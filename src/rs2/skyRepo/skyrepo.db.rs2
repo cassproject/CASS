@@ -1,0 +1,117 @@
+//Copyright 2015 Eduworks Corporation and other contributing parties.
+//Licensed under an Apache 2.0 License. See LICENSE in the root directory.
+//This file is an RS2 file, a functional scripting language for defining web services.
+//This code requires LEVR, a web service definition framework.
+
+//Uses ElasticSearch as a backend.
+
+type=#add(a="@",b="type");
+context=#add(a="@",b="context");
+owner=#add(a="@",b="owner");
+signature=#add(a="@",b="signature");
+id=#add(a="@",b="id");
+
+urlBase=#urlBase();
+
+putUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	d="/",
+	g=#urlEncode(obj="@id"),
+	h=#if(
+		operator="@version",
+		operand="",
+		ne=#add(
+			a="?version=",
+			i="@version",
+			j="&version_type=external"
+		)
+	)
+);
+
+put=#if(
+	operator="@obj",
+	operand="",
+	ne=#object(
+		a=#fixElasticsearchMappings(
+			obj=#toObject(obj="@obj").toObject().toDotAndArrayNotationObject()
+		),
+		b=#if(
+			operator=#owners().count(),
+			operand="0",
+			gt=#if(
+				operator=#signatureSheet().intersect(b=#owners()).count(),
+				operand="0",
+				eq=#error(msg="Only an owner of an object may change it.")
+			)
+		).call(obj=#skyrepoGet()),
+		z=#toObject(obj="@obj").toObject().toDotAndArrayNotationObject().httpPost(
+			url=putUrl,
+			contentType="application/json",
+			multipart="false"
+		)
+	)
+).object(z=#toObject(obj="@obj")).cget(z="");
+
+#skyrepoPut=put;
+
+getUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	f="/",
+	g=#urlEncode(obj="@id"),
+	h=#if(
+		operator="@version",
+		operand="",
+		ne=#add(
+			a="?version=",
+			b="@version",
+			c="&version_type=external"
+		)
+	)
+);
+
+get=getUrl.httpGet().toObject().cgetByParam(
+	param="_source"
+).fromDotAndArrayNotationObject().filterResults();
+
+#skyrepoGet=get;
+
+searchObj=#object(
+	from="0",
+	size="50",
+	query=#object(
+		filtered=#object(
+			query=#object(
+				query_string=#object(
+					query="@q"
+				)
+			)
+		)
+	)
+).put(
+	_key="_source",
+	_value=#object(
+		a=context,
+		b=type,
+		c=id,
+		d=owner.add(z="*"),
+		e=signature,
+		f="name"
+	).valueSet()
+);
+
+searchUrl=#add(
+	a=urlBase,
+	b="/_search"
+);
+
+search=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+	paramName="obj",
+	array="true",
+	op=#toObject(obj="@obj").getByParam(param="_source").fromDotAndArrayNotationObject()
+).filterResults().displayJson(_collapse="true");
+
+#skyrepoSearch=search;

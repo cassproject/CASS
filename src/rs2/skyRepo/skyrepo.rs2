@@ -1,0 +1,36 @@
+//Copyright 2015 Eduworks Corporation and other contributing parties.
+//Licensed under an Apache 2.0 License. See LICENSE in the root directory.
+//This file is an RS2 file, a functional scripting language for defining web services.
+//This code requires LEVR, a web service definition framework.
+
+query=#object(
+	type=#split(obj="@urlRemainder",split="/").getIndex(index="1"),
+	id=#split(obj="@urlRemainder",split="/").getIndex(index="2"),
+	version=#split(obj="@urlRemainder",split="/").getIndex(index="3")
+);
+
+get=#skyrepoGet(
+	type=query.cget(type=""),
+	id=query.cget(id=""),
+	version=query.cget(version="")
+);
+
+postData=#fileFromDatastream(name="data");
+postObject=postData.fileToString().toObject();
+
+save=postObject.skyrepoPut(
+	type=query.cget(type=""),
+	id=query.cget(id=""),
+	version=query.cget(version="")
+);
+
+saveOrGet=#object(
+	a=save,
+	b=get
+).cget(b="");
+
+data=saveOrGet.call(type="data").displayJson(_collapse="true");
+/data=data;
+
+search=#skyrepoSearch(q=postData.fileToString());
+/sky/repo/search=search;

@@ -1,0 +1,216 @@
+//Copyright 2015 Eduworks Corporation and other contributing parties.
+//Licensed under an Apache 2.0 License. See LICENSE in the root directory.
+//This file is an RS2 file, a functional scripting language for defining web services.
+//This code requires LEVR, a web service definition framework.
+
+//Generate or load a salt used to generate a secret.
+salt = #fileLoad(path="skyId.salt").fileToString();
+salt = #if(
+	operator=#fileExists(path="skyId.salt"),
+	operand="",
+	eq=#object(
+		a=#fileSave(obj=#randomString(length="2048"),path="skyId.salt"),
+		b=salt
+	).cget(b=""),
+	ne=salt
+).cache(name="skyIdSalt");
+
+//Generate or load a string used to generate a secret.
+secret=#fileLoad(path="skyId.secret").fileToString();
+secret=#if(
+	operator=#fileExists(path="skyId.secret"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#randomString(length="2048"),path="skyId.secret"),
+		b=secret
+	).cget(b=""),
+	ne=secret
+);
+
+//Hash the string secret to make the well-randomized secret.
+secret=#pbkdf2(
+	obj=secret,
+	salt=salt,
+	iterations="10000",
+	hashLength="16"
+).cache(name="skyidSecret");
+
+//Generate or load the public/private key.
+ppk=#fileLoad(path="skyId.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="skyId.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="skyId.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="skyidPpk");
+
+//Salt a provided identifier.
+saltedId=#pbkdf2(
+	obj="@id",
+	salt=salt,
+	iterations="10000",
+	hashLength="16"
+);
+
+//Salt a provided password.
+saltedPassword=#pbkdf2(
+	obj="@password",
+	salt=salt,
+	iterations="10000",
+	hashLength="64"
+);
+
+//Create a signature sheet using our credentials so we may store and retreive data in the repository.
+signatureSheet=#object(
+	filename="signatureSheet.json",
+	mimeType="application/json",
+	data=#object(
+		a=#toObject(obj="@signableObject").put(
+			_key=#signature(),
+			_value=#toObject(obj="@signableObject").rsaSign(ppk=ppk)
+		).call(
+			signableObject=#object(
+				expiry=#date(_raw="true").add(z="1000").toLong()
+			).put(
+				_key=#type(),
+				_value="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature"
+			).put(
+				_key=#owner(),
+				_value=ppk.rsaPpkToPk()
+			)
+		)
+	).valueSet().toString()
+).stringToFile();
+
+//Get user credentials from the repository and decrypt.
+retrieve=#skyrepoGet(
+	type="schema.eduworks.com.ebac.0.1.encryptedValue",
+	id=saltedId
+).cget(payload="").aesDecrypt(
+	secret=secret,
+	iv=saltedId
+).toObject();
+
+//Encode payload into an encrypted value JSON-LD wrapper.
+payload=#object(
+	payload = #toObject(obj="@payload").aesEncrypt(
+		secret=secret,
+		iv=saltedId
+	)
+).put(
+	_key=#schema(),
+	_value="http://schema.eduworks.com/ebac/0.1/"
+).put(
+	_key=#type(),
+	_value="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+).put(
+	_key=#owner(),
+	_value=ppk.rsaPpkToPk()
+);
+
+//Retreive the user credential payload, generating a new token (and saving it).
+retreiveFormally=#if(
+	operator=saltedPassword,
+	operand=retrieve.cget(password=""),
+	eq=payload.call(
+		payload=retrieve.put(token=#randomString(length="20"))
+	).skyrepoPut(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	).cget(payload="").aesDecrypt(
+		secret=secret,
+		iv=saltedId
+	).toObject().put(password=""),
+	ne=#error(code="401")
+);
+
+//Can't forget our signature sheet!
+retreiveFormally = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=retreiveFormally
+);
+	
+#skyidRetreive = retreiveFormally;
+
+//Attempt to store the credentials.
+store=payload.skyrepoPut(
+	type="schema.eduworks.com.ebac.0.1.encryptedValue",
+	id=saltedId
+);
+
+//Verify the token and then attempt to store the credentials.
+storeFormally=#if(
+	operator=retrieve.cget(token=""),
+	operand="@token",
+	eq=store,
+	ne=#error(code="403",msg="An error in synchronization has occurred. Please re-login and try again.")
+);
+
+//Can't forget our signature sheet!
+storeFormally = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=storeFormally
+);
+
+#skyidStore = storeFormally;
+
+//If the account exists, pretend we created it (to prevent creation-denied attacks). If not, create it.
+create=#if(
+	operator=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	),
+	operand="",
+	eq=store
+);
+
+//Create, and notify our spiffy chat that someone created a user.
+create = #object(
+	a=create,
+	b=#object(text="Sky User Created.").httpPost(multipart="false",contentType="text/plain",url="https://zhooks.slack.com/services/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")
+);
+
+//Don't forget the signature sheet!
+create = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=create
+);
+
+#skyidCreate=create;
+
+//Login Service
+postData=#fileFromDatastream(name="credentialRequest");
+postObject=postData.fileToString().toObject();
+
+login=#skyidRetreive(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password="")
+).displayJson(_collapse="true");
+/sky/id/login=login;
+
+//Commit Service
+postData=#fileFromDatastream(name="credentialCommit");
+postObject=postData.fileToString().toObject();
+
+store=#skyidStore(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password=""),
+	token=postObject.cget(token=""),
+	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
+);
+/sky/id/commit=store;
+
+//Create Service
+postData=#fileFromDatastream(name="credentialCommit");
+postObject=postData.fileToString().toObject();
+
+store=#skyidCreate(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password=""),
+	token=postObject.cget(token=""),
+	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
+);
+/sky/id/create=store;
