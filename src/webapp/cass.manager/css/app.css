@@ -1,0 +1,8 @@
+body{
+    background-color:gray;
+}
+body>div{
+    background-color:white;
+}
+
+

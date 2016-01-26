@@ -1,0 +1,111 @@
+/**
+ *  Data wrapper to represent remotely hosted data. Includes necessary fields for
+ *  permission controls, signing, and identification of the object.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EcRemoteLinkedData = function(schema, type) {
+    EcLinkedData.call(this, schema, type);
+};
+EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(constructor, prototype) {
+    /**
+     *  PEM encoded public keys of the owner of the object. A repository, upon
+     *  receiving a write operation, will ensure either the data did not
+     *  previously exist, or that an owner has provided a signature authorizing
+     *  the replacement of the old data with the new data.
+     */
+    prototype.owner = null;
+    /**
+     *  PEM encoded public keys of identities authorized to view the object. A
+     *  repository will ignore write operations from these identities, but will
+     *  allow them to read the object.
+     */
+    prototype.readers = null;
+    /**
+     *  Signatures of the object. The signing method is as follows: Remove the
+     *  signature field. Encode the object and its fields in ascii-sort order
+     *  JSON-LD using a space-free, tab-free encoding. Sign the aforementioned
+     *  string.
+     */
+    prototype.signature = null;
+    /**
+     *  URL/URI used to retrieve and store the object, plus identify the object.
+     */
+    prototype.id = null;
+    /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository).
+     *  
+     *  @param server
+     *             Base URL of the server's repository functionality.
+     */
+    prototype.generateId = function(server) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += "data/";
+        this.id += this.type.replace("http://", "").replaceAll("/", ".");
+        this.id += "/";
+        this.id += generateUUID();
+        this.id += "/";
+        this.id += new Date().getTime();
+    };
+    /**
+     *  Determines if the object has pk as an owner. Homogenizes the PEM strings
+     *  for comparison.
+     *  
+     *  @param pk
+     *  @return True if owner is represented by the PK, false otherwise.
+     */
+    prototype.hasOwner = function(pk) {
+        var pkPem = pk.toPem();
+        for (var i = 0; i < this.owner.length; i++) 
+            if (pkPem.equals(EcPk.fromPem(this.owner[i]).toPem())) 
+                return true;
+        return false;
+    };
+    /**
+     *  Encodes the object in a form where it is ready to be signed.
+     *  
+     *  @return ASCII-sort order encoded space-free and tab-free JSON-LD.
+     */
+    prototype.toSignableJson = function() {
+        var d = JSON.parse(this.toJson());
+        delete (d)["@signature"];
+        return d.toJson();
+    };
+    /**
+     *  Adds an owner to the object, if the owner does not exist.
+     *  
+     *  @param newOwner
+     *             PK of the new owner.
+     */
+    prototype.addOwner = function(newOwner) {
+        var pem = newOwner.toPem();
+        if (this.owner == null) 
+            this.owner = new Array();
+        for (var i = 0; i < this.owner.length; i++) 
+            if (this.owner[i].equals(pem)) 
+                return;
+        this.owner.push(pem);
+    };
+    /**
+     *  Determines if the object will survive and be retreivable from a server,
+     *  should it be written.
+     *  
+     *  @return True if the object is NOT VALID for storage, false otherwise.
+     */
+    prototype.invalid = function() {
+        if (this.id == null) 
+            return true;
+        if (this.id.contains("http://") == false) 
+            return true;
+        if (this.schema == null) 
+            return true;
+        if (this.getFullType() == null) 
+            return true;
+        if (this.getFullType().contains("http://") == false) 
+            return true;
+        return false;
+    };
+}, {owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
