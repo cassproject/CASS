@@ -35,4 +35,4 @@ EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, proto
         var blob = base64ToBlob(this.data, this.mimeType);
         saveAs(blob, this.name);
     };
-}, {owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

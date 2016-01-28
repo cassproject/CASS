@@ -60,18 +60,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param success
      *  @param failure
      */
-    prototype.save = function(data, success, failure) {
-        if (data.id == null) 
-             throw new RuntimeException("Cannot save data that has no ID.");
+    constructor.save = function(data, success, failure) {
+        if (data.invalid()) 
+            failure("Data is malformed.");
+        EcIdentityManager.sign(data);
         var fd = new FormData();
         fd.append("data", data.toJson());
         fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 10000, data.id));
         EcRemote.postExpectingString(data.id, "", fd, success, failure);
     };
-    prototype.update = function(data, success, failure) {
+    constructor.update = function(data, success, failure) {
         EcRepository.get(data.id, success, failure);
     };
-    prototype.sign = function(data, pen) {
+    constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));
     };
 }, {}, {});

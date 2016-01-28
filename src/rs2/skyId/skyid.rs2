@@ -214,3 +214,4 @@ store=#skyidCreate(
 	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
 );
 /sky/id/create=store;
+

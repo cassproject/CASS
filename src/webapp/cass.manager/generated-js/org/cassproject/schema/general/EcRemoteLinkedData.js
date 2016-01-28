@@ -20,7 +20,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  repository will ignore write operations from these identities, but will
      *  allow them to read the object.
      */
-    prototype.readers = null;
+    prototype.reader = null;
     /**
      *  Signatures of the object. The signing method is as follows: Remove the
      *  signature field. Encode the object and its fields in ascii-sort order
@@ -72,7 +72,22 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.toSignableJson = function() {
         var d = JSON.parse(this.toJson());
         delete (d)["@signature"];
+        delete (d)["@owner"];
+        delete (d)["@reader"];
         return d.toJson();
+    };
+    /**
+     *  Sign this object with a private key.
+     *  
+     *  @param ppk
+     */
+    prototype.signWith = function(ppk) {
+        var signableJson = this.toSignableJson();
+        var signed = EcRsaOaep.sign(ppk, signableJson);
+        for (var i = 0; i < this.signature.length; i++) 
+            if (this.signature[i].equals(signed)) 
+                return;
+        this.signature.push(signed);
     };
     /**
      *  Adds an owner to the object, if the owner does not exist.
@@ -108,4 +123,4 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             return true;
         return false;
     };
-}, {owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

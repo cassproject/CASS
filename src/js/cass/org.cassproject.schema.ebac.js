@@ -189,7 +189,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  access to the payload.
      */
     prototype.secret = null;
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Message used to commit credentials to a remote login server.
  *  

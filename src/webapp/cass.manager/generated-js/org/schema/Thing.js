@@ -13,4 +13,4 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     prototype.mainEntityOfPage = null;
     prototype.image = null;
     prototype.additionalType = null;
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

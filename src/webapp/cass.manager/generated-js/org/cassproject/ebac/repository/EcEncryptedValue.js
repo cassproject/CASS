@@ -57,9 +57,9 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 if (decrypted != null) 
                     return decrypted;
             }
-        if (this.readers != null) 
-            for (var i = 0; i < this.readers.length; i++) {
-                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.readers[i]));
+        if (this.reader != null) 
+            for (var i = 0; i < this.reader.length; i++) {
+                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptToObject(decryptionKey);
@@ -85,9 +85,9 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 if (decrypted != null) 
                     return decrypted;
             }
-        if (this.readers != null) 
-            for (var i = 0; i < this.readers.length; i++) {
-                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.readers[i]));
+        if (this.reader != null) 
+            for (var i = 0; i < this.reader.length; i++) {
+                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptRaw(decryptionKey);
@@ -126,4 +126,4 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         return null;
     };
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

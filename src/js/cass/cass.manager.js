@@ -114,7 +114,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
         f.addOwner(this.identity.selectedIdentity.ppk.toPk());
         var encryptedValue = EcEncryptedValue.toEncryptedValue(f, false);
         encryptedValue.generateId(this.repo.selectedServer);
-        this.repo.save(encryptedValue, function(p1) {
+        this.repo.constructor.save(encryptedValue, function(p1) {
             fileUploaded();
         }, null);
     };
@@ -124,7 +124,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
         f.name = name;
         f.mimeType = mimeType;
         f.generateId(this.repo.selectedServer);
-        this.repo.save(f, function(p1) {
+        this.repo.constructor.save(f, function(p1) {
             fileUploaded();
         }, null);
     };
@@ -133,7 +133,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
         d.copyFrom(JSON.parse(data));
         if (d.invalid()) 
             cannotSaveErrorInData();
-        this.repo.save(d, function(p1) {
+        this.repo.constructor.save(d, function(p1) {
             savedData();
         }, function(p1) {
             errorSavingData(p1);

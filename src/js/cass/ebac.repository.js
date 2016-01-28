@@ -57,9 +57,9 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 if (decrypted != null) 
                     return decrypted;
             }
-        if (this.readers != null) 
-            for (var i = 0; i < this.readers.length; i++) {
-                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.readers[i]));
+        if (this.reader != null) 
+            for (var i = 0; i < this.reader.length; i++) {
+                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptToObject(decryptionKey);
@@ -85,9 +85,9 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 if (decrypted != null) 
                     return decrypted;
             }
-        if (this.readers != null) 
-            for (var i = 0; i < this.readers.length; i++) {
-                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.readers[i]));
+        if (this.reader != null) 
+            for (var i = 0; i < this.reader.length; i++) {
+                var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptRaw(decryptionKey);
@@ -126,7 +126,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         return null;
     };
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, readers: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
@@ -189,18 +189,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param success
      *  @param failure
      */
-    prototype.save = function(data, success, failure) {
-        if (data.id == null) 
-             throw new RuntimeException("Cannot save data that has no ID.");
+    constructor.save = function(data, success, failure) {
+        if (data.invalid()) 
+            failure("Data is malformed.");
+        EcIdentityManager.sign(data);
         var fd = new FormData();
         fd.append("data", data.toJson());
         fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 10000, data.id));
         EcRemote.postExpectingString(data.id, "", fd, success, failure);
     };
-    prototype.update = function(data, success, failure) {
+    constructor.update = function(data, success, failure) {
         EcRepository.get(data.id, success, failure);
     };
-    prototype.sign = function(data, pen) {
+    constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));
     };
 }, {}, {});

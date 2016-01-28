@@ -237,7 +237,7 @@ function replaceField(field,obj)
     }
     else
     {
-        if (field.children("label").text() == "@owner")
+        if (field.children("label").text() == "@owner" || field.parent().parent().children("label").text() == "@owner")
             field.append(createContactSmall(obj));
         else
             field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+obj+"</p>");

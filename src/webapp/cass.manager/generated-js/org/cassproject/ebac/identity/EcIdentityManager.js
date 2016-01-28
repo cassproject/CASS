@@ -155,6 +155,19 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         return null;
     };
+    /**
+     *  Sign a piece of data with all available keys that own that data.
+     *  
+     *  @param d
+     *             Data to sign.
+     */
+    constructor.sign = function(d) {
+        for (var i = 0; i < d.owner.length; i++) {
+            var attempt = EcIdentityManager.getPpk(EcPk.fromPem(d.owner[i]));
+            if (attempt != null) 
+                d.signWith(attempt);
+        }
+    };
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityAdded: {name: "Callback1", arguments: ["EcIdentity"]}, onContactAdded: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
