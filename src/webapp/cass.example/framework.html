@@ -1,0 +1,352 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example Application</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li>
+                    <a class="menu-text" href="#">Framework Manager</a>
+                    <ul class="menu vertical">
+                        <li><a href="#" href="framework.html">Framework Manager</a></li>
+                        <li><a href="#" onclick="alert('NYI');">Profile Manager</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="menu-text" href="#">Framework</a>
+                    <ul class="menu vertical">
+                        <li><a href="#" onclick="newFrameworkButton();">New</a></li>
+                        <li><a href="#" onclick="exportCsv();">Export Competencies</a></li>
+                        <!--<li><a href="#" onclick="alert('NYI');">Clone</a></li>-->
+                    </ul>
+                </li>
+                <li class="canEditFramework" style='display:none;'>
+                    <a class="menu-text" href="#">Insert</a>
+                    <ul class="menu vertical">
+                        <li><a href="#" onclick="alert('NYI');">New</a>
+                            <ul class="menu vertical">
+                                <li><a class="canEditFramework" href="#" onclick="insertNewCompetency();">Competency</a></li>
+                                <li><a class="canEditFramework" href="#" onclick="insertNewLevel();">Level</a></li>
+                                <li><a class="canEditFramework" href="#" onclick="insertNewRelation();">Relation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Existing</a>
+                            <ul class="menu vertical">
+                                <li><a class="canEditFramework" href="#" onclick="insertExistingCompetency();">Competency</a></li>
+                                <li><a class="canEditFramework" href="#" onclick="insertExistingLevel();">Level</a></li>
+                                <li><a class="canEditFramework" href="#" onclick="insertExistingRelation();">Relation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Import</a>
+                            <ul class="menu vertical">
+                                <li><a class="canEditFramework" href="#" onclick="insertBulkFromCsv();">From CSV</a>
+                                </li>
+                                <li><a class="canEditFramework" href="#" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a>
+                                </li>
+                                <li><a class="canEditFramework" href="#" onclick="bulkFromFrameworkButton();">From Framework</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <ul class="menu">
+                <li>
+                    <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
+                </li>
+                <li>
+                    <button type="button" class="button" data-open="login" style="display:none;">Login</button>
+                    <button type="button" class="button" style="display:none;">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <ul id="frameworks" class="accordion" data-accordion role="tablist">
+        <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
+            <a class="accordion-title cass-framework-name">Framework 1</a>
+            <div class="accordion-content" data-tab-content>
+                <a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>Edit</a>
+                <i class="cass-framework-description">Loading...</i>
+                <br>
+                <small><a class="cass-framework-url"></a></small>
+                <div class="cass-framework-owner">
+                </div>
+                <div class="cass-framework-competencies">
+                </div>
+                <div class="cass-framework-actions">
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <ul id="competency" class="accordion" data-accordion role="tablist">
+        <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
+            <a class="accordion-title cass-competency-name">Loading...</a>
+            <div class="accordion-content" data-tab-content>
+                <div class="cass-competency-actions"></div>
+                <i class="cass-competency-description">No Description.</i>
+                <br><small><a class="cass-competency-url"></a></small>
+                <ul class="cass-competency-levels">
+                    <li class="cass-competency-level">
+                        <span class="cass-level-actions"></span>
+                        <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
+                        <br>
+                        <i class="cass-level-description">No Description.</i>
+                    </li>
+                </ul>
+                <ul class="cass-competency-relations">
+                    <li class="cass-competency-relation">
+                        <span class="cass-relation-actions"></span>
+                        <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
+                        <span class="cass-relation-type"></span>
+                        <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <div class="small reveal" id="login" data-reveal>
+        <h3>Login</h3>
+        <form>
+            <input id="loginUsername" type="text" placeholder="Username" />
+            <input id="loginPassword" type="password" placeholder="Password" />
+            <small>You will automatically create an account if no account exists.</small>
+            <a class="button float-right" onclick="login();">Login</a>
+        </form>
+    </div>
+
+    <div class="tiny reveal" id="newFramework" data-reveal>
+        <h3>New Framework</h3>
+        <input id="newFrameworkName" type="text" placeholder="Name" />
+        <textarea id="newFrameworkDescription" placeholder="Description"></textarea>
+        <!--
+        <input id="newFrameworkSourceName" type="text" placeholder="Source Name"/>
+        <textarea id="newFrameworkSourceDescription" placeholder="Source Description"></textarea>
+        <input id="newFrameworkSourceUrl" type="text" placeholder="Source URL"/>
+        -->
+        <a class="button float-right" onclick="newFramework();">Create</a>
+    </div>
+
+    <div class="tiny reveal" id="editFramework" data-reveal>
+        <h3>Edit Framework</h3>
+        <input id="editFrameworkName" type="text" placeholder="Name" />
+        <textarea id="editFrameworkDescription" placeholder="Description"></textarea>
+        <!--
+        <input id="newFrameworkSourceName" type="text" placeholder="Source Name"/>
+        <textarea id="newFrameworkSourceDescription" placeholder="Source Description"></textarea>
+        <input id="newFrameworkSourceUrl" type="text" placeholder="Source URL"/>
+        -->
+        <a class="button float-right" onclick="editFrameworkSave();">Save</a>
+        <a class="button alert" onclick="editFrameworkDelete();">Delete</a>
+    </div>
+
+    <div class="tiny reveal" id="newCompetency" data-reveal>
+        <h3>New Competency</h3>
+        <input id="newCompetencyName" type="text" placeholder="Name" />
+        <textarea id="newCompetencyDescription" placeholder="Description"></textarea>
+        <input id="newCompetencyScope" type="text" placeholder="Scope" />
+        <a class="button float-right" onclick="newCompetency();">Create</a>
+    </div>
+
+    <div class="small reveal" id="editCompetency" data-reveal>
+        <h3>Edit Competency</h3>
+        <input id="editCompetencyName" type="text" placeholder="Name" />
+        <textarea id="editCompetencyDescription" placeholder="Description"></textarea>
+        <input id="editCompetencyScope" type="text" placeholder="Scope" />
+        <div id="editCompetencyLevels">
+        </div>
+        <a class="button float-right" onclick="editCompetencySave();">Save</a>
+        <a class="button alert" onclick="editCompetencyDelete();">Delete</a>
+    </div>
+
+    <div class="small reveal" id="insertExistingCompetency" data-reveal>
+        <h3>Insert Existing Competency</h3>
+        <input id="insertExistingCompetencySearch" type="search" onchange="insertExistingCompetency();" placeholder="Search Competencies...">
+        <ul id="insertExistingCompetencyResults">
+
+        </ul>
+    </div>
+
+    <div class="large reveal" id="newRelation" data-reveal>
+        <h3>New Relation</h3>
+        <h3>Source<span class="float-right">Target</span></h3>
+        <div class="large-5 small-12 columns">
+            <select type="text" id="newRelationSource" placeholder="Source"></select>
+        </div>
+        <div class="large-2 small-12 columns">
+            <select id="newRelationType" class="prefix">
+                <option value="requires" selected>Requires:</option>
+                <option value="desires">Desires:</option>
+                <option value="narrows">Narrows:</option>
+                <option value="isEnabledBy">Is Enabled By:</option>
+                <option value="isRelatedTo">Is Related To:</option>
+                <option value="isEquivalentTo">Is Equivalent To:</option>
+            </select>
+        </div>
+        <div class="large-5 small-12 columns">
+            <select type="text" id="newRelationTarget" placeholder="Search..."></select>
+        </div>
+        <input id="newRelationName" type="text" placeholder="Relation Name" />
+        <textarea id="newRelationDescription" placeholder="Relation Description"></textarea>
+        <a class="button float-right" onclick="newRelation();">Create</a>
+    </div>
+
+    <div class="large reveal" id="editRelation" data-reveal>
+        <h3>Edit Relation</h3>
+        <h3>Source<span class="float-right">Target</span></h3>
+        <input type="text" id="editRelationId" style="display:none;">
+        <div class="large-5 small-12 columns">
+            <select type="text" id="editRelationSource" placeholder="Source"></select>
+        </div>
+        <div class="large-2 small-12 columns">
+            <select id="editRelationType" class="prefix">
+                <option value="requires" selected>Requires:</option>
+                <option value="desires">Desires:</option>
+                <option value="narrows">Narrows:</option>
+                <option value="isEnabledBy">Is Enabled By:</option>
+                <option value="isRelatedTo">Is Related To:</option>
+                <option value="isEquivalentTo">Is Equivalent To:</option>
+            </select>
+        </div>
+        <div class="large-5 small-12 columns">
+            <select type="text" id="editRelationTarget" placeholder="Target"></select>
+        </div>
+        <input id="editRelationName" type="text" placeholder="Relation Name" />
+        <textarea id="editRelationDescription" placeholder="Relation Description"></textarea>
+        <a class="button float-right" onclick="editRelationSave();">Save</a>
+        <a class="button alert" onclick="editRelationDelete();">Delete</a>
+    </div>
+
+    <div class="small reveal" id="newLevel" data-reveal>
+        <h3>New Level</h3>
+        <input id="newLevelName" type="text" placeholder="Level Name" />
+        <input id="newLevelTitle" type="text" placeholder="Title of a holder of this level." />
+        <textarea id="newLevelDescription" placeholder="Level Description"></textarea>
+        <a class="button float-right" onclick="newLevel();">Create</a>
+    </div>
+
+    <div class="small reveal" id="editLevel" data-reveal>
+        <h3>Edit Level</h3>
+        <input type="text" id="editLevelId" style="display:none;">
+        <input id="editLevelName" type="text" placeholder="Level Name" />
+        <input id="editLevelTitle" type="text" placeholder="Title of a holder of this level." />
+        <textarea id="editLevelDescription" placeholder="Level Description"></textarea>
+        <a class="button float-right" onclick="editLevelSave();">Save</a>
+        <a class="button alert" onclick="editLevelDelete();">Delete</a>
+    </div>
+
+    <div class="small reveal" id="bulkFromFramework" data-reveal>
+        <h3>Import Competencies From Framework</h3><span>This will import all the competencies and relations from the below framework into the selected framework. </span>
+
+        <select type="text" id="bulkFromFrameworkSource" placeholder="Framework"></select>
+        Please indicate whether you would like to link to the above framework's competencies and relations, or copy the competencies and relations for your own use.
+        <div class="switch">
+            <input class="switch-input" id="bulkFromFrameworkCompetencyDuplicate" type="checkbox" name="bulkFromFrameworkCompetencyDuplicate">
+            <label class="switch-paddle" for="bulkFromFrameworkCompetencyDuplicate" style="width:120px;">
+                <span class="show-for-sr">Duplicate Competencies</span>
+                <span class="switch-active" style="left:70px;" aria-hidden="true">Copy</span>
+                <span class="switch-inactive" style="left:70px;" aria-hidden="true">Link</span>
+            </label>
+        </div>
+        <a class="button float-right" onclick="bulkFromFramework();">Import</a>
+    </div>
+
+    <div class="small reveal" id="insertExistingRelation" data-reveal>
+        <h3>Insert Existing Relation</h3>
+        <div class="cass-competency-relations" id="insertExistingRelationResults">
+
+        </div>
+    </div>
+
+    <div class="small reveal" id="insertExistingLevel" data-reveal>
+        <h3>Insert Existing Level</h3>
+        <div class="cass-competency-levels" id="insertExistingLevelsResults">
+
+        </div>
+    </div>
+
+    <div class="small reveal" id="importCsv" data-reveal>
+        <h3>Import CSV</h3>
+        <i>This will import a CSV of competencies. (with headers as the first row, please!)</i>
+        <label>Step 1: Select a CSV.</label>
+        <input type="file" id="importCsvFile" onchange="analyzeCsv();" />
+        <label>Step 2: Select the Name column.</label>
+        <select id="importCsvColumnName"></select>
+        <label>Step 3: Select the Description column (if any).</label>
+        <select id="importCsvColumnDescription"></select>
+        <label>Step 4: Select the Scope column (if any).</label>
+        <select id="importCsvColumnScope"></select>
+        <a class="button float-right" onclick="importCsv();">Import</a>
+    </div>
+
+    <div class="small reveal" id="importMedbiqXml" data-reveal>
+        <h3>Import Medbiquitous XML</h3>
+        <i>This will scan an XML file for <a href="http://ns.medbiq.org/competencyobject/v1/">CompetencyObject</a> and import them into the framework.</i>
+        <label>Step 1: Select an XML file.</label>
+        <input type="file" id="importMedbiqXmlFile" onchange="analyzeMedbiqXml();" />
+        <label>Step 2: Wait for the file to be scanned.</label>
+        <label id="importMedbiqXmlCompetencies"></label>
+        <label id="importMedbiqXmlProgress"></label>
+        <br>
+        <a class="button float-right" onclick="importMedbiqXml();">Import</a>
+    </div>
+
+    <div class="tiny reveal" id="exportCsv" data-reveal>
+        <h3>Exporting...</h3>
+        <center id="exportCsvStatus"></center>
+    </div>
+
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/what-input.min.js"></script>
+    <script src="js/vendor/papaparse.js"></script>
+    <script src="js/vendor/xml2json.js"></script>
+    <script src="js/vendor/json2xml.js"></script>
+    <script src="forge/forge.bundle.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/cass/stjs.js"></script>
+    <script src="js/cass/ec.base.js"></script>
+    <script src="js/cass/random.js"></script>
+    <script src="js/cass/blobHelper.js"></script>
+    <script src="js/cass/ec.crypto.js"></script>
+    <script src="js/cass/ebac.identity.js"></script>
+    <script src="js/cass/org.json-ld.js"></script>
+    <script src="js/cass/FileSaver.js"></script>
+    <script src="js/cass/org.cassproject.schema.general.js"></script>
+    <script src="js/cass/org.schema.js"></script>
+    <script src="js/cass/org.cassproject.schema.ebac.js"></script>
+    <script src="js/cass/org.cassproject.schema.cass.js"></script>
+    <script src="js/cass/ebac.repository.js"></script>
+    <script src="js/cass/cass.competency.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/framework/app.js"></script>
+    <script src="js/framework/appIdentity.js"></script>
+    <script src="js/framework/appFramework.js"></script>
+    <script src="js/framework/appCompetency.js"></script>
+    <script src="js/framework/appFrameworkCompetency.js"></script>
+    <script src="js/framework/appRelation.js"></script>
+    <script src="js/framework/appFrameworkRelation.js"></script>
+    <script src="js/framework/appLevel.js"></script>
+    <script src="js/framework/appFrameworkLevel.js"></script>
+    <script src="js/framework/appImport.js"></script>
+    <script>
+        $(document).foundation();
+        $("#login").foundation('open');
+
+    </script>
+</body>
+
+</html>

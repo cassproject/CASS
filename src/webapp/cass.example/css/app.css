@@ -1,0 +1,147 @@
+/* 
+COLORS: 
+rgb(46,205,113) - green - Framework
+rgb(92,173,226) blue - Competencies
+rgb(233,76,60) red - Rollup rules
+rgb(243,196,12) yellow - Levels
+rgb(156,89,184) purple - Relations
+*/
+
+body
+{
+    background-color: rgb(242,242,242);
+    color: rgb(68,84,106);
+}
+
+/* --- MENU --- */
+
+.top-bar
+{
+    background-color: rgb(53,152,220);
+    font-size: .75rem;
+}
+
+.top-bar .menu .menu-text
+{
+    color: white;
+    background-color: rgb(53,152,220);
+}
+
+.top-bar .menu .menu-text:hover
+{
+    background-color: rgb(92,173,226);
+}
+.is-dropdown-submenu-parent.is-down-arrow > a::after
+{
+    border-color: #BCE6F3 transparent transparent;
+}
+.top-bar .menu .submenu 
+{
+    background-color: white;
+}
+.top-bar .menu .submenu a
+{
+    color: rgb(68,84,106);
+}
+.top-bar .menu .submenu a:hover
+{
+    background-color: #eee;
+}
+
+/* --- Accordians --- */
+
+.accordion-title
+{
+    color: rgb(68,84,106);
+    background-color: white;
+    margin: 1px 0;
+    padding: .6rem 1rem;
+    font-size: 1rem;
+}
+
+.accordion-title[aria-selected=true]
+{
+    color: white;
+    font-weight: bold;
+}
+
+.accordion-content
+{
+    background-color: rgb(242,242,242);
+}
+
+/* --- Frameworks --- */
+
+.accordion-title.cass-framework-name { border-left: 4px solid rgb(46,205,113); }
+.cass-framework-name[aria-selected=true] { background-color: rgb(46,205,113); }
+.cass-framework.is-active > .accordion-content { border-bottom: 2px solid rgb(46,205,113); }
+
+.cass-framework-description {}
+
+/* --- Competencies --- */
+
+.accordion-title.cass-competency-name { border-left: 4px solid rgb(92,173,226); }
+.cass-competency-name[aria-selected=true] { background-color: rgb(92,173,226); }
+.cass-competency.is-active > .accordion-content { border-bottom: 2px solid rgb(92,173,226); }
+.cass-competency-actions {float:right}
+.cass-competency-actions a {margin-left:5px;}
+
+/* --- Relationships --- */
+.cass-relation-actions {float:right}
+.cass-relation-actions a {margin-left:5px;}
+
+.cass-relation-type
+{
+    font-weight: bold;
+    color: rgb(156,89,184);
+}
+.cass-relation-target,.cass-relation-source
+{
+    text-decoration: underline;
+}
+
+ul.cass-competency-relations {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li.cass-competency-relation { 
+    padding-left: 1em; 
+    text-indent: -.7em;
+}
+
+li.cass-competency-relation:before {
+    content: "■ ";
+    color: rgb(156,89,184); /* or whatever color you prefer */
+}
+
+/* --- Levels --- */
+.cass-level-actions {float:right}
+.cass-level-actions a {margin-left:5px;}
+
+.cass-level-type
+{
+    font-weight: bold;
+    color: rgb(243,196,12);
+}
+.cass-level-title
+{
+    text-decoration: underline;
+}
+
+ul.cass-competency-levels {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li.cass-competency-level { 
+    padding-left: 1em; 
+    text-indent: -.7em;
+}
+
+li.cass-competency-level:before {
+    content: "■ ";
+    color: rgb(243,196,12); /* or whatever color you prefer */
+}
