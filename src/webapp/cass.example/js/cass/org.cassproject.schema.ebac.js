@@ -44,9 +44,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
      *  Credential array.
      */
     prototype.credentials = null;
-}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    /**
+     *  Contact array.
+     */
+    prototype.contacts = null;
+}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  AES encrypted public key and display name. Contains Initialization Vectors,
+ *  AES encrypted private key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt private identities for storage on remote
  *  systems.
  *  
@@ -72,6 +76,36 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
      *  AES encrypted display name for identity.
      */
     prototype.displayName = null;
+}, {atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  AES encrypted public key and display name. Contains Initialization Vectors,
+ *  but not secrets. Used to encrypt public identities for storage on remote
+ *  systems.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacContact = function() {
+    EcLinkedData.call(this, Ebac.schema, "http://schema.eduworks.com/ebac/0.1/contact");
+};
+EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, prototype) {
+    /**
+     *  AES Initialization Vector used to decode PPK.
+     */
+    prototype.iv = null;
+    /**
+     *  AES encrypted Private Key in PEM form.
+     */
+    prototype.pk = null;
+    /**
+     *  AES Initialization Vector used to decode displayName.
+     */
+    prototype.displayNameIv = null;
+    /**
+     *  AES encrypted display name for identity.
+     */
+    prototype.displayName = null;
+    prototype.sourceIv = null;
+    prototype.source = null;
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Component of EbacEncryptedValue that contains data needed to decrypt

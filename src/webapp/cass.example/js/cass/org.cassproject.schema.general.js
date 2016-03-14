@@ -128,6 +128,20 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.owner.push(pem);
     };
     /**
+     *  Removes an owner from the object, if the owner does exist.
+     *  
+     *  @param owner
+     *             PK of the new owner.
+     */
+    prototype.removeOwner = function(oldOwner) {
+        var pem = oldOwner.toPem();
+        if (this.owner == null) 
+            this.owner = new Array();
+        for (var i = 0; i < this.owner.length; i++) 
+            if (this.owner[i].equals(pem)) 
+                this.owner.splice(i, 1);
+    };
+    /**
      *  Determines if the object will survive and be retreivable from a server,
      *  should it be written.
      *  

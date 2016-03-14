@@ -20,15 +20,19 @@ AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, pr
         console.error("Not Implemented Yet");
     };
 }, {field: "Object"}, {});
-var LoginModal = function() {
+var LoginModal = function(success, fail) {
     EcModal.call(this);
+    this.loginSuccess = success;
+    this.loginFail = fail;
 };
 LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "tiny";
+    prototype.loginSuccess = null;
+    prototype.loginFail = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet");
     };
-}, {}, {});
+}, {loginSuccess: "Callback0", loginFail: "Callback0"}, {});
 var CreateUserModal = function() {
     EcModal.call(this);
 };
@@ -38,100 +42,100 @@ CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor
         console.error("Not Implemented Yet");
     };
 }, {}, {});
+var WelcomeScreen = function() {
+    EcScreen.call(this);
+};
+WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "welcome";
+    prototype.display = function(arg0, arg1) {
+        console.error("Not Implemented Yet");
+    };
+    prototype.getDisplayName = function() {
+        return WelcomeScreen.displayName;
+    };
+}, {}, {});
 var CompetencySearchScreen = function(lastViewed) {
     EcScreen.call(this);
     this.lastViewed = lastViewed;
 };
 CompetencySearchScreen = stjs.extend(CompetencySearchScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencySearch";
     prototype.lastViewed = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
+    prototype.getDisplayName = function() {
+        return CompetencySearchScreen.displayName;
+    };
 }, {lastViewed: "Object"}, {});
-var CompetencyEditScreen = function(data) {
-    EcScreen.call(this);
-    this.data = data;
-};
-CompetencyEditScreen = stjs.extend(CompetencyEditScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {data: "Object"}, {});
-var WelcomeScreen = function() {
-    EcScreen.call(this);
-};
-WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.display = function(arg0, arg1) {
-        console.error("Not Implemented Yet");
-    };
-}, {}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencySearchScreen.displayName)) {
+            ScreenManager.startupScreen = new CompetencySearchScreen(null);
+        }
+    });
+})();
 var RepoCreateScreen = function(data) {
     EcScreen.call(this);
     this.data = data;
 };
 RepoCreateScreen = stjs.extend(RepoCreateScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoCreate";
     prototype.data = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
-}, {data: "Object"}, {});
-var CompetencyViewScreen = function(data) {
-    EcScreen.call(this);
-    this.data = data;
-};
-CompetencyViewScreen = stjs.extend(CompetencyViewScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
+    prototype.getDisplayName = function() {
+        return RepoCreateScreen.displayName;
     };
 }, {data: "Object"}, {});
-var UserIdentityScreen = function() {
-    EcScreen.call(this);
-};
-UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {}, {});
-var RepoViewScreen = function(data) {
-    EcScreen.call(this);
-    this.data = data;
-};
-RepoViewScreen = stjs.extend(RepoViewScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
+            ScreenManager.startupScreen = new RepoCreateScreen(null);
+        }
+    });
+})();
 var FileManagerScreen = function() {
     EcScreen.call(this);
 };
 FileManagerScreen = stjs.extend(FileManagerScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "fileManager";
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FileManagerScreen.displayName;
     };
 }, {}, {});
-var RelationshipEditScreen = function(data) {
-    EcScreen.call(this);
-    this.data = data;
-};
-RelationshipEditScreen = stjs.extend(RelationshipEditScreen, EcScreen, [], function(constructor, prototype) {
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
+            ScreenManager.startupScreen = new FileManagerScreen();
+        }
+    });
+})();
 var RepoSearchScreen = function(lastViewed) {
     EcScreen.call(this);
     this.lastViewed = lastViewed;
 };
 RepoSearchScreen = stjs.extend(RepoSearchScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoSearch";
     prototype.lastViewed = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
+    prototype.getDisplayName = function() {
+        return RepoSearchScreen.displayName;
+    };
 }, {lastViewed: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RepoSearchScreen.displayName)) {
+            ScreenManager.startupScreen = new RepoSearchScreen(null);
+        }
+    });
+})();
 var IdentityController = function() {};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
     prototype.selectedIdentity = null;
@@ -141,11 +145,20 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
             if (EcIdentityManager.ids[i].ppk.equals(clickedPpk)) 
                 this.selectedIdentity = EcIdentityManager.ids[i];
     };
+    prototype.unselect = function() {
+        this.selectedIdentity = null;
+    };
+    prototype.currentOwner = function(pkPem) {
+        var candidatePk = EcPk.fromPem(pkPem);
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcIdentityManager.ids[i].ppk.toPk().equals(candidatePk)) {
+                return true;
+            }
+        }
+        return false;
+    };
     prototype.lookup = function(pkPem) {
         var candidatePk = EcPk.fromPem(pkPem);
-        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
-            if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
-                return EcIdentityManager.contacts[i];
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             if (EcIdentityManager.ids[i].ppk.toPk().equals(candidatePk)) {
                 var newContact = new EcContact();
@@ -154,8 +167,12 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
                 return newContact;
             }
         }
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
+            if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
+                return EcIdentityManager.contacts[i];
         var newContact = new EcContact();
         newContact.pk = candidatePk;
+        newContact.displayName = "N/A";
         EcIdentityManager.contacts.push(newContact);
         return newContact;
     };
@@ -264,7 +281,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
         var query = "";
         query = "(@type:\"" + EcAlignment.myType + "\")";
         var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
-        if (noVersion.equals(sourceId)) {
+        if (noVersion == sourceId) {
             query += " AND (source:\"" + sourceId + "\")";
         } else {
             query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\")";
@@ -333,8 +350,11 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     prototype.loginServer = null;
     prototype.identity = null;
     prototype.login = function(username, password, success, failure, server) {
+        var identityManager = this.identity;
         this.loginServer.startLogin(username, password);
         this.loginServer.fetch(function(p1) {
+            if (EcIdentityManager.ids.length > 0) 
+                identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
             success();
         }, function(p1) {
             failure(p1);
@@ -353,9 +373,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             prototype.callback = function() {
                 return "";
             };
-        }, {}, {}))());
+        }, {}, {}))(), server);
     };
-    prototype.save = function(success, failure) {
+    prototype.save = function(success, failure, server) {
         var me = this;
         this.loginServer.commit(function(p1) {
             success();
@@ -367,7 +387,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             prototype.callback = function() {
                 return null;
             };
-        }, {}, {}))());
+        }, {}, {}))(), server);
     };
     prototype.logout = function() {
         this.loginServer.clear();
@@ -375,6 +395,33 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         EcIdentityManager.ids = new Array();
     };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController"}, {});
+var UserIdentityScreen = function() {
+    EcScreen.call(this);
+};
+UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "identity";
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return UserIdentityScreen.displayName;
+    };
+}, {}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
+            ScreenManager.startupScreen = new UserIdentityScreen();
+            ModalManager.showModal(new LoginModal(function() {
+                ModalManager.hideModal();
+                if (window.document.location.hash.startsWith("#" + new WelcomeScreen().getDisplayName())) {
+                    ScreenManager.changeScreen(new UserIdentityScreen(), null, null);
+                }
+            }, function() {
+                ScreenManager.changeScreen(new WelcomeScreen(), null, null);
+            }));
+        }
+    });
+})();
 var AppController = function() {};
 AppController = stjs.extend(AppController, null, [], function(constructor, prototype) {
     constructor.topBarContainerId = "#menuContainer";
@@ -397,8 +444,9 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         AppController.loginServer.setDefaultIdentityManagementServer("http://localhost:9722/api/custom/");
         ScreenManager.setDefaultScreen(new WelcomeScreen());
         $(window.document).ready(function(arg0, arg1) {
-            ViewManager.showView(new AppMenu(), AppController.topBarContainerId, null);
-            ModalManager.showModal(new LoginModal());
+            ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
+                ($(window.document)).foundation();
+            });
             return true;
         });
     };
@@ -428,3 +476,158 @@ Manager = stjs.extend(Manager, null, [], function(constructor, prototype) {
 }, {searchController: "SearchController", loginController: "LoginController", identityController: "IdentityController", repositoryController: "RepositoryController", cryptoController: "CryptoController", repo: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
 if (!stjs.mainCallDisabled) 
     Manager.main();
+var CompetencyEditScreen = function(data) {
+    EcScreen.call(this);
+    this.data = data;
+};
+CompetencyEditScreen = stjs.extend(CompetencyEditScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyEdit";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return CompetencyEditScreen.displayName;
+    };
+}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new CompetencyEditScreen(data), null);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new CompetencySearchScreen(null), null);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new CompetencyEditScreen(null);
+        }
+    });
+})();
+var CompetencyViewScreen = function(data) {
+    EcScreen.call(this);
+    this.data = data;
+};
+CompetencyViewScreen = stjs.extend(CompetencyViewScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyView";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return CompetencyViewScreen.displayName;
+    };
+}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new CompetencyViewScreen(data), null);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new CompetencySearchScreen(null), null);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new CompetencySearchScreen(null);
+        }
+    });
+})();
+var RepoViewScreen = function(data) {
+    EcScreen.call(this);
+    this.data = data;
+};
+RepoViewScreen = stjs.extend(RepoViewScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoView";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return RepoViewScreen.displayName;
+    };
+}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RepoViewScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new RepoViewScreen(data), null);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new RepoSearchScreen(null), null);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new RepoSearchScreen(null);
+        }
+    });
+})();
+var RelationshipEditScreen = function(data) {
+    EcScreen.call(this);
+    this.data = data;
+};
+RelationshipEditScreen = stjs.extend(RelationshipEditScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationshipEdit";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return RelationshipEditScreen.displayName;
+    };
+}, {data: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            if (data.isA(EcAlignment.myType)) 
+                                ScreenManager.replaceScreen(new RelationshipEditScreen(data), null);
+                             else 
+                                ScreenManager.replaceScreen(new CompetencySearchScreen(null), null);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new CompetencySearchScreen(null), null);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new RelationshipEditScreen(null);
+        }
+    });
+})();
