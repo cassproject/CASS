@@ -11,60 +11,65 @@ schema=#add(a="@",b="schema");
 #schema=schema;
 signatureParam=#add(a="@",b="signature");
 #signature=signatureParam;
-
 signatureArr=#toObject(obj="@signatureArr");
-type=signatureArr.getByParam(param=#type());
-owner=signatureArr.getByParam(param=#owner());
+type=signatureArr.getByParam(param=type);
+owner=signatureArr.getByParam(param=owner);
 expiry=signatureArr.cget(expiry="");
 signature=signatureArr.getByParam(param=signatureParam);
 
 owner = owner.replace(
-	replace="-----BEGIN PUBLIC KEY-----",
-	with=""
-).replace(
-	replace="-----END PUBLIC KEY-----",
-	with=""
-).replace(
 	regex="true",
 	replace="\r?\n",
 	with=""
 );
 
-signatureSheet=#fileFromDatastream(name="signatureSheet").fileToString().toArray();
+signatureSheet=#object(
+	a=#fileFromDatastream(name="signatureSheet").fileToString().toArray(),
+	b=#headers().get(signaturesheet="").toArray()
+).valueSet().union();
 
 verifySignature=#object(
 	a=#if(
 		operator=type,
-		operand="",
-		eq=#error(code="422",msg="Missing Signature Version.")
-	),
-	aa=#if(
-		operator=type,
 		operand="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature",
 		ne=#error(code="422",msg="Invalid Signature Version.")
 	),
+	aa=#if(
+		operator=type,
+		operand="",
+		eq=#error(code="422",msg="Missing Signature Version.")
+	),
 	b=#if(
+		operator=expiry,
+		operand=#date(_raw="true"),
+		lt=#error(
+			code="419",
+			msg=#add(
+				_string="true",
+				a="A Signature is Expired. My time is ",
+				b=#date(_raw="true").toString(),
+				c=" and the signature expires at ",
+				d=expiry
+			).toString()
+		)
+	),
+	bb=#if(
 		operator=expiry,
 		operand="",
 		eq=#error(code="422",msg="Missing expiry date.")
 	),
-	bb=#if(
-		operator=expiry,
-		operand=#date(_raw="true"),
-		lt=#error(code="419",msg="A Signature is Expired.")
-	),
 	c=#if(
-		operator=signature,
-		operand="",
-		eq=#error(code="496",msg="Missing Signature.")	
-	),
-	cc=#if(
 		operator=signature.rsaVerify(
 			pk=owner,
 			against=signatureArr.removeByParam(param=signatureParam)
 		),
 		operand="true",
 		ne=#error(code="451",msg=#add(a="Invalid Signature Detected: ",b=signature))
+	),
+	cc=#if(
+		operator=signature,
+		operand="",
+		eq=#error(code="496",msg="Missing Signature.")	
 	),
 	z=owner
 ).cget(z="");

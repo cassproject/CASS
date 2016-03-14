@@ -9,14 +9,15 @@ query=#object(
 	version=#split(obj="@urlRemainder",split="/").getIndex(index="3")
 );
 
+postData=#fileFromDatastream(name="data");
+
+postObject=postData.fileToString().toObject();
+
 get=#skyrepoGet(
 	type=query.cget(type=""),
 	id=query.cget(id=""),
 	version=query.cget(version="")
 );
-
-postData=#fileFromDatastream(name="data");
-postObject=postData.fileToString().toObject();
 
 save=postObject.skyrepoPut(
 	type=query.cget(type=""),
@@ -24,13 +25,28 @@ save=postObject.skyrepoPut(
 	version=query.cget(version="")
 );
 
+delete=get.skyrepoDelete(
+	type=query.cget(type=""),
+	id=query.cget(id=""),
+	version=query.cget(version="")
+);
+
+saveOrDelete = #if(operator="@methodType",operand="DELETE",eq=delete,ne=save);
+
 saveOrGet=#object(
-	a=save,
+	a=saveOrDelete,
 	b=get
 ).cget(b="");
 
 data=saveOrGet.call(type="data").displayJson(_collapse="true");
 /data=data;
 
-search=#skyrepoSearch(q=postData.fileToString());
+searchParamData = #fileFromDatastream(name="searchParams");
+searchParamObj = searchParamData.fileToString().toObject();
+
+search=#skyrepoSearch(q=postData.fileToString(), size=searchParamObj.cget(size=""), start=searchParamObj.cget(start=""));
+
 /sky/repo/search=search;
+
+performance=#reflectionPerformance().displayJson();
+/perf=performance;

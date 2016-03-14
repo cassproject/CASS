@@ -25,17 +25,20 @@ putUrl=#add(
 		ne=#add(
 			a="?version=",
 			i="@version",
-			j="&version_type=external"
-		)
-	)
+			j="&version_type=external&refresh=true"
+		),
+		eq="?refresh=true"
+	),
+	
 );
 
+//BUG: Check to see if there are no signature sheet signatures but the owners change, if it changes the owner.
 put=#if(
 	operator="@obj",
 	operand="",
 	ne=#object(
-		a=#fixElasticsearchMappings(
-			obj=#toObject(obj="@obj").toObject().toDotAndArrayNotationObject()
+		a=#skyRepoCheckType(
+			obj=#toObject(obj="@obj").toObject().toBracketNotationObject()
 		),
 		b=#if(
 			operator=#owners().count(),
@@ -43,10 +46,15 @@ put=#if(
 			gt=#if(
 				operator=#signatureSheet().intersect(b=#owners()).count(),
 				operand="0",
-				eq=#error(msg="Only an owner of an object may change it.")
+				eq=#if(
+					operator=#owners().count(),
+					operand="0",
+					eq=#error(code="401",msg="This object is public, nobody can own it."),
+					ne=#error(code="401",msg="Only an owner of an object may change it.")
+				)
 			)
 		).call(obj=#skyrepoGet()),
-		z=#toObject(obj="@obj").toObject().toDotAndArrayNotationObject().httpPost(
+		z=#toObject(obj="@obj").toObject().toBracketNotationObject().httpPost(
 			url=putUrl,
 			contentType="application/json",
 			multipart="false"
@@ -55,6 +63,39 @@ put=#if(
 ).object(z=#toObject(obj="@obj")).cget(z="");
 
 #skyrepoPut=put;
+
+deleteUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	d="/",
+	g=#urlEncode(obj="@id"),
+	z="?refresh=true"
+);
+
+//BUG: Check to see if there are no signature sheet signatures but the owners change, if it changes the owner.
+delete=#object(
+		b=#if(
+			operator=#owners().count(),
+			operand="0",
+			gt=#if(
+				operator=#signatureSheet().intersect(b=#owners()).count(),
+				operand="0",
+				eq=#if(
+					operator=#owners().count(),
+					operand="0",
+					eq=#error(code="403",msg="This object is public, nobody can delete it."),
+					ne=#error(code="401",msg="Only an owner of an object may delete it.")
+				)
+			),
+			eq=#error(code="403",msg="This object is public, nobody can delete it.")
+		).call(obj=#skyrepoGet()),
+		z=#httpDelete(
+			url=deleteUrl
+		)
+).cget(z="");
+
+#skyrepoDelete=delete;
 
 getUrl=#add(
 	a=urlBase,
@@ -75,18 +116,63 @@ getUrl=#add(
 
 get=getUrl.httpGet().toObject().cgetByParam(
 	param="_source"
-).fromDotAndArrayNotationObject().filterResults();
+).fromBracketNotationObject().filterResults();
 
 #skyrepoGet=get;
 
+
+//#skyRepoGetProtectedTypes
 searchObj=#object(
-	from="0",
-	size="50",
+	from=#if(operator="@start", operand="",
+		eq="0",
+		ne="@start"
+	),
+	size=#if(operator="@size", operand="",
+		eq="50",
+		ne="@size"
+	),
 	query=#object(
 		filtered=#object(
 			query=#object(
 				query_string=#object(
 					query="@q"
+				)
+			),
+			filter=#object(
+				bool=#object(
+					should=#signatureSheet().cforEach(
+						paramName="signatureKey",
+						op=#object(
+							match=#object().put(
+								_key=owner,
+								_value=#object(
+									query="@signatureKey",
+									analyzer="whitespace_remove"
+								)
+							)
+						),
+						array="true"
+					).append(
+						a=#object(
+							missing=#object(
+								field=owner
+							)
+						),
+						b=#object(
+							bool=#object(
+								must_not=#skyRepoGetProtectedTypes().cforEach(
+									paramName="protectedType",
+									op=#object(
+										match=#object().put(
+											_key=#add(a="@",b="type.(full)"),
+											_value="@protectedType"
+										)
+									),
+									array="true"
+								)
+							)
+						)
+					)	
 				)
 			)
 		)
@@ -111,7 +197,7 @@ searchUrl=#add(
 search=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
-	op=#toObject(obj="@obj").getByParam(param="_source").fromDotAndArrayNotationObject()
+	op=#toObject(obj="@obj").getByParam(param="_source").fromBracketNotationObject()
 ).filterResults().displayJson(_collapse="true");
 
 #skyrepoSearch=search;

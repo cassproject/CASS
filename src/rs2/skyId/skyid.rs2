@@ -86,13 +86,21 @@ signatureSheet=#object(
 ).stringToFile();
 
 //Get user credentials from the repository and decrypt.
-retrieve=#skyrepoGet(
-	type="schema.eduworks.com.ebac.0.1.encryptedValue",
-	id=saltedId
-).cget(payload="").aesDecrypt(
-	secret=secret,
-	iv=saltedId
-).toObject();
+retrieve=#if(
+	operator="@payload",
+	operand="",
+	eq=#error(code="404", msg="User Does Not Exist"),
+	ne=#aesDecrypt(
+		obj="@payload",
+		secret=secret,
+		iv=saltedId
+	).toObject()
+).ccall(
+	payload=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	).cget(payload="")
+);
 
 //Encode payload into an encrypted value JSON-LD wrapper.
 payload=#object(
@@ -136,7 +144,7 @@ retreiveFormally = signatureSheet.toDatastream(
 #skyidRetreive = retreiveFormally;
 
 //Attempt to store the credentials.
-store=payload.skyrepoPut(
+store=payload.debug().skyrepoPut(
 	type="schema.eduworks.com.ebac.0.1.encryptedValue",
 	id=saltedId
 );
@@ -153,6 +161,12 @@ storeFormally=#if(
 storeFormally = signatureSheet.toDatastream(
 	paramName="signatureSheet",
 	op=storeFormally
+);
+
+//Can't forget our signature sheet!
+storeFormally = #object(
+	a=#addWhitespaceAnalyzer(),
+	b=storeFormally
 );
 
 #skyidStore = storeFormally;
@@ -179,10 +193,16 @@ create = signatureSheet.toDatastream(
 	op=create
 );
 
+create = #object(
+	a=#addWhitespaceAnalyzer(),
+	b=create
+);
+
 #skyidCreate=create;
 
 //Login Service
 postData=#fileFromDatastream(name="credentialRequest");
+
 postObject=postData.fileToString().toObject();
 
 login=#skyidRetreive(
@@ -193,6 +213,7 @@ login=#skyidRetreive(
 
 //Commit Service
 postData=#fileFromDatastream(name="credentialCommit");
+
 postObject=postData.fileToString().toObject();
 
 store=#skyidStore(
@@ -205,6 +226,7 @@ store=#skyidStore(
 
 //Create Service
 postData=#fileFromDatastream(name="credentialCommit");
+
 postObject=postData.fileToString().toObject();
 
 store=#skyidCreate(
@@ -214,4 +236,3 @@ store=#skyidCreate(
 	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
 );
 /sky/id/create=store;
-

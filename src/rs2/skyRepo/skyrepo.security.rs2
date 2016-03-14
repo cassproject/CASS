@@ -3,6 +3,15 @@
 //This file is an RS2 file, a functional scripting language for defining web services.
 //This code requires LEVR, a web service definition framework.
 
+encryptedTypes=#object(
+	a="http://skyrepo.eduworks.com/EncryptedValue",
+	b="EncryptedValue",
+	c="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+).valueSet();
+
+#skyRepoPredefinedEncrypted = encryptedTypes;
+
+
 type=#add(a="@",b="type");
 context=#add(a="@",b="context");
 owner=#add(a="@",b="owner");
@@ -10,40 +19,50 @@ reader=#add(a="@",b="reader");
 protect=#add(a="@",b="protect");
 obj=#toObject(obj="@obj");
 
-owners=obj.getByParam(
-	param=owner
-).toArray().cforEach(
+owners=#if(
+	operator="@owner",
+	operand="",
+	ne=#if(
+		operator=#startsWith(obj="@owner",with="["), 
+		operand="true",
+		eq=#toArray(obj="@owner"),
+		ne=#add(a="[",b="]").toArray().append(a="@owner")
+	)
+).ccall(
+	owner=obj.getByParam(
+		param=owner
+	)
+).cforEach(
 	paramName="owner",
 	array="true",
 	threaded="false",
 	op=#replace(
 		obj="@owner",
-		replace="-----BEGIN PUBLIC KEY-----",
-		with=""
-	).replace(
-		replace="-----END PUBLIC KEY-----",
-		with=""
-	).replace(
 		regex="true",
 		replace="\r?\n",
 		with=""
 	)
 );
 
-readers=obj.getByParam(
-	param=reader
-).toArray().cforEach(
-	paramName="reader",
+readers=#if(
+	operator="@reader",
+	operand="",
+	ne=#if(
+		operator=#startsWith(obj="@reader",with="["), 
+		operand="true",
+		eq=#toArray(obj="@owner"),
+		ne=#add(a="[",b="]").toArray().append(a="@reader")
+	)
+).ccall(
+	reader=obj.getByParam(
+		param=reader
+	)
+).cforEach(
+	paramName="owner",
 	array="true",
 	threaded="false",
 	op=#replace(
 		obj="@reader",
-		replace="-----BEGIN PUBLIC KEY-----",
-		with=""
-	).replace(
-		replace="-----END PUBLIC KEY-----",
-		with=""
-	).replace(
 		regex="true",
 		replace="\r?\n",
 		with=""
@@ -70,12 +89,6 @@ types=obj.getByParam(param=type).toArray().cforEach(
 		ne="@type"
 	)
 );
-
-encryptedTypes=#object(
-	a="http://skyrepo.eduworks.com/EncryptedValue",
-	b="EncryptedValue",
-	c="http://schema.eduworks.com/ebac/0.1/encryptedValue"
-).valueSet();
 
 isEncryptedType=#if(
 	operator=encryptedTypes.intersect(b=types).count(),
@@ -116,7 +129,7 @@ filterResultObject=#if(
 		paramName="key",
 		valueName="obj",
 		threaded="false",
-		op=#filterResults()
+		op=#filterResults(obj="@obj", key="@key")
 	)
 );
 
