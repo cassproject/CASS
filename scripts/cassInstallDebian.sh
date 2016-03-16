@@ -1,3 +1,4 @@
+#!/bin/bash
 #Install LEVR
 export DEBIAN_FRONTEND=noninteractive
 echo
