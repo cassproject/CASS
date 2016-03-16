@@ -60,19 +60,19 @@ service elasticsearch start
 
 echo -----
 echo 
-echo HEY! I need you to do something.
+echo "HEY! I need you to do something."
 echo 
-echo Go set up your domain name if you havent yet.
-echo If you are using a reverse proxy, configure the proxy endpoint to point at:
-echo    http://<ip>:8080/levr/api/custom/
-echo If not, strongly consider it:
-echo    All of the created objects will use the service endpoint as part of their identifier.
-echo    A reverse proxy allows you to change around servers.
+echo "Go set up your domain name if you haven't yet."
+echo "If you are using a reverse proxy, configure the proxy endpoint to point at:"
+echo "   http://<ip>:8080/levr/api/custom/"
+echo "If not, strongly consider it:"
+echo "   All of the created objects will use the service endpoint as part of their identifier."
+echo "   A reverse proxy allows you to change around servers."
 echo
-echo If you are using the IP as the endpoint, say, for testing...
-echo    Identity Manager and Selected Repository endpoint in app.js -> http://<ip>:8080/levr/api/custom/
-echo If you are using a DNS name as the endpoint, which is good!
-echo    Identity Manager and Selected Repository endpoint in app.js -> http://<service endpoint>/
+echo "If you are using the IP as the endpoint (say, for testing)"
+echo "   Identity Manager and Selected Repository endpoint (in app.js) -> http://<ip>:8080/levr/api/custom/"
+echo "If you are using a DNS name as the endpoint (good)"
+echo "   Identity Manager and Selected Repository endpoint (in app.js) -> http://<service endpoint>/"
 echo -----
 
 read -p "Press [Enter] key to edit app.js using nano..."
