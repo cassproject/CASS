@@ -1,7 +1,6 @@
 var loginServer = new EcRemoteIdentityManager();
 
 loginServer.setDefaultIdentityManagementServer("http://sandbox.service.cassproject.org/");
-loginServer.setDefaultIdentityManagementServer("http://dev.skyrepo.service.eduworks.com/");
 loginServer.configure(
     "Replace this with your application salt.", 5000, 64,
     "Replace this with a different application salt.", 5000, 64,
@@ -10,7 +9,6 @@ loginServer.configure(
 
 var repo = new EcRepository();
 repo.selectedServer = "http://sandbox.service.cassproject.org/";
-repo.selectedServer = "http://dev.skyrepo.service.eduworks.com/";
 
 EcRepository.caching = true;
 

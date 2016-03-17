@@ -1,6 +1,7 @@
 #!/bin/bash
 #Install LEVR
 export DEBIAN_FRONTEND=noninteractive
+cd
 echo -----
 echo Updating Repositories...
 apt-get -qq update

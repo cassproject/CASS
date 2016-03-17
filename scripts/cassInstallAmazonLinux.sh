@@ -1,5 +1,6 @@
 #!/bin/bash
 #Install LEVR
+cd
 echo -----
 echo Installing Tomcat 7...
 yum -y -q install tomcat7
