@@ -204,6 +204,12 @@ var EbacEncryptedValue = function() {
 EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.type = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
     /**
+     *  PEM encoded public keys of identities authorized to view the object. A
+     *  repository will ignore write operations from these identities, but will
+     *  allow them to read the object.
+     */
+    prototype.reader = null;
+    /**
      *  Optional Hint used to aid search, showing the type of the inner encrypted
      *  object.
      */
@@ -223,7 +229,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  access to the payload.
      */
     prototype.secret = null;
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Message used to commit credentials to a remote login server.
  *  

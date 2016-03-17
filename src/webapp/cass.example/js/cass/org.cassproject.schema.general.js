@@ -20,12 +20,6 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.owner = null;
     /**
-     *  PEM encoded public keys of identities authorized to view the object. A
-     *  repository will ignore write operations from these identities, but will
-     *  allow them to read the object.
-     */
-    prototype.reader = null;
-    /**
      *  Signatures of the object. The signing method is as follows: Remove the
      *  signature field. Encode the object and its fields in ascii-sort order
      *  JSON-LD using a space-free, tab-free encoding. Sign the aforementioned
@@ -113,6 +107,35 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.signature.push(signed);
     };
     /**
+     *  Verify's the object's signatures
+     *  
+     *  @return true if all of the signatures could be verified, false if they could not
+     */
+    prototype.verify = function() {
+        if (this.signature != null) {
+            for (var i = 0; i < this.signature.length; ) {
+                var works = false;
+                var sig = this.signature[i];
+                if (this.owner != null) {
+                    for (var j = 0; j < this.owner.length; j++) {
+                        var own = this.owner[j];
+                        var pk = EcPk.fromPem(own);
+                        if (EcRsaOaep.verify(pk, this.toSignableJson(), sig)) {
+                            works = true;
+                            break;
+                        }
+                    }
+                }
+                if (!works) 
+                    return false;
+                 else 
+                    i++;
+            }
+            return true;
+        }
+        return false;
+    };
+    /**
      *  Adds an owner to the object, if the owner does not exist.
      *  
      *  @param newOwner
@@ -183,7 +206,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.shortId = function() {
         return EcRemoteLinkedData.trimVersionFromUrl(this.id);
     };
-}, {owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A representation of a file.
  *  

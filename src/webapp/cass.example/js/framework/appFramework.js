@@ -52,8 +52,8 @@ function populateFramework(frameworkId) {
                 var ui = fwui.find("#competency").children().last();
                 ui.attr("url", competencyUrl);
                 ui.find(".cass-competency-relations").html("");
-                ui.find(".cass-competency-actions").append("<a class='canEditCompetency' onclick='editCompetencyButton(this);' style='display:none;'>Edit</a>");
-                ui.find(".cass-competency-actions").append("<a class='canEditFramework' onclick='removeCompetencyFromFrameworkButton(this);' style='display:none;'>Remove</a>");
+                ui.find(".cass-competency-actions").prepend("<a class='canEditCompetency' onclick='editCompetencyButton(this);' style='display:none;'>✎</a>");
+                ui.find(".cass-competency-actions").append("<a class='canEditFramework' onclick='removeCompetencyFromFrameworkButton(this);' style='display:none;'>X</a>");
                 (function (competencyUrl, i) {
                     timeout(function () {
                         populateCompetency(competencyUrl);
@@ -64,7 +64,7 @@ function populateFramework(frameworkId) {
         }
         populateFrameworkRelations(frameworkId);
         populateFrameworkLevels(frameworkId);
-        if (fw.canEdit(identity.ppk.toPk()))
+        if (identity != null && fw.canEdit(identity.ppk.toPk()))
             $(".canEditFramework").show();
         else
             $(".canEditFramework").hide();

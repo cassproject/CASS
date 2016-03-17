@@ -21,16 +21,16 @@ function populateFrameworkRelation(fw, relationId) {
         ui.attr("url", relation.shortId());
         ui.find(".cass-relation-source").attr("url", source);
         ui.find(".cass-relation-target").attr("url", target);
-        ui.find(".cass-relation-actions").prepend("<a class='canEditFramework' onclick='removeRelationFromFrameworkButton(this);' style='display:none;'>Remove</a>");
-        ui.find(".cass-relation-actions").prepend("<a class='canEditRelation' onclick='editRelationButton(this);' style='display:none;'>Edit</a>");
+        ui.find(".cass-relation-actions").append("<a class='canEditFramework' onclick='removeRelationFromFrameworkButton(this);' style='display:none;'>X</a>");
+        ui.find(".cass-relation-actions").prepend("<a class='canEditRelation' onclick='editRelationButton(this);' style='display:none;'>✎</a>");
         ui.find(".cass-relation-type").text(relation.relationType);
         populateCompetency(source);
         populateCompetency(target);
-        if (relation.canEdit(identity.ppk.toPk()))
+        if (identity != null && relation.canEdit(identity.ppk.toPk()))
             ui.find(".canEditRelation").show();
         else
             ui.find(".canEditRelation").hide();
-        if (fw.canEdit(identity.ppk.toPk()))
+        if (identity != null && fw.canEdit(identity.ppk.toPk()))
             ui.find(".canEditFramework").show();
         else
             ui.find(".canEditFramework").hide();

@@ -44,9 +44,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
      *  Credential array.
      */
     prototype.credentials = null;
-}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    /**
+     *  Contact array.
+     */
+    prototype.contacts = null;
+}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  AES encrypted public key and display name. Contains Initialization Vectors,
+ *  AES encrypted private key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt private identities for storage on remote
  *  systems.
  *  
@@ -72,6 +76,36 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
      *  AES encrypted display name for identity.
      */
     prototype.displayName = null;
+}, {atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  AES encrypted public key and display name. Contains Initialization Vectors,
+ *  but not secrets. Used to encrypt public identities for storage on remote
+ *  systems.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacContact = function() {
+    EcLinkedData.call(this, Ebac.schema, "http://schema.eduworks.com/ebac/0.1/contact");
+};
+EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, prototype) {
+    /**
+     *  AES Initialization Vector used to decode PPK.
+     */
+    prototype.iv = null;
+    /**
+     *  AES encrypted Private Key in PEM form.
+     */
+    prototype.pk = null;
+    /**
+     *  AES Initialization Vector used to decode displayName.
+     */
+    prototype.displayNameIv = null;
+    /**
+     *  AES encrypted display name for identity.
+     */
+    prototype.displayName = null;
+    prototype.sourceIv = null;
+    prototype.source = null;
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Component of EbacEncryptedValue that contains data needed to decrypt
@@ -170,6 +204,12 @@ var EbacEncryptedValue = function() {
 EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.type = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
     /**
+     *  PEM encoded public keys of identities authorized to view the object. A
+     *  repository will ignore write operations from these identities, but will
+     *  allow them to read the object.
+     */
+    prototype.reader = null;
+    /**
      *  Optional Hint used to aid search, showing the type of the inner encrypted
      *  object.
      */
@@ -189,7 +229,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  access to the payload.
      */
     prototype.secret = null;
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Message used to commit credentials to a remote login server.
  *  

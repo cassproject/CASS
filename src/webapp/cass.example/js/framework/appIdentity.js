@@ -25,7 +25,10 @@ function login() {
                 if (EcIdentityManager.ids.length > 0)
                     identity = EcIdentityManager.ids[0];
                 $("#login").foundation('close');
+                $("#loginButton").hide();
+                $("#logoutButton").show();
                 frameworkSearch();
+                populateContacts();
             }
         },
         function (p1) {
@@ -55,4 +58,6 @@ logout = function () {
     loginServer.clear();
     identity = null;
     EcIdentityManager.ids = new Array();
+    $("#loginButton").show();
+    $("#logoutButton").hide();
 }

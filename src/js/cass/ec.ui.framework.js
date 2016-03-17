@@ -87,12 +87,24 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         ModalManager.inModal = false;
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 var ScreenManager = function() {
     ViewManager.call(this);
 };
 ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor, prototype) {
     constructor.SCREEN_CONTAINER_ID = "#screenContainer";
     constructor.myHistory = [];
+    constructor.LOADING_STARTUP_PAGE = new (stjs.extend(function ScreenManager$1() {
+        EcScreen.call(this);
+    }, EcScreen, [], function(constructor, prototype) {
+        prototype.display = function(containerId, callback) {
+            if (callback != null) 
+                callback();
+        };
+    }, {}, {}))();
     constructor.defaultScreen = null;
     constructor.startupScreen = null;
     constructor.startupCallback = null;
@@ -127,17 +139,19 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             return true;
         });
     };
-    constructor.changeScreen = function(page, addHistory) {
+    constructor.changeScreen = function(page, addHistory, callback) {
         if (addHistory == null) 
             addHistory = true;
         if (addHistory) 
             ScreenManager.addHistory(page, ScreenManager.SCREEN_CONTAINER_ID);
         ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
             ($(window.document)).foundation();
+            if (callback != null) 
+                callback();
         });
     };
     constructor.replaceScreen = function(page, callback) {
-        ScreenManager.replaceHistory(page, ScreenManager.SCREEN_CONTAINER_ID);
+        ScreenManager.replaceHistory(page, ScreenManager.SCREEN_CONTAINER_ID, null);
         ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
             ($(window.document)).foundation();
             if (callback != null) 
@@ -154,7 +168,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(pageName, screen, displayContainerId);
         (window.history).pushState({name: pageName}, pageName, "#" + pageName);
     };
-    constructor.replaceHistory = function(screen, displayContainerId) {
+    constructor.replaceHistory = function(screen, displayContainerId, params) {
         var name = screen.getDisplayName();
         if (name.equals("")) 
             name = screen.displayName;
@@ -165,7 +179,16 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         if (idx < 0) 
             idx = 0;
         ScreenManager.myHistory[idx] = new HistoryClosure(pageName, screen, displayContainerId);
-        (window.history).replaceState({name: pageName}, pageName, "#" + pageName);
+        var hash = "#" + pageName;
+        if (params != null) {
+            hash += "?";
+            for (var str in (params)) {
+                if (!hash.endsWith("?")) 
+                    hash += "&";
+                hash += str + "=" + (params)[str];
+            }
+        }
+        (window.history).replaceState({name: pageName}, pageName, hash);
     };
     constructor.loadHistoryScreen = function(name) {
         for (var i = ScreenManager.myHistory.length - 1; i > -1; i--) {
@@ -188,7 +211,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             cb();
         }
         if (ScreenManager.startupScreen != null) 
-            ScreenManager.changeScreen(ScreenManager.startupScreen, false);
+            ScreenManager.changeScreen(ScreenManager.startupScreen, false, null);
         var tempName = ScreenManager.defaultScreen.getDisplayName();
         if (tempName.equals("")) 
             tempName = ScreenManager.defaultScreen.displayName;
@@ -199,7 +222,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             window.history.go(-1 * window.history.length);
         }
     };
-}, {myHistory: {name: "Array", arguments: ["HistoryClosure"]}, defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback1", arguments: ["EcScreen"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+}, {myHistory: {name: "Array", arguments: ["HistoryClosure"]}, LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback1", arguments: ["EcScreen"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 (function() {
     $(window).on("popstate", function(event, arg1) {
         var state = (event.originalEvent)["state"];
@@ -210,10 +233,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 var OverlayManager = function() {
     ScreenManager.call(this);
 };
@@ -253,9 +272,9 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
     constructor.hideOverlay = function() {
         $(OverlayManager.OVERLAY_WRAPPER_ID).fadeOut();
         OverlayManager.inOverlay = false;
-        ScreenManager.changeScreen(OverlayManager.lastScreen, true);
+        ScreenManager.changeScreen(OverlayManager.lastScreen, true, null);
     };
-}, {startupOverlay: "EcOverlay", startupOverlayCallbacks: {name: "Array", arguments: [{name: "Callback1", arguments: [null]}]}, lastScreen: "EcScreen", myHistory: {name: "Array", arguments: ["HistoryClosure"]}, defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback1", arguments: ["EcScreen"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+}, {startupOverlay: "EcOverlay", startupOverlayCallbacks: {name: "Array", arguments: [{name: "Callback1", arguments: [null]}]}, lastScreen: "EcScreen", myHistory: {name: "Array", arguments: ["HistoryClosure"]}, LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback1", arguments: ["EcScreen"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 (function() {
     $(window).keydown(function(event, arg1) {
         if (event.keyCode == 27 && OverlayManager.inOverlay) 

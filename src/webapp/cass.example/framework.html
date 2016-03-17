@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Example Application</title>
+    <title>CASS Framework Manager</title>
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/app.css" />
 </head>
@@ -66,8 +66,9 @@
                     <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
                 </li>
                 <li>
-                    <button type="button" class="button" data-open="login" style="display:none;">Login</button>
-                    <button type="button" class="button" style="display:none;">Logout</button>
+                    <button type="button" class="button" data-open="contacts" onclick="populateContacts();">Contacts</button>
+                    <button id="loginButton" type="button" class="button" data-open="login">Login</button>
+                    <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
                 </li>
             </ul>
         </div>
@@ -77,7 +78,7 @@
         <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
             <a class="accordion-title cass-framework-name">Framework 1</a>
             <div class="accordion-content" data-tab-content>
-                <a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>Edit</a>
+                <span class="cass-competency-actions"><a class="float-right" href="#" onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
                 <i class="cass-framework-description">Loading...</i>
                 <br>
                 <small><a class="cass-framework-url"></a></small>
@@ -95,12 +96,13 @@
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
             <div class="accordion-content" data-tab-content>
-                <div class="cass-competency-actions"></div>
+                <span class="cass-competency-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
                 <i class="cass-competency-description">No Description.</i>
-                <br><small><a class="cass-competency-url"></a></small>
+                <br>
+                <small><a class="cass-competency-url"></a></small>
                 <ul class="cass-competency-levels">
                     <li class="cass-competency-level">
-                        <span class="cass-level-actions"></span>
+                        <span class="cass-level-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
                         <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
                         <br>
                         <i class="cass-level-description">No Description.</i>
@@ -108,7 +110,7 @@
                 </ul>
                 <ul class="cass-competency-relations">
                     <li class="cass-competency-relation">
-                        <span class="cass-relation-actions"></span>
+                        <span class="cass-relation-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
                         <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
                         <span class="cass-relation-type"></span>
                         <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
@@ -309,6 +311,39 @@
         <center id="exportCsvStatus"></center>
     </div>
 
+    <div class="tiny reveal" id="permissions" data-reveal>
+        <span id="permissionsUrl" style="display:none;"></span>
+        <div id="permissionsVisibilitySwitchDisabled" style="display:none;" class="switch float-right">
+            <input class="switch-input" id="permissionsVisiblity" type="checkbox" name="permissionsVisiblity">
+            <label class="switch-paddle" for="permissionsVisiblity" style="width:130px;">
+                <span class="show-for-sr">Visibility</span>
+                <span class="switch-active" style="left:70px;" aria-hidden="true">Private</span>
+                <span class="switch-inactive" style="left:70px;" aria-hidden="true">Public</span>
+            </label>
+        </div>
+        <h3 id="permissionsObjectName">Name of Object</h3>
+        <label>Owners:</label>
+        <select id="permissionsAddOwner" onchange='permissionsAddOwner(this);'></select>
+        <ul id="permissionsObjectOwners">
+            <li style="list-style: none;" class="contact permissionsObjectOwner">
+                <a class="float-right" onclick="permissionsRemoveOwner(this);">X</a><span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
+            </li>
+        </ul>
+        <label class="permissionsViewer">Viewers:</label>
+        <select class="permissionsViewer" id="permissionsAddViewer"></select>
+        <ul class="permissionsViewer" id="permissionsObjectViewers">
+
+        </ul>
+    </div>
+
+    <div class="tiny reveal" id="contacts" data-reveal>
+        <h3>Contacts</h3>
+        <ul id="contactsList">
+            <li style="list-style: none;" class="contact contactsContact">
+                <a class="float-right" onclick="removeContact();">X</a><span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
+            </li>
+        </ul>
+    </div>
 
     <script src="js/vendor/jquery.min.js"></script>
     <script src="js/vendor/what-input.min.js"></script>
@@ -342,10 +377,11 @@
     <script src="js/framework/appLevel.js"></script>
     <script src="js/framework/appFrameworkLevel.js"></script>
     <script src="js/framework/appImport.js"></script>
+    <script src="js/framework/appPermissions.js"></script>
+    <script src="js/framework/appContacts.js"></script>
     <script>
         $(document).foundation();
         $("#login").foundation('open');
-
     </script>
 </body>
 

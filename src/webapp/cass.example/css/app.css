@@ -77,6 +77,8 @@ body
 .cass-framework.is-active > .accordion-content { border-bottom: 2px solid rgb(46,205,113); }
 
 .cass-framework-description {}
+.cass-framework-actions {float:right}
+.cass-framework-actions a {font-size:x-large;margin-left:5px;}
 
 /* --- Competencies --- */
 
@@ -84,7 +86,7 @@ body
 .cass-competency-name[aria-selected=true] { background-color: rgb(92,173,226); }
 .cass-competency.is-active > .accordion-content { border-bottom: 2px solid rgb(92,173,226); }
 .cass-competency-actions {float:right}
-.cass-competency-actions a {margin-left:5px;}
+.cass-competency-actions a {font-size:x-large;margin-left:5px;}
 
 /* --- Relationships --- */
 .cass-relation-actions {float:right}
@@ -106,6 +108,11 @@ ul.cass-competency-relations {
     margin:0;
 }
 
+.contact:before{
+    content: "👤";
+    font-size: x-large;
+}
+
 li.cass-competency-relation { 
     padding-left: 1em; 
     text-indent: -.7em;
@@ -118,7 +125,7 @@ li.cass-competency-relation:before {
 
 /* --- Levels --- */
 .cass-level-actions {float:right}
-.cass-level-actions a {margin-left:5px;}
+.cass-level-actions a {font-size:x-large;margin-left:5px;}
 
 .cass-level-type
 {

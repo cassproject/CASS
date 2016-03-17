@@ -85,7 +85,7 @@ function populateCompetency(id) {
         ui.children(".cass-competency-name").text(competency.name);
         ui.find(".cass-competency-description").text(competency.description);
         ui.find(".cass-competency-url").text(competency.shortId()).attr("href", competency.shortId());
-        if (competency.canEdit(identity.ppk.toPk()))
+        if (identity != null && competency.canEdit(identity.ppk.toPk()))
             $(".canEditCompetency").show();
         else
             $(".canEditCompetency").hide();

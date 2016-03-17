@@ -134,15 +134,15 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     constructor.ids = new Array();
     constructor.contacts = new Array();
-    constructor.onIdentityAdded = null;
-    constructor.onContactAdded = null;
-    constructor.identityAdded = function(identity) {
-        if (EcIdentityManager.onIdentityAdded != null) 
-            EcIdentityManager.onIdentityAdded(identity);
+    constructor.onIdentityChanged = null;
+    constructor.onContactChanged = null;
+    constructor.identityChanged = function(identity) {
+        if (EcIdentityManager.onIdentityChanged != null) 
+            EcIdentityManager.onIdentityChanged(identity);
     };
-    constructor.contactAdded = function(contact) {
-        if (EcIdentityManager.onContactAdded != null) 
-            EcIdentityManager.onContactAdded(contact);
+    constructor.contactChanged = function(contact) {
+        if (EcIdentityManager.onContactChanged != null) 
+            EcIdentityManager.onContactChanged(contact);
         EcIdentityManager.saveContacts();
     };
     /**
@@ -191,7 +191,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             if (EcIdentityManager.ids[i].equals(identity)) 
                 return;
         EcIdentityManager.ids.push(identity);
-        EcIdentityManager.identityAdded(identity);
+        EcIdentityManager.identityChanged(identity);
     };
     /**
      *  Adds a contact to the identity manager. Checks for duplicates. Triggers
@@ -205,7 +205,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             if (EcIdentityManager.contacts[i].equals(contact)) 
                 return;
         EcIdentityManager.contacts.push(contact);
-        EcIdentityManager.contactAdded(contact);
+        EcIdentityManager.contactChanged(contact);
     };
     /**
      *  Create a signature sheet, authorizing movement of data outside of our
@@ -327,7 +327,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             }
         }
     };
-}, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityAdded: {name: "Callback1", arguments: ["EcIdentity"]}, onContactAdded: {name: "Callback1", arguments: ["EcContact"]}}, {});
+}, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
 /**
@@ -361,8 +361,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
     prototype.secretSalt = null;
     prototype.secretIterations = 0;
     prototype.configured = false;
-    prototype.defaultServer = null;
-    prototype.connectedServer = null;
+    prototype.server = null;
     prototype.usernameWithSalt = null;
     prototype.passwordWithSalt = null;
     prototype.secretWithSalt = null;
@@ -416,7 +415,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *             URL to remote identity management server.
      */
     prototype.setDefaultIdentityManagementServer = function(server) {
-        this.defaultServer = server;
+        this.server = server;
     };
     /**
      *  "Log Into" system, generating credentials. Does not actually remotely
@@ -450,42 +449,35 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param success
      *  @param failure
      */
-    prototype.fetch = function(success, failure, loginServer) {
+    prototype.fetch = function(success, failure) {
         if (!this.configured) 
             alert("Remote Identity not configured.");
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
             alert("Please log in before performing this operation.");
             return;
         }
-        var server;
-        var identityManager = this;
-        if (loginServer == null) 
-            server = this.defaultServer;
-         else 
-            server = loginServer;
         var r = new EbacCredentialRequest();
         r.username = this.usernameWithSalt;
         r.password = this.passwordWithSalt;
         var fd = new FormData();
         fd.append("credentialRequest", r.toJson());
         var me = this;
-        EcRemote.postExpectingObject(server, "sky/id/login", fd, function(arg0) {
+        EcRemote.postExpectingObject(this.server, "sky/id/login", fd, function(arg0) {
             var cs = arg0;
             me.pad = cs.pad;
             me.token = cs.token;
             if (cs.credentials != null) 
                 for (var i = 0; i < cs.credentials.length; i++) {
                     var c = cs.credentials[i];
-                    var identity = EcIdentity.fromCredential(c, me.secretWithSalt, server);
+                    var identity = EcIdentity.fromCredential(c, me.secretWithSalt, me.server);
                     EcIdentityManager.addIdentity(identity);
                 }
             if (cs.contacts != null) 
                 for (var i = 0; i < cs.contacts.length; i++) {
                     var c = cs.contacts[i];
-                    var identity = EcContact.fromEncryptedContact(c, me.secretWithSalt, server);
+                    var identity = EcContact.fromEncryptedContact(c, me.secretWithSalt, me.server);
                     EcIdentityManager.addContact(identity);
                 }
-            identityManager.connectedServer = server;
             success(arg0);
         }, function(arg0) {
             failure(arg0);
@@ -500,9 +492,9 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param failure
      *  @param padGenerationCallback
      */
-    prototype.commit = function(success, failure, padGenerationCallback, server) {
+    prototype.commit = function(success, failure, padGenerationCallback) {
         var service = "sky/id/commit";
-        this.sendCredentials(success, failure, padGenerationCallback, service, server);
+        this.sendCredentials(success, failure, padGenerationCallback, service);
     };
     /**
      *  Creates an account.
@@ -518,11 +510,11 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param failure
      *  @param padGenerationCallback
      */
-    prototype.create = function(success, failure, padGenerationCallback, server) {
+    prototype.create = function(success, failure, padGenerationCallback) {
         var service = "sky/id/create";
-        this.sendCredentials(success, failure, padGenerationCallback, service, server);
+        this.sendCredentials(success, failure, padGenerationCallback, service);
     };
-    prototype.sendCredentials = function(success, failure, padGenerationCallback, service, server) {
+    prototype.sendCredentials = function(success, failure, padGenerationCallback, service) {
         if (!this.configured) 
             alert("Remote Identity not configured.");
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
@@ -535,10 +527,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
             this.pad = padGenerationCallback.callback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
+            if (id.source != null && id.source.equals(this.server) == false) 
+                continue;
+            id.source = this.server;
             credentials.push(id.toCredential(this.secretWithSalt));
         }
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var id = EcIdentityManager.contacts[i];
+            if (id.source != null && id.source.equals(this.server) == false) 
+                continue;
+            id.source = this.server;
             contacts.push(id.toEncryptedContact(this.secretWithSalt));
         }
         var commit = new EbacCredentialCommit();
@@ -550,14 +548,8 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         commit.credentials.contacts = contacts;
         var fd = new FormData();
         fd.append("credentialCommit", commit.toJson());
-        if (server == null) {
-            if (this.connectedServer != null) 
-                server = this.connectedServer;
-             else 
-                server = this.defaultServer;
-        }
-        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, server));
-        EcRemote.postExpectingString(server, service, fd, function(arg0) {
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.server));
+        EcRemote.postExpectingString(this.server, service, fd, function(arg0) {
             success(arg0);
         }, function(arg0) {
             failure(arg0);

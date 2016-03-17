@@ -226,6 +226,25 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 success(results);
         }, failure);
     };
+    /**
+     *  Lists all types visible to the current user in the repository
+     *  
+     *  Uses a signature sheet gathered from {@link EcIdentityManager}.
+     *  
+     *  @param success
+     *             Success event
+     *  @param failure
+     *             Failure event.
+     */
+    prototype.listTypes = function(success, failure) {
+        var fd = new FormData();
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.selectedServer));
+        EcRemote.postExpectingObject(this.selectedServer, "sky/repo/types", fd, function(p1) {
+            var results = p1;
+            if (success != null) 
+                success(results);
+        }, failure);
+    };
     constructor.escapeSearch = function(query) {
         var s = null;
         s = (query.split("\\")).join("\\\\");

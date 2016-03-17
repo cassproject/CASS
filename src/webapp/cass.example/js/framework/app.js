@@ -1,16 +1,7 @@
 var loginServer = new EcRemoteIdentityManager();
-var identity = null;
-
-var frameworksTemplate = $("#frameworks").outerHTML();
-var cassFrameworkTemplate = $(".cass-framework").outerHTML();
-var competencyTemplate = $("#competency").outerHTML();
-var cassCompetencyTemplate = $(".cass-competency").outerHTML();
-var cassRelationTemplate = $(".cass-competency-relation").outerHTML();
-var cassLevelTemplate = $(".cass-competency-level").outerHTML();
-$("#frameworks").html("");
-$("#competency").remove();
 
 loginServer.setDefaultIdentityManagementServer("http://sandbox.service.cassproject.org/");
+loginServer.setDefaultIdentityManagementServer("http://dev.skyrepo.service.eduworks.com/");
 loginServer.configure(
     "Replace this with your application salt.", 5000, 64,
     "Replace this with a different application salt.", 5000, 64,
@@ -18,8 +9,22 @@ loginServer.configure(
 );
 
 var repo = new EcRepository();
-EcRepository.caching = true;
 repo.selectedServer = "http://sandbox.service.cassproject.org/";
+repo.selectedServer = "http://dev.skyrepo.service.eduworks.com/";
+
+EcRepository.caching = true;
+
+var identity = null;
+
+var frameworksTemplate = $("#frameworks").outerHTML();
+var cassFrameworkTemplate = $(".cass-framework").outerHTML();
+var competencyTemplate = $("#competency").outerHTML();
+var cassLevelTemplate = $(".cass-competency-level").outerHTML();
+$(".cass-competency-level").remove();
+var cassCompetencyTemplate = $(".cass-competency").outerHTML();
+var cassRelationTemplate = $(".cass-competency-relation").outerHTML();
+$("#frameworks").html("");
+$("#competency").remove();
 
 function error(error) {
     alert(error);
@@ -57,3 +62,7 @@ function timeoutLoop()
         tout = null;
     }
 }
+
+$(document).ready(function () {
+    frameworkSearch();
+});

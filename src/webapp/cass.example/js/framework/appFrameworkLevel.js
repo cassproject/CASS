@@ -11,13 +11,13 @@ function populateFrameworkLevels(frameworkId) {
                     ui.find(".cass-level-name").text(level.name);
                     ui.find(".cass-level-title").text(level.title);
                     ui.find(".cass-level-description").text(level.description);
-                    ui.find(".cass-level-actions").prepend("<a class='canEditLevel' onclick='removeLevelFromFrameworkButton(this);' style='display:none;'>Remove</a>");
-                    ui.find(".cass-level-actions").prepend("<a class='canEditLevel' onclick='editLevelButton(this);' style='display:none;'>Edit</a>");
-                    if (level.canEdit(identity.ppk.toPk()))
+                    ui.find(".cass-level-actions").append("<a class='canEditLevel' onclick='removeLevelFromFrameworkButton(this);' style='display:none;'>X</a>");
+                    ui.find(".cass-level-actions").prepend("<a class='canEditLevel' onclick='editLevelButton(this);' style='display:none;'>✎</a>");
+                    if (identity != null && level.canEdit(identity.ppk.toPk()))
                         ui.find(".canEditLevel").show();
                     else
                         ui.find(".canEditLevel").hide();
-                    if (fw.canEdit(identity.ppk.toPk()))
+                    if (identity != null && fw.canEdit(identity.ppk.toPk()))
                         ui.find(".canEditFramework").show();
                     else
                         ui.find(".canEditFramework").hide();
