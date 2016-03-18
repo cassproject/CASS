@@ -23,7 +23,7 @@ mv levr.war /var/lib/tomcat7/webapps/
 #Install Elasticsearch
 echo -----
 echo Downloading ElasticSearch 2.2...
-wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.2.0/elasticsearch-2.2.1.deb
+wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.2.1/elasticsearch-2.2.1.deb
 apt-get -y -qq install gdebi
 echo -----
 echo Installing ElasticSearch 2.2...
