@@ -27,8 +27,8 @@ wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsear
 apt-get -y -qq install gdebi
 echo -----
 echo Installing ElasticSearch 2.2...
-gdebi -q -n elasticsearch-2.2.0.deb
-rm elasticsearch-2.2.0.deb
+gdebi -q -n elasticsearch-2.2.1.deb
+rm elasticsearch-2.2.1.deb
 
 #Install apache2
 echo -----
