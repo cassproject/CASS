@@ -77,7 +77,7 @@ echo "   Identity Manager and Selected Repository endpoint (in app.js) -> http:/
 echo -----
 
 read -p "Press [Enter] key to edit app.js using nano..."
-nano /var/www/html/cass.examples/js/framework/app.js
+nano /var/www/html/cass.example/js/framework/app.js
 
 clear
 echo Navigate to this server to see CASS.
