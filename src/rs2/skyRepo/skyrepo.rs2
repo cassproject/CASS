@@ -44,9 +44,24 @@ data=saveOrGet.call(type="data").displayJson(_collapse="true");
 searchParamData = #fileFromDatastream(name="searchParams");
 searchParamObj = searchParamData.fileToString().toObject();
 
-search=#skyrepoSearch(q=postData.fileToString(), size=searchParamObj.cget(size=""), start=searchParamObj.cget(start=""));
+search=#skyrepoSearch(
+	q=postData.fileToString(), 
+	size=searchParamObj.cget(size=""), 
+	start=searchParamObj.cget(start=""), 
+	ownership=searchParamObj.cget(ownership=""), 
+	types=searchParamObj.cget(types="")
+);
 
 /sky/repo/search=search;
+
+
+
+
+types = #skyrepoTypes();
+
+/sky/repo/types=types;
+
+
 
 performance=#reflectionPerformance().displayJson();
 /perf=performance;
