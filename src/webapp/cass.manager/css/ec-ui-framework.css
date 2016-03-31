@@ -1,0 +1,51 @@
+#overlay{
+	display: none;
+	
+	opacity: 0;
+    background: rgb(1,155,196);
+    background-color: rgba(1,155,196,0.95);
+    color: white;
+    
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: -999999px;
+    top: 0;
+    
+    overflow: hidden;
+    
+    -webkit-transition: left 0s ease 0.5s, opacity 0.5s ease 0;
+    transition: left 0s ease 0.5s, opacity 0.5s ease 0;
+}
+
+#overlay.active{
+	z-index: 10;
+	display: table;
+	
+	opacity: 1;
+    
+    left: 0;
+    
+    -webkit-transition: left 0s ease 0s, opacity 0.5s ease 0;
+    transition: left 0s ease 0s, opacity 0.5s ease 0;
+}
+
+#closeOverlay{
+	display: block;
+    
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    
+    cursor: pointer;
+    
+    opacity: 0.25;
+    transition: opacity 0.3s;
+    
+    z-index: 50;
+}
+
+#overlayContainer.centeredOverlay{
+	display: table-cell;
+    vertical-align: middle;
+}

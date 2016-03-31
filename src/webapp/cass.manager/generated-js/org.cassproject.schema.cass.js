@@ -2,17 +2,6 @@ var Cass = function() {};
 Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.schema = "http://schema.eduworks.com/cass/0.1";
 }, {}, {});
-var Alignment = function() {
-    Thing.call(this);
-    this.schema = Cass.schema;
-    this.type = Alignment.myType;
-};
-Alignment = stjs.extend(Alignment, Thing, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.eduworks.com/cass/0.1/alignment";
-    prototype.source = null;
-    prototype.destination = null;
-    prototype.alignmentType = null;
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Level = function() {
     Thing.call(this);
     this.schema = Cass.schema;
@@ -21,8 +10,9 @@ var Level = function() {
 Level = stjs.extend(Level, Thing, [], function(constructor, prototype) {
     constructor.myType = "http://schema.eduworks.com/cass/0.1/level";
     prototype.competency = null;
+    prototype.title = null;
     prototype.performance = null;
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Source = function() {
     Thing.call(this);
     this.schema = Cass.schema;
@@ -31,7 +21,7 @@ var Source = function() {
 Source = stjs.extend(Source, Thing, [], function(constructor, prototype) {
     constructor.myType = "http://schema.eduworks.com/cass/0.1/source";
     prototype.target = null;
-}, {target: "EntryPoint", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {target: "EntryPoint", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A composition of references to competencies, alignments, and levels that
  *  embody a competency framework. It is reasonable safe to assume the maker of
@@ -47,9 +37,46 @@ var Framework = function() {
 Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
     constructor.myType = "http://schema.eduworks.com/cass/0.1/framework";
     prototype.competency = null;
-    prototype.alignment = null;
+    prototype.relation = null;
     prototype.level = null;
-}, {competency: {name: "Array", arguments: [null]}, alignment: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.source = null;
+}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var Assertion = function() {
+    Thing.call(this);
+    this.schema = Cass.schema;
+    this.type = Assertion.myType;
+};
+Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
+    constructor.myType = "http://schema.eduworks.com/cass/0.1/assertion";
+    prototype.competency = null;
+    prototype.level = null;
+    prototype.subject = null;
+    prototype.agent = null;
+    prototype.evidence = null;
+    prototype.confidence = null;
+    prototype.assertionDate = null;
+    prototype.expirationDate = null;
+    prototype.decayFunction = null;
+}, {evidence: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var Relation = function() {
+    Thing.call(this);
+    this.schema = Cass.schema;
+    this.type = Relation.myType;
+};
+Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
+    constructor.myType = "http://schema.eduworks.com/cass/0.1/relation";
+    constructor.IS_ENABLED_BY = "isEnabledBy";
+    constructor.REQUIRES = "requires";
+    constructor.DESIRES = "desires";
+    constructor.IS_RELATED_TO = "isRelatedTo";
+    constructor.IS_EQUIVALENT_TO = "isEquivalenTo";
+    prototype.source = null;
+    prototype.target = null;
+    prototype.relationType = null;
+    prototype.validFrom = null;
+    prototype.validThrough = null;
+    prototype.agent = null;
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A composition of references to assertions and acceptances that embody a
  *  person's profile. It is reasonable safe to assume the maker of this framework
@@ -67,21 +94,7 @@ Profile = stjs.extend(Profile, Thing, [], function(constructor, prototype) {
     prototype.person = null;
     prototype.assertion = null;
     prototype.acceptance = null;
-}, {assertion: {name: "Array", arguments: [null]}, acceptance: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-var Assertion = function() {
-    Thing.call(this);
-    this.schema = Cass.schema;
-    this.type = Assertion.myType;
-};
-Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.eduworks.com/cass/0.1/assertion";
-    prototype.competency = null;
-    prototype.level = null;
-    prototype.subject = null;
-    prototype.agent = null;
-    prototype.evidence = null;
-    prototype.confidence = null;
-}, {evidence: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {assertion: {name: "Array", arguments: [null]}, acceptance: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Under construction.
  *  
@@ -95,7 +108,5 @@ var Competency = function() {
 };
 Competency = stjs.extend(Competency, Thing, [], function(constructor, prototype) {
     constructor.myType = "http://schema.eduworks.com/cass/0.1/competency";
-    prototype.level = null;
     prototype.scope = null;
-    prototype.source = null;
-}, {level: {name: "Array", arguments: ["Level"]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

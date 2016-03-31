@@ -1,0 +1,53 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="fileManagerMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-3 columns">
+			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<div class="row">
+		          		<div class="small-12 columns">
+		          			<h5>Search:</h5>
+		          			<input id="fileManagerSearchText" type="text" style="display: inline-block;width: 70%; vertical-align:top;">
+		          			<button id="fileManagerSearchBtn" class="tiny button" style="width: 25%;padding-top: 0.8rem;padding-bottom: 0.8rem;font-weight: bold;">Search</button>
+		          		</div>
+		          	</div>
+					
+					<div class="row">
+						<div class="small-12 columns" style="padding-right:0px">   
+							<div class="" style="margin-bottom:0px">
+								Encrypt Uploaded Files: 
+							</div>
+							<span class="switch" style="margin-bottom:0px">
+								<input class="switch-input" id="fileManagerEncrypted" type="checkbox" checked style="margin-bottom:0px;">
+								<label class="switch-paddle" for="fileManagerEncrypted" style="margin-bottom:0px;"></label>
+							</span>
+							<div class="" style="margin-bottom:0px">
+								Search Unencrypted Files: 
+							</div>
+							<span class="switch" style="margin-bottom:0px">
+								<input class="switch-input" id="fileManagerPublic" type="checkbox" checked style="margin-bottom:0px;">
+								<label class="switch-paddle" for="fileManagerPublic" style="margin-bottom:0px;"></label>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="large-1 columns">
+		</div>
+		<div class="large-8 columns">
+			<div id="dragTarget" class=" row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+				<div class="small-12 columns">
+					<h3>File Manager</h3>
+					<div id="fileManagerInstructions">Drag and Drop to upload files.</div>
+					
+					<div id="fileManagerResults" class="vertStack">
+					</div>
+				</div>                    
+			</div>
+		</div>
+	</div>
+</div>

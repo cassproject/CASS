@@ -1,0 +1,34 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Add New Server
+</h3>
+<form id="addServerForm">
+	<div class="row">
+		<div class="small-10 small-centered columns">
+			<div id="loginError" class="small callout alert hide"></div>
+		</div>
+	</div>
+    
+    <div class="row">
+    	<label class="small-12 columns" for="addServerName">
+			Server Name:
+			<input type="text" name="addServerName" id="addServerName">
+		</label>
+    </div>
+    
+	<div class="row">
+		<label class="small-12 columns" for="addServerUrl">
+			Server Url:
+			<input type="text" name="addServerUrl" id="addServerUrl">
+		</label>
+	</div>
+		
+	<div class="row">
+		<div class="small-12 columns">
+			<input type="submit" value="Add Server" class="button float-right" />
+			<button id="addServerCancel" class="button secondary float-right" style="margin-right:1rem;">Cancel</button>
+		</div>
+	</div>    
+</form>

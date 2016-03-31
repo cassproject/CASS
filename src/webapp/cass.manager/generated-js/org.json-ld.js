@@ -52,6 +52,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
             var value = me[key.replace("@", "")];
             if (value != null) 
                 op[key] = value;
+             else 
+                value = me[key];
+            if (value != null) 
+                op[key] = value;
         }
         return op;
     };

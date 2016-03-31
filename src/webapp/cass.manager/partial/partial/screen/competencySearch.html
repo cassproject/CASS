@@ -1,0 +1,67 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="competencySearchMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-3 columns">
+		    <div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+			    <div class="small-12 columns">
+	            	<div class="row">
+	            		<div class="small-12 columns">
+	            			<h5>Search:</h5>
+	            			<input id="competencySearchText" type="text" style="display: inline-block;width: 70%; vertical-align:top;">
+	            			<button id="competencySearchSubmit" class="tiny button" style="width: 25%;padding-top: 0.8rem;padding-bottom: 0.8rem;font-weight: bold;">Search</button>
+	            		</div>
+	            	</div>
+	            	
+	            	<div class="row">
+	            		<div class="small-12 columns">
+	            			<h5>Ownership</h5>
+			            	<input id="competencySearchOwnership" type="range" min="1" max="3" step="1" style="width:100%;" value="2"/>
+			            	
+			            	<div id="competencySearchOwnershipLoggedIn" class="hide" style="position: relative; height: 2rem;">
+			            		<small style="position:absolute">Public</small>
+			            		<small style="position:absolute;left:31%">All</small>
+			            		<small style="position:absolute;right:26%">Owned</small>
+			            		<small style="position:absolute;right:0%">By Me</small>
+			            	</div>
+			            	
+			            	<div id="competencySearchOwnershipPublic" style="position: relative; height: 2rem;">
+			            		<small class="float-right">Owned</small>
+			            		<small class="float-left">Public</small>
+			            		<small class="float-center" style="width:25px; text-align:center;">All</small>
+			            	</div>
+	            		</div>
+	            	</div>
+				</div>
+			</div>
+		</div>
+		<div class="small-8 columns">
+			<div class="row" style="margin-top:0px;padding-bottom:0px">
+				<div class="small-12 columns large-centered" style="margin-bottom:0px">
+					<a id="competencySearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
+					<a id="competencySearchViewBtn" class="label hide" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">View</a>
+	    		</div>
+			</div>
+			
+			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+				<div class="small-12 columns">
+					<h3>
+						Competency Results                      
+					</h3>
+					<div id="competencySearchProgress" class="hide">
+	        			<i class=" fa fa-spinner fa-spin"></i>
+	        			Searching..
+	        		</div>
+	        		<div id="competencySearchNone" class="hide" style="text-align:center;">
+	        			No Results Found
+	        		</div>
+					
+					<div id="competencySearchResults" class="vertStack">
+					</div>
+				</div>                    
+			</div>
+		</div>
+	</div>
+</div>

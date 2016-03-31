@@ -126,10 +126,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         return null;
     };
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
+    constructor.caching = false;
+    constructor.cache = new Object();
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
      *  
@@ -143,11 +145,18 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *             Event to call upon spectacular failure.
      */
     constructor.get = function(url, success, failure) {
+        if (EcRepository.caching) 
+            if ((EcRepository.cache)[url] != null) {
+                success((EcRepository.cache)[url]);
+                return;
+            }
         var fd = new FormData();
-        fd.append("signatureSheet", EcIdentityManager.signatureSheet(10000, url));
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, url));
         EcRemote.postExpectingObject(url, null, fd, function(p1) {
             var d = new EcRemoteLinkedData("", "");
             d.copyFrom(p1);
+            if (EcRepository.caching) 
+                (EcRepository.cache)[url] = d;
             success(d);
         }, failure);
     };
@@ -169,15 +178,98 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.search = function(query, eachSuccess, success, failure) {
         var fd = new FormData();
         fd.append("data", query);
-        fd.append("signatureSheet", EcIdentityManager.signatureSheet(10000, this.selectedServer));
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.selectedServer));
         EcRemote.postExpectingObject(this.selectedServer, "sky/repo/search", fd, function(p1) {
             var results = p1;
-            if (eachSuccess != null) 
-                for (var i = 0; i < results.length; i++) 
+            for (var i = 0; i < results.length; i++) {
+                var d = new EcRemoteLinkedData(null, null);
+                d.copyFrom(results[i]);
+                results[i] = d;
+                if (eachSuccess != null) 
                     eachSuccess(results[i]);
+            }
             if (success != null) 
                 success(results);
         }, failure);
+    };
+    /**
+     *  Search a repository for JSON-LD compatible data.
+     *  
+     *  Uses a signature sheet gathered from {@link EcIdentityManager}.
+     *  
+     *  @param query
+     *             ElasticSearch compatible query string, similar to Google query
+     *             strings.
+     *  @param eachSuccess
+     *             Success event for each found object.
+     *  @param success
+     *             Success event, called after eachSuccess.
+     *  @param failure
+     *             Failure event.
+     */
+    prototype.searchWithParams = function(query, params, eachSuccess, success, failure) {
+        var fd = new FormData();
+        fd.append("data", query);
+        if (params != null) 
+            fd.append("searchParams", JSON.stringify(params));
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.selectedServer));
+        EcRemote.postExpectingObject(this.selectedServer, "sky/repo/search", fd, function(p1) {
+            var results = p1;
+            for (var i = 0; i < results.length; i++) {
+                var d = new EcRemoteLinkedData(null, null);
+                d.copyFrom(results[i]);
+                results[i] = d;
+                if (eachSuccess != null) 
+                    eachSuccess(results[i]);
+            }
+            if (success != null) 
+                success(results);
+        }, failure);
+    };
+    /**
+     *  Lists all types visible to the current user in the repository
+     *  
+     *  Uses a signature sheet gathered from {@link EcIdentityManager}.
+     *  
+     *  @param success
+     *             Success event
+     *  @param failure
+     *             Failure event.
+     */
+    prototype.listTypes = function(success, failure) {
+        var fd = new FormData();
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.selectedServer));
+        EcRemote.postExpectingObject(this.selectedServer, "sky/repo/types", fd, function(p1) {
+            var results = p1;
+            if (success != null) 
+                success(results);
+        }, failure);
+    };
+    constructor.escapeSearch = function(query) {
+        var s = null;
+        s = (query.split("\\")).join("\\\\");
+        s = (s.split("-")).join("\\-");
+        s = (s.split("=")).join("\\=");
+        s = (s.split("&&")).join("\\&&");
+        s = (s.split("||")).join("\\||");
+        s = (s.split("<")).join("\\<");
+        s = (s.split(">")).join("\\>");
+        s = (s.split("|")).join("\\|");
+        s = (s.split("(")).join("\\(");
+        s = (s.split(")")).join("\\)");
+        s = (s.split("{")).join("\\{");
+        s = (s.split("}")).join("\\}");
+        s = (s.split("[")).join("\\[");
+        s = (s.split("]")).join("\\]");
+        s = (s.split("^")).join("\\^");
+        s = (s.split("\"")).join("\\\"");
+        s = (s.split("~")).join("\\~");
+        s = (s.split("*")).join("\\*");
+        s = (s.split("?")).join("\\?");
+        s = (s.split(":")).join("\\:");
+        s = (s.split("/")).join("\\/");
+        s = (s.split("+")).join("\\+");
+        return s;
     };
     /**
      *  Attempts to save a piece of data.
@@ -190,18 +282,39 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param failure
      */
     constructor.save = function(data, success, failure) {
-        if (data.invalid()) 
+        if (EcRepository.caching) {
+            delete (EcRepository.cache)[data.id];
+            delete (EcRepository.cache)[data.shortId()];
+        }
+        if (data.invalid()) {
             failure("Data is malformed.");
+            return;
+        }
         EcIdentityManager.sign(data);
+        data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
-        fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 10000, data.id));
+        fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id));
         EcRemote.postExpectingString(data.id, "", fd, success, failure);
     };
-    constructor.update = function(data, success, failure) {
-        EcRepository.get(data.id, success, failure);
+    /**
+     *  Attempts to delete a piece of data.
+     *  
+     *  Uses a signature sheet informed by the owner field of the data.
+     *  
+     *  @param data
+     *             Data to save to the location designated by its id.
+     *  @param success
+     *  @param failure
+     */
+    constructor._delete = function(data, success, failure) {
+        if (EcRepository.caching) {
+            delete (EcRepository.cache)[data.id];
+            delete (EcRepository.cache)[data.shortId()];
+        }
+        EcRemote._delete(data.id, EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id), success, failure);
     };
     constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));
     };
-}, {}, {});
+}, {cache: "Object"}, {});

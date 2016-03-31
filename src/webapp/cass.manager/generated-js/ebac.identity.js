@@ -12,8 +12,52 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
     prototype.pk = null;
     prototype.displayName = null;
     prototype.source = null;
+    prototype.equals = function(obj) {
+        if (stjs.isInstanceOf(obj.constructor, EcContact)) 
+            return this.pk.equals((obj).pk);
+        return Object.prototype.equals.call(this, obj);
+    };
     prototype.getImageUrl = function() {
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/48px-User_icon_2.svg.png";
+    };
+    /**
+     *  Helper function to encrypt a contact into an encrypted contact (storable
+     *  version of a contact)
+     *  
+     *  @param secret
+     *             AES secret used to encrypt the contact.
+     *  @return Encrypted contact object.
+     */
+    prototype.toEncryptedContact = function(secret) {
+        var c = new EbacContact();
+        c.iv = EcAes.newIv(32);
+        c.pk = EcAesCtr.encrypt(this.pk.toPem(), secret, c.iv);
+        c.displayNameIv = EcAes.newIv(32);
+        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
+        c.sourceIv = EcAes.newIv(32);
+        c.source = EcAesCtr.encrypt(this.source, secret, c.iv);
+        return c;
+    };
+    /**
+     *  Helper function to decrypt an encrypted contact (storable version of an contact)
+     *  into an contact
+     *  
+     *  @param contact
+     *             Contact to decrypt.
+     *  @param secret
+     *             AES secret used to decrypt the credential.
+     *  @param source
+     *             Source of the credential, used to track where a contact
+     *             came from.
+     *  @return Decrypted identity object, ready for use.
+     */
+    constructor.fromEncryptedContact = function(contact, secret, source) {
+        var i = new EcContact();
+        i.pk = EcPk.fromPem(EcAesCtr.decrypt(contact.pk, secret, contact.iv));
+        i.source = source;
+        if (contact.displayName != null && contact.displayNameIv != null) 
+            i.displayName = EcAesCtr.decrypt(contact.displayName, secret, contact.iv);
+        return i;
     };
 }, {pk: "EcPk"}, {});
 /**
@@ -90,15 +134,15 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     constructor.ids = new Array();
     constructor.contacts = new Array();
-    constructor.onIdentityAdded = null;
-    constructor.onContactAdded = null;
-    constructor.identityAdded = function(identity) {
-        if (EcIdentityManager.onIdentityAdded != null) 
-            EcIdentityManager.onIdentityAdded(identity);
+    constructor.onIdentityChanged = null;
+    constructor.onContactChanged = null;
+    constructor.identityChanged = function(identity) {
+        if (EcIdentityManager.onIdentityChanged != null) 
+            EcIdentityManager.onIdentityChanged(identity);
     };
-    constructor.contactAdded = function(contact) {
-        if (EcIdentityManager.onContactAdded != null) 
-            EcIdentityManager.onContactAdded(contact);
+    constructor.contactChanged = function(contact) {
+        if (EcIdentityManager.onContactChanged != null) 
+            EcIdentityManager.onContactChanged(contact);
         EcIdentityManager.saveContacts();
     };
     /**
@@ -111,10 +155,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         var c = JSON.parse(localStore);
         for (var i = 0; i < c.length; i++) {
             var contact = new EcContact();
-            var o = new Object();
+            var o = c[i];
             var props = (o);
             contact.displayName = props["displayName"];
-            contact.pk = EcPk.fromPem(props["ok"]);
+            contact.pk = EcPk.fromPem(props["pk"]);
             contact.source = props["source"];
             EcIdentityManager.contacts.push(contact);
         }
@@ -133,7 +177,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             props["source"] = contact.source;
             c.push(o);
         }
-        localStorage["contacts"] = c;
+        localStorage["contacts"] = JSON.stringify(c);
     };
     /**
      *  Adds an identity to the identity manager. Checks for duplicates. Triggers
@@ -147,7 +191,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             if (EcIdentityManager.ids[i].equals(identity)) 
                 return;
         EcIdentityManager.ids.push(identity);
-        EcIdentityManager.identityAdded(identity);
+        EcIdentityManager.identityChanged(identity);
     };
     /**
      *  Adds a contact to the identity manager. Checks for duplicates. Triggers
@@ -157,11 +201,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *             Contact to add.
      */
     constructor.addContact = function(contact) {
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
             if (EcIdentityManager.contacts[i].equals(contact)) 
                 return;
         EcIdentityManager.contacts.push(contact);
-        EcIdentityManager.contactAdded(contact);
+        EcIdentityManager.contactChanged(contact);
     };
     /**
      *  Create a signature sheet, authorizing movement of data outside of our
@@ -180,13 +224,12 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         var crypto = new EcRsaOaep();
         for (var j = 0; j < EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
-            var ourPem = ppk.toPk().toPem();
+            var pk = ppk.toPk();
             if (identityPksinPem != null) 
                 for (var i = 0; i < identityPksinPem.length; i++) {
-                    var ownerPem = identityPksinPem[i];
-                    if (ourPem.equals(ownerPem)) {
+                    var ownerPpk = EcPk.fromPem(identityPksinPem[i].trim());
+                    if (pk.equals(ownerPpk)) 
                         signatures.push(EcIdentityManager.createSignature(duration, server, crypto, ppk).atIfy());
-                    }
                 }
         }
         return JSON.stringify(signatures);
@@ -234,19 +277,57 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         return null;
     };
     /**
+     *  Get Contact from PK (if we have it)
+     *  
+     *  @param fromPem
+     *             PK to use to look up PPK
+     *  @return PPK or null.
+     */
+    constructor.getContact = function(pk) {
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
+            if (pk.equals(EcIdentityManager.contacts[i].pk)) 
+                return EcIdentityManager.contacts[i];
+        }
+        return null;
+    };
+    /**
      *  Sign a piece of data with all available keys that own that data.
      *  
      *  @param d
      *             Data to sign.
      */
     constructor.sign = function(d) {
-        for (var i = 0; i < d.owner.length; i++) {
-            var attempt = EcIdentityManager.getPpk(EcPk.fromPem(d.owner[i]));
-            if (attempt != null) 
-                d.signWith(attempt);
+        if (d.signature != null) {
+            for (var i = 0; i < d.signature.length; ) {
+                var works = false;
+                var signature = d.signature[i];
+                if (d.owner != null) {
+                    for (var j = 0; j < d.owner.length; j++) {
+                        var owner = d.owner[j];
+                        var pk = EcPk.fromPem(owner);
+                        try {
+                            if (EcRsaOaep.verify(pk, d.toSignableJson(), signature)) {
+                                works = true;
+                                break;
+                            }
+                        }catch (ex) {}
+                    }
+                }
+                if (!works) 
+                    d.signature.splice(i);
+                 else 
+                    i++;
+            }
+        }
+        if (d.owner != null) {
+            for (var i = 0; i < d.owner.length; i++) {
+                var attempt = EcIdentityManager.getPpk(EcPk.fromPem(d.owner[i]));
+                if (attempt != null) 
+                    d.signWith(attempt);
+            }
         }
     };
-}, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityAdded: {name: "Callback1", arguments: ["EcIdentity"]}, onContactAdded: {name: "Callback1", arguments: ["EcContact"]}}, {});
+}, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
 /**
@@ -280,7 +361,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
     prototype.secretSalt = null;
     prototype.secretIterations = 0;
     prototype.configured = false;
-    prototype.selectedServer = null;
+    prototype.server = null;
     prototype.usernameWithSalt = null;
     prototype.passwordWithSalt = null;
     prototype.secretWithSalt = null;
@@ -333,8 +414,8 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param server
      *             URL to remote identity management server.
      */
-    prototype.setIdentityManagementServer = function(server) {
-        this.selectedServer = server;
+    prototype.setDefaultIdentityManagementServer = function(server) {
+        this.server = server;
     };
     /**
      *  "Log Into" system, generating credentials. Does not actually remotely
@@ -347,7 +428,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param password
      *             Password
      */
-    prototype.login = function(username, password) {
+    prototype.startLogin = function(username, password) {
         if (!this.configured) 
             alert("Remote Identity not configured.");
         this.usernameWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
@@ -381,15 +462,22 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         var fd = new FormData();
         fd.append("credentialRequest", r.toJson());
         var me = this;
-        EcRemote.postExpectingObject(this.selectedServer, "sky/id/login", fd, function(arg0) {
+        EcRemote.postExpectingObject(this.server, "sky/id/login", fd, function(arg0) {
             var cs = arg0;
             me.pad = cs.pad;
             me.token = cs.token;
-            for (var i = 0; i < cs.credentials.length; i++) {
-                var c = cs.credentials[i];
-                var identity = EcIdentity.fromCredential(c, me.secretWithSalt, me.selectedServer);
-                EcIdentityManager.addIdentity(identity);
-            }
+            if (cs.credentials != null) 
+                for (var i = 0; i < cs.credentials.length; i++) {
+                    var c = cs.credentials[i];
+                    var identity = EcIdentity.fromCredential(c, me.secretWithSalt, me.server);
+                    EcIdentityManager.addIdentity(identity);
+                }
+            if (cs.contacts != null) 
+                for (var i = 0; i < cs.contacts.length; i++) {
+                    var c = cs.contacts[i];
+                    var identity = EcContact.fromEncryptedContact(c, me.secretWithSalt, me.server);
+                    EcIdentityManager.addContact(identity);
+                }
             success(arg0);
         }, function(arg0) {
             failure(arg0);
@@ -434,11 +522,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
             return;
         }
         var credentials = new Array();
-        if (this.pad == null) 
+        var contacts = new Array();
+        if (this.pad == null && padGenerationCallback != null) 
             this.pad = padGenerationCallback.callback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
             credentials.push(id.toCredential(this.secretWithSalt));
+        }
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
+            var id = EcIdentityManager.contacts[i];
+            contacts.push(id.toEncryptedContact(this.secretWithSalt));
         }
         var commit = new EbacCredentialCommit();
         commit.username = this.usernameWithSalt;
@@ -446,9 +539,11 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         commit.token = this.token;
         commit.credentials.pad = this.pad;
         commit.credentials.credentials = credentials;
+        commit.credentials.contacts = contacts;
         var fd = new FormData();
         fd.append("credentialCommit", commit.toJson());
-        EcRemote.postExpectingString(this.selectedServer, service, fd, function(arg0) {
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.server));
+        EcRemote.postExpectingString(this.server, service, fd, function(arg0) {
             success(arg0);
         }, function(arg0) {
             failure(arg0);

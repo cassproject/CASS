@@ -1,3 +1,7 @@
+var EcCallback = function() {};
+EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
+    prototype.callback = function(result) {};
+}, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
@@ -7,7 +11,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
         var failureCallback = function(paramP1, paramP2, paramP3) {
             if (failure != null) 
-                failure(paramP2);
+                failure(paramP1.responseText);
         };
         EcRemote.postInner(server, service, fd, successCallback, failureCallback);
     };
@@ -18,7 +22,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
         var failureCallback = function(paramP1, paramP2, paramP3) {
             if (failure != null) 
-                failure(paramP2);
+                failure(paramP1.responseText);
         };
         EcRemote.postInner(server, service, fd, successCallback, failureCallback);
     };
@@ -35,6 +39,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.data = fd;
         (p)["contentType"] = false;
         p.cache = false;
+        p.async = true;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -47,7 +52,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
         var failureCallback = function(paramP1, paramP2, paramP3) {
             if (failure != null) 
-                failure(paramP2);
+                failure(paramP1.responseText);
         };
         var url = server;
         if (!url.endsWith("/") && service != null && service.isEmpty() == false) 
@@ -63,12 +68,26 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.error = failureCallback;
         $.ajax(p);
     };
+    constructor._delete = function(url, signatureSheet, success, failure) {
+        var successCallback = function(arg0, arg1, arg2) {
+            if (success != null) 
+                success(arg2.responseText);
+        };
+        var failureCallback = function(paramP1, paramP2, paramP3) {
+            if (failure != null) 
+                failure(paramP1.responseText);
+        };
+        var p = {};
+        p.method = "DELETE";
+        p.url = url;
+        p.headers = new Object();
+        p.headers["signatureSheet"] = signatureSheet;
+        p.success = successCallback;
+        p.error = failureCallback;
+        $.ajax(p);
+    };
 }, {}, {});
 var EcCallbackReturn0 = function() {};
 EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
     prototype.callback = function() {};
-}, {}, {});
-var EcCallback = function() {};
-EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
-    prototype.callback = function(result) {};
 }, {}, {});

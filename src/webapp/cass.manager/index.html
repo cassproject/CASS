@@ -1,331 +1,46 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
 <head>
 	<meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>CASS Manager</title>
-  <link rel="stylesheet" href="css/foundation.css" />
-  <link rel="stylesheet" href="css/app.css" />
-  <link rel="stylesheet" href="css/cube.css" />
-  <link rel="stylesheet" href="css/animate.css" />
-  <script src="js/vendor/custom.modernizr.js"></script>
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<title>CASS Manager</title>
+	
+	<link rel="stylesheet" href="css/foundation.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	
+	<link rel="stylesheet" href="css/ec-ui-framework.css" />
+	
+	<link rel="stylesheet" href="css/app.css" />
+	<link rel="stylesheet" href="css/cube.css" />
+  	<link rel="stylesheet" href="css/animate.css" />
 </head>
-<body style="background-color:gray">
-    <nav class="top-bar" data-topbar role="navigation">
-      <ul class="title-area">
-        <li class="name" >
-            <a href="#" onclick="$('.topLevel').hide();$('#main').show()"><h3 style="color:white;">&nbsp;&nbsp;CASS Manager&nbsp;&nbsp;</h3></a>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-      </ul>
+<body>
+	<div id="menuContainer">
+	</div>
 
-      <section class="top-bar-section">
-        <ul class="right">       
-            <li><a href="#" onclick="$('.topLevel').hide();$('#key').show()">My Identity</a></li><li class="divider"></li>    
-            <li><a href="#" onclick="$('.topLevel').hide();$('#contacts').show()">My Contacts</a></li><li class="divider"></li>
-            <li><a href="#" onclick="$('.topLevel').hide();$('#servers').show()">My Servers</a></li><li class="divider"></li>     
-        </ul>
-
-        <ul class="left"><li class="divider"></li>
-            <li class="has-dropdown">
-                <a href="#">Account</a>
-                <ul class="dropdown">
-                    <li><a href="#" id="skyIdLogin" onclick="$('#skyIdLoginModal').foundation('reveal', 'open');$('#skyIdLoginModalUsername').focus();">Login</a></li><li class="divider"></li>
-                    <li><a href="#" id="skyIdCreate" onclick="$('#skyIdCreateModal').foundation('reveal', 'open');$('#skyIdCreateModalUsername').focus();">Create Account</a></li><li class="divider"></li>
-                    <li><a href="#" id="skyIdSave" onclick="saveCredentials();" style="display:none;">Save</a></li><li class="divider"></li>
-                    <li><a href="#" id="skyIdLogout" onclick="logout();" style="display:none;">Logout</a></li><li class="divider"></li>
-                </ul>
-            </li>
-            <li class="has-dropdown">
-                <a href="#">Repository</a>
-                <ul class="dropdown">
-                    <li><a href="#" onclick="$('.topLevel').hide();$('#data').show();$('.dataMenu').hide();$('.myData').show();privateDataSearch();">Search</a></li><li class="divider"></li>
-                    <li><a href="#" onclick="$('.topLevel').hide();$('#data').show();$('.dataMenu').hide();$('.newData').show();dataEdit(defaultObject());">Create</a></li><li class="divider"></li>
-                    <li class="has-dropdown">
-                        <a href="#">Examples</a>
-                        <ul class="dropdown">
-                            <li><a href="#" onclick="$('.topLevel').hide();$('#fileManager').show();fileManagerSearch();">Secure File Store</a></li><li class="divider"></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="has-dropdown">
-                <a href="#">Reasoning</a>
-                <ul class="dropdown">
-                    <li><a href="#" onclick="alert('Not yet implemented.');">Query</a></li><li class="divider"></li>
-                    <li><a href="#" onclick="alert('Not yet implemented.');">Rules</a></li><li class="divider"></li>
-                </ul>
-            </li>
-        </ul>
-      </section>
-    </nav>
-    <div id="loading">
-        <div class="row" style="padding-top:100px">
-            <div class="large-5 columns large-centered panel radius" style="">
-                Loading...
-            </div>
-        </div>
-    </div>
-    <div id="main" class="topLevel" style="display:none;">
-        <div class="row" style="padding-top:50px">
-            <div class="large-7 columns large-centered panel radius" style="margin-bottom:0px;padding-bottom:0px">
-                <div class="row">
-                    <div class="small-12 columns">
-                        <h3>Developer Dashboard</h3>
-                        <p>This application is meant to act as a proof of concept and developer dashboard for the CASS project. Prototyped features and sample code will be provided here, and underlying architecture will be exposed.</p>
-                        <p>Areas under construction will be marked as Not Yet Implemented (NYI).</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top:0px;padding-bottom:50px">
-            <div class="large-7 columns large-centered" style="margin-bottom:20px">
-            </div>
-        </div>  
-    </div>
-    <div id="servers" class="topLevel" style="display:none;">
-        <div class="row" style="padding-top:50px">
-            <div class="large-7 columns large-centered panel radius" style="margin-bottom:0px;padding-bottom:0px">
-                <div class="row">
-                    <div class="small-12 columns">
-                        <form><button class="right tiny" style="margin-top:3px">Add</button><input class="right" style="width:200px" type="url"></form>
-                        <h3>Servers (NYI)</h3>
-                        <hr>
-                        <a class="button right tiny" style="margin-left:5px">Disconnect</a>
-                        <h5>Eduworks (Home)<br><small>http://skyrepo.eduworks.com</small><br><small>Login, Repository</small></h5>
-                        <hr>
-                        <a class="button right tiny" style="margin-left:5px">Disconnect</a>
-                        <a class="button right tiny" style="margin-left:5px">Make Home</a>
-                        <h5>ADL<br><small>http://cass.adlnet.gov</small><br><small>Login, Repository</small></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top:0px;padding-bottom:50px">
-            <div class="large-7 columns large-centered" style="margin-bottom:20px">
-            </div>
-        </div>  
-    </div>
-    <div id="contacts" class="topLevel" style="display:none;">
-        <div class="row" style="padding-top:50px">
-            <div class="large-7 columns large-centered panel radius" style="margin-bottom:0px;padding-bottom:0px">
-                <div class="row">
-                    <div class="small-12 columns">
-                        <form><button class="right tiny" style="margin-top:3px">Filter</button><input class="right" style="width:200px" type="text"></form>
-                        <h3>Contacts (NYI)</h3>
-                        <div class="contactsList">
-                            <hr>
-                            <a class="button right tiny" style="margin-left:5px">Lookup</a>
-                            <a class="button right tiny" style="margin-left:5px">Forget</a>
-                            <h5><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/48px-User_icon_2.svg.png"><span title="PK HERE" contenteditable="true">Me</span><br><small>Home: http://skyrepo.eduworks.com</small></h5>
-                            <hr>
-                            <a class="button right tiny" style="margin-left:5px">Lookup</a>
-                            <a class="button right tiny" style="margin-left:5px">Forget</a>
-                            <h5><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/48px-User_icon_2.svg.png"><span title="PK HERE" contenteditable="true">Bob</span><br><small>Home: http://skyrepo.adlnet.gov</small></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top:0px;padding-bottom:50px">
-            <div class="large-7 columns large-centered" style="margin-bottom:20px">
-            </div>
-        </div>  
-    </div>
-    <div id="key" class="topLevel" style="display:none;"> 
-        <div class="row" style="padding-top:50px">
-            <div class="large-6 columns">
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns">
-                        <h3 title="Each Alias also contains a Key.">Aliases<br><small>These will be cleared upon every page refresh.</small></h3>
-                        <p class="activeKeys">None found.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="large-5 columns">
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns">
-                        <h3>Import Aliases
-                            <br>
-                            <small>Importing an alias will also import its key.</small>
-                            <br>
-                            <small>Select one or more aliases to import.</small>
-                        </h3>
-                        <form id="addKeyForm" name="skyRepo Keys">
-                            <input id="addKeyPpk" multiple type="file" accept=".pem" placeholder="Private Key">
-                        </form>
-                        <a class="button right" onclick="activateKey($('#addKeyPpk')[0].files);if (skyid.token != undefined)$('#skyIdSaveModal').foundation('reveal', 'open');" value="Add">Import</a>
-                    </div>
-                </div>
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns">
-                        <h3>Generate an Alias
-                            <br>
-                            <small>This may take a couple seconds.</small>
-                            <br>
-                            <small>We will download the alias to your computer.</small>
-                        </h3>                        
-                        <a class="button right" onclick="generateIdentity();" value="Add">Generate</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="data" class="topLevel" style="display:none;"> 
-        <div class="row" style="padding-top:50px">
-            <div class="large-3 columns">
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns">
-                        <h3>Aliases</h3>
-                        <p class="activeKeys">None found.</p>
-                    </div>
-                </div>
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns" style="">
-                        <h3 class="">Log</h3>          
-                        <p id="dataLog" style="width:100%;height:300px;overflow-y:scroll;"><span>Initialized</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="large-8 columns">
-                <div class="row" style="margin-top:0px;padding-bottom:0px">
-                    <div class="large-12 columns large-centered" style="margin-bottom:0px">
-                        <a class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);" onclick="$('.dataMenu').hide();$('.myData').show();privateDataSearch();">Search</a>
-                        <a class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);" onclick="$('.dataMenu').hide();$('.newData').show();">Edit/View</a>
-                    </div>
-                </div>
-                <div class="dataMenu myData row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
-                    <div class="small-12 columns">
-                        <h3>Search
-                            <small class="right">
-                                Search:<input id="privateDataSearchText" style="margin-top:10px;padding:0px;" type="text">
-                            </small>                            
-                        </h3>
-                        <span>Search Repository using the box to the right.</span>
-                        <div id="searchResultsPrivate" class="vertStack">
-                        </div>
-                    </div>                    
-                </div> 
-                <div class="dataMenu newData dataRecepticle row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px;display:none">
-                    <div id="datum" class="small-12 columns">
-                    </div>
-                </div>
-                <div class="dataMenu row newData" style="margin-top:0px;padding-bottom:50px;display:none">
-                    <div class="large-12 columns large-centered" style="margin-bottom:20px">
-                        <a class="right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);">Save</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="fileManager" class="topLevel" style="display:none;"> 
-        <div class="row" style="padding-top:50px">
-            <div class="large-3 columns">
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns">
-                        <h3>Aliases</h3>
-                        <p class="activeKeys">None found.</p>
-                    </div>
-                </div>
-                <div class="row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-                    <div class="small-12 columns" style="padding-right:0px">   
-                        <div class="" style="margin-bottom:0px">Encrypt Uploaded Files: </div>
-                        <span class="switch" style="margin-bottom:0px">
-                            <input id="fileManagerEncrypted" type="checkbox" checked style="margin-bottom:0px;">
-                            <label for="fileManagerEncrypted" style="margin-bottom:0px;"></label>
-                        </span>
-                        <div class="" style="margin-bottom:0px">Search Unencrypted Files: </div>
-                        <span class="switch" style="margin-bottom:0px">
-                            <input id="fileManagerPublic" type="checkbox" checked style="margin-bottom:0px;">
-                            <label for="fileManagerPublic" style="margin-bottom:0px;"></label>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="large-1 columns">
-            </div>
-            <div class="large-8 columns">
-                <div id="dragTarget" class=" row panel radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
-                    <div class="small-12 columns">
-                        <h3>
-                            <span id="fileManagerLabel">File Manager</span>
-                            <small class="right">
-                                Search:<input id="fileManagerSearchText" style="margin-top:10px;padding:0px;" type="text">
-                            </small>
-                            <br>   
-                            <small>Drag and Drop to upload files.</small>                        
-                        </h3>
-                        <div id="fileManagerResults" class="vertStack">
-                        </div>
-                    </div>                    
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="foot">
-        <span>
-            <img style="height:40px;top:55px;margin:0px;padding:0px" src="img/eduworks-logo.png"> 
-            © 2015 Eduworks Corporation and contributing members. Licensed under the Apache License, Version 2.0.
-        </span> 
-    </div>
-    <div id="skyIdLoginModal" class="reveal-modal small radius" data-reveal="" style="width:600px;display: none; opacity: 1; visibility: hidden; top: 50px;">
-        <h3>Account Login</h3>
-        <form id="skyManagerLogin">
-            <select id="skyIdLoginModalServer" class="serverSelect">
-                <option value="http://skyrepo.eduworks.com" selected>Eduworks (Home)</option>
-                <option value="http://skyrepo.adlnet.gov">ADL</option>
-            </select>
-            <label>Login</label>
-            <input type="text" id="skyIdLoginModalUsername">
-            <label>Password</label>
-            <input type="password" id="skyIdLoginModalPassword">
-        </form>
-        <a id="loginLogin" style="margin-top:1rem;margin-left:5px" class="radius button right" onclick="">Login</a>
-        <a id="loginSkip" style="margin-top:1rem" class="radius button right" onclick="$('#skyIdLoginModal').foundation('reveal', 'close');">Cancel</a>
-    </div>
-    <div id="skyIdCreateModal" class="reveal-modal small radius" data-reveal="" style="width:600px;display: none; opacity: 1; visibility: hidden; top: 50px;">
-        <h3>Create Account</h3>
-        <form id="skyManagerCreate">
-            <select id="skyIdCreateModalServer" class="serverSelect">
-                <option value="http://skyrepo.eduworks.com" selected>Eduworks (Home)</option>
-                <option value="http://skyrepo.adlnet.gov">ADL</option>
-            </select>
-            <label>Login</label>
-            <input type="text" id="skyIdCreateModalUsername">
-            <label>Password</label>
-            <input type="password" id="skyIdCreateModalPassword">
-        </form>
-        <a id="createCreate" style="margin-top:1rem;margin-left:5px" class="radius button right" onclick="">Create</a>
-        <a id="createSkip" style="margin-top:1rem" class="radius button right" onclick="$('#skyIdCreateModal').foundation('reveal', 'close');">Cancel</a>
-    </div>
-    <div id="skyIdSaveModal" class="reveal-modal small radius" data-reveal="" style="width:600px;display: none; opacity: 1; visibility: hidden; top: 50px;">
-        <h3>Your credentials have changed.</h3>
-        <p>Would you like to save these new credentials to the cloud? Or would you like to keep them local?<br><small>Note: If you save at any point after this, we will save all credentials in the cloud.</small></p>
-        <a id="saveSave" style="margin-top:1rem;margin-left:5px" class="radius button right" onclick="saveCredentials();$('#skyIdSaveModal').foundation('reveal', 'close');">Save Credentials</a>
-        <a id="saveSkip" style="margin-top:1rem" class="radius button right" onclick="$('#skyIdSaveModal').foundation('reveal', 'close');">Keep Locally</a>
-    </div>
-    <div id="addFieldModal" class="reveal-modal small radius" data-reveal="" style="width:600px;display: none; opacity: 1; visibility: hidden; top: 50px;">
-        <h3>New Field</h3>
-        <span class="objectProperties">My new field:</span><br>
-        <a id="addFieldModalNameSelect" class="objectProperties button right">...</a>
-        <input id="addFieldModalName" class="objectProperties" type="text" style="width:400px;" placeholder="Field Name"/>
-        <br>Is a(n):<br>
-        <a id="addFieldModalText" class="radius button">Text</a>
-        <a id="addFieldModalArray" class="radius button">Array</a>
-        <a id="addFieldModalObject" class="radius button">Object</a>
-        <a id="addFieldModalDecal" class="radius button">Decal</a>
-        <a id="cancel" class="radius button right" onclick="$('#addFieldModal').foundation('reveal', 'close');">Cancel</a>
-    </div>
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/vendor/jquery-ui.min.js"></script>
-    <script src="js/foundation/foundation.js"></script>
-    <script src="js/foundation/foundation.reveal.js"></script>
-    <script src="js/foundation/foundation.joyride.js"></script>
-    <script src="js/foundation/foundation.topbar.js"></script>
+	<div id="screenContainer">
+	</div>
+	
+	<div id="modalContainer" class="reveal tiny" data-reveal>
+	</div>
+	
+	<div id="overlay">
+		<span id="closeOverlay" class="exit close-overlay" title="Cancel">
+			<i class="fa fa-times fa-5x hidden" id="close-overlay-btn"></i>
+		</span>
+		<div id="overlayContainer" class="centeredOverlay">
+		
+		</div>
+	</div>
+    
     <script src="forge/forge.bundle.js"></script>
-    <script src="js/base64.js"></script>
-    <script src="js/common.js"></script>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/vendor/jquery-ui.min.js"></script>
+    <script src="js/vendor/jquery.qrcode.js"></script>
+    <script src="js/vendor/qrcode.js"></script>
+    
     <script src="generated-js/stjs.js"></script>
     <script src="generated-js/ec.base.js"></script>
     <script src="generated-js/random.js"></script>
@@ -337,21 +52,40 @@
     <script src="generated-js/org.cassproject.schema.general.js"></script>
     <script src="generated-js/org.schema.js"></script>
     <script src="generated-js/org.cassproject.schema.ebac.js"></script>
+    <script src="generated-js/org.cassproject.schema.cass.js"></script>
     <script src="generated-js/ebac.repository.js"></script>
+    <script src="generated-js/cass.competency.js"></script>
+    
+    <script src="generated-js/ec.ui.framework.js"></script>
+    
     <script src="generated-js/cass.manager.js"></script>
-    <script src="settings/settings.js"></script>
-    <script src="js/uiLog.js"></script>
-    <script src="js/uiGeneral.js"></script>
-    <script src="js/uiFileManager.js"></script>
-    <script src="js/uiId.js"></script>
-    <script src="js/uiSearch.js"></script>
-    <script src="js/uiIdentity.js"></script>
-    <script src="js/uiCreate.js"></script>
-    <script src="js/vendor/i18next-1.10.1.js"></script>
-<script>
-  $(document).foundation();
-  $("#loading").hide();
-  $("#main").show();
-</script>
+    
+    <script src="js/common.js"></script>
+    
+	<script src="js/screen/WelcomeScreen.js"></script>
+	<script src="js/screen/UserIdentityScreen.js"></script>
+	<script src="js/screen/RepoSearchScreen.js"></script>
+	<script src="js/screen/RepoViewScreen.js"></script>
+	<script src="js/screen/RepoCreateScreen.js"></script>
+	<script src="js/screen/FileManagerScreen.js"></script>
+	<script src="js/screen/CompetencySearchScreen.js"></script>
+	<script src="js/screen/CompetencyViewScreen.js"></script>
+	<script src="js/screen/CompetencyEditScreen.js"></script>
+	<script src="js/screen/RelationshipEditScreen.js"></script>	
+
+    
+    <script src="js/modal/LoginModal.js"></script>
+    <script src="js/modal/CreateUserModal.js"></script>
+    <script src="js/modal/SaveIdModal.js"></script>
+    <script src="js/modal/AddFieldModal.js"></script>
+    <script src="js/modal/ChangeServerModal.js"></script>
+    <script src="js/modal/AddServerModal.js"></script>
+    <script src="js/modal/ChangeTypeModal.js"></script>
+    
+    <script src="js/other/AppMenu.js"></script>
+    <script src="js/other/RepoEdit.js"></script>
+    <script src="js/other/MessageContainer.js"></script>
+    
+    <script src="js/main.js"></script>
 </body>
 </html>
