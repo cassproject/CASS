@@ -1,7 +1,5 @@
 //Copyright 2015 Eduworks Corporation and other contributing parties.
 //Licensed under an Apache 2.0 License. See LICENSE in the root directory.
-//This file is an RS2 file, a functional scripting language for defining web services.
-//This code requires LEVR, a web service definition framework.
 
 //Uses ElasticSearch as a backend.
 
@@ -124,7 +122,7 @@ get=getUrl.httpGet().toObject().cgetByParam(
 
 #skyrepoGet=get;
 
-mySignatureFilterArray = #signatureSheet().cforEach(
+ownerSignatureFilterArray = #signatureSheet().cforEach(
 	paramName="signatureKey",
 	op=#object(
 		match=#object().put(
@@ -138,69 +136,49 @@ mySignatureFilterArray = #signatureSheet().cforEach(
 	array="true"
 );
 
-ownershipFilterArray = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="public").has(has="@ownership"), operand="true",
-	eq=#toArray(obj="@ownershipArray").append(
-		a=#object(
-			missing=#object(
-				field=owner
-			)
-		),
-		b=#object(
-			bool=#object(
-				must_not=#skyRepoGetProtectedTypes().cforEach(
-					paramName="protectedType",
-					op=#object(
-						match=#object().put(
-							_key=#add(a="@",b="type.(full)"),
-							_value="@protectedType"
-						)
-					),
-					array="true"
-				)
+readerSignatureFilterArray = #signatureSheet().cforEach(
+	paramName="signatureKey",
+	op=#object(
+		match=#object().put(
+			_key=#add(a="@",b="reader"),
+			_value=#object(
+				query="@signatureKey",
+				analyzer="whitespace_remove"
 			)
 		)
 	),
-	ne=#toArray(obj="@ownershipArray")
-).ccall(
-	ownershipArray=#if(
-		operator=#add(a="[",b="]").toArray().append(a="all", b="owned", c="me").has(has="@ownership"), 
-		operand="true",
-		eq=mySignatureFilterArray.displayJson(_collapse="true"),
-		ne=#add(a="[",b="]")
-	)
+	array="true"
 );
 
-ownershipMustObj = #if(operator="@ownership", operand="public",
-	eq=#add(a="[",b="]").toArray().append(
-		a=#object(
-			missing=#object(
-				field=owner
-			)
-		)
-	),
-	ne=#if(operator="@ownership", operand="owned",
-		eq=#add(a="[",b="]").toArray().append(
+ownershipObj = #object(
+	should=ownerSignatureFilterArray
+);
+
+ownershipFilters = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="public").has(has="@ownership"), operand="true",
+	ne=ownershipObj,
+	eq=ownershipObj.put(
+		_key="must",
+		_value=#add(a="[",b="]").toArray().append(
 			a=#object(
 				exists=#object(
 					field=owner
 				)
 			)
-		),
+		)
 	)
 );
 
-ownershipFilters = #if(
-	operator=#add(a="[",b="]").append(a="public",b="owned").has(has="@ownership"),
-	operand="true",
-	eq=#decode(obj="@filterObj").put(
-		_key="must",
-		_value=ownershipMustObj
+
+
+ownerOrReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="[", b="@", c="reader")), operand="-1",
+	ne=#if(operator=#signatureSheet().count(), operand="0",
+		eq=#error(msg="error!"),
+		ne=ownershipFilters.put(
+			_key="should",
+			_value=#merge(a=ownershipFilters.cget(should=""), b=readerSignatureFilterArray)
+		)
 	),
-	ne=#decode(obj="@filterObj"),
-).ccall(
-	filterObj=#object(
-		should=ownershipFilterArray
-	)
+	eq=ownershipFilters
 );
 
 typeArray=#toArray(obj="@types").cforEach(
@@ -217,14 +195,8 @@ typeArray=#toArray(obj="@types").cforEach(
 
 //#skyRepoGetProtectedTypes
 searchObj=#object(
-	from=#if(operator="@start", operand="",
-		eq="0",
-		ne="@start"
-	),
-	size=#if(operator="@size", operand="",
-		eq="50",
-		ne="@size"
-	),
+	from="@start",
+	size="@size",
 	query=#object(
 		filtered=#object(
 			query=#object(
@@ -234,11 +206,11 @@ searchObj=#object(
 			),
 			filter=#object(
 				bool=#if(operator="@types", operand="",
-					eq=ownershipFilters,
+					eq=ownerOrReaderFilters,
 					ne=#object(
 						must=#add(a="[",b="]").toArray().append(
 							a=#object(
-								bool=ownershipFilters
+								bool=ownerOrReaderFilters
 							),
 							b=#object(
 								bool=#object(
@@ -263,18 +235,194 @@ searchObj=#object(
 	).valueSet()
 );
 
+protectedTypeArray = #skyRepoGetProtectedTypes().cforEach(
+	paramName="protectedType",
+	op=#object(
+		match=#object().put(
+			_key=#add(a="@",b="type.(full)"),
+			_value="@protectedType"
+		)
+	),
+	array="true"
+);
+
+nonSigOwnershipFilters = #if(operator=#toArray().append(a="all", b="owned").has(has="@ownership"), operand="true",
+	eq=#object(
+		must_not=#if(operator="@ownership", operand="owned",
+			eq=#merge(a=protectedTypeArray, b=ownerSignatureFilterArray).append(
+				a=#object(
+					missing=#object(
+						field=owner
+					)
+				)
+			),
+			ne=#merge(a=protectedTypeArray, b=ownerSignatureFilterArray)
+		)
+	),
+	ne=#if(operator="@ownership", operand="public",
+		eq=#object(
+			must_not=protectedTypeArray.append(
+				a=#object(
+					exists=#object(
+						field=owner
+					)
+				)
+			)
+		),
+		ne=#object(
+			must=protectedTypeArray.append(
+				a=#object(
+					exists=#object(
+						field=owner
+					)
+				)
+			)
+		)
+	)
+);
+
+checkNonSigReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="[", b="@", c="reader")), operand="-1",
+	ne=#if(operator=#signatureSheet().count(), operand="0",
+		eq=#error(msg="error!"),
+		ne=nonSigOwnershipFilters.put(
+			_key="should",
+			_value=readerSignatureFilterArray
+		)
+	),
+	eq=nonSigOwnershipFilters
+);
+	
+
+nonSigSearchObj = #object(
+	from="@start",
+	size="@size",
+	query=#object(
+		filtered=#object(
+			query=#object(
+				query_string=#object(
+					query="@q"
+				)
+			),
+			filter=#object(
+				bool=#if(operator="@types", operand="",
+					eq=checkNonSigReaderFilters,
+					ne=#object(
+						must=#toArray().append(
+							a=#object(
+								bool=checkNonSigReaderFilters
+							),
+							b=#object(
+								bool=#object(
+									should=typeArray
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+).put(
+	_key="_source",
+	_value=#object(
+		a=context,
+		b=type,
+		c=id,
+		d=owner.add(z="*"),
+		e=signature,
+		f="name"
+	).valueSet()
+);
+
+
 searchUrl=#add(
 	a=urlBase,
 	b="/_search"
 );
 
-search=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+signatureSearch=searchObj.debug().httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
 	op=#toObject(obj="@obj").getByParam(param="_source").fromBracketNotationObject()
-).filterResults().displayJson(_collapse="true");
+).filterResults();
+
+checkRunSignatureSearch = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="owned", c="me").has(has="@ownership"), operand="true",
+	eq=#if(operator=#signatureSheet().count(), operand="0",
+		ne=signatureSearch,
+		eq=#toArray()
+	),
+	ne=#toArray()
+);
+
+nonSigSearch = nonSigSearchObj.debug().httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+	paramName="obj",
+	array="true",
+	op=#toObject(obj="@obj").getByParam(param="_source").fromBracketNotationObject()
+).filterResults();
+
+
+checkRunNonSigSearch = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="public", c="owned").has(has="@ownership"), operand="true",
+	eq=#catch(try=nonSigSearch, runtime=#toArray()),
+	ne=#add(a="[",b="]").toArray()
+);
+
+search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
+	eq="@sigResults",
+	lt=#if(operator=#toArray(obj="@sigResults").count(), operand="0",
+		eq=checkRunNonSigSearch.ccall(
+			start=#string(
+				str="@string",
+				op="substr",
+				begin="0",
+				end=#indexOf(str="@string", substr=".")
+			).ccall(
+				string=#add(
+					a="@start",
+					b=#add(
+						a="-",
+						b=checkRunSignatureSearch.ccall(
+							start="0",
+							size="@start"
+						).toArray().count()
+					),
+					c="-1"
+				).append(a="0").cmax()
+			),
+			size="@size"
+		),
+		ne=#merge(
+			a=#toArray(obj="@sigResults"), 
+			b=checkRunNonSigSearch.ccall(
+				start="0",
+				size=#string(
+					str="@string",
+					op="substr",
+					begin="0",
+					end=#indexOf(str="@string", substr=".")
+				).ccall(
+					string=#add(
+						a="@size",
+						b=#add(
+							a="-",
+							b=#decode(obj="@sigResults").count()
+						)
+					)
+				)
+			)
+		)
+	),
+).ccall(
+	sigResults=checkRunSignatureSearch
+).displayJson(_collapse="true");
+
+//search = #merge(a=checkRunNonSigSearch, b=checkRunSignatureSearch).displayJson(_collapse="true");
 
 #skyrepoSearch=search;
+
+
+
+
+
 
 typesObj = #object(
 	query=#object(

@@ -1,7 +1,5 @@
 //Copyright 2015 Eduworks Corporation and other contributing parties.
 //Licensed under an Apache 2.0 License. See LICENSE in the root directory.
-//This file is an RS2 file, a functional scripting language for defining web services.
-//This code requires LEVR, a web service definition framework.
 
 type=#add(a="@",b="type");
 #type=type;
@@ -25,7 +23,7 @@ owner = owner.replace(
 
 signatureSheet=#object(
 	a=#fileFromDatastream(name="signatureSheet").fileToString().toArray(),
-	b=#headers().get(signaturesheet="").toArray()
+	b=#headers().get(signatureSheet="").toArray()
 ).valueSet().union();
 
 verifySignature=#object(

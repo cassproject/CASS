@@ -1,7 +1,5 @@
 //Copyright 2015 Eduworks Corporation and other contributing parties.
 //Licensed under an Apache 2.0 License. See LICENSE in the root directory.
-//This file is an RS2 file, a functional scripting language for defining web services.
-//This code requires LEVR, a web service definition framework.
 
 encryptedTypes=#object(
 	a="http://skyrepo.eduworks.com/EncryptedValue",

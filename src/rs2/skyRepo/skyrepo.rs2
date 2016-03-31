@@ -1,7 +1,5 @@
 //Copyright 2015 Eduworks Corporation and other contributing parties.
 //Licensed under an Apache 2.0 License. See LICENSE in the root directory.
-//This file is an RS2 file, a functional scripting language for defining web services.
-//This code requires LEVR, a web service definition framework.
 
 query=#object(
 	type=#split(obj="@urlRemainder",split="/").getIndex(index="1"),
@@ -31,7 +29,10 @@ delete=get.skyrepoDelete(
 	version=query.cget(version="")
 );
 
-saveOrDelete = #if(operator="@methodType",operand="DELETE",eq=delete,ne=save);
+saveOrDelete = #if(operator="@methodType",operand="DELETE",
+	eq=delete,
+	ne=save
+);
 
 saveOrGet=#object(
 	a=saveOrDelete,
@@ -46,22 +47,33 @@ searchParamObj = searchParamData.fileToString().toObject();
 
 search=#skyrepoSearch(
 	q=postData.fileToString(), 
-	size=searchParamObj.cget(size=""), 
-	start=searchParamObj.cget(start=""), 
-	ownership=searchParamObj.cget(ownership=""), 
+	size=#if(operator="@size", operand="",
+		eq="50",
+		ne="@size"
+	).ccall(
+		size=searchParamObj.cget(size="")
+	), 
+	start=#if(operator="@start", operand="",
+		eq="0",
+		ne="@start"
+	).ccall(
+		start=searchParamObj.cget(start="")
+	), 
+	ownership=#if(operator="@ownership", operand="",
+		eq="all",
+		ne="@ownership"
+	).ccall(
+		ownership=searchParamObj.cget(ownership=""),
+	), 
 	types=searchParamObj.cget(types="")
 );
 
 /sky/repo/search=search;
 
 
-
-
 types = #skyrepoTypes();
 
 /sky/repo/types=types;
-
-
 
 performance=#reflectionPerformance().displayJson();
 /perf=performance;

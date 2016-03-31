@@ -1,9 +1,3 @@
-//Copyright 2015 Eduworks Corporation and other contributing parties.
-//Licensed under an Apache 2.0 License. See LICENSE in the root directory.
-//This file is an RS2 file, a functional scripting language for defining web services.
-//This code requires LEVR, a web service definition framework.
-
-//Generate or load a salt used to generate a secret.
 salt = #fileLoad(path="skyId.salt").fileToString();
 salt = #if(
 	operator=#fileExists(path="skyId.salt"),
@@ -15,7 +9,6 @@ salt = #if(
 	ne=salt
 ).cache(name="skyIdSalt");
 
-//Generate or load a string used to generate a secret.
 secret=#fileLoad(path="skyId.secret").fileToString();
 secret=#if(
 	operator=#fileExists(path="skyId.secret"),
@@ -27,7 +20,6 @@ secret=#if(
 	ne=secret
 );
 
-//Hash the string secret to make the well-randomized secret.
 secret=#pbkdf2(
 	obj=secret,
 	salt=salt,
@@ -35,7 +27,6 @@ secret=#pbkdf2(
 	hashLength="16"
 ).cache(name="skyidSecret");
 
-//Generate or load the public/private key.
 ppk=#fileLoad(path="skyId.pem").fileToString();
 ppk=#if(
 	operator=#fileExists(path="skyId.pem"),
@@ -47,7 +38,6 @@ ppk=#if(
 	ne=ppk
 ).cache(name="skyidPpk");
 
-//Salt a provided identifier.
 saltedId=#pbkdf2(
 	obj="@id",
 	salt=salt,
@@ -55,7 +45,6 @@ saltedId=#pbkdf2(
 	hashLength="16"
 );
 
-//Salt a provided password.
 saltedPassword=#pbkdf2(
 	obj="@password",
 	salt=salt,
@@ -63,7 +52,6 @@ saltedPassword=#pbkdf2(
 	hashLength="64"
 );
 
-//Create a signature sheet using our credentials so we may store and retreive data in the repository.
 signatureSheet=#object(
 	filename="signatureSheet.json",
 	mimeType="application/json",
@@ -85,7 +73,6 @@ signatureSheet=#object(
 	).valueSet().toString()
 ).stringToFile();
 
-//Get user credentials from the repository and decrypt.
 retrieve=#if(
 	operator="@payload",
 	operand="",
@@ -102,7 +89,6 @@ retrieve=#if(
 	).cget(payload="")
 );
 
-//Encode payload into an encrypted value JSON-LD wrapper.
 payload=#object(
 	payload = #toObject(obj="@payload").aesEncrypt(
 		secret=secret,
@@ -119,7 +105,6 @@ payload=#object(
 	_value=ppk.rsaPpkToPk()
 );
 
-//Retreive the user credential payload, generating a new token (and saving it).
 retreiveFormally=#if(
 	operator=saltedPassword,
 	operand=retrieve.cget(password=""),
@@ -135,7 +120,6 @@ retreiveFormally=#if(
 	ne=#error(code="401")
 );
 
-//Can't forget our signature sheet!
 retreiveFormally = signatureSheet.toDatastream(
 	paramName="signatureSheet",
 	op=retreiveFormally
@@ -143,13 +127,11 @@ retreiveFormally = signatureSheet.toDatastream(
 	
 #skyidRetreive = retreiveFormally;
 
-//Attempt to store the credentials.
 store=payload.debug().skyrepoPut(
 	type="schema.eduworks.com.ebac.0.1.encryptedValue",
 	id=saltedId
 );
 
-//Verify the token and then attempt to store the credentials.
 storeFormally=#if(
 	operator=retrieve.cget(token=""),
 	operand="@token",
@@ -157,13 +139,11 @@ storeFormally=#if(
 	ne=#error(code="403",msg="An error in synchronization has occurred. Please re-login and try again.")
 );
 
-//Can't forget our signature sheet!
 storeFormally = signatureSheet.toDatastream(
 	paramName="signatureSheet",
 	op=storeFormally
 );
 
-//Can't forget our signature sheet!
 storeFormally = #object(
 	a=#addWhitespaceAnalyzer(),
 	b=storeFormally
@@ -171,7 +151,6 @@ storeFormally = #object(
 
 #skyidStore = storeFormally;
 
-//If the account exists, pretend we created it (to prevent creation-denied attacks). If not, create it.
 create=#if(
 	operator=#skyrepoGet(
 		type="schema.eduworks.com.ebac.0.1.encryptedValue",
@@ -181,13 +160,11 @@ create=#if(
 	eq=store
 );
 
-//Create, and notify our spiffy chat that someone created a user.
 create = #object(
 	a=create,
 	b=#object(text="Sky User Created.").httpPost(multipart="false",contentType="text/plain",url="https://zhooks.slack.com/services/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")
 );
 
-//Don't forget the signature sheet!
 create = signatureSheet.toDatastream(
 	paramName="signatureSheet",
 	op=create
@@ -200,7 +177,6 @@ create = #object(
 
 #skyidCreate=create;
 
-//Login Service
 postData=#fileFromDatastream(name="credentialRequest");
 
 postObject=postData.fileToString().toObject();
@@ -211,7 +187,6 @@ login=#skyidRetreive(
 ).displayJson(_collapse="true");
 /sky/id/login=login;
 
-//Commit Service
 postData=#fileFromDatastream(name="credentialCommit");
 
 postObject=postData.fileToString().toObject();
@@ -224,7 +199,6 @@ store=#skyidStore(
 );
 /sky/id/commit=store;
 
-//Create Service
 postData=#fileFromDatastream(name="credentialCommit");
 
 postObject=postData.fileToString().toObject();
