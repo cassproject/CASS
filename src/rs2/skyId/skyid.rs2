@@ -61,7 +61,7 @@ signatureSheet=#object(
 			_value=#toObject(obj="@signableObject").rsaSign(ppk=ppk)
 		).call(
 			signableObject=#object(
-				expiry=#date(_raw="true").add(z="1000").toLong()
+				expiry=#date(_raw="true").add(z="10000").toLong()
 			).put(
 				_key=#type(),
 				_value="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature"
