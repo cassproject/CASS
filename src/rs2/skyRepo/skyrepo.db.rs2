@@ -340,7 +340,7 @@ searchUrl=#add(
 	b="/_search"
 );
 
-signatureSearch=searchObj.debug().httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+signatureSearch=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
 	op=#toObject(obj="@obj").getByParam(param="_source").fromBracketNotationObject()
@@ -354,7 +354,7 @@ checkRunSignatureSearch = #if(operator=#add(a="[",b="]").toArray().append(a="all
 	ne=#toArray()
 );
 
-nonSigSearch = nonSigSearchObj.debug().httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+nonSigSearch = nonSigSearchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
 	op=#toObject(obj="@obj").getByParam(param="_source").fromBracketNotationObject()
