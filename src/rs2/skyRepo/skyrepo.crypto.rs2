@@ -23,7 +23,8 @@ owner = owner.replace(
 
 signatureSheet=#object(
 	a=#fileFromDatastream(name="signatureSheet").fileToString().toArray(),
-	b=#headers().get(signatureSheet="").toArray()
+	b=#headers().get(signatureSheet="").toArray(),
+	c=#headers().get(signaturesheet="").toArray()
 ).valueSet().union();
 
 verifySignature=#object(
