@@ -109,7 +109,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Verify's the object's signatures
      *  
-     *  @return true if all of the signatures could be verified, false if they could not
+     *  @return true if all of the signatures could be verified, false if they
+     *          could not
      */
     prototype.verify = function() {
         if (this.signature != null) {
@@ -120,7 +121,11 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                     for (var j = 0; j < this.owner.length; j++) {
                         var own = this.owner[j];
                         var pk = EcPk.fromPem(own);
-                        if (EcRsaOaep.verify(pk, this.toSignableJson(), sig)) {
+                        var verify = false;
+                        try {
+                            verify = EcRsaOaep.verify(pk, this.toSignableJson(), sig);
+                        }catch (ex) {}
+                        if (verify) {
                             works = true;
                             break;
                         }
@@ -244,4 +249,4 @@ EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, proto
         var blob = base64ToBlob(this.data, this.mimeType);
         saveAs(blob, this.name);
     };
-}, {owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

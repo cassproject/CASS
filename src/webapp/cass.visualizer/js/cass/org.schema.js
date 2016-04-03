@@ -13,7 +13,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     prototype.mainEntityOfPage = null;
     prototype.image = null;
     prototype.additionalType = null;
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EntryPoint = function() {
     Thing.call(this);
 };
@@ -24,7 +24,7 @@ EntryPoint = stjs.extend(EntryPoint, Thing, [], function(constructor, prototype)
     prototype.encodingType = null;
     prototype.httpMethod = null;
     prototype.urlTemplate = null;
-}, {actionApplication: "Object", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {actionApplication: "Object", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Action = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
@@ -41,7 +41,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     prototype.object = null;
     prototype.participant = null;
     prototype.result = null;
-}, {target: "EntryPoint", participant: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {target: "EntryPoint", participant: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var AlignmentObject = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
@@ -53,7 +53,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, 
     prototype.targetDescription = null;
     prototype.targetName = null;
     prototype.targetUrl = null;
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var CreativeWork = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
@@ -128,7 +128,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     prototype.version = 0;
     prototype.video = null;
     prototype.workExample = null;
-}, {about: "Thing", accountablePerson: "Person", aggregateRating: "Object", associatedMedia: "Object", audience: "Object", audio: "Object", author: "Thing", character: "Person", citation: "Object", comment: "Object", contentLocation: "Object", contributor: "Thing", copyrightHolder: "Thing", creator: "Thing", dateCreated: "Date", dateModified: "Date", datePublished: "Date", editor: "Person", educationalAlignment: "AlignmentObject", encoding: "Object", exampleOfWork: "CreativeWork", hasPart: "CreativeWork", interactionStatistic: "Object", isPartOf: "CreativeWork", license: "Object", locationCreated: "Object", mainEntity: "Thing", mentions: "Thing", offers: "Object", position: "Object", producer: "Thing", provider: "Thing", publication: "Object", publisher: "Thing", recordedAt: "Object", releasedEvent: "Object", review: "Object", sourceOrganization: "Organization", timeRequired: "Object", translator: "Thing", video: "Object", workExample: "CreativeWork", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {about: "Thing", accountablePerson: "Person", aggregateRating: "Object", associatedMedia: "Object", audience: "Object", audio: "Object", author: "Thing", character: "Person", citation: "Object", comment: "Object", contentLocation: "Object", contributor: "Thing", copyrightHolder: "Thing", creator: "Thing", dateCreated: "Date", dateModified: "Date", datePublished: "Date", editor: "Person", educationalAlignment: "AlignmentObject", encoding: "Object", exampleOfWork: "CreativeWork", hasPart: "CreativeWork", interactionStatistic: "Object", isPartOf: "CreativeWork", license: "Object", locationCreated: "Object", mainEntity: "Thing", mentions: "Thing", offers: "Object", position: "Object", producer: "Thing", provider: "Thing", publication: "Object", publisher: "Thing", recordedAt: "Object", releasedEvent: "Object", review: "Object", sourceOrganization: "Organization", timeRequired: "Object", translator: "Thing", video: "Object", workExample: "CreativeWork", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Person = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
@@ -155,7 +155,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     prototype.follows = null;
     prototype.gender = null;
     prototype.givenName = null;
-    prototype.globalLocaitonNumber = null;
+    prototype.globalLocationNumber = null;
     prototype.hasOfferCatalog = null;
     prototype.hasPOS = null;
     prototype.height = null;
@@ -183,7 +183,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     prototype.weight = null;
     prototype.workLocation = null;
     prototype.worksFor = null;
-}, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Object", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Object", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Organization = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
@@ -227,4 +227,4 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     prototype.taxID = null;
     prototype.telephone = null;
     prototype.vatID = null;
-}, {aggregateRating: "Thing", alumni: "Person", brand: "Object", contactPoint: "Object", department: "Organization", dissolutionDate: "Date", employee: "Person", event: "Object", founder: "Person", foundingDate: "Date", foundingLocation: "Object", hasOfferCatalog: "Object", hasPOS: "Object", logo: "Object", makesOffer: "Object", member: "Thing", memberOf: "Organization", numberOfEmployees: "Object", owns: "Object", parentOrganization: "Organization", review: "Object", seeks: "Object", subOrganization: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {aggregateRating: "Thing", alumni: "Person", brand: "Object", contactPoint: "Object", department: "Organization", dissolutionDate: "Date", employee: "Person", event: "Object", founder: "Person", foundingDate: "Date", foundingLocation: "Object", hasOfferCatalog: "Object", hasPOS: "Object", logo: "Object", makesOffer: "Object", member: "Thing", memberOf: "Organization", numberOfEmployees: "Object", owns: "Object", parentOrganization: "Organization", review: "Object", seeks: "Object", subOrganization: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

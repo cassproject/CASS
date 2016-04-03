@@ -12,7 +12,127 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     prototype.setDescription = function(description) {
         this.description = description;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  The sequence that assertions should be built as such:
+ *  1. Generate the ID.
+ *  2. Add the owner.
+ *  3. Set the subject.
+ *  4. Set the agent.
+ *  Further functions may be called afterwards in any order.
+ *  WARNING: The modifications of ownership and readership do not "just work".
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAssertion = function() {
+    Assertion.call(this);
+};
+EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    prototype.getSubject = function() {
+        if (this.subject == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.subject);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return EcPk.fromPem(decryptedString);
+    };
+    prototype.getAgent = function() {
+        if (this.agent == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.agent);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return EcPk.fromPem(decryptedString);
+    };
+    prototype.getSubjectName = function() {
+        if (this.subject == null) 
+            return "Nobody";
+        var contact = EcIdentityManager.getContact(this.getSubject());
+        if (contact == null || contact.displayName == null) 
+            return "Unknown Subject";
+        return contact.displayName;
+    };
+    prototype.getAgentName = function() {
+        if (this.agent == null) 
+            return "Nobody";
+        var contact = EcIdentityManager.getContact(this.getAgent());
+        if (contact == null || contact.displayName == null) 
+            return "Unknown Agent";
+        return contact.displayName;
+    };
+    prototype.getAssertionDate = function() {
+        if (this.assertionDate == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.assertionDate);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return Long.parseLong(decryptedString);
+    };
+    prototype.getExpirationDate = function() {
+        if (this.expirationDate == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.expirationDate);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return Long.parseLong(decryptedString);
+    };
+    prototype.getEvidenceCount = function() {
+        if (this.evidence == null) 
+            return 0;
+        return this.evidence.length;
+    };
+    /**
+     *  Sets the subject of an assertion. Makes a few assumptions:
+     *  Owners of the object should be able to see and change the encrypted value.
+     *  Owners and readers of the object should be persisted.
+     *  @param pk
+     */
+    prototype.setSubject = function(pk) {
+        var owners = new Array();
+        var readers = new Array();
+        if (this.subject != null) {
+            owners.concat(this.subject.owner);
+            readers.concat(this.subject.reader);
+        }
+        owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, "subject", owners, readers);
+    };
+    prototype.setAgent = function(pk) {
+        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, "agent", this.subject.owner, this.subject.reader);
+    };
+    prototype.setCompetency = function(competencyUrl) {
+        this.competency = competencyUrl;
+    };
+    prototype.setLevel = function(levelUrl) {
+        this.level = levelUrl;
+    };
+    prototype.setConfidence = function(confidenceZeroToOne) {
+        this.confidence = confidenceZeroToOne;
+    };
+    prototype.setEvidence = function(evidences) {
+        var encryptedValues = new Array();
+        for (var i = 0; i < evidences.length; i++) 
+            encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, "evidence", this.subject.owner, this.subject.reader));
+        this.evidence = encryptedValues;
+    };
+    prototype.setAssertionDate = function(assertionDateMs) {
+        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, "assertionDate", this.subject.owner, this.subject.reader);
+    };
+    prototype.setExpirationDate = function(expirationDateMs) {
+        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, "expirationDate", this.subject.owner, this.subject.reader);
+    };
+    prototype.setDecayFunction = function(decayFunctionText) {
+        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, "decayFunction", this.subject.owner, this.subject.reader);
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
@@ -36,7 +156,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     prototype.setDescription = function(description) {
         this.description = description;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
@@ -92,7 +212,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     prototype.setScope = function(scope) {
         this.scope = scope;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcFramework = function() {
     Framework.call(this);
 };
@@ -186,7 +306,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (this.level[i].equals(id)) 
                 this.level.splice(i, 1);
     };
-}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var CompetencyManager = function() {};
 CompetencyManager = stjs.extend(CompetencyManager, null, [], function(constructor, prototype) {
     constructor.get = function(id, success, failure) {

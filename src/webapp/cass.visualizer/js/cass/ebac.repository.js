@@ -10,13 +10,14 @@ var EcEncryptedValue = function() {
 };
 EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], function(constructor, prototype) {
     constructor.toEncryptedValue = function(d, hideType) {
-        var v = new EbacEncryptedValue();
+        var v = new EcEncryptedValue();
         if (!hideType) 
             v.encryptedType = d.type;
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
+        v.id = d.id;
         if ((d)["name"] != null) 
             v.name = (d)["name"];
         for (var i = 0; i < d.owner.length; i++) {
@@ -29,8 +30,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         return v;
     };
-    constructor.encryptValue = function(text, id, fieldName, owner) {
-        var v = new EbacEncryptedValue();
+    constructor.encryptValueOld = function(text, id, fieldName, owner) {
+        var v = new EcEncryptedValue();
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
         v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
@@ -44,6 +45,39 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 v.secret = new Array();
             v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
         }
+        return v;
+    };
+    constructor.encryptValue = function(text, id, fieldName, owners, readers) {
+        var v = new EcEncryptedValue();
+        var newIv = EcAes.newIv(32);
+        var newSecret = EcAes.newIv(32);
+        v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
+        if (owners != null) 
+            for (var i = 0; i < owners.length; i++) 
+                v.addOwner(EcPk.fromPem(owners[i]));
+        if (readers != null) 
+            for (var i = 0; i < readers.length; i++) 
+                v.addReader(EcPk.fromPem(readers[i]));
+        if (owners != null) 
+            for (var i = 0; i < v.owner.length; i++) {
+                var eSecret = new EbacEncryptedSecret();
+                eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
+                eSecret.iv = newIv;
+                eSecret.secret = newSecret;
+                if (v.secret == null) 
+                    v.secret = new Array();
+                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
+            }
+        if (readers != null) 
+            for (var i = 0; i < v.reader.length; i++) {
+                var eSecret = new EbacEncryptedSecret();
+                eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
+                eSecret.iv = newIv;
+                eSecret.secret = newSecret;
+                if (v.secret == null) 
+                    v.secret = new Array();
+                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.reader[i]), eSecret.toEncryptableJson()));
+            }
         return v;
     };
     prototype.decryptIntoObject = function() {
@@ -103,14 +137,17 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return null;
     };
     prototype.decryptRaw = function(decryptionKey) {
-        for (var j = 0; j < this.secret.length; j++) {
-            var decryptedSecret = null;
-            decryptedSecret = EcRsaOaep.decrypt(decryptionKey, this.secret[j]);
-            if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
-                continue;
-            var secret = EbacEncryptedSecret.fromEncryptableJson(JSON.parse(decryptedSecret));
-            return EcAesCtr.decrypt(this.payload, secret.secret, secret.iv);
-        }
+        if (this.secret != null) 
+            for (var j = 0; j < this.secret.length; j++) {
+                try {
+                    var decryptedSecret = null;
+                    decryptedSecret = EcRsaOaep.decrypt(decryptionKey, this.secret[j]);
+                    if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
+                        continue;
+                    var secret = EbacEncryptedSecret.fromEncryptableJson(JSON.parse(decryptedSecret));
+                    return EcAesCtr.decrypt(this.payload, secret.secret, secret.iv);
+                }catch (ex) {}
+            }
         return null;
     };
     prototype.decryptToObject = function(decryptionKey) {
@@ -126,7 +163,36 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         return null;
     };
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    /**
+     *  Adds a reader to the object, if the reader does not exist.
+     *  
+     *  @param newReader
+     *             PK of the new reader.
+     */
+    prototype.addReader = function(newReader) {
+        var pem = newReader.toPem();
+        if (this.reader == null) 
+            this.reader = new Array();
+        for (var i = 0; i < this.reader.length; i++) 
+            if (this.reader[i].equals(pem)) 
+                return;
+        this.reader.push(pem);
+    };
+    /**
+     *  Removes a reader from the object, if the reader does exist.
+     *  
+     *  @param oldReader
+     *             PK of the old reader.
+     */
+    prototype.removeReader = function(oldReader) {
+        var pem = oldReader.toPem();
+        if (this.reader == null) 
+            this.reader = new Array();
+        for (var i = 0; i < this.reader.length; i++) 
+            if (this.reader[i].equals(pem)) 
+                this.reader.splice(i, 1);
+    };
+}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
@@ -312,7 +378,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
         }
-        EcRemote._delete(data.id, EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id), success, failure);
+        EcRemote._delete(data.shortId(), EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id), success, failure);
     };
     constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));

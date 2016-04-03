@@ -21,7 +21,7 @@ function permissionsPopulate(objectUrl)
         $("#permissionsVisibilitySwitch").hide();
         $("#permissionsAddViewer").hide();
         $("#permissionsAddOwner").hide();
-        if (object.owner !== undefined)
+        if (object.owner != undefined)
             for (var i = 0; i < object.owner.length; i++) {
                 var ui = $("#permissionsObjectOwners").append(permissionsObjectOwner).children().last();
                 var displayName = "Unknown (Click to Edit)";

@@ -23,7 +23,11 @@ var EcPk = function() {};
 EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     constructor.fromPem = function(pem) {
         var pk = new EcPk();
-        pk.pk = forge.pki.publicKeyFromPem(pem);
+        try {
+            pk.pk = forge.pki.publicKeyFromPem(pem);
+        }catch (ex) {
+            return null;
+        }
         return pk;
     };
     prototype.pk = null;
@@ -33,7 +37,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
         return Object.prototype.equals.call(this, obj);
     };
     prototype.toPem = function() {
-        return forge.pki.publicKeyToPem(this.pk);
+        return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
     };
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
@@ -88,7 +92,11 @@ var EcPpk = function() {};
 EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     constructor.fromPem = function(pem) {
         var pk = new EcPpk();
-        pk.ppk = forge.pki.privateKeyFromPem(pem);
+        try {
+            pk.ppk = forge.pki.privateKeyFromPem(pem);
+        }catch (ex) {
+            return null;
+        }
         return pk;
     };
     constructor.generateKeyAsync = function(callback) {
@@ -100,6 +108,14 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
             callback(ppk);
         });
     };
+    constructor.generateKey = function() {
+        var o = new Object();
+        (o)["workers"] = -1;
+        var keypair = forge.pki.rsa.generateKeyPair(o, null);
+        var ppk = new EcPpk();
+        ppk.ppk = keypair.privateKey;
+        return ppk;
+    };
     prototype.ppk = null;
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcPpk)) 
@@ -107,7 +123,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         return Object.prototype.equals.call(this, obj);
     };
     prototype.toPem = function() {
-        return forge.pki.privateKeyToPem(this.ppk);
+        return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
     };
     prototype.toPk = function() {
         var pk = new EcPk();

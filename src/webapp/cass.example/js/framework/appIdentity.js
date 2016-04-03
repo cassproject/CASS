@@ -3,6 +3,7 @@ function login() {
     var username = $("#loginUsername").val();
     var password = $("#loginPassword").val();
 
+    EcRepository.cache={};
     loginServer.startLogin(username, password);
 
     loginServer.fetch(
@@ -56,6 +57,7 @@ function login() {
 
 logout = function () {
     loginServer.clear();
+    EcRepository.cache={};
     identity = null;
     EcIdentityManager.ids = new Array();
     $("#loginButton").show();

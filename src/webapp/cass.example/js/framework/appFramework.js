@@ -1,21 +1,20 @@
-
 function frameworkSearch() {
     var searchString = "(@type:\"" + Framework.myType + "\")";
-    if ($("#frameworkSearch").val() != "")
+    if ($("#frameworkSearch").length > 0 && $("#frameworkSearch").val() != "")
         searchString += " AND (" + $("#frameworkSearch").val() + ")";
     repo.search(searchString, null,
         function (frameworks) {
             $("#frameworks").replaceWith(frameworksTemplate);
-            $("#frameworks").html("");
+            $("#frameworks-frameworks").html("");
             for (var i = 0; i < frameworks.length; i++) {
                 var fw = frameworks[i];
-                $("#frameworks").append(cassFrameworkTemplate);
-                var ui = $("#frameworks").children().last();
+                $("#frameworks-frameworks").append(cassFrameworkTemplate);
+                var ui = $("#frameworks-frameworks").children().last();
                 ui.attr("url", fw.shortId());
                 ui.find(".cass-framework-name").text(fw.name);
                 ui.find(".cass-framework-description").text(fw.description);
             }
-            $("#frameworks").foundation();
+            $(document).foundation();
         }, error
     );
 }
@@ -45,7 +44,7 @@ function populateFramework(frameworkId) {
         fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId());
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
-        if (fw.competency !== undefined) {
+        if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined) {
             for (var i = 0; i < fw.competency.length; i++) {
                 var competencyUrl = fw.competency[i];
                 fwui.find("#competency").append(cassCompetencyTemplate);
@@ -77,7 +76,7 @@ $("body").on("click", ".cass-framework", null, function (e) {
     setTimeout((function (frameworkUrl) {
         $(".canEditFramework").hide();
         populateFramework(frameworkUrl);
-    })($(this).attr("url")),0);
+    })($(this).attr("url")), 0);
 }, error);
 
 function editFramework(e) {

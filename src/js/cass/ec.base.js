@@ -1,5 +1,6 @@
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
+    constructor.async = true;
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
         var successCallback = function(arg0, arg1, arg2) {
             if (success != null) 
@@ -35,7 +36,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.data = fd;
         (p)["contentType"] = false;
         p.cache = false;
-        p.async = true;
+        p.async = EcRemote.async;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -59,6 +60,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.method = "GET";
         p.url = url;
         p.cache = false;
+        p.async = EcRemote.async;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -76,11 +78,18 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         var p = {};
         p.method = "DELETE";
         p.url = url;
+        p.async = EcRemote.async;
         p.headers = new Object();
         p.headers["signatureSheet"] = signatureSheet;
         p.success = successCallback;
         p.error = failureCallback;
         $.ajax(p);
+    };
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
     };
 }, {}, {});
 var EcCallbackReturn0 = function() {};

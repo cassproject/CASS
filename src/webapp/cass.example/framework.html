@@ -12,69 +12,62 @@
 
 <body>
     <div class="top-bar">
-        <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <li>
-                    <a class="menu-text" href="#">Framework Manager</a>
-                    <ul class="menu vertical">
-                        <li><a href="#" href="framework.html">Framework Manager</a></li>
-                        <li><a href="#" onclick="alert('NYI');">Profile Manager</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="menu-text" href="#">Framework</a>
-                    <ul class="menu vertical">
-                        <li><a href="#" onclick="newFrameworkButton();">New</a></li>
-                        <li><a href="#" onclick="exportCsv();">Export Competencies</a></li>
-                        <!--<li><a href="#" onclick="alert('NYI');">Clone</a></li>-->
-                    </ul>
-                </li>
-                <li class="canEditFramework" style='display:none;'>
-                    <a class="menu-text" href="#">Insert</a>
-                    <ul class="menu vertical">
-                        <li><a href="#" onclick="alert('NYI');">New</a>
-                            <ul class="menu vertical">
-                                <li><a class="canEditFramework" href="#" onclick="insertNewCompetency();">Competency</a></li>
-                                <li><a class="canEditFramework" href="#" onclick="insertNewLevel();">Level</a></li>
-                                <li><a class="canEditFramework" href="#" onclick="insertNewRelation();">Relation</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Existing</a>
-                            <ul class="menu vertical">
-                                <li><a class="canEditFramework" href="#" onclick="insertExistingCompetency();">Competency</a></li>
-                                <li><a class="canEditFramework" href="#" onclick="insertExistingLevel();">Level</a></li>
-                                <li><a class="canEditFramework" href="#" onclick="insertExistingRelation();">Relation</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Import</a>
-                            <ul class="menu vertical">
-                                <li><a class="canEditFramework" href="#" onclick="insertBulkFromCsv();">From CSV</a>
-                                </li>
-                                <li><a class="canEditFramework" href="#" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a>
-                                </li>
-                                <li><a class="canEditFramework" href="#" onclick="bulkFromFrameworkButton();">From Framework</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="top-bar-right">
-            <ul class="menu">
-                <li>
-                    <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
-                </li>
-                <li>
-                    <button type="button" class="button" data-open="contacts" onclick="populateContacts();">Contacts</button>
-                    <button id="loginButton" type="button" class="button" data-open="login">Login</button>
-                    <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
-                </li>
-            </ul>
-        </div>
+        <ul class="top-bar-left dropdown menu" data-dropdown-menu>
+            <li>
+                <a class="menu-text" href="#">Framework Manager</a>
+                <ul class="menu vertical">
+                    <li><a href="framework.html">Framework Manager</a></li>
+                    <li><a href="profile.html">Profile Manager</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="menu-text" href="#">Framework</a>
+                <ul class="menu vertical">
+                    <li><a href="#" onclick="newFrameworkButton();">New</a></li>
+                    <li><a href="#" onclick="exportCsv();">Export Competencies</a></li>
+                </ul>
+            </li>
+            <li class="canEditFramework" style='display:none;'>
+                <a class="menu-text" href="#">Insert</a>
+                <ul class="menu vertical">
+                    <li><a href="#">New</a>
+                        <ul class="menu vertical">
+                            <li><a class="canEditFramework" href="#" onclick="insertNewCompetency();">Competency</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="insertNewLevel();">Level</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="insertNewRelation();">Relation</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Existing</a>
+                        <ul class="menu vertical">
+                            <li><a class="canEditFramework" href="#" onclick="insertExistingCompetency();">Competency</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="insertExistingLevel();">Level</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="insertExistingRelation();">Relation</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Import</a>
+                        <ul class="menu vertical">
+                            <li><a class="canEditFramework" href="#" onclick="insertBulkFromCsv();">From CSV</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
+                            <li><a class="canEditFramework" href="#" onclick="bulkFromFrameworkButton();">From Framework</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="top-bar-right menu">
+            <li>
+                <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
+            </li>
+            <li>
+                <button type="button" class="button" data-open="contacts" onclick="populateContacts();">Contacts</button>
+                <button id="loginButton" type="button" class="button" data-open="login">Login</button>
+                <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
+            </li>
+        </ul>
     </div>
 
-    <ul id="frameworks" class="accordion" data-accordion role="tablist">
+    <div id="frameworks">
+    <ul id="frameworks-frameworks" class="accordion" data-accordion role="tablist">
         <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
             <a class="accordion-title cass-framework-name">Framework 1</a>
             <div class="accordion-content" data-tab-content>
@@ -91,7 +84,7 @@
             </div>
         </li>
     </ul>
-
+    </div>
     <ul id="competency" class="accordion" data-accordion role="tablist">
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
@@ -134,11 +127,6 @@
         <h3>New Framework</h3>
         <input id="newFrameworkName" type="text" placeholder="Name" />
         <textarea id="newFrameworkDescription" placeholder="Description"></textarea>
-        <!--
-        <input id="newFrameworkSourceName" type="text" placeholder="Source Name"/>
-        <textarea id="newFrameworkSourceDescription" placeholder="Source Description"></textarea>
-        <input id="newFrameworkSourceUrl" type="text" placeholder="Source URL"/>
-        -->
         <a class="button float-right" onclick="newFramework();">Create</a>
     </div>
 
@@ -146,11 +134,6 @@
         <h3>Edit Framework</h3>
         <input id="editFrameworkName" type="text" placeholder="Name" />
         <textarea id="editFrameworkDescription" placeholder="Description"></textarea>
-        <!--
-        <input id="newFrameworkSourceName" type="text" placeholder="Source Name"/>
-        <textarea id="newFrameworkSourceDescription" placeholder="Source Description"></textarea>
-        <input id="newFrameworkSourceUrl" type="text" placeholder="Source URL"/>
-        -->
         <a class="button float-right" onclick="editFrameworkSave();">Save</a>
         <a class="button alert" onclick="editFrameworkDelete();">Delete</a>
     </div>
@@ -178,7 +161,6 @@
         <h3>Insert Existing Competency</h3>
         <input id="insertExistingCompetencySearch" type="search" onchange="insertExistingCompetency();" placeholder="Search Competencies...">
         <ul id="insertExistingCompetencyResults">
-
         </ul>
     </div>
 
@@ -269,14 +251,12 @@
     <div class="small reveal" id="insertExistingRelation" data-reveal>
         <h3>Insert Existing Relation</h3>
         <div class="cass-competency-relations" id="insertExistingRelationResults">
-
         </div>
     </div>
 
     <div class="small reveal" id="insertExistingLevel" data-reveal>
         <h3>Insert Existing Level</h3>
         <div class="cass-competency-levels" id="insertExistingLevelsResults">
-
         </div>
     </div>
 

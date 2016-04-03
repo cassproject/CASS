@@ -232,7 +232,7 @@ CryptoController = stjs.extend(CryptoController, null, [], function(constructor,
         if (this.identity.selectedIdentity == null) {
             return null;
         }
-        return EcEncryptedValue.encryptValue(text, id, fieldName, this.identity.selectedIdentity.ppk.toPk()).atIfy();
+        return EcEncryptedValue.encryptValueOld(text, id, fieldName, this.identity.selectedIdentity.ppk.toPk()).atIfy();
     };
     prototype.decryptField = function(encryptedObject) {
         var e = new EcEncryptedValue();

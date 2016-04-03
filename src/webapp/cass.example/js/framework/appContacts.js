@@ -1,10 +1,12 @@
 var commitTimeout = null;
 EcIdentityManager.onContactChanged = function (contact) {
+    populateContacts();
     if (commitTimeout != null)
         clearTimeout(commitTimeout);
     commitTimeout = setTimeout(function () {
         commitTimeout = null;
-        loginServer.commit(function(){},error);
+        loginServer.commit(function(){},silent);
+        populateContacts();
     }, 5000);
 }
 
@@ -14,9 +16,10 @@ function populateContacts() {
     $("#contactsList").html("");
     for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
         var contact = EcIdentityManager.contacts[i];
-        if (identity != null && identity.ppk.toPk().equals(contact.pk))
-            continue;
         var ui = $("#contactsList").append(contactsContact).children().last();
+        if (identity != null && identity.ppk.toPk().equals(contact.pk))
+        ui.find("#identity").attr("title", contact.pk.toPem()).text("(You) "+contact.displayName);
+        else
         ui.find("#identity").attr("title", contact.pk.toPem()).text(contact.displayName);
     }
 }
