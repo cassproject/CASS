@@ -48,7 +48,7 @@ readers=#if(
 	ne=#if(
 		operator=#startsWith(obj="@reader",with="["), 
 		operand="true",
-		eq=#toArray(obj="@owner"),
+		eq=#toArray(obj="@reader"),
 		ne=#add(a="[",b="]").toArray().append(a="@reader")
 	)
 ).ccall(
@@ -56,7 +56,7 @@ readers=#if(
 		param=reader
 	)
 ).cforEach(
-	paramName="owner",
+	paramName="reader",
 	array="true",
 	threaded="false",
 	op=#replace(
