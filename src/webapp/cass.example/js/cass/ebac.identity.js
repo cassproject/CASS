@@ -204,6 +204,9 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
             if (EcIdentityManager.contacts[i].equals(contact)) 
                 return;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+            if (EcIdentityManager.ids[i].ppk.toPk().toPem().equals(contact.pk.toPem())) 
+                EcIdentityManager.ids[i].displayName = contact.displayName;
         EcIdentityManager.contacts.push(contact);
         EcIdentityManager.contactChanged(contact);
     };

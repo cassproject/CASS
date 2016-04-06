@@ -88,6 +88,14 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return 0;
         return this.evidence.length;
     };
+    prototype.getEvidence = function(index) {
+        if (this.evidence == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.evidence[index]);
+        var decryptedString = v.decryptIntoString();
+        return decryptedString;
+    };
     /**
      *  Sets the subject of an assertion. Makes a few assumptions:
      *  Owners of the object should be able to see and change the encrypted value.

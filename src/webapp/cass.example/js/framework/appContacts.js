@@ -1,6 +1,5 @@
 var commitTimeout = null;
 EcIdentityManager.onContactChanged = function (contact) {
-    populateContacts();
     if (commitTimeout != null)
         clearTimeout(commitTimeout);
     commitTimeout = setTimeout(function () {

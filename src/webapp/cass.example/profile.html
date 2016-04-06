@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li>
-                <a class="menu-text" href="#">Action</a>
+                <a class="menu-text requiresLogin" href="#">Action</a>
                 <ul class="menu vertical" id="menuActions">
                     <li>
                         <a href="#">Create</a>
@@ -73,21 +73,28 @@
                 </ul>
             </div>
         </div>
-        <div class="large-7 columns">
+        <div class="large-6 columns">
+            <h3 id="selectedContact" class="contact">Selected Contact</h3>
             <ul id="oneToOneAssertions">
-                <li id="oneToOneAssertion" style="list-style: none;">
-                    <span class="assertionTimestamp">&lt;Restricted&gt; ago</span>, <span class="assertionAgent">&lt;Restricted&gt;</span> claimed <span class="assertionSubject">&lt;Restricted&gt;</span> possessed <span class="assertionCompetency">Competency</span>
+                <li id="oneToOneAssertion" class="assertion" style="list-style: none;">
+                    <span class="assertionTimestamp">&lt;Decrypting&gt; ago</span>, 
+                    <span class="assertionAgent">&lt;Decrypting&gt;</span> claimed 
+                    <span class="assertionSubject">&lt;Decrypting&gt;</span> possessed 
+                    <span class="assertionCompetency">Competency</span>
                     <span class="assertionOptionLevel">
                     at <span class="assertionLevel">Level</span>
                     </span>
-                    with <span class="assertionEvidence">&lt;Restricted&gt; pieces of evidence</span>.
+                    with <span class="assertionEvidence">&lt;Decrypting&gt; pieces of evidence</span>,
+                    <span class="assertionConfidence"></span>
+                     and is <span class="assertionExpirationProgress"></span>.
                     <span class="assertionActions">
                         <a class="assertionActionDelete" style="display:none;">X</a>
                     </span>
+                    <ul class="assertionEvidenceStore" style="display:none;"></ul>
                 </li>
             </ul>
         </div>
-        <div id="contactSelector" class="large-2 columns">
+        <div id="contactSelector" class="large-3 columns">
             <input id="contactSearch" type="search" onchange="contactSearch();" placeholder="Search Contacts...">
             <ul id="contactsList">
                 <li style="list-style: none;" class="contact contactsContact">
@@ -138,7 +145,7 @@
         <form>
             <input id="loginUsername" type="text" placeholder="Username" />
             <input id="loginPassword" type="password" placeholder="Password" />
-            <small>You will automatically create an account if no account exists.</small>
+            <small>An account will automatically be created if none exists.</small>
             <a class="button float-right" onclick="login();">Login</a>
         </form>
     </div>
@@ -195,6 +202,13 @@
         <select class="permissionsViewer" id="permissionsAddViewer"></select>
         <ul class="permissionsViewer" id="permissionsObjectViewers">
 
+        </ul>
+    </div>
+    
+    <div class="small reveal" id="evidenceViewer" data-reveal>
+        <h3>Evidence</h3>
+        <ul id="evidenceViewerList">
+    
         </ul>
     </div>
 

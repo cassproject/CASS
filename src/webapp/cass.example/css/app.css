@@ -13,12 +13,18 @@ body
     color: rgb(68,84,106);
 }
 
+.topLevel
+{
+    margin-right:0em;
+}
+
 /* --- MENU --- */
 
 .top-bar
 {
     background-color: rgb(53,152,220);
     font-size: .75rem;
+    padding-right:1em;
 }
 
 .top-bar .menu .menu-text
@@ -214,10 +220,18 @@ li.cass-competency-level:before {
 }
 
 /* --- Timestamp --- */
-.assertionTimestamp {    
+.assertion { 
     padding-left: .5em; 
     padding-right: .5em; 
-    background-color: white; 
+    background-color: rgb(230,230,230);
+    color:black;
+    border-left: 6px solid orange; 
+    border-bottom: 4px solid rgb(210, 210, 210);
+}
+.assertionTimestamp,.assertionConfidence,.assertionExpirationProgress {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white;
     color:black;
     border-left: 6px solid rgb(0,0,0); 
     border-bottom: 1px solid rgb(230, 230, 230);

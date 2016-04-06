@@ -27,9 +27,12 @@ function login() {
                     identity = EcIdentityManager.ids[0];
                 $("#login").foundation('close');
                 $("#loginButton").hide();
+                $(".requiresLogin").show();
                 $("#logoutButton").show();
                 frameworkSearch();
                 populateContacts();
+                if (typeof(oneToOneSearch) == "function")
+                    oneToOneSearch();
             }
         },
         function (p1) {
@@ -62,4 +65,7 @@ logout = function () {
     EcIdentityManager.ids = new Array();
     $("#loginButton").show();
     $("#logoutButton").hide();
+    $(".requiresLogin").hide();
 }
+
+$(".requiresLogin").hide();
