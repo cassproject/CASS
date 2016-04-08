@@ -9,6 +9,16 @@ EcIdentityManager.onContactChanged = function (contact) {
         populateContacts();
     }, 5000);
 }
+EcIdentityManager.onIdentityChanged = function (identity) {
+    if (commitTimeout != null)
+        clearTimeout(commitTimeout);
+    commitTimeout = setTimeout(function () {
+        commitTimeout = null;
+        if (identity == null) return;
+        loginServer.commit(function () {}, silent);
+        populateContacts();
+    }, 5000);
+}
 
 var contactsContact = $(".contactsContact").outerHTML();
 
@@ -19,13 +29,19 @@ function populateContacts() {
 
 function populateContactsActual() {
     $("#contactsList").html("");
+    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+        var identity = EcIdentityManager.ids[i];
+        var ui = $("#contactsList").append(contactsContact).children().last();
+        ui.find("a").hide();
+        ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
+    }
     for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
         var contact = EcIdentityManager.contacts[i];
-        var ui = $("#contactsList").append(contactsContact).children().last();
-        if (EcIdentityManager.getPpk(contact.pk) != null)
-            ui.find("#identity").attr("title", contact.pk.toPem()).text("(You) " + contact.displayName);
-        else
+
+        if (EcIdentityManager.getPpk(contact.pk) == null) {
+            var ui = $("#contactsList").append(contactsContact).children().last();
             ui.find("#identity").attr("title", contact.pk.toPem()).text(contact.displayName);
+        }
     }
 }
 
@@ -33,15 +49,37 @@ function updateContact(me) {
     var pk = EcPk.fromPem($(me).attr("title"));
     var displayName = $(me).text();
     var contact = null;
-    if (EcIdentityManager.getContact(pk) != null) {
-        contact = EcIdentityManager.getContact(pk);
-        contact.displayName = displayName;
-        EcIdentityManager.contactChanged(contact);
-    } else {
-        contact = new EcContact();
-        contact.pk = pk;
-        contact.displayName = displayName;
-        EcIdentityManager.addContact(contact);
+    var found = false;
+    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+        if (pk.equals(EcIdentityManager.ids[i].ppk.toPk())) {
+            found = true;
+            contact = EcIdentityManager.ids[i];
+            contact.displayName = displayName.replace("(You) ", "");
+            EcIdentityManager.identityChanged(contact);
+        }
+    }
+    if (!found) {
+        if (EcIdentityManager.getContact(pk) != null) {
+            contact = EcIdentityManager.getContact(pk);
+            contact.displayName = displayName;
+            EcIdentityManager.contactChanged(contact);
+        } else {
+            contact = new EcContact();
+            contact.pk = pk;
+            contact.displayName = displayName;
+            EcIdentityManager.addContact(contact);
+        }
+    }
+}
+
+function removeContact(me) {
+    var pk = EcPk.fromPem($(me).parents(".contact").find("#identity").attr("title"));
+    for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
+        if (pk.equals(EcIdentityManager.contacts[i].pk)) {
+            EcIdentityManager.contacts.splice(i, 1);
+            EcIdentityManager.contactChanged(EcIdentityManager.contacts[i]);
+            populateContactsActual();
+        }
     }
 }
 
