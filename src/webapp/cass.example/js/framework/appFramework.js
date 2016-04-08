@@ -40,7 +40,10 @@ function populateFramework(frameworkId) {
     EcRepository.get(frameworkId, function (fw) {
         var fwui = $("[url='" + fw.shortId() + "']");
         fwui.find(".cass-framework-name").text(fw.name);
-        fwui.find(".cass-framework-description").text(fw.description);
+        if (fw.description === undefined || fw.description == null)
+            fwui.find(".cass-framework-description").text("No description");
+        else
+            fwui.find(".cass-framework-description").text(fw.description);
         fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId());
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
@@ -63,10 +66,10 @@ function populateFramework(frameworkId) {
         }
         populateFrameworkRelations(frameworkId);
         populateFrameworkLevels(frameworkId);
-        if (identity != null && fw.canEdit(identity.ppk.toPk()))
-            $(".canEditFramework").show();
-        else
-            $(".canEditFramework").hide();
+        $(".canEditFramework").hide();
+        for (var i = 0;i < EcIdentityManager.ids.length;i++)
+            if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
+                $(".canEditFramework").show();
     });
 }
 
@@ -117,9 +120,40 @@ function editFrameworkDelete() {
     }
     if (confirm("This will delete the selected framework. Continue?") == true)
         EcRepository.get(frameworkId, function (framework) {
-            EcRepository._delete(framework, function (response) {
-                frameworkSearch();
-                $("#editFramework").foundation('close');
-            }, error);
+            if (confirm("Delete all competencies, levels, and relations as well?") == true) {
+                if (framework.competency != null)
+                    for (var i = 0; i < framework.competency.length; i++)
+                        (function (framework, i) {
+                            timeout(function () {
+                                EcRepository.get(framework.competency[i], function (competency) {
+                                    EcRepository._delete(competency, function (success) {}, error);
+                                });
+                            })
+                        })(framework, i);
+                if (framework.level != null)
+                    for (var i = 0; i < framework.level.length; i++)
+                        (function (framework, i) {
+                            timeout(function () {
+                                EcRepository.get(framework.level[i], function (level) {
+                                    EcRepository._delete(level, function (success) {}, error);
+                                });
+                            })
+                        })(framework, i);
+                if (framework.relation != null)
+                    for (var i = 0; i < framework.relation.length; i++)
+                        (function (framework, i) {
+                            timeout(function () {
+                                EcRepository.get(framework.relation[i], function (relation) {
+                                    EcRepository._delete(relation, function (success) {}, error);
+                                });
+                            })
+                        })(framework, i);
+            }
+            timeoutAndBlock(function () {
+                EcRepository._delete(framework, function (response) {
+                    frameworkSearch();
+                }, error);
+            });
+            $("#editFramework").foundation('close');
         });
 }

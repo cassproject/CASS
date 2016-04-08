@@ -52,7 +52,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 failure(paramP1.responseText);
         };
         var url = server;
-        if (!url.endsWith("/") && service != null && service.isEmpty() == false) 
+        if (!url.endsWith("/") && service != null && service.equals("")) 
             url += "/";
         if (service != null) 
             url += service;

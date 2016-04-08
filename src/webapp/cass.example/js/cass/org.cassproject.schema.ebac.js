@@ -231,6 +231,24 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     prototype.secret = null;
 }, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  AES encrypted public key and display name. Contains Initialization Vectors,
+ *  but not secrets. Used to encrypt public identities for storage on remote
+ *  systems.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacContactGrant = function() {
+    EcRemoteLinkedData.call(this, Ebac.schema, "http://schema.eduworks.com/ebac/0.1/contactGrant");
+};
+EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
+    prototype.iv = null;
+    prototype.pk = null;
+    prototype.displayName = null;
+    prototype.source = null;
+    prototype.responseToken = null;
+    prototype.responseSignature = null;
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Message used to commit credentials to a remote login server.
  *  
  *  TODO: Semi-vulnerable to replay attacks. Token field prevents some replay

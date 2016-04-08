@@ -292,6 +292,47 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 success(results);
         }, failure);
     };
+    prototype.autoDetectRepository = function() {
+        EcRemote.async = false;
+        var protocols = new Array("http:", "https:");
+        var hostnames = new Array();
+        if (window.location.host != null) 
+            hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");
+        if (window.location.hostname != null) 
+            hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
+        hostnames.push("localhost", "localhost:8080", "localhost:9722");
+        var servicePrefixes = new Array("/", "/service/", "/api/custom/", "/levr/api/custom/");
+        for (var i = 0; i < protocols.length; i++) 
+            for (var j = 0; j < hostnames.length; j++) 
+                for (var k = 0; k < servicePrefixes.length; k++) 
+                    if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k])) 
+                        return;
+        EcRemote.async = true;
+    };
+    prototype.autoDetectFound = false;
+    prototype.autoDetectRepositoryActual = function(guess) {
+        var me = this;
+        var successCheck = function(p1) {
+            if (p1 != null) 
+                if ((p1)["ping"].equals("pong")) {
+                    me.selectedServer = guess;
+                    me.autoDetectFound = true;
+                }
+        };
+        var failureCheck = function(p1) {
+            if (p1 != null) 
+                if (!p1.equals("")) 
+                    if (p1.contains("pong")) {
+                        me.selectedServer = guess;
+                        me.autoDetectFound = true;
+                    }
+        };
+        if (guess != null && guess.equals("") == false) 
+            try {
+                EcRemote.getExpectingObject(guess, "ping", successCheck, failureCheck);
+            }catch (ex) {}
+        return this.autoDetectFound;
+    };
     /**
      *  Lists all types visible to the current user in the repository
      *  

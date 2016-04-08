@@ -44,11 +44,13 @@ $("body").on("click", ".cass-relation-target,.cass-relation-source", null, funct
     if ($(".cass-competency[url=\"" + $(this).attr("url") + "\"]>.accordion-content").attr("aria-hidden") != "false") {
         $(this).parents(".cass-framework").find(".cass-framework-competencies").children(".accordion").foundation('down', $(".cass-competency[url=\"" + $(this).attr("url") + "\"]>.accordion-content"));
         (function (url) {
-                setTimeout(function () {
+            setTimeout(function () {
+                timeout(function () {
                     $('html, body').animate({
                         scrollTop: $(".cass-competency[url=\"" + url + "\"]>").offset().top
                     }, 500);
-                }, 500);
+                });
+            }, 500);
         })($(this).attr("url"));
     }
 });

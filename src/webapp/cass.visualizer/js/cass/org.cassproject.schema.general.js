@@ -136,6 +136,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                  else 
                     i++;
             }
+            if (this.signature.length == 0) 
+                return false;
             return true;
         }
         return false;

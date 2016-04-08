@@ -59,25 +59,5 @@ echo Starting HTTPD...
 service httpd stop
 service httpd start
 
-echo -----
-echo 
-echo "HEY! I need you to do something."
-echo 
-echo "Go set up your domain name if you haven't yet."
-echo "If you are using a reverse proxy, configure the proxy endpoint to point at:"
-echo "   http://<ip>:8080/levr/api/custom/"
-echo "If not, strongly consider it:"
-echo "   All of the created objects will use the service endpoint as part of their identifier."
-echo "   A reverse proxy allows you to change around servers (and not rely, say, on port 8080)."
-echo
-echo "If you are using the IP or DNS name as the endpoint (say, for testing)"
-echo "   Identity Manager and Selected Repository endpoint (in app.js) -> http://<ip or dns name>:8080/levr/api/custom/"
-echo "If you are using a reverse proxy'd DNS name as the endpoint (good)"
-echo "   Identity Manager and Selected Repository endpoint (in app.js) -> http://<service endpoint>/"
-echo -----
-
-read -p "Press [Enter] key to edit app.js using nano..."
-nano /var/www/html/cass.example/js/framework/app.js
-
 clear
 echo Navigate to this server to see CASS.

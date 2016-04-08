@@ -50,27 +50,29 @@ function importCsv() {
                 var scopeIndex = parseInt($("#importCsvColumnScope option:selected").attr("index"));
                 for (var i = 1; i < data.length; i++) {
                     (function (i) {
-                        var f = new EcCompetency();
-                        if (data[i][nameIndex] === undefined || data[i][nameIndex] == "")
-                            return;
-                        if (nameIndex !== undefined)
-                            f.name = data[i][nameIndex];
-                        if (descriptionIndex !== undefined)
-                            f.description = data[i][descriptionIndex];
-                        if (scopeIndex !== undefined)
-                            f.scope = data[i][scopeIndex];
-                        f.generateId(repo.selectedServer);
-                        if (identity != null)
-                            f.addOwner(identity.ppk.toPk());
-                        framework.competency.push(f.shortId());
-                        EcRepository.save(f, function () {}, error);
+                        timeout(function () {
+                            var f = new EcCompetency();
+                            if (data[i][nameIndex] === undefined || data[i][nameIndex] == "")
+                                return;
+                            if (nameIndex !== undefined)
+                                f.name = data[i][nameIndex];
+                            if (descriptionIndex !== undefined)
+                                f.description = data[i][descriptionIndex];
+                            if (scopeIndex !== undefined)
+                                f.scope = data[i][scopeIndex];
+                            f.generateId(repo.selectedServer);
+                            if (identity != null)
+                                f.addOwner(identity.ppk.toPk());
+                            framework.competency.push(f.shortId());
+                            EcRepository.save(f, function () {}, error);
+                        });
                     })(i);
                 }
-                EcRepository.save(framework, function () {
-                    timeout(function () {
+                timeoutAndBlock(function () {
+                    EcRepository.save(framework, function () {
                         populateFramework(frameworkId);
-                    });
-                }, error);
+                    }, error);
+                });
                 $("#importCsv").foundation('close');
             }
         }, error);

@@ -14,28 +14,27 @@
     <div class="top-bar">
         <ul class="top-bar-left dropdown menu" data-dropdown-menu>
             <li>
-                <a class="menu-text" href="#">Profile Manager</a>
+                <a class="menu-text">Profile Manager</a>
                 <ul class="menu vertical">
                     <li><a href="framework.html">Framework Manager</a></li>
                     <li><a href="profile.html">Profile Manager</a></li>
                 </ul>
             </li>
             <li>
-                <a class="menu-text" href="#">View</a>
+                <a class="menu-text">View</a>
                 <ul class="menu vertical">
-                    <li><a href="#" onclick="alert('NYI');">Many-to-Many</a></li>
-                    <li><a href="#" onclick="alert('NYI');">One-to-Many</a></li>
-                    <li><a href="#" onclick="oneToOne();">One-to-One</a></li>
+                    <li><a onclick="oneToMany();">Transcript</a></li>
+                    <li><a onclick="oneToOne();">Timeline</a></li>
                 </ul>
             </li>
             <li>
-                <a class="menu-text requiresLogin" href="#">Action</a>
+                <a class="menu-text requiresLogin">Action</a>
                 <ul class="menu vertical" id="menuActions">
                     <li>
-                        <a href="#">Create</a>
+                        <a>Create</a>
                         <ul class="menu vertical">
                             <li>
-                                <a href="#" onclick="createNewAssertion();">Assertion</a>
+                                <a onclick="createNewAssertion();">Assertion</a>
                             </li>
                         </ul>
                     </li>
@@ -44,13 +43,15 @@
         </ul>
         <ul class="top-bar-right menu">
             <li>
+                <span id="status" class="status" style="display:none;">Busy...</span>
+                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
                 <button id="loginButton" type="button" class="button" data-open="login">Login</button>
                 <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
             </li>
         </ul>
     </div>
 
-    <div id="oneToOne" class="topLevel">
+    <div id="oneToOne" class="topLevel" style="display:none;">
         <div class="large-3 columns">
             <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
             <div id="frameworks">
@@ -58,7 +59,7 @@
                     <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
                         <a class="accordion-title cass-framework-name">Framework 1</a>
                         <div class="accordion-content" data-tab-content>
-                            <span class="cass-competency-actions"><a class="float-right" href="#" onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
+                            <span class="cass-competency-actions"><a class="float-right"  onclick="permissionsOn(this);">🔒</a></span>
                             <i class="cass-framework-description">Loading...</i>
                             <br>
                             <small><a class="cass-framework-url"></a></small>
@@ -77,16 +78,15 @@
             <h3 id="selectedContact" class="contact">Selected Contact</h3>
             <ul id="oneToOneAssertions">
                 <li id="oneToOneAssertion" class="assertion" style="list-style: none;">
-                    <span class="assertionTimestamp">&lt;Decrypting&gt; ago</span>, 
-                    <span class="assertionAgent">&lt;Decrypting&gt;</span> claimed 
-                    <span class="assertionSubject">&lt;Decrypting&gt;</span> possessed 
+                    <span class="assertionTimestamp">&lt;Unknown&gt; ago</span>,
+                    <span class="assertionAgent">&lt;Unknown&gt;</span> claimed
+                    <span class="assertionSubject">&lt;Unknown&gt;</span> possessed
                     <span class="assertionCompetency">Competency</span>
                     <span class="assertionOptionLevel">
                     at <span class="assertionLevel">Level</span>
                     </span>
-                    with <span class="assertionEvidence">&lt;Decrypting&gt; pieces of evidence</span>,
-                    <span class="assertionConfidence"></span>
-                     and is <span class="assertionExpirationProgress"></span>.
+                    with <span class="assertionEvidence">&lt;Unknown&gt; pieces of evidence</span>,
+                    <span class="assertionConfidence"></span> and is <span class="assertionExpirationProgress"></span>.
                     <span class="assertionActions">
                         <a class="assertionActionDelete" style="display:none;">X</a>
                     </span>
@@ -104,8 +104,37 @@
         </div>
     </div>
 
-    <div id="oneToMany" class="topLevel" style="display:none;">
-
+    <div id="oneToMany" class="topLevel">
+        <div class="large-9 columns">
+            <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
+            <div id="frameworks">
+                <ul id="frameworks-frameworks" class="accordion" data-accordion role="tablist">
+                    <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
+                        <a class="accordion-title cass-framework-name">Framework 1</a>
+                        <div class="accordion-content" data-tab-content>
+                            <span class="cass-competency-actions"></span>
+                            <i class="cass-framework-description">Loading...</i>
+                            <br>
+                            <small><a class="cass-framework-url"></a></small>
+                            <div class="cass-framework-owner">
+                            </div>
+                            <div class="cass-framework-competencies">
+                            </div>
+                            <div class="cass-framework-actions">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="contactSelector" class="large-3 columns">
+            <input id="contactSearch" type="search" onchange="contactSearch();" placeholder="Search Contacts...">
+            <ul id="contactsList">
+                <li style="list-style: none;" class="contact contactsContact">
+                    <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div id="manyToMany" class="topLevel" style="display:none;">
@@ -136,6 +165,7 @@
                         <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
                     </li>
                 </ul>
+                <ul class="cass-competency-assertions" style="display:none;"></ul>
             </div>
         </li>
     </ul>
@@ -169,10 +199,9 @@
             My judgment was made at:
             <input type="datetime-local" id="newAssertionAssertionDateTime" /> And I declare to expire:
             <input type="datetime-local" id="newAssertionExpirationDateTime" /> with confidence decaying based on a:
-            <select type="text" id="newAssertionDecayFunction" placeholder="<Function>">
-                <option>&lt;Decay Function&gt;</option>
-                <option value="logarithmic">Logarithmic Decay</option>
+            <select type="text" id="newAssertionDecayFunction" placeholder="<Decay Function>">
                 <option value="linear">Linear Decay</option>
+                <option value="logarithmic">Logarithmic Decay</option>
                 <option value="exponential">Exponential Decay</option>
             </select>
             function.
@@ -204,12 +233,16 @@
 
         </ul>
     </div>
-    
+
     <div class="small reveal" id="evidenceViewer" data-reveal>
         <h3>Evidence</h3>
         <ul id="evidenceViewerList">
-    
+
         </ul>
+    </div>
+
+    <div class="tiny reveal" id="blocking" data-reveal>
+        <h3 class="status" style="">Loading...</h3>
     </div>
 
     <script src="js/vendor/jquery.min.js"></script>
@@ -225,13 +258,13 @@
     <script src="js/cass/random.js"></script>
     <script src="js/cass/blobHelper.js"></script>
     <script src="js/cass/ec.crypto.js"></script>
-    <script src="js/cass/ebac.identity.js"></script>
     <script src="js/cass/org.json-ld.js"></script>
     <script src="js/cass/FileSaver.js"></script>
     <script src="js/cass/org.cassproject.schema.general.js"></script>
     <script src="js/cass/org.schema.js"></script>
     <script src="js/cass/org.cassproject.schema.ebac.js"></script>
     <script src="js/cass/org.cassproject.schema.cass.js"></script>
+    <script src="js/cass/ebac.identity.js"></script>
     <script src="js/cass/ebac.repository.js"></script>
     <script src="js/cass/cass.competency.js"></script>
     <script src="js/util.js"></script>
@@ -248,14 +281,19 @@
     <script src="js/framework/appPermissions.js"></script>
     <script src="js/framework/appContacts.js"></script>
     <script src="js/profile/appFramework.js"></script>
-    <script src="js/profile/appView.js"></script>
     <script src="js/profile/appContacts.js"></script>
     <script src="js/profile/appOneToOne.js"></script>
+    <script src="js/profile/appOneToMany.js"></script>
     <script src="js/profile/appAssertion.js"></script>
+    <script src="js/profile/appView.js"></script>
     <script>
-        $(document).foundation();
-        $("#login").foundation('open');
-        populateContacts();
+        $(document).ready(function() {
+            $(document).foundation();
+            $("#login").foundation('open');
+            populateContacts();
+            oneToMany();
+
+        });
 
     </script>
 </body>

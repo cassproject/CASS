@@ -14,41 +14,41 @@
     <div class="top-bar">
         <ul class="top-bar-left dropdown menu" data-dropdown-menu>
             <li>
-                <a class="menu-text" href="#">Framework Manager</a>
+                <a class="menu-text">Framework Manager</a>
                 <ul class="menu vertical">
                     <li><a href="framework.html">Framework Manager</a></li>
                     <li><a href="profile.html">Profile Manager</a></li>
                 </ul>
             </li>
             <li>
-                <a class="menu-text" href="#">Framework</a>
+                <a class="menu-text">Framework</a>
                 <ul class="menu vertical">
-                    <li><a href="#" onclick="newFrameworkButton();">New</a></li>
-                    <li><a href="#" onclick="exportCsv();">Export Competencies</a></li>
+                    <li><a onclick="newFrameworkButton();">New</a></li>
+                    <li><a onclick="exportCsv();">Export Competencies</a></li>
                 </ul>
             </li>
             <li class="canEditFramework" style='display:none;'>
-                <a class="menu-text" href="#">Insert</a>
+                <a class="menu-text">Insert</a>
                 <ul class="menu vertical">
-                    <li><a href="#">New</a>
+                    <li><a>New</a>
                         <ul class="menu vertical">
-                            <li><a class="canEditFramework" href="#" onclick="insertNewCompetency();">Competency</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="insertNewLevel();">Level</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="insertNewRelation();">Relation</a></li>
+                            <li><a class="canEditFramework" onclick="insertNewCompetency();">Competency</a></li>
+                            <li><a class="canEditFramework" onclick="insertNewLevel();">Level</a></li>
+                            <li><a class="canEditFramework" onclick="insertNewRelation();">Relation</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Existing</a>
+                    <li><a>Existing</a>
                         <ul class="menu vertical">
-                            <li><a class="canEditFramework" href="#" onclick="insertExistingCompetency();">Competency</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="insertExistingLevel();">Level</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="insertExistingRelation();">Relation</a></li>
+                            <li><a class="canEditFramework" onclick="insertExistingCompetency();">Competency</a></li>
+                            <li><a class="canEditFramework" onclick="insertExistingLevel();">Level</a></li>
+                            <li><a class="canEditFramework" onclick="insertExistingRelation();">Relation</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Import</a>
+                    <li><a>Import</a>
                         <ul class="menu vertical">
-                            <li><a class="canEditFramework" href="#" onclick="insertBulkFromCsv();">From CSV</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
-                            <li><a class="canEditFramework" href="#" onclick="bulkFromFrameworkButton();">From Framework</a></li>
+                            <li><a class="canEditFramework" onclick="insertBulkFromCsv();">From CSV</a></li>
+                            <li><a class="canEditFramework" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
+                            <li><a class="canEditFramework" onclick="bulkFromFrameworkButton();">From Framework</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -59,7 +59,9 @@
                 <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
             </li>
             <li>
+                <span id="status" class="status" style="display:none;">Busy...</span>
                 <button type="button" class="button" data-open="contacts" onclick="populateContacts();">Contacts</button>
+                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
                 <button id="loginButton" type="button" class="button" data-open="login">Login</button>
                 <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
             </li>
@@ -67,35 +69,35 @@
     </div>
 
     <div id="frameworks">
-    <ul id="frameworks-frameworks" class="accordion" data-accordion role="tablist">
-        <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
-            <a class="accordion-title cass-framework-name">Framework 1</a>
-            <div class="accordion-content" data-tab-content>
-                <span class="cass-competency-actions"><a class="float-right" href="#" onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
-                <i class="cass-framework-description">Loading...</i>
-                <br>
-                <small><a class="cass-framework-url"></a></small>
-                <div class="cass-framework-owner">
+        <ul id="frameworks-frameworks" class="accordion" data-accordion role="tablist">
+            <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
+                <a class="accordion-title cass-framework-name">Framework 1</a>
+                <div class="accordion-content" data-tab-content>
+                    <span class="cass-competency-actions"><a class="float-right"  onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
+                    <i class="cass-framework-description">Loading...</i>
+                    <br>
+                    <small><a class="cass-framework-url"></a></small>
+                    <div class="cass-framework-owner">
+                    </div>
+                    <div class="cass-framework-competencies">
+                    </div>
+                    <div class="cass-framework-actions">
+                    </div>
                 </div>
-                <div class="cass-framework-competencies">
-                </div>
-                <div class="cass-framework-actions">
-                </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
     </div>
     <ul id="competency" class="accordion" data-accordion role="tablist">
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
             <div class="accordion-content" data-tab-content>
-                <span class="cass-competency-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
+                <span class="cass-competency-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
                 <i class="cass-competency-description">No Description.</i>
                 <br>
                 <small><a class="cass-competency-url"></a></small>
                 <ul class="cass-competency-levels">
                     <li class="cass-competency-level">
-                        <span class="cass-level-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
+                        <span class="cass-level-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
                         <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
                         <br>
                         <i class="cass-level-description">No Description.</i>
@@ -103,7 +105,7 @@
                 </ul>
                 <ul class="cass-competency-relations">
                     <li class="cass-competency-relation">
-                        <span class="cass-relation-actions"><a href="#" onclick="permissionsOn(this);">🔒</a></span>
+                        <span class="cass-relation-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
                         <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
                         <span class="cass-relation-type"></span>
                         <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
@@ -325,6 +327,10 @@
         </ul>
     </div>
 
+    <div class="tiny reveal" id="blocking" data-reveal>
+        <h3 class="status" style="">Loading...</h3>
+    </div>
+
     <script src="js/vendor/jquery.min.js"></script>
     <script src="js/vendor/what-input.min.js"></script>
     <script src="js/vendor/papaparse.js"></script>
@@ -337,13 +343,13 @@
     <script src="js/cass/random.js"></script>
     <script src="js/cass/blobHelper.js"></script>
     <script src="js/cass/ec.crypto.js"></script>
-    <script src="js/cass/ebac.identity.js"></script>
     <script src="js/cass/org.json-ld.js"></script>
     <script src="js/cass/FileSaver.js"></script>
     <script src="js/cass/org.cassproject.schema.general.js"></script>
     <script src="js/cass/org.schema.js"></script>
     <script src="js/cass/org.cassproject.schema.ebac.js"></script>
     <script src="js/cass/org.cassproject.schema.cass.js"></script>
+    <script src="js/cass/ebac.identity.js"></script>
     <script src="js/cass/ebac.repository.js"></script>
     <script src="js/cass/cass.competency.js"></script>
     <script src="js/util.js"></script>
@@ -360,8 +366,12 @@
     <script src="js/framework/appPermissions.js"></script>
     <script src="js/framework/appContacts.js"></script>
     <script>
-        $(document).foundation();
-        $("#login").foundation('open');
+        $(document).ready(function() {
+            $(document).foundation();
+            $("#login").foundation('open');
+
+        });
+
     </script>
 </body>
 

@@ -86,22 +86,25 @@ function createNewAssertionSelectedCompetencyChanged(e) {
 
 function newAssertion() {
     var agent = $("#newAssertionAgent option:selected").val();
-    if (agent == null) {
+    if (agent == $("#newAssertionAgent").attr("placeholder")) {
         error("You must log in or select an alias in order to assert a claim.");
         return;
     }
     agent = EcPk.fromPem(agent);
     var subject = $("#newAssertionSubject option:selected").val();
-    if (subject == null) {
+    if (subject == $("#newAssertionSubject").attr("placeholder")) {
         error("You must select a contact to make a claim about.");
         return;
     }
     subject = EcPk.fromPem(subject);
     var competency = $("#newAssertionCompetency option:selected").val();
-    if (competency == null) {
+    if (competency == $("#newAssertionCompetency").attr("placeholder")) {
         error("You must select a competency to claim the subject holds.");
+        return;
     }
     var level = $("#newAssertionLevel option:selected").val();
+    if (level == $("#newAssertionLevel").attr("placeholder"))
+        level = null;
     var confidence = $("#newAssertionAssertionConfidence").val() / 100;
     var evidence = $("#newAssertionEvidence").val().split("\n");
     var eviNew = [];
@@ -116,7 +119,12 @@ function newAssertion() {
         logarithmic:"log(t)",
         exponential:"t^2"
     };
-    var decayFunction = decayFunctions[$("#newAssertionDecayFunction").val()];
+    if ($("#newAssertionDecayFunction").val() == $("#newAssertionDecayFunction").attr("placeholder"))
+    {
+        error("You must select a decay function. If in doubt, select linear.");
+        return;
+    }
+        var decayFunction = decayFunctions[$("#newAssertionDecayFunction").val()];
     var assertion = new EcAssertion();
     assertion.generateId(repo.selectedServer);
     assertion.addOwner(agent);

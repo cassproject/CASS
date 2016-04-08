@@ -112,7 +112,8 @@ function insertExistingCompetency() {
                 results.append(cassCompetencyTemplate);
                 var ui = results.children().last();
                 ui.attr("url", competency.shortId());
-                ui.find(".cass-competency-name").text(competency.name);
+                if (!ui.find(".cass-competency-name").text().startsWith(competency.name))
+                    ui.find(".cass-competency-name").text(competency.name);
                 ui.find(".cass-competency-description").text(competency.description);
                 if ($("[url='" + frameworkId + "']").find("[url='" + competency.shortId() + "']").length > 0)
                     ui.find(".cass-competency-actions").prepend("<a class='button disabled float-right'>Exists</a>");

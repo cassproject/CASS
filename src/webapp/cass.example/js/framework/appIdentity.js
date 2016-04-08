@@ -1,8 +1,14 @@
 
+function errorLogin(error) {
+    alert(error);
+    $("#login").foundation('open');
+}
+
 function login() {
     var username = $("#loginUsername").val();
     var password = $("#loginPassword").val();
-
+    $(".status").text("Logging in...");
+    $("#login").foundation('close');
     EcRepository.cache={};
     loginServer.startLogin(username, password);
 
@@ -18,7 +24,7 @@ function login() {
                             function (p1) {
                                 login();
                             },
-                            error
+                            errorLogin
                         )
                     }
                 );
@@ -26,9 +32,9 @@ function login() {
                 if (EcIdentityManager.ids.length > 0)
                     identity = EcIdentityManager.ids[0];
                 $("#login").foundation('close');
-                $("#loginButton").hide();
+                $("#loginButton,.loggedOut").hide();
                 $(".requiresLogin").show();
-                $("#logoutButton").show();
+                $("#logoutButton,.loggedIn").show();
                 frameworkSearch();
                 populateContacts();
                 if (typeof(oneToOneSearch) == "function")
@@ -47,12 +53,12 @@ function login() {
                                 function (p1) {
                                     login();
                                 },
-                                error
+                                errorLogin
                             )
                         }
                     );
                 },
-                error
+                errorLogin
             )
         }
     );
@@ -63,9 +69,12 @@ logout = function () {
     EcRepository.cache={};
     identity = null;
     EcIdentityManager.ids = new Array();
-    $("#loginButton").show();
+    $("#loginButton,.loggedOut").show();
     $("#logoutButton").hide();
-    $(".requiresLogin").hide();
+    $(".requiresLogin,.loggedIn").hide();
+    frameworkSearch();
+    if (typeof(oneToOneSearch) == "function")
+        oneToOneSearch();
 }
 
 $(".requiresLogin").hide();

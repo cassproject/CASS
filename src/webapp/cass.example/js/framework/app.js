@@ -1,14 +1,6 @@
 var loginServer = new EcRemoteIdentityManager();
 
-loginServer.setDefaultIdentityManagementServer("http://localhost:8080/levr/api/custom/");
-loginServer.configure(
-    "Replace this with your application salt.", 5000, 64,
-    "Replace this with a different application salt.", 5000, 64,
-    "Replace this with a third application salt.", 5000
-);
-
 var repo = new EcRepository();
-repo.selectedServer = "http://localhost:8080/levr/api/custom/";
 
 EcRepository.caching = true;
 
@@ -28,42 +20,53 @@ function error(error) {
     alert(error);
 }
 
-function silent(error) {
-}
+function silent(error) {}
 
 function isObject(obj) {
-  return toString.call(obj) == '[object Object]';
+    return toString.call(obj) == '[object Object]';
 }
 
 function isArray(obj) {
-  return toString.call(obj) == '[object Array]';
+    return toString.call(obj) == '[object Array]';
 }
 
 //setTimeout sometimes isn't enough to let the UI draw.
 //Solution? Why not another layer of abstraction!
 var timeouts = [];
 var tout = null;
-function timeout(fun)
-{
-    timeouts.push(fun);
-    if (tout == null)
-        tout = setTimeout(timeoutLoop,0);
+
+function timeoutAndBlock(fun) {
+    timeout(fun);
+    $("#blocking").foundation('open');
 }
 
-function timeoutLoop()
-{
-    var fun = timeouts.splice(0,1);
-    if (fun.length > 0)
-    {
+function timeout(fun) {
+    timeouts.push(fun);
+    if (tout == null)
+        tout = setTimeout(timeoutLoop, 0);
+}
+
+function timeoutLoop() {
+    var fun = timeouts.splice(0, 1);
+    if (fun.length > 0) {
         (fun[0])();
-        tout = setTimeout(timeoutLoop,0);
-    }
-    else
-    {
+        tout = setTimeout(timeoutLoop, 0);
+        $(".status").text(timeouts.length + " tasks remaining...").show();
+    } else {
+        $(".status").text(timeouts.length + " tasks remaining...").hide();
+        $("#blocking").foundation('close');
         tout = null;
     }
 }
 
 $(document).ready(function () {
+    repo.autoDetectRepository();
+
+    loginServer.setDefaultIdentityManagementServer(repo.selectedServer);
+    loginServer.configure(
+        "Replace this with your application salt.", 5000, 64,
+        "Replace this with a different application salt.", 5000, 64,
+        "Replace this with a third application salt.", 5000
+    );
     frameworkSearch();
 });

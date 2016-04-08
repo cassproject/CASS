@@ -59,7 +59,11 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
     constructor.verify = function(pk, text, signature) {
         var s = forge.md.sha1.create();
         s.update(text, "utf8");
-        return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
+        try {
+            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
+        }catch (ex) {
+            return false;
+        }
     };
 }, {}, {});
 var EcRsa = function() {};

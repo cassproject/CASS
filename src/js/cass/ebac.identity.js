@@ -201,6 +201,16 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *             Contact to add.
      */
     constructor.addContact = function(contact) {
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+            if (EcIdentityManager.ids[i].ppk.toPk().toPem().equals(contact.pk.toPem())) {
+                EcIdentityManager.ids[i].displayName = contact.displayName;
+                EcIdentityManager.contactChanged(contact);
+            }
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
+            if (EcIdentityManager.contacts[i].pk.toPem().equals(contact.pk.toPem())) {
+                EcIdentityManager.contacts[i].displayName = contact.displayName;
+                EcIdentityManager.contactChanged(contact);
+            }
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
             if (EcIdentityManager.contacts[i].equals(contact)) 
                 return;
@@ -330,6 +340,24 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
+var EcContactGrant = function() {
+    EbacContactGrant.call(this);
+};
+EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    constructor.myType = "http://schema.eduworks.com/ebac/0.1/contactGrant";
+    prototype.valid = function() {
+        if (!this.verify()) 
+            return false;
+        if (this.invalid()) 
+            return false;
+        var found = false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
+                found = true;
+        }
+        return found;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs complete anonymization of the user.

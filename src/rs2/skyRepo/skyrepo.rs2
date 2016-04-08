@@ -77,3 +77,6 @@ types = #skyrepoTypes();
 
 performance=#reflectionPerformance().displayJson();
 /perf=performance;
+
+pong=#object(ping="pong").displayJson(_collapse="true");
+/ping=pong;

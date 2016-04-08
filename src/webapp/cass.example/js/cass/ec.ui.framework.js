@@ -14,6 +14,16 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
         return null;
     };
 }, {}, {});
+var HistoryClosure = function(name, screen, containerId) {
+    this.pageName = name;
+    this.screen = screen;
+    this.containerId = containerId;
+};
+HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
+    prototype.pageName = null;
+    prototype.screen = null;
+    prototype.containerId = null;
+}, {screen: "EcScreen"}, {});
 var ViewManager = function() {};
 ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype) {
     constructor.viewMap = {};
@@ -32,22 +42,6 @@ var HistoryObject = function() {};
 HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
     prototype.name = null;
 }, {}, {});
-var HistoryClosure = function(name, screen, containerId) {
-    this.pageName = name;
-    this.screen = screen;
-    this.containerId = containerId;
-};
-HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
-    prototype.pageName = null;
-    prototype.screen = null;
-    prototype.containerId = null;
-}, {screen: "EcScreen"}, {});
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-}, {}, {});
 var EcScreen = function() {
     EcView.call(this);
 };
@@ -57,6 +51,13 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         return this.displayName;
     };
 }, {}, {});
+var EcModal = function() {
+    EcView.call(this);
+};
+EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+}, {onClose: "Callback0"}, {});
 var ModalManager = function() {
     ViewManager.call(this);
 };
@@ -87,10 +88,13 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         ModalManager.inModal = false;
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
+(function() {
+    $(ModalManager.MODAL_CONTAINER_ID).one("closed.zf.reveal", function(arg0, arg1) {
+        if (ModalManager.getCurrentModal().onClose != null) 
+            ModalManager.getCurrentModal().onClose();
+        return true;
+    });
+})();
 var ScreenManager = function() {
     ViewManager.call(this);
 };
@@ -233,6 +237,10 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 var OverlayManager = function() {
     ScreenManager.call(this);
 };

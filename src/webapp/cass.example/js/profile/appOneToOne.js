@@ -19,7 +19,7 @@ $("#oneToOne").on("click", ".assertionActionDelete", null, function (e) {
     });
 }, error);
 
-$("#oneToOne").on("click",".assertionEvidence",null,function(e){
+$("#oneToOne,#oneToMany").on("click",".assertionEvidence",null,function(e){
     $("#evidenceViewerList").html($(this).parents("#oneToOneAssertion").find(".assertionEvidenceStore").html());
     $('#evidenceViewer').foundation('open');
 },error);
@@ -50,6 +50,7 @@ function oneToOneBaseSearchString(){
 }
 
 function oneToOneSearch() {
+    if ($("#oneToOne").html() == "") return;
     $("#oneToOneAssertions").text("");
     var competencyId = $("#frameworks").find(".cass-competency.is-active").attr("url");
     
@@ -80,7 +81,7 @@ function oneToOneSearch() {
                 repo.search(searchString, null,
                     function (assertions) {
                         for (var i = 0; i < assertions.length; i++) {
-                            displayAssertionSearchItem(assertions[i]);
+                            displayAssertionSearchItem($("#oneToOneAssertions"),assertions[i]);
                         }
                     }, error
                 );
@@ -92,7 +93,7 @@ function oneToOneSearch() {
     repo.search(searchString, null,
         function (assertions) {
             for (var i = 0; i < assertions.length; i++) {
-                displayAssertionSearchItem(assertions[i]);
+                displayAssertionSearchItem($("#oneToOneAssertions"),assertions[i]);
             }
         }, error
     );
@@ -101,13 +102,13 @@ function oneToOneSearch() {
 var cassAssertionTemplate = $("#oneToOneAssertion").outerHTML();
 $("#oneToOneAssertion").remove();
 
-function displayAssertionSearchItem(assertion) {
+function displayAssertionSearchItem(where,assertion) {
     EcRepository.get(assertion.shortId(), function (assertion) {
         var a = new EcAssertion();
         a.copyFrom(assertion);
-        $("#oneToOneAssertions").append(cassAssertionTemplate);
+        where.append(cassAssertionTemplate);
 
-        var ui = $("#oneToOneAssertions").children().last();
+        var ui = where.children().last();
             ui.hide();
 
         ui.attr("url", assertion.shortId());
@@ -131,9 +132,9 @@ function displayAssertionSearchItem(assertion) {
         if (a.getEvidenceCount() == 0)
             ui.find(".assertionEvidence").text("No evidence");
         else if (a.getEvidenceCount() == 1)
-            ui.find(".assertionEvidence").text(a.getEvidenceCount() + " piece of evidence");
+            ui.find(".assertionEvidence").css("text-decoration","underline").text(a.getEvidenceCount() + " piece of evidence");
         else
-            ui.find(".assertionEvidence").text(a.getEvidenceCount() + " pieces of evidence");
+            ui.find(".assertionEvidence").css("text-decoration","underline").text(a.getEvidenceCount() + " pieces of evidence");
         
         ui.find(".assertionConfidence").text(Math.round(a.confidence*100)+"% confidence");
 
