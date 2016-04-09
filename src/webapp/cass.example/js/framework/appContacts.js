@@ -7,7 +7,7 @@ EcIdentityManager.onContactChanged = function (contact) {
         if (identity == null) return;
         loginServer.commit(function () {}, silent);
         populateContacts();
-    }, 5000);
+    }, 1000);
 }
 EcIdentityManager.onIdentityChanged = function (identity) {
     if (commitTimeout != null)
@@ -17,7 +17,7 @@ EcIdentityManager.onIdentityChanged = function (identity) {
         if (identity == null) return;
         loginServer.commit(function () {}, silent);
         populateContacts();
-    }, 5000);
+    }, 1000);
 }
 
 var contactsContact = $(".contactsContact").outerHTML();
@@ -25,6 +25,13 @@ var contactsContact = $(".contactsContact").outerHTML();
 function populateContacts() {
     populateContactsActual();
     actionAddContactCheck();
+}
+
+function loopPopulateContacts() {
+    populateContacts();
+    setTimeout(function () {
+        loopPopulateContacts()
+    }, 60000);
 }
 
 function populateContactsActual() {
@@ -58,33 +65,39 @@ function updateContact(me) {
             EcIdentityManager.identityChanged(contact);
         }
     }
-    if (!found) {
-        if (EcIdentityManager.getContact(pk) != null) {
-            contact = EcIdentityManager.getContact(pk);
-            contact.displayName = displayName;
-            EcIdentityManager.contactChanged(contact);
-        } else {
-            contact = new EcContact();
-            contact.pk = pk;
-            contact.displayName = displayName;
-            EcIdentityManager.addContact(contact);
+    if (!found)
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
+            if (pk.equals(EcIdentityManager.contacts[i].pk)) {
+                found = true;
+                contact = EcIdentityManager.contacts[i];
+                contact.displayName = displayName.replace("(You) ", "");
+                EcIdentityManager.contactChanged(contact);
+            }
         }
+    if (!found) {
+        contact = new EcContact();
+        contact.pk = pk;
+        contact.displayName = displayName;
+        EcIdentityManager.addContact(contact);
     }
 }
 
 function removeContact(me) {
-    var pk = EcPk.fromPem($(me).parents(".contact").find("#identity").attr("title"));
-    for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
-        if (pk.equals(EcIdentityManager.contacts[i].pk)) {
-            EcIdentityManager.contacts.splice(i, 1);
-            EcIdentityManager.contactChanged(EcIdentityManager.contacts[i]);
-            populateContactsActual();
+    if (confirm("This will delete the contact. Continue?")) {
+        var pk = EcPk.fromPem($(me).parents(".contact").find("#identity").attr("title"));
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
+            if (pk.equals(EcIdentityManager.contacts[i].pk)) {
+                EcIdentityManager.contacts.splice(i, 1);
+                EcIdentityManager.contactChanged(EcIdentityManager.contacts[i]);
+                populateContactsActual();
+            }
         }
     }
 }
 
 function getShareString() {
     var input = window.prompt("What name would you like the recipient to know you by?", identity.displayName);
+    if (input == null) return;
     var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
 
     var iv = EcAes.newIv(32);
@@ -100,6 +113,10 @@ function actionAddContactCheck() {
         c.displayName = QueryString.contactDisplayName;
         c.pk = EcPk.fromPem(QueryString.contactKey);
         c.source = QueryString.contactServer;
+        if (EcIdentityManager.getContact(c.pk) != null) {
+            window.location = window.location.href.split('?')[0];
+            return;
+        }
         EcIdentityManager.addContact(c);
         if (window.confirm("Contact added. Would you like to reply with your contact info?")) {
             var grant = new EcContactGrant();
@@ -119,6 +136,7 @@ function actionAddContactCheck() {
                     loginServer.commit(function () {
                         window.alert("Response sent. The page will now reload.");
                         window.location = window.location.href.split('?')[0];
+                        return;
                     }, silent);
                 }, error);
             }
@@ -143,10 +161,14 @@ function actionAddContactCheck() {
                         EcIdentityManager.addContact(contact);
                         alert(contact.displayName + " has accepted your invitation to connect and has been added to your contact list.");
                         populateContactsActual();
+                        EcRepository._delete(ev);
                     };
             }
-            EcRepository._delete(ev);
         }, error);
     }, null, error);
 
 }
+
+timeout(function () {
+    loopPopulateContacts();
+});

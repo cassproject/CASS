@@ -33,7 +33,7 @@ function isArray(obj) {
 //setTimeout sometimes isn't enough to let the UI draw.
 //Solution? Why not another layer of abstraction!
 var timeouts = [];
-var tout = null;
+var tout = [];
 
 function timeoutAndBlock(fun) {
     timeout(fun);
@@ -42,26 +42,26 @@ function timeoutAndBlock(fun) {
 
 function timeout(fun) {
     timeouts.push(fun);
-    if (tout == null)
-        tout = setTimeout(timeoutLoop, 0);
+    while (tout.length < 1)
+        tout.push(setTimeout(timeoutLoop, 0));
 }
 
 function timeoutLoop() {
     var fun = timeouts.splice(0, 1);
+    tout.splice(0,1);
     if (fun.length > 0) {
         (fun[0])();
-        tout = setTimeout(timeoutLoop, 0);
+        tout.push(setTimeout(timeoutLoop, 0));
+        
         $(".status").text(timeouts.length + " tasks remaining...").show();
     } else {
         $(".status").text(timeouts.length + " tasks remaining...").hide();
         $("#blocking").foundation('close');
-        tout = null;
     }
 }
 
-$(document).ready(function () {
+timeout(function () {
     repo.autoDetectRepository();
-
     loginServer.setDefaultIdentityManagementServer(repo.selectedServer);
     loginServer.configure(
         "Replace this with your application salt.", 5000, 64,

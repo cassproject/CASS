@@ -11,7 +11,13 @@ function login() {
     $("#login").foundation('close');
     EcRepository.cache={};
     loginServer.startLogin(username, password);
-
+    localStorage["usernameWithSalt"]=loginServer.usernameWithSalt;
+    localStorage["passwordWithSalt"]=loginServer.passwordWithSalt;
+    localStorage["secretWithSalt"]=loginServer.secretWithSalt;
+    loginProcess();
+}
+    
+function loginProcess(){
     loginServer.fetch(
         function (p1) {
             if (EcIdentityManager.ids.length == 0)
@@ -66,6 +72,9 @@ function login() {
 
 logout = function () {
     loginServer.clear();
+    delete localStorage["usernameWithSalt"];
+    delete localStorage["passwordWithSalt"];
+    delete localStorage["secretWithSalt"];
     EcRepository.cache={};
     identity = null;
     EcIdentityManager.ids = new Array();
@@ -75,6 +84,17 @@ logout = function () {
     frameworkSearch();
     if (typeof(oneToOneSearch) == "function")
         oneToOneSearch();
+    populateContactsActual();
 }
 
 $(".requiresLogin").hide();
+
+timeout(function() {
+    loginServer.usernameWithSalt=localStorage["usernameWithSalt"];
+    loginServer.passwordWithSalt=localStorage["passwordWithSalt"];
+    loginServer.secretWithSalt=localStorage["secretWithSalt"];
+    if (loginServer.usernameWithSalt != null && loginServer.passwordWithSalt != null && loginServer.secretWithSalt != null)
+        loginProcess();
+    else
+        $("#login").foundation('open');
+});

@@ -39,13 +39,19 @@ function insertExistingRelation() {
     );
 }
 
-$("body").on("click", ".cass-relation-target,.cass-relation-source", null, function (e) {
+$("body").on("click", ".cass-relation-target,.cass-relation-source,.assertionCompetency", null, function (e) {
+    var frameworkId = $("#frameworks").find(".is-active").attr("url");
+    if (frameworkId == null) {
+        return;
+    }
+    var competencyId = $(this).attr("url");
     e.stopPropagation();
-    if ($(".cass-competency[url=\"" + $(this).attr("url") + "\"]>.accordion-content").attr("aria-hidden") != "false") {
-        $(this).parents(".cass-framework").find(".cass-framework-competencies").children(".accordion").foundation('down', $(".cass-competency[url=\"" + $(this).attr("url") + "\"]>.accordion-content"));
+    if ($(".cass-competency[url=\"" + competencyId + "\"]>.accordion-content").attr("aria-hidden") != "false") {
+        $(".cass-framework[url='"+frameworkId+"']").find(".cass-framework-competencies").children(".accordion").foundation('down', $(".cass-competency[url='" + competencyId + "']>.accordion-content"));
         (function (url) {
             setTimeout(function () {
                 timeout(function () {
+                    if ($(".cass-competency[url=\"" + url + "\"]>").length > 0)
                     $('html, body').animate({
                         scrollTop: $(".cass-competency[url=\"" + url + "\"]>").offset().top
                     }, 500);

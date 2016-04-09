@@ -41,6 +41,9 @@ function oneToOneBaseSearchString(){
         var selectedContact = EcIdentityManager.getContact(EcPk.fromPem(contactPk));
         if (selectedContact != null)
             $("#selectedContact").text(selectedContact.displayName);
+        var selectedIdentity = EcIdentityManager.getIdentity(EcPk.fromPem(contactPk));
+        if (selectedIdentity != null)
+            $("#selectedContact").text(selectedIdentity.displayName);
     }
     else
         {
@@ -116,7 +119,7 @@ function displayAssertionSearchItem(where,assertion) {
         if (a.competency != null)
             (function (ui, a) {
                 EcRepository.get(a.competency, function (competency) {
-                    ui.find(".assertionCompetency").text(competency.name);
+                    ui.find(".assertionCompetency").attr("url",competency.shortId()).text(competency.name);
                 }, error);
             })(ui, a);
 
@@ -170,16 +173,16 @@ function displayAssertionSearchItem(where,assertion) {
                 if (opc < 0)
                 {
                     ui.css("color","gray");
-                    ui.find(".assertionExpirationProgress").text("Expired.");
+                    ui.find(".assertionExpirationProgress").text("is Expired");
                 }
                 else if (opc > 1)
                 {
                     ui.css("color","gray");
-                    ui.find(".assertionExpirationProgress").text("Not yet issued.");
+                    ui.find(".assertionExpirationProgress").text("is Not yet issued");
                 }
                 else
                 {
-                    ui.find(".assertionExpirationProgress").text(Math.round((1-opc)*100)+"% elapsed");
+                    ui.find(".assertionExpirationProgress").text("will expire "+ moment(expirationDate).fromNow());
                 }
             }
             catch (e)

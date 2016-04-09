@@ -86,7 +86,7 @@
                     at <span class="assertionLevel">Level</span>
                     </span>
                     with <span class="assertionEvidence">&lt;Unknown&gt; pieces of evidence</span>,
-                    <span class="assertionConfidence"></span> and is <span class="assertionExpirationProgress"></span>.
+                    <span class="assertionConfidence"></span> and <span class="assertionExpirationProgress"></span>.
                     <span class="assertionActions">
                         <a class="assertionActionDelete" style="display:none;">X</a>
                     </span>
@@ -97,14 +97,18 @@
         <div id="contactSelector" class="large-3 columns">
             <input id="contactSearch" type="search" onchange="contactSearch();" placeholder="Search Contacts...">
             <ul id="contactsList">
-                <li style="list-style: none;" class="contact contactsContact">
+                <li style="list-style: none;" class="contact contactsContact"><a class="float-right" onclick="removeContact(this);">X</a>
                     <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div id="oneToMany" class="topLevel">
+    <div id="loading" class="topLevel">
+        <p></p>
+        <center>Loading...</center>
+    </div>
+    <div id="oneToMany" class="topLevel" style="display:none;">
         <div class="large-9 columns">
             <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
             <div id="frameworks">
@@ -130,7 +134,7 @@
         <div id="contactSelector" class="large-3 columns">
             <input id="contactSearch" type="search" onchange="contactSearch();" placeholder="Search Contacts...">
             <ul id="contactsList">
-                <li style="list-style: none;" class="contact contactsContact">
+                <li style="list-style: none;" class="contact contactsContact"><a class="float-right" onclick="removeContact(this);">X</a>
                     <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
                 </li>
             </ul>
@@ -141,6 +145,7 @@
 
     </div>
 
+    <div id="hidey hidey" class="topLevel" style="display:none;">
     <ul id="competency" class="accordion" data-accordion role="tablist">
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
@@ -169,6 +174,7 @@
             </div>
         </li>
     </ul>
+    </div>
 
     <div class="small reveal" id="login" data-reveal>
         <h3>Login</h3>
@@ -287,10 +293,8 @@
     <script src="js/profile/appAssertion.js"></script>
     <script src="js/profile/appView.js"></script>
     <script>
-        $(document).ready(function() {
+        timeout(function() {
             $(document).foundation();
-            $("#login").foundation('open');
-            populateContacts();
             oneToOne();
 
         });

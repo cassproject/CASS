@@ -145,7 +145,7 @@ function updateAssertionTranscript(acs) {
         if (acs[competencyId].length > 0)
         EcRepository.get(competencyId, function (competency) {
             var ui = $("#frameworks").find(".cass-competency[url='" + competencyId + "']");
-            var name = ui.find(".cass-competency-name");
+            var name = ui.children(".cass-competency-name");
 
             name.html("").append(competency.name);
 

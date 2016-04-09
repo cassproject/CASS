@@ -301,6 +301,20 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         return null;
     };
     /**
+     *  Get Identity from PK (if we have it)
+     *  
+     *  @param fromPem
+     *             PK to use to look up PPK
+     *  @return PPK or null.
+     */
+    constructor.getIdentity = function(pk) {
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (pk.equals(EcIdentityManager.ids[i].ppk.toPk())) 
+                return EcIdentityManager.ids[i];
+        }
+        return null;
+    };
+    /**
      *  Sign a piece of data with all available keys that own that data.
      *  
      *  @param d

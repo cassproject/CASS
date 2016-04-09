@@ -108,23 +108,22 @@ function newAssertion() {
     var confidence = $("#newAssertionAssertionConfidence").val() / 100;
     var evidence = $("#newAssertionEvidence").val().split("\n");
     var eviNew = [];
-    for (var i = 0;i < evidence.length;i++)
+    for (var i = 0; i < evidence.length; i++)
         if (evidence[i].trim() != "")
             eviNew.push(evidence[i].trim());
     evidence = eviNew;
     var assertionDateMs = moment($("#newAssertionAssertionDateTime").val()).valueOf();
     var expirationDateMs = moment($("#newAssertionExpirationDateTime").val()).valueOf();
-    var decayFunctions={
-        linear:"t",
-        logarithmic:"log(t)",
-        exponential:"t^2"
+    var decayFunctions = {
+        linear: "t",
+        logarithmic: "log(t)",
+        exponential: "t^2"
     };
-    if ($("#newAssertionDecayFunction").val() == $("#newAssertionDecayFunction").attr("placeholder"))
-    {
+    if ($("#newAssertionDecayFunction").val() == $("#newAssertionDecayFunction").attr("placeholder")) {
         error("You must select a decay function. If in doubt, select linear.");
         return;
     }
-        var decayFunction = decayFunctions[$("#newAssertionDecayFunction").val()];
+    var decayFunction = decayFunctions[$("#newAssertionDecayFunction").val()];
     var assertion = new EcAssertion();
     assertion.generateId(repo.selectedServer);
     assertion.addOwner(agent);
@@ -137,8 +136,8 @@ function newAssertion() {
     assertion.setAssertionDate(assertionDateMs);
     assertion.setExpirationDate(expirationDateMs);
     assertion.setDecayFunction(decayFunction);
-    EcRepository.save(assertion,function(success){
+    EcRepository.save(assertion, function (success) {
         $("#newAssertion").foundation('close');
         oneToOneSearch();
-    },error);
+    }, error);
 }
