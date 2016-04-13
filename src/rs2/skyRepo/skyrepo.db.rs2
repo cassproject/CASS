@@ -59,7 +59,7 @@ put=#if(
 			url=putUrl,
 			contentType="application/json",
 			multipart="false"
-		).debug()
+		)
 	)
 ).object(z=#toObject(obj="@obj")).cget(z="");
 
@@ -227,7 +227,7 @@ searchObj=#object(
 ).put(
 	_key="_source",
 	_value=#object(a="*").valueSet()
-).debug(prefix="Protected Type: ");
+).debug(prefix="Sig Search Terms: ");
 
 protectedTypeArray = #skyRepoGetProtectedTypes().cforEach(
 	paramName="protectedType",
@@ -273,7 +273,7 @@ nonSigOwnershipFilters = #if(operator=#toArray().append(a="all", b="owned").has(
 			)
 		)
 	)
-).debug(prefix="Non-Protected Type: ");
+);
 
 checkNonSigReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="", b="@", c="reader")), operand="-1",
 	ne=#if(operator=#signatureSheet().count(), operand="0",
@@ -319,7 +319,7 @@ nonSigSearchObj = #object(
 ).put(
 	_key="_source",
 	_value=#object(a="*").valueSet()
-);
+).debug(prefix="Non-Sig Search Terms: ");
 
 
 searchUrl=#add(
@@ -327,31 +327,28 @@ searchUrl=#add(
 	b="/_search"
 );
 
-signatureSearch=searchObj.httpPost(url=searchUrl,multipart="false").debug().toObject().cget(hits="").cget(hits="").cforEach(
+signatureSearch=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
 	op=#toObject(obj="@obj").getByParam(param="_source")
 ).filterResults();
 
-checkRunSignatureSearch = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="owned", c="me").has(has="@ownership"), operand="true",
-	eq=#if(operator=#signatureSheet().count(), operand="0",
-		ne=signatureSearch,
-		eq=#toArray()
-	),
-	ne=#toArray()
-);
+checkRunSignatureSearch = #if(operator=#signatureSheet().count(), operand="0",
+	ne=signatureSearch,
+	eq=#toArray()
+).debug(prefix="sig search:");
 
-nonSigSearch = nonSigSearchObj.httpPost(url=searchUrl,multipart="false").debug().toObject().cget(hits="").cget(hits="").cforEach(
+nonSigSearch = nonSigSearchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
 	paramName="obj",
 	array="true",
 	op=#toObject(obj="@obj").getByParam(param="_source")
 ).filterResults();
 
 
-checkRunNonSigSearch = #if(operator=#add(a="[",b="]").toArray().append(a="all", b="public", c="owned").has(has="@ownership"), operand="true",
-	eq=#catch(try=nonSigSearch, runtime=#toArray()),
-	ne=#add(a="[",b="]").toArray()
-);
+checkRunNonSigSearch = #catch(
+	try=nonSigSearch, 
+	runtime=#toArray()
+).debug(prefix="nonsig search:");
 
 search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 	eq="@sigResults",
