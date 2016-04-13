@@ -2,6 +2,7 @@ function populateFrameworkLevels(frameworkId) {
     EcRepository.get(frameworkId, function (fw) {
         $("[url='" + frameworkId + "']").find(".cass-competency-levels").html("");
         if (fw.level !== undefined) {
+            repo.precache(fw.level);
             for (var i = 0; i < fw.level.length; i++) {
                 EcRepository.get(fw.level[i], function (level) {
                     var ui = $("[url='" + frameworkId + "']").find("[url='" + level.competency + "']");

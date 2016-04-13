@@ -10,6 +10,7 @@ query=#object(
 postData=#fileFromDatastream(name="data");
 
 postObject=postData.fileToString().toObject();
+postArray=postData.fileToString().toArray();
 
 get=#skyrepoGet(
 	type=query.cget(type=""),
@@ -41,6 +42,10 @@ saveOrGet=#object(
 
 data=saveOrGet.call(type="data").displayJson(_collapse="true");
 /data=data;
+
+multiGet=postArray.cforEach(paramName="urlRemainder",op=get.call(type="data"),array="true").displayJson(_collapse="true");
+
+/sky/repo/multiGet=multiGet;
 
 searchParamData = #fileFromDatastream(name="searchParams");
 searchParamObj = searchParamData.fileToString().toObject();

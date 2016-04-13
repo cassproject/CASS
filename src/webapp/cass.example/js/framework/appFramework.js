@@ -48,6 +48,7 @@ function populateFramework(frameworkId) {
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
         if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined) {
+            repo.precache(fw.competency);
             for (var i = 0; i < fw.competency.length; i++) {
                 var competencyUrl = fw.competency[i];
                 fwui.find("#competency").append(cassCompetencyTemplate);
@@ -59,7 +60,7 @@ function populateFramework(frameworkId) {
                 (function (competencyUrl, i) {
                     timeout(function () {
                         populateCompetency(competencyUrl);
-                    }, (0));
+                    });
                 })(competencyUrl, i);
             }
             fwui.find("#competency").foundation();

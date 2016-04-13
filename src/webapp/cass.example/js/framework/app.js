@@ -42,7 +42,7 @@ function timeoutAndBlock(fun) {
 
 function timeout(fun) {
     timeouts.push(fun);
-    while (tout.length < 1)
+    while (tout.length < 6)
         tout.push(setTimeout(timeoutLoop, 0));
 }
 

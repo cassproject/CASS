@@ -2,6 +2,7 @@ function populateFrameworkRelations(frameworkId) {
     EcRepository.get(frameworkId, function (fw) {
         var relationUi = $("[url='" + frameworkId + "']").find(".cass-competency-relations").html("");
         if (relationUi.length > 0 && fw.relation !== undefined) {
+            repo.precache(fw.relation);
             for (var i = 0; i < fw.relation.length; i++) {
                 populateFrameworkRelation(fw, fw.relation[i]);
             }

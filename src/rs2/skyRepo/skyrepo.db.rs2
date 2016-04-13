@@ -226,14 +226,7 @@ searchObj=#object(
 	)
 ).put(
 	_key="_source",
-	_value=#object(
-		a=context,
-		b=type,
-		c=id,
-		d=owner.add(z="*"),
-		e=signature,
-		f="name"
-	).valueSet()
+	_value=#object(a="*").valueSet()
 ).debug(prefix="Protected Type: ");
 
 protectedTypeArray = #skyRepoGetProtectedTypes().cforEach(
@@ -325,14 +318,7 @@ nonSigSearchObj = #object(
 	)
 ).put(
 	_key="_source",
-	_value=#object(
-		a=context,
-		b=type,
-		c=id,
-		d=owner.add(z="*"),
-		e=signature,
-		f="name"
-	).valueSet()
+	_value=#object(a="*").valueSet()
 );
 
 

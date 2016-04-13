@@ -198,6 +198,30 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.selectedServer = null;
     constructor.caching = false;
     constructor.cache = new Object();
+    prototype.precache = function(urls) {
+        var cacheUrls = new Array();
+        for (var i = 0; i < urls.length; i++) {
+            var url = urls[i];
+            if (url.startsWith(this.selectedServer) && (EcRepository.cache)[url] == null) {
+                cacheUrls.push(url.replace(this.selectedServer, ""));
+            }
+        }
+        if (cacheUrls.length == 0) 
+            return;
+        var fd = new FormData();
+        fd.append("data", JSON.stringify(cacheUrls));
+        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.selectedServer));
+        EcRemote.postExpectingObject(this.selectedServer, "sky/repo/multiGet", fd, function(p1) {
+            var results = p1;
+            for (var i = 0; i < results.length; i++) {
+                var d = new EcRemoteLinkedData(null, null);
+                d.copyFrom(results[i]);
+                results[i] = d;
+                if (EcRepository.caching) 
+                    (EcRepository.cache)[d.shortId()] = d;
+            }
+        }, null);
+    };
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
      *  
@@ -251,6 +275,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 var d = new EcRemoteLinkedData(null, null);
                 d.copyFrom(results[i]);
                 results[i] = d;
+                if (EcRepository.caching) 
+                    (EcRepository.cache)[d.shortId()] = d;
                 if (eachSuccess != null) 
                     eachSuccess(results[i]);
             }
@@ -285,6 +311,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 var d = new EcRemoteLinkedData(null, null);
                 d.copyFrom(results[i]);
                 results[i] = d;
+                if (EcRepository.caching) 
+                    (EcRepository.cache)[d.shortId()] = d;
                 if (eachSuccess != null) 
                     eachSuccess(results[i]);
             }
@@ -305,8 +333,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         for (var i = 0; i < protocols.length; i++) 
             for (var j = 0; j < hostnames.length; j++) 
                 for (var k = 0; k < servicePrefixes.length; k++) 
-                    if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k])) 
+                    if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k])) {
+                        EcRemote.async = true;
                         return;
+                    }
         EcRemote.async = true;
     };
     prototype.autoDetectFound = false;
