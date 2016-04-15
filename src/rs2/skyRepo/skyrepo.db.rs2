@@ -212,7 +212,12 @@ searchObj=#object(
 		bool=#object(
 			must=#object(
 				a=#object(query_string=#object(
-					query=#add(a="(",b="@q",c=") AND (",d=ownerReaderFilter,e=")")
+					query=#if(
+						operator=ownerReaderFilter.trim(),
+						operand="",
+						eq="@q",
+						ne=#add(a="(",b="@q",c=") AND (",d=ownerReaderFilter,e=")")
+					)
 				))
 			).valueSet(),
 			should=#if(

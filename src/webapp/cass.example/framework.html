@@ -27,17 +27,17 @@
                     <li><a onclick="exportCsv();">Export Competencies</a></li>
                 </ul>
             </li>
-            <li class="canEditFramework" style='display:none;'>
+            <li>
                 <a class="menu-text">Insert</a>
                 <ul class="menu vertical">
-                    <li><a>New</a>
+                    <li class="canEditFramework" style='display:none;'><a>New</a>
                         <ul class="menu vertical">
                             <li><a class="canEditFramework" onclick="insertNewCompetency();">Competency</a></li>
                             <li><a class="canEditFramework" onclick="insertNewLevel();">Level</a></li>
                             <li><a class="canEditFramework" onclick="insertNewRelation();">Relation</a></li>
                         </ul>
                     </li>
-                    <li><a>Existing</a>
+                    <li class="canEditFramework" style='display:none;'><a>Existing</a>
                         <ul class="menu vertical">
                             <li><a class="canEditFramework" onclick="insertExistingCompetency();">Competency</a></li>
                             <li><a class="canEditFramework" onclick="insertExistingLevel();">Level</a></li>
@@ -46,9 +46,10 @@
                     </li>
                     <li><a>Import</a>
                         <ul class="menu vertical">
-                            <li><a class="canEditFramework" onclick="insertBulkFromCsv();">From CSV</a></li>
-                            <li><a class="canEditFramework" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
-                            <li><a class="canEditFramework" onclick="bulkFromFrameworkButton();">From Framework</a></li>
+                            <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="insertBulkFromCsv();">From CSV</a></li>
+                            <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
+                            <li><a onclick="insertBulkFromAsnJson();">From Achievement Standards Network JSON</a></li>
+                            <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="bulkFromFrameworkButton();">From Framework</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -288,6 +289,19 @@
         <a class="button float-right" onclick="importMedbiqXml();">Import</a>
     </div>
 
+    <div class="large reveal" id="importAsnJson" data-reveal>
+        <h3>Import Achievement Standards Network JSON</h3>
+        <i>This will scan a JSON file for a <a href="http://purl.org/ASN/schema/core/StandardDocument">StandardDocument</a>, convert that into a new Framework, find all child <a href="http://purl.org/ASN/schema/core/Statement">Statements</a> and convert them into Competencies (with 'isChildOf' relations being defined by 'narrows').</i>
+        
+        <label>Step 1: Select a JSON file. (Please use the 'Download Full Document JSON' document from the ASN network as the input file.)</label>
+        <input type="file" id="importAsnJsonFile" onchange="analyzeAsnJson();" />
+        <label>Step 2: Wait for the file to be scanned.</label>
+        <label id="importAsnJsonCompetencies"></label>
+        <label id="importAsnJsonProgress"></label>
+        <br>
+        <a class="button float-right" onclick="importAsnJson();">Import</a>
+    </div>
+
     <div class="tiny reveal" id="exportCsv" data-reveal>
         <h3>Exporting...</h3>
         <center id="exportCsvStatus"></center>
@@ -368,7 +382,6 @@
     <script>
         timeout(function() {
             $(document).foundation();
-            $("#login").foundation('open');
 
         });
 

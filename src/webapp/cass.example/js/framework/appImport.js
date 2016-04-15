@@ -243,3 +243,140 @@ function medbiqXmlStartUpload(framework) {
         }
     }
 }
+
+function insertBulkFromAsnJson() {
+    $("#importAsnJson").foundation('open');
+}
+
+var asnJsonSource = null;
+var asnJsonFramework = null;
+var asnJsonCompetencies = null;
+
+function analyzeAsnJson() {
+    var file = $("#importAsnJsonFile")[0].files[0];
+    $("#importAsnJsonCompetencies").text("");
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            asnJsonSource = JSON.parse(e.target.result);
+            asnJsonFramework = null;
+            asnJsonCompetencies = {};
+            asnJsonLookThroughSource();
+            if (asnJsonFramework == null) {
+                $("#importAsnJsonCompetencies").text("Could not find StandardDocument.");
+            } else {
+                $("#importAsnJsonCompetencies").text("Step 3: One framework and " + Object.keys(asnJsonCompetencies).length + " competencies detected. Tap Import to finish.");
+            }
+        };
+        reader.readAsText(file);
+    }
+}
+
+function asnJsonLookThroughSource() {
+    for (var key in asnJsonSource) {
+        var value = asnJsonSource[key];
+        if (isObject(value)) {
+            if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] != null) {
+                if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0].value == "http://purl.org/ASN/schema/core/StandardDocument") {
+                    asnJsonFramework = value;
+                    var children = value["http://purl.org/gem/qualifiers/hasChild"];
+                    if (children != null)
+                        for (var j = 0; j < children.length; j++) {
+                            asnJsonPrime(children[j].value);
+                        }
+                }
+            }
+        }
+    }
+}
+
+function asnJsonPrime(key) {
+    var value = asnJsonSource[key];
+    if (isObject(value)) {
+        if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] != null) {
+            if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0].value == "http://purl.org/ASN/schema/core/Statement") {
+                asnJsonCompetencies[key] = value;
+                var children = value["http://purl.org/gem/qualifiers/hasChild"];
+                if (children != null)
+                    for (var j = 0; j < children.length; j++) {
+                        asnJsonPrime(children[j].value);
+                    }
+            }
+        }
+    }
+}
+
+function importAsnJson() {
+    var f = new EcFramework();
+    f.competency = [];
+    f.relation = [];
+    importAsnJsonCompetencies(f);
+    timeoutCheckpoint();
+    importAsnJsonRelations(f, asnJsonFramework, null);
+    timeoutCheckpoint();
+    importAsnJsonFramework(f);
+    $("#importAsnJson").foundation('close');
+}
+
+function importAsnJsonCompetencies(framework) {
+    for (var key in asnJsonCompetencies) {
+        (function (key) {
+            timeout(function () {
+                var f = new EcCompetency();
+                var obj = asnJsonCompetencies[key];
+                if (obj["http://purl.org/dc/elements/1.1/title"] === undefined)
+                    f.name = obj["http://purl.org/dc/terms/description"][0].value;
+                else
+                    f.name = obj["http://purl.org/dc/elements/1.1/title"][0].value;
+                f.url = key;
+                if (obj["http://purl.org/dc/terms/description"] !== undefined)
+                    f.description = obj["http://purl.org/dc/terms/description"][0].value;
+                f.generateId(repo.selectedServer);
+                if (identity != null)
+                    f.addOwner(identity.ppk.toPk());
+                framework.competency.push(f.shortId());
+                asnJsonCompetencies[key] = f;
+                EcRepository.save(f, function (success) {}, error);
+            });
+        })(key);
+    }
+}
+
+function importAsnJsonRelations(framework, node, nodeId) {
+    var value = asnJsonSource[key];
+    var children = node["http://purl.org/gem/qualifiers/hasChild"];
+    if (children != null)
+        for (var j = 0; j < children.length; j++) {
+            if (nodeId != null) {
+                (function (j) {
+                    timeout(function () {
+                        var f = new EcAlignment();
+                        f.target = asnJsonCompetencies[nodeId].shortId();
+                        f.source = asnJsonCompetencies[children[j].value].shortId();
+                        f.relationType = "narrows";
+                        f.name = "";
+                        f.description = "";
+                        f.generateId(repo.selectedServer);
+                        if (identity != null)
+                            f.addOwner(identity.ppk.toPk());
+                        framework.relation.push(f.shortId());
+                        EcRepository.save(f, function () {}, error);
+                    });
+                })(j);
+            }
+            importAsnJsonRelations(framework, asnJsonCompetencies[children[j].value], children[j].value);
+        }
+}
+
+function importAsnJsonFramework(f) {
+    timeoutAndBlock(function () {
+        f.name = asnJsonFramework["http://purl.org/dc/elements/1.1/title"][0].value;
+        f.description = asnJsonFramework["http://purl.org/dc/terms/description"][0].value;
+        f.generateId(repo.selectedServer);
+        if (identity != null)
+            f.addOwner(identity.ppk.toPk());
+        EcRepository.save(f, function () {
+            frameworkSearch();
+        }, error);
+    });
+}

@@ -47,7 +47,8 @@ var EcModal = function() {
 };
 EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
     prototype.modalSize = "small";
-}, {}, {});
+    prototype.onClose = null;
+}, {onClose: "Callback0"}, {});
 var EcScreen = function() {
     EcView.call(this);
 };
@@ -87,6 +88,13 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         ModalManager.inModal = false;
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+(function() {
+    $(ModalManager.MODAL_CONTAINER_ID).one("closed.zf.reveal", function(arg0, arg1) {
+        if (ModalManager.getCurrentModal().onClose != null) 
+            ModalManager.getCurrentModal().onClose();
+        return true;
+    });
+})();
 var EcOverlay = function() {
     EcScreen.call(this);
 };

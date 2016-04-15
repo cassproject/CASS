@@ -204,12 +204,24 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         l.name = name;
         l.addOwner(owner.toPk());
     };
-    prototype.levels = function(repo, success, failure) {
-        repo.search("type:\"" + EcLevel.myType + "\" AND competency:\"" + this.id + "\"", function(p1) {
-            var a = new EcLevel();
-            a.copyFrom(p1);
-            success(a);
-        }, null, failure);
+    prototype.levels = function(repo, success, failure, successAll) {
+        repo.search("@type:\"" + EcLevel.myType + "\" AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\")", function(p1) {
+            if (success != null) {
+                var a = new EcLevel();
+                a.copyFrom(p1);
+                success(a);
+            }
+        }, function(p1) {
+            if (successAll != null) {
+                var levels = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var a = new EcLevel();
+                    a.copyFrom(p1[i]);
+                    levels[i] = a;
+                }
+                successAll(levels);
+            }
+        }, failure);
     };
     prototype.setName = function(name) {
         this.name = name;

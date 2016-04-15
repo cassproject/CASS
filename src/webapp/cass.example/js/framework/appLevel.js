@@ -72,6 +72,11 @@ function newLevel(frameworkId) {
     f.generateId(repo.selectedServer);
     if (identity != null)
         f.addOwner(identity.ppk.toPk());
+    else
+    {
+        alert("Login required to create level.");
+        return;
+    }
     EcRepository.save(f, function () {
         insertLevelIntoFramework(f.shortId(), frameworkId);
         $("#newLevel").foundation('close');

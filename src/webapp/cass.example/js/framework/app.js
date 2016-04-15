@@ -40,9 +40,11 @@ function timeoutAndBlock(fun) {
     $("#blocking").foundation('open');
 }
 
+var timeoutMax = 6;
+
 function timeout(fun) {
     timeouts.push(fun);
-    while (tout.length < 6)
+    while (tout.length < timeoutMax)
         tout.push(setTimeout(timeoutLoop, 0));
 }
 
@@ -57,6 +59,13 @@ function timeoutLoop() {
     } else {
         $(".status").text(timeouts.length + " tasks remaining...").hide();
         $("#blocking").foundation('close');
+    }
+}
+
+function timeoutCheckpoint(){
+    for (var i = 0;i < timeoutMax;i++)
+    {
+        timeout(function(){});
     }
 }
 

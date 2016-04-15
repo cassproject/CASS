@@ -103,6 +103,11 @@ function newRelation(frameworkId) {
     f.generateId(repo.selectedServer);
     if (identity != null)
         f.addOwner(identity.ppk.toPk());
+    else
+    {
+        alert("Login required to create relation.");
+        return;
+    }
     EcRepository.save(f, function () {
         insertRelationIntoFramework(f.shortId(), frameworkId);
         $("#newCompetency").foundation('close');

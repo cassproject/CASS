@@ -1,6 +1,6 @@
 function frameworkSearch() {
     var searchString = "(@type:\"" + Framework.myType + "\")";
-    if ($("#frameworkSearch").length > 0 && $("#frameworkSearch").val() != "")
+    if ($("#frameworkSearch").length > 0 && $("#frameworkSearch").val().trim() != "")
         searchString += " AND (" + $("#frameworkSearch").val() + ")";
     repo.search(searchString, null,
         function (frameworks) {
@@ -30,6 +30,11 @@ function newFramework() {
     f.generateId(repo.selectedServer);
     if (identity != null)
         f.addOwner(identity.ppk.toPk());
+    else
+    {
+        alert("Login required to create framework.");
+        return;
+    }
     EcRepository.save(f, function () {
         frameworkSearch();
         $("#newFramework").foundation('close');
@@ -70,7 +75,8 @@ function populateFramework(frameworkId) {
         $(".canEditFramework").hide();
         for (var i = 0;i < EcIdentityManager.ids.length;i++)
             if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
-                $(".canEditFramework").show();
+                if (identity != null)
+                    $(".canEditFramework").show();
     });
 }
 
