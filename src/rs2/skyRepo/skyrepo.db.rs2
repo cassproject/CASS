@@ -213,7 +213,7 @@ searchObj=#object(
 			must=#object(
 				a=#object(query_string=#object(
 					query=#if(
-						operator=ownerReaderFilter.trim(),
+						operator=ownerReaderFilter.string(op="trim"),
 						operand="",
 						eq="@q",
 						ne=#add(a="(",b="@q",c=") AND (",d=ownerReaderFilter,e=")")
