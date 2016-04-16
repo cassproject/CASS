@@ -1,5 +1,15 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+var CompetencyManager = function() {};
+CompetencyManager = stjs.extend(CompetencyManager, null, [], null, {}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcAlignment = function() {
@@ -11,6 +21,23 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
     prototype.setDescription = function(description) {
         this.description = description;
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAlignment.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an alignment.");
+                return;
+            }
+            var c = new EcAlignment();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
@@ -140,9 +167,25 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setDecayFunction = function(decayFunctionText) {
         this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, "decayFunction", this.subject.owner, this.subject.reader);
     };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAssertion.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an assertion.");
+                return;
+            }
+            var c = new EcAssertion();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
 }, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcLevel = function() {
@@ -164,9 +207,25 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     prototype.setDescription = function(description) {
         this.description = description;
     };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcLevel.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a level.");
+                return;
+            }
+            var c = new EcLevel();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcCompetency = function() {
@@ -231,6 +290,23 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     prototype.setScope = function(scope) {
         this.scope = scope;
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcCompetency.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a competency.");
+                return;
+            }
+            var c = new EcCompetency();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcFramework = function() {
@@ -326,19 +402,16 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (this.level[i].equals(id)) 
                 this.level.splice(i, 1);
     };
-}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-var CompetencyManager = function() {};
-CompetencyManager = stjs.extend(CompetencyManager, null, [], function(constructor, prototype) {
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             if (success == null) 
                 return;
-            if (!p1.isA(EcCompetency.myType)) {
+            if (!p1.isA(EcFramework.myType)) {
                 if (failure != null) 
-                    failure("Resultant object is not a competency.");
+                    failure("Resultant object is not a framework.");
                 return;
             }
-            var c = new EcCompetency();
+            var c = new EcFramework();
             c.copyFrom(p1);
             success(c);
         }, function(p1) {
@@ -346,4 +419,4 @@ CompetencyManager = stjs.extend(CompetencyManager, null, [], function(constructo
                 failure(p1);
         });
     };
-}, {}, {});
+}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

@@ -1,0 +1,28 @@
+Competency and Skills Service (CASS)
+Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+This software uses the Forge library (https://github.com/digitalbazaar/forge) developed by Digital Bazaar under the New BSD 3-clause license.
+	forge.min.js
+	prime.worker.js
+The Forge license can be found next to the library, or at https://github.com/digitalbazaar/forge/blob/master/LICENSE.
+
+Forge uses a jsbn.js library under an AS-IS license, which can be found at http://www-cs-students.stanford.edu/~tjw/jsbn/LICENSE.
+
+This software uses the Foundation library (http://foundation.zurb.com/) under the MIT license.
+	foundation.min.js
+	foundation.css
+The Foundation license can be found at https://github.com/zurb/foundation-sites/blob/develop/LICENSE.
+
+Foundation uses a what-input.min.js library (https://github.com/ten1seven/what-input) under the MIT license at https://github.com/ten1seven/what-input/blob/master/LICENSE.
+
+This software uses the moment-with-locales.js (http://momentjs.com/) developed by Tim Wood, Iskren Chernev, et al under the MIT license at https://github.com/moment/moment/blob/develop/LICENSE.
+
+This software uses papaparse.js, developed by Matthew Holt under the MIT license at https://github.com/mholt/PapaParse/blob/master/LICENSE
+
+This software uses jquery under the MIT license at http://jquery.org/license
+
+This software uses xml2json.js library under the Apache Version 2 license attached to the file.
+
+This software uses the stjs.js library by Alexandru Craciun, Eyal Kaspi under the Apache Version 2 license at https://github.com/st-js/st-js/blob/master/LICENSE.TXT
+
+All other files in this project are subject to the license designated in the preamble of the file, or to the Apache 2 license found under LICENSE.

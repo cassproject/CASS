@@ -1,3 +1,13 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+
 function insertBulkFromCsv() {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
@@ -139,10 +149,9 @@ function analyzeMedbiqXml() {
     if (file) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            dom = (new DOMParser()).parseFromString(e.target.result, "text/xml");
-            var obj = xml2json(dom, "");
+            var obj = new X2JS().xml_str2json( e.target.result );
             medbiqXmlCompetencies = {};
-            medbiqXmlLookForCompetencyObject(JSON.parse(obj));
+            medbiqXmlLookForCompetencyObject(obj);
             $("#importMedbiqXmlCompetencies").text("Step 3: " + Object.keys(medbiqXmlCompetencies).length + " competencies detected. Tap Import to finish.");
         };
         reader.readAsText(file);
@@ -171,12 +180,12 @@ function medbiqXmlParseCompetencyObject(obj) {
         }
     } else {
         var newCompetency = {};
-        if (obj["lom:lom"] !== undefined && obj["lom:lom"]["lom:general"] !== undefined) {
-            newCompetency.name = obj["lom:lom"]["lom:general"]["lom:title"]["lom:string"];
-            if (obj["lom:lom"]["lom:general"]["lom:description"] !== undefined)
-                newCompetency.description = obj["lom:lom"]["lom:general"]["lom:description"]["lom:string"];
-            if (obj["lom:lom"]["lom:general"]["lom:identifier"] !== undefined)
-                newCompetency.url = obj["lom:lom"]["lom:general"]["lom:identifier"]["lom:entry"];
+        if (obj["lom"] !== undefined && obj["lom"]["general"] !== undefined) {
+            newCompetency.name = obj["lom"]["general"]["title"]["string"].toString();
+            if (obj["lom"]["general"]["description"] !== undefined)
+                newCompetency.description = obj["lom"]["general"]["description"]["string"].toString();
+            if (obj["lom"]["general"]["identifier"] !== undefined)
+                newCompetency.url = obj["lom"]["general"]["identifier"]["entry"].toString();
             if (newCompetency.description === undefined)
                 newCompetency.description = "";
             medbiqXmlCompetencies[newCompetency.url] = newCompetency;
