@@ -10,7 +10,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.repoInterface = new EcRepository();
     constructor.loginServer = new EcRemoteIdentityManager();
     constructor.main = function(args) {
-        AppController.serverController = new ServerController("http://skyrepo.service.eduworks.com/", "SkyRepo");
+        AppController.serverController = new ServerController("http://skyrepo.service.eduworks.com/", "Eduworks (Default)");
         AppController.loginServer.configure("UserNameSaltIsSaltyWOOOOO", 5000, 64, "PasswordSalskfeSEfejsfjoepsjof", 5000, 64, "SuperSecretSELKeFJSEOFJSEPF", 5000);
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);

@@ -16,9 +16,6 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
             }
         }, failure);
     };
-    prototype.view = function(id, success, failure) {
-        EcRepository.get(id, success, failure);
-    };
     prototype.encryptAndUploadFile = function(name, base64Data, mimeType, success, failure) {
         if (this.identity.selectedIdentity == null) {
             return;
@@ -51,5 +48,52 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
             fail("Cannot save data. It is missing a vital component.");
         }
         this.repo.constructor.save(d, success, fail);
+    };
+    prototype.view = function(id, success, failure) {
+        EcRepository.get(id, success, failure);
+    };
+    prototype.viewCompetency = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcCompetency.myType)) {
+                var competency = new EcCompetency();
+                competency.copyFrom(p1);
+                success(competency);
+            } else {
+                failure("Retrieved object was not a competency");
+            }
+        }, failure);
+    };
+    prototype.viewFramework = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcFramework.myType)) {
+                var framework = new EcFramework();
+                framework.copyFrom(p1);
+                success(framework);
+            } else {
+                failure("Retrieved object was not a framework");
+            }
+        }, failure);
+    };
+    prototype.viewRelation = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcAlignment.myType)) {
+                var alignment = new EcAlignment();
+                alignment.copyFrom(p1);
+                success(alignment);
+            } else {
+                failure("Retrieved object was not a relation");
+            }
+        }, failure);
+    };
+    prototype.viewLevel = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcLevel.myType)) {
+                var level = new EcLevel();
+                level.copyFrom(p1);
+                success(level);
+            } else {
+                failure("Retrieved object was not a level");
+            }
+        }, failure);
     };
 }, {repo: "EcRepository", identity: "IdentityController"}, {});

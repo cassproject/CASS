@@ -1,9 +1,19 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 var EcCallback = function() {};
 EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
     prototype.callback = function(result) {};
 }, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
+    constructor.async = true;
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
         var successCallback = function(arg0, arg1, arg2) {
             if (success != null) 
@@ -39,7 +49,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.data = fd;
         (p)["contentType"] = false;
         p.cache = false;
-        p.async = true;
+        p.async = EcRemote.async;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -55,7 +65,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 failure(paramP1.responseText);
         };
         var url = server;
-        if (!url.endsWith("/") && service != null && service.isEmpty() == false) 
+        if (!url.endsWith("/") && service != null && service.equals("")) 
             url += "/";
         if (service != null) 
             url += service;
@@ -63,6 +73,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.method = "GET";
         p.url = url;
         p.cache = false;
+        p.async = EcRemote.async;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -80,11 +91,18 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         var p = {};
         p.method = "DELETE";
         p.url = url;
+        p.async = EcRemote.async;
         p.headers = new Object();
         p.headers["signatureSheet"] = signatureSheet;
         p.success = successCallback;
         p.error = failureCallback;
         $.ajax(p);
+    };
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
     };
 }, {}, {});
 var EcCallbackReturn0 = function() {};

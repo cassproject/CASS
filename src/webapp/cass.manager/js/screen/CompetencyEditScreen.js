@@ -1,11 +1,20 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 CompetencyEditScreen = (function(CompetencyEditScreen){
 	
-	function createContactSmall(pk)
+	function createContactSmall(pem)
 	{
-		var ident = AppController.identityController.lookup(pk);
+		var ident = AppController.identityController.lookup(pem);
 	    return '<span class="ownershipDisplay has-tip" tabindex>'
 	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
+	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
 	    	+ '</span>';
 	}
 	
@@ -17,19 +26,21 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	    $("#competencyEditDescription").val(competency.description);
 	    $("#competencyEditScope").val(competency.scope);
 	    
-	    var field = $("#competencyEditOwner");
-	    if(competency.owner != undefined)
+	    if(competency.owner != undefined && competency.owner.length > 0)
 	    {
-	    	for(var i in competency.owner)
+	    	for(var i = 0; i < competency.owner.length; i++)
 	    	{
-	    		var pk = competency.owner[i];
+	    		if(i > 0)
+	    			$("#competencyEditOwner").append(", ");
 	    		
-	    		var contact = $(createContactSmall(pk));
-	    		field.append(contact);            
+	    		var pem = competency.owner[i];
+	    		
+	    		var contact = $(createContactSmall(pem));
+	    		$("#competencyEditOwner").append(contact);            
 	    		contact.children(".qrcodeCanvas").qrcode({
 	                width:128,
 	                height:128,
-	                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
+	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
 	            });   
 	    	}
 	    }else{
@@ -37,6 +48,57 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	    	$("#competencyEditOwnerAdvanced").hide();
 	    }
 	    
+	    competency.levels(AppController.repoInterface, addLevel, errorRetrievingLevels)
+	    
+	}
+	
+	function addLevel(level){
+		$("#competencyNoLevels").addClass("hide");
+		
+		
+		var container = $("<span data-tooltip data-fade-out-duration='1500' class='level fake-a has-tip top'></span>");
+		container.append(level.name);
+		container.attr("id", level.id);
+		
+		var tip = "";
+		if(level.description != undefined && level.description != "")
+			tip += "Description: "+level.description+"<br/><br/>";
+		if(level.title != undefined && level.title != "")
+			tip += "Title: "+level.title+"<br/><br/>";
+		if(level.performance != undefined && level.performance != "")
+			tip += "Performance Measure: "+level.performance+"<br/><br/>";
+		if(level.owner != undefined && level.owner.length > 0){
+			tip += "Owner: ";
+			for(var i = 0; i < level.owner.length; i++)
+			{
+				if(i != 0)
+					tip+=", ";
+				tip+=AppController.identityController.lookup(level.owner[i]).displayName;
+			}
+			tip+= "<br/><br/>"
+		}
+				
+		tip += level.id;
+		
+		if($("#competencyLevelContainer").children(".level").size() > 0)
+			$("#competencyLevelContainer").append(", ");
+		
+		$("#competencyLevelContainer").append(container);
+		
+		container.click(function(ev){
+			ev.preventDefault();
+			ModalManager.showModal(new EditLevelModal(level, function(level){
+				container.foundation("destroy");
+				container.remove();
+				
+				if(level != null)
+					addLevel(level)
+				else if($("#competencyLevelContainer").find(".level").size() == 0)
+					$("#competencyNoLevels").removeClass("hide");
+			}));
+		});
+		
+		new Foundation.Tooltip(container, {"tipText":tip});
 	}
 	
 	function saveSuccess(){
@@ -56,6 +118,13 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 			err = "Unable to Connect to Server to Save Competency";
 		
 		ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "saveFail");
+	}
+	
+	function errorRetrievingLevels(err){
+		if(err == undefined)
+			err = "Unable to Connect to Server to Retrieve Competency Levels";
+		
+		ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "getLevels");
 	}
 	
 	var NEW_COMPETENCY_NAME = "_New Competency";
@@ -152,13 +221,23 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 				$("#competencyEditId").val(split.join("/"));
 			});
 			
+			$("#competencyAddLevel").click(function(ev){
+				ev.preventDefault();
+				ModalManager.showModal(new EditLevelModal(data, function(level){
+					addLevel(level);
+				}));
+			});
+			
 			if(data.name == NEW_COMPETENCY_NAME)
 			{
 				displayCompetency(data);
 			}
 			else
 			{
-				EcRepository.get(data.id, displayCompetency, errorRetrieving);
+				AppController.repositoryController.viewCompetency(data.id, function(competency){
+					data = competency;
+					displayCompetency(competency)
+				}, errorRetrieving);
 			}
 						
 			if(callback != undefined)

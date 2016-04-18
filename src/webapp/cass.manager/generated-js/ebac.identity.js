@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
@@ -201,6 +210,16 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *             Contact to add.
      */
     constructor.addContact = function(contact) {
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+            if (EcIdentityManager.ids[i].ppk.toPk().toPem().equals(contact.pk.toPem())) {
+                EcIdentityManager.ids[i].displayName = contact.displayName;
+                EcIdentityManager.contactChanged(contact);
+            }
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
+            if (EcIdentityManager.contacts[i].pk.toPem().equals(contact.pk.toPem())) {
+                EcIdentityManager.contacts[i].displayName = contact.displayName;
+                EcIdentityManager.contactChanged(contact);
+            }
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
             if (EcIdentityManager.contacts[i].equals(contact)) 
                 return;
@@ -287,6 +306,20 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             if (pk.equals(EcIdentityManager.contacts[i].pk)) 
                 return EcIdentityManager.contacts[i];
+        }
+        return null;
+    };
+    /**
+     *  Get Identity from PK (if we have it)
+     *  
+     *  @param fromPem
+     *             PK to use to look up PPK
+     *  @return PPK or null.
+     */
+    constructor.getIdentity = function(pk) {
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (pk.equals(EcIdentityManager.ids[i].ppk.toPk())) 
+                return EcIdentityManager.ids[i];
         }
         return null;
     };
@@ -527,10 +560,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
             this.pad = padGenerationCallback.callback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
+            if (id.source != null && id.source.equals(this.server) == false) 
+                continue;
+            id.source = this.server;
             credentials.push(id.toCredential(this.secretWithSalt));
         }
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var id = EcIdentityManager.contacts[i];
+            if (id.source != null && id.source.equals(this.server) == false) 
+                continue;
+            id.source = this.server;
             contacts.push(id.toEncryptedContact(this.secretWithSalt));
         }
         var commit = new EbacCredentialCommit();
@@ -573,3 +612,21 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         return passwordSplice;
     };
 }, {}, {});
+var EcContactGrant = function() {
+    EbacContactGrant.call(this);
+};
+EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    constructor.myType = "http://schema.eduworks.com/ebac/0.1/contactGrant";
+    prototype.valid = function() {
+        if (!this.verify()) 
+            return false;
+        if (this.invalid()) 
+            return false;
+        var found = false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
+                found = true;
+        }
+        return found;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

@@ -6,9 +6,10 @@ var LoginModal = function(success, cancel, warningMessage) {
 };
 LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
+    prototype.onClose = null;
     prototype.loginSuccess = null;
     prototype.warning = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet");
     };
-}, {loginSuccess: "Callback0", onClose: "Callback0"}, {});
+}, {onClose: "Callback0", loginSuccess: "Callback0", onClose: "Callback0"}, {});

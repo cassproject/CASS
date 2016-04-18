@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 RepoSearchScreen = (function(RepoSearchScreen){
 	
 	var maxLength = 24;
@@ -61,7 +70,14 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				ViewManager.getView("#repoSearchMessageContainer").clearAlert("repoSearchFail");
 				$("#repoSearchNone").addClass("hide");
 				$("#repoSearchProgress").removeClass("hide");
-				AppController.searchController.search(query, callback, errorSearching, start, maxLength, ownership, types);
+				
+				var params = {};
+				params.size = maxLength;
+				params.start = start;
+				params.ownership = ownership;
+				params.types = types;
+				
+				AppController.searchController.search(query, callback, errorSearching, params);
 			}
 		}, 100);
 	}
@@ -137,7 +153,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
 		{
 			$("#moreSearchResults").addClass("hide");
-			runRepoSearch(resultDiv.children().length);
+			runRepoSearch(resultDiv.children().size());
 		}
 	}
 	

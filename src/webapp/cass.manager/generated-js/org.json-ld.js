@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 var EcLinkedData = function(schema, type) {
     this.schema = schema;
     this.type = type;
@@ -11,7 +20,7 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Represents the @schema field in JSON-LD.
      */
     prototype.schema = null;
-    constructor.atProperties = ["id", "type", "schema", "context", "signature", "owner", "encryptedType"];
+    constructor.atProperties = ["id", "type", "schema", "context", "signature", "owner", "reader", "encryptedType"];
     /**
      *  Determines which fields to serialize into @fields.
      *  
@@ -36,8 +45,23 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  @return Serializable JSON object.
      */
     prototype.atIfy = function() {
+        return this.atIfyObject(this);
+    };
+    prototype.atIfyArray = function(o) {
+        var a = new Array();
+        for (var i = 0; i < o.length; i++) {
+            if (stjs.isInstanceOf(o[i].constructor, EcLinkedData)) 
+                a[i] = this.atIfyObject(o[i]);
+             else if (EcArray.isArray(o[i])) 
+                a[i] = this.atIfyArray(o[i]);
+             else 
+                a[i] = o[i];
+        }
+        return a;
+    };
+    prototype.atIfyObject = function(o) {
         var keys = new Array();
-        var me = (this);
+        var me = (o);
         for (var key in me) {
             if (EcLinkedData.isAtProperty(key)) 
                 key = "@" + key;
@@ -50,6 +74,11 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var value = me[key.replace("@", "")];
+            if (value != null) 
+                if (stjs.isInstanceOf(value.constructor, EcLinkedData)) 
+                    value = (value).atIfy();
+                 else if (EcArray.isArray(value)) 
+                    value = this.atIfyArray(value);
             if (value != null) 
                 op[key] = value;
              else 
@@ -124,8 +153,13 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
     prototype.deAtify = function() {
         var me = (this);
         for (var key in me) {
-            if (me[key] == null) 
-                me[key.replace("@", "")] = me[key];
+            if (me[key] == null) {
+                var value = me[key];
+                if (value != null) 
+                    if (stjs.isInstanceOf(value.constructor, EcLinkedData)) 
+                        value = (value).deAtify();
+                me[key.replace("@", "")] = value;
+            }
         }
         return this;
     };

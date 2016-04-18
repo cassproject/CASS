@@ -27,7 +27,7 @@ var ServerController = function(defaultServer, defaultServerName) {
         this.selectedServerName = "Default (Localhost)";
         console.warn("Default Server Not Given, Set to LocalHost");
     }
-    this.storageSystem["cass.server.selected"] = JSON.stringify(this.selectedServerName);
+    this.storageSystem["cass.server.selected"] = this.selectedServerName;
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
 };

@@ -1,4 +1,13 @@
 /*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+/*
  * The third definition defines the UI methods and server-exposed methods
  */
 var AppMenu = (function(AppMenu){
@@ -188,6 +197,24 @@ var AppMenu = (function(AppMenu){
 				ScreenManager.changeScreen(new FileManagerScreen());
 			});
 			
+			$("#appMenuFrameworks").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+			$("#appMenuFrameworks").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new FrameworkSearchScreen());
+			});
+			
+			$("#appMenuFrameworkSearch").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+			$("#appMenuFrameworkSearch").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new FrameworkSearchScreen());
+			});
+			
+			$("#appMenuFrameworkCreate").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
+			$("#appMenuFrameworkCreate").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new FrameworkEditScreen());
+			});
+			
 			$("#appMenuCompetencies").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
 			$("#appMenuCompetencies").click(function(event){
 				event.preventDefault();
@@ -205,6 +232,11 @@ var AppMenu = (function(AppMenu){
 				event.preventDefault();
 				ScreenManager.changeScreen(new CompetencyEditScreen());
 			});
+			
+			$("#appMenuCompetencyImport").click(function(event){
+				event.preventDefault();
+				ModalManager.showModal(new ImportCompetenciesModal());
+			})
 			
 			$("#appMenuCompetencyRelationships").attr("href", "#"+RelationshipEditScreen.prototype.displayName);
 			$("#appMenuCompetencyRelationships").click(function(event){
@@ -248,6 +280,10 @@ var AppMenu = (function(AppMenu){
 			if(callback != undefined)
 				callback();
 		});
+	}
+	
+	AppMenu.prototype.rebuildIdentityList = function(){
+		buildIdentityList();
 	}
 	
 	AppMenu.prototype.setCurrentServer = function(){

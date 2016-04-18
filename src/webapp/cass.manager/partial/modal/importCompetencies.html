@@ -1,0 +1,96 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Import Competencies
+</h3>
+
+<div class="row">
+	<div class="small-10 small-centered columns">
+		<div id="importCompetenciesMessageContainer" class="errorContainer"></div>
+	</div>
+</div>
+
+<div class="row" id="selectLocationRow">
+	<div class="small-12 columns">
+		<em>Step 1: Where would you like to import to?</em>
+		<select id="importLocationSelect">
+			<option value="" selected="selected" id="noLocation">No Specific Framework</option>
+		</select>
+	</div>
+</div>
+   
+<div class="row" id="selectSourceRow">
+   	<div class="small-12 columns" >
+   		<p style="font-style:italic"">Step 2: Where would you like to import from?</p>
+		<div style="text-align:center;">
+			<button class="button" id="selectCSV">CSV</button>
+			<button class="button" id="selectMedbiq">Medbiquitious XML</button>
+			<button class="button hide" id="selectFramework">Another Framework</button>
+		</div>
+	</div>
+</div> 
+
+<div class="row hide sourceRow" id="csvSourceRow">
+	<div class="small-12 columns">
+		<em>Step 3: Select a CSV File on your computer</em>
+		<input type="file" id="importCsvFile"/>
+		
+		<em>Step 4: Select the Competency Name Column</em>
+		<select id="importCsvColumnName"></select>
+		
+		<em>Step 5: Select the Competency Description Column (if exists)</em>
+		<select id="importCsvColumnDescription"></select>
+		
+		<em>Step 6: Select the Competency Scope Column (if exists)</em>
+		<select id="importCsvColumnScope"></select>
+		
+		<em>Step 7: Verify Ownership</em>
+		<div class="importCompetenciesOwner">Public</div>
+		
+		<button class="button float-right" disabled='disabled' id="submitImportCsv"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from CSV</span></button>
+		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+	</div>
+</div>
+
+<div class="row hide sourceRow" id="medbiqSourceRow">
+	<div class="small-12 columns">
+		<em>Step 3: Select a Medbiquitous XML File on your computer</em>
+		<input type="file" id="importMedbiqFile"/>
+		
+		<em>Step 4: Wait for the file to be scanned</em>
+		<p style="font-weight:bold" id="medbiqImportProgress"></p>
+		
+		<button class="button float-right" disabled='disabled' id="submitImportMedbiq"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from Medbiquitous XML</span></button>
+		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+	</div>
+</div>
+
+<div class="row hide sourceRow" id="frameworkSourceRow">
+	<div class="small-12 columns">
+		<em>Step 3: Select a Framework to copy from</em>
+		<select id="importSourceSelect">
+			<option value="" selected="selected" id="noSource" class="hide" disabled>No Source Selected</option>
+		</select>
+		
+		<em>Step 4: Choose linking to the existing competencies or copying them for your own use</em>
+		
+		<div style="text-align:center">
+			<span class="prefix" style="vertical-align:30%">Link</span>
+			<div class="switch" style="display:inline-block;">
+				<input class="switch-input" id="copySwitch" type="checkbox" name="copySwitch">
+			  	<label class="switch-paddle" for="copySwitch">
+			  	</label>
+			</div>
+			<span class="prefix" style="vertical-align:30%">Copy</span>
+		</div>
+		
+		<div id="importFrameworkOwner" style="display:none;">
+			<em>Step 5: Verify Ownership</em>
+			<div class="importCompetenciesOwner">Public</div>
+		</div>
+		
+		<button class="button float-right" disabled='disabled' id="submitImportFramework"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from selected framework</span></button>
+		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+	</div>
+</div>
