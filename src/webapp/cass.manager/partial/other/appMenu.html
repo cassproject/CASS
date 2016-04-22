@@ -1,129 +1,124 @@
 <nav id="appMenu" class="top-bar" data-topbar role="navigation">
-	<section class="top-bar-title">
-  		<span class="hide-for-medium" data-responsive-toggle="toggleMenu" data-hide-for="medium">
-  			<a id="appMenuToggle">
-  				<span class="menu-icon" data-toggle></span>
-  			</a>
-  		</span>
-  		<h1>
-			<a href="#" id="appMenuHeader">
+    <section class="top-bar-title">
+        <a class="menu-text" id="appMenuHeader">
     			&nbsp;&nbsp;CASS Manager&nbsp;&nbsp;
-    		</a>
-    	</h1>
-	</section>
+    	</a>
+    </section>
 
-	<section id="toggleMenu">
-		<ul id="appMenuPublic" class="vertical menu top-bar-right" data-responsive-menu="medium-dropdown" data-alignment="right">
-	    	<li>
-	    		<a id="appMenuPublicTop">
+    <section id="toggleMenu">
+        <ul id="appMenuPublic" class="vertical menu top-bar-right" data-responsive-menu="medium-dropdown" data-alignment="right">
+            <li>
+                <a class="menu-text" id="appMenuPublicTop">
 	    			Public (Not Logged In)
 	    		</a>
-	    		<ul class="vertical menu submenu">
-   					<li>
- 						<div id="appMenuPublicChangeServer" class="fake-a" style="font-size:0.75rem;">
-	 						Identity Server:
-	 						
-	 						<div id="currentServer" style="margin-top:0.2rem; font-size:0.8rem;"></div>
- 						</div>
-   					</li>
-   					<li>
-						<div id="appMenuLogin" class="fake-a">Login</div>
-					</li>
-					<li>
-						<div id="appMenuCreateAccount" class="fake-a">Create Account</div>
-					</li>
-       			</ul>
-	    	</li>    
-		</ul>
-		
-		<ul id="appMenuUserInfo" class="vertical menu top-bar-right hide" data-responsive-menu="medium-dropdown" data-alignment="right">     
-	    	<li>
-	    		<a id="appMenuUserIdentity">
-	    			<div>My Identity</div>
-	    		</a>
-	    		<ul class="vertical menu submenu">
-   					<li>
- 						<div id="appMenuUserChangeServer" class="fake-a" style="font-size:0.75rem;">
-	 						Identity Server:
-	 						
-	 						<div id="appMenuIdentityServer" style="margin-top:0.2rem; font-size:0.8rem;"></div>
- 						</div>
-   					</li>
-   					<li>
-   						<a href="#" id="appMenuUserIdentityPage">My Identities</a>
-   						<ul id="appMenuIdentityList" class="vertical menu submenu">
-   							<li></li>
-   						</ul>
-   					</li>
-   					
-   					<li>
-						<a id="appMenuUserLogout">Logout</a>
-					</li>
-       			</ul>
-	    	</li>    
-			
-		</ul>	
-	
-		<ul id="appMenuMain" class="vertical menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
-			<li>
-    			<a id="appMenuRepository" href="#">Repository</a>
-    			<ul class="vertical menu submenu">
-        			<li>
-        				<a href="#" id="appMenuRepoSearch">Search</a>
-        			</li>
-					<li>
-						<a href="#" id="appMenuRepoCreate">Create</a>
-					</li>
-					<li>
-    					<a href="#">Examples</a>
-    					<ul class="vertical menu submenu">
-        					<li><a href="#" id="appMenuFileManager">Secure File Store</a></li>
-            			</ul>
-        			</li>
-    			</ul>
-			</li>
-			
-			<li>
-    			<a href="#" id="appMenuCompetency">Competency</a>
-    			<ul class="vertical menu">
-        			<li>
-        				<a href="#" id="appMenuFrameworks">Frameworks</a>
-        				<ul class="vertical menu submenu">
-        					<li>
-        						<a href="#" id="appMenuFrameworkSearch">Search</a>
-        					</li>
-        					<li>
-        						<a href="#" id="appMenuFrameworkCreate">Create</a>
-        					</li>
-            			</ul>
-        			</li>
-					<li>
-						<a href="#" id="appMenuCompetencies">Competencies</a>
-    					<ul class="vertical menu submenu">
-        					<li>
-        						<a href="#" id="appMenuCompetencySearch">Search</a>
-        					</li>
-        					<li>
-        						<a href="#" id="appMenuCompetencyCreate">Create</a>
-        					</li>
-        					<li>
-        						<a id="appMenuCompetencyImport">Import</a>
-        					</li>
-            			</ul>
-					</li>
-					<li>
-						<a href="#" id="appMenuCompetencyRelationships">Create Relationship</a>
-					</li>
-            	</ul>
-        	</li>
-        	
-        	<li class="hide">
-    			<a href="#">Reasoning</a>
-    			<ul class="vertical menu">
-        			<li><a href="#" onclick="alert('Not yet implemented.');">Query</a></li><li class="divider"></li>
-					<li><a href="#" onclick="alert('Not yet implemented.');">Rules</a></li><li class="divider"></li>
-    			</ul>
-			</li>
-    	</ul>
-	</section>
+                <ul class="vertical menu">
+                    <li>
+                        <div id="appMenuPublicChangeServer" class="fake-a" style="font-size:0.75rem;">
+                            &nbsp;Identity Server:
+
+                            <div id="currentServer" style="margin-top:0.2rem; margin-left:0.2rem; font-size:0.8rem;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="appMenuLogin">Login</a>
+                    </li>
+                    <li>
+                        <a id="appMenuCreateAccount" >Create Account</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul id="appMenuUserInfo" class="vertical menu top-bar-right hide" data-responsive-menu="medium-dropdown" data-alignment="right">
+            <li>
+                <a id="appMenuUserIdentity">
+                    <div>My Identity</div>
+                </a>
+                <ul class="vertical menu submenu">
+                    <li>
+                        <div id="appMenuUserChangeServer" class="fake-a" style="font-size:0.75rem;">
+                            Identity Server:
+
+                            <div id="appMenuIdentityServer" style="margin-top:0.2rem; font-size:0.8rem;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="appMenuUserIdentityPage">My Identities</a>
+                        <ul id="appMenuIdentityList" class="vertical menu submenu">
+                            <li></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a id="appMenuUserLogout">Logout</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+        <ul id="appMenuMain" class="menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
+            <li>
+                <a class="menu-text" id="appMenuRepository">Repository</a>
+                <ul class="vertical menu submenu">
+                    <li>
+                        <a id="appMenuRepoSearch">Search</a>
+                    </li>
+                    <li>
+                        <a id="appMenuRepoCreate">Create</a>
+                    </li>
+                    <li>
+                        <a>Examples</a>
+                        <ul class="vertical menu submenu">
+                            <li><a id="appMenuFileManager">Secure File Store</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="menu-text" id="appMenuCompetency">Competency</a>
+                <ul class="vertical menu">
+                    <li>
+                        <a id="appMenuFrameworks">Frameworks</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuFrameworkSearch">Search</a>
+                            </li>
+                            <li>
+                                <a id="appMenuFrameworkCreate">Create</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="appMenuCompetencies">Competencies</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuCompetencySearch">Search</a>
+                            </li>
+                            <li>
+                                <a id="appMenuCompetencyCreate">Create</a>
+                            </li>
+                            <li>
+                                <a id="appMenuCompetencyImport">Import</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="appMenuCompetencyRelationships">Create Relationship</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="hide">
+                <a>Reasoning</a>
+                <ul class="vertical menu">
+                    <li><a onclick="alert('Not yet implemented.');">Query</a></li>
+                    <li class="divider"></li>
+                    <li><a onclick="alert('Not yet implemented.');">Rules</a></li>
+                    <li class="divider"></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
 </nav>

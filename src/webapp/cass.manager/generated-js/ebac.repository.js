@@ -431,6 +431,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         s = (s.split("+")).join("\\+");
         return s;
     };
+    constructor.save = function(data, success, failure) {
+        console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
+        EcRepository._save(data, success, failure);
+    };
     /**
      *  Attempts to save a piece of data.
      *  
@@ -441,7 +445,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param success
      *  @param failure
      */
-    constructor.save = function(data, success, failure) {
+    constructor._save = function(data, success, failure) {
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
@@ -468,6 +472,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param failure
      */
     constructor._delete = function(data, success, failure) {
+        console.warn("Watch out! " + data.id + " is being deleted with the repository delete function, no clean up delete operations will occur");
+        EcRepository.DELETE(data, success, failure);
+    };
+    constructor.DELETE = function(data, success, failure) {
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];

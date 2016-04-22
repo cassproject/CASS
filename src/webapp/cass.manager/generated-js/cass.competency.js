@@ -190,35 +190,52 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     constructor.RELATIONSHIP_TYPE_LEVEL_GREATER_THAN = "greaterThan";
     constructor.RELATIONSHIP_TYPE_LEVEL_IS_EQUIVALENT_TO = "isEquivalentTo";
     constructor.RELATIONSHIP_TYPE_LEVEL_OVERLAPS = "overlaps";
-    prototype.addAlignment = function(target, alignmentType, owner, server) {
+    prototype.addAlignment = function(target, alignmentType, owner, server, success, failure) {
         var a = new EcAlignment();
         a.generateId(server);
-        a.source = this.id;
-        a.target = target.id;
+        a.source = this.shortId();
+        a.target = target.shortId();
         a.relationType = alignmentType;
         a.addOwner(owner.toPk());
+        EcRepository.save(a, success, failure);
+        return a;
     };
-    prototype.relationships = function(repo, success, failure) {
-        repo.search("type:\"" + EcAlignment.myType + "\" AND (source:\"" + this.id + "\" OR destination:\"" + this.id + "\")", function(p1) {
+    prototype.relationships = function(repo, eachSuccess, failure, successAll) {
+        repo.search("@type:\"" + EcAlignment.myType + "\" AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
             var a = new EcAlignment();
             a.copyFrom(p1);
-            success(a);
-        }, null, failure);
+            if (eachSuccess != null) 
+                eachSuccess(a);
+        }, function(p1) {
+            if (successAll != null) {
+                var rels = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var a = new EcAlignment();
+                    a.copyFrom(p1[i]);
+                    rels[i] = a;
+                }
+                if (successAll != null) 
+                    successAll(rels);
+            }
+        }, failure);
     };
-    prototype.addLevel = function(name, description, owner, server) {
+    prototype.addLevel = function(name, description, owner, server, success, failure) {
         var l = new EcLevel();
         l.generateId(server);
-        l.competency = this.id;
+        l.competency = this.shortId();
         l.description = description;
         l.name = name;
         l.addOwner(owner.toPk());
+        EcRepository.save(l, success, failure);
+        return l;
     };
     prototype.levels = function(repo, success, failure, successAll) {
         repo.search("@type:\"" + EcLevel.myType + "\" AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\")", function(p1) {
             if (success != null) {
                 var a = new EcLevel();
                 a.copyFrom(p1);
-                success(a);
+                if (success != null) 
+                    success(a);
             }
         }, function(p1) {
             if (successAll != null) {
@@ -228,7 +245,8 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                     a.copyFrom(p1[i]);
                     levels[i] = a;
                 }
-                successAll(levels);
+                if (successAll != null) 
+                    successAll(levels);
             }
         }, failure);
     };
@@ -359,6 +377,20 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
         for (var i = 0; i < this.level.length; i++) 
             if (this.level[i].equals(id)) 
                 this.level.splice(i, 1);
+    };
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Framework Name Cannot be Empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.log(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
     };
 }, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var CompetencyManager = function() {};

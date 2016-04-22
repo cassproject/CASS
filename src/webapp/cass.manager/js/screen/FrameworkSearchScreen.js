@@ -53,7 +53,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
 	function displayResults(results)
 	{ 
-		var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app competency"><div class="front"><p class="title"></p></div><div class="back"><p class="status"></p><div class="actions"></div></div></div><a class="hotspot finger" title=""></a></div>';
+		var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app framework"><div class="front"><center><h1>🏗</h1></center><p class="title"></p></div><div class="back"><center><h1>👓</h1></center><p class="status"></p><div class="actions">View</div></div></div><a class="hotspot finger" title=""></a></div>';
 
 	    $("#frameworkSearchResults").html("");
 	    
@@ -66,7 +66,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	        var t = $("#frameworkSearchResults").children(".tile").last();
 	        var name = framework["name"];
 	        t.find(".title").text(name);
-	        t.attr("id", framework.id);
+	        t.attr("id", framework.shortId());
 	        
 	        t.click(function(e){
 	        	e.preventDefault();
@@ -105,6 +105,10 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			ViewManager.showView(new MessageContainer("frameworkSearch"), "#frameworkSearchMessageContainer");
 			
 			$("#frameworkSearchSubmit").click(function(event){
+				event.preventDefault();
+				runFrameworkSearch();
+			});			
+			$("#frameworkSearchOwnership").change(function(event){
 				event.preventDefault();
 				runFrameworkSearch();
 			});

@@ -714,3 +714,17 @@
 .tile.large .file.collection .back {
 	background-image: url(../images/app-collections-back-large.png);
 }
+
+/*CASS*/
+
+.tile .framework .front{
+    background: linear-gradient(to bottom,rgb(66,225,143),white);
+}
+
+.tile .framework .front .title{
+    background: rgb(46,205,113);
+}
+
+.tile .framework .back{
+    background: linear-gradient(to bottom,#2ba6cb,white);
+}
