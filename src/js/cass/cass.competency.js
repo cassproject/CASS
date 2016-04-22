@@ -322,31 +322,55 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 return;
         this.competency.push(id);
     };
-    prototype.removeCompetency = function(id2, success, failure) {
-        var id = EcRemoteLinkedData.trimVersionFromUrl(id2);
+    constructor.relDone = {};
+    constructor.levelDone = {};
+    prototype.removeCompetency = function(id, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.competency == null) 
             this.competency = new Array();
         for (var i = 0; i < this.competency.length; i++) 
-            if (this.competency[i].equals(id)) 
+            if (this.competency[i].equals(shortId) || this.competency[i].equals(id)) 
                 this.competency.splice(i, 1);
         if (this.relation == null && this.level == null) 
-            success("");
+            if (success != null) 
+                success("");
+        EcFramework.relDone[id] = false;
+        EcFramework.levelDone[id] = false;
         if (this.relation != null) {
-            this.removeRelationshipsThatInclude(id, 0, success, failure);
+            this.removeRelationshipsThatInclude(id, 0, function(p1) {
+                if (EcFramework.levelDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.relDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.relDone[id] = true;
         }
         if (this.level != null) {
-            this.removeLevelsThatInclude(id, 0, success, failure);
+            this.removeLevelsThatInclude(id, 0, function(p1) {
+                if (EcFramework.relDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.levelDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.levelDone[id] = true;
         }
     };
     prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         var me = this;
-        if (i >= this.relation.length) 
+        if (i >= this.relation.length && success != null) 
             success("");
          else 
             EcRepository.get(this.relation[i], function(p1) {
                 var a = new EcAlignment();
                 a.copyFrom(p1);
-                if (a.source == id || a.target == id) {
+                if (a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
                     me.relation.splice(i, 1);
                     me.removeRelationshipsThatInclude(id, i, success, failure);
                 } else 
@@ -354,14 +378,15 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             }, failure);
     };
     prototype.removeLevelsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         var me = this;
-        if (i >= this.level.length) 
+        if (i >= this.level.length && success != null) 
             success("");
          else 
             EcRepository.get(this.level[i], function(p1) {
                 var a = new EcLevel();
                 a.copyFrom(p1);
-                if (a.competency == id) {
+                if (a.competency == shortId || a.competency == id) {
                     me.level.splice(i, 1);
                     me.removeLevelsThatInclude(id, i, success, failure);
                 } else 
@@ -419,4 +444,4 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 failure(p1);
         });
     };
-}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

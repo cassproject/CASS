@@ -11,6 +11,107 @@ var AppSettings = function() {};
 AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype) {
     constructor.returnLoginMessage = "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.";
 }, {}, {});
+var EditLevelModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.closeCallback = callback;
+};
+EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.data = null;
+    prototype.closeCallback = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
+var ChangeServerModal = function() {
+    EcModal.call(this);
+};
+ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0"}, {});
+var AddServerModal = function(modalClose) {
+    EcModal.call(this);
+    this.onClose = modalClose;
+};
+AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0", onClose: "Callback0"}, {});
+var ChangeTypeModal = function(repoEditContainer) {
+    EcModal.call(this);
+    this.repoEditContainer = repoEditContainer;
+};
+ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.repoEditContainer = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0"}, {});
+var ImportCompetenciesModal = function(data) {
+    EcModal.call(this);
+    this.data = data;
+};
+ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+var SaveIdModal = function() {
+    EcModal.call(this);
+};
+SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+}, {onClose: "Callback0"}, {});
+var AddFieldModal = function(field, repoEditContainer) {
+    EcModal.call(this);
+    this.field = field;
+    this.repoEditContainer = repoEditContainer;
+};
+AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.field = null;
+    prototype.repoEditContainer = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {field: "Object", onClose: "Callback0"}, {});
+var LoginModal = function(success, cancel, warningMessage) {
+    EcModal.call(this);
+    this.loginSuccess = success;
+    this.onClose = cancel;
+    this.warning = warningMessage;
+};
+LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+    prototype.loginSuccess = null;
+    prototype.warning = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0", loginSuccess: "Callback0", onClose: "Callback0"}, {});
+var CreateUserModal = function() {
+    EcModal.call(this);
+};
+CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.display = function(arg0, arg1) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0"}, {});
 var IdentityController = function() {};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
     prototype.selectedIdentity = null;
@@ -69,82 +170,6 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         });
     };
 }, {selectedIdentity: "EcIdentity"}, {});
-var ChangeServerModal = function() {
-    EcModal.call(this);
-};
-ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "tiny";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0"}, {});
-var AddServerModal = function(modalClose) {
-    EcModal.call(this);
-    this.onClose = modalClose;
-};
-AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0", onClose: "Callback0"}, {});
-var ChangeTypeModal = function(repoEditContainer) {
-    EcModal.call(this);
-    this.repoEditContainer = repoEditContainer;
-};
-ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.repoEditContainer = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0"}, {});
-var SaveIdModal = function() {
-    EcModal.call(this);
-};
-SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "tiny";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {onClose: "Callback0"}, {});
-var AddFieldModal = function(field, repoEditContainer) {
-    EcModal.call(this);
-    this.field = field;
-    this.repoEditContainer = repoEditContainer;
-};
-AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.field = null;
-    prototype.repoEditContainer = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {field: "Object", onClose: "Callback0"}, {});
-var LoginModal = function(success, cancel, warningMessage) {
-    EcModal.call(this);
-    this.loginSuccess = success;
-    this.onClose = cancel;
-    this.warning = warningMessage;
-};
-LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.loginSuccess = null;
-    prototype.warning = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {loginSuccess: "Callback0", onClose: "Callback0"}, {});
-var CreateUserModal = function() {
-    EcModal.call(this);
-};
-CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.display = function(arg0, arg1) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0"}, {});
 var CryptoController = function() {};
 CryptoController = stjs.extend(CryptoController, null, [], function(constructor, prototype) {
     prototype.identity = null;
@@ -230,9 +255,6 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
             }
         }, failure);
     };
-    prototype.view = function(id, success, failure) {
-        EcRepository.get(id, success, failure);
-    };
     prototype.encryptAndUploadFile = function(name, base64Data, mimeType, success, failure) {
         if (this.identity.selectedIdentity == null) {
             return;
@@ -266,7 +288,203 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
         }
         this.repo.constructor.save(d, success, fail);
     };
+    prototype.view = function(id, success, failure) {
+        EcRepository.get(id, success, failure);
+    };
+    prototype.viewCompetency = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcCompetency.myType)) {
+                var competency = new EcCompetency();
+                competency.copyFrom(p1);
+                success(competency);
+            } else {
+                failure("Retrieved object was not a competency");
+            }
+        }, failure);
+    };
+    prototype.viewFramework = function(id, success, failure) {
+        var me = this;
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcFramework.myType)) {
+                var framework = new EcFramework();
+                framework.copyFrom(p1);
+                success(framework);
+            } else {
+                failure("Retrieved object was not a framework");
+            }
+        }, failure);
+    };
+    prototype.viewRelation = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcAlignment.myType)) {
+                var alignment = new EcAlignment();
+                alignment.copyFrom(p1);
+                success(alignment);
+            } else {
+                failure("Retrieved object was not a relation");
+            }
+        }, failure);
+    };
+    prototype.viewLevel = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcLevel.myType)) {
+                var level = new EcLevel();
+                level.copyFrom(p1);
+                success(level);
+            } else {
+                failure("Retrieved object was not a level");
+            }
+        }, failure);
+    };
 }, {repo: "EcRepository", identity: "IdentityController"}, {});
+var SearchController = function() {};
+SearchController = stjs.extend(SearchController, null, [], function(constructor, prototype) {
+    prototype.repo = null;
+    prototype.getTypes = function(success, failure) {
+        this.repo.listTypes(success, failure);
+    };
+    prototype.search = function(query, success, failure, paramObj) {
+        if (paramObj == null) 
+            paramObj = new Object();
+        var params = new Object();
+        var paramProps = (params);
+        if ((paramObj)["start"] != null) 
+            paramProps["start"] = (paramObj)["start"];
+        if ((paramObj)["size"] != null) 
+            paramProps["size"] = (paramObj)["size"];
+        if ((paramObj)["types"] != null) 
+            paramProps["types"] = (paramObj)["types"];
+        if ((paramObj)["ownership"] != null) {
+            var ownership = (paramObj)["ownership"];
+            if (!query.startsWith("(") || !query.endsWith(")")) {
+                query = "(" + query + ")";
+            }
+            if (ownership.equals("public")) {
+                query += " AND (_missing_:@owner)";
+            } else if (ownership.equals("owned")) {
+                query += " AND (_exists_:@owner)";
+            } else if (ownership.equals("me")) {
+                query += " AND (";
+                for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                    if (i != 0) {
+                        query += " OR ";
+                    }
+                    var id = EcIdentityManager.ids[i];
+                    query += "@owner:\"" + id.ppk.toPk().toPem() + "\"";
+                }
+                query += ")";
+            }
+        }
+        if ((paramObj)["fields"] != null) 
+            paramProps["fields"] = (paramObj)["fields"];
+        if (paramProps["start"] != null || paramProps["size"] != null || paramProps["ownership"] != null || paramProps["types"] != null || paramProps["fields"] != null) 
+            this.repo.searchWithParams(query, params, null, success, failure);
+         else 
+            this.repo.search(query, null, success, failure);
+    };
+    prototype.searchWithParams = function(query, params, success, failure) {
+        this.repo.searchWithParams(query, params, null, success, failure);
+    };
+    prototype.fileSearch = function(query, searchPublic, success, failure) {
+        var queryAdd = "";
+        if (searchPublic) 
+            queryAdd = "(@type:*file OR @encryptedType:*file)";
+         else 
+            queryAdd = "(@encryptedType:*file)";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        this.repo.search(query, null, success, failure);
+    };
+    prototype.competencySearch = function(query, success, failure, ownership) {
+        var queryAdd = "";
+        queryAdd = "(@type:\"" + EcCompetency.myType + "\")";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        var params = new Object();
+        (params)["ownership"] = ownership;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var comp = new EcCompetency();
+                    comp.copyFrom(p1[i]);
+                    ret[i] = comp;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+    prototype.frameworkSearch = function(query, success, failure, ownership) {
+        var queryAdd = "";
+        queryAdd = "(@type:\"" + EcFramework.myType + "\")";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        var params = new Object();
+        (params)["ownership"] = ownership;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var framework = new EcFramework();
+                    framework.copyFrom(p1[i]);
+                    ret[i] = framework;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+    prototype.relationSearchBySource = function(sourceId, success, failure) {
+        var query = "";
+        query = "(@type:\"" + EcAlignment.myType + "\")";
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
+        if (noVersion == sourceId) {
+            query += " AND (source:\"" + sourceId + "\")";
+        } else {
+            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\")";
+        }
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    alignment.copyFrom(p1[i]);
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure, null);
+    };
+    prototype.relationSearchBySourceOrTarget = function(competencyId, success, failure) {
+        var query = "";
+        query = "(@type:\"" + EcAlignment.myType + "\")";
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
+        if (noVersion == competencyId) {
+            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\")";
+        } else {
+            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\")";
+        }
+        var fields = ["source", "target", "relationType"];
+        var params = new Object();
+        (params)["fields"] = fields;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    alignment.copyFrom(p1[i]);
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+}, {repo: "EcRepository"}, {});
 var LoginController = function() {};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
     prototype.loginServer = null;
@@ -343,71 +561,6 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.storageSystem["cass.login"] = false;
     }
 })();
-var SearchController = function() {};
-SearchController = stjs.extend(SearchController, null, [], function(constructor, prototype) {
-    prototype.repo = null;
-    prototype.getTypes = function(success, failure) {
-        this.repo.listTypes(success, failure);
-    };
-    prototype.search = function(query, success, failure, start, size, ownership, types) {
-        var params = new Object();
-        var paramProps = (params);
-        if (start != null) 
-            paramProps["start"] = start.intValue();
-        if (size != null) 
-            paramProps["size"] = size.intValue();
-        if (ownership != null) 
-            paramProps["ownership"] = ownership;
-        if (types != null) 
-            paramProps["types"] = types;
-        if (paramProps["start"] != null || paramProps["size"] != null || paramProps["ownership"] != null || paramProps["ownership"] != null) 
-            this.repo.searchWithParams(query, params, null, success, failure);
-         else 
-            this.repo.search(query, null, success, failure);
-    };
-    prototype.searchWithParams = function(query, params, success, failure) {
-        this.repo.searchWithParams(query, params, null, success, failure);
-    };
-    prototype.fileSearch = function(query, searchPublic, success, failure) {
-        var queryAdd = "";
-        if (searchPublic) 
-            queryAdd = "(@type:*file OR @encryptedType:*file)";
-         else 
-            queryAdd = "(@encryptedType:*file)";
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        this.repo.search(query, null, success, failure);
-    };
-    prototype.competencySearch = function(query, success, failure, ownership) {
-        var queryAdd = "";
-        queryAdd = "(@type:\"" + EcCompetency.myType + "\")";
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        var params = new Object();
-        var paramProps = (params);
-        if (ownership != null) 
-            paramProps["ownership"] = ownership;
-        if (paramProps["ownership"] != null) 
-            this.repo.searchWithParams(query, params, null, success, failure);
-         else 
-            this.repo.search(query, null, success, failure);
-    };
-    prototype.relationSearchBySource = function(sourceId, success, failure) {
-        var query = "";
-        query = "(@type:\"" + EcAlignment.myType + "\")";
-        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
-        if (noVersion == sourceId) {
-            query += " AND (source:\"" + sourceId + "\")";
-        } else {
-            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\")";
-        }
-        this.repo.search(query, null, success, failure);
-    };
-}, {repo: "EcRepository"}, {});
 var ServerController = function(defaultServer, defaultServerName) {
     this.serverList = {};
     if (localStorage != null) 
@@ -437,7 +590,7 @@ var ServerController = function(defaultServer, defaultServerName) {
         this.selectedServerName = "Default (Localhost)";
         console.warn("Default Server Not Given, Set to LocalHost");
     }
-    this.storageSystem["cass.server.selected"] = JSON.stringify(this.selectedServerName);
+    this.storageSystem["cass.server.selected"] = this.selectedServerName;
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
 };
@@ -597,6 +750,51 @@ RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function
         }
     });
 })();
+var FrameworkSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkSearchScreen.displayName;
+    };
+}, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new FrameworkSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
 var RepoSearchScreen = function(lastViewed, query, ownership, types) {
     CassManagerScreen.call(this);
     this.lastViewed = lastViewed;
@@ -708,6 +906,86 @@ CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, 
                 }
             }
             ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkEdit";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkEditScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.viewFramework(id, function(data) {
+                            ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkEditScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkView";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkViewScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkViewScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });

@@ -122,7 +122,7 @@ retreiveFormally=#if(
 		secret=secret,
 		iv=saltedId
 	).toObject().put(password=""),
-	ne=#error(code="401")
+	ne=#error(code="401",msg="Not found.")
 );
 
 retreiveFormally = signatureSheet.toDatastream(

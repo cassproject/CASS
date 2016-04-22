@@ -57,7 +57,7 @@ function oneToOneBaseSearchString(){
     }
     else
         {
-            $("#selectedContact").text("Nobody")
+            $("#selectedContact").text("Public Information")
         }
     return searchString;
 }
@@ -180,7 +180,12 @@ function displayAssertionSearchItem(where,assertion) {
                 var spn = expirationDate - assertionDate;
                 var elp = now - assertionDate;
                 var opc = 1.0-(elp/spn);
-                if (opc < 0)
+                if (elp == now)
+                {
+                    ui.css("color","gray");
+                    ui.find(".assertionExpirationProgress").text("will expire <Unknown>");
+                }
+                else if (opc < 0)
                 {
                     ui.css("color","gray");
                     ui.find(".assertionExpirationProgress").text("is Expired");
@@ -200,6 +205,9 @@ function displayAssertionSearchItem(where,assertion) {
                 ui.css("opacity",a.confidence);        
             }            
         });
+        if (a.getEvidenceCount() == 0)
+            ui.find(".assertionEvidenceStore").html("No evidence.");
+            else
         for (var i = 0;i < a.getEvidenceCount();i++)
         {
             (function(ui,i,a){

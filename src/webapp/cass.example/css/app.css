@@ -104,6 +104,13 @@ body
 .cass-framework-actions {float:right}
 .cass-framework-actions a {font-size:x-large;margin-left:5px;}
 
+.framework {    
+    padding-left: .2em; 
+    padding-right: .5em; 
+    background-color: white; 
+    border-left: 6px solid rgb(46,205,113); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
 /* --- Competencies --- */
 
 .accordion-title.cass-competency-name { border-left: 4px solid rgb(92,173,226); }
@@ -111,6 +118,14 @@ body
 .cass-competency.is-active > .accordion-content { border-bottom: 2px solid rgb(92,173,226); }
 .cass-competency-actions {float:right}
 .cass-competency-actions a {font-size:x-large;margin-left:5px;}
+
+.competency {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white; 
+    border-left: 6px solid rgb(92,173,226); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
 
 .assertionCompetency {    
     padding-left: .5em; 
@@ -204,6 +219,13 @@ li.cass-competency-level:before {
     border-bottom: 1px solid rgb(230, 230, 230);
 }
 
+.accordion-title.cass-provider-name { border-left: 4px solid black; }
+.cass-provider-name[aria-selected=true] { background-color: black; }
+.cass-provider.is-active > .accordion-content { border-bottom: 2px solid black; }
+.accordion-title.cass-resource-name { border-left: 4px solid gray; }
+.cass-resource-name[aria-selected=true] { background-color: gray; }
+.cass-resource.is-active > .accordion-content { border-bottom: 2px solid gray; }
+
 /* --- Contacts --- */
 
 .contact:before{
@@ -234,7 +256,8 @@ li.cass-competency-level:before {
     background-color: rgb(230,230,230);
     color:black;
     border-left: 6px solid orange; 
-    border-bottom: 4px solid rgb(210, 210, 210);
+    border-bottom: 4px solid #D99058;
+    margin-bottom: 5px;
 }
 .assertionTimestamp,.assertionConfidence,.assertionExpirationProgress {    
     padding-left: .5em; 

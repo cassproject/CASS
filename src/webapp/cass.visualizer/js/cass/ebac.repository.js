@@ -64,9 +64,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         if (owners != null) 
             for (var i = 0; i < owners.length; i++) 
                 v.addOwner(EcPk.fromPem(owners[i]));
-        if (readers != null) 
-            for (var i = 0; i < readers.length; i++) 
-                v.addReader(EcPk.fromPem(readers[i]));
         if (owners != null) 
             for (var i = 0; i < v.owner.length; i++) {
                 var eSecret = new EbacEncryptedSecret();
@@ -78,15 +75,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
             }
         if (readers != null) 
-            for (var i = 0; i < v.reader.length; i++) {
-                var eSecret = new EbacEncryptedSecret();
-                eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
-                eSecret.iv = newIv;
-                eSecret.secret = newSecret;
-                if (v.secret == null) 
-                    v.secret = new Array();
-                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.reader[i]), eSecret.toEncryptableJson()));
-            }
+            for (var i = 0; i < readers.length; i++) 
+                v.addReader(EcPk.fromPem(readers[i]));
         return v;
     };
     prototype.decryptIntoObject = function() {
@@ -179,6 +169,29 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *             PK of the new reader.
      */
     prototype.addReader = function(newReader) {
+        var payloadSecret = null;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            var decryptionKey = EcIdentityManager.ids[i].ppk;
+            if (this.secret != null) 
+                for (var j = 0; j < this.secret.length; j++) {
+                    try {
+                        var decryptedSecret = null;
+                        decryptedSecret = EcRsaOaep.decrypt(decryptionKey, this.secret[j]);
+                        if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
+                            continue;
+                        payloadSecret = EbacEncryptedSecret.fromEncryptableJson(JSON.parse(decryptedSecret));
+                        break;
+                    }catch (ex) {
+                        console.log("fail  " + this.secret[j]);
+                    }
+                }
+            if (payloadSecret != null) 
+                break;
+        }
+        if (payloadSecret == null) {
+            console.error("Cannot add a Reader if you don't know the secret");
+            return;
+        }
         var pem = newReader.toPem();
         if (this.reader == null) 
             this.reader = new Array();
@@ -186,6 +199,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             if (this.reader[i].equals(pem)) 
                 return;
         this.reader.push(pem);
+        this.secret.push(EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
     };
     /**
      *  Removes a reader from the object, if the reader does exist.

@@ -30,8 +30,7 @@ function newCompetency(frameworkId) {
     f.generateId(repo.selectedServer);
     if (identity != null)
         f.addOwner(identity.ppk.toPk());
-    else
-    {
+    else {
         alert("Login required to create competency.");
         return;
     }
@@ -98,6 +97,10 @@ function populateCompetency(id) {
     EcRepository.get(id, function (competency) {
         var ui = $("[url='" + competency.shortId() + "']");
         ui.children(".cass-competency-name").text(competency.name);
+        if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
+            $("#selectedCompetency").text(competency.name).show();
+            $("#selectedFramework").hide();
+        }
         ui.find(".cass-competency-description").text(competency.description);
         ui.find(".cass-competency-url").text(competency.shortId()).attr("href", competency.shortId());
         if (identity != null && competency.canEdit(identity.ppk.toPk()))
@@ -145,6 +148,8 @@ function insertExistingCompetency() {
 $("body").on("click", ".cass-competency", null, function (e) {
     e.stopPropagation();
     (function (url) {
-        setTimeout(function(){populateCompetency(url);},0);
+        setTimeout(function () {
+            populateCompetency(url);
+        }, 0);
     })($(this).attr("url"));
 }, error);

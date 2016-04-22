@@ -52,6 +52,7 @@ function populateContactsActual() {
         ui.find("a").hide();
         ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
     }
+    if (EcIdentityManager.contacts !== undefined && EcIdentityManager.contacts.length != 0)
     for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
         var contact = EcIdentityManager.contacts[i];
 
@@ -59,6 +60,10 @@ function populateContactsActual() {
             var ui = $("#contactsList").append(contactsContact).children().last();
             ui.find("#identity").attr("title", contact.pk.toPem()).text(contact.displayName);
         }
+    }
+    else
+    {
+        $("#contactsList").html("No contacts. Please log in and invite people to connect with you.");
     }
 }
 

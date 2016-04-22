@@ -40,8 +40,7 @@ function newFramework() {
     f.generateId(repo.selectedServer);
     if (identity != null)
         f.addOwner(identity.ppk.toPk());
-    else
-    {
+    else {
         alert("Login required to create framework.");
         return;
     }
@@ -55,6 +54,13 @@ function populateFramework(frameworkId) {
     EcRepository.get(frameworkId, function (fw) {
         var fwui = $("[url='" + fw.shortId() + "']");
         fwui.find(".cass-framework-name").text(fw.name);
+        if ($("#frameworks").find(".is-active").attr("url") == null) {
+            $("#selectedFramework").text("All Frameworks").show();
+            $("#selectedCompetency").hide();} else {
+
+            $("#selectedFramework").text(fw.name).show();
+            $("#selectedCompetency").hide();
+        }
         if (fw.description === undefined || fw.description == null)
             fwui.find(".cass-framework-description").text("No description");
         else
@@ -62,7 +68,7 @@ function populateFramework(frameworkId) {
         fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId());
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
-        if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined) {
+        if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
             repo.precache(fw.competency);
             for (var i = 0; i < fw.competency.length; i++) {
                 var competencyUrl = fw.competency[i];
@@ -79,11 +85,16 @@ function populateFramework(frameworkId) {
                 })(competencyUrl, i);
             }
             fwui.find("#competency").foundation();
+        } else {
+            fwui.find("#competency").html("&nbsp;No competencies found.");
+            for (var i = 0; i < EcIdentityManager.ids.length; i++)
+                if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
+                    fwui.find("#competency").html("&nbsp;No competencies found. You may add to this framework in the Framework Manager through the Insert menu.");
         }
         populateFrameworkRelations(frameworkId);
         populateFrameworkLevels(frameworkId);
         $(".canEditFramework").hide();
-        for (var i = 0;i < EcIdentityManager.ids.length;i++)
+        for (var i = 0; i < EcIdentityManager.ids.length; i++)
             if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
                 if (identity != null)
                     $(".canEditFramework").show();
@@ -91,8 +102,6 @@ function populateFramework(frameworkId) {
 }
 
 $("body").on("click", ".cass-framework", null, function (e) {
-    e.stopPropagation();
-
     setTimeout((function (frameworkUrl) {
         $(".canEditFramework").hide();
         populateFramework(frameworkUrl);

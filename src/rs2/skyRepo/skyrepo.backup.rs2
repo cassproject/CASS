@@ -117,7 +117,14 @@ restore=#fileList(path=backupPath).forEach(
 					z="/data/",
 					zz="@dir",
 					zzz="/",
-					zzzz=#hexToString(obj="@file").urlEncode()
+					zzzz=#hexToString(obj="@file").urlEncode(),
+					zzzzz=#add(
+						a="?version=",
+						i=#fileLoad(
+							path=#add(_string="true",a=backupPath,aa="/",b="@dir",bb="/",f="@file")
+						).fileToString().toObject().getByParam(param=#add(a="@",b="id")).split(split="/").reverse().getIndex(index="0"),
+						j="&version_type=external&refresh=true"
+					)
 				),
 				reliable="true",
 				contentType="application/json"
