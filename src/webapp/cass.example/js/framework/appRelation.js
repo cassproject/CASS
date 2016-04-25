@@ -106,7 +106,15 @@ function newRelation(frameworkId) {
     }
     var f = new EcAlignment();
     f.source = $("#newRelationSource option:selected").attr("value");
+    if (f.source == null) {
+        error("Source not selected.");
+        return;
+    }
     f.target = $("#newRelationTarget option:selected").attr("value");
+    if (f.target == null) {
+        error("Target not selected.");
+        return;
+    }
     f.relationType = $("#newRelationType option:selected").attr("value");
     f.name = $("#newRelationName").val();
     f.description = $("#newRelationDescription").val();
@@ -120,7 +128,7 @@ function newRelation(frameworkId) {
     }
     EcRepository.save(f, function () {
         insertRelationIntoFramework(f.shortId(), frameworkId);
-        $("#newCompetency").foundation('close');
+        $("#newRelation").foundation('close');
     }, error);
 }
 

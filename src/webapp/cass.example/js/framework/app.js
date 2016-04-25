@@ -38,6 +38,14 @@ function isArray(obj) {
     return toString.call(obj) == '[object Array]';
 }
 
+function helpAssist(selector)
+{
+    if ($(selector).length == 0) return;
+    if (localStorage["help"+selector] != "true")
+        new Foundation.Joyride($(selector), {}).start();
+    localStorage["help"+selector] = "true";
+}
+
 timeout(function () {
     repo.autoDetectRepository();
     loginServer.setDefaultIdentityManagementServer(repo.selectedServer);

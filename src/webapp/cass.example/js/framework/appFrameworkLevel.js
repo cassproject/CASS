@@ -39,7 +39,7 @@ function populateFrameworkLevels(frameworkId) {
 }
 
 function insertExistingLevelIntoFramework(me) {
-    var levelId = $(me).parent(".cass-competency-level").attr("url");
+    var levelId = $(me).parents(".cass-competency-level").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
     insertLevelIntoFramework(levelId, frameworkId);
@@ -69,6 +69,7 @@ function removeLevelFromFrameworkButton(me) {
     var levelId = $(me).parents(".cass-competency-level").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
+    if (confirm("This will remove '"+$(me).parents(".cass-competency-level").children(".cass-level-name").text()+"' Continue?") == true)
     removeLevelFromFramework(levelId, frameworkId);
 }
 

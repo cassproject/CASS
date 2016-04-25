@@ -38,6 +38,7 @@ function removeCompetencyFromFrameworkButton(me) {
     var competencyId = $(me).parents(".cass-competency").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
+    if (confirm("This will remove '"+$(me).parents(".cass-competency").children(".cass-competency-name").text()+"' Continue?") == true)
     removeCompetencyFromFramework(competencyId, frameworkId);
 }
 

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CASS Profile Manager</title>
     <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation.joyride.css" />
     <link rel="stylesheet" href="css/app.css" />
 </head>
 
@@ -62,7 +63,7 @@
                             <span class="cass-competency-actions"><a class="float-right"  onclick="permissionsOn(this);">🔒</a></span>
                             <i class="cass-framework-description">Loading...</i>
                             <br>
-                            <small><a class="cass-framework-url"></a></small>
+                            <small><a class="cass-framework-url" target="_blank"></a></small>
                             <div class="cass-framework-owner">
                             </div>
                             <div class="cass-framework-competencies">
@@ -148,14 +149,14 @@
     </div>
 
     <div id="hidey hidey" class="topLevel" style="display:none;">
-    <ul id="competency" class="accordion" data-accordion role="tablist">
+    <ul id="competency" class="accordion" data-accordion role="tablist" data-allow-all-closed="true">
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
             <div class="accordion-content" data-tab-content>
                 <span class="cass-competency-actions"></span>
                 <i class="cass-competency-description">No Description.</i>
                 <br>
-                <small><a class="cass-competency-url"></a></small>
+                <small><a class="cass-competency-url" target="_blank"></a></small>
                 <ul class="cass-competency-levels">
                     <li class="cass-competency-level">
                         <span class="cass-level-actions"></span>
@@ -260,7 +261,8 @@
     <script src="js/timeout.js"></script>
     <script src="js/vendor/moment-with-locales.js"></script>
     <script src="forge/forge.min.js"></script>
-    <script src="js/foundation.min.js"></script>
+    <script src="js/foundation.js"></script>
+    <script src="js/foundation.joyride.js"></script>
     <script src="js/cass/stjs.js"></script>
     <script src="js/cass/ec.base.js"></script>
     <script src="js/cass/random.js"></script>

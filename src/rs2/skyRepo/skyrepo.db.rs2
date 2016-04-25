@@ -402,7 +402,7 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 	),
 ).ccall(
 	sigResults=checkRunSignatureSearch
-).removeDuplicates().displayJson(_collapse="true");
+).toArray().removeDuplicates().displayJson(_collapse="true");
 
 //search = #merge(a=checkRunNonSigSearch, b=checkRunSignatureSearch).displayJson(_collapse="true");
 

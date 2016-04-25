@@ -23,6 +23,7 @@ function frameworkSearch() {
                 ui.attr("url", fw.shortId());
                 ui.find(".cass-framework-name").text(fw.name);
                 ui.find(".cass-framework-description").text(fw.description);
+                helpAssist('#joyride-framework');
             }
             $(document).foundation();
         }, error
@@ -65,7 +66,11 @@ function populateFramework(frameworkId) {
             fwui.find(".cass-framework-description").text("No description");
         else
             fwui.find(".cass-framework-description").text(fw.description);
-        fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId());
+        fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId()).unbind().click(function(e){
+            e.preventDefault();
+            if (confirm("This will navigate to another page. Continue?"))
+                window.open($(this).attr("href"),"_blank");
+        });
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
         if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
@@ -105,6 +110,7 @@ $("body").on("click", ".cass-framework", null, function (e) {
     setTimeout((function (frameworkUrl) {
         $(".canEditFramework").hide();
         populateFramework(frameworkUrl);
+        setTimeout(function(){helpAssist('#joyride-framework-detail');},500);
     })($(this).attr("url")), 0);
 }, error);
 

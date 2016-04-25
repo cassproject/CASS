@@ -102,7 +102,11 @@ function populateCompetency(id) {
             $("#selectedFramework").hide();
         }
         ui.find(".cass-competency-description").text(competency.description);
-        ui.find(".cass-competency-url").text(competency.shortId()).attr("href", competency.shortId());
+        ui.find(".cass-competency-url").text(competency.shortId()).attr("href", competency.shortId()).unbind().click(function(e){
+            e.preventDefault();
+            if (confirm("This will navigate to another page. Continue?"))
+                window.open($(this).attr("href"),"_blank");
+        });
         if (identity != null && competency.canEdit(identity.ppk.toPk()))
             $(".canEditCompetency").show();
         else
@@ -150,6 +154,7 @@ $("body").on("click", ".cass-competency", null, function (e) {
     (function (url) {
         setTimeout(function () {
             populateCompetency(url);
+            setTimeout(function(){helpAssist('#joyride-competency-detail');},500);
         }, 0);
     })($(this).attr("url"));
 }, error);

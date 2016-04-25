@@ -108,6 +108,7 @@ body
     padding-left: .2em; 
     padding-right: .5em; 
     background-color: white; 
+    color:black;
     border-left: 6px solid rgb(46,205,113); 
     border-bottom: 1px solid rgb(230, 230, 230);
 }
@@ -123,6 +124,7 @@ body
     padding-left: .5em; 
     padding-right: .5em; 
     background-color: white; 
+    color:black;
     border-left: 6px solid rgb(92,173,226); 
     border-bottom: 1px solid rgb(230, 230, 230);
 }
@@ -149,6 +151,7 @@ body
 .cass-relation-target,.cass-relation-source
 {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 ul.cass-competency-relations {

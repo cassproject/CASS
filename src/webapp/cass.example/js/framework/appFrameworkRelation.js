@@ -51,7 +51,7 @@ function populateFrameworkRelation(fw, relationId) {
 }
 
 function insertExistingRelationIntoFramework(me) {
-    var relationId = $(me).parent(".cass-competency-relation").attr("url");
+    var relationId = $(me).parents(".cass-competency-relation").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
     insertRelationIntoFramework(relationId, frameworkId);
@@ -83,6 +83,7 @@ function removeRelationFromFrameworkButton(me) {
     var relationId = $(me).parents(".cass-competency-relation").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
+    if (confirm("This will remove '"+$(me).parents(".cass-competency-relation").find(".cass-relation-source").text()+" "+$(me).parents(".cass-competency-relation").find(".cass-relation-type").text()+" "+$(me).parents(".cass-competency-relation").find(".cass-relation-target").text()+"' Continue?") == true)
     removeRelationFromFramework(relationId, frameworkId);
 }
 

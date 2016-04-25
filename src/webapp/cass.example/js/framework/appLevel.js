@@ -35,9 +35,9 @@ function insertExistingLevel() {
                     ui.find(".cass-level-title").text(level.title);
                     ui.find(".cass-level-description").text(level.description);
                     if ($("[url='" + frameworkId + "']").find("[url='" + competencyId + "']").find("[url='" + level.shortId() + "']").length > 0)
-                        ui.prepend("<a class='float-right disabled'>Exists</a>");
+                        ui.find(".cass-level-actions").prepend("<a class='float-right disabled'>Exists</a>&nbsp;");
                     else
-                        ui.prepend("<a class='float-right' onclick='insertExistingLevelIntoFramework(this);setTimeout(function(){insertExistingLevel();},1000);'>Insert</a>");
+                        ui.find(".cass-level-actions").prepend("<a class='float-right' onclick='insertExistingLevelIntoFramework(this);setTimeout(function(){insertExistingLevel();},1000);'>Insert</a>&nbsp;");
                 }, error);
             }
             $("#insertExistingLevel").foundation('open');
