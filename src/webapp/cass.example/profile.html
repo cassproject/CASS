@@ -99,7 +99,7 @@
             </ul>
         </div>
         <div id="contactSelector" class="large-3 columns">
-            <input id="contactSearch" type="search" onchange="contactSearch();" placeholder="Search Contacts...">
+            <input id="contactSearch" type="search" onkeyup="contactSearch();" placeholder="Search Contacts...">
             <ul id="contactsList">
                 <li style="list-style: none;" class="contact contactsContact"><a class="float-right" onclick="removeContact(this);">X</a>
                     <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
@@ -298,9 +298,11 @@
     <script src="js/profile/appAssertion.js"></script>
     <script src="js/profile/appView.js"></script>
     <script>
-        timeout(function() {
             $(document).foundation();
+        timeout(function() {
             oneToOne();
+            if (identity == null)
+                $("#login").foundation('open');
 
         });
 

@@ -105,6 +105,4 @@ timeout(function() {
     loginServer.secretWithSalt=localStorage["secretWithSalt"];
     if (loginServer.usernameWithSalt != null && loginServer.passwordWithSalt != null && loginServer.secretWithSalt != null)
         loginProcess();
-    else
-        $("#login").foundation('open');
 });

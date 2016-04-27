@@ -46,8 +46,16 @@ function loopPopulateContacts() {
 
 function populateContactsActual() {
     $("#contactsList").html("");
+    var contactFilter = $("#contactSearch").val();
+    if (contactFilter != null) contactFilter = contactFilter.trim();
     for (var i = 0; i < EcIdentityManager.ids.length; i++) {
         var identity = EcIdentityManager.ids[i];
+        if (contactFilter != null && contactFilter != "")
+        {
+            if (identity.displayName != null)
+                if (identity.displayName.indexOf(contactFilter) == -1)
+                    continue;
+        }
         var ui = $("#contactsList").append(contactsContact).children().last();
         ui.find("a").hide();
         ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
@@ -56,6 +64,13 @@ function populateContactsActual() {
     for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
         var contact = EcIdentityManager.contacts[i];
 
+        if (contactFilter != null && contactFilter != "")
+        {
+            if (contact.displayName != null)
+                if (contact.displayName.indexOf(contactFilter) == -1)
+                    continue;
+        }
+        
         if (EcIdentityManager.getPpk(contact.pk) == null) {
             var ui = $("#contactsList").append(contactsContact).children().last();
             ui.find("#identity").attr("title", contact.pk.toPem()).text(contact.displayName);
@@ -108,6 +123,9 @@ function removeContact(me) {
             }
         }
     }
+}
+function contactSearch(){
+    populateContactsActual();
 }
 
 function getShareString() {

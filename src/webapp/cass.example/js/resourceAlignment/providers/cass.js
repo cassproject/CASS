@@ -1,9 +1,9 @@
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","assesses").text("Store in CASS as an LRMI (schema.org/AlignmentObject) 'assesses' alignment.");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","assesses").text("CASS as an LRMI (schema.org/AlignmentObject) 'assesses' alignment.");
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","teaches").text("Store in CASS as an LRMI (schema.org/AlignmentObject) 'teaches' alignment.");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","teaches").text("CASS as an LRMI (schema.org/AlignmentObject) 'teaches' alignment.");
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","requires").text("Store in CASS as an LRMI (schema.org/AlignmentObject) 'requires' alignment.");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","requires").text("CASS as an LRMI (schema.org/AlignmentObject) 'requires' alignment.");
 
 resourceCommitHooks.push(function(){
     
