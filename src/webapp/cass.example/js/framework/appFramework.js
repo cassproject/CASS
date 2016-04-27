@@ -66,7 +66,10 @@ function populateFramework(frameworkId) {
             fwui.find(".cass-framework-description").text("No description");
         else
             fwui.find(".cass-framework-description").text(fw.description);
-        fwui.find(".cass-framework-url").text(fw.shortId()).attr("href", fw.shortId()).unbind().click(function(e){
+        var url = fw.shortId();
+        if (fw.url != null)
+            url = fw.url;
+        fwui.find(".cass-framework-url").text(url).attr("href", url).unbind().click(function(e){
             e.preventDefault();
             if (confirm("This will navigate to another page. Continue?"))
                 window.open($(this).attr("href"),"_blank");

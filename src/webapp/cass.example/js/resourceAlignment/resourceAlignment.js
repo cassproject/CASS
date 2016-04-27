@@ -10,7 +10,7 @@ function selectCompetency(me)
 {
     var text = $(me).parents(".cass-competency").find(".cass-competency-text").text();
     var url = $(me).parents(".cass-competency").find(".cass-competency-url").text();
-    var framework = $("#frameworks").find(".is-active").attr("url");
+    var framework = $("#frameworks").find(".is-active").find(".cass-framework-url").text();
     var description = $(me).parents(".cass-competency").find(".cass-competency-description").text();
     $("#selectedCompetency")
         .attr("url",url)

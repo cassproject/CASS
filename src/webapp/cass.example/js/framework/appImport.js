@@ -259,6 +259,7 @@ function insertBulkFromAsnJson() {
 
 var asnJsonSource = null;
 var asnJsonFramework = null;
+var asnJsonFrameworkUrl = null;
 var asnJsonCompetencies = null;
 
 function analyzeAsnJson() {
@@ -288,6 +289,7 @@ function asnJsonLookThroughSource() {
             if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] != null) {
                 if (value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0].value == "http://purl.org/ASN/schema/core/StandardDocument") {
                     asnJsonFramework = value;
+                    asnJsonFrameworkUrl = key;
                     var children = value["http://purl.org/gem/qualifiers/hasChild"];
                     if (children != null)
                         for (var j = 0; j < children.length; j++) {
@@ -382,6 +384,7 @@ function importAsnJsonFramework(f) {
         f.name = asnJsonFramework["http://purl.org/dc/elements/1.1/title"][0].value;
         f.description = asnJsonFramework["http://purl.org/dc/terms/description"][0].value;
         f.generateId(repo.selectedServer);
+        f.url = asnJsonFrameworkUrl;
         if (identity != null)
             f.addOwner(identity.ppk.toPk());
         EcRepository.save(f, function () {

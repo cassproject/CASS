@@ -69,3 +69,101 @@ function searchFlr() {
         error: function (error) {}
     });
 }
+
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "assesses").text("LR Sandbox as an LRMI (schema.org/AlignmentObject) 'assesses' alignment.");
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "teaches").text("LR Sandbox as an LRMI (schema.org/AlignmentObject) 'teaches' alignment.");
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "requires").text("LR Sandbox as an LRMI (schema.org/AlignmentObject) 'requires' alignment.");
+
+var lrUsername = "";
+var lrPassword = "";
+
+resourceCommitHooks.push(function () {
+
+    if ($("#alignmentTypeSelect option:selected").attr("value") == "LR-LRMI") {
+        if (identity == null || identity === undefined) {
+            error("Please log in to commit alignments.");
+            return;
+        }
+        var cw = new CreativeWork();
+        var ao = new AlignmentObject();
+        cw.url = $("#selectedResource").text();
+        ao.alignmentType = $("#alignmentTypeSelect option:selected").attr("alignment");
+        ao.targetUrl = $("#selectedCompetency").attr("url");
+        ao.targetName = $("#selectedCompetency").text();
+        ao.targetDescription = $("#selectedCompetency").attr("description");
+        ao.educationalFramework = $("#selectedCompetency").attr("framework");
+        cw.educationalAlignment = [ao];
+
+        var envelope = makeEnvelope(cw);
+        var signedEnvelope = signEnvelope(envelope);
+        lrUsername = prompt("Please enter your LR Sandbox Username.",lrUsername);
+        lrPassword = prompt("Please enter your LR Sandbox Password.",lrPassword);
+        $.ajax({
+            type: "POST",
+            url: "http://sandbox.learningregistry.org/publish",
+            contentType: "application/json",
+            data: JSON.stringify({
+                documents: [signedEnvelope]
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Basic " + btoa(lrUsername + ":" + lrPassword));
+            },
+            success: function (s) {
+                if (s.document_results[0].error !== undefined)
+                    alert(s.document_results[0].OK + ": " + s.document_results[0].error);
+                else
+                    window.open("http://sandbox.learningregistry.org/harvest/getrecord?request_ID="+s.document_results[0].doc_ID+"&by_doc_ID=true","_blank");
+            },
+            error: function (s) {
+                alert(JSON.stringify(s));
+            },
+            failure: function (s) {
+                alert(JSON.stringify(s));
+            }
+        });
+    }
+
+});
+
+makeEnvelope = function (cw) {
+    var envelope = {
+        "active": true,
+        "doc_type": "resource_data",
+        "doc_version": "0.51.0",
+        "identity": {
+            owner: identity.ppk.toPk().toPem(),
+            submitter: "CASS Resource Aligner",
+            submitter_type: "agent",
+            curator: "cassproject.org"
+        },
+        "keys": ["CASS Resource Alignment", "CASS"],
+        "payload_placement": "inline",
+        "payload_schema": ["schema.org", "lrmi", "JSON-LD"],
+        "resource_data": JSON.stringify(cw),
+        "resource_data_type": "metadata",
+        "resource_locator": cw.url,
+        "TOS": {
+            "submission_TOS": "http://www.learningregistry.org/tos"
+        }
+    }
+
+    return envelope;
+}
+
+signEnvelope = function (ev) {
+    var bencoded = bencode(ev);
+    var md = forge.md.sha256.create();
+    md.update(bencoded);
+    var hashed = md.digest().toHex();
+    var signature = EcRsaOaep.sign(identity.ppk, hashed);
+    var clearsign = "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n" + hashed + "\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\n\n" + signature + "\n-----END PGP SIGNATURE-----\n";
+    ev["digital_signature"] = {
+        signing_method: "LR-PGP.1.0",
+        signature: clearsign,
+        key_location: ["http://urlecho.appspot.com/echo?body=" + encodeURIComponent(identity.ppk.toPk().toPem())]
+    }
+    return ev;
+}
