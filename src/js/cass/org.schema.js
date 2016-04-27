@@ -54,7 +54,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
 var AlignmentObject = function() {
     Thing.call(this);
     this.schema = "http://schema.org/";
-    this.type = "http://schema.org/Thing";
+    this.type = "http://schema.org/AlignmentObject";
 };
 AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, prototype) {
     prototype.alignmentType = null;

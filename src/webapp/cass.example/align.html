@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CASS Resource Alignment</title>
     <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation.joyride.css" />
     <link rel="stylesheet" href="css/app.css" />
 </head>
 
@@ -42,10 +43,8 @@
             <h3 id="selectedCompetency" class="competency">No Selected Competency</h3>
             
             <h3>and put the alignment in </h3>
-            <button class="float-right button disabled">Create Alignment</button>
-            <select id="alignmentTypeSelect" class="" style="width:400px;">
-                <option>CASS (schema.org/AlignmentObject)</option>
-                <option>Learning Registry (standard)</option>
+            <button class="float-right button" onclick="createAlignment();">Create Alignment</button>
+            <select id="alignmentTypeSelect" class="" style="width:600px;">
             </select>
         </div>
     </div>
@@ -166,6 +165,7 @@
     <script src="js/vendor/moment-with-locales.js"></script>
     <script src="forge/forge.min.js"></script>
     <script src="js/foundation.js"></script>
+    <script src="js/foundation.joyride.js"></script>
     <script src="js/cass/stjs.js"></script>
     <script src="js/cass/ec.base.js"></script>
     <script src="js/cass/random.js"></script>
@@ -193,8 +193,9 @@
     <script src="js/framework/appImport.js"></script>
     <script src="js/framework/appPermissions.js"></script>
     <script src="js/framework/appContacts.js"></script>
-    <script src="js/resourceAlignment/providers/lr.js"></script>
     <script src="js/resourceAlignment/resourceAlignment.js"></script>
+    <script src="js/resourceAlignment/providers/lr.js"></script>
+    <script src="js/resourceAlignment/providers/cass.js"></script>
     <script>
         $(".cass-provider").remove();
         timeout(function() {

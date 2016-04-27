@@ -19,17 +19,18 @@
                 <ul class="menu vertical">
                     <li><a href="framework.html">Framework Manager</a></li>
                     <li><a href="profile.html">Profile Manager</a></li>
+                    <li><a href="align.html">Resource Alignment</a></li>
                 </ul>
             </li>
             <li>
                 <a class="menu-text">Framework</a>
                 <ul class="menu vertical">
-                    <li><a onclick="newFrameworkButton();">New</a></li>
+                    <li class="requiresLogin"><a onclick="newFrameworkButton();">New</a></li>
                     <li><a onclick="exportCsv();">Export Competencies</a></li>
                 </ul>
             </li>
             <li>
-                <a class="menu-text">Insert</a>
+                <a class="menu-text canEditFramework" style="display:none;">Insert</a>
                 <ul class="menu vertical">
                     <li class="canEditFramework" style='display:none;'><a>New</a>
                         <ul class="menu vertical">
@@ -45,12 +46,21 @@
                             <li><a class="canEditFramework" onclick="insertExistingRelation();">Relation</a></li>
                         </ul>
                     </li>
-                    <li><a>Import</a>
+                    <li><a class="canEditFramework">Bulk</a>
                         <ul class="menu vertical">
                             <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="insertBulkFromCsv();">From CSV</a></li>
                             <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="insertBulkFromMedbiqXml();">From MedBiquitous XML</a></li>
-                            <li><a onclick="insertBulkFromAsnJson();">From Achievement Standards Network JSON</a></li>
                             <li class="canEditFramework" style='display:none;'><a class="canEditFramework" onclick="bulkFromFrameworkButton();">From Framework</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="menu-text requiresLogin">Import</a>
+                <ul class="menu vertical">
+                    <li ><a>Framework</a>
+                        <ul class="menu vertical">
+                            <li><a onclick="insertBulkFromAsnJson();">From Achievement Standards Network JSON</a></li>
                         </ul>
                     </li>
                 </ul>
