@@ -85,10 +85,6 @@ var lrPassword = "";
 resourceCommitHooks.push(lrUpload = function () {
 
     if ($("#alignmentTypeSelect option:selected").attr("value") == "LR-LRMI") {
-        if (identity == null || identity === undefined) {
-            error("Please log in to commit alignments.");
-            return;
-        }
         var cw = new CreativeWork();
         var ao = new AlignmentObject();
         cw.url = $("#selectedResource").text();
