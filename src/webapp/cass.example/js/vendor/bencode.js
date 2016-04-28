@@ -138,13 +138,12 @@ function bint(num) {
 function blist(list) {
     var str, enclist;
     enclist = [];
-    for(key in list) {
+    for(var key = 0;key < list.length;key++) {
         enclist.push(bencode(list[key]));
     }
-    enclist.sort();
 
     str = "l";
-    for(key in enclist) {
+    for(var key = 0;key < enclist.length;key++) {
         str += enclist[key];
     }
     return str + "e";
@@ -154,13 +153,14 @@ function blist(list) {
 function bdict(dict) {
     var str, enclist;
     enclist = []
-    for(key in dict) {
-        enclist.push(bstring(key) + bencode(dict[key]));
+    var listKeys = Object.keys(dict);
+    listKeys.sort();
+    for(var key = 0;key < listKeys.length;key++) {
+        enclist.push(bstring(listKeys[key]) + bencode(dict[listKeys[key]]));
     }
-    enclist.sort();
 
     str = "d";
-    for(key in enclist) {
+    for(var key = 0;key < enclist.length;key++) {
         str += enclist[key];
     }
     return str + "e";

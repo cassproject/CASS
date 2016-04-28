@@ -77,10 +77,12 @@ $("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("align
 $("#alignmentTypeSelect").append("<option/>");
 $("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "requires").text("LR Sandbox as an LRMI (schema.org/AlignmentObject) 'requires' alignment.");
 
+$("#main").append("<label title='gpg --export-secret-key -a \"Your Name\"'>LR Signing Key:</label><input type='file' id='pgpkey'/>");
+
 var lrUsername = "";
 var lrPassword = "";
 
-resourceCommitHooks.push(function () {
+resourceCommitHooks.push(lrUpload = function () {
 
     if ($("#alignmentTypeSelect option:selected").attr("value") == "LR-LRMI") {
         if (identity == null || identity === undefined) {
@@ -97,32 +99,44 @@ resourceCommitHooks.push(function () {
         ao.educationalFramework = $("#selectedCompetency").attr("framework");
         cw.educationalAlignment = [ao];
 
+        if (privkey == null) {
+            loadKey();
+            return;
+        }
+
         var envelope = makeEnvelope(cw);
-        var signedEnvelope = signEnvelope(envelope);
-        lrUsername = prompt("Please enter your LR Sandbox Username.",lrUsername);
-        lrPassword = prompt("Please enter your LR Sandbox Password.",lrPassword);
-        $.ajax({
-            type: "POST",
-            url: "http://sandbox.learningregistry.org/publish",
-            contentType: "application/json",
-            data: JSON.stringify({
-                documents: [signedEnvelope]
-            }),
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + btoa(lrUsername + ":" + lrPassword));
-            },
-            success: function (s) {
-                if (s.document_results[0].error !== undefined)
-                    alert(s.document_results[0].OK + ": " + s.document_results[0].error);
-                else
-                    window.open("http://sandbox.learningregistry.org/harvest/getrecord?request_ID="+s.document_results[0].doc_ID+"&by_doc_ID=true","_blank");
-            },
-            error: function (s) {
-                alert(JSON.stringify(s));
-            },
-            failure: function (s) {
-                alert(JSON.stringify(s));
+        signEnvelope(envelope, function (ciphertext) {
+            envelope["digital_signature"] = {
+                signing_method: "LR-PGP.1.0",
+                signature: ciphertext.data,
+                key_location: ["http://urlecho.appspot.com/echo?body=" + encodeURIComponent(openpgp.key.readArmored(privkey).keys[0].toPublic().armor())]
             }
+            envelope.active = true;
+            lrUsername = prompt("Please enter your LR Sandbox Username.", lrUsername);
+            lrPassword = prompt("Please enter your LR Sandbox Password.", lrPassword);
+            $.ajax({
+                type: "POST",
+                url: "http://sandbox.learningregistry.org/publish",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    documents: [envelope]
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(lrUsername + ":" + lrPassword));
+                },
+                success: function (s) {
+                    if (s.document_results[0].error !== undefined)
+                        alert(s.document_results[0].OK + ": " + s.document_results[0].error);
+                    else
+                        window.open("http://sandbox.learningregistry.org/harvest/getrecord?request_ID=" + s.document_results[0].doc_ID + "&by_doc_ID=true", "_blank");
+                },
+                error: function (s) {
+                    alert(JSON.stringify(s));
+                },
+                failure: function (s) {
+                    alert(JSON.stringify(s));
+                }
+            });
         });
     }
 
@@ -130,16 +144,16 @@ resourceCommitHooks.push(function () {
 
 makeEnvelope = function (cw) {
     var envelope = {
-        "active": true,
+        "active": "true",
         "doc_type": "resource_data",
         "doc_version": "0.51.0",
         "identity": {
-            owner: identity.ppk.toPk().toPem(),
+            owner: openpgp.key.readArmored(privkey).keys[0].users[0].userId.userid,
             submitter: "CASS Resource Aligner",
             submitter_type: "agent",
-            curator: "cassproject.org"
+            curator: openpgp.key.readArmored(privkey).keys[0].users[0].userId.userid
         },
-        "keys": ["CASS Resource Alignment", "CASS"],
+        "keys": ["CASS Resource Alignment", "CASS", "lr-test-data"],
         "payload_placement": "inline",
         "payload_schema": ["schema.org", "lrmi", "JSON-LD"],
         "resource_data": JSON.stringify(cw),
@@ -153,17 +167,57 @@ makeEnvelope = function (cw) {
     return envelope;
 }
 
-signEnvelope = function (ev) {
+var privkey = null;
+
+signEnvelope = function (ev, fun) {
+    var options, encrypted;
+
     var bencoded = bencode(ev);
     var md = forge.md.sha256.create();
     md.update(bencoded);
     var hashed = md.digest().toHex();
-    var signature = EcRsaOaep.sign(identity.ppk, hashed);
-    var clearsign = "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n" + hashed + "\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\n\n" + signature + "\n-----END PGP SIGNATURE-----\n";
-    ev["digital_signature"] = {
-        signing_method: "LR-PGP.1.0",
-        signature: clearsign,
-        key_location: ["http://urlecho.appspot.com/echo?body=" + encodeURIComponent(identity.ppk.toPk().toPem())]
+    options = {
+        data: hashed, // input as String (or Uint8Array)
+        publicKeys: [openpgp.key.readArmored(privkey).keys[0].toPublic()],
+        privateKeys: openpgp.key.readArmored(privkey).keys // for signing (optional)
+    };
+
+    openpgp.sign(options).then(function (ciphertext) {
+        fun(ciphertext)
+    });
+}
+
+function loadKey() {
+    if ($("#pgpkey")[0].files.length == 1) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            privkey = e.target.result;
+            if (openpgp.key.readArmored(privkey).keys.length == 0) {
+                alert("Failed to import key.");
+                return;
+            }
+            lrUpload();
+            return;
+        };
+        reader.readAsText($("#pgpkey")[0].files[0]);
+    } else {
+        if (confirm("You have not selected a LR signing key. Click OK to generate one.\n\nTo export, use 'gpg --export-secret-key -a \"<your name>\"'")); {
+            var options = {
+                userIds: [{
+                    name: prompt("Please enter your name."),
+                    email: prompt("Please enter your email.")
+                    }], // multiple user IDs
+                numBits: 2048
+            };
+
+            openpgp.generateKey(options).then(function (key) {
+                privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
+                download("lrSigningKey.gpg", privkey);
+                $("#pgpkey").prev().text("LR Signing Key has been downloaded.");
+                $("#pgpkey").remove();
+                lrUpload();
+            });
+            return;
+        }
     }
-    return ev;
 }
