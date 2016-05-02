@@ -15,7 +15,7 @@
     <div class="top-bar">
         <ul class="top-bar-left dropdown menu" data-dropdown-menu>
             <li>
-                <a class="menu-text">Profile Manager</a>
+                <a class="menu-text" href="../index.html">CASS</a>
                 <ul class="menu vertical">
                     <li><a href="framework.html">Framework Manager</a></li>
                     <li><a href="profile.html">Profile Manager</a></li>
@@ -54,7 +54,49 @@
     </div>
 
     <div id="oneToOne" class="topLevel" style="display:none;">
-        <div class="large-3 columns">
+
+        <div id="contactSelectorPlaceholder" class="large-3 columns">
+            &nbsp;
+        </div>
+        <div id="contactSelector" class="large-3 columns" style="display:none;">
+
+            <input id="contactSearch" type="search" onkeyup="contactSearch();" placeholder="Search Contacts...">
+            <ul id="contactsList">
+                <li style="list-style: none;" class="contact contactsContact"><a class="float-right" onclick="removeContact(this);">X</a>
+                    <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
+                </li>
+            </ul>
+        </div>
+        <div class="large-6 columns">
+            <h5 style="padding-top:1em;">Assertions for 
+            <a id="selectedContact" style="" class="" onclick="slideInContacts();">Selected Contact</a> across
+            <a id="selectedFramework" style="width:50%;" class="" onclick="slideInFrameworks();">All Frameworks</a>
+            <a id="selectedCompetency" style="width:50%;display:none;" class="">Selected Competency</a></h5>
+            <ul id="oneToOneAssertions">
+                <li id="oneToOneAssertion" class="assertion" style="list-style: none;">
+                    <h3 class="assertionCompetency">Competency</h3>
+                    <span class="assertionTimestamp">&lt;Restricted&gt; ago</span>,
+                    <span class="assertionAgent">&lt;Restricted&gt;</span> claimed
+                    <span class="assertionSubject">&lt;Restricted&gt;</span> possessed
+                    <span class="assertionCompetency">Competency</span>
+                    <span class="assertionOptionLevel">
+                    at <span class="assertionLevel">Level</span>
+                    </span>
+                    with <span class="assertionEvidence">&lt;Restricted&gt; pieces of evidence</span>,
+                    <span class="assertionConfidence"></span> and <span class="assertionExpirationProgress"></span>.
+                    <br>
+                    <br>
+                    <span class="assertionActions"><span class="assertionEvidence button tiny">&lt;Restricted&gt; pieces of evidence</span>
+                    <a class="assertionActionDelete button tiny alert" style="display:none;">Delete</a>
+                    </span>
+                    <ul class="assertionEvidenceStore" style="display:none;"></ul>
+                </li>
+            </ul>
+        </div>
+        <div id="oneToOneFrameworkPlaceholder" class="large-3 columns">
+            &nbsp;
+        </div>
+        <div id="oneToOneFramework" class="large-3 columns" style="display:none;">
             <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
             <div id="frameworks">
                 <ul id="frameworks-frameworks" class="accordion" data-accordion data-allow-all-closed="true" role="tablist">
@@ -75,36 +117,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="large-6 columns">
-            <h3 id="selectedContact" style="width:50%;float:right;" class="contact">Selected Contact</h3>
-            <h3 id="selectedFramework" style="width:50%;" class="framework">All Frameworks</h3>
-            <h3 id="selectedCompetency" style="width:50%;display:none;" class="competency">Selected Competency</h3>
-            <ul id="oneToOneAssertions">
-                <li id="oneToOneAssertion" class="assertion" style="list-style: none;">
-                    <span class="assertionTimestamp">&lt;Unknown&gt; ago</span>,
-                    <span class="assertionAgent">&lt;Unknown&gt;</span> claimed
-                    <span class="assertionSubject">&lt;Unknown&gt;</span> possessed
-                    <span class="assertionCompetency">Competency</span>
-                    <span class="assertionOptionLevel">
-                    at <span class="assertionLevel">Level</span>
-                    </span>
-                    with <span class="assertionEvidence">&lt;Unknown&gt; pieces of evidence</span>,
-                    <span class="assertionConfidence"></span> and <span class="assertionExpirationProgress"></span>.
-                    <span class="assertionActions">
-                        <a class="assertionActionDelete" style="display:none;">X</a>
-                    </span>
-                    <ul class="assertionEvidenceStore" style="display:none;"></ul>
-                </li>
-            </ul>
-        </div>
-        <div id="contactSelector" class="large-3 columns">
-            <input id="contactSearch" type="search" onkeyup="contactSearch();" placeholder="Search Contacts...">
-            <ul id="contactsList">
-                <li style="list-style: none;" class="contact contactsContact"><a class="float-right" onclick="removeContact(this);">X</a>
-                    <span id="identity" title="PK HERE" onInput="updateContact(this);" contenteditable="true">Me</span>
-                </li>
-            </ul>
         </div>
     </div>
 
@@ -150,34 +162,34 @@
     </div>
 
     <div id="hidey hidey" class="topLevel" style="display:none;">
-    <ul id="competency" class="accordion" data-accordion role="tablist" data-allow-all-closed="true">
-        <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
-            <a class="accordion-title cass-competency-name">Loading...</a>
-            <div class="accordion-content" data-tab-content>
-                <span class="cass-competency-actions"></span>
-                <i class="cass-competency-description">No Description.</i>
-                <br>
-                <small><a class="cass-competency-url" target="_blank"></a></small>
-                <ul class="cass-competency-levels">
-                    <li class="cass-competency-level">
-                        <span class="cass-level-actions"></span>
-                        <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
-                        <br>
-                        <i class="cass-level-description">No Description.</i>
-                    </li>
-                </ul>
-                <ul class="cass-competency-relations">
-                    <li class="cass-competency-relation">
-                        <span class="cass-relation-actions"></span>
-                        <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
-                        <span class="cass-relation-type"></span>
-                        <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
-                    </li>
-                </ul>
-                <ul class="cass-competency-assertions" style="display:none;"></ul>
-            </div>
-        </li>
-    </ul>
+        <ul id="competency" class="accordion" data-accordion role="tablist" data-allow-all-closed="true">
+            <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
+                <a class="accordion-title cass-competency-name">Loading...</a>
+                <div class="accordion-content" data-tab-content>
+                    <span class="cass-competency-actions"></span>
+                    <i class="cass-competency-description">No Description.</i>
+                    <br>
+                    <small><a class="cass-competency-url" target="_blank"></a></small>
+                    <ul class="cass-competency-levels">
+                        <li class="cass-competency-level">
+                            <span class="cass-level-actions"></span>
+                            <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
+                            <br>
+                            <i class="cass-level-description">No Description.</i>
+                        </li>
+                    </ul>
+                    <ul class="cass-competency-relations">
+                        <li class="cass-competency-relation">
+                            <span class="cass-relation-actions"></span>
+                            <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
+                            <span class="cass-relation-type"></span>
+                            <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
+                        </li>
+                    </ul>
+                    <ul class="cass-competency-assertions" style="display:none;"></ul>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <div class="small reveal" id="login" data-reveal>
@@ -298,7 +310,7 @@
     <script src="js/profile/appAssertion.js"></script>
     <script src="js/profile/appView.js"></script>
     <script>
-            $(document).foundation();
+        $(document).foundation();
         timeout(function() {
             oneToOne();
             if (identity == null)

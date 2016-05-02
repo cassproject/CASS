@@ -21,7 +21,7 @@ timeout(function () {
 
     flrUi = ui;
 
-    ui.find(".cass-provider-name").text("Federal Learning Registry");
+    ui.find(".cass-provider-name").text("Learning Registry");
     ui.find(".cass-provider-url").text("http://search.learningregistry.net/api/search");
     ui.find(".cass-provider-description").text("The learning registry is a new approach to capturing, connecting and sharing data about learning resources available online with the goal of making it easier for educators and students to access the rich content available in our ever-expanding digital universe.");
     ui.find("#resourceSearch").keypress(function (e) {

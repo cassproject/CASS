@@ -129,13 +129,7 @@ body
     border-bottom: 1px solid rgb(230, 230, 230);
 }
 
-.assertionCompetency {    
-    padding-left: .5em; 
-    padding-right: .5em; 
-    background-color: white; 
-    color:black;
-    border-left: 6px solid rgb(92,173,226); 
-    border-bottom: 1px solid rgb(230, 230, 230);
+.assertionCompetency {  
 }
 
 /* --- Relationships --- */
@@ -173,12 +167,6 @@ li.cass-competency-relation:before {
 /* --- Levels --- */
 
 .assertionLevel {    
-    padding-left: .5em; 
-    padding-right: .5em; 
-    background-color: white; 
-    color:black;
-    border-left: 6px solid rgb(243,196,12); 
-    border-bottom: 1px solid rgb(230, 230, 230);
 }
 
 .cass-level-actions {float:right}
@@ -214,12 +202,6 @@ li.cass-competency-level:before {
 /* --- Evidence --- */
 
 .assertionEvidence {    
-    padding-left: .5em; 
-    padding-right: .5em; 
-    background-color: white; 
-    color:black;
-    border-left: 6px solid rgb(126,140,140); 
-    border-bottom: 1px solid rgb(230, 230, 230);
 }
 
 .accordion-title.cass-provider-name { border-left: 4px solid black; }
@@ -231,19 +213,26 @@ li.cass-competency-level:before {
 
 /* --- Contacts --- */
 
-.contact:before{
+.contact:before,.contactStyle:before{
     content: "👤";
     font-size: x-large;
 }
 .assertionAgent:before,.assertionSubject:before{
-    content: "👤 ";
 }
 
-.contact,.assertionAgent,.assertionSubject {    
+.contact,.contactStyle{    
     padding-left: .2em; 
     padding-right: .5em; 
     background-color: white; 
     border-left: 6px solid maroon; 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+.resource,.resourceStyle{    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white;
+    color:black;
+    border-left: 6px solid black; 
     border-bottom: 1px solid rgb(230, 230, 230);
 }
 .contact[aria-selected=true] { color:white; background-color: maroon; }
@@ -253,20 +242,13 @@ li.cass-competency-level:before {
 }
 
 /* --- Timestamp --- */
-.assertion { 
-    padding-left: .5em; 
-    padding-right: .5em; 
-    background-color: rgb(230,230,230);
-    color:black;
-    border-left: 6px solid orange; 
-    border-bottom: 4px solid #D99058;
-    margin-bottom: 5px;
+.assertion {
+    background-color:white;
+    padding-top:1em;
+    padding-left:2em;
+    padding-right:2em;
+    border: 1px solid lightgray;
 }
-.assertionTimestamp,.assertionConfidence,.assertionExpirationProgress {    
-    padding-left: .5em; 
-    padding-right: .5em; 
-    background-color: white;
-    color:black;
-    border-left: 6px solid rgb(0,0,0); 
-    border-bottom: 1px solid rgb(230, 230, 230);
+.assertionTimestamp { 
 }
+.assertionConfidence,.assertionExpirationProgress{}
