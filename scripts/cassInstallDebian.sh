@@ -17,7 +17,7 @@ echo Downloading LEVR...
 wget -q http://build.eduworks.com/dist/levr/levr.war
 echo -----
 echo Installing LEVR...
-rm -rf /var/lib/tomcat7/levr*
+rm -rf /var/lib/tomcat7/webapps/levr*
 mv levr.war /var/lib/tomcat7/webapps/
 
 #Install Elasticsearch
