@@ -985,7 +985,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.repoInterface = new EcRepository();
     constructor.loginServer = new EcRemoteIdentityManager();
     constructor.main = function(args) {
-        AppController.serverController = new ServerController("https://sandbox.service.cassproject.org/", "CASS Sandbox");
+        AppController.serverController = new ServerController(window.location.origin+"/api/custom/", "Local Instance");
         AppController.loginServer.configure("UserNameSaltIsSaltyWOOOOO", 5000, 64, "PasswordSalskfeSEfejsfjoepsjof", 5000, 64, "SuperSecretSELKeFJSEOFJSEPF", 5000);
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);

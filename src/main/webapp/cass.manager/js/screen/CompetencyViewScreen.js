@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 CompetencyViewScreen = (function(CompetencyViewScreen){
 	
 	var relationCounts = {};
@@ -38,6 +29,11 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 	    $("#competencyViewerId").text(competency.id);
 	    $(".competencyViewerName").text(competency.name);
 	    $("#competencyViewerDescription").text(competency.description);
+	    
+	    if(competency.privateEncrypted)
+			$("#competencyViewerPrivateSymbol").removeClass("hide");
+		else
+			$("#competencyViewerPrivateSymbol").addClass("hide");
 	    
 	    if(competency.owner != undefined && competency.owner.length > 0)
 	    {
@@ -121,7 +117,7 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 		
 	    relationCounts = {}
 	    for (var i = 0;i < arr.length;i++)
-	        EcRepository.get(arr[i].id,competencyViewRelationInner,errorFindingRelationships);
+	    	competencyViewRelationInner(arr[i]);
 	    for (var key in relationTypes)
 	        if (relationCounts[key] !== undefined && relationCounts[key] > 0)
 	            $(relationTypes[key]).parent().removeClass("hide");
@@ -157,11 +153,8 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 
 	function fetchNameFor(dom,id)
 	{
-	    EcRepository.get(id,function(obj){
-	        var c = new EcCompetency();
-	        c.copyFrom(obj);
-	        dom.text(c.name);
-	        
+	    AppController.repositoryController.viewCompetency(id, function(c){
+	        dom.text(c.name);        
 	        dom.click(function(e){
 	        	e.preventDefault();
 	        	ScreenManager.changeScreen(new CompetencyViewScreen(c))
@@ -215,24 +208,30 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 				event.preventDefault();
 			});
 			
-			var canEdit = false;
-			
-			for(var index in EcIdentityManager.ids){
-				var pk = EcIdentityManager.ids[index].ppk.toPk()
-				if(data.canEdit(pk))
-					canEdit = true;
-			}
-			
-			if(data.owner == undefined || data.owner.length == 0)
-				canEdit = true;
-			
-			if(canEdit){
+			if(AppController.identityController.canEdit(data)){
 				$("#editCompetencyBtn").click(function(event){
 					event.preventDefault();
 					ScreenManager.changeScreen(new CompetencyEditScreen(data))
 				})
 			}else{
 				$("#editCompetencyBtn").remove();
+			}
+			
+			if(AppController.identityController.owns(data) || AppController.loginController.getAdmin()){
+				$("#competencyViewDeleteBtn").click(function(){
+					ModalManager.showModal(new ConfirmModal(function(){
+						data._delete(function(){
+							ScreenManager.changeScreen(new CompetencySearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete competenncy";
+							ViewManager.getView("#competencyViewMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this competency?"))
+				})
+			}else{
+				$("#competencyViewDeleteBtn").remove();
 			}
 			
 			

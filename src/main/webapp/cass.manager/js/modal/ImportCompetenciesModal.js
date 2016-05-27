@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var ImportCompetenciesModal = (function(ImportCompetenciesModal){	
 	
 	function createContactSmall(pem) {
@@ -138,10 +129,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	            
 	            $("#submitImportCsv").on("click", function(ev){
 					ev.preventDefault();
-					if(framework != undefined)
-						importCsv(framework);
-					else
-						importCsv(cached_frameworks[$("#importLocationSelect").val()]);
+					importCsv(framework);
 				})
 	        },
 	        error: errorParsing
@@ -149,6 +137,12 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	}
 	
 	function importCsv(framework) {  
+		var editingFramework = true;
+		if(framework == undefined){
+			editingFramework = false;
+			framework = cached_frameworks[$("#importLocationSelect").val()]
+		}
+		
 	    var file = $("#importCsvFile")[0].files[0];
 	    
 	    Papa.parse(file, {
@@ -166,6 +160,14 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 
                 if(nameIndex == -1 ){
                 	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert("Must select a column that contains competency names", "selectName");
+                	$("#submitImportCsv").addClass("alert");
+        			$("#submitImportCsv").attr("disabled", "disabled");
+        			
+        			$("#importCsvColumnName").change(function(){
+        				$("#submitImportCsv").removeClass("alert");
+        				$("#submitImportCsv").removeAttr("disabled", "disabled");
+        			});
+                	
                 	return;
                 }
                 ViewManager.getView("#importCompetenciesMessageContainer").clearAlert("selectName");
@@ -220,10 +222,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 var finishUp = function(){
                 	if((saved + failed) == competencies.length){
                 		if(framework != undefined){
-                			delete framework.competencyObjects;
-        	                EcRepository.save(framework, function () { 
-        	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
-        	                }, errorSavingFramework);
+                			if(!editingFramework){
+                				delete framework.competencyObjects;
+            	                EcRepository.save(framework, function () { 
+            	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
+            	                }, errorSavingFramework);
+                			}else{
+                				for(var i = 0; i < competencies.length; i++){
+                					ScreenManager.getCurrentScreen().addCompetency(competencies[i]);
+                				}
+                			}
                 		}else{
                         	ScreenManager.changeScreen(new CompetencySearchScreen(null, query))
                         }
@@ -243,8 +251,12 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	}
 	
 	function importFromFramework(framework){
-		if(framework == undefined)
+		var editingFramework = true;
+		if(framework == undefined){
+			editingFramework = false;
 			framework = cached_frameworks[$("#importLocationSelect").val()];
+		}
+			
 		
 		if(framework == undefined){
 			ViewManager.getView("#importCompetenciesMessageContainer").displayAlert("Problem finding framework to import to", "missingLocationFramework");
@@ -259,6 +271,20 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			return;
 		}
 		ViewManager.getView("#importCompetenciesMessageContainer").clearAlert("missingSourceFramework");
+		
+		if(source.competency == undefined || source.competency.length == 0){
+			ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(source.name+" contains no competencies", "missingSourceFrameworkCompetencies");
+			$("#submitImportFramework").addClass("alert");
+			$("#submitImportFramework").attr("disabled", "disabled");
+			
+			$("#importLocationSelect").change(function(){
+				$("#submitImportFramework").removeClass("alert");
+				$("#submitImportFramework").removeAttr("disabled", "disabled");
+			});
+			
+			return;
+		}
+		ViewManager.getView("#importCompetenciesMessageContainer").clearAlert("missingSourceFrameworkCompetencies");
 		
 		var copy = $("#copySwitch").is(":checked");
 		
@@ -280,6 +306,9 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 					EcRepository.save(f, function(){
 						saved++;
 						framework.addCompetency(f.id);
+						if(editingFramework){
+							ScreenManager.getCurrentScreen().addCompetency(f);
+						}
 					}, function(err){
 						failed++;
 						errorSavingCompetency("Trouble Copying Competency: "+comp.id);
@@ -289,12 +318,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			
 			var finishUp = function(){
 				if((saved + failed) == source.competency.length){
-					EcRepository.save(framework, function(){
-						ScreenManager.changeScreen(new FrameworkViewScreen(framework));
-						
-						if(saved == source.competency.length)
-							ModalManager.hideModal();
-					}, errorSavingFramework);
+					
+					if(!editingFramework){
+						EcRepository.save(framework, function(){
+							ScreenManager.changeScreen(new FrameworkViewScreen(framework));
+							
+							if(saved == source.competency.length)
+								ModalManager.hideModal();
+						}, errorSavingFramework);
+					}
 				}else{
 					setTimeout(finishUp, 200);
 				}
@@ -303,14 +335,25 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			setTimeout(finishUp, 200);
 		}else{
 			for(var i = 0; i < source.competency.length; i++){
+				if(editingFramework && framework.competency != undefined 
+						&& framework.competency.indexOf(source.competency[i]) == -1 
+						&& framework.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1){
+					AppController.repositoryController.viewCompetency(source.competency[i], function(comp){
+						ScreenManager.getCurrentScreen().addCompetency(comp);
+					});
+				}
 				framework.addCompetency(source.competency[i]);
 			}
 			
-			delete framework.competencyObjects;
-			EcRepository.save(framework, function(){
-				ScreenManager.changeScreen(new FrameworkViewScreen(framework));
+			if(!editingFramework){
+				delete framework.competencyObjects;
+				EcRepository.save(framework, function(){
+					ScreenManager.changeScreen(new FrameworkViewScreen(framework));
+					ModalManager.hideModal();
+				}, errorSavingFramework);
+			}else{
 				ModalManager.hideModal();
-			}, errorSavingFramework);
+			}
 		}
 	}
 	
@@ -467,10 +510,9 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			}else{
 				$("#selectFramework").removeClass("hide");
 				
-				if(data.owner == undefined || data.owner.length == 0)
-					addPublicFramework(data);
-				else
-					addMyFramework(data);
+				// TODO:
+				
+				addLocationFramework(data);
 				$("#noLocation").removeAttr('selected');
 				
 				var id = data.shortId().split("/");

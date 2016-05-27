@@ -277,15 +277,30 @@ AssertionViewScreen = (function(AssertionViewScreen){
 			})
 			
 			
-			var canEdit = AppController.identityController.canEdit(data)
-			
-			if(canEdit){
+			if(AppController.identityController.canEdit(data)){
 				$("#editAssertionBtn").click(function(event){
 					event.preventDefault();
 					ScreenManager.changeScreen(new AssertionEditScreen(data))
 				})
 			}else{
 				$("#editAssertionBtn").remove();
+			}
+			
+			if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+				$("#assertionViewDeleteBtn").remove();
+			}else{
+				$("#assertionViewDeleteBtn").click(function(){
+					ModalManager.showModal(new ConfirmModal(function(){
+						EcRepository._delete(data, function(){
+							ScreenManager.changeScreen(new AssertionSearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete assertion";
+							ViewManager.getView("#assertionViewMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this assertion?"))
+				})
 			}
 			
 			

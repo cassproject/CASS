@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.schema = "http://schema.eduworks.com/general/0.1";
@@ -39,6 +30,19 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  URL/URI used to retrieve and store the object, plus identify the object.
      */
     prototype.id = null;
+    prototype.privateEncrypted = false;
+    /**
+     *  PEM encoded public keys of identities authorized to view the object. A
+     *  repository will ignore write operations from these identities, but will
+     *  allow them to read the object.
+     */
+    prototype.reader = null;
+    /**
+     *  Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using
+     *  RSA public keys of owners or readers (or unknown parties) to allow them
+     *  access to the payload.
+     */
+    prototype.secret = null;
     /**
      *  Will generate an identifier using the server URL provided (usually from
      *  an EcRepository).
@@ -65,6 +69,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @return True if owner is represented by the PK, false otherwise.
      */
     prototype.hasOwner = function(pk) {
+        if (this.owner == null) 
+            return false;
         var pkPem = pk.toPem();
         for (var i = 0; i < this.owner.length; i++) 
             if (pkPem.equals(EcPk.fromPem(this.owner[i]).toPem())) 
@@ -181,6 +187,35 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                 this.owner.splice(i, 1);
     };
     /**
+     *  Adds a reader to the object, if the reader does not exist.
+     *  
+     *  @param newReader
+     *             PK of the new reader.
+     */
+    prototype.addReader = function(newReader) {
+        var pem = newReader.toPem();
+        if (this.reader == null) 
+            this.reader = new Array();
+        for (var i = 0; i < this.reader.length; i++) 
+            if (this.reader[i].equals(pem)) 
+                return;
+        this.reader.push(pem);
+    };
+    /**
+     *  Removes a reader from the object, if the reader does exist.
+     *  
+     *  @param oldReader
+     *             PK of the old reader.
+     */
+    prototype.removeReader = function(oldReader) {
+        var pem = oldReader.toPem();
+        if (this.reader == null) 
+            this.reader = new Array();
+        for (var i = 0; i < this.reader.length; i++) 
+            if (this.reader[i].equals(pem)) 
+                this.reader.splice(i, 1);
+    };
+    /**
      *  Determines if the object will survive and be retreivable from a server,
      *  should it be written.
      *  
@@ -189,13 +224,13 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.invalid = function() {
         if (this.id == null) 
             return true;
-        if (this.id.contains("http://") == false) 
+        if (this.id.contains("http://") == false && this.id.contains("https://") == false) 
             return true;
         if (this.schema == null) 
             return true;
         if (this.getFullType() == null) 
             return true;
-        if (this.getFullType().contains("http://") == false) 
+        if (this.getFullType().contains("http://") == false && this.getFullType().contains("https://") == false) 
             return true;
         return false;
     };
@@ -222,7 +257,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.shortId = function() {
         return EcRemoteLinkedData.trimVersionFromUrl(this.id);
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A representation of a file.
  *  
@@ -260,4 +295,4 @@ EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, proto
         var blob = base64ToBlob(this.data, this.mimeType);
         saveAs(blob, this.name);
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

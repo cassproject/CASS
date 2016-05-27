@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 CompetencyEditScreen = (function(CompetencyEditScreen){
 	
 	function createContactSmall(pem)
@@ -28,6 +19,7 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	    
 	    if(competency.owner != undefined && competency.owner.length > 0)
 	    {
+	    	$("#competencyEditOwner").html("");
 	    	for(var i = 0; i < competency.owner.length; i++)
 	    	{
 	    		if(i > 0)
@@ -48,6 +40,38 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	    	$("#competencyEditOwnerAdvanced").hide();
 	    }
 	    
+	    if(competency.privateEncrypted){
+			if($("#privateRow").css("display") == "none")
+				$("#privateRow").slideDown();
+			
+			if(competency.reader != undefined && competency.reader.length != 0)
+		    {
+		    	$("#competencyEditNoReaders").addClass("hide");
+		    	$("#competencyEditReaders").html("");
+		    	for(var i = 0; i < competency.reader.length; i++)
+		    	{
+		    		var pk = competency.reader[i];
+		    		
+		    		var contact = $(createContactSmall(pk));
+		    		$("#competencyEditReaders").append(contact);            
+		    		contact.children(".qrcodeCanvas").qrcode({
+		                width:128,
+		                height:128,
+		                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
+		            });
+		    		
+		    		if(i < competency.reader.length-1)
+		    			$("#competencyEditReaders").append(", ");
+		    	}
+		    }else{
+		    	$("#competencyEditNoReaders").removeClass("hide");
+		    }
+		}else if($("#privateRow").css("display") != "none"){
+			$("#privateRow").slideUp();
+		}
+	    
+	    $("#competencyNoLevels").removeClass("hide");
+	    $("#competencyLevelContainer").children(".level").remove();
 	    competency.levels(AppController.repoInterface, addLevel, errorRetrievingLevels)
 	    
 	}
@@ -196,6 +220,25 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 				ScreenManager.changeScreen(new CompetencyViewScreen(data))
 			});
 			
+			if(data.name == NEW_COMPETENCY_NAME){
+				$("#competencyEditDeleteBtn").remove();	
+			}else{
+				$("#competencyEditDeleteBtn").click(function(event){
+					event.preventDefault();
+					
+					ModalManager.showModal(new ConfirmModal(function(){
+						data._delete(function(){
+							ScreenManager.changeScreen(new CompetencySearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete framework";
+							ViewManager.getView("#competencyEditMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this competency?"))
+				})
+			}
+			
 			$("#competencyEditSaveBtn").click(function(event){
 				event.preventDefault();
 				 
@@ -227,6 +270,24 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 					addLevel(level);
 				}));
 			});
+			
+			$("#competencyEditOwnerAdvanced").click(function(ev){
+				ev.preventDefault();
+				
+				data.name = $("#competencyEditName").val();
+				data.description = $("#competencyEditDescription").val();
+				data.scope = $("#competencyEditScope").val();
+				
+				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+					data.owner = dataAfter.owner;
+					data.privateEncrypted = dataAfter.privateEncrypted;
+					data.reader = dataAfter.reader;
+					
+					displayCompetency(data);
+					
+					ModalManager.hideModal();
+				}))
+			})
 			
 			if(data.name == NEW_COMPETENCY_NAME)
 			{

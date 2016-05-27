@@ -7,15 +7,6 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /* 
 COLORS: 
 rgb(46,205,113) - green - Framework
@@ -29,6 +20,10 @@ body
 {
     background-color: rgb(242,242,242);
     color: rgb(68,84,106);
+}
+
+#screenContainer{
+	padding-bottom:3rem;
 }
 
 .topLevel
@@ -51,6 +46,13 @@ body
     background-color: rgb(53,152,220);
     font-size: .75rem;
     padding-right:1em;
+}
+
+.top-bar h1 a{
+	color:white;
+}
+.top-bar h1 a:hover{
+	color:#CECECE;
 }
 
 .top-bar .menu .menu-text
@@ -421,6 +423,8 @@ li.cass-competency-level:before {
 	display: inline-block;
 }
 
+
+
 .ownershipDisplay{
 	position: relative;
 }
@@ -446,6 +450,150 @@ li.cass-competency-level:before {
 	background-color: rgba(173, 216, 230, 0.4)
 }
 
-.frameworkList.empty{
+
+
+.searchSelect.empty{
 	text-align:center;
+}
+
+#repoSearchTypesDisplay{
+	width:100%;
+}
+
+#repoSearchTypesText{
+	max-width:90%;
+	text-overflow: ellipsis;
+	white-space:nowrap;	
+	display:inline-block;
+}
+
+#repoSearchTypesDisplay:hover{
+	cursor:pointer;
+	color: grey;
+}
+
+#repoSearchTypes{
+	padding:5px 0px;
+	list-style:none;
+	width:100%;
+}
+
+#repoSearchTypes li{
+	padding: 0px 10px;
+}
+
+#repoSearchTypesDisplay{
+	display: block;
+	padding: .7rem 1rem;
+	line-height: 1;
+	padding-right: 1.5rem;
+	position: relative;
+}
+
+
+
+.callout.dataViewResults{
+	box-shadow:6px 0px 4px rgba(0,0,0,.4);
+	margin-bottom:0px;
+	background-color: lightgrey;
+	margin-bottom:0px; 
+	padding: 0px;
+	margin-top:35px;
+}
+
+.dataViewSort{
+	position:absolute;
+	top:-35px;
+	right: 0px;
+	width:200px;
+	box-shadow: 7px -3px 4px rgba(0,0,0,.4);
+	border-right: 1px solid lightgrey;
+	background-color: lightgray;
+	border-bottom: 1px solid grey;
+}
+
+.dataViewProgress, .dataViewNone{
+	background-color:white;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	text-align: center;
+}
+
+.dataView .row{
+	border-bottom: 1px solid #B9B9B9;
+	background-color:white;
+	position:relative;
+}
+.dataView .row:last-child{
+	border-bottom: 0px;
+}
+
+.dataView .row .datum-select{
+	display:none;
+	position:absolute;
+	left: 15px;
+  	top: 33%;
+  	
+}
+
+.dataView .row .rowToolbar{
+	position:absolute;
+	right:10px; 
+	display:none;
+}
+
+.dataView .row:hover .datum-select{
+	display:inline;
+}
+
+
+.dataView .row:hover .rowToolbar{
+	display:block;
+}
+
+.dataView.selecting .row .datum-select, .dataView.selecting .row .datum-select{
+	display:inline;
+}
+
+.dataView.selecting .row:hover .rowToolbar{
+	display:none;
+}
+.dataView.selecting .row.selected{
+	background-color: #E0EEF3;
+}
+
+.dataViewBtn:hover{
+	color: grey;
+	cursor: pointer;
+}
+
+.contextMenu{
+	position:absolute;
+	box-shadow:6px 0px 4px rgba(0,0,0,.4);
+	background-color:white;
+	border: 1px solid lightgrey;
+	list-style:none;
+	margin:0px; 
+	width:200px;
+}
+.contextMenu li{
+	border-top:1px solid white;
+	padding:0px 10px;
+}
+.contextMenu li:first-child{
+	padding-top:3px;
+	border-top:0px;
+}
+.contextMenu li:last-child{
+	padding-bottom:3px;
+}
+
+.contextMenu li:hover{
+	background:lightgrey;
+	cursor:pointer;
+}
+
+
+#readerRow{
+	display:block;
 }

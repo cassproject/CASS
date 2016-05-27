@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Represents an encrypted piece of data. Provides helper functions for
  *  encryption/decryption of JSON-LD objects, and provides some searchability of
@@ -19,6 +10,7 @@ var EcEncryptedValue = function() {
 };
 EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], function(constructor, prototype) {
     constructor.toEncryptedValue = function(d, hideType) {
+        d.updateTimestamp();
         var v = new EcEncryptedValue();
         if (!hideType) 
             v.encryptedType = d.type;
@@ -26,6 +18,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         var newSecret = EcAes.newIv(32);
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
+        v.reader = d.reader;
         v.id = d.id;
         if ((d)["name"] != null) 
             v.name = (d)["name"];
@@ -36,6 +29,14 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             if (v.secret == null) 
                 v.secret = new Array();
             v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.owner[i]), eSecret.toEncryptableJson()));
+        }
+        for (var i = 0; i < d.reader.length; i++) {
+            var eSecret = new EbacEncryptedSecret();
+            eSecret.iv = newIv;
+            eSecret.secret = newSecret;
+            if (v.secret == null) 
+                v.secret = new Array();
+            v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
         }
         return v;
     };
@@ -80,7 +81,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     prototype.decryptIntoObject = function() {
-        var d = null;
         if (this.owner != null) 
             for (var i = 0; i < this.owner.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.owner[i]));
@@ -158,9 +158,15 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 continue;
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
+            decrypted.privateEncrypted = true;
             return decrypted.deAtify();
         }
         return null;
+    };
+    prototype.isAnEncrypted = function(type) {
+        if (this.encryptedType == null) 
+            return false;
+        return this.encryptedType.equals(type);
     };
     /**
      *  Adds a reader to the object, if the reader does not exist.
@@ -215,7 +221,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             if (this.reader[i].equals(pem)) 
                 this.reader.splice(i, 1);
     };
-}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
@@ -268,6 +274,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcRemote.postExpectingObject(url, null, fd, function(p1) {
             var d = new EcRemoteLinkedData("", "");
             d.copyFrom(p1);
+            if (d.schema == "") {
+                failure(JSON.stringify(p1));
+                return;
+            }
             if (EcRepository.caching) 
                 (EcRepository.cache)[url] = d;
             success(d);
@@ -345,14 +355,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     prototype.autoDetectRepository = function() {
         EcRemote.async = false;
-        var protocols = new Array("http:", "https:");
+        var protocols = new Array();
+        protocols.push("https:");
+        if (window.location.protocol == "http:") 
+            protocols.push("http:");
         var hostnames = new Array();
         if (window.location.host != null) 
             hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");
         if (window.location.hostname != null) 
             hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
         hostnames.push("localhost", "localhost:8080", "localhost:9722");
-        var servicePrefixes = new Array("/", "/service/", "/api/custom/", "/levr/api/custom/");
+        var servicePrefixes = new Array("/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/custom/", "/levr/api/custom/");
         for (var i = 0; i < protocols.length; i++) 
             for (var j = 0; j < hostnames.length; j++) 
                 for (var k = 0; k < servicePrefixes.length; k++) 
@@ -433,7 +446,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     constructor.save = function(data, success, failure) {
         console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
-        EcRepository._save(data, success, failure);
+        if (data.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(data, success, failure);
+        }
     };
     /**
      *  Attempts to save a piece of data.
@@ -455,7 +473,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         EcIdentityManager.sign(data);
-        data.updateTimestamp();
+        if (!data.isA(EcEncryptedValue.type)) 
+            data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
         fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id));
@@ -480,7 +499,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
         }
-        EcRemote._delete(data.shortId(), EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id), success, failure);
+        EcRemote._delete(data.shortId(), EcIdentityManager.signatureSheet(60000, data.id), success, failure);
     };
     constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));

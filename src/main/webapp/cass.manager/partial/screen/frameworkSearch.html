@@ -3,6 +3,7 @@
         <div id="frameworkSearchMessageContainer" class="small-6 columns small-centered">
         </div>
     </div>
+    
     <div class="row">
         <div class="small-12 columns">
             <div class="row" style="margin-top:0px;padding-bottom:0px">
@@ -22,23 +23,15 @@
                         <small class="float-center" style="width:25px; text-align:center;">All</small>
                     </div>
                 </div>
-                <div class="small-9 columns" style="margin-bottom:0px">
+                <div class="small-8 columns" style="margin-bottom:0px">
                     <input id="frameworkSearchText" type="search" placeholder="Search Frameworks...">
+                </div>
+                <div class="small-1 columns" style="margin-bottom:0px">
+                    <button id="frameworkSearchSubmit" class="button">Search</button>
                 </div>
             </div>
 
-            <div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
-                <div class="small-12 columns">
-                    <div id="frameworkSearchProgress" class="hide">
-                        <i class=" fa fa-spinner fa-spin"></i> Searching..
-                    </div>
-                    <div id="frameworkSearchNone" class="hide" style="text-align:center;">
-                        No Results Found
-                    </div>
-
-                    <div id="frameworkSearchResults" class="vertStack">
-                    </div>
-                </div>
+            <div id="frameworkSearchResults" class="row column callout dataViewResults">
             </div>
         </div>
     </div>

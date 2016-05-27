@@ -1,16 +1,13 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-var HistoryObject = function() {};
-HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
-    prototype.name = null;
-}, {}, {});
+var HistoryClosure = function(name, screen, containerId) {
+    this.pageName = name;
+    this.screen = screen;
+    this.containerId = containerId;
+};
+HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
+    prototype.pageName = null;
+    prototype.screen = null;
+    prototype.containerId = null;
+}, {screen: "EcScreen"}, {});
 var EcView = function() {};
 EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     prototype.display = function(containerId, callback) {};
@@ -41,23 +38,10 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
         view.display(containerId, callback);
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
-var HistoryClosure = function(name, screen, containerId) {
-    this.pageName = name;
-    this.screen = screen;
-    this.containerId = containerId;
-};
-HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
-    prototype.pageName = null;
-    prototype.screen = null;
-    prototype.containerId = null;
-}, {screen: "EcScreen"}, {});
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.onClose = null;
-}, {onClose: "Callback0"}, {});
+var HistoryObject = function() {};
+HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
+    prototype.name = null;
+}, {}, {});
 var EcScreen = function() {
     EcView.call(this);
 };
@@ -67,6 +51,13 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         return this.displayName;
     };
 }, {}, {});
+var EcModal = function() {
+    EcView.call(this);
+};
+EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+}, {onClose: "Callback0"}, {});
 var ModalManager = function() {
     ViewManager.call(this);
 };
@@ -81,13 +72,13 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("small");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("full");
-        if (modal.modalSize.equals("tiny") || modal.modalSize.equals("small") || modal.modalSize.equals("large") || modal.modalSize.equals("full")) {
+        if (modal.modalSize.equals("tiny") || modal.modalSize.equals("small") || modal.modalSize.equals("medium") || modal.modalSize.equals("large") || modal.modalSize.equals("full")) {
             $(ModalManager.MODAL_CONTAINER_ID).addClass(modal.modalSize);
         } else {
             $(ModalManager.MODAL_CONTAINER_ID).addClass("small");
         }
         ViewManager.showView(modal, ModalManager.MODAL_CONTAINER_ID, function() {
-            ($(window.document)).foundation();
+            ($(ModalManager.MODAL_CONTAINER_ID)).foundation();
             ($(ModalManager.MODAL_CONTAINER_ID)).foundation("open");
             ModalManager.inModal = true;
         });
@@ -141,7 +132,24 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                 cb();
             }
             if (ScreenManager.startupScreen != null) {
-                ScreenManager.replaceScreen(ScreenManager.startupScreen, null);
+                var params = null;
+                if (window.document.location.hash.contains("?")) {
+                    var hashSplit = (window.document.location.hash.split("?"));
+                    if (hashSplit.length > 1 && hashSplit[1] != "") {
+                        var paramSplit = (hashSplit[1].split("&"));
+                        for (var i = 0; i < paramSplit.length; i++) {
+                            var argSplit = (paramSplit[i].split("="));
+                            if (argSplit.length == 2) 
+                                if (params == null) 
+                                    params = new Object();
+                            (params)[argSplit[0]] = argSplit[1];
+                        }
+                    }
+                }
+                ScreenManager.replaceHistory(ScreenManager.startupScreen, ScreenManager.SCREEN_CONTAINER_ID, params);
+                ViewManager.showView(ScreenManager.startupScreen, ScreenManager.SCREEN_CONTAINER_ID, function() {
+                    ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
+                });
                 return true;
             }
             if (ScreenManager.defaultScreen == null) {
@@ -162,7 +170,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         if (addHistory) 
             ScreenManager.addHistory(page, ScreenManager.SCREEN_CONTAINER_ID);
         ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
-            ($(window.document)).foundation();
+            ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
             if (callback != null) 
                 callback();
         });
@@ -170,7 +178,14 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     constructor.replaceScreen = function(page, callback) {
         ScreenManager.replaceHistory(page, ScreenManager.SCREEN_CONTAINER_ID, null);
         ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
-            ($(window.document)).foundation();
+            ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
+            if (callback != null) 
+                callback();
+        });
+    };
+    constructor.reloadCurrentScreen = function(callback) {
+        ViewManager.showView(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, function() {
+            ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
             if (callback != null) 
                 callback();
         });
@@ -205,6 +220,9 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                 hash += str + "=" + (params)[str];
             }
         }
+        if (hash.endsWith("?")) {
+            hash = hash.substring(0, hash.length - 1);
+        }
         (window.history).replaceState({name: pageName}, pageName, hash);
     };
     constructor.loadHistoryScreen = function(name) {
@@ -215,7 +233,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                     if (ScreenManager.loadHistoryCallback != null) 
                         ScreenManager.loadHistoryCallback(screen);
                     ViewManager.showView(screen, ScreenManager.myHistory[i].containerId, function() {
-                        ($(window.document)).foundation();
+                        ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
                     });
                     ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(name, screen, ScreenManager.myHistory[i].containerId);
                     return;

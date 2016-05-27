@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
@@ -169,6 +160,13 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             contact.displayName = props["displayName"];
             contact.pk = EcPk.fromPem(props["pk"]);
             contact.source = props["source"];
+            var cont = false;
+            for (var j = 0; j < EcIdentityManager.contacts.length; j++) {
+                if (EcIdentityManager.contacts[j].pk.toPem() == contact.pk.toPem()) 
+                    cont = true;
+            }
+            if (cont) 
+                continue;
             EcIdentityManager.contacts.push(contact);
         }
     };
@@ -187,6 +185,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             c.push(o);
         }
         localStorage["contacts"] = JSON.stringify(c);
+    };
+    constructor.clearContacts = function() {
+        delete localStorage["contacts"];
+        EcIdentityManager.contacts = new Array();
     };
     /**
      *  Adds an identity to the identity manager. Checks for duplicates. Triggers
@@ -611,6 +613,13 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         }
         return passwordSplice;
     };
+    prototype.fetchServerAdminKeys = function(success, failure) {
+        EcRemote.getExpectingObject(this.server, "sky/admin", function(p1) {
+            success(p1);
+        }, function(p1) {
+            failure("");
+        });
+    };
 }, {}, {});
 var EcContactGrant = function() {
     EbacContactGrant.call(this);
@@ -629,4 +638,4 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
         }
         return found;
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 FrameworkEditScreen = (function(FrameworkEditScreen){
 	
 	var relationTypes = {
@@ -32,9 +23,10 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    $("#frameworkEditName").val(framework.name);
 	    $("#frameworkEditDescription").val(framework.description);
 	    
-	    if(framework.owner != undefined)
+	    if(framework.owner != undefined && framework.owner.length != 0)
 	    {
-	    	for(var i in framework.owner)
+	    	$("#frameworkEditOwner").html("");
+	    	for(var i = 0; i < framework.owner.length; i++)
 	    	{
 	    		var pk = framework.owner[i];
 	    		
@@ -44,7 +36,10 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	                width:128,
 	                height:128,
 	                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
-	            });   
+	            });
+	    		
+	    		if(i < framework.owner.length-1)
+	    			$("#frameworkEditOwner").append(", ");
 	    	}
 	    	$("#frameworkEditOwnerAdvanced").removeClass("hide");
 	    }else{
@@ -52,6 +47,38 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    	$("#frameworkEditOwnerAdvanced").addClass("hide");
 	    }
 	    
+	    if(framework.privateEncrypted){
+			if($("#privateRow").css("display") == "none")
+				$("#privateRow").slideDown();
+			
+			if(framework.reader != undefined && framework.reader.length != 0)
+		    {
+		    	$("#frameworkEditNoReaders").addClass("hide");
+		    	$("#frameworkEditReaders").html("");
+		    	for(var i = 0; i < framework.reader.length; i++)
+		    	{
+		    		var pk = framework.reader[i];
+		    		
+		    		var contact = $(createContactSmall(pk));
+		    		$("#frameworkEditReaders").append(contact);            
+		    		contact.children(".qrcodeCanvas").qrcode({
+		                width:128,
+		                height:128,
+		                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
+		            });
+		    		
+		    		if(i < framework.reader.length-1)
+		    			$("#frameworkEditReaders").append(", ");
+		    	}
+		    }else{
+		    	$("#frameworkEditNoReaders").removeClass("hide");
+		    }
+		}else if($("#privateRow").css("display") != "none"){
+			$("#privateRow").slideUp();
+		}
+		
+	    
+	    $("#frameworkEditCompetencies option").not("#noCompetencies").remove();
 	    for(var idx in framework.competency)
 	    {
 	    	AppController.repositoryController.viewCompetency(framework.competency[idx], function(competency){
@@ -60,15 +87,12 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    		}
 	    		framework.competencyObjects[competency.id] = competency;
 	    		
-	    		if(Object.keys(framework.competencyObjects).length == framework.competency.length)
-	    		{
-	    			
-	    		}
 	    		
 	    		addCompetency(competency);
 	    	}, errorRetrievingCompetency);
 	    }
 
+	    $("#frameworkEditRelations option").not("#noRelations").remove();
 	    for(var idx in framework.relation)
 	    {
 	    	AppController.repositoryController.viewRelation(framework.relation[idx], function(relation){
@@ -99,6 +123,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    		
 	    }
 	    
+	    $("#frameworkEditLevels option").not("#noLevels").remove();
 	    for(var idx in framework.level)
 	    {
 	    	AppController.repositoryController.viewLevel(framework.level[idx], levelRecieved, errorRetrievingLevel);
@@ -305,7 +330,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		  					if(i == Object.keys(framework.competencyObjects).length){
 		  						var ret = [];
 		  						for(var id in levels){
-		  							if(framework.level.indexOf(id) == -1 && framework.level.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
+		  							if(framework.level == undefined || framework.level.indexOf(id) == -1 && framework.level.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
 			  						{
 		  								ret.push(levels[id])
 			  						}
@@ -361,7 +386,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		  					if(i == Object.keys(framework.competencyObjects).length){
 		  						var ret = [];
 		  						for(var id in relations){
-		  							if(framework.relation.indexOf(id) == -1 && framework.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
+		  							if(framework.relation == undefined || framework.relation.indexOf(id) == -1 && framework.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
 		  							{
 		  								var rel = relations[id];
 			  							
@@ -511,10 +536,29 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 				event.preventDefault();
 			});
 			
-			$("#competencyEditCancelBtn").click(function(event){
+			$("#frameworkEditCancelBtn").click(function(event){
 				event.preventDefault();
 				ScreenManager.changeScreen(new FrameworkViewScreen(data))
 			});
+			
+			if(data.name == NEW_FRAMEWORK_NAME){
+				$("#frameworkEditDeleteBtn").remove();	
+			}else{
+				$("#frameworkEditDeleteBtn").click(function(event){
+					event.preventDefault();
+					ModalManager.showModal(new ConfirmModal(function(){
+						data._delete(function(){
+							ScreenManager.changeScreen(new FrameworkSearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete framework";
+							ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this framework?"))
+				})
+			}
+			
 			
 			$("#frameworkEditSaveBtn").click(function(event){
 				event.preventDefault();
@@ -527,13 +571,13 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 					ViewManager.getView("#frameworkEditMessageContainer").clearAlert("saveFail");
 					ViewManager.getView("#frameworkEditMessageContainer").clearAlert("defaultName");
 					
-					var savingData = {};
+					var savingData = new EcFramework();
 					for(var key in data){
 						if(key != "competencyObjects")
 							savingData[key] = data[key];
 					}
 					
-					EcRepository.save(savingData, function(str){
+					savingData.save(function(str){
 						data.id = savingData.id;
 						$("#frameworkEditId").val(data.id);
 						saveSuccess(str);
@@ -581,6 +625,9 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 						$("#frameworkEditCompetencies").html("");
 						$("#frameworkEditRelations").html("");
 						$("#frameworkEditLevels").html("");
+						
+						data.name = $("#frameworkEditName").val();
+						data.description = $("#frameworkEditDescription").val();
 						
 						displayFramework(data);
 					}, errorRemovingCompetency);
@@ -655,6 +702,23 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 				})
 			});
 			
+			$("#frameworkEditOwnerAdvanced").click(function(ev){
+				ev.preventDefault();
+				
+				data.name = $("#frameworkEditName").val();
+				data.description = $("#frameworkEditDescription").val();
+				
+				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+					data.owner = dataAfter.owner;
+					data.privateEncrypted = dataAfter.privateEncrypted;
+					data.reader = dataAfter.reader;
+					
+					displayFramework(data);
+					
+					ModalManager.hideModal();
+				}))
+			})
+			
 			
 			if(data.name == NEW_FRAMEWORK_NAME)
 			{
@@ -679,6 +743,10 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 				callback();
 		});
 	};
+	
+	FrameworkEditScreen.prototype.addCompetency = function(competency){
+		addCompetency(competency);
+	}
 	
 	return FrameworkEditScreen;
 })(FrameworkEditScreen);

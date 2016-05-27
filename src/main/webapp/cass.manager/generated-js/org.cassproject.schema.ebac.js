@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var Ebac = function() {};
 Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
     constructor.schema = "http://schema.eduworks.com/ebac/0.1/";
@@ -219,7 +210,7 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
     prototype.source = null;
     prototype.responseToken = null;
     prototype.responseSignature = null;
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Encrypted JSON-LD object.
  *  
@@ -230,12 +221,6 @@ var EbacEncryptedValue = function() {
 };
 EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.type = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
-    /**
-     *  PEM encoded public keys of identities authorized to view the object. A
-     *  repository will ignore write operations from these identities, but will
-     *  allow them to read the object.
-     */
-    prototype.reader = null;
     /**
      *  Optional Hint used to aid search, showing the type of the inner encrypted
      *  object.
@@ -250,13 +235,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  object.
      */
     prototype.name = null;
-    /**
-     *  Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using
-     *  RSA public keys of owners or readers (or unknown parties) to allow them
-     *  access to the payload.
-     */
-    prototype.secret = null;
-}, {reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Message used to commit credentials to a remote login server.
  *  

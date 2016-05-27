@@ -3,7 +3,7 @@ var RelationshipEditScreen = function(data) {
     this.data = data;
 };
 RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "relationshipEdit";
+    constructor.displayName = "relationEdit";
     prototype.data = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
@@ -26,9 +26,9 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
                             if (data.isA(EcAlignment.myType)) 
                                 ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                              else 
-                                ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                                ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
-                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                            ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
                         });
                         ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                         return;

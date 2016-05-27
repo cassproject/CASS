@@ -58,30 +58,9 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
             query = "(" + query + ") AND " + queryAdd;
         this.repo.search(query, null, success, failure);
     };
-    prototype.competencySearch = function(query, success, failure, ownership) {
-        var queryAdd = "";
-        queryAdd = "(@type:\"" + EcCompetency.myType + "\")";
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        var params = new Object();
-        (params)["ownership"] = ownership;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcCompetency();
-                    comp.copyFrom(p1[i]);
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure, params);
-    };
     prototype.frameworkSearch = function(query, success, failure, ownership) {
         var queryAdd = "";
-        queryAdd = "(@type:\"" + EcFramework.myType + "\")";
+        queryAdd = "(@type:\"" + EcFramework.myType + "\" OR @encryptedType:\"" + EcFramework.myType + "\")";
         if (query == null || query == "") 
             query = queryAdd;
          else 
@@ -93,8 +72,94 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                 var ret = [];
                 for (var i = 0; i < p1.length; i++) {
                     var framework = new EcFramework();
-                    framework.copyFrom(p1[i]);
+                    if (p1[i].isA(EcFramework.myType)) {
+                        framework.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcFramework.myType)) {
+                            var obj = val.decryptIntoObject();
+                            framework.copyFrom(obj);
+                            framework.privateEncrypted = true;
+                        }
+                    }
                     ret[i] = framework;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+    prototype.competencySearch = function(query, success, failure, ownership) {
+        var queryAdd = "";
+        queryAdd = "(@type:\"" + EcCompetency.myType + "\" OR @encryptedType:\"" + EcCompetency.myType + "\")";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        var params = new Object();
+        (params)["ownership"] = ownership;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var comp = new EcCompetency();
+                    if (p1[i].isA(EcCompetency.myType)) {
+                        comp.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcCompetency.myType)) {
+                            var obj = val.decryptIntoObject();
+                            comp.copyFrom(obj);
+                            comp.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = comp;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+    prototype.levelSearchByCompetency = function(competencyId, success, failure) {
+        this.search("@type:\"" + EcLevel.myType + "\" AND ( competency:\"" + competencyId + "\" OR competency:\"" + EcRemoteLinkedData.trimVersionFromUrl(competencyId) + "\")", function(p1) {
+            if (success != null) {
+                var levels = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var a = new EcLevel();
+                    a.copyFrom(p1[i]);
+                    levels[i] = a;
+                }
+                if (success != null) 
+                    success(levels);
+            }
+        }, failure, null);
+    };
+    prototype.relationSearch = function(query, success, failure, ownership) {
+        var queryAdd = "";
+        queryAdd = "(@type:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType + "\")";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        var params = new Object();
+        (params)["ownership"] = ownership;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isA(EcAlignment.myType)) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
                 }
                 success(ret);
             }
@@ -102,19 +167,33 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
     };
     prototype.relationSearchBySource = function(sourceId, success, failure) {
         var query = "";
-        query = "(@type:\"" + EcAlignment.myType + "\")";
+        query = "((@type:\"" + EcAlignment.myType + "\"";
         var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
         if (noVersion == sourceId) {
-            query += " AND (source:\"" + sourceId + "\")";
+            query += " AND (source:\"" + sourceId + "\"))";
         } else {
-            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\")";
+            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
         }
+        query += " OR @encryptedType:\"" + EcAlignment.myType + "\")";
         this.search(query, function(p1) {
             if (success != null) {
                 var ret = [];
                 for (var i = 0; i < p1.length; i++) {
                     var alignment = new EcAlignment();
-                    alignment.copyFrom(p1[i]);
+                    if (p1[i].isA(EcAlignment.myType)) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["source"] != sourceId && (obj)["source"] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
                     ret[i] = alignment;
                 }
                 success(ret);
@@ -123,13 +202,14 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
     };
     prototype.relationSearchBySourceOrTarget = function(competencyId, success, failure) {
         var query = "";
-        query = "(@type:\"" + EcAlignment.myType + "\")";
+        query = "((@type:\"" + EcAlignment.myType + "\"";
         var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
         if (noVersion == competencyId) {
-            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\")";
+            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\"))";
         } else {
-            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\")";
+            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\"))";
         }
+        query += " OR @encryptedType:\"" + EcAlignment.myType + "\")";
         var fields = ["source", "target", "relationType"];
         var params = new Object();
         (params)["fields"] = fields;
@@ -138,8 +218,42 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                 var ret = [];
                 for (var i = 0; i < p1.length; i++) {
                     var alignment = new EcAlignment();
-                    alignment.copyFrom(p1[i]);
+                    if (p1[i].isA(EcAlignment.myType)) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["source"] != competencyId && (obj)["source"] != noVersion && (obj)["target"] != competencyId && (obj)["target"] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
                     ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure, params);
+    };
+    prototype.assertionSearch = function(query, success, failure, ownership) {
+        var queryAdd = "";
+        queryAdd = "(@type:\"" + EcAssertion.myType + "\")";
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        var params = new Object();
+        (params)["ownership"] = ownership;
+        this.search(query, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var assertion = new EcAssertion();
+                    assertion.copyFrom(p1[i]);
+                    ret[i] = assertion;
                 }
                 success(ret);
             }

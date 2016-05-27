@@ -1,13 +1,13 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 FrameworkSearchScreen = (function(FrameworkSearchScreen){
+	
+	function createContactSmall(pk)
+	{
+		var ident = AppController.identityController.lookup(pk);
+	    return '<span class="ownershipDisplay has-tip" tabindex>'
+	    	+ '<span class="qrcodeCanvas"></span>'
+	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
+	    	+ '</span>';
+	}
 	
 	var searchHandle = null;
 	
@@ -30,7 +30,6 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			ownership = "all";
 		
 		searchHandle = setTimeout(function() {
-			
 			var urlParams = {};
 			if(query != "*")
 				urlParams.query = query;
@@ -43,54 +42,27 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
 			
 			ViewManager.getView("#frameworkSearchMessageContainer").clearAlert("searchFail");
-			$("#frameworkSearchResults").html("");
-			$("#frameworkSearchProgress").removeClass("hide");
-			$("#frameworkSearchNone").addClass("hide");
+			ViewManager.getView("#frameworkSearchResults").showProgressMessage();
+			ViewManager.getView("#frameworkSearchResults").deselectAll();
 			
 			AppController.searchController.frameworkSearch(query, displayResults, errorSearching, ownership);
 		}, 100);
 	}
 	
 	function displayResults(results)
-	{ 
-		var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app framework"><div class="front"><center><h1>🏗</h1></center><p class="title"></p></div><div class="back"><center><h1>👓</h1></center><p class="status"></p><div class="actions">View</div></div></div><a class="hotspot finger" title=""></a></div>';
-
-	    $("#frameworkSearchResults").html("");
-	    
-	    if($(results).size() == 0){
-	    	$("#frameworkSearchNone").removeClass("hide");
-	    }
-	    
-	    $(results).each(function(index, framework){
-		    $("#frameworkSearchResults").append(tile);
-	        var t = $("#frameworkSearchResults").children(".tile").last();
-	        var name = framework["name"];
-	        t.find(".title").text(name);
-	        t.attr("id", framework.shortId());
-	        
-	        t.click(function(e){
-	        	e.preventDefault();
-	        	viewFramework(framework);
-	        });
-	    });
-	    
+	{   
 		searchHandle = null;
 		
-		$("#frameworkSearchProgress").addClass("hide");
+		ViewManager.getView("#frameworkSearchResults").populate(results);
 	}
 	
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
 		
-		ViewManager.getView("#competencySearchMessageContainer").displayAlert(err, "searchFail");
+		ViewManager.getView("frameworkSearchMessageContainer").displayAlert(err, "searchFail");
 		
-		$("#frameworkSearchNone").removeClass("hide");
-		$("#frameworkSearchProgress").addClass("hide");
-	}
-	
-	function viewFramework(framework){
-		ScreenManager.changeScreen(new FrameworkViewScreen(framework));
+		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}
 	
 	FrameworkSearchScreen.prototype.display = function(containerId, callback)
@@ -104,6 +76,50 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			
 			ViewManager.showView(new MessageContainer("frameworkSearch"), "#frameworkSearchMessageContainer");
 			
+			ViewManager.showView(new DataViewer("frameworkResults", {
+				sort:{},
+				clickDataEdit:function(datum){
+					ScreenManager.changeScreen(new FrameworkEditScreen(datum));
+				},
+				buildData:function(id, datum){
+					var comps = (datum.competency == undefined ? 0 : datum.competency.length);
+					var rels = (datum.relation == undefined ? 0 : datum.relation.length)
+					
+					var html = "<div class='small-4 columns'><a class='datum-name'>"+datum.name+"</a></div>" +
+								"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
+								"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
+								"<div class='small-4 columns'>{{dataOwner}}</div>";
+					
+					if(datum["owner"] != undefined && datum["owner"].length > 0){
+						var owner = "";
+						for(var i in datum["owner"]){
+							owner+= createContactSmall(datum["owner"][i])+ ", "
+						}
+						owner = owner.substring(0, owner.length-2);
+						html = html.replaceAll(/{{dataOwner}}/g, owner);
+					}else{
+						html = html.replaceAll(/{{dataOwner}}/g, "Public");
+					}
+					
+					var el = $(html)
+					
+					el.find(".ownershipDisplay").each(function(i, element){
+						$(element).children(".qrcodeCanvas").qrcode({
+			                width:128,
+			                height:128,
+			                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
+			            });  
+					})
+					
+					el.find(".datum-name").click(function(ev){
+						ev.preventDefault();
+						ScreenManager.changeScreen(new FrameworkViewScreen(datum));
+					});
+					
+					return el;
+				}
+			}), "#frameworkSearchResults");
+			
 			$("#frameworkSearchSubmit").click(function(event){
 				event.preventDefault();
 				runFrameworkSearch();
@@ -112,27 +128,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 				event.preventDefault();
 				runFrameworkSearch();
 			});
-			
-			$("#frameworkSearchBtn").attr("href", FrameworkSearchScreen.prototype.displayName);
-			$("#frameworkSearchBtn").click(function(e){
-				e.preventDefault();
-			})
-			
-			$("#frameworkSearchViewBtn").attr("href", CompetencyViewScreen.prototype.displayName);
-			if(lastViewed != undefined)
-			{
-				$("#frameworkSearchViewBtn").removeClass("hide");
-				$("#frameworkSearchViewBtn").click(function(e){
-					e.preventDefault();
-					viewFramework(lastViewed);
-				})
-			}
-			else
-			{
-				$("#frameworkSearchViewBtn").click(function(e){
-					e.preventDefault();
-				})
-			}
+	
 			
 			$("#frameworkSearchText").keypress(function(e){
 				var key = e.which;

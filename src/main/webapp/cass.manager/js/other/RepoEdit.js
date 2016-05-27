@@ -1,13 +1,4 @@
 /*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-/*
  * The third definition defines the UI methods and server-exposed methods
  */
 var RepoEdit = (function(RepoEdit){
@@ -397,7 +388,12 @@ var RepoEdit = (function(RepoEdit){
 		ViewManager.showView(new MessageContainer("repoEdit"), this.messageContainerId);
 		
 		$(this.saveButtonId).click(function(){
-			AppController.repositoryController.upload(serializeField($("#datum")), saveSuccess, saveFailure);
+			var serialized = serializeField($("#datum"));
+			if(serialized != undefined){
+				AppController.repositoryController.upload(serialized, saveSuccess, saveFailure);
+			}else if(data != undefined){
+				EcRepository._delete(data, saveSuccess, saveFailure);
+			}
 		});
 		
 		$(this.saveButtonId).on("mousemove", function(){

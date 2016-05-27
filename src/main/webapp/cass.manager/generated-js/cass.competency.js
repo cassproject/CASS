@@ -1,14 +1,6 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
+var CompetencyManager = function() {};
+CompetencyManager = stjs.extend(CompetencyManager, null, [], null, {}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcAlignment = function() {
@@ -21,7 +13,54 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     prototype.setDescription = function(description) {
         this.description = description;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.save = function(success, failure) {
+        if (this.source == null || this.source == "") {
+            var msg = "Source Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.target == null || this.target == "") {
+            var msg = "Target Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == "") {
+            var msg = "Relation Type cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAlignment.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an alignment.");
+                return;
+            }
+            var c = new EcAlignment();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  The sequence that assertions should be built as such:
  *  1. Generate the ID.
@@ -105,6 +144,16 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         var decryptedString = v.decryptIntoString();
         return decryptedString;
     };
+    prototype.getDecayFunction = function() {
+        if (this.decayFunction == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.decayFunction);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return decryptedString;
+    };
     /**
      *  Sets the subject of an assertion. Makes a few assumptions:
      *  Owners of the object should be able to see and change the encrypted value.
@@ -113,7 +162,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
      */
     prototype.setSubject = function(pk) {
         var owners = new Array();
-        var readers = new Array();
+        var readers = this.reader;
+        if (readers == null) 
+            readers = new Array();
         if (this.subject != null) {
             owners.concat(this.subject.owner);
             readers.concat(this.subject.reader);
@@ -149,9 +200,76 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setDecayFunction = function(decayFunctionText) {
         this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, "decayFunction", this.subject.owner, this.subject.reader);
     };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.save = function(success, failure) {
+        if (this.competency == null || this.competency == "") {
+            var msg = "Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.subject == null) {
+            var msg = "Subject cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.agent == null) {
+            var msg = "Subject cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.confidence == null) {
+            var msg = "Confidence cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.assertionDate == null) {
+            var msg = "Assertion Date cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.decayFunction == null) {
+            var msg = "Decay Function cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAssertion.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an assertion.");
+                return;
+            }
+            var c = new EcAssertion();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcLevel = function() {
@@ -173,9 +291,47 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     prototype.setDescription = function(description) {
         this.description = description;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Level name cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == "") {
+            var msg = "Level's Competency cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure, repo) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcLevel.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a level.");
+                return;
+            }
+            var c = new EcLevel();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Helper class that immediately reflects changes into its remote repository.
  *  @author fritz.ray@eduworks.com
  */
 var EcCompetency = function() {
@@ -259,7 +415,82 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     prototype.setScope = function(scope) {
         this.scope = scope;
     };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Competency Name can not be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure, repo) {
+        var me = this;
+        EcRepository.DELETE(this, function(p1) {
+            if (repo != null) {
+                me.relationships(repo, function(p1) {
+                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                        if (p1.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                            p1._delete(null, function(p1) {
+                                if (failure != null) 
+                                    failure("Unable to Delete Competency Relation");
+                                 else 
+                                    console.error("Unable to Delete Competency Relation");
+                            });
+                            return;
+                        }
+                    }
+                }, failure, function(p1) {
+                    if (success != null) 
+                        success("");
+                });
+                me.levels(repo, function(p1) {
+                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                        if (p1.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                            p1._delete(null, function(p1) {
+                                if (failure != null) 
+                                    failure("Unable to Delete Competency Relation");
+                                 else 
+                                    console.error("Unable to Delete Competency Relation");
+                            }, repo);
+                            return;
+                        }
+                    }
+                }, failure, function(p1) {
+                    if (success != null) 
+                        success("");
+                });
+            } else {
+                if (success != null) 
+                    success(p1);
+            }
+        }, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcCompetency.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a competency.");
+                return;
+            }
+            var c = new EcCompetency();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcFramework = function() {
     Framework.call(this);
 };
@@ -384,27 +615,29 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (failure != null) 
                 failure(msg);
              else 
-                console.log(msg);
+                console.error(msg);
             return;
         }
-        EcRepository._save(this, success, failure);
+        if (this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
     };
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
-}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-var CompetencyManager = function() {};
-CompetencyManager = stjs.extend(CompetencyManager, null, [], function(constructor, prototype) {
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             if (success == null) 
                 return;
-            if (!p1.isA(EcCompetency.myType)) {
+            if (!p1.isA(EcFramework.myType)) {
                 if (failure != null) 
-                    failure("Resultant object is not a competency.");
+                    failure("Resultant object is not a framework.");
                 return;
             }
-            var c = new EcCompetency();
+            var c = new EcFramework();
             c.copyFrom(p1);
             success(c);
         }, function(p1) {
@@ -412,4 +645,4 @@ CompetencyManager = stjs.extend(CompetencyManager, null, [], function(constructo
                 failure(p1);
         });
     };
-}, {}, {});
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

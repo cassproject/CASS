@@ -1,8 +1,11 @@
 <nav id="appMenu" class="top-bar" data-topbar role="navigation">
     <section class="top-bar-title">
-        <a class="menu-text" id="appMenuHeader">
+    	<h1>
+    	<a class="menu-text" id="appMenuHeader">
     			&nbsp;&nbsp;CASS Manager&nbsp;&nbsp;
     	</a>
+    	</h1>
+
     </section>
 
     <section id="toggleMenu">
@@ -59,7 +62,7 @@
 
         <ul id="appMenuMain" class="menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
             <li>
-                <a class="menu-text" id="appMenuRepository">Repository</a>
+                <a class="menu-text" id="appMenuRepository">General</a>
                 <ul class="vertical menu submenu">
                     <li>
                         <a id="appMenuRepoSearch">Search</a>
@@ -77,7 +80,7 @@
             </li>
 
             <li>
-                <a class="menu-text" id="appMenuCompetency">Competency</a>
+                <a class="menu-text" id="appMenuCompetency">Models</a>
                 <ul class="vertical menu">
                     <li>
                         <a id="appMenuFrameworks">Frameworks</a>
@@ -104,8 +107,33 @@
                             </li>
                         </ul>
                     </li>
+                   	<li>
+                        <a id="appMenuCompetencyRelationship">Relationships</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuRelationshipSearch">Search</a>
+                            </li>
+                            <li>
+                                <a id="appMenuRelationshipCreate">Create</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+			<li>
+                <a class="menu-text" id="appMenuProfile">Users</a>
+                <ul class="vertical menu">
                     <li>
-                        <a id="appMenuCompetencyRelationships">Create Relationship</a>
+                        <a id="appMenuAssertions">Assertions</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuAssertionSearch">View All</a>
+                            </li>
+                            <li>
+                                <a id="appMenuAssertionCreate">Create</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

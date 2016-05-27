@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var fonts = {
     node: "bold 12px Arial",
     edge: "bold 12px Arial"
@@ -44,6 +35,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         $("#frameworkViewerDescription").text(framework.description);
         $("#frameworkViewerLevels").html("");
 
+        if(framework.privateEncrypted)
+			$("#frameworkViewerPrivateSymbol").removeClass("hide");
+		else
+			$("#frameworkViewerPrivateSymbol").addClass("hide");
+        
         var canvas = $("#frameworkViewCanvas").get(0);
         var ctx = canvas.getContext("2d");
 
@@ -63,11 +59,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 
         window.springs = new Springy.Layout.ForceDirected(graph, 0.0, new Springy.Vector(200.0, 100.0), 0.1);
 
-        if (framework.competency !== undefined)
+        if (framework.competency != undefined)
             for (var i = 0; i < framework.competency.length; i++) {
                 (function (i) {
                     timeout(function () {
-                        EcRepository.get(framework.competency[i], function (competency) {
+                        AppController.repositoryController.viewCompetency(framework.competency[i], function (competency) {
                             competency.font = fonts.node;
                             competency.mass = 2;
                             nodes[competency.shortId()] = graph.newNode(competency);
@@ -76,11 +72,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                             if (framework.competency.length < 20)
                                 nodes[competency.shortId()].alwaysShowText = true;
                             if (competency.shortId() == framework.competency[framework.competency.length - 1]) {
-                                if (framework.relation !== undefined)
+                                if (framework.relation != undefined)
                                     for (var i = 0; i < framework.relation.length; i++) {
                                         (function (i) {
                                             timeout(function () {
-                                                EcRepository.get(framework.relation[i], function (relation) {
+                                            	AppController.repositoryController.viewRelation(framework.relation[i], function (relation) {
                                                     if (relation.source !== undefined) {
                                                         nodes[relation.source].fixed = false;
                                                         if (nodes[relation.source].alwaysShowText === undefined)
@@ -97,12 +93,12 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                                                         relation.font = fonts.edge;
                                                         graph.newEdge(nodes[relation.source], nodes[relation.target], relation);
                                                     }
-                                                });
+                                                }, function(){});
                                             });
                                         })(i);
                                     }
                             }
-                        });
+                        }, function(){});
                     });
                 })(i);
             }
@@ -115,7 +111,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.competency) {
             (function (idx) {
                 timeout(function () {
-                    EcRepository.get(framework.competency[idx], function (competency) {
+                	AppController.repositoryController.viewCompetency(framework.competency[idx], function (competency) {
                         if (framework.competencyObjects == undefined) {
                             framework.competencyObjects = {};
                         }
@@ -130,7 +126,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.relation) {
             (function (idx) {
                 timeout(function () {
-                    EcRepository.get(framework.relation[idx], function (relation) {
+                    AppController.repositoryController.viewRelation(framework.relation[idx], function (relation) {
                         addRelation(relation, framework);
                     }, errorRetrievingRelation);
                 });
@@ -140,7 +136,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.level) {
             (function (idx) {
                 timeout(function () {
-                    EcRepository.get(framework.level[idx], addLevel, errorRetrievingLevel);
+                	AppController.repositoryController.viewLevel(framework.level[idx], addLevel, errorRetrievingLevel);
                 });
             })(idx);
         }
@@ -281,29 +277,51 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 
     function errorRetrieving(err) {
         if (err == undefined)
-            err = "Unable to Connect to Server to Retrieve Competency";
+            err = "Unable to Connect to Server to Retrieve Framework";
 
         ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err, "getFramework");
     }
 
     function errorRetrievingCompetency(err) {
-        if (err == undefined)
-            err = "Unable to Connect to Server to Retrieve one or more Competencies";
+        if (err == undefined){
+        	err = "Unable to Connect to Server to Retrieve one or more Competencies";
+    	}else{
+        	try{
+            	err = JSON.parse(err);
+            	if(err.msg == undefined && err.message == undefined)
+            		err = "Framework contains Private Competency(s) that you don't have permission to view"
+            }catch(e){ }
+        }
+        
 
         ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err, "getCompetency");
     }
 
     function errorRetrievingRelation(err) {
-        if (err == undefined)
+        if (err == undefined){
             err = "Unable to Connect to Server to Retrieve one or more Relation(s)";
-
+        }else{
+        	try{
+            	err = JSON.parse(err);
+            	if(err.msg == undefined && err.message == undefined)
+            		err = "Framework contains Private Relation(s) that you don't have permission to view"
+            }catch(e){ }
+        }
+        
         ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err, "getRelation");
     }
 
     function errorRetrievingLevel(err) {
-        if (err == undefined)
+        if (err == undefined){
             err = "Unable to Connect to Server to Retrieve one or more Level(s)";
-
+    	}else{
+        	try{
+            	err = JSON.parse(err);
+            	if(err.msg == undefined && err.message == undefined)
+            		err = "Framework contains Private Level(s) that you don't have permission to view"
+            }catch(e){ }
+        }
+        
         ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err, "getLevel");
     }
 
@@ -331,17 +349,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                 event.preventDefault();
             });
 
-            var canEdit = false;
-            for (var index in EcIdentityManager.ids) {
-                var pk = EcIdentityManager.ids[index].ppk.toPk()
-                if (data.canEdit(pk))
-                    canEdit = true;
-            }
-
-            if (data.owner == undefined || data.owner.length == 0)
-                canEdit = true;
-
-            if (canEdit) {
+            if (AppController.identityController.canEdit(data)) {
                 $("#editFrameworkBtn").click(function (event) {
                     event.preventDefault();
                     ScreenManager.changeScreen(new FrameworkEditScreen(data))
@@ -350,6 +358,23 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                 $("#editFrameworkBtn").remove();
             }
 
+            if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+				$("#frameworkViewDeleteBtn").remove();
+			}else{
+				$("#frameworkViewDeleteBtn").click(function(){
+					ModalManager.showModal(new ConfirmModal(function(){
+						data._delete(function(){
+							ScreenManager.changeScreen(new FrameworkSearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete framework";
+							ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this framework?"))
+				})
+			}
+            
             AppController.repositoryController.viewFramework(data.shortId(), displayFramework, errorRetrieving);
 
             if (callback != undefined)

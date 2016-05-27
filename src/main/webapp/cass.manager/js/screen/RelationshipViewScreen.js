@@ -140,24 +140,31 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 				event.preventDefault();
 			});
 			
-			var canEdit = false;
 			
-			for(var index in EcIdentityManager.ids){
-				var pk = EcIdentityManager.ids[index].ppk.toPk()
-				if(data.canEdit(pk))
-					canEdit = true;
-			}
-			
-			if(data.owner == undefined || data.owner.length == 0)
-				canEdit = true;
-			
-			if(canEdit){
+			if(AppController.identityController.canEdit(data)){
 				$("#editRelationshipBtn").click(function(event){
 					event.preventDefault();
 					ScreenManager.changeScreen(new RelationshipEditScreen(data))
 				})
 			}else{
 				$("#editRelationshipBtn").remove();
+			}
+			
+			if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+				$("#relationshipViewDeleteBtn").remove();
+			}else{
+				$("#relationshipViewDeleteBtn").click(function(){
+					ModalManager.showModal(new ConfirmModal(function(){
+						data._delete(function(){
+							ScreenManager.changeScreen(new RelationshipSearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete relationship";
+							ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this relationship?"))
+				})
 			}
 			
 			

@@ -11,8 +11,9 @@
 					<a id="competencyEditViewBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">View</a>
 					<a id="competencyEditBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Edit</a>
 					
-					<span id="competencyEditSaveBtn" class="fake-a-label float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Save</span>
-					<span id="competencyEditCancelBtn" class="fake-a-label float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:6px;">Cancel</span>				
+					<span id="competencyEditSaveBtn" class="fake-a-label float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-top:0.2rem;">Save</span>
+					<span id="competencyEditDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Delete</span>
+					<span id="competencyEditCancelBtn" class="float-right label secondary" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Cancel</span>				
 		   		</div>
 			</div>
 			
@@ -73,7 +74,7 @@
 						</div>
 					</div>
 					
-					<div class="row collapse" style="margin-top:1rem;">
+					<div class="row collapse" style="margin-top:1rem;margin-bottom:1rem;">
 						<div class="small-4 large-3 columns">
 							<span class="prefix">Ownership:</span>
 						</div>
@@ -82,6 +83,27 @@
 						</div>
 						<div class="small-1 columns">
 							<small id="competencyEditOwnerAdvanced" class="fake-a float-right">Advanced</small>
+						</div>
+					</div>
+					
+					<div id="privateRow" style="display:none;">
+						<div class="row collapse " style="margin-bottom:1rem;">
+							<div class="small-4 large-3 columns">
+								<span class="prefix">Visibility:</span>
+							</div>
+							<div class="small-8 large-9 columns">
+								Private
+							</div>
+						</div>
+						
+						<div class="row collapse" style="margin-bottom:1rem;">
+							<div class="small-4 large-3 columns">
+								<span class="prefix">Readers:</span>
+							</div>
+							<div class="small-8 large-9 columns">
+								<span id="competencyEditNoReaders" style="font-style:italic">None Added Yet</span>
+								<span id="competencyEditReaders"></span>
+							</div>
 						</div>
 					</div>
 				</div> 

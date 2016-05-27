@@ -35,7 +35,6 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         var newContact = new EcContact();
         newContact.pk = candidatePk;
         newContact.displayName = "Unknown";
-        EcIdentityManager.contacts.push(newContact);
         return newContact;
     };
     prototype.addKey = function(ppk, displayName, success) {
@@ -54,5 +53,25 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
             EcIdentityManager.addIdentity(ident);
             success(ident);
         });
+    };
+    prototype.owns = function(data) {
+        if (data.owner == null) 
+            return false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
+                return true;
+            }
+        }
+        return false;
+    };
+    prototype.canEdit = function(data) {
+        if (data.owner == null || data.owner.length == 0) 
+            return true;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (data.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                return true;
+            }
+        }
+        return false;
     };
 }, {selectedIdentity: "EcIdentity"}, {});

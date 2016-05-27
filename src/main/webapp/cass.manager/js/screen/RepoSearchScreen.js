@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 RepoSearchScreen = (function(RepoSearchScreen){
 	
 	var maxLength = 24;
@@ -38,6 +29,8 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		    }).get();
 		}else if($("#repoSearchTypes input:checkbox:checked").size() == 0 && urlTypes != undefined){
 			types = urlTypes;
+		}else{
+			types = undefined;
 		}
 		
 		
@@ -54,12 +47,29 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			if(searchHandle == null)
 			{
 				var urlParams = {};
+				if(window.location.hash.split("?").length > 1){
+					var hashSplit = window.location.hash.split(/[?&]/)
+					for(var i = 1; i < hashSplit.length; i++){
+						var paramSplit = hashSplit[i].split("=");
+						if(paramSplit.length == 2)
+							urlParams[paramSplit[0]] = paramSplit[1]; 
+					}
+				}
+				
 				if(types != undefined)
 					urlParams.types = types;
+				else if(urlParams.types != undefined)
+					delete urlParams.types;
+				
 				if(query != "*")
 					urlParams.query = query;
+				else if(urlParams.query != undefined)
+					delete urlParams.query;
+				
 				if(ownership != "all")
 					urlParams.ownership = ownership;
+				else if(urlParams.ownership != undefined)
+					delete urlParams.ownership;
 				
 				if(Object.keys(urlParams).length > 0)
 					ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
@@ -68,8 +78,9 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				
 				searchHandle = true;
 				ViewManager.getView("#repoSearchMessageContainer").clearAlert("repoSearchFail");
-				$("#repoSearchNone").addClass("hide");
-				$("#repoSearchProgress").removeClass("hide");
+				
+				if($("#repoResults-data").first().children().size() == 0)
+					ViewManager.getView("#repoSearchResults").showProgressMessage();
 				
 				var params = {};
 				params.size = maxLength;
@@ -84,75 +95,40 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 	function clearDisplayResults(results)
 	{
-		var resultDiv = $("#repoSearchResultsPrivate").first(); 
-		var height = resultDiv.height()
-		resultDiv.css("height",height+"px");
-		resultDiv.html("");
-		
 		displayResults(results);
 	}
 	
 	function displayResults(results)
 	{ 
-		var resultDiv = $("#repoSearchResultsPrivate").first(); 
-		
-		var prevCount = resultDiv.children().length;
-		
-		$(results).each(function(idx, item){
-			$("<div></div>").load("partial/element/searchResult.html", function(){
-				$(this).addClass("tile");
-				$(this).attr("tabindex", idx);
-				
-				
-				var type = item.type;
-				type = type.split("/");
-				type = type[type.length - 1];
-				$(this).find(".title").text(type);
-				$(this).attr("id", item.id);
-				
-				$(this).click(function(){
-					AppController.repositoryController.view($(this).attr("id"), viewResult);
-				})
-				
-				resultDiv.append(this);
-				
-				if(resultDiv.children().length == prevCount+results.length)
-				{
-					resultDiv.css("height","");
-					
-					$("#repoSearchProgress").addClass("hide");
-				}
-			});
-		});
+		ViewManager.getView("#repoSearchResults").populate(results);
 		
 		if(results.length == 0)
 		{
-			resultDiv.css("height","");
-			
-			$("#repoSearchNone").removeClass("hide");
-			$("#repoSearchProgress").addClass("hide");
+			ViewManager.getView("#repoSearchResults").showNoDataMessage();
 		}else if(results.length < maxLength){
 			$("#moreSearchResults").addClass("hide");
 			$(window).off("scroll", scrollSearchHandler);
 		}else{
 			$("#getMoreResults").click(function(){
 				$("#moreSearchResults").addClass("hide");
-				runRepoSearch(resultDiv.children().length);
+				runRepoSearch(resultDiv.children().size());
 			})
 			
 			$(window).scroll(scrollSearchHandler)
 			
 			$("#moreSearchResults").removeClass("hide");
+			$("#loadingMoreResults").addClass("hide");
 		}
 		
 		searchHandle = null;
 	}
 	
 	function scrollSearchHandler(){
-		var resultDiv = $("#repoSearchResultsPrivate").first(); 
+		var resultDiv = $("#repoResults-data").first(); 
 		if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
 		{
 			$("#moreSearchResults").addClass("hide");
+			$("#loadingMoreResults").removeClass("hide");
 			runRepoSearch(resultDiv.children().size());
 		}
 	}
@@ -185,7 +161,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		if($(typeObjects).size() == 0)
 			errorDisplayingTypes("No Types Returned");
 		
-		$("#repoSearchTypes").html("");
+		$("#repoSearchTypes li.type").remove();
 		for(var i in typeObjects)
 		{
 			var typeObject = typeObjects[i];
@@ -198,24 +174,31 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			shortType = shortType.slice(0,1).toUpperCase() + shortType.slice(1, shortType.length);
 
 			if(urlTypes == undefined){
-				var html = '<label title="'+fullType+'">'
+				var html = '<li class="type"><label title="'+fullType+'">'
 	    			+ '<input type="checkbox" style="margin-bottom:0.5rem;" checked>'
 	    			+ shortType+' ('+count+')'
-	    			+'</label>';
+	    			+'</label></li>';
 			}else{
-				var html = '<label title="'+fullType+'">'
+				var html = '<li class="type"><label title="'+fullType+'">'
     			+ '<input type="checkbox" style="margin-bottom:0.5rem;"';
 				
 				html += $.inArray(fullType, urlTypes) != -1 ? "checked" : "";
 				
 				html += '>'
     			+ shortType+' ('+count+')'
-    			+'</label>';
+    			+'</label></li>';
+				
+				if(urlTypes.length == 1 && $.inArray(fullType, urlTypes) != -1){
+					$("#repoSearchTypesText").text(shortType+' ('+count+')');
+				}
 			}
-			
-			
-			
-			$("#repoSearchTypes").append(html);
+				
+			$("#repoSearchTypes").prepend(html);
+		}
+		
+		if(urlTypes != undefined && urlTypes.length > 1){
+			$("#repoSearchTypesText").text(urlTypes.length + " Types Selected")
+			$("#repoSearchTypesText").css("font-size", "small");
 		}
 		
 		var selectToggle = $("#repoSearchSelectAllToggle");
@@ -223,10 +206,45 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			if(selectToggle.text().indexOf("Deselect") == -1){
 				$("#repoSearchTypes input:checkbox").prop('checked', true);
 				selectToggle.text("Deselect All");
+				$("#repoSearchTypes input:checkbox").trigger("change");
 			}else{
 				$("#repoSearchTypes input:checkbox").prop('checked', false);
 				selectToggle.text("Select All");
 			}
+		})
+		
+		var typesChanged = false;
+		$("#repoSearchTypes input:checkbox").change(function(){
+			typesChanged = true;
+		})
+		
+		var el = new Foundation.Dropdown($("#repoSearchTypes"));
+		
+		$(el.$element).bind("hide.zf.dropdown", function(ev){
+			
+			var checked = $("#repoSearchTypes input:checked");
+			
+			var typeText;
+			if(checked.size() == 0 || checked.size() == $("#repoSearchTypes input").size()){
+				typeText = "All";
+				$("#repoSearchTypes input:checkbox").prop('checked', true);
+				selectToggle.text("Deselect All");
+				$("#repoSearchTypesText").css("font-size", "normal");
+			}else if(checked.size() == 1){
+				typeText = checked.closest("label").text();
+				$("#repoSearchTypesText").css("font-size", "normal");
+			}else{
+				typeText = checked.size() + " Types Selected";
+				$("#repoSearchTypesText").css("font-size", "small");
+			}
+			
+			$("#repoSearchTypesText").text(typeText);
+			
+			if(typesChanged){
+				typesChanged = false;
+				runRepoSearch();
+			}
+				
 		})
 	}
 	
@@ -242,20 +260,17 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		$(containerId).load("partial/screen/repoSearch.html", function(){
 			ViewManager.showView(new MessageContainer("repoSearch"), "#repoSearchMessageContainer");
 			
+			ViewManager.showView(new DataViewer("repoResults", {}), "#repoSearchResults");
+			
 			$("#repoSearchBtn").click(function(event){
 				event.preventDefault();
 				runRepoSearch();
 			});
+			$("#repoSearchOwnership").change(function(event){
+				event.preventDefault();
+				runRepoSearch();
+			});
 			
-			if(lastViewed != undefined)
-			{
-				$("#repoSearchViewBtn").attr("href", "#"+RepoViewScreen.prototype.displayName);
-				$("#repoSearchViewBtn").removeClass("hide");
-				$("#repoSearchViewBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new RepoViewScreen(lastViewed));
-				});
-			}
 			
 			$("#repoSearchText").keypress(function(e){
 				var key = e.which;
@@ -289,7 +304,6 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				$("#repoSearchOwnership").val(ownership);
 			}
 				
-			
 			AppController.searchController.getTypes(displayTypes, errorDisplayingTypes);
 			
 			runRepoSearch();

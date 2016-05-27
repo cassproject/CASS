@@ -1,13 +1,13 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 CompetencySearchScreen = (function(CompetencySearchScreen){
+	
+	function createContactSmall(pk)
+	{
+		var ident = AppController.identityController.lookup(pk);
+	    return '<span class="ownershipDisplay has-tip" tabindex>'
+	    	+ '<span class="qrcodeCanvas"></span>'
+	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
+	    	+ '</span>';
+	}
 	
 	var searchHandle = null;
 	
@@ -43,9 +43,6 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
 			
 			ViewManager.getView("#competencySearchMessageContainer").clearAlert("searchFail");
-			$("#competencySearchResults").html("");
-			$("#competencySearchProgress").removeClass("hide");
-			$("#competencySearchNone").addClass("hide");
 			
 			var params = {};
 			params.ownership = ownership;
@@ -56,30 +53,8 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 	
 	function displayResults(results)
 	{ 
-		var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app competency"><div class="front"><p class="title"></p></div><div class="back"><p class="status"></p><div class="actions"></div></div></div><a class="hotspot finger" title=""></a></div>';
-
-	    $("#competencySearchResults").html("");
-	    
-	    if($(results).size() == 0){
-	    	$("#competencySearchNone").removeClass("hide");
-	    }
-	    
-	    $(results).each(function(index, competency){
-		    $("#competencySearchResults").append(tile);
-	        var t = $("#competencySearchResults").children(".tile").last();
-	        var name = competency["name"];
-	        t.find(".title").text(name);
-	        t.attr("id", competency.id);
-	        
-	        t.click(function(e){
-	        	e.preventDefault();
-	        	viewCompetency(competency);
-	        });
-	    });
-	    
 		searchHandle = null;
-		
-		$("#competencySearchProgress").addClass("hide");
+		ViewManager.getView("#competencySearchResults").populate(results);
 	}
 	
 	function errorSearching(err){
@@ -104,34 +79,79 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		var ownership = this.ownership;
 		
 		$(containerId).load("partial/screen/competencySearch.html", function(){
-			
 			ViewManager.showView(new MessageContainer("competencySearch"), "#competencySearchMessageContainer");
+			
+			ViewManager.showView(new DataViewer("competencyResults", {
+				sort:{},
+				clickDataEdit:function(datum){
+					ScreenManager.changeScreen(new CompetencyEditScreen(datum));
+				},
+				moreMenuTools:function(){
+					var el = $("<li><span><i class='fa fa-sitemap'></i> Add to Framework</span></li>");
+					
+					el.click(function(){
+						var selected = ViewManager.getView("#competencySearchResults").getSelected();
+						
+						ModalManager.showModal(new AddCompetenciesToFrameworkModal(selected));
+					})
+					
+					return el;
+				},
+				buildData:function(id, datum){
+					var html = "<div class='small-8 columns'>" +
+					"<a class='datum-name'>{{dataName}}</a>" +
+					"<span class='datum-description'>{{dataDescription}}</span>" +
+					"</div>" +
+					"<div class='small-4 columns datum-owner'>{{dataOwner}}</div>";
+	
+				html = html.replaceAll(/{{dataId}}/g, id);
+				
+				if(datum["name"] != undefined)
+					html = html.replaceAll(/{{dataName}}/g, datum["name"])
+				else
+					html = html.replaceAll(/{{dataName}}/g, id);
+			
+				if(datum["description"] != undefined)
+					html = html.replaceAll(/{{dataDescription}}/g, " - "+datum["description"])
+				else
+					html = html.replaceAll(/{{dataDescription}}/g, "");
+					
+				
+				if(datum["owner"] != undefined && datum["owner"].length > 0){
+					var owner = "";
+					for(var i in datum["owner"]){
+						owner+= createContactSmall(datum["owner"][i])+ ", "
+					}
+					owner = owner.substring(0, owner.length-2);
+					html = html.replaceAll(/{{dataOwner}}/g, owner);
+				}else{
+					html = html.replaceAll(/{{dataOwner}}/g, "Public");
+				}
+				
+				var el = $(html)
+				
+				el.find(".ownershipDisplay").each(function(i, element){
+					$(element).children(".qrcodeCanvas").qrcode({
+			            width:128,
+			            height:128,
+			            text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
+			        });  
+				})
+				
+				el.find("a.datum-name").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new CompetencyViewScreen(datum));
+				})
+				
+				return el;
+				}
+			}), "#competencySearchResults");
+			
 			
 			$("#competencySearchSubmit").click(function(event){
 				event.preventDefault();
 				runCompetencySearch();
 			});
-			
-			$("#competencySearchBtn").attr("href", CompetencySearchScreen.prototype.displayName);
-			$("#competencySearchBtn").click(function(e){
-				e.preventDefault();
-			})
-			
-			$("#competencySearchViewBtn").attr("href", CompetencyViewScreen.prototype.displayName);
-			if(lastViewed != undefined)
-			{
-				$("#competencySearchViewBtn").removeClass("hide");
-				$("#competencySearchViewBtn").click(function(e){
-					e.preventDefault();
-					viewCompetency(lastViewed);
-				})
-			}
-			else
-			{
-				$("#competencySearchViewBtn").click(function(e){
-					e.preventDefault();
-				})
-			}
 			
 			$("#competencySearchText").keypress(function(e){
 				var key = e.which;

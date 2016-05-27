@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var EcCallback = function() {};
 EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
     prototype.callback = function(result) {};
@@ -53,6 +44,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
+        if (p.url.indexOf(window.location.protocol) == -1) 
+            p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor.getExpectingObject = function(server, service, success, failure) {
@@ -77,6 +70,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
+        if (p.url.indexOf(window.location.protocol) == -1) 
+            p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor._delete = function(url, signatureSheet, success, failure) {
@@ -96,6 +91,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.headers["signatureSheet"] = signatureSheet;
         p.success = successCallback;
         p.error = failureCallback;
+        if (p.url.indexOf(window.location.protocol) == -1) 
+            p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
 }, {}, {});

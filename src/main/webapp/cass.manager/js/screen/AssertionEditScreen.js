@@ -358,7 +358,6 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err);
 	}
 	
-	
 	AssertionEditScreen.prototype.display = function(containerId, callback)
 	{
 		var data = this.data;
@@ -401,11 +400,11 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			}
 			else
 			{
-//				$("#assertionEditViewBtn").attr("href", "#"+CompetencyViewScreen.prototype.displayName);
-//				$("#assertionEditViewBtn").click(function(event){
-//					event.preventDefault();
-//					ScreenManager.changeScreen(new CompetencyViewScreen(data))
-//				});
+				$("#assertionEditViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
+				$("#assertionEditViewBtn").click(function(event){
+					event.preventDefault();
+					ScreenManager.changeScreen(new AssertionViewScreen(data))
+				});
 			}
 			
 			
@@ -416,8 +415,26 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			
 			$("#assertionEditCancelBtn").click(function(event){
 				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen());
+				ScreenManager.changeScreen(new AssertionViewScreen());
 			});
+			
+			if(newAssertion){
+				$("#assertionEditDeleteBtn").remove();	
+			}else{
+				$("#assertionEditDeleteBtn").click(function(event){
+					event.preventDefault();
+					ModalManager.showModal(new ConfirmModal(function(){
+						EcRepository._delete(data, function(){
+							ScreenManager.changeScreen(new AssertionSearchScreen());
+						}, function(err){
+							if(err == undefined)
+								err = "Unable to connect to server to delete assertion";
+							ViewManager.getView("#assertionEditMessageContainer").displayAlert(err)
+						});
+						ModalManager.hideModal();
+					}, "Are you sure you want to delete this assertion?"));
+				})
+			}
 			
 			if(newAssertion && (!LoginController.getLoggedIn() || !AppController.identityController.canEdit(data))){
 				$("#assertionEditSaveBtn").removeClass("fake-a-label");
@@ -468,7 +485,13 @@ AssertionEditScreen = (function(AssertionEditScreen){
 					}
 					data.setConfidence(confidence);
 					
-					data.setEvidence($("#assertionEvidenceInput").val().split(/\n/));
+					var evidences = $("#assertionEvidenceInput").val().split(/\n/);
+					if(evidences != undefined && evidences.length == 1 && evidences[0] == undefined || evidences[0] == ""){
+						data.evidence = undefined;
+					}else{
+						data.setEvidence(evidences);	
+					}
+					
 					
 					var dateSplit = new Date($("#assertionDateInput").val()).toUTCString().split(" ");
 					dateSplit.splice(5,1);

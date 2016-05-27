@@ -4,6 +4,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     prototype.identity = null;
     constructor.refreshLoggedIn = false;
     constructor.loggedIn = false;
+    constructor.admin = false;
     constructor.storageSystem = null;
     constructor.setLoggedIn = function(val) {
         LoginController.loggedIn = val;
@@ -13,15 +14,32 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.getLoggedIn = function() {
         return LoginController.loggedIn;
     };
+    prototype.setAdmin = function(val) {
+        LoginController.admin = val;
+    };
+    prototype.getAdmin = function() {
+        return LoginController.admin;
+    };
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
     };
     prototype.login = function(username, password, success, failure) {
         var identityManager = this.identity;
+        var that = this;
         this.loginServer.startLogin(username, password);
         this.loginServer.fetch(function(p1) {
-            if (EcIdentityManager.ids.length > 0) 
+            if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                that.loginServer.fetchServerAdminKeys(function(keys) {
+                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
+                            that.setAdmin(true);
+                        }
+                    }
+                }, function(p1) {});
+            }
+            EcIdentityManager.readContacts();
+            EcRepository.cache = new Object();
             LoginController.setLoggedIn(true);
             success();
         }, function(p1) {
@@ -60,8 +78,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     prototype.logout = function() {
         this.loginServer.clear();
         this.identity.selectedIdentity = null;
-        EcIdentityManager.ids = new Array();
+        EcRepository.cache = new Object();
         LoginController.setLoggedIn(false);
+        EcIdentityManager.ids = new Array();
+        EcIdentityManager.clearContacts();
     };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
 (function() {

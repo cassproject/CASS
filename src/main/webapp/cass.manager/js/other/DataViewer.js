@@ -54,6 +54,8 @@ var DataViewer = (function(DataViewer){
 		
 		var sortType = $("#"+prefix+"-sortSelect").val();
 		
+		var defaultSort = (callbacks == undefined || callbacks["sort"] == undefined || callbacks["sort"][sortType] == undefined);
+		
 		if(sortType == "type"){
 			arr.sort(function(a, b){
 				if(a.type > b.type){
@@ -64,7 +66,7 @@ var DataViewer = (function(DataViewer){
 					return 0;
 				}
 			});
-		}else if(sortType == "owner"){
+		}else if(sortType == "owner" || (LoginController.getLoggedIn() && defaultSort)){
 			arr.sort(function(a, b){
 				if(AppController.identityController.owns(a)){
 					if(AppController.identityController.owns(b)){
@@ -86,7 +88,7 @@ var DataViewer = (function(DataViewer){
 					return 0;
 				}
 			});
-		}else if(sortType == "timestamp" || callbacks == undefined || callbacks["sort"] == undefined || callbacks["sort"][sortType] == undefined){
+		}else if(sortType == "timestamp" || (!LoginController.getLoggedIn() && defaultSort)){
 			arr.sort(function(a, b){
 				// By ID Timestamp (date newest -> oldest)
 				aId = a.id.split("/");
@@ -124,12 +126,12 @@ var DataViewer = (function(DataViewer){
 		}
 		
 		var option = $("<option value='timestamp'>Sort by Timestamp</option>");
-		if(urlParams["sort"] == undefined)
+		if(urlParams["sort"] == undefined && !LoginController.getLoggedIn())
 			option.attr("selected","selected");
 		$("#"+prefix+"-sortSelect").append(option);
 		
 		option = $("<option value='owner'>Sort by Owner</option>");
-		if(urlParams["sort"] == "owner")
+		if(urlParams["sort"] == "owner" || (urlParams["sort"] == undefined && LoginController.getLoggedIn()))
 			option.attr("selected","selected");
 		$("#"+prefix+"-sortSelect").append(option);
 		
@@ -269,7 +271,7 @@ var DataViewer = (function(DataViewer){
 				
 				if(!AppController.identityController.owns(datum)){
 					$("#"+prefix+"-menu").find(".fa-group").addClass("hide");
-					var admin = false;
+					var admin = AppController.loginController.getAdmin();
 					if(!admin){
 						$("#"+prefix+"-menu").find(".fa-trash").addClass("hide");
 					}
@@ -291,6 +293,7 @@ var DataViewer = (function(DataViewer){
 							allOwned = false;
 					}
 					if(allOwned){
+						
 						$("#"+prefix+"-menu").find(".fa-group").removeClass("hide");
 						$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
 					}
@@ -400,7 +403,7 @@ var DataViewer = (function(DataViewer){
 			element.find(".fa-group").remove();
 			
 			// TODO: Figure out admin user stuff
-			var adminUser = false;
+			var adminUser = AppController.loginController.getAdmin();
 			if(!adminUser){
 				element.find(".fa-trash").remove();
 			}else{
@@ -525,7 +528,9 @@ var DataViewer = (function(DataViewer){
 						"<i class='fa fa-trash dataViewBtn' title='Delete' style='margin-right:1rem;'></i>" +
 						"<i class='fa fa-group dataViewBtn' title='Manage Permissions' style='margin-right:1rem;'></i>" +
 						"<i class='fa fa-clone dataViewBtn' title='Copy Resource' style='margin-right:1rem;'></i>" +
-						"<span id='moreMenuBtns' class='dataViewBtn hide' style='padding:0px 5px'><i class='fa fa-ellipsis-v '></i></span>" +
+						"<ul id='moreMenuBtns' class='dropdown menu hide' style='display:inline-block;vertical-align:middle;text-align:left;' data-dropdown-menu data-disable-hover='true' data-click-open='true' data-close-on-click='trues'>" +
+							"<li id='moreMenuContainer'><span class='dataViewBtn' style='padding:0px 5px; display:inline-block;'><i class='fa fa-ellipsis-v'></i></span></li>" +
+						"</ul>" +
 					"</div>" +
 				"</div>";
 		
@@ -619,8 +624,8 @@ var DataViewer = (function(DataViewer){
 		});
 		
 		if(callbacks != undefined && callbacks["moreMenuTools"]){
-			var list = $("<ul class='contextMenu hide'></ul>");
-			$("body").append(list);
+			var list = $("<ul class='menu contextMenu'></ul>");
+			row.find("#moreMenuContainer").append(list);
 			
 			var moreActions = callbacks["moreMenuTools"](prefix);
 			
@@ -628,24 +633,6 @@ var DataViewer = (function(DataViewer){
 				row.find("#moreMenuBtns").removeClass("hide");
 				
 				list.append(moreActions);
-				
-				row.find("#moreMenuBtns").click(function(ev){
-					ev.preventDefault();
-					
-					list.css("left", ev.clientX - 200);
-					list.css("top", ev.clientY);
-					
-					list.removeClass("hide");
-				});
-				
-				list.on("mouseleave", function(){
-					var record = setTimeout(function(){
-						list.addClass("hide");
-					}, 750);
-					list.on("mouseenter",function(){
-						clearTimeout(record);
-					});
-				});
 			}
 			
 		}
@@ -715,6 +702,7 @@ var DataViewer = (function(DataViewer){
 			}
 			
 			$("#"+prefix+"-menu").append(menu);
+			$("#"+prefix+"-menu").foundation();
 			
 			if(callback != undefined)
 				callback();

@@ -54,9 +54,17 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
     };
     prototype.viewCompetency = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
             if (p1.isA(EcCompetency.myType)) {
                 var competency = new EcCompetency();
                 competency.copyFrom(p1);
+                success(competency);
+            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcCompetency.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                var competency = new EcCompetency();
+                competency.copyFrom(decrypted);
+                competency.privateEncrypted = true;
                 success(competency);
             } else {
                 failure("Retrieved object was not a competency");
@@ -64,10 +72,19 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
         }, failure);
     };
     prototype.viewFramework = function(id, success, failure) {
+        var me = this;
         EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
             if (p1.isA(EcFramework.myType)) {
                 var framework = new EcFramework();
                 framework.copyFrom(p1);
+                success(framework);
+            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcFramework.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                var framework = new EcFramework();
+                framework.copyFrom(decrypted);
+                framework.privateEncrypted = true;
                 success(framework);
             } else {
                 failure("Retrieved object was not a framework");
@@ -76,9 +93,17 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
     };
     prototype.viewRelation = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
             if (p1.isA(EcAlignment.myType)) {
                 var alignment = new EcAlignment();
                 alignment.copyFrom(p1);
+                success(alignment);
+            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcAlignment.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                var alignment = new EcAlignment();
+                alignment.copyFrom(decrypted);
+                alignment.privateEncrypted = true;
                 success(alignment);
             } else {
                 failure("Retrieved object was not a relation");
@@ -93,6 +118,17 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
                 success(level);
             } else {
                 failure("Retrieved object was not a level");
+            }
+        }, failure);
+    };
+    prototype.viewAssertion = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (p1.isA(EcAssertion.myType)) {
+                var assertion = new EcAssertion();
+                assertion.copyFrom(p1);
+                success(assertion);
+            } else {
+                failure("Retrieved object was not an assertion");
             }
         }, failure);
     };

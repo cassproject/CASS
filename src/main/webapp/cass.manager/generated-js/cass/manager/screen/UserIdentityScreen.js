@@ -13,15 +13,17 @@ UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(cons
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
-            if (LoginController.getPreviouslyLoggedIn()) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (LoginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
                 ScreenManager.startupScreen = new UserIdentityScreen();
                 ModalManager.showModal(new LoginModal(function() {
                     ModalManager.hideModal();
-                    if (window.document.location.hash.startsWith("#" + new WelcomeScreen().getDisplayName())) {
-                        ScreenManager.changeScreen(new UserIdentityScreen(), null, null);
-                    }
                 }, function() {
-                    ScreenManager.replaceScreen(new WelcomeScreen(), null);
+                    if (!LoginController.getLoggedIn()) {
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null);
+                    } else {
+                        ScreenManager.reloadCurrentScreen(null);
+                    }
                 }, AppSettings.returnLoginMessage));
             }
         }
