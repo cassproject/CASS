@@ -1,0 +1,217 @@
+// Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+salt = #fileLoad(path="skyId.salt").fileToString();
+salt = #if(
+	operator=#fileExists(path="skyId.salt"),
+	operand="",
+	eq=#object(
+		a=#fileSave(obj=#randomString(length="2048"),path="skyId.salt"),
+		b=salt
+	).cget(b=""),
+	ne=salt
+).cache(name="skyIdSalt");
+
+secret=#fileLoad(path="skyId.secret").fileToString();
+secret=#if(
+	operator=#fileExists(path="skyId.secret"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#randomString(length="2048"),path="skyId.secret"),
+		b=secret
+	).cget(b=""),
+	ne=secret
+);
+
+secret=#pbkdf2(
+	obj=secret,
+	salt=salt,
+	iterations="10000",
+	hashLength="16"
+).cache(name="skyidSecret");
+
+ppk=#fileLoad(path="skyId.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="skyId.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="skyId.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="skyidPpk");
+
+saltedId=#pbkdf2(
+	obj="@id",
+	salt=salt,
+	iterations="10000",
+	hashLength="16"
+);
+
+saltedPassword=#pbkdf2(
+	obj="@password",
+	salt=salt,
+	iterations="10000",
+	hashLength="64"
+);
+
+signatureSheet=#object(
+	filename="signatureSheet.json",
+	mimeType="application/json",
+	data=#object(
+		a=#toObject(obj="@signableObject").put(
+			_key=#signature(),
+			_value=#toObject(obj="@signableObject").rsaSign(ppk=ppk)
+		).call(
+			signableObject=#object(
+				expiry=#date(_raw="true").add(z="10000").toLong()
+			).put(
+				_key=#type(),
+				_value="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature"
+			).put(
+				_key=#owner(),
+				_value=ppk.rsaPpkToPk()
+			)
+		)
+	).valueSet().toString()
+).stringToFile();
+
+retrieve=#if(
+	operator="@payload",
+	operand="",
+	eq=#error(code="404", msg="User Does Not Exist"),
+	ne=#aesDecrypt(
+		obj="@payload",
+		secret=secret,
+		iv=saltedId
+	).toObject()
+).ccall(
+	payload=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	).cget(payload="")
+);
+
+payload=#object(
+	payload = #toObject(obj="@payload").aesEncrypt(
+		secret=secret,
+		iv=saltedId
+	)
+).put(
+	_key=#schema(),
+	_value="http://schema.eduworks.com/ebac/0.1/"
+).put(
+	_key=#type(),
+	_value="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+).put(
+	_key=#owner(),
+	_value=ppk.rsaPpkToPk()
+);
+
+retreiveFormally=#if(
+	operator=saltedPassword,
+	operand=retrieve.cget(password=""),
+	eq=payload.call(
+		payload=retrieve.put(token=#randomString(length="20"))
+	).skyrepoPut(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	).cget(payload="").aesDecrypt(
+		secret=secret,
+		iv=saltedId
+	).toObject().put(password=""),
+	ne=#error(code="401",msg="Not found.")
+);
+
+retreiveFormally = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=retreiveFormally
+);
+	
+#skyidRetreive = retreiveFormally;
+
+store=payload.debug().skyrepoPut(
+	type="schema.eduworks.com.ebac.0.1.encryptedValue",
+	id=saltedId
+);
+
+storeFormally=#if(
+	operator=retrieve.cget(token=""),
+	operand="@token",
+	eq=store,
+	ne=#error(code="403",msg="An error in synchronization has occurred. Please re-login and try again.")
+);
+
+storeFormally = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=storeFormally
+);
+
+storeFormally = #object(
+	a=#addWhitespaceAnalyzer(),
+	b=storeFormally
+);
+
+#skyidStore = storeFormally;
+
+create=#if(
+	operator=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	),
+	operand="",
+	eq=store
+);
+
+create = #object(
+	a=create,
+	b=#object(text="Sky User Created.").httpPost(multipart="false",contentType="text/plain",url="https://zhooks.slack.com/services/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")
+);
+
+create = signatureSheet.toDatastream(
+	paramName="signatureSheet",
+	op=create
+);
+
+create = #object(
+	a=#addWhitespaceAnalyzer(),
+	b=create
+);
+
+#skyidCreate=create;
+
+postData=#fileFromDatastream(name="credentialRequest");
+
+postObject=postData.fileToString().toObject();
+
+login=#skyidRetreive(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password="")
+).displayJson(_collapse="true");
+/sky/id/login=login;
+
+postData=#fileFromDatastream(name="credentialCommit");
+
+postObject=postData.fileToString().toObject();
+
+store=#skyidStore(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password=""),
+	token=postObject.cget(token=""),
+	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
+);
+/sky/id/commit=store;
+
+postData=#fileFromDatastream(name="credentialCommit");
+
+postObject=postData.fileToString().toObject();
+
+store=#skyidCreate(
+	id=postObject.cget(username=""),
+	password=postObject.cget(password=""),
+	token=postObject.cget(token=""),
+	payload=postObject.cget(credentials="").put(token=postObject.cget(token=""),password=saltedPassword.call(password=postObject.cget(password="")))
+);
+/sky/id/create=store;

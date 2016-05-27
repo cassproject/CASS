@@ -1,0 +1,50 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Account Login
+</h3>
+<form id="loginForm">
+	<div class="row">
+		<div id="loginMessageContainer" class="small-10 small-centered columns">
+			
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-11 columns">
+			<select id="loginServer">
+				<option value="http://localhost:9722/api/custom/">Localhost</option>
+		    </select>
+		</div>
+		<div class="small-1 columns">
+			<span id="loginAddServer" class="fake-a">
+				<i style="margin-top: 0.7rem;" title="Add New Server Endpoint" class="fa fa-plus"></i>
+			</span>
+		</div>
+	</div>
+    
+    <div class="row">
+    	<label class="small-12 columns" for="loginUserId">
+			Username:
+			<input type="text" name="loginUserId" id="loginUserId">
+		</label>
+    </div>
+    
+	<div class="row">
+		<label class="small-12 columns" for="loginPassword">
+			Password:
+			<input type="password" name="loginPassword" id="loginPassword">
+		</label>
+	</div>
+		
+	<div class="row">
+		<div class="small-12 columns">
+		
+			<small id="loginCreateAccount" class="fake-a">Create Account</small>
+		
+			<input type="submit" value="Login" class="button float-right" />
+			<button id="loginCancel" class="button secondary float-right" style="margin-right:1rem;">Cancel</button>
+		</div>
+	</div>    
+</form>

@@ -1,0 +1,472 @@
+// Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+type=#add(a="@",b="type");
+context=#add(a="@",b="context");
+owner=#add(a="@",b="owner");
+reader=#add(a="@",b="reader");
+signature=#add(a="@",b="signature");
+id=#add(a="@",b="id");
+
+urlBase=#urlBase();
+
+putUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	d="/",
+	g=#urlEncode(obj="@id"),
+	h=#if(
+		operator="@version",
+		operand="",
+		ne=#add(
+			a="?version=",
+			i="@version",
+			j="&version_type=external&refresh=true"
+		),
+		eq="?refresh=true"
+	),
+	
+);
+
+//BUG: Check to see if there are no signature sheet signatures but the owners change, if it changes the owner.
+put=#if(
+	operator="@obj",
+	operand="",
+	ne=#object(
+		a=#skyRepoCheckType(
+			obj=#toObject(obj="@obj").toObject()
+		),
+		c=#if(
+			operator=#owners(obj="@oldObj").count(),
+			operand="0",
+			gt=#if(
+				operator=#signatureSheet().intersect(b=#owners(obj="@oldObj")).count(),
+				operand="0",
+				eq=#if(
+					operator=#owners(obj="@oldObj").count(),
+					operand="0",
+					eq=#error(code="401",msg="This object is public, nobody can own it."),
+					ne=#error(code="401",msg="Only an owner of an object may change it.")
+				)
+			)
+		).ccall(
+			oldObj=#skyrepoGet(version="")
+		),
+		z=#toObject(obj="@obj").toObject().httpPost(
+			url=putUrl,
+			contentType="application/json",
+			multipart="false"
+		)
+	)
+).object(z=#toObject(obj="@obj")).cget(z="");
+
+#skyrepoPut=put;
+
+deleteUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	d="/",
+	g=#urlEncode(obj="@id"),
+	z="?refresh=true"
+);
+
+//BUG: Check to see if there are no signature sheet signatures but the owners change, if it changes the owner.
+delete=#object(
+		b=#if(
+			operator=#owners().count(obj="@oldObj"),
+			operand="0",
+			gt=#if(
+				operator=#signatureSheet().intersect(b=#owners(obj="@oldObj")).count(),
+				operand="0",
+				eq=#if(
+					operator=#owners(obj="@oldObj").count(),
+					operand="0",
+					eq=#error(code="403",msg="This object is public, nobody can delete it."),
+					ne=#error(code="401",msg="Only an owner of an object may delete it.")
+				)
+			),
+			eq=#error(code="403",msg="This object is public, nobody can delete it.")
+		).ccall(
+			oldObj=#skyrepoGet(version="")
+		),
+		z=#httpDelete(
+			url=deleteUrl
+		)
+).cget(z="");
+
+#skyrepoDelete=delete;
+
+getUrl=#add(
+	a=urlBase,
+	b="/data/",
+	c="@type",
+	f="/",
+	g=#urlEncode(obj="@id"),
+	h=#if(
+		operator="@version",
+		operand="",
+		ne=#add(
+			a="?version=",
+			b="@version",
+			c="&version_type=external"
+		)
+	)
+);
+
+get=getUrl.httpGet().toObject().cgetByParam(
+	param="_source"
+).filterResults();
+
+#skyrepoGet=get;
+
+ownerSignatureFilterArray = #signatureSheet().cforEach(
+	paramName="signatureKey",
+	op=#object(
+		multi_match=#object(
+			fields=#object(
+				a=owner.add(a="")
+			).valueSet(),
+			type="phrase",
+			query="@signatureKey",
+			analyzer="whitespace_remove"
+		)
+	),
+	array="true"
+);
+
+readerSignatureFilterArray = #signatureSheet().cforEach(
+	paramName="signatureKey",
+	op=#object(
+		multi_match=#object(
+			fields=#object(
+				a=reader.add(a="")
+			).valueSet(),
+			type="phrase",
+			query="@signatureKey",
+			analyzer="whitespace_remove"
+		)
+	),
+	array="true"
+);
+
+ownerReaderFilter=#signatureSheet().cforEach(
+	paramName="signatureKey",
+	op=#add(a="\*",aa=owner,b=':"',c="@signatureKey",d='"').add(a="\*",aa=reader,b=':"',c="@signatureKey",d='"',e=" OR ")
+).flatten(_delimiter=" ");
+
+ownershipObj = #object(
+	should=ownerSignatureFilterArray
+);
+
+ownershipFilters = 
+#object(
+			bool=#if(operator=#add(a="[",b="]").toArray().append(a="all", b="public").has(has="@ownership"), operand="true",
+	ne=ownershipObj,
+	eq=ownershipObj.put(
+		_key="must",
+		_value=#add(a="[",b="]").toArray().append(
+			a=#object(
+				exists=#object(
+					field=owner
+				)
+			)
+		)
+	)
+)
+);
+
+
+
+ownerOrReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="", b="@", c="reader")), operand="-1",
+	ne=#if(operator=#signatureSheet().count(), operand="0",
+		eq=#error(msg="error!"),
+		ne=#object(
+			c=ownerSignatureFilterArray,
+			a=readerSignatureFilterArray
+		).valueSet().union()
+	),
+	eq=ownershipFilters
+);
+
+typeArray=#toArray(obj="@types").cforEach(
+	paramName="type",
+	op=#object(
+		match=#object().put(
+			_key=#add(a=type,b=".(full)"),
+			_value="@type"
+		)
+	),
+	array="true"
+);
+
+
+//#skyRepoGetProtectedTypes
+searchObj=#object(
+	from="@start",
+	size="@size",
+	query=#object(
+		bool=#object(
+			must=#object(
+				a=#object(query_string=#object(
+					query=#if(
+						operator=ownerReaderFilter.string(op="trim"),
+						operand="",
+						eq="@q",
+						ne=#add(a="(",b="@q",c=") AND (",d=ownerReaderFilter,e=")")
+					)
+				))
+			).valueSet(),
+			should=#if(
+				operator="@types", 
+				operand="",
+				ne=#object(
+					a=typeArray
+				).valueSet()
+			)
+		)
+	)
+).put(
+	_key="_source",
+	_value=#object(a="*").valueSet()
+).debug(prefix="Sig Search Terms: ");
+
+protectedTypeArray = #skyRepoGetProtectedTypes().cforEach(
+	paramName="protectedType",
+	op=#object(
+		match=#object().put(
+			_key=#add(a="@",b="type.(full)"),
+			_value="@protectedType"
+		)
+	),
+	array="true"
+);
+
+nonSigOwnershipFilters = #if(operator=#toArray().append(a="all", b="owned").has(has="@ownership"), operand="true",
+	eq=#object(
+		must_not=#if(operator="@ownership", operand="owned",
+			eq=#merge(a=protectedTypeArray, b=ownerSignatureFilterArray).append(
+				a=#object(
+					missing=#object(
+						field=owner
+					)
+				)
+			),
+			ne=#merge(a=protectedTypeArray, b=ownerSignatureFilterArray)
+		)
+	),
+	ne=#if(operator="@ownership", operand="public",
+		eq=#object(
+			must_not=protectedTypeArray.append(
+				a=#object(
+					exists=#object(
+						field=owner
+					)
+				)
+			)
+		),
+		ne=#object(
+			must=protectedTypeArray.append(
+				a=#object(
+					exists=#object(
+						field=owner
+					)
+				)
+			)
+		)
+	)
+);
+
+checkNonSigReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="", b="@", c="reader")), operand="-1",
+	ne=#if(operator=#signatureSheet().count(), operand="0",
+		eq=#error(msg="error!"),
+		ne=nonSigOwnershipFilters.put(
+			_key="should",
+			_value=readerSignatureFilterArray
+		)
+	),
+	eq=nonSigOwnershipFilters
+);
+	
+
+nonSigSearchObj = #object(
+	from="@start",
+	size="@size",
+	query=#object(
+		filtered=#object(
+			query=#object(
+				query_string=#object(
+					query="@q"
+				)
+			),
+			filter=#object(
+				bool=#if(operator="@types", operand="",
+					eq=checkNonSigReaderFilters,
+					ne=#object(
+						must=#toArray().append(
+							a=#object(
+								bool=checkNonSigReaderFilters
+							),
+							b=#object(
+								bool=#object(
+									should=typeArray
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+).put(
+	_key="_source",
+	_value=#object(a="*").valueSet()
+).debug(prefix="Non-Sig Search Terms: ");
+
+
+searchUrl=#add(
+	a=urlBase,
+	b="/_search"
+);
+
+signatureSearch=searchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+	paramName="obj",
+	array="true",
+	op=#toObject(obj="@obj").getByParam(param="_source")
+).filterResults();
+
+checkRunSignatureSearch = #if(operator=#signatureSheet().count(), operand="0",
+	ne=signatureSearch,
+	eq=#toArray()
+).debug(prefix="sig search:");
+
+nonSigSearch = nonSigSearchObj.httpPost(url=searchUrl,multipart="false").toObject().cget(hits="").cget(hits="").cforEach(
+	paramName="obj",
+	array="true",
+	op=#toObject(obj="@obj").getByParam(param="_source")
+).filterResults();
+
+
+checkRunNonSigSearch = #catch(
+	try=nonSigSearch, 
+	runtime=#toArray()
+).debug(prefix="nonsig search:");
+
+search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
+	eq="@sigResults",
+	lt=#if(operator=#toArray(obj="@sigResults").count(), operand="0",
+		eq=checkRunNonSigSearch.ccall(
+			start=#string(
+				str="@string",
+				op="substr",
+				begin="0",
+				end=#indexOf(str="@string", substr=".")
+			).ccall(
+				string=#add(
+					a="@start",
+					b=#add(
+						a="-",
+						b=checkRunSignatureSearch.ccall(
+							start="0",
+							size="@start"
+						).toArray().count()
+					),
+					c="-1"
+				).append(a="0").cmax()
+			),
+			size="@size"
+		),
+		ne=#merge(
+			a=#toArray(obj="@sigResults"), 
+			b=checkRunNonSigSearch.ccall(
+				start="0",
+				size=#string(
+					str="@string",
+					op="substr",
+					begin="0",
+					end=#indexOf(str="@string", substr=".")
+				).ccall(
+					string=#add(
+						a="@size",
+						b=#add(
+							a="-",
+							b=#decode(obj="@sigResults").count()
+						)
+					)
+				)
+			)
+		)
+	),
+).ccall(
+	sigResults=checkRunSignatureSearch
+).toArray().removeDuplicates().displayJson(_collapse="true");
+
+//search = #merge(a=checkRunNonSigSearch, b=checkRunSignatureSearch).displayJson(_collapse="true");
+
+#skyrepoSearch=search;
+
+
+
+
+
+
+typesObj = #object(
+	query=#object(
+		filtered=#object(
+			query=#object(
+				match_all=#object()
+			),
+			filter=#object(
+				bool=#object(
+					should=#signatureSheet().cforEach(
+						paramName="signatureKey",
+						op=#object(
+							match=#object().put(
+								_key=owner,
+								_value=#object(
+									query="@signatureKey",
+									analyzer="whitespace_remove"
+								)
+							)
+						),
+						array="true"
+					).append(
+						a=#object(
+							missing=#object(
+								field=owner
+							)
+						),
+						b=#object(
+							bool=#object(
+								must_not=#skyRepoGetProtectedTypes().cforEach(
+									paramName="protectedType",
+									op=#object(
+										match=#object().put(
+											_key=#add(a="@",b="type.(full)"),
+											_value="@protectedType"
+										)
+									),
+									array="true"
+								)
+							)
+						)
+					)	
+				)
+			)
+		)
+	),
+	aggs=#object(
+		types=#object(
+			terms=#object(
+				field=#add(a=type,b=".(full)")
+			)
+		)
+	)
+);
+
+types = typesObj.httpPost(url=searchUrl, multipart="false").toObject().cget(aggregations="").cget(types="").cget(buckets="").displayJson(_collapse="true");
+
+#skyrepoTypes = types;

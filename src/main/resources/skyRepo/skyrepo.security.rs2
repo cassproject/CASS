@@ -1,0 +1,159 @@
+// Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+encryptedTypes=#object(
+	a="http://skyrepo.eduworks.com/EncryptedValue",
+	b="EncryptedValue",
+	c="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+).valueSet();
+
+#skyRepoPredefinedEncrypted = encryptedTypes;
+
+
+type=#add(a="@",b="type");
+context=#add(a="@",b="context");
+owner=#add(a="@",b="owner");
+reader=#add(a="@",b="reader");
+protect=#add(a="@",b="protect");
+obj=#toObject(obj="@obj");
+
+owners=#if(
+	operator="@owner",
+	operand="",
+	ne=#if(
+		operator=#startsWith(obj="@owner",with="["), 
+		operand="true",
+		eq=#toArray(obj="@owner"),
+		ne=#add(a="[",b="]").toArray().append(a="@owner")
+	)
+).ccall(
+	owner=obj.getByParam(
+		param=owner
+	)
+).cforEach(
+	paramName="owner",
+	array="true",
+	threaded="false",
+	op=#replace(
+		obj="@owner",
+		regex="true",
+		replace="\r?\n",
+		with=""
+	)
+);
+
+readers=#if(
+	operator="@reader",
+	operand="",
+	ne=#if(
+		operator=#startsWith(obj="@reader",with="["), 
+		operand="true",
+		eq=#toArray(obj="@reader"),
+		ne=#add(a="[",b="]").toArray().append(a="@reader")
+	)
+).ccall(
+	reader=obj.getByParam(
+		param=reader
+	)
+).cforEach(
+	paramName="reader",
+	array="true",
+	threaded="false",
+	op=#replace(
+		obj="@reader",
+		regex="true",
+		replace="\r?\n",
+		with=""
+	)
+);
+
+ownersOrReaders=#object(a=owners,b=readers).valueSet().union();
+#owners=owners;
+
+urlType=#add(
+	a=obj.getByParam(param=context).string(op="trim",chars="/"),
+	b=#if(operator=obj.getByParam(param=context),operand="",ne="/"),
+	c=#replace(obj="@type",replace=obj.getByParam(param=context),with="").string(op="trim",chars="/")
+);
+
+types=obj.getByParam(param=type).toArray().cforEach(
+	paramName="type",
+	array="true",
+	threaded="false",
+	op=#if(
+		operator=#has(obj="@type",has="http"),
+		operand=true,
+		eq=urlType,
+		ne="@type"
+	)
+);
+
+isEncryptedType=#if(
+	operator=encryptedTypes.intersect(b=types).count(),
+	operand="0",
+	gt="true",
+	eq=#if(
+		operator=#httpGet(obj=types.getIndex(index="0")).fileToString().toObject().getByParam(param=protect),
+		operand="true",
+		eq="true",
+		ne="false"
+	)
+);
+
+filterResultObject=#if(
+	operator=isEncryptedType,
+	operand="true",
+	eq=#if(
+		operator=ownersOrReaders.count(),
+		operand="0",
+		eq=obj.cforEach(
+			paramName="key",
+			valueName="obj",
+			threaded="false",
+			op=#filterResults()
+		),
+		ne=#if(
+			operator=#signatureSheet().intersect(b=ownersOrReaders).count(),
+			operand="0",
+			gt=obj.cforEach(
+				paramName="key",
+				valueName="obj",
+				threaded="false",
+				op=#filterResults()
+			)
+		)
+	),
+	ne=obj.cforEach(
+		paramName="key",
+		valueName="obj",
+		threaded="false",
+		op=#filterResults(obj="@obj", key="@key")
+	)
+);
+
+filterResultArray=#toArray(obj="@obj").cforEach(
+	paramName="obj",
+	threaded="false",
+	array="true",
+	op=#filterResults()
+);
+
+filterResults=#if(
+	operator="@obj",
+	operand="",
+	ne=#if(
+		operator=#startsWith(obj="@obj",with="{"),
+		operand="true",
+		eq=filterResultObject,
+		ne=#if(
+			operator=#startsWith(obj="@obj",with="["),
+			operand="true",
+			eq=filterResultArray,
+			ne="@obj"			
+		)
+	)
+);
+
+#filterResults=filterResults;

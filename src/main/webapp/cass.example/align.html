@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CASS Resource Alignment</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation.joyride.css" />
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+    <div class="top-bar">
+        <ul class="top-bar-left dropdown menu" data-dropdown-menu>
+            <li>
+                <a class="menu-text" href="../index.html">CASS</a>
+                <ul class="menu vertical">
+                    <li><a href="framework.html">Framework Manager</a></li>
+                    <li><a href="profile.html">Profile Manager</a></li>
+                    <li><a href="align.html">Resource Alignment</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="top-bar-right menu">
+            <li>
+                <span id="status" class="status" style="display:none;">Busy...</span>
+                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
+                <button id="loginButton" type="button" class="button" data-open="login">Login</button>
+                <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div class="row" id="main">
+        <div id="alignmentProcess" class="topLevel large-12 columns large-centered">
+            <button class="float-right button tiny" data-open="resourceSelector">...</button>
+            <h5 id="selectedResource" class="resourceStyle">No Selected Resource</h3>
+            <select id="alignmentTypeSelect" class="" style="width:300px;">
+            </select>
+            <br>
+            <button class="float-right button tiny" data-open="competencySelector">...</button>
+            <h5 id="selectedCompetency" class="competency">No Selected Competency</h3>
+            <br>
+            <button class="float-right button" onclick="createAlignment();">Create Alignment</button>
+            <br>
+            <br>
+        </div>
+    </div>
+    <div class="small reveal" data-reveal id="competencySelector">
+        <div class="large-12 columns">
+            <input id="frameworkSearch" type="search" onchange="frameworkSearch();" placeholder="Search Frameworks...">
+            <div id="frameworks">
+                <ul id="frameworks-frameworks" class="accordion" data-accordion data-allow-all-closed="true" role="tablist">
+                    <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
+                        <a class="accordion-title cass-framework-name">Framework 1</a>
+                        <div class="accordion-content" data-tab-content>
+                            <span class="cass-competency-actions"><a class="float-right"  onclick="permissionsOn(this);">🔒</a></span>
+                            <i class="cass-framework-description">Loading...</i>
+                            <br>
+                            <small><a class="cass-framework-url"></a></small>
+                            <div class="cass-framework-owner">
+                            </div>
+                            <div class="cass-framework-competencies">
+                            </div>
+                            <div class="cass-framework-actions">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="small reveal" data-reveal id="resourceSelector">
+        <div class="large-12 columns">
+            <div>
+                <ul id="resource-providers" class="accordion" data-accordion role="tablist">
+                    <li class="accordion-item accordion-navigation cass-provider" data-accordion-item>
+                        <a class="accordion-title cass-provider-name">Provider 1</a>
+                        <div class="accordion-content" data-tab-content>
+                            <span class="cass-provider-actions"></span>
+                            <i class="cass-provider-description">Loading...</i>
+                            <br>
+                            <small><a class="cass-provider-url"></a></small>
+                            <input id="resourceSearch" type="search" placeholder="Search...">
+                            <div class="cass-provider-resources">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="hidey hidey" class="topLevel" style="display:none;">
+        <ul id="competency" class="accordion" data-accordion role="tablist">
+            <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
+                <a class="accordion-title cass-competency-name">Loading...</a>
+                <div class="accordion-content" data-tab-content>
+                    <span class="cass-competency-actions"><button class="float-right button" onclick="selectCompetency(this);">Select</button></span>
+                    <i class="cass-competency-description">No Description.</i>
+                    <br>
+                    <small><a class="cass-competency-url"></a></small>
+                    <ul class="cass-competency-levels">
+                        <li class="cass-competency-level">
+                            <span class="cass-level-actions"></span>
+                            <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
+                            <br>
+                            <i class="cass-level-description">No Description.</i>
+                        </li>
+                    </ul>
+                    <ul class="cass-competency-relations">
+                        <li class="cass-competency-relation">
+                            <span class="cass-relation-actions"></span>
+                            <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
+                            <span class="cass-relation-type"></span>
+                            <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
+                        </li>
+                    </ul>
+                    <ul class="cass-competency-assertions" style="display:none;"></ul>
+                </div>
+            </li>
+        </ul>
+        <ul id="resources" class="accordion" data-accordion data-allow-all-closed="true" role="tablist">
+            <li id="resource" class="accordion-item accordion-navigation cass-resource" data-accordion-item>
+                <a class="accordion-title cass-resource-name">Loading...</a>
+                <div class="accordion-content" data-tab-content>
+                    <span class="cass-resource-actions"><button class="float-right button" onclick="selectResource(this);">Select</button></span>
+                    <i class="cass-resource-description">No Description.</i>
+                    <br>
+                    <small><a class="cass-resource-url"></a></small>
+                    <ul class="cass-resource-alignments">
+                        <li class="cass-resource-alignment">
+                            <span class="cass-alignment-actions"></span>
+                            <span class="cass-alignment-source"><span class="cass-alignment-name"></span></span>
+                            <span class="cass-alignment-type"></span>
+                            <span class="cass-alignment-target"><span class="cass-competency-name"></span></span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="small reveal" id="login" data-reveal>
+        <h3>Login</h3>
+        <form>
+            <input id="loginUsername" type="text" placeholder="Username" />
+            <input id="loginPassword" type="password" placeholder="Password" />
+            <small>An account will automatically be created if none exists.</small>
+            <a class="button float-right" onclick="login();">Login</a>
+        </form>
+    </div>
+    <div class="tiny reveal" data-reveal id="blocking">
+        <h3 class="status" style="">Loading...</h3>
+    </div>
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/what-input.min.js"></script>
+    <script src="js/vendor/papaparse.js"></script>
+    <script src="js/vendor/xml2json.js"></script>
+    <script src="js/timeout.js"></script>
+    <script src="js/vendor/bencode.js"></script>
+    <script src="https://sandbox.cassproject.org/openpgp.js"></script>
+    <script src="js/vendor/moment-with-locales.js"></script>
+    <script src="forge/forge.min.js"></script>
+    <script src="js/foundation.js"></script>
+    <script src="js/foundation.joyride.js"></script>
+    <script src="js/cass/stjs.js"></script>
+    <script src="js/cass/ec.base.js"></script>
+    <script src="js/cass/random.js"></script>
+    <script src="js/cass/blobHelper.js"></script>
+    <script src="js/cass/ec.crypto.js"></script>
+    <script src="js/cass/org.json-ld.js"></script>
+    <script src="js/cass/FileSaver.js"></script>
+    <script src="js/cass/org.cassproject.schema.general.js"></script>
+    <script src="js/cass/org.schema.js"></script>
+    <script src="js/cass/org.cassproject.schema.ebac.js"></script>
+    <script src="js/cass/org.cassproject.schema.cass.js"></script>
+    <script src="js/cass/ebac.identity.js"></script>
+    <script src="js/cass/ebac.repository.js"></script>
+    <script src="js/cass/cass.competency.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/framework/app.js"></script>
+    <script src="js/framework/appIdentity.js"></script>
+    <script src="js/framework/appFramework.js"></script>
+    <script src="js/framework/appCompetency.js"></script>
+    <script src="js/framework/appFrameworkCompetency.js"></script>
+    <script src="js/framework/appRelation.js"></script>
+    <script src="js/framework/appFrameworkRelation.js"></script>
+    <script src="js/framework/appLevel.js"></script>
+    <script src="js/framework/appFrameworkLevel.js"></script>
+    <script src="js/framework/appImport.js"></script>
+    <script src="js/framework/appPermissions.js"></script>
+    <script src="js/framework/appContacts.js"></script>
+    <script src="js/resourceAlignment/resourceAlignment.js"></script>
+    <script src="js/resourceAlignment/providers/lr.js"></script>
+    <script src="js/resourceAlignment/providers/cass.js"></script>
+    <script>
+        $(".cass-provider").remove();
+        timeout(function() {
+            $(document).foundation();
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app version="2.4" xmlns="http://java.sun.com/json/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/json/ns/j2ee http://java.sun.com/json/ns/j2ee/web-app_2_4.xsd">
+	<display-name>CASS</display-name>
+	<servlet>
+		<display-name>Resolver Servlet</display-name>
+		<servlet-name>resolver</servlet-name>
+		<servlet-class>com.eduworks.levr.servlet.impl.LevrResolverServlet</servlet-class>
+		<init-param>
+			<param-name>readonly</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>resolver</servlet-name>
+		<url-pattern>/api/custom/*</url-pattern>
+	</servlet-mapping>
+</web-app>

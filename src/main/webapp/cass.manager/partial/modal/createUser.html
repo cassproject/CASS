@@ -1,0 +1,45 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Create Account
+</h3>
+<form id="createForm">
+	<div class="row">
+		<div id="createMessageContainer" class="small-10 small-centered columns">
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-11 columns">
+			<select id="createServer">
+				<option value="http://localhost:9722/api/custom/" selected>Localhost</option>
+		    </select>
+		</div>
+		<div class="small-1 columns">
+			<span id="createAddServer" class="fake-a">
+				<i style="margin-top: 0.7rem;" title="Add New Server Endpoint" class="fa fa-plus"></i>
+			</span>
+		</div>
+	</div>
+	
+	<div class="row">
+		<label class="small-12 columns" for="createUsername">
+			Username:
+			<input type="text" name="createUsername" id="createUsername">
+		</label>
+	</div>
+	
+	<div class="row">
+		<label class="small-12 columns" for="createPassword">
+			Password:
+			<input type="password" name="createPassword" id="createPassword">
+		</label>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<input type="submit" id="createButton" value="Create" class="button float-right"></input>
+		</div>
+	</div>
+</form>

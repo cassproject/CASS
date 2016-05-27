@@ -1,0 +1,338 @@
+// Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+schema=#httpGet(obj="@typeUrl").toObject().cache(name=#add(z="@typeUrl",a="httpGet"));
+schemaContext=schema.cgetByParam(param=#add(a="@",b="context"));
+
+type=#add(a="@",b="type");
+context=#add(a="@",b="context");
+
+obj=#toObject(obj="@obj");
+
+urlType=#add(
+	_string="true",
+	a=obj.getByParam(param=context).string(op="trim",chars="/"),
+	b=#if(operator=obj.getByParam(param=context),operand="",ne="/"),
+	c=obj.getByParam(param=type).replace(replace=obj.getByParam(param=context),with="").string(op="trim",chars="/")
+);
+
+mapUrl=#add(
+	a=#urlBase(),
+	b="/data/",
+	c="@type",
+	d="/_mapping"
+);
+
+map=mapUrl.httpGet().toObject().cache(name="elasticMapping");
+
+properties=map.cget(data="").cget(mappings="").getByParam(param="@type").cget(properties="");
+
+settingsUrl = #add(
+	a=#urlBase(),
+	b="/_settings",
+);
+
+settings = settingsUrl.httpGet().toObject().cache(name="elasticSettings"); 
+
+noSearchList=#object(
+	a="base64:base64"
+).valueSet();
+
+//Iterate over each field about to go into the document.
+//	If the mapping has the field already, skip.
+//	If the prefix.@type == null, skip.
+//	If the schema of the @type of the field (at the appropriate nesting level) is base64:base64, add a mapping to not index the field.
+// ---------------------
+
+prefix=#split(obj="@field",split=".").remove(index=#split(obj="@field",split=".").count().add(z="-1")).flatten(_delimiter=".");
+simpleType=#split(obj="@field",split=".").cgetIndex(index=#split(obj="@field",split=".").count().add(z="-1"));
+
+getCurrentMapping=properties.toDotNotationObject().forEach(
+	paramName="k",
+	valueName="v",
+	op=#if(
+		operator=#startsWith(
+			obj="@k",
+			with=#add(
+				a="@typePrefix",
+				b="@field"
+			)
+		),
+		operand="true",
+		eq="@v"
+	)
+);
+
+prefixType=#if(
+	operator=prefix,
+	operand="",
+	eq=urlType,
+	ne=#add(
+		_string="true",
+		a=obj.getByParam(param=prefix.add(z=".@schema")).string(op="trim",chars="/"),
+		b=#if(operator=obj.getByParam(param=prefix.add(z=".@schema")),operand="",ne="/"),
+		c=obj.getByParam(param=prefix.add(z=".@type")).string(op="trim",chars="/")
+	)
+);
+
+addMappingNoSearch=#object(
+	properties=#object(
+	).put(
+		_key="@field",
+		_value=#object(
+			type="string",
+			index="no"
+		)
+	)
+).httpPost(url=mapUrl,multipart="false").debug(prefix="Add Mapping Result: ");
+
+addWhiteSpaceRemovalMapping = #object(
+	properties=#object(
+	).put(
+		_key="@field",
+		_value=#object(
+			type="string",
+			analyzer="whitespace_remove"
+		)
+	)
+).httpPost(url=mapUrl,multipart="false").debug(prefix="Add Whitespace Result: ");
+
+addWhiteSpaceRemovalMapping = #object(
+	properties=getCurrentMapping.put(
+		_key=#add(a="@typePrefix",c="@field",d=".analyzer"),
+		_value="whitespace_remove"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".type"),
+		_value="string"
+	).fromDotNotationObject()
+).debug(prefix="Now mapping: ").httpPost(url=mapUrl, multipart="false").debug(prefix="Add Whitespace Result: ");
+
+addWhiteSpaceRemovalMapping=#if(
+	operator=getCurrentMapping.getByParam(param=#add(a="@typePrefix",c="@field",d=".analyzer")),
+	operand="whitespace_remove",
+	ne=addWhiteSpaceRemovalMapping
+);
+
+addNotAnalyzedMultiField = #object(
+	properties=#object(
+	).put(
+		_key="@field",
+		_value=#object(
+			type="multi_field",
+			fields=#object(
+			).put(
+				_key="(full)",
+				_value=#object(
+					type="string",
+					index="not_analyzed"
+				)
+			).put(
+				_key="@field",
+				_value=#object(
+					type="string",
+					index="analyzed"
+				)
+			)
+		)
+	)
+).httpPost(url=mapUrl, multipart="false").debug(prefix="Not Analyzed Result: ");
+	
+addNotAnalyzedMultiField = #object(
+	properties=getCurrentMapping.put(
+		_key=#add(a="@typePrefix",c="@field",d=".fields.(full).type"),
+		_value="string"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".fields.(full).index"),
+		_value="not_analyzed"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".fields.",e="@field",f=".type"),
+		_value="string"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".fields.",e="@field",f=".index"),
+		_value="analyzed"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".type"),
+		_value="multi_field"
+	).fromDotNotationObject()
+).debug(prefix="Now mapping: ").httpPost(url=mapUrl, multipart="false").debug(prefix="Not Analyzed Result: ");
+
+addNotAnalyzedMultiField=#if(
+	operator=getCurrentMapping.getByParam(param=#add(a="@typePrefix",c="@field",d=".fields.(full).index")),
+	operand="not_analyzed",
+	ne=addNotAnalyzedMultiField
+);
+			
+addExcludeFromAllIndex = #object(
+	properties=getCurrentMapping.put(
+		_key=#add(a="@typePrefix",c="@field",d=".include_in_all"),
+		_value="false"
+	).put(
+		_key=#add(a="@typePrefix",c="@field",d=".type"),
+		_value="string"
+	).fromDotNotationObject()
+).debug(prefix="Now mapping: ").httpPost(url=mapUrl, multipart="false").debug(prefix="Result: ");
+
+addExcludeFromAllIndex=#if(
+	operator=getCurrentMapping.has(has=#add(a="@typePrefix",c="@field",d=".include_in_all")),
+	operand="true",
+	ne=addExcludeFromAllIndex
+);
+
+iterateOverFields=obj.cforEach(
+	paramName="field",
+	valueName="value",
+	threaded="false",
+	op=#if(
+		operator=#toArray(obj="@value").getIndex(index="0").toObject(obj="@value").catch(any=#object()).count(),
+		operand="0",
+		eq=#if(
+			operator=#indexOf(str="@field", substr=#add(a="@", b="owner")),
+			operand="-1",
+			eq=#if(
+				operator=#indexOf(str="@field", substr=#add(a="@", b="type")),
+				operand="-1",
+				eq=#if(
+					operator=#indexOf(str="@field", substr=#add(a="@", b="reader")),
+					operand="-1",
+					eq=#if(
+						operator=prefixType,
+						operand="",
+						ne=#if(
+							operator=noSearchList.has(has=schemaContext.call(typeUrl=prefixType.reduce()).cgetByParam(param=simpleType).cgetByParam(param=type)),
+							operand="true",
+							eq=addMappingNoSearch
+						)
+					),
+					ne=addExcludeFromAllIndex,
+				),
+				ne=addNotAnalyzedMultiField,
+			),
+			ne=addWhiteSpaceRemovalMapping
+		),
+		ne=#toArray(obj="@value").cforEach(paramName="obj",op=#toObject(obj="@obj").typeIterateOverFields(typePrefix=#add(a="@typePrefix",a="@field",b=".properties.")))
+	)
+);
+#typeIterateOverFields=iterateOverFields;
+
+// Caches whether the type is protected (should be searchable/viewable by non-owners/readers)
+// ---------------------
+cacheDir = #string(str="./cache");
+cacheName = #string(str="skyRepoCache");
+cacheIndex = #string(str="skyRepoCache");
+cacheKey = #string(str="encryptedTypes");
+
+cacheDb = {
+	indexDir = cacheDir,
+	databaseName = cacheName,
+	index= cacheIndex,
+	key=cacheKey
+};
+
+cachedProtectedTypes = #idxGet(multi="true", cacheDb);
+
+getProtectedTypes = #object(
+	a=#skyRepoPredefinedEncrypted(),
+	b=getProtectedTypes,
+).valueSet().union();
+
+#skyRepoGetProtectedTypes = getProtectedTypes;
+
+addProtectedType = #if(
+	operator="@cacheVal",
+	operand="",
+	eq=#add(a="[",b="]").toArray(),
+	ne=#toArray(obj="@cacheVal")
+).ccall(
+	cacheVal=#cache(name=cacheKey, global="true")
+).append(
+	a="@typeUrl"
+).idxAdd(
+	cacheDb
+);
+
+types=obj.getByParam(param=type).toArray().cforEach(
+	paramName="type",
+	array="true",
+	threaded="false",
+	op=#if(
+		operator=#has(obj="@type",has="http"),
+		operand=true,
+		eq=urlType,
+		ne="@type"
+	)
+);
+
+cacheSchemaProtect=#if(
+	operator=getProtectedTypes.intersect(b=types).count(),
+	operand="0",
+	gt="true",
+	eq=#if(
+		operator=#catch(try=#httpGet(obj="@typeUrl").fileToString().toObject().getByParam(param=protect), any="false"),
+		operand="true",
+		eq=#object(
+			a=addProtectedType,
+			b="true"
+		).cget(b=""),
+		ne="false"
+	).ccall(
+		typeUrl=types.getIndex(index="0")
+	)
+);
+
+
+// Adds the whitespace_remove analyzer that removes whitespace from a field
+// ---------------------
+
+addAnalyzer = #object(
+	settings=#object(
+		analysis=#object(
+			filter=#object(
+				space_remove=#object(
+					type="pattern_replace",
+					pattern="\s",
+					replacement=""
+				)
+			),
+			analyzer=#object(
+				whitespace_remove=#object(
+					type="custom",
+					tokenizer="keyword",
+					filter=#add(a="[",b="]").toArray().append(a="space_remove")
+				)
+			)
+		)
+	)
+).httpPut(
+	url=#add(
+		a=#urlBase(),
+		b="/data",
+	)
+);
+
+checkAddAnalyzer = #if(
+	operator=#decode(obj="@settings").has(has="data"),
+	operand="true",
+	eq=#if(
+		operator=#decode(obj="@settings").cget(data="").cget(index="").cget(analysis="").cget(analyzer="").has(has="whitespace_remove"),
+		operand="true",
+		ne=addAnalyzer
+	),
+	ne=addAnalyzer
+	
+).ccall(
+	settings=settings
+);
+
+#addWhitespaceAnalyzer = checkAddAnalyzer;
+
+checkType = #object(
+	a=checkAddAnalyzer,
+	b=cacheSchemaProtect,
+	c=iterateOverFields,
+	d=#cache(remove="true",name="elasticSettings"),
+	e=#cache(remove="true",name="elasticMapping")
+);
+
+#skyRepoCheckType=checkType;

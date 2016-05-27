@@ -1,0 +1,730 @@
+/* -----------------------------------------
+   3D Block Basics (rotation and alignemnt)
+----------------------------------------- */
+/* ---- Horizontally scrolling TABLE containing 3D tiles ---- */
+.horzScrollBar {
+	position: relative;
+	height: 280px;
+	overflow: auto;
+	overflow-x: auto;
+	overflow-y: hidden;
+	border-collapse: collapse;
+}
+
+.horzScrollBar.one-up {
+	height: 146px;
+}
+
+.horzScrollBar table {
+	border: none !important;
+	background-color: transparent;
+}
+
+.horzScrollBar td {
+	width: 130px;
+	padding: 0;
+}
+
+/* ---- Vertically stacked 3D tile container,
+ no scrollbar ---- */
+.vertStack {
+	/*width: 100%;
+	min-height: 260px;
+	padding-bottom: 10px;*/
+	
+}
+
+.vertStack .tile {
+	float: left;
+	margin: 15px;
+}
+
+/* ---- 3D TILE ROTATION ---- */
+.tile {
+	width: 130px;
+	height: 130px;
+	display: block;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	-webkit-perspective: 800px;
+	-moz-perspective: 800px;
+	-ms-perspective: 800px;
+	-o-perspective: 800px;
+	perspective: 800px;
+}
+
+.front,
+.back {
+	display: block;
+	position: absolute;
+	width: 130px;
+	height: 130px;
+	border: 1px solid #B1D0AB;
+	background: #fff;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-o-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transition: 0.2s ease-in-out;
+	-moz-transition: 0.2s ease-in-out;
+	-o-transition: 0.2s ease-in-out;
+	-ms-transition: 0.2s ease-in-out;
+	transition: 0.2s ease-in-out;
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	-o-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.front {
+	z-index: 10;
+}
+
+.back {
+	z-index: 1;
+}
+
+.front {
+	-moz-transform: translateZ(0px) translateX(0) translateY(0);
+	-ms-transform: translateZ(0px) translateX(0) translateY(0);
+	-o-transform: translateZ(0px) translateX(0) translateY(0);
+	transform: translateZ(0px) translateX(0) translateY(0);
+}
+
+.back {
+	-webkit-transform: rotateY(90deg) translateZ(65px) translateX(65px);
+	-moz-transform: rotateY(90deg) translateZ(65px) translateX(65px);
+	-ms-transform: rotateY(90deg) translateZ(65px) translateX(65px);
+	-o-transform: rotateY(90deg) translateZ(65px) translateX(65px);
+	transform: rotateY(90deg) translateZ(65px) translateX(65px);
+}
+
+.tile:hover .front,
+.tile .active .front {
+	z-index: 1;
+	-webkit-transform: rotateY(-90deg) translateZ(65px) translateX(-65px);
+	-moz-transform: rotateY(-90deg) translateZ(65px) translateX(-65px);
+	-ms-transform: rotateY(-90deg) translateZ(65px) translateX(-65px);
+	-o-transform: rotateY(-90deg) translateZ(65px) translateX(-65px);
+	transform: rotateY(-90deg) translateZ(65px) translateX(-65px);
+}
+
+.tile:hover .back,
+.tile .active .back {
+	z-index: 10;
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	-o-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
+
+/* -----------------------------------------
+   3D Tiles for Apps,
+ Objects,
+ and Collections
+----------------------------------------- */
+/* Shared styles - all 3D Tile types */
+.tile .hotspot {
+	display: block;
+	position: absolute;
+	width: 130px;
+	height: 84px;
+	top: 16px;
+	left: 0;
+	z-index: 50;
+}
+
+.tile .delete,
+.tile .select {
+	display: block;
+	top: 0;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	text-align: center;
+	cursor: pointer;
+	z-index: 60;
+}
+
+.tile .delete {
+	right: 0;
+	background: url(../images/btn-delete-idle.png) no-repeat;
+}
+
+.tile .select {
+	left: 0;
+	background: url(../images/btn-select-idle.png) no-repeat;
+}
+
+.tile .select:hover,
+.tile .cube.active .select {
+	background-image: url(../images/btn-select-over.png);
+}
+
+.tile .delete:hover {
+	background-image: url(../images/btn-delete-over.png);
+}
+
+.tile .title,
+.tile .status,
+.tile .actions {
+	display: block;
+	position: absolute;
+	color: #333;
+	width: 120px;
+	padding: 0 5px;
+	margin: 5px 0;
+}
+
+.tile .title {
+	font-size: 13px;
+}
+
+.tile .status {
+	font-size: 11px;
+	margin: 5px;
+	color: #fff;
+}
+
+.tile .status .status-label {
+	font-weight: bold;
+}
+
+.tile .actions {
+	bottom: 0;
+	text-align: center;
+}
+
+.tile .actions a {
+	color: #fff;
+	padding: 2px 4px;
+	background-color: rgba(0,0,0,0.05);
+	box-shadow: 0 1px 0 rgba(0,0,0,0.3),0 -1px 0
+		rgba(255,255,255,0.4);
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.tile .actions a:hover,
+.tile a.active {
+	background-color: #fff;
+	color: #333;
+}
+
+/* App Tiles */
+.tile .app .front {
+	background-color: #fff;
+}
+
+.tile .app .back {
+	background-color: #ffa200;
+}
+
+.tile .app .front .title {
+	margin: 0;
+	padding: 5px;
+	bottom: 0;
+	color: #fff;
+	text-align: center;
+	background-color: #81bc00;
+	width: 100%;
+	font-weight: bold;
+}
+
+.tile .app .back .status {
+	top: 0;
+	margin: 0;
+	padding-top: 5px;
+	width: 118px;
+	text-shadow: -0.5px -1px rgba(0,0,0,0.2)
+}
+
+.tile .app .status .icon {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	background-color: rgba(0,0,0,0.2);
+	margin-right: 3px;
+}
+
+.tile .app .status .icon.doc {
+	
+}
+
+.tile .app.testDocumentSet .front {
+	background-image: url(../images/app-collections-front.png);
+}
+
+.tile .app.testDocumentSet .back {
+	background-image: url(../images/app-collections-back.png);
+}
+
+.tile .app.reports .front {
+	background-image: url(../images/app-review-front.png);
+}
+
+.tile .app.reports .back {
+	background-image: url(../images/app-review-back.png);
+}
+
+.tile .app.document .front {
+	background-image: url(../images/file-document-back.png);
+}
+
+.tile .app.document .back {
+	background-image: url(../images/app-download-back.png);
+}
+
+.tile .app.competency .front {
+	background-image: url(../images/file-course-back.png);
+}
+
+.tile .app.competency .back {
+	background-image: url(../images/app-review-back.png);
+}
+
+.tile .app.data .front {
+	background-image: url(../images/app-designer-front.png);
+}
+
+.tile .app.data .back {
+	background-image: url(../images/app-designer-back.png);
+}
+
+.tile .app.expertInterface .front {
+	background-image: url(../images/app-repository-front.png);
+}
+
+.tile .app.expertInterface .back {
+	background-image: url(../images/app-repository-back.png);
+}
+
+/* File Object Tiles */
+.tile .file .front {
+	background-color: #fff;
+}
+
+.tile .file .front .title,
+.tile .file .front .paradata {
+	display: block;
+	position: absolute;
+	width: 118px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	background-color: #fff;
+	color: #333;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.tile .file .front .title {
+	top: 0;
+	padding: 3px;
+	font-weight: bold;
+	text-align: left;
+}
+
+.tile .file .front .title .icon {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+.tile .file .front .description { /* preview image or description */
+	position: absolute;
+	display: block;
+	top: 26px;
+	width: 119px;
+	height: 84px;
+	background-size: 100%;
+	background-position: center;
+	background-repeat: none;
+	margin: 0 5px;
+	font-size: 10px;
+	overflow: hidden;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
+.tile .file .front .paradata {
+	bottom: 0;
+	text-align: left;
+	padding: 0 3px;
+	font-size: 10px;
+}
+
+.tile .file .front .paradata .uses,
+.tile .file .front .paradata .comments,
+.tile .file .front .paradata .status-alert,
+.tile .file .front .paradata .rating,
+.tile .file .front .paradata .files
+	{
+	display: block;
+	float: left;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.tile .file .front .paradata .uses {
+	background: url(../images/icon-uses.png) center no-repeat;
+}
+
+.tile .file .front .paradata .comments {
+	background: url(../images/icon-comments.png) center no-repeat;
+}
+
+.tile .file .front .paradata .status-alert {
+	background: url(../images/alert1.gif) center no-repeat;
+}
+
+.tile .file .front .paradata .rating {
+	float: right;
+	padding-top: 8px;
+	margin-bottom: 8px;
+	width: 50px;
+	height: 10px;
+	background: url(../images/star_small.gif) left 8px repeat-x;
+	line-height: 10px;
+	height: 10px;
+	text-indent: -1000px;
+	text-align: left;
+}
+
+.tile .file .front .paradata .current-rating {
+	display: block;
+	background: url(../images/star_small.gif) left -10px repeat-x;
+	text-align: left;
+}
+
+.tile .file.missing .front,
+.tile .file.missing .front .title,
+.tile .file.missing .front .paradata
+	{
+	background-color: #bfbfbf !important;
+}
+
+.tile .file .back .status {
+	top: 16px;
+	margin: 0;
+	padding-top: 5px;
+	width: 118px;
+	height: 80px;
+	color: #fff;
+	text-shadow: -0.5px -1px rgba(0,0,0,0.2);
+	overflow: hidden;
+}
+
+.tile .file .back .status-title {
+	display: inline-block;
+	font-family: Georgia,"Times New Roman",Times,serif;
+	font-weight: bold;
+	font-style: italic;
+	padding-bottom: 3px;
+	word-wrap: break-word;
+	width: 118px;
+}
+
+.tile .file .back .status-alert,
+.tile .file .back .status .icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-right: 3px;
+	vertical-align: middle;
+}
+
+.tile .file .back .status-alert {
+	background: url(../images/alert1.gif) center no-repeat;
+}
+
+.tile .file.loading .front .title .icon {
+	
+}
+
+.tile .file.loading .back {
+	background-image: url(../images/file-loading-back.png);
+}
+
+.tile .file.course .front .title .icon {
+	background-image: url(../images/icon-course.png);
+}
+
+.tile .file.course .back {
+	background-image: url(../images/file-course-back.png);
+}
+
+.tile .file.document .front .title .icon {
+	background-image: url(../images/icon-doc.png);
+}
+
+.tile .file.document .back {
+	background-image: url(../images/file-document-back.png);
+}
+
+.tile .file.image .front .title .icon {
+	background-image: url(../images/icon-photo.png);
+}
+
+.tile .file.image .back {
+	background-image: url(../images/file-image-back.png);
+}
+
+.tile .file.video .front .title .icon {
+	background-image: url(../images/icon-video.png);
+}
+
+.tile .file.video .back {
+	background-image: url(../images/file-video-back.png);
+}
+
+.tile .file.audio .front .title .icon {
+	background-image: url(../images/icon-audio.png);
+}
+
+.tile .file.audio .back {
+	background-image: url(../images/file-audio-back.png);
+}
+
+.tile .file.link .front .title .icon {
+	background-image: url(../images/icon-link.png);
+}
+
+.tile .file.link .back {
+	background-image: url(../images/file-link-back.png);
+}
+
+.tile .file.external .front .title .icon {
+	background-image: url(../images/icon-external.png);
+}
+
+.tile .file.external .back {
+	background-image: url(../images/file-external-back.png);
+}
+
+.tile .file.project .front .title .icon {
+	background-image: url(../images/icon-project.png);
+}
+
+.tile .file.project .back {
+	background-image: url(../images/file-project-back.png);
+}
+
+.tile .file.collection .front .title .icon {
+	background-image: url(../images/icon-collection.png);
+}
+
+.tile .file.collection .back {
+	background-image: url(../images/app-collections-back.png);
+}
+
+/* Collection Tiles */
+/* relies uses 'file' styles,
+ above */
+.tile .file.collection .front {
+	background-color: #666;
+	color: #fff;
+}
+
+.tile .file.collection .front .title {
+	width: 125px;
+	font-weight: normal;
+	background-color: #666;
+	color: #fff;
+}
+
+.tile .file.collection .front .paradata {
+	background-color: transparent;
+}
+
+.tile .file.collection .front .paradata .files {
+	color: #fff;
+	background-color: #333;
+	float: right;
+	width: auto;
+	height: 10px;
+	padding: 3px 5px;
+	margin-bottom: 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.tile .app.new.collection .front {
+	background-image: url(../images/app-collections-new-front.png);
+}
+
+.tile .app.new.collection .back {
+	background-image: url(../images/app-collections-new-back.png);
+}
+
+/* Large Tile variation */
+.tile.large,
+.large .front,
+.large .back {
+	width: 260px;
+	height: 260px;
+}
+
+.tile.large .front {
+	-moz-transform: translateZ(0px) translateX(0) translateY(0);
+	-ms-transform: translateZ(0px) translateX(0) translateY(0);
+	-o-transform: translateZ(0px) translateX(0) translateY(0);
+	transform: translateZ(0px) translateX(0) translateY(0);
+}
+
+.tile.large .back {
+	-webkit-transform: rotateY(90deg) translateZ(130px) translateX(130px);
+	-moz-transform: rotateY(90deg) translateZ(130px) translateX(130px);
+	-ms-transform: rotateY(90deg) translateZ(130px) translateX(130px);
+	-o-transform: rotateY(90deg) translateZ(130px) translateX(130px);
+	transform: rotateY(90deg) translateZ(130px) translateX(130px);
+}
+
+.tile.large:hover .front,
+.tile.large .active .front {
+	z-index: 1;
+	-webkit-transform: rotateY(-90deg) translateZ(130px) translateX(-130px);
+	-moz-transform: rotateY(-90deg) translateZ(130px) translateX(-130px);
+	-ms-transform: rotateY(-90deg) translateZ(130px) translateX(-130px);
+	-o-transform: rotateY(-90deg) translateZ(130px) translateX(-130px);
+	transform: rotateY(-90deg) translateZ(130px) translateX(-130px);
+}
+
+.tile.large:hover .back,
+.tile.large .active .back {
+	z-index: 10;
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	-o-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
+
+.tile.large .hotspot {
+	width: 260px;
+	height: 220px;
+}
+
+.tile.large .title,
+.tile.large .status,
+.tile.large .actions {
+	width: 250px;
+}
+
+.tile.large .title,
+.tile.large .status {
+	font-size: 2em;
+}
+
+.tile.large .back .status {
+	font-size: 1.5em;
+	width: 236px;
+}
+
+.tile.large .file .front .title,
+.tile.large .file .front .paradata {
+	width: 236px;
+}
+
+.tile.large .file .front .description {
+	/* preview image or description */
+	top: 38px;
+	width: 240px;
+	height: 190px;
+	margin: 0 10px;
+	font-size: 1.5em;
+	background-repeat: no-repeat;
+}
+
+.tile.large .file .back .status {
+	padding-top: 10px;
+	width: 236px;
+	height: 180px;
+}
+
+.tile.large .file .back .status-title {
+	padding-bottom: 6px;
+	width: 236px;
+}
+
+.tile.large .file.collection .front .title {
+	width: 254px;
+}
+
+.tile.large .app.new .front {
+	background-image: url(../images/app-new-front-large.png);
+}
+
+.tile.large .app.new .back {
+	background-image: url(../images/app-new-back-large.png);
+}
+
+.tile.large .app.new.collection .front {
+	background-image: url(../images/app-collections-new-front-large.png);
+}
+
+.tile.large .app.new.collection .back {
+	background-image: url(../images/app-collections-new-back-large.png);
+}
+
+.tile.large .file.course .back {
+	background-image: url(../images/file-course-back-large.png);
+}
+
+.tile.large .file.document .back {
+	background-image: url(../images/file-document-back-large.png);
+}
+
+.tile.large .file.image .back {
+	background-image: url(../images/file-image-back-large.png);
+}
+
+.tile.large .file.video .back {
+	background-image: url(../images/file-video-back-large.png);
+}
+
+.tile.large .file.link .back {
+	background-image: url(../images/file-link-back-large.png);
+}
+
+.tile.large .file.external .back {
+	background-image: url(../images/file-external-back-large.png);
+}
+
+.tile.large .file.project .back {
+	background-image: url(../images/file-project-back-large.png);
+}
+
+.tile.large .file.collection .back {
+	background-image: url(../images/app-collections-back-large.png);
+}
+
+/*CASS*/
+
+.tile .framework .front{
+    background: linear-gradient(to bottom,rgb(66,225,143),white);
+}
+
+.tile .framework .front .title{
+    background: rgb(46,205,113);
+}
+
+.tile .framework .back{
+    background: linear-gradient(to bottom,#2ba6cb,white);
+}
