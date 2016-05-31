@@ -31,22 +31,24 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         v.id = d.id;
         if ((d)["name"] != null) 
             v.name = (d)["name"];
-        for (var i = 0; i < d.owner.length; i++) {
-            var eSecret = new EbacEncryptedSecret();
-            eSecret.iv = newIv;
-            eSecret.secret = newSecret;
-            if (v.secret == null) 
-                v.secret = new Array();
-            v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.owner[i]), eSecret.toEncryptableJson()));
-        }
-        for (var i = 0; i < d.reader.length; i++) {
-            var eSecret = new EbacEncryptedSecret();
-            eSecret.iv = newIv;
-            eSecret.secret = newSecret;
-            if (v.secret == null) 
-                v.secret = new Array();
-            v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
-        }
+        if (d.owner != null) 
+            for (var i = 0; i < d.owner.length; i++) {
+                var eSecret = new EbacEncryptedSecret();
+                eSecret.iv = newIv;
+                eSecret.secret = newSecret;
+                if (v.secret == null) 
+                    v.secret = new Array();
+                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.owner[i]), eSecret.toEncryptableJson()));
+            }
+        if (d.reader != null) 
+            for (var i = 0; i < d.reader.length; i++) {
+                var eSecret = new EbacEncryptedSecret();
+                eSecret.iv = newIv;
+                eSecret.secret = newSecret;
+                if (v.secret == null) 
+                    v.secret = new Array();
+                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
+            }
         return v;
     };
     constructor.encryptValueOld = function(text, id, fieldName, owner) {
@@ -478,8 +480,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         EcIdentityManager.sign(data);
-        if (!data.isA(EcEncryptedValue.myType)) 
-            data.updateTimestamp();
+        data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
         fd.append("signatureSheet", EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id));

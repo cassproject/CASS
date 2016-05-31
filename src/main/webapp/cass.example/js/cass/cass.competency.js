@@ -366,7 +366,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         return a;
     };
     prototype.relationships = function(repo, eachSuccess, failure, successAll) {
-        repo.search("@type:\"" + EcAlignment.myType + "\" AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
+        repo.search(new EcAlignment().getSearchStringByType() + " AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
             var a = new EcAlignment();
             a.copyFrom(p1);
             if (eachSuccess != null) 
@@ -395,7 +395,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         return l;
     };
     prototype.levels = function(repo, success, failure, successAll) {
-        repo.search("@type:\"" + EcLevel.myType + "\" AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\")", function(p1) {
+        repo.search(new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\")", function(p1) {
             if (success != null) {
                 var a = new EcLevel();
                 a.copyFrom(p1);
