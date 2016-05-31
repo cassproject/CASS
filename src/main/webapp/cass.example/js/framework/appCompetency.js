@@ -103,8 +103,8 @@ function populateCompetency(id) {
         }
         ui.find(".cass-competency-description").text(competency.description);
         var url = competency.shortId();
-        if (competency.url != null)
-            url = competency.url;
+        if (competency.sameAs != null)
+            url = competency.sameAs;
         ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
             e.preventDefault();
             if (confirm("This will navigate to another page. Continue?"))
@@ -124,7 +124,7 @@ function insertExistingCompetency() {
         return;
     }
 
-    var searchString = "(@type:\"" + EcCompetency.myType + "\")";
+    var searchString = new EcCompetency().getSearchStringByType();
     if ($("#insertExistingCompetencySearch").val() != "")
         searchString += " AND (" + $("#insertExistingCompetencySearch").val() + ")";
     repo.search(searchString, null,

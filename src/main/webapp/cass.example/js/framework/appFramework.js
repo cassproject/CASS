@@ -9,7 +9,7 @@
 */
 
 function frameworkSearch() {
-    var searchString = "(@type:\"" + Framework.myType + "\")";
+    var searchString = new EcFramework().getSearchStringByType();
     //    if ($("#frameworkSearch").length > 0 && $("#frameworkSearch").val().trim() != "")
     //  searchString += " AND (" + $("#frameworkSearch").val() + ")";
     repo.search(searchString, null,
@@ -86,8 +86,8 @@ function populateFramework(frameworkId) {
         else
             fwui.find(".cass-framework-description").text(fw.description);
         var url = fw.shortId();
-        if (fw.url != null)
-            url = fw.url;
+        if (fw.sameAs != null)
+            url = fw.sameAs;
         fwui.find(".cass-framework-url").text(url).attr("href", url).unbind().click(function (e) {
             e.preventDefault();
             if (confirm("This will navigate to another page. Continue?"))

@@ -3,16 +3,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-type=#add(a="@",b="type");
-#type=type;
 owner=#add(a="@",b="owner");
 #owner=owner;
-schema=#add(a="@",b="schema");
-#schema=schema;
+context=#add(a="@",b="context");
+#context=context;
+type=#add(a="@",b="type");
+#type=type;
 signatureParam=#add(a="@",b="signature");
 #signature=signatureParam;
 signatureArr=#toObject(obj="@signatureArr");
+context=signatureArr.getByParam(param=context);
 type=signatureArr.getByParam(param=type);
+type=#if(
+	operator=type.has(has="http"),
+	operand="true",
+	eq=type,
+	ne=#if(
+		operator=context.endsWith(with="/"),
+		operand="true",
+		eq=context.add(z=type),
+		ne=context.add(y="/",z=type)
+	)
+).debug();
 owner=signatureArr.getByParam(param=owner);
 expiry=signatureArr.cget(expiry="");
 signature=signatureArr.getByParam(param=signatureParam);
@@ -32,7 +44,7 @@ signatureSheet=#object(
 verifySignature=#object(
 	a=#if(
 		operator=type,
-		operand="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature",
+		operand="http://schema.eduworks.com/ebac/0.2/timeLimitedSignature",
 		ne=#error(code="422",msg="Invalid Signature Version.")
 	),
 	aa=#if(

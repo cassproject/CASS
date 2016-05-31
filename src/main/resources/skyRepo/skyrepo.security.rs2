@@ -6,7 +6,7 @@
 encryptedTypes=#object(
 	a="http://skyrepo.eduworks.com/EncryptedValue",
 	b="EncryptedValue",
-	c="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+	c="http://schema.eduworks.com/ebac/0.2/encryptedValue"
 ).valueSet();
 
 #skyRepoPredefinedEncrypted = encryptedTypes;

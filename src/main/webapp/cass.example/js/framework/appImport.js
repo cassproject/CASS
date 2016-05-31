@@ -185,10 +185,10 @@ function medbiqXmlParseCompetencyObject(obj) {
             if (obj["lom"]["general"]["description"] !== undefined)
                 newCompetency.description = obj["lom"]["general"]["description"]["string"].toString();
             if (obj["lom"]["general"]["identifier"] !== undefined)
-                newCompetency.url = obj["lom"]["general"]["identifier"]["entry"].toString();
+                newCompetency.sameAs = obj["lom"]["general"]["identifier"]["entry"].toString();
             if (newCompetency.description === undefined)
                 newCompetency.description = "";
-            medbiqXmlCompetencies[newCompetency.url] = newCompetency;
+            medbiqXmlCompetencies[newCompetency.sameAs] = newCompetency;
         }
     }
 }
@@ -211,7 +211,7 @@ function importMedbiqXml() {
                 continue;
             f.name = obj.name;
             if (obj.url !== undefined)
-                f.url = obj.url;
+                f.sameAs = obj.url;
             if (obj.description !== undefined)
                 f.description = obj.description;
             f.generateId(repo.selectedServer);
@@ -339,7 +339,7 @@ function importAsnJsonCompetencies(framework) {
                     f.name = obj["http://purl.org/dc/terms/description"][0].value;
                 else
                     f.name = obj["http://purl.org/dc/elements/1.1/title"][0].value;
-                f.url = key;
+                f.sameAs = key;
                 if (obj["http://purl.org/dc/terms/description"] !== undefined)
                     f.description = obj["http://purl.org/dc/terms/description"][0].value;
                 f.generateId(repo.selectedServer);
@@ -384,7 +384,7 @@ function importAsnJsonFramework(f) {
         f.name = asnJsonFramework["http://purl.org/dc/elements/1.1/title"][0].value;
         f.description = asnJsonFramework["http://purl.org/dc/terms/description"][0].value;
         f.generateId(repo.selectedServer);
-        f.url = asnJsonFrameworkUrl;
+        f.sameAs = asnJsonFrameworkUrl;
         if (identity != null)
             f.addOwner(identity.ppk.toPk());
         EcRepository.save(f, function () {

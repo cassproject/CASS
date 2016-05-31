@@ -71,8 +71,8 @@ prefixType=#if(
 	eq=urlType,
 	ne=#add(
 		_string="true",
-		a=obj.getByParam(param=prefix.add(z=".@schema")).string(op="trim",chars="/"),
-		b=#if(operator=obj.getByParam(param=prefix.add(z=".@schema")),operand="",ne="/"),
+		a=obj.getByParam(param=prefix.add(z=".@context")).string(op="trim",chars="/"),
+		b=#if(operator=obj.getByParam(param=prefix.add(z=".@context")),operand="",ne="/"),
 		c=obj.getByParam(param=prefix.add(z=".@type")).string(op="trim",chars="/")
 	)
 );

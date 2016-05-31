@@ -206,7 +206,7 @@ function actionAddContactCheck() {
         }
     }
 
-    var searchString = '(@encryptedType:"' + EcContactGrant.myType + '")';
+    var searchString = new EcContactGrant().getSearchStringByType();
     repo.search(searchString, function (encryptedValue) {
         EcRepository.get(encryptedValue.shortId(), function (encryptedValue) {
             var ev = new EcEncryptedValue();

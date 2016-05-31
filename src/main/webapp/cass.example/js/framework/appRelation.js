@@ -20,7 +20,7 @@ function insertExistingRelation() {
         return;
     }
 
-    var searchString = "(@type:\"" + EcAlignment.myType + "\")";
+    var searchString = new EcAlignment().getSearchStringByType();
     searchString += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\")";
     repo.search(searchString, null,
         function (relations) {

@@ -20,7 +20,7 @@ function insertExistingLevel() {
         return;
     }
 
-    var searchString = "(@type:\"" + EcLevel.myType + "\")";
+    var searchString = new EcLevel().getSearchStringByType();
     searchString += " AND (competency:\"" + competencyId + "\")";
     repo.search(searchString, null,
         function (levels) {

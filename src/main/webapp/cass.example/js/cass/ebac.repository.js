@@ -90,7 +90,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     prototype.decryptIntoObject = function() {
-        var d = null;
         if (this.owner != null) 
             for (var i = 0; i < this.owner.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.owner[i]));
@@ -284,10 +283,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcRemote.postExpectingObject(url, null, fd, function(p1) {
             var d = new EcRemoteLinkedData("", "");
             d.copyFrom(p1);
-            if (d.schema == "") {
-                failure(JSON.stringify(p1));
-                return;
-            }
             if (EcRepository.caching) 
                 (EcRepository.cache)[url] = d;
             success(d);
@@ -375,7 +370,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (window.location.hostname != null) 
             hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
         hostnames.push("localhost", "localhost:8080", "localhost:9722");
-        var servicePrefixes = new Array("/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/custom/", "/levr/api/custom/");
+        var servicePrefixes = new Array("/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/custom/");
         for (var i = 0; i < protocols.length; i++) 
             for (var j = 0; j < hostnames.length; j++) 
                 for (var k = 0; k < servicePrefixes.length; k++) 
@@ -456,7 +451,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     constructor.save = function(data, success, failure) {
         console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
-        if (data.privateEncrypted) {
+        if (data.privateEncrypted != null && data.privateEncrypted.booleanValue()) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcRepository._save(encrypted, success, failure);
         } else {
@@ -483,7 +478,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         EcIdentityManager.sign(data);
-        if (!data.isA(EcEncryptedValue.type)) 
+        if (!data.isA(EcEncryptedValue.myType)) 
             data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
@@ -509,7 +504,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
         }
-        EcRemote._delete(data.shortId(), EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id), success, failure);
+        EcRemote._delete(data.shortId(), EcIdentityManager.signatureSheet(60000, data.id), success, failure);
     };
     constructor.sign = function(data, pen) {
         data.signature.push(EcRsaOaep.sign(pen, data.toSignableJson()));

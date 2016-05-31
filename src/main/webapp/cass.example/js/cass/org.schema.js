@@ -36,7 +36,7 @@ EntryPoint = stjs.extend(EntryPoint, Thing, [], function(constructor, prototype)
 }, {actionApplication: "Object", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Action = function() {
     Thing.call(this);
-    this.schema = "http://schema.org/";
+    this.context = "http://schema.org/";
     this.type = "http://schema.org/Action";
 };
 Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
@@ -53,7 +53,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
 }, {target: "EntryPoint", participant: {name: "Array", arguments: [null]}, mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var AlignmentObject = function() {
     Thing.call(this);
-    this.schema = "http://schema.org/";
+    this.context = "http://schema.org/";
     this.type = "http://schema.org/AlignmentObject";
 };
 AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, prototype) {
@@ -65,7 +65,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, 
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var CreativeWork = function() {
     Thing.call(this);
-    this.schema = "http://schema.org/";
+    this.context = "http://schema.org/";
     this.type = "http://schema.org/CreativeWork";
 };
 CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, prototype) {
@@ -140,7 +140,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
 }, {about: "Thing", accountablePerson: "Person", aggregateRating: "Object", associatedMedia: "Object", audience: "Object", audio: "Object", author: "Thing", character: "Person", citation: "Object", comment: "Object", contentLocation: "Object", contributor: "Thing", copyrightHolder: "Thing", creator: "Thing", dateCreated: "Date", dateModified: "Date", datePublished: "Date", editor: "Person", educationalAlignment: "AlignmentObject", encoding: "Object", exampleOfWork: "CreativeWork", hasPart: "CreativeWork", interactionStatistic: "Object", isPartOf: "CreativeWork", license: "Object", locationCreated: "Object", mainEntity: "Thing", mentions: "Thing", offers: "Object", position: "Object", producer: "Thing", provider: "Thing", publication: "Object", publisher: "Thing", recordedAt: "Object", releasedEvent: "Object", review: "Object", sourceOrganization: "Organization", timeRequired: "Object", translator: "Thing", video: "Object", workExample: "CreativeWork", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Person = function() {
     Thing.call(this);
-    this.schema = "http://schema.org/";
+    this.context = "http://schema.org/";
     this.type = "http://schema.org/Person";
 };
 Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
@@ -195,7 +195,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
 }, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Object", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Organization = function() {
     Thing.call(this);
-    this.schema = "http://schema.org/";
+    this.context = "http://schema.org/";
     this.type = "http://schema.org/Organization";
 };
 Organization = stjs.extend(Organization, Thing, [], function(constructor, prototype) {

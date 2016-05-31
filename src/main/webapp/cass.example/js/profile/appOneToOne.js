@@ -40,7 +40,7 @@ function oneToOneBaseSearchString() {
     if (contactPk == null && identity != null)
         contactPk = identity.ppk.toPk().toPem();
 
-    var searchString = "(@type:\"" + EcAssertion.myType + "\")";
+    var searchString = new EcAssertion().getSearchStringByType();
     if (contactPk != null) {
         searchString += " AND (\\*@reader:\"" +
             contactPk.trim().replace(/\r?\n/g, "") +

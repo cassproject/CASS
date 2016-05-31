@@ -378,7 +378,7 @@ var EcContactGrant = function() {
     EbacContactGrant.call(this);
 };
 EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.eduworks.com/ebac/0.1/contactGrant";
+    constructor.myType = "http://schema.eduworks.com/ebac/0.2/contactGrant";
     prototype.valid = function() {
         if (!this.verify()) 
             return false;
@@ -639,5 +639,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
                 break;
         }
         return passwordSplice;
+    };
+    prototype.fetchServerAdminKeys = function(success, failure) {
+        EcRemote.getExpectingObject(this.server, "sky/admin", function(p1) {
+            success(p1);
+        }, function(p1) {
+            failure("");
+        });
     };
 }, {}, {});

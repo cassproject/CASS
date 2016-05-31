@@ -31,7 +31,7 @@ function createNewAssertion() {
     var competencyText = $("#frameworks").find(".cass-competency.is-active").find(".cass-competency-name").text();
 
     if (frameworkId == null) {
-        var searchString = "(@type:\"" + EcCompetency.myType + "\")";
+        var searchString = new EcCompetency().getSearchStringByType();
         repo.search(searchString, function (competency) {
             $("#newAssertionCompetency").append("<option/>").children().last()
                 .text(competency.name)
@@ -73,7 +73,7 @@ function createNewAssertionSelectedCompetencyChanged(e) {
     var competencyId = $("#newAssertionCompetency option:selected").attr("value");
     $("#newAssertionLevel").html("").append("<option value=''>No level available.</option>");
     if (frameworkId == null) {
-        var searchString = "(@type:\"" + EcLevel.myType + "\") AND (competency:\"" + competencyId + "\")";
+        var searchString = new EcLevel().getSearchStringByType()+" AND (competency:\"" + competencyId + "\")";
         repo.search(searchString, function (level) {
             $("#newAssertionLevel").append("<option/>").children().last()
                 .text(level.name)

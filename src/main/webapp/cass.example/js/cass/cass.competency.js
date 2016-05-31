@@ -433,7 +433,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted) {
+        if (this.privateEncrypted != null && this.privateEncrypted.booleanValue()) {
             var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
             EcRepository._save(encrypted, success, failure);
         } else {
@@ -627,7 +627,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted) {
+        if (this.privateEncrypted != null && this.privateEncrypted.booleanValue()) {
             var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
             EcRepository._save(encrypted, success, failure);
         } else {

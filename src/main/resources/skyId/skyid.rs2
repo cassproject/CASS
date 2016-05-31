@@ -69,7 +69,7 @@ signatureSheet=#object(
 				expiry=#date(_raw="true").add(z="10000").toLong()
 			).put(
 				_key=#type(),
-				_value="http://schema.eduworks.com/ebac/0.1/timeLimitedSignature"
+				_value="http://schema.eduworks.com/ebac/0.2/timeLimitedSignature"
 			).put(
 				_key=#owner(),
 				_value=ppk.rsaPpkToPk()
@@ -88,10 +88,16 @@ retrieve=#if(
 		iv=saltedId
 	).toObject()
 ).ccall(
-	payload=#skyrepoGet(
-		type="schema.eduworks.com.ebac.0.1.encryptedValue",
-		id=saltedId
-	).cget(payload="")
+	payload=#object(
+		a=#skyrepoGet(
+			type="schema.eduworks.com.ebac.0.2.encryptedValue",
+			id=saltedId
+		).cget(payload=""),
+		b=#skyrepoGet(
+			type="schema.eduworks.com.ebac.0.1.encryptedValue",
+			id=saltedId
+		).cget(payload="")
+	).valueSet().union().getIndex(index="0")
 );
 
 payload=#object(
@@ -100,11 +106,11 @@ payload=#object(
 		iv=saltedId
 	)
 ).put(
-	_key=#schema(),
-	_value="http://schema.eduworks.com/ebac/0.1/"
+	_key=#context(),
+	_value="http://schema.eduworks.com/ebac/0.2/"
 ).put(
 	_key=#type(),
-	_value="http://schema.eduworks.com/ebac/0.1/encryptedValue"
+	_value="http://schema.eduworks.com/ebac/0.2/encryptedValue"
 ).put(
 	_key=#owner(),
 	_value=ppk.rsaPpkToPk()
@@ -116,7 +122,7 @@ retreiveFormally=#if(
 	eq=payload.call(
 		payload=retrieve.put(token=#randomString(length="20"))
 	).skyrepoPut(
-		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		type="schema.eduworks.com.ebac.0.2.encryptedValue",
 		id=saltedId
 	).cget(payload="").aesDecrypt(
 		secret=secret,
@@ -133,7 +139,7 @@ retreiveFormally = signatureSheet.toDatastream(
 #skyidRetreive = retreiveFormally;
 
 store=payload.debug().skyrepoPut(
-	type="schema.eduworks.com.ebac.0.1.encryptedValue",
+	type="schema.eduworks.com.ebac.0.2.encryptedValue",
 	id=saltedId
 );
 
@@ -158,7 +164,7 @@ storeFormally = #object(
 
 create=#if(
 	operator=#skyrepoGet(
-		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		type="schema.eduworks.com.ebac.0.2.encryptedValue",
 		id=saltedId
 	),
 	operand="",

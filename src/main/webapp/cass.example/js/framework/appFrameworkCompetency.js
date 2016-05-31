@@ -68,7 +68,7 @@ function bulkFromFrameworkButton() {
         error("Framework not selected.");
         return;
     }
-    var searchString = "(@type:\"" + Framework.myType + "\")";
+    var searchString = new EcFramework().getSearchStringByType();
     if ($("#frameworkSearch").val() != "")
         searchString += " AND (" + $("#frameworkSearch").val() + ")";
     repo.search(searchString, null,

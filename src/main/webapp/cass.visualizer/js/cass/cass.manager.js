@@ -367,12 +367,12 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
     prototype.downloadFile = function(id, failure) {
         EcRepository.get(id, function(p1) {
             var f = new EcFile();
-            if (p1.isA(EcEncryptedValue.type)) {
+            if (p1.isA(EcEncryptedValue.myType)) {
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
             }
-            if (p1.isA(EcFile.type)) {
+            if (p1.isA(EcFile.myType)) {
                 f.copyFrom(p1);
                 f.download();
             }
@@ -422,7 +422,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
                 var competency = new EcCompetency();
                 competency.copyFrom(p1);
                 success(competency);
-            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcCompetency.myType)) {
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcCompetency.myType)) {
                 var decrypted = encrypted.decryptIntoObject();
                 var competency = new EcCompetency();
                 competency.copyFrom(decrypted);
@@ -442,7 +442,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
                 var framework = new EcFramework();
                 framework.copyFrom(p1);
                 success(framework);
-            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcFramework.myType)) {
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcFramework.myType)) {
                 var decrypted = encrypted.decryptIntoObject();
                 var framework = new EcFramework();
                 framework.copyFrom(decrypted);
@@ -461,7 +461,7 @@ RepositoryController = stjs.extend(RepositoryController, null, [], function(cons
                 var alignment = new EcAlignment();
                 alignment.copyFrom(p1);
                 success(alignment);
-            } else if (p1.isA(EcEncryptedValue.type) && encrypted.isAnEncrypted(EcAlignment.myType)) {
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcAlignment.myType)) {
                 var decrypted = encrypted.decryptIntoObject();
                 var alignment = new EcAlignment();
                 alignment.copyFrom(decrypted);
@@ -571,7 +571,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                     var framework = new EcFramework();
                     if (p1[i].isA(EcFramework.myType)) {
                         framework.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
                         var val = new EcEncryptedValue();
                         val.copyFrom(p1[i]);
                         if (val.isAnEncrypted(EcFramework.myType)) {
@@ -602,7 +602,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                     var comp = new EcCompetency();
                     if (p1[i].isA(EcCompetency.myType)) {
                         comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
                         var val = new EcEncryptedValue();
                         val.copyFrom(p1[i]);
                         if (val.isAnEncrypted(EcCompetency.myType)) {
@@ -647,7 +647,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                     var alignment = new EcAlignment();
                     if (p1[i].isA(EcAlignment.myType)) {
                         alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
                         var val = new EcEncryptedValue();
                         val.copyFrom(p1[i]);
                         if (val.isAnEncrypted(EcAlignment.myType)) {
@@ -679,7 +679,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                     var alignment = new EcAlignment();
                     if (p1[i].isA(EcAlignment.myType)) {
                         alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
                         var val = new EcEncryptedValue();
                         val.copyFrom(p1[i]);
                         if (val.isAnEncrypted(EcAlignment.myType)) {
@@ -717,7 +717,7 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
                     var alignment = new EcAlignment();
                     if (p1[i].isA(EcAlignment.myType)) {
                         alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.type)) {
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
                         var val = new EcEncryptedValue();
                         val.copyFrom(p1[i]);
                         if (val.isAnEncrypted(EcAlignment.myType)) {
@@ -763,6 +763,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     prototype.identity = null;
     constructor.refreshLoggedIn = false;
     constructor.loggedIn = false;
+    constructor.admin = false;
     constructor.storageSystem = null;
     constructor.setLoggedIn = function(val) {
         LoginController.loggedIn = val;
@@ -772,15 +773,30 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.getLoggedIn = function() {
         return LoginController.loggedIn;
     };
+    prototype.setAdmin = function(val) {
+        LoginController.admin = val;
+    };
+    prototype.getAdmin = function() {
+        return LoginController.admin;
+    };
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
     };
     prototype.login = function(username, password, success, failure) {
         var identityManager = this.identity;
+        var that = this;
         this.loginServer.startLogin(username, password);
         this.loginServer.fetch(function(p1) {
-            if (EcIdentityManager.ids.length > 0) 
+            if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                that.loginServer.fetchServerAdminKeys(function(keys) {
+                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
+                            that.setAdmin(true);
+                        }
+                    }
+                }, function(p1) {});
+            }
             EcIdentityManager.readContacts();
             EcRepository.cache = new Object();
             LoginController.setLoggedIn(true);
