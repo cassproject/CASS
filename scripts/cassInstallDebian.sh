@@ -59,8 +59,5 @@ echo Starting ElasticSearch...
 service elasticsearch stop
 service elasticsearch start
 
-read -p "Press [Enter] key to edit app.js using nano..."
-nano /var/www/html/cass.example/js/framework/app.js
-
 clear
 echo Navigate to this server to see CASS.
