@@ -95,6 +95,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 	function clearDisplayResults(results)
 	{
+		ViewManager.getView("#repoSearchResults").clear();
 		displayResults(results);
 	}
 	
@@ -125,7 +126,11 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 	function scrollSearchHandler(){
 		var resultDiv = $("#repoResults-data").first(); 
-		if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
 		{
 			$("#moreSearchResults").addClass("hide");
 			$("#loadingMoreResults").removeClass("hide");

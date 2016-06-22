@@ -1,5 +1,7 @@
 FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
+	var maxLength = 24;
+	
 	function createContactSmall(pk)
 	{
 		var ident = AppController.identityController.lookup(pk);
@@ -11,7 +13,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
 	var searchHandle = null;
 	
-	function runFrameworkSearch(){
+	function runFrameworkSearch(start){
 		var query = $("#frameworkSearchText").val();
 
 		if (query == null || query == "")
@@ -29,6 +31,12 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		else
 			ownership = "all";
 		
+		var callback;
+		if(start == undefined)
+			callback = clearDisplayResults;
+		else
+			callback = displayResults;
+		
 		searchHandle = setTimeout(function() {
 			var urlParams = {};
 			if(query != "*")
@@ -45,15 +53,59 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			ViewManager.getView("#frameworkSearchResults").showProgressMessage();
 			ViewManager.getView("#frameworkSearchResults").deselectAll();
 			
-			AppController.searchController.frameworkSearch(query, displayResults, errorSearching, ownership);
+			var params = {};
+			params.ownership = ownership;
+			params.size = maxLength;
+			params.start = start;
+			
+			AppController.searchController.frameworkSearch(query, callback, errorSearching, params);
 		}, 100);
 	}
 	
+	function clearDisplayResults(results)
+	{
+		ViewManager.getView("#frameworkSearchResults").clear();
+		displayResults(results);
+	}
+	
 	function displayResults(results)
-	{   
-		searchHandle = null;
-		
+	{  
 		ViewManager.getView("#frameworkSearchResults").populate(results);
+		
+		if(results.length == 0)
+		{
+			ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
+		}else if(results.length < maxLength){
+//			$("#moreSearchResults").addClass("hide");
+			$(window).off("scroll", scrollSearchHandler);
+		}else{
+//			$("#getMoreResults").click(function(){
+//				$("#moreSearchResults").addClass("hide");
+//				runRepoSearch(resultDiv.children().size());
+//			})
+			
+			$(window).scroll(scrollSearchHandler)
+			
+//			$("#moreSearchResults").removeClass("hide");
+//			$("#loadingMoreResults").addClass("hide");
+			
+		}
+		
+		searchHandle = null;
+	}
+	
+	function scrollSearchHandler(){
+		var resultDiv = $("#frameworkResults-data").first(); 
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runFrameworkSearch(resultDiv.children().size());
+		}
 	}
 	
 	function errorSearching(err){

@@ -75,14 +75,16 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    		try{
 	    			JSON.parse(err);
 	    			
-	    			$("#assertionViewCompetency").html("<span style='font-style:italic'>Unknown</span>");
-	    			$("#assertionViewCompetencyContainer").addClass(" unknown");
-	    			$("#assertionViewCompetencyContainer").css("display", "none");
-	    			$("#assertionToggleUnknownBtn").removeClass("hide");
+	    			errorFindingCompetency(err);
 	    			
 	    			return;
 	    		}catch(e){}
-	    		errorFindingCompetency(err);
+	    		
+	    		$("#assertionViewCompetency").html("<span style='font-style:italic'>Unknown</span>");
+    			$("#assertionViewCompetencyContainer").addClass(" unknown");
+    			$("#assertionViewCompetencyContainer").css("display", "none");
+    			$("#assertionToggleUnknownBtn").removeClass("hide");
+	    		
 	    	});
 	    }else{
 	    	ViewManager.getView("#assertionViewMessageContainer").displayAlert("Assertion is Missing Competency Reference");

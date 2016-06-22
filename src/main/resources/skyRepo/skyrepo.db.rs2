@@ -83,13 +83,15 @@ delete=#object(
 				operator=#signatureSheet().intersect(b=#owners(obj="@oldObj")).count(),
 				operand="0",
 				eq=#if(
-					operator=#owners(obj="@oldObj").count(),
+					operator=#signatureSheet().intersect(a=#append(a=#skyIdAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
 					operand="0",
-					eq=#error(code="403",msg="This object is public, nobody can delete it."),
-					ne=#error(code="401",msg="Only an owner of an object may delete it.")
+					eq=#error(code="401",msg="Only an owner of an object may delete it.")
 				)
 			),
-			eq=#error(code="403",msg="This object is public, nobody can delete it.")
+			eq=#if(operator=#signatureSheet().intersect(a=#append(a=#skyIdAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
+					operand="0",
+					eq=#error(code="403",msg="This object is public, nobody can delete it."),
+				)
 		).ccall(
 			oldObj=#skyrepoGet(version="")
 		),
@@ -162,21 +164,19 @@ ownershipObj = #object(
 	should=ownerSignatureFilterArray
 );
 
-ownershipFilters = 
-#object(
-			bool=#if(operator=#add(a="[",b="]").toArray().append(a="all", b="public").has(has="@ownership"), operand="true",
-	ne=ownershipObj,
-	eq=ownershipObj.put(
-		_key="must",
-		_value=#add(a="[",b="]").toArray().append(
-			a=#object(
-				exists=#object(
-					field=owner
+ownershipFilters = #object(bool=#if(operator=#add(a="[",b="]").toArray().append(a="all", b="public").has(has="@ownership"), operand="true",
+		ne=ownershipObj,
+		eq=ownershipObj.put(
+			_key="must",
+			_value=#add(a="[",b="]").toArray().append(
+				a=#object(
+					exists=#object(
+						field=owner
+					)
 				)
 			)
 		)
 	)
-)
 );
 
 
@@ -402,9 +402,7 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 	),
 ).ccall(
 	sigResults=checkRunSignatureSearch
-).toArray().removeDuplicates().displayJson(_collapse="true");
-
-//search = #merge(a=checkRunNonSigSearch, b=checkRunSignatureSearch).displayJson(_collapse="true");
+).removeDuplicates().displayJson(_collapse="true");
 
 #skyrepoSearch=search;
 

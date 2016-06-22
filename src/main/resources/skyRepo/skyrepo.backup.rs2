@@ -31,16 +31,16 @@ query=#object(
 
 check=#object(
 	word=#urlBase().add(
-		z="/data/",
-		zz=#toObject(obj="@hit").getByParam(param="_type"),
-		zzz="/",
-		zzzz=#toObject(obj="@hit").getByParam(param="_id").urlEncode()
+		a="/data/",
+		b=#toObject(obj="@hit").getByParam(param="_type"),
+		c="/",
+		d=#toObject(obj="@hit").getByParam(param="_id").urlEncode()
 	).httpGet().toObject().getByParam(param="_source").toString().fileSave(
 		path=backupPath.add(
-			z="/",
-			zz=#toObject(obj="@hit").getByParam(param="_type"),
-			zzz="/",
-			zzzz=#toObject(obj="@hit").getByParam(param="_id").stringToHex()
+			a="/",
+			b=#toObject(obj="@hit").getByParam(param="_type"),
+			c="/",
+			d=#toObject(obj="@hit").getByParam(param="_id").stringToHex()
 		)
 	)
 );
@@ -57,12 +57,12 @@ scroll=#object(
 		array="true",
 		op=check
 	),
-	aa=#if(
+	b=#if(
 		operator=#toObject(obj="@search").cget(hits="").cget(hits="").count().debug(),
 		operand="0",
 		eq=#error(code="200",msg="Complete.")
 	),
-	b=#toObject(obj="@search").cgetByParam(param="_scroll_id").variableSet(key="scroll")
+	c=#toObject(obj="@search").cgetByParam(param="_scroll_id").variableSet(key="scroll")
 ).call(
 	search=#httpGet(
 		obj=#add(a=#urlBase(),b="/_search/scroll?scroll=1m&scroll_id=",c=#variableGet(key="scroll")).debug(),

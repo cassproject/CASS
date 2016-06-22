@@ -14,7 +14,7 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 	var typeSelected = {};
 	
 	function addOptionToTypeSelect(obj){
-		if(obj.type == null || obj.schema == null)
+		if(obj.type == null || obj.context == null)
 			return;
 		
 		var option = $("<option></option>");
@@ -38,13 +38,13 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 			typeSelected[type](dataEdit);
 			ModalManager.hideModal();
 		}else{
-			var schema = $("#changeTypeOtherSchemaInput").val();
+			var context = $("#changeTypeOtherSchemaInput").val();
 			var otherType = $("#changeTypeOtherInput").val();
-			if(otherType != undefined && otherType != "" && schema != undefined && schema != ""){
-				dataEdit.changeType(schema, otherType);
+			if(otherType != undefined && otherType != "" && context != undefined && context != ""){
+				dataEdit.changeType(context, otherType);
 				ModalManager.hideModal();
 			}else{
-				displayError("Cannot Set Blank Schema or Type")
+				displayError("Cannot Set Blank Context or Type")
 			}
 		}
 	}

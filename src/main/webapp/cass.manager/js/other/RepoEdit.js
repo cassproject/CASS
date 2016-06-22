@@ -249,17 +249,8 @@ var RepoEdit = (function(RepoEdit){
 	    	if(obj != undefined && obj["@owner"] == undefined)
 	    	{
 	    		buttonStr += decorationButton("+","Add a new field to the object."); 
-	    	}
-	    	if(obj != undefined && obj["@owner"] != undefined)
-	    	{
-	    		for(var i in obj["@owner"])
-	    		{
-	    			if(AppController.identityController.currentOwner(obj["@owner"][i]))
-	    			{
-	    				buttonStr+=decorationButton("+","Add a new field to the object.")+decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
-	    				break;
-	    			}
-	    		}
+	    	}else if(AppController.identityController.owns(obj)){
+	    		buttonStr+=decorationButton("+","Add a new field to the object.")+decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
 	    	}
 	    		
 	    	buttonStr += "</section>";
@@ -312,9 +303,9 @@ var RepoEdit = (function(RepoEdit){
 	    if (isObject(obj))
 	    {
 	        if (
-	            obj["@schema"] != undefined 
+	            obj["@context"] != undefined 
 	            && obj["@type"] != undefined 
-	            && obj["@schema"] == Ebac.schema
+	            && obj["@context"] == Ebac.context
 	            && obj["@type"] == EbacEncryptedValue.type
 	        )
 	            field.children().first().children(".label:contains('encrypt')").text("decrypt");
@@ -423,10 +414,10 @@ var RepoEdit = (function(RepoEdit){
 		buildDisplay(obj, this.containerId);
 	}
 	
-	RepoEdit.prototype.changeType = function(schema, newType){
-		$("#datum").children("div").children("[field='@schema']").each(
+	RepoEdit.prototype.changeType = function(context, newType){
+		$("#datum").children("div").children("[field='@context']").each(
 			function(i, e){
-				   $(e).children("p").text(schema);
+				   $(e).children("p").text(context);
 			}
 		);
 		

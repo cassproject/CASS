@@ -1,6 +1,12 @@
-var EcCallback = function() {};
-EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
-    prototype.callback = function(result) {};
+var EcCallbackReturn0 = function() {};
+EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
+    prototype.callback = function() {};
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
+    };
 }, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
@@ -45,7 +51,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = successCallback;
         p.error = failureCallback;
         if (p.url.indexOf(window.location.protocol) == -1) 
-            p.url = p.url.replace("http", "https");
+            if (!p.url.startsWith("https")) 
+                p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor.getExpectingObject = function(server, service, success, failure) {
@@ -71,7 +78,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = successCallback;
         p.error = failureCallback;
         if (p.url.indexOf(window.location.protocol) == -1) 
-            p.url = p.url.replace("http", "https");
+            if (!p.url.startsWith("https")) 
+                p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor._delete = function(url, signatureSheet, success, failure) {
@@ -92,17 +100,12 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = successCallback;
         p.error = failureCallback;
         if (p.url.indexOf(window.location.protocol) == -1) 
-            p.url = p.url.replace("http", "https");
+            if (!p.url.startsWith("https")) 
+                p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
 }, {}, {});
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
-    constructor.isArray = function(o) {
-        return toString.call(o) == "[object Array]";
-    };
-}, {}, {});
-var EcCallbackReturn0 = function() {};
-EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
-    prototype.callback = function() {};
+var EcCallback = function() {};
+EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
+    prototype.callback = function(result) {};
 }, {}, {});

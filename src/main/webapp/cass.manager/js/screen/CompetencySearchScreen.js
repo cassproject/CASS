@@ -1,5 +1,7 @@
 CompetencySearchScreen = (function(CompetencySearchScreen){
 	
+	var maxLength = 24;
+	
 	function createContactSmall(pk)
 	{
 		var ident = AppController.identityController.lookup(pk);
@@ -11,7 +13,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 	
 	var searchHandle = null;
 	
-	function runCompetencySearch(){
+	function runCompetencySearch(start){
 		var query = $("#competencySearchText").val();
 
 		if (query == null || query == "")
@@ -28,6 +30,12 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 			ownership = "me"
 		else
 			ownership = "all";
+		
+		var callback;
+		if(start == undefined)
+			callback = clearDisplayResults;
+		else
+			callback = displayResults;
 		
 		searchHandle = setTimeout(function() {
 			
@@ -46,15 +54,57 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 			
 			var params = {};
 			params.ownership = ownership;
+			params.size = maxLength;
+			params.start = start;
 			
-			AppController.searchController.competencySearch(query, displayResults, errorSearching, ownership);
+			AppController.searchController.competencySearch(query, callback, errorSearching, params);
 		}, 100);
+	}
+	
+	function clearDisplayResults(results)
+	{
+		ViewManager.getView("#competencySearchResults").clear();
+		displayResults(results);
 	}
 	
 	function displayResults(results)
 	{ 
-		searchHandle = null;
 		ViewManager.getView("#competencySearchResults").populate(results);
+		
+		if(results.length == 0)
+		{
+			ViewManager.getView("#competencySearchResults").showNoDataMessage();
+		}else if(results.length < maxLength){
+//			$("#moreSearchResults").addClass("hide");
+			$(window).off("scroll", scrollSearchHandler);
+		}else{
+//			$("#getMoreResults").click(function(){
+//				$("#moreSearchResults").addClass("hide");
+//				runRepoSearch(resultDiv.children().size());
+//			})
+			
+			$(window).scroll(scrollSearchHandler)
+			
+//			$("#moreSearchResults").removeClass("hide");
+//			$("#loadingMoreResults").addClass("hide");
+			
+		}
+		
+		searchHandle = null;
+	}
+	
+	function scrollSearchHandler(){
+		var resultDiv = $("#competencyResults-data").first(); 
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runCompetencySearch(resultDiv.children().size());
+		}
 	}
 	
 	function errorSearching(err){

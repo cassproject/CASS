@@ -528,7 +528,7 @@ var DataViewer = (function(DataViewer){
 						"<i class='fa fa-trash dataViewBtn' title='Delete' style='margin-right:1rem;'></i>" +
 						"<i class='fa fa-group dataViewBtn' title='Manage Permissions' style='margin-right:1rem;'></i>" +
 						"<i class='fa fa-clone dataViewBtn' title='Copy Resource' style='margin-right:1rem;'></i>" +
-						"<ul id='moreMenuBtns' class='dropdown menu hide' style='display:inline-block;vertical-align:middle;text-align:left;' data-dropdown-menu data-disable-hover='true' data-click-open='true' data-close-on-click='trues'>" +
+						"<ul id='moreMenuBtns' class='dropdown menu align-right hide' style='display:inline-block;vertical-align:middle;text-align:left;' data-dropdown-menu data-disable-hover='true' data-click-open='true' data-close-on-click='true'>" +
 							"<li id='moreMenuContainer'><span class='dataViewBtn' style='padding:0px 5px; display:inline-block;'><i class='fa fa-ellipsis-v'></i></span></li>" +
 						"</ul>" +
 					"</div>" +
@@ -710,7 +710,7 @@ var DataViewer = (function(DataViewer){
 	}
 	
 	DataViewer.prototype.clear = function(){
-		$("#"+prefix+"-data").find(".row").remove();
+		$("#"+this.prefix+"-data").find(".row").remove();
 	}
 	
 	DataViewer.prototype.populate = function(data){

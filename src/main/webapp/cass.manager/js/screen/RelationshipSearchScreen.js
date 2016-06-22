@@ -1,5 +1,7 @@
 RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
+	var maxLength = 24;
+	
 	var relationTypes = {
 	    isEnabledBy:"Enabled By",
 	    requires:"Requires",
@@ -19,7 +21,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
 	var searchHandle = null;
 	
-	function runRelationshipSearch(){
+	function runRelationshipSearch(start){
 		var query = $("#relationshipSearchText").val();
 
 		if (query == null || query == "")
@@ -37,6 +39,12 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		else
 			ownership = "all";
 		
+		var callback;
+		if(start == undefined)
+			callback = clearDisplayResults;
+		else
+			callback = displayResults;
+		
 		searchHandle = setTimeout(function() {
 			var urlParams = {};
 			if(query != "*")
@@ -50,18 +58,62 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
 			
 			ViewManager.getView("#relationshipSearchMessageContainer").clearAlert("searchFail");
-			ViewManager.getView("#relationshipSearchResults").showProgressMessage();
-			ViewManager.getView("#relationshipSearchResults").deselectAll();
+			//ViewManager.getView("#relationshipSearchResults").showProgressMessage();
+			//ViewManager.getView("#relationshipSearchResults").deselectAll();
 			
-			AppController.searchController.relationSearch(query, displayResults, errorSearching, ownership);
+			var params = {};
+			params.ownership = ownership;
+			params.size = maxLength;
+			params.start = start;
+			
+			AppController.searchController.relationSearch(query, callback, errorSearching, params);
 		}, 100);
 	}
 	
+	function clearDisplayResults(results)
+	{
+		ViewManager.getView("#relationshipSearchResults").clear();
+		displayResults(results);
+	}
+	
 	function displayResults(results)
-	{   
-		searchHandle = null;
-		
+	{  
 		ViewManager.getView("#relationshipSearchResults").populate(results);
+		
+		if(results.length == 0)
+		{
+			ViewManager.getView("#relationshipSearchResults").showNoDataMessage();
+		}else if(results.length < maxLength){
+//			$("#moreSearchResults").addClass("hide");
+			$(window).off("scroll", scrollSearchHandler);
+		}else{
+//			$("#getMoreResults").click(function(){
+//				$("#moreSearchResults").addClass("hide");
+//				runRepoSearch(resultDiv.children().size());
+//			})
+			
+			$(window).scroll(scrollSearchHandler)
+			
+//			$("#moreSearchResults").removeClass("hide");
+//			$("#loadingMoreResults").addClass("hide");
+			
+		}
+		
+		searchHandle = null;
+	}
+	
+	function scrollSearchHandler(){
+		var resultDiv = $("#relationshipResults-data").first(); 
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runRelationshipSearch(resultDiv.children().size());
+		}
 	}
 	
 	function errorSearching(err){

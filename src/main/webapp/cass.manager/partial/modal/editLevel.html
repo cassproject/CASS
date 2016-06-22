@@ -37,16 +37,38 @@
 	</div>
 	
 	<div class="row">
+		<div class="small-12 columns"  >
+			<div style="padding-left: 0.5rem; margin-top:0.5rem; margin-bottom:0.5rem;">
+				<span class="prefix">Ownership:</span> 
+				<span id="editLevelOwnership" >Public</span> 
+				<small id="editLevelAdvancedOwnership" class="float-right fake-a hide">Advanced</small>
+			</div>
+		</div>
+	</div>
+	
+	<div id="editLevelVisibilityRow" class="row hide">
 		<div class="small-12 columns">
-			<div style="font-style:italic; padding-left: 0.5rem; margin-bottom:1rem;">Owned By <span id="editLevelOwnership" style="font-style:normal;">Public</span></div>
+			<div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+				<span class="prefix">Visibility:</span> 
+				<span>Private</span>
+			</div>
+		</div>
+	</div>
+	
+	<div id="editLevelReadersRow" class="row hide">
+		<div class="small-12 columns">
+			<div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+				<span class="prefix">Readers:</span>
+				<span id="editLevelReaders" style="font-style:italic">None Added Yet</span>
+			</div>
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="small-12 columns">
-			<button class="button alert hide" id="editLevelDelete">Delete</button>
-			<button class="button float-right" id="editLevelSubmit">Add Level</button>
-			<button id="editLevelCancel" class="button secondary float-right" style="margin-right:1rem;">Cancel</button>
+			<button id="editLevelSubmit" class="button float-right">Add Level</button>
+			<button id="editLevelCancel" class="button secondary float-right" style="margin-right:1em;">Cancel</button>
+			<button id="editLevelDelete" class="button alert hide float-right"  style="margin-right:1em;">Delete</button>
 		</div>
 	</div>
 </div>   	

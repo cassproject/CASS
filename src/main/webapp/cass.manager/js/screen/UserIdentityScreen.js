@@ -165,7 +165,7 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	}
 	
 	function checkContactGrants(){
-	    AppController.repoInterface.search('(@encryptedType:"' + EcContactGrant.myType + '")', function (encryptedValue) {
+	    AppController.repoInterface.search(new EcContactGrant().getSearchStringByType(), function (encryptedValue) {
 	        EcRepository.get(encryptedValue.shortId(), function (encryptedValue) {
 	            var ev = new EcEncryptedValue();
 	            ev.copyFrom(encryptedValue);

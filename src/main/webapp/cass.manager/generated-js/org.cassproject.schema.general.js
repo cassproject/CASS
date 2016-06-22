@@ -1,6 +1,14 @@
+var Ebac = function() {};
+Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
+    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
+    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
+    constructor.context = "http://schema.eduworks.com/ebac/0.2";
+}, {}, {});
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
-    constructor.schema = "http://schema.eduworks.com/general/0.1";
+    constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
+    constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
+    constructor.context = "http://schema.eduworks.com/general/0.2";
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary fields for
@@ -8,8 +16,8 @@ General = stjs.extend(General, null, [], function(constructor, prototype) {
  *  
  *  @author fritz.ray@eduworks.com
  */
-var EcRemoteLinkedData = function(schema, type) {
-    EcLinkedData.call(this, schema, type);
+var EcRemoteLinkedData = function(context, type) {
+    EcLinkedData.call(this, context, type);
 };
 EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(constructor, prototype) {
     /**
@@ -30,7 +38,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  URL/URI used to retrieve and store the object, plus identify the object.
      */
     prototype.id = null;
-    prototype.privateEncrypted = false;
+    prototype.privateEncrypted = null;
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
@@ -55,7 +63,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (!this.id.endsWith("/")) 
             this.id += "/";
         this.id += "data/";
-        this.id += this.type.replace("http://", "").replaceAll("/", ".");
+        this.id += this.getFullType().replace("http://", "").replaceAll("/", ".");
         this.id += "/";
         this.id += generateUUID();
         this.id += "/";
@@ -100,7 +108,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         delete (d)["@owner"];
         delete (d)["@reader"];
         delete (d)["@id"];
-        var e = new EcLinkedData(d.schema, d.type);
+        delete (d)["privateEncrypted"];
+        var e = new EcLinkedData(d.context, d.type);
         e.copyFrom(d);
         return e.toJson();
     };
@@ -226,7 +235,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             return true;
         if (this.id.contains("http://") == false && this.id.contains("https://") == false) 
             return true;
-        if (this.schema == null) 
+        if (this.context == null) 
             return true;
         if (this.getFullType() == null) 
             return true;
@@ -257,6 +266,25 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.shortId = function() {
         return EcRemoteLinkedData.trimVersionFromUrl(this.id);
     };
+    prototype.getSearchStringByType = function() {
+        var types = this.getTypes();
+        var result = "";
+        for (var i = 0; i < types.length; i++) {
+            if (i != 0) 
+                result += " OR ";
+            result += "@type:\"" + types[i] + "\"";
+            var lastSlash = types[i].lastIndexOf("/");
+            result += " OR (@context:\"" + types[i].substring(0, lastSlash) + "\" AND @type:\"" + types[i].substring(lastSlash) + "\")";
+        }
+        for (var i = 0; i < types.length; i++) {
+            if (result.equals("") == false) 
+                result += " OR ";
+            result += "@encryptedType:\"" + types[i] + "\"";
+            var lastSlash = types[i].lastIndexOf("/");
+            result += " OR (@context:\"" + Ebac.context + "\" AND @encryptedType:\"" + types[i].substring(lastSlash) + "\")";
+        }
+        return "(" + result + ")";
+    };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A representation of a file.
@@ -264,10 +292,12 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
  *  @author fritz.ray@eduworks.com
  */
 var EcFile = function() {
-    EcRemoteLinkedData.call(this, General.schema, EcFile.type);
+    EcRemoteLinkedData.call(this, General.context, EcFile.myType);
 };
 EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.type = "http://schema.eduworks.com/general/0.1/file";
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
+    constructor.myType = EcFile.TYPE_0_2;
     /**
      *  Optional checksum of the file, used to verify if the file has been
      *  transmitted correctly.
@@ -294,5 +324,20 @@ EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, proto
     prototype.download = function() {
         var blob = base64ToBlob(this.data, this.mimeType);
         saveAs(blob, this.name);
+    };
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (this.type.equals(EcFile.TYPE_0_1)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(General.context_0_2, EcFile.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(EcFile.TYPE_0_2);
+        a.push(EcFile.TYPE_0_1);
+        return a;
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

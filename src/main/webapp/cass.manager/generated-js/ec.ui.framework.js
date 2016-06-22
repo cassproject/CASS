@@ -42,6 +42,13 @@ var HistoryObject = function() {};
 HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
     prototype.name = null;
 }, {}, {});
+var EcModal = function() {
+    EcView.call(this);
+};
+EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+}, {onClose: "Callback0"}, {});
 var EcScreen = function() {
     EcView.call(this);
 };
@@ -51,13 +58,6 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         return this.displayName;
     };
 }, {}, {});
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.onClose = null;
-}, {onClose: "Callback0"}, {});
 var ModalManager = function() {
     ViewManager.call(this);
 };
@@ -67,7 +67,7 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     constructor.getCurrentModal = function() {
         return ViewManager.getView(ModalManager.MODAL_CONTAINER_ID);
     };
-    constructor.showModal = function(modal) {
+    constructor.showModal = function(modal, callback) {
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("tiny");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("small");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
@@ -81,6 +81,9 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
             ($(ModalManager.MODAL_CONTAINER_ID)).foundation();
             ($(ModalManager.MODAL_CONTAINER_ID)).foundation("open");
             ModalManager.inModal = true;
+            if (callback != null) {
+                callback();
+            }
         });
     };
     constructor.hideModal = function() {
@@ -95,10 +98,6 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         return true;
     });
 })();
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 var ScreenManager = function() {
     ViewManager.call(this);
 };
@@ -268,6 +267,10 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 var OverlayManager = function() {
     ScreenManager.call(this);
 };

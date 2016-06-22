@@ -1,9 +1,5 @@
 var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 	
-	function savePermissions(data, callback){
-		
-	}
-	
 	function addOwner(contact){
 		$('#advancedPermissionsAddOwner').typeahead('val', "");
 		
@@ -256,9 +252,6 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 				$("#advancedPermissionsOwners").attr("disabled", "disabled");
 				$("#advancedPermissionsReaders").attr("disabled", "disabled");
 			}else{
-				$("#advancedPermissionsSave").click(function(){
-					savePermissions(data, saveCallback);
-				});
 				
 				if(!onlyReaders){
 					$("#privateSwitch").change(function(){
@@ -376,6 +369,26 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 					}
 				});
 				
+				$("#advancedPermissionsReaders").focus(function(){
+					$("#advancedPermissionsReaders").css("margin-bottom", "0px");
+					$("#advancedPermissionsDeleteReader").slideDown();
+					
+					$("#advancedPermissionsReaders").blur(function(){
+						$("#advancedPermissionsDeleteReader").slideUp(function(){
+							$("#advancedPermissionsReaders").removeAttr("style");
+						});
+					})
+				});
+				
+				$("#advancedPermissionsDeleteReader").click(function(){
+					$("#advancedPermissionsReaders option[value='"+$("#advancedPermissionsReaders").val()+"']").remove();
+					if($("#advancedPermissionsReaders option").size() == 1){
+						$("#noReaders").removeClass("hide")
+						$("#advancedPermissionsReaders").attr("disabled", "disabled");
+						$("#advancedPermissionsReaders").addClass("empty");
+					}
+				});
+				
 				setupTypeaheads(data);
 				
 				$("#advancedPermissionsSave").click(function(ev){
@@ -430,6 +443,9 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 			
 			$("#advancedPermissionsCancel").click(function(){				
 				ModalManager.hideModal();
+				if(data.isAny(new EcLevel().getTypes())){
+					saveCallback(data);
+				}
 			})
 			
 			if(callback != undefined)

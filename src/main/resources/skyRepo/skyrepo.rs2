@@ -87,3 +87,7 @@ performance=#reflectionPerformance().displayJson();
 
 pong=#object(ping="pong").displayJson(_collapse="true");
 /ping=pong;
+
+
+admin = #skyrepoAdminList().displayJson(_collapse="true");
+/sky/admin = admin;

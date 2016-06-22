@@ -1,4 +1,64 @@
 /**
+ *  An identity is an alias that a person or system may own. It consists of a
+ *  private key and a display name. Using the private key we may: 1. Perform all
+ *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
+ *  messages, ensuring the recipient knows that we sent the message and it was
+ *  not altered.
+ *  
+ *  @author fray
+ */
+var EcIdentity = function() {
+    this.displayName = "Alias " + EcIdentity.identityCounter++;
+};
+EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
+    constructor.identityCounter = 1;
+    prototype.ppk = null;
+    prototype.displayName = null;
+    prototype.source = null;
+    prototype.equals = function(obj) {
+        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
+            return this.ppk.equals((obj).ppk);
+        return Object.prototype.equals.call(this, obj);
+    };
+    /**
+     *  Helper function to encrypt an identity into a credential (storable
+     *  version of an identity)
+     *  
+     *  @param secret
+     *             AES secret used to encrypt the credential.
+     *  @return Encrypted credential object.
+     */
+    prototype.toCredential = function(secret) {
+        var c = new EbacCredential();
+        c.iv = EcAes.newIv(32);
+        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
+        c.displayNameIv = EcAes.newIv(32);
+        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
+        return c;
+    };
+    /**
+     *  Helper function to decrypt a credential (storable version of an identity)
+     *  into an identity)
+     *  
+     *  @param credential
+     *             Credential to decrypt.
+     *  @param secret
+     *             AES secret used to decrypt the credential.
+     *  @param source
+     *             Source of the credential, used to track where a credential
+     *             came from.
+     *  @return Decrypted identity object, ready for use.
+     */
+    constructor.fromCredential = function(credential, secret, source) {
+        var i = new EcIdentity();
+        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
+        i.source = source;
+        if (credential.displayName != null && credential.displayNameIv != null) 
+            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
+        return i;
+    };
+}, {ppk: "EcPpk"}, {});
+/**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
  *  signed message that was sent (by using the verify function of the public key)
@@ -60,66 +120,6 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
         return i;
     };
 }, {pk: "EcPk"}, {});
-/**
- *  An identity is an alias that a person or system may own. It consists of a
- *  private key and a display name. Using the private key we may: 1. Perform all
- *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
- *  messages, ensuring the recipient knows that we sent the message and it was
- *  not altered.
- *  
- *  @author fray
- */
-var EcIdentity = function() {
-    this.displayName = "Alias " + EcIdentity.identityCounter++;
-};
-EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
-    constructor.identityCounter = 1;
-    prototype.ppk = null;
-    prototype.displayName = null;
-    prototype.source = null;
-    prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
-            return this.ppk.equals((obj).ppk);
-        return Object.prototype.equals.call(this, obj);
-    };
-    /**
-     *  Helper function to encrypt an identity into a credential (storable
-     *  version of an identity)
-     *  
-     *  @param secret
-     *             AES secret used to encrypt the credential.
-     *  @return Encrypted credential object.
-     */
-    prototype.toCredential = function(secret) {
-        var c = new EbacCredential();
-        c.iv = EcAes.newIv(32);
-        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
-        c.displayNameIv = EcAes.newIv(32);
-        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
-        return c;
-    };
-    /**
-     *  Helper function to decrypt a credential (storable version of an identity)
-     *  into an identity)
-     *  
-     *  @param credential
-     *             Credential to decrypt.
-     *  @param secret
-     *             AES secret used to decrypt the credential.
-     *  @param source
-     *             Source of the credential, used to track where a credential
-     *             came from.
-     *  @return Decrypted identity object, ready for use.
-     */
-    constructor.fromCredential = function(credential, secret, source) {
-        var i = new EcIdentity();
-        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
-        i.source = source;
-        if (credential.displayName != null && credential.displayNameIv != null) 
-            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
-        return i;
-    };
-}, {ppk: "EcPpk"}, {});
 /**
  *  Manages identities and contacts, provides hooks to respond to identity and
  *  contact events, and builds signatures and signature sheets for authorizing
@@ -365,6 +365,24 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
+var EcContactGrant = function() {
+    EbacContactGrant.call(this);
+};
+EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    constructor.myType = "http://schema.eduworks.com/ebac/0.2/contactGrant";
+    prototype.valid = function() {
+        if (!this.verify()) 
+            return false;
+        if (this.invalid()) 
+            return false;
+        var found = false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
+                found = true;
+        }
+        return found;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs complete anonymization of the user.
@@ -614,28 +632,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         return passwordSplice;
     };
     prototype.fetchServerAdminKeys = function(success, failure) {
-        EcRemote.getExpectingObject(this.server, "sky/admin", function(p1) {
+        var service;
+        if (this.server.endsWith("/")) {
+            service = "sky/admin";
+        } else {
+            service = "/sky/admin";
+        }
+        EcRemote.getExpectingObject(this.server, service, function(p1) {
             success(p1);
         }, function(p1) {
             failure("");
         });
     };
 }, {}, {});
-var EcContactGrant = function() {
-    EbacContactGrant.call(this);
-};
-EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.eduworks.com/ebac/0.1/contactGrant";
-    prototype.valid = function() {
-        if (!this.verify()) 
-            return false;
-        if (this.invalid()) 
-            return false;
-        var found = false;
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
-                found = true;
-        }
-        return found;
-    };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

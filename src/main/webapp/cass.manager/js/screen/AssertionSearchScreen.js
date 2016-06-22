@@ -1,5 +1,7 @@
 AssertionSearchScreen = (function(AssertionSearchScreen){
 	
+	var maxLength = 24;
+	
 	function createContactSmall(pk)
 	{
 		var ident = AppController.identityController.lookup(pk);
@@ -11,30 +13,80 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 	
 	var searchHandle = null;
 	
-	function runAssertionSearch(){
+	function runAssertionSearch(start){
 		searchHandle = setTimeout(function() {
 			
 			ViewManager.getView("#assertionSearchMessageContainer").clearAlert("searchFail");
 			
+			var callback;
+			if(start == undefined)
+				callback = clearDisplayResults;
+			else
+				callback = displayResults;
+			
+			var params = {};
+			params.size = maxLength;
+			params.start = start;
+			
 			AppController.searchController.assertionSearch("*", function(results){
 				var waitFunc = function(){
 					if(ViewManager.getView("#assertionSearchResults") != undefined){
-						displayResults(results);
+						callback(results);
 					}else{
 						setTimeout(waitFunc, 100);
 					}
 				};
 				
 				waitFunc();
-			}, errorSearching);
+			}, errorSearching, params);
 		}, 100);
+	}
+	
+	function clearDisplayResults(results)
+	{
+		ViewManager.getView("#assertionSearchResults").clear();
+		displayResults(results);
 	}
 	
 	function displayResults(results)
 	{ 
+		ViewManager.getView("#assertionSearchResults").populate(results);
+		
+		if(results.length == 0)
+		{
+			ViewManager.getView("#relationshipSearchResults").showNoDataMessage();
+		}else if(results.length < maxLength){
+//			$("#moreSearchResults").addClass("hide");
+			$(window).off("scroll", scrollSearchHandler);
+		}else{
+//			$("#getMoreResults").click(function(){
+//				$("#moreSearchResults").addClass("hide");
+//				runRepoSearch(resultDiv.children().size());
+//			})
+			
+			$(window).scroll(scrollSearchHandler)
+			
+//			$("#moreSearchResults").removeClass("hide");
+//			$("#loadingMoreResults").addClass("hide");
+			
+		}
+		
 		searchHandle = null;
 		
-		ViewManager.getView("#assertionSearchResults").populate(results);
+	}
+	
+	function scrollSearchHandler(){
+		var resultDiv = $("#assertionResults-data").first(); 
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runAssertionSearch(resultDiv.children().size());
+		}
 	}
 	
 	function errorSearching(err){

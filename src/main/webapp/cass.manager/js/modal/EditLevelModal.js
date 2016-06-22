@@ -28,10 +28,10 @@ var EditLevelModal = (function(EditLevelModal){
 		var data = this.data;
 		var modalCloseCallback = this.closeCallback;
 		
-		$(containerId).load("partial/modal/editLevel.html", function(){
+		$(containerId).load("partial/modal/editLevel.html", function(html){
 			
 			ViewManager.showView(new MessageContainer("editLevel"), "#editLevelError", function(){
-				if(AppController.identityController.selectedIdentity == undefined && data.isA(EcCompetency.myType))
+				if(AppController.identityController.selectedIdentity == undefined && data.isAny(new EcCompetency().getTypes()))
 				{
 					ViewManager.getView("#editLevelError").displayWarning("You are Creating a Public Level, this level can be modified by anyone");
 				}
@@ -42,7 +42,7 @@ var EditLevelModal = (function(EditLevelModal){
 				ModalManager.hideModal();
 			});
 			
-			if(data.isA(EcCompetency.myType))
+			if(data.isAny(new EcCompetency().getTypes()))
 			{
 				if(AppController.identityController.selectedIdentity != undefined)
 				{
@@ -56,8 +56,102 @@ var EditLevelModal = (function(EditLevelModal){
 		                width:128,
 		                height:128,
 		                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-		            });   
+		            });
+		    		
+		    		$("#editLevelAdvancedOwnership").removeClass("hide");
+					$("#editLevelAdvancedOwnership").click(function(ev){
+						var level = new EcLevel();
+						level.name = $("#editLevelName").val();
+						level.title = $("#editLevelTitle").val();
+						level.description = $("#editLevelDescription").val();
+						level.performance = $("#editLevelPerformance").val();
+						
+						var owners = $("#editLevelOwnership").children("span").map(function(idx, el){
+							return $(el).find(".contactText").attr("title");
+						})
+						
+						for(var i = 0; i < owners.length; i++){
+							level.addOwner(EcPk.fromPem(owners[i]))
+						}
+						
+						if(!$("#editLevelVisibilityRow").hasClass("hide")){
+							level.privateEncrypted = true;
+							var readers = $("#editLevelReaders").children().map(function(idx, el){
+								return $(el).find(".contactText").attr("title");
+							})
+							
+							for(var i = 0; i < readers.length; i++){
+								level.addReader(EcPk.fromPem(readers[i]))
+							}
+						}
+
+						ModalManager.showModal(new AdvancedPermissionsModal(level, function(permissionedLevel){
+							ModalManager.showModal(new EditLevelModal(data, modalCloseCallback), function(){
+								$("#editLevelName").val(permissionedLevel.name);
+								$("#editLevelTitle").val(permissionedLevel.title);
+								$("#editLevelDescription").val(permissionedLevel.description);
+								$("#editLevelPerformance").val(permissionedLevel.performance);
+								
+								if(permissionedLevel.owner != undefined && permissionedLevel.owner.length > 0)
+								{
+									$("#editLevelOwnership").text("");
+									
+									for(var i = 0; i < permissionedLevel.owner.length; i++)
+									{	
+										if(i > 0)
+							    			$("#editLevelOwnership").append(", ");
+										
+										var pem = permissionedLevel.owner[i];
+										
+										var contact = $(createContactSmall(pem));
+										$("#editLevelOwnership").append(contact);            
+							    		contact.children(".qrcodeCanvas").qrcode({
+							                width:128,
+							                height:128,
+							                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
+							            });   
+									}
+								}else{
+									$("#editLevelOwnership").text("Public");
+								}
+								
+								if(permissionedLevel.privateEncrypted){
+									$("#editLevelVisibilityRow").removeClass("hide");
+									$("#editLevelReadersRow").removeClass("hide");
+									
+									if(permissionedLevel.reader != undefined && permissionedLevel.reader.length > 0)
+									{
+										$("#editLevelReaders").text("");
+										$("#editLevelReaders").css("font-style", "normal");
+										
+										for(var i = 0; i < permissionedLevel.reader.length; i++)
+										{	
+											if(i > 0)
+								    			$("#editLevelReaders").append(", ");
+											
+											var pem = permissionedLevel.reader[i];
+											
+											var contact = $(createContactSmall(pem));
+											$("#editLevelReaders").append(contact);            
+								    		contact.children(".qrcodeCanvas").qrcode({
+								                width:128,
+								                height:128,
+								                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
+								            });   
+										}
+									}else{
+										$("#editLevelReaders").text("None Added Yet");
+									}
+								}else{
+									$("#editLevelVisibilityRow").addClass("hide");
+									$("#editLevelReadersRow").addClass("hide");
+									
+								}
+							})
+						}))
+					});
 				}
+				
 				
 				$("#editLevelDelete").remove();
 				
@@ -75,6 +169,24 @@ var EditLevelModal = (function(EditLevelModal){
 					level.performance = $("#editLevelPerformance").val();
 					level.competency = data.shortId();
 					
+					var owners = $("#editLevelOwnership").children("span").map(function(idx, el){
+						return $(el).find(".contactText").attr("title");
+					})
+					
+					for(var i = 0; i < owners.length; i++){
+						level.addOwner(EcPk.fromPem(owners[i]))
+					}
+					
+					if(!$("#editLevelVisibilityRow").hasClass("hide")){
+						level.privateEncrypted = true;
+						var readers = $("#editLevelReaders").children().map(function(idx, el){
+							return $(el).find(".contactText").attr("title");
+						})
+						
+						for(var i = 0; i < readers.length; i++){
+							level.addReader(EcPk.fromPem(readers[i]))
+						}
+					}
 					
 					if(level.name == undefined || level.name == ""){
 						ViewManager.getView("#editLevelError").displayAlert("Level Requires a Name to be Saved");
@@ -89,7 +201,7 @@ var EditLevelModal = (function(EditLevelModal){
 					}, saveLevelFail);
 				})
 			}
-			else if(data.isA(EcLevel.myType))
+			else if(data.isAny(new EcLevel().getTypes()))
 			{
 				$("#editLevelDelete").removeClass("hide");
 				
@@ -100,12 +212,44 @@ var EditLevelModal = (function(EditLevelModal){
 				$("#editLevelDescription").val(data.description);
 				$("#editLevelPerformance").val(data.performance);
 				
+				if(data.privateEncrypted == true){
+					$("#editLevelVisibilityRow").removeClass("hide");
+					$("#editLevelReadersRow").removeClass("hide");
+					
+					if(data.reader != undefined && data.reader.length > 0)
+					{
+						$("#editLevelReaders").text("");
+						$("#editLevelReaders").css("font-style", "normal");
+						
+						for(var i = 0; i < data.reader.length; i++)
+						{	
+							if(i > 0)
+				    			$("#editLevelReaders").append(", ");
+							
+							var pem = data.reader[i];
+							
+							var contact = $(createContactSmall(pem));
+							$("#editLevelReaders").append(contact);            
+				    		contact.children(".qrcodeCanvas").qrcode({
+				                width:128,
+				                height:128,
+				                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
+				            });   
+						}
+					}else{
+						$("#editLevelReaders").text("None Added Yet");
+					}
+				}
+				
 				if(data.owner != undefined && data.owner.length > 0)
 				{
 					$("#editLevelOwnership").text("");
 					
 					for(var i = 0; i < data.owner.length; i++)
-					{	
+					{
+						if(i > 0)
+			    			$("#editLevelOwnership").append(", ");
+						
 						var pem = data.owner[i];
 						
 						var contact = $(createContactSmall(pem));
@@ -129,6 +273,69 @@ var EditLevelModal = (function(EditLevelModal){
 				
 				if(canEdit)
 				{
+					if(data.owner != undefined){
+						$("#editLevelAdvancedOwnership").removeClass("hide");
+						$("#editLevelAdvancedOwnership").click(function(ev){
+							data.name = $("#editLevelName").val();
+							data.title = $("#editLevelTitle").val();
+							data.description = $("#editLevelDescription").val();
+							data.performance = $("#editLevelPerformance").val();
+							
+							var owners = $("#editLevelOwnership").children("span").map(function(idx, el){
+								return $(el).find(".contactText").attr("title");
+							})
+							
+							for(var i = 0; i < owners.length; i++){
+								data.addOwner(EcPk.fromPem(owners[i]))
+							}
+							
+							if(!$("#editLevelVisibilityRow").hasClass("hide")){
+								data.privateEncrypted = true;
+								var readers = $("#editLevelReaders").children().map(function(idx, el){
+									return $(el).find(".contactText").attr("title");
+								})
+								
+								for(var i = 0; i < readers.length; i++){
+									data.addReader(EcPk.fromPem(readers[i]))
+								}
+							}
+							
+							ModalManager.showModal(new AdvancedPermissionsModal(data, function(permissionedLevel){
+								if(permissionedLevel.privateEncrypted){
+									$("#editLevelVisibilityRow").removeClass("hide");
+									$("#editLevelReadersRow").removeClass("hide");
+									
+									if(permissionedLevel.reader != undefined && permissionedLevel.reader.length > 0)
+									{
+										$("#editLevelReaders").text("");
+										$("#editLevelReaders").css("font-style", "normal");
+										
+										for(var i = 0; i < permissionedLevel.reader.length; i++)
+										{	
+											var pem = permissionedLevel.reader[i];
+											
+											var contact = $(createContactSmall(pem));
+											$("#editLevelReaders").append(contact);            
+								    		contact.children(".qrcodeCanvas").qrcode({
+								                width:128,
+								                height:128,
+								                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
+								            });   
+										}
+									}else{
+										$("#editLevelReaders").text("None Added Yet");
+									}
+								}else{
+									$("#editLevelVisibilityRow").addClass("hide");
+									$("#editLevelReadersRow").addClass("hide");
+									
+								}
+								
+								ModalManager.showModal(new EditLevelModal(permissionedLevel, modalCloseCallback))
+							}));
+						});
+					}
+					
 					$("#editLevelModalTitle").text("Edit Level");
 					
 					$("#editLevelSubmit").click(function(event){
@@ -138,6 +345,25 @@ var EditLevelModal = (function(EditLevelModal){
 						data.title = $("#editLevelTitle").val();
 						data.description = $("#editLevelDescription").val();
 						data.performance = $("#editLevelPerformance").val();
+						
+						var owners = $("#editLevelOwnership").children("span").map(function(idx, el){
+							return $(el).find(".contactText").attr("title");
+						})
+						
+						for(var i = 0; i < owners.length; i++){
+							data.addOwner(EcPk.fromPem(owners[i]))
+						}
+						
+						if(!$("#editLevelVisibilityRow").hasClass("hide")){
+							data.privateEncrypted = true;
+							var readers = $("#editLevelReaders").children().map(function(idx, el){
+								return $(el).find(".contactText").attr("title");
+							})
+							
+							for(var i = 0; i < readers.length; i++){
+								data.addReader(EcPk.fromPem(readers[i]))
+							}
+						}
 						
 						if(data.name == undefined || data.name == ""){
 							ViewManager.getView("#editLevelError").displayAlert("Level Requires a Name to be Saved");
