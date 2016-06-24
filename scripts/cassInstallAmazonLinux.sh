@@ -62,6 +62,7 @@ cp target/cass-0.1.0.war /usr/share/tomcat7/webapps
 cd ..
 rm -rf CASS
 service tomcat7 start
+sleep 3s
 service tomcat7 stop
 
 
