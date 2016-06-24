@@ -1516,7 +1516,11 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.loginServer = new EcRemoteIdentityManager();
     constructor.main = function(args) {
         AppSettings.loadSettings();
-        AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
+        AppController.repoInterface.autoDetectRepository();
+        if (AppController.repoInterface.selectedServer == null) 
+            AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
+         else 
+            AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "Web Server");
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
         AppController.searchController.repo = AppController.repoInterface;
