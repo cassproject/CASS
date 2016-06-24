@@ -1520,7 +1520,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         if (AppController.repoInterface.selectedServer == null) 
             AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
          else 
-            AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "Web Server");
+            AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "This Server (" + window.location.host + ")");
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
         AppController.searchController.repo = AppController.repoInterface;
