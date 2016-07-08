@@ -51,6 +51,7 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
     constructor.IS_ENABLED_BY = "isEnabledBy";
     constructor.REQUIRES = "requires";
     constructor.DESIRES = "desires";
+    constructor.NARROWS = "narrows";
     constructor.IS_RELATED_TO = "isRelatedTo";
     constructor.IS_EQUIVALENT_TO = "isEquivalenTo";
     prototype.source = null;
@@ -72,6 +73,24 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
         var a = new Array();
         a.push(Relation.TYPE_0_2);
         a.push(Relation.TYPE_0_1);
+        return a;
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var RollupRule = function() {
+    Thing.call(this);
+    this.setContextAndType(Cass.context, RollupRule.myType);
+};
+RollupRule = stjs.extend(RollupRule, Thing, [], function(constructor, prototype) {
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
+    constructor.myType = RollupRule.TYPE_0_2;
+    prototype.rule = null;
+    prototype.competency = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(RollupRule.TYPE_0_2);
         return a;
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
@@ -118,6 +137,7 @@ Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
     prototype.competency = null;
     prototype.relation = null;
     prototype.level = null;
+    prototype.rollupRule = null;
     prototype.source = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
@@ -134,7 +154,7 @@ Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
         a.push(Framework.TYPE_0_1);
         return a;
     };
-}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A composition of references to assertions and acceptances that embody a
  *  person's profile. It is reasonably safe to assume the maker of this framework
@@ -187,6 +207,7 @@ Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
     prototype.assertionDate = null;
     prototype.expirationDate = null;
     prototype.decayFunction = null;
+    prototype.negative = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
         if (this.type.equals(Assertion.TYPE_0_1)) {
@@ -202,7 +223,7 @@ Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
         a.push(Assertion.TYPE_0_1);
         return a;
     };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Under construction.
  *  

@@ -7,6 +7,12 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
+var Ebac = function() {};
+Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
+    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
+    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
+    constructor.context = "http://schema.eduworks.com/ebac/0.2";
+}, {}, {});
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
@@ -107,10 +113,17 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.toSignableJson = function() {
         var d = JSON.parse(this.toJson());
-        delete (d)["@signature"];
-        delete (d)["@owner"];
-        delete (d)["@reader"];
-        delete (d)["@id"];
+        if (this.type.contains("http://schema.eduworks.com/") && this.type.contains("/0.1/")) {
+            delete (d)["@signature"];
+            delete (d)["@owner"];
+            delete (d)["@reader"];
+            delete (d)["@id"];
+            delete (d)["privateEncrypted"];
+        } else {
+            delete (d)["@signature"];
+            delete (d)["@id"];
+            delete (d)["privateEncrypted"];
+        }
         var e = new EcLinkedData(d.context, d.type);
         e.copyFrom(d);
         return e.toJson();
@@ -283,7 +296,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                 result += " OR ";
             result += "@encryptedType:\"" + types[i] + "\"";
             var lastSlash = types[i].lastIndexOf("/");
-            result += " OR (@context:\"" + types[i].substring(0, lastSlash) + "\" AND @encryptedType:\"" + types[i].substring(lastSlash) + "\")";
+            result += " OR (@context:\"" + Ebac.context + "\" AND @encryptedType:\"" + types[i].substring(lastSlash) + "\")";
         }
         return "(" + result + ")";
     };

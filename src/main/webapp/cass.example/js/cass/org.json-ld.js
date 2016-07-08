@@ -163,6 +163,8 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.copyFrom = function(that) {
         var me = (this);
+        for (var key in me) 
+            delete me[key];
         var you = (that);
         this.upgrade();
         for (var key in you) {

@@ -7,12 +7,6 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var Ebac = function() {};
-Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
-    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
-    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
-    constructor.context = "http://schema.eduworks.com/ebac/0.2";
-}, {}, {});
 /**
  *  Message used to retrieve credentials from a remote system.
  *  
@@ -332,6 +326,18 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  object.
      */
     prototype.name = null;
+    prototype.copyFrom = function(that) {
+        var me = (this);
+        for (var key in me) 
+            delete me[key];
+        var you = (that);
+        for (var key in you) {
+            if (me[key] == null) 
+                me[key.replace("@", "")] = you[key];
+        }
+        if (!this.isAny(this.getTypes())) 
+             throw new RuntimeException("Incompatible type: " + this.getFullType());
+    };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
         if (this.type.equals(EbacEncryptedValue.TYPE_0_1)) {

@@ -379,7 +379,7 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 			),
 			size="@size"
 		),
-		ne=#merge(
+		ne=#object(
 			a=#toArray(obj="@sigResults"), 
 			b=checkRunNonSigSearch.ccall(
 				start="0",
@@ -398,7 +398,7 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 					)
 				)
 			)
-		)
+		).valueSet().union()
 	),
 ).ccall(
 	sigResults=checkRunSignatureSearch

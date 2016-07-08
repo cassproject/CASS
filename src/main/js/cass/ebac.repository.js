@@ -92,14 +92,18 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     prototype.decryptIntoObject = function() {
+        if (!this.verify()) 
+            return null;
         if (this.owner != null) 
             for (var i = 0; i < this.owner.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.owner[i]));
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptToObject(decryptionKey);
-                if (decrypted != null) 
+                if (decrypted != null) {
+                    decrypted.id = this.id;
                     return decrypted;
+                }
             }
         if (this.reader != null) 
             for (var i = 0; i < this.reader.length; i++) {
@@ -107,14 +111,18 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 if (decryptionKey == null) 
                     continue;
                 var decrypted = this.decryptToObject(decryptionKey);
-                if (decrypted != null) 
+                if (decrypted != null) {
+                    decrypted.id = this.id;
                     return decrypted;
+                }
             }
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var decryptionKey = EcIdentityManager.ids[i].ppk;
             var decrypted = this.decryptToObject(decryptionKey);
-            if (decrypted != null) 
+            if (decrypted != null) {
+                decrypted.id = this.id;
                 return decrypted;
+            }
         }
         return null;
     };
@@ -177,7 +185,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
     prototype.isAnEncrypted = function(type) {
         if (this.encryptedType == null) 
             return false;
-        return this.encryptedType.equals(type);
+        var typeSplit = (type.split("/"));
+        return this.encryptedType.equals(type) || this.encryptedType.equals(typeSplit[typeSplit.length - 1]);
     };
     /**
      *  Adds a reader to the object, if the reader does not exist.
@@ -453,7 +462,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     constructor.save = function(data, success, failure) {
         console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
-        if (data.privateEncrypted != null && data.privateEncrypted.booleanValue()) {
+        if (data.privateEncrypted != null && data.privateEncrypted) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcRepository._save(encrypted, success, failure);
         } else {

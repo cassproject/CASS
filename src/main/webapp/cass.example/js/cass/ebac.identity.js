@@ -394,17 +394,17 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
- *  Performs complete anonymization of the user.
+ *  Performs anonymization of the user.
  *  
- *  Requires initialization with application specific salts. Application specific
- *  salts prevent co-occurrence attacks, should credentials in one application be
+ *  Requires initialization with server specific salts. Server specific
+ *  salts prevent co-occurrence attacks, should credentials on one server be
  *  compromised (intercepted in transit).
  *  
  *  Transmits hashed username, hashed password, and encrypts credentials using
  *  the hashed combination of the username and password. This prevents the system
  *  storing the credentials from having any knowledge of the user.
  *  
- *  Password recovery is done through, when the password changes, creating a
+ *  Password recovery is done by, when the password changes, creating a
  *  cryptographic pad (or perfect cipher) where one half is stored on the server,
  *  and the other half is stored with the user. Should the user lose this pad and
  *  forget their password, they are not able to recover or reset their password,
@@ -460,6 +460,56 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         this.secretIterations = secretIterations;
         this.configured = true;
     };
+    prototype.configureFromServer = function(success, failure) {
+        var me = this;
+        EcRemote.getExpectingObject(this.server, "sky/id/salts", function(p1) {
+            me.usernameSalt = (p1)["usernameSalt"];
+            if (me.usernameSalt.length < 16) {
+                failure("Insufficient length on Username Salt");
+                return;
+            }
+            me.usernameIterations = stjs.trunc((p1)["usernameIterations"]);
+            if (me.usernameIterations < 1000) {
+                failure("Insufficient iterations on Username Hash");
+                return;
+            }
+            me.usernameWidth = stjs.trunc((p1)["usernameLength"]);
+            if (me.usernameWidth != 64) {
+                failure("Username Hash required to be length 64.");
+                return;
+            }
+            me.passwordSalt = (p1)["passwordSalt"];
+            if (me.passwordSalt.length < 16) {
+                failure("Insufficient length on Password Salt");
+                return;
+            }
+            me.passwordIterations = stjs.trunc((p1)["passwordIterations"]);
+            if (me.passwordIterations < 1000) {
+                failure("Insufficient iterations on Password Hash");
+                return;
+            }
+            me.passwordWidth = stjs.trunc((p1)["passwordLength"]);
+            if (me.passwordWidth != 64) {
+                failure("Password Hash required to be length 64.");
+                return;
+            }
+            me.secretSalt = (p1)["secretSalt"];
+            if (me.secretSalt.length < 16) {
+                failure("Insufficient length on Secret Salt");
+                return;
+            }
+            me.secretIterations = stjs.trunc((p1)["secretIterations"]);
+            if (me.secretIterations < 1000) {
+                failure("Insufficient iterations on Secret Hash");
+                return;
+            }
+            me.configured = true;
+            success(p1);
+        }, function(p1) {
+            me.configured = false;
+            failure(p1);
+        });
+    };
     /**
      *  Wipes login data.
      */
@@ -491,8 +541,10 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *             Password
      */
     prototype.startLogin = function(username, password) {
-        if (!this.configured) 
+        if (!this.configured) {
             alert("Remote Identity not configured.");
+            return;
+        }
         this.usernameWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
         this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(password, this.passwordSalt, this.passwordIterations, this.passwordWidth));
         var arys = new Array();
@@ -512,8 +564,10 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param failure
      */
     prototype.fetch = function(success, failure) {
-        if (!this.configured) 
+        if (!this.configured) {
             alert("Remote Identity not configured.");
+            return;
+        }
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
             alert("Please log in before performing this operation.");
             return;
@@ -641,7 +695,13 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         return passwordSplice;
     };
     prototype.fetchServerAdminKeys = function(success, failure) {
-        EcRemote.getExpectingObject(this.server, "sky/admin", function(p1) {
+        var service;
+        if (this.server.endsWith("/")) {
+            service = "sky/admin";
+        } else {
+            service = "/sky/admin";
+        }
+        EcRemote.getExpectingObject(this.server, service, function(p1) {
             success(p1);
         }, function(p1) {
             failure("");

@@ -50,10 +50,5 @@ function helpAssist(selector) {
 timeout(function () {
     repo.autoDetectRepository();
     loginServer.setDefaultIdentityManagementServer(repo.selectedServer);
-    loginServer.configure(
-        "Replace this with your application salt.", 5000, 64,
-        "Replace this with a different application salt.", 5000, 64,
-        "Replace this with a third application salt.", 5000
-    );
-    frameworkSearch();
+    loginServer.configureFromServer(function(obj){frameworkSearch();},error);
 });

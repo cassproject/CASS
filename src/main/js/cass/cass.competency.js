@@ -277,7 +277,63 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
                 failure(p1);
         });
     };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.getSearchStringByTypeAndCompetency = function(competency) {
+        return "(" + this.getSearchStringByType() + " AND competency:\"" + competency.shortId() + "\")";
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  @author fritz.ray@eduworks.com
+ */
+var EcRollupRule = function() {
+    RollupRule.call(this);
+};
+EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.rule == null || this.rule == "") {
+            var msg = "RollupRule Rule cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == "") {
+            var msg = "RollupRule's Competency cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure, repo) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcRollupRule.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a level.");
+                return;
+            }
+            var c = new EcRollupRule();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  @author fritz.ray@eduworks.com
  */
@@ -395,19 +451,48 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         return l;
     };
     prototype.levels = function(repo, success, failure, successAll) {
-        repo.search(new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\")", function(p1) {
+        var query = "(" + new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
+        query += " OR @encryptedType:\"" + EcLevel.myType + "\" OR @encryptedType:\"" + EcLevel.myType.replace(Cass.context + "/", "") + "\"";
+        var competencyId = this.id;
+        var shortId = this.shortId();
+        repo.search(query, function(p1) {
             if (success != null) {
                 var a = new EcLevel();
-                a.copyFrom(p1);
-                if (success != null) 
-                    success(a);
+                if (p1.isA(EcLevel.myType)) {
+                    a.copyFrom(p1);
+                } else if (p1.isA(EcEncryptedValue.myType)) {
+                    var val = new EcEncryptedValue();
+                    val.copyFrom(p1);
+                    if (val.isAnEncrypted(EcLevel.myType)) {
+                        var obj = val.decryptIntoObject();
+                        if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
+                            return;
+                        }
+                        a.copyFrom(obj);
+                        a.privateEncrypted = true;
+                    }
+                }
+                success(a);
             }
         }, function(p1) {
             if (successAll != null) {
                 var levels = [];
                 for (var i = 0; i < p1.length; i++) {
                     var a = new EcLevel();
-                    a.copyFrom(p1[i]);
+                    if (p1[i].isA(EcLevel.myType)) {
+                        a.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcLevel.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
+                                continue;
+                            }
+                            a.copyFrom(obj);
+                            a.privateEncrypted = true;
+                        }
+                    }
                     levels[i] = a;
                 }
                 if (successAll != null) 
@@ -654,4 +739,4 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 failure(p1);
         });
     };
-}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
