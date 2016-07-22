@@ -107,7 +107,11 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.getSubjectName = function() {
         if (this.subject == null) 
             return "Nobody";
-        var contact = EcIdentityManager.getContact(this.getSubject());
+        var subjectPk = this.getSubject();
+        var identity = EcIdentityManager.getIdentity(subjectPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(subjectPk);
         if (contact == null || contact.displayName == null) 
             return "Unknown Subject";
         return contact.displayName;
@@ -115,7 +119,11 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.getAgentName = function() {
         if (this.agent == null) 
             return "Nobody";
-        var contact = EcIdentityManager.getContact(this.getAgent());
+        var agentPk = this.getAgent();
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(agentPk);
         if (contact == null || contact.displayName == null) 
             return "Unknown Agent";
         return contact.displayName;
@@ -162,6 +170,14 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return decryptedString;
+    };
+    prototype.getNegative = function() {
+        if (this.negative == null) 
+            return false;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.decayFunction);
+        var decryptedString = v.decryptIntoString();
+        return Boolean.getBoolean(decryptedString);
     };
     /**
      *  Sets the subject of an assertion. Makes a few assumptions:

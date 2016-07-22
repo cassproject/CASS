@@ -38,7 +38,7 @@ function populateContacts() {
 }
 
 function loopPopulateContacts() {
-    populateContacts();
+    actionAddContactCheck();
     setTimeout(function () {
         loopPopulateContacts()
     }, 60000);

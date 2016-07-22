@@ -13,10 +13,16 @@ function createNewAssertion() {
     $("#newAssertionAgent").html("");
     $("#newAssertionSubject").html("").append("<option>&lt;Contact&gt;</option>");
     $("#newAssertionCompetency").html("").append("<option>&lt;Competency&gt;</option>");
-    for (var i = 0; i < EcIdentityManager.ids.length; i++)
+    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
         $("#newAssertionAgent").append("<option/>").children().last()
-        .text(EcIdentityManager.ids[i].displayName)
-        .attr("value", EcIdentityManager.ids[i].ppk.toPk().toPem());
+            .text(EcIdentityManager.ids[i].displayName)
+            .attr("value", EcIdentityManager.ids[i].ppk.toPk().toPem());
+        $("#newAssertionSubject").append("<option/>").children().last()
+            .text(EcIdentityManager.ids[i].displayName)
+            .attr("value", EcIdentityManager.ids[i].ppk.toPk().toPem());
+        if (EcIdentityManager.ids[i].ppk.toPk().toPem().equals(contactPk))
+            $("#newAssertionSubject").children().last().prop("selected", true);
+    }
 
     var contactPk = $("#contactSelector").find(".contact[aria-selected='true'] > #identity").attr("title");
     for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
@@ -73,7 +79,7 @@ function createNewAssertionSelectedCompetencyChanged(e) {
     var competencyId = $("#newAssertionCompetency option:selected").attr("value");
     $("#newAssertionLevel").html("").append("<option value=''>No level available.</option>");
     if (frameworkId == null) {
-        var searchString = new EcLevel().getSearchStringByType()+" AND (competency:\"" + competencyId + "\")";
+        var searchString = new EcLevel().getSearchStringByType() + " AND (competency:\"" + competencyId + "\")";
         repo.search(searchString, function (level) {
             $("#newAssertionLevel").append("<option/>").children().last()
                 .text(level.name)
@@ -155,5 +161,6 @@ function newAssertion() {
     EcRepository.save(assertion, function (success) {
         $("#newAssertion").foundation('close');
         oneToOneSearch();
+        profileSearch();
     }, error);
 }

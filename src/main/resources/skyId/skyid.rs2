@@ -6,7 +6,7 @@
 usernameSalt = #fileLoad(path="skyId.username.public.salt").fileToString();
 usernameSalt = #if(
 	operator=#fileExists(path="skyId.username.public.salt"),
-	operand="",
+	operand="false",
 	eq=#object(
 		a=#fileSave(obj=#randomString(length="2048"),path="skyId.username.public.salt"),
 		b=usernameSalt
@@ -17,7 +17,7 @@ usernameSalt = #if(
 passwordSalt = #fileLoad(path="skyId.password.public.salt").fileToString();
 passwordSalt = #if(
 	operator=#fileExists(path="skyId.password.public.salt"),
-	operand="",
+	operand="false",
 	eq=#object(
 		a=#fileSave(obj=#randomString(length="2048"),path="skyId.password.public.salt"),
 		b=passwordSalt
@@ -28,7 +28,7 @@ passwordSalt = #if(
 secretSalt = #fileLoad(path="skyId.secret.public.salt").fileToString();
 secretSalt = #if(
 	operator=#fileExists(path="skyId.secret.public.salt"),
-	operand="",
+	operand="false",
 	eq=#object(
 		a=#fileSave(obj=#randomString(length="2048"),path="skyId.secret.public.salt"),
 		b=secretSalt
@@ -45,14 +45,14 @@ salts=#object(
 	passwordLength=#toInteger(obj="64"),
 	secretSalt=secretSalt,
 	secretIterations=#toInteger(obj="5000"),
-	secretLength=#toInteger(obj="64")
+	secretLength=#toInteger(obj="32")
 ).displayJson(_collapse="true");
 /sky/id/salts=salts;
 
 salt = #fileLoad(path="skyId.salt").fileToString();
 salt = #if(
 	operator=#fileExists(path="skyId.salt"),
-	operand="",
+	operand="false",
 	eq=#object(
 		a=#fileSave(obj=#randomString(length="2048"),path="skyId.salt"),
 		b=salt
@@ -124,6 +124,17 @@ signatureSheet=#object(
 	).valueSet().toString()
 ).stringToFile();
 
+getAnyBySaltedId=#object(
+	a=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.2.encryptedValue",
+		id=saltedId
+	).cget(payload=""),
+	b=#skyrepoGet(
+		type="schema.eduworks.com.ebac.0.1.encryptedValue",
+		id=saltedId
+	).cget(payload="")
+).valueSet().union().getIndex(index="0");
+
 retrieve=#if(
 	operator="@payload",
 	operand="",
@@ -134,16 +145,7 @@ retrieve=#if(
 		iv=saltedId
 	).toObject()
 ).ccall(
-	payload=#object(
-		a=#skyrepoGet(
-			type="schema.eduworks.com.ebac.0.2.encryptedValue",
-			id=saltedId
-		).cget(payload=""),
-		b=#skyrepoGet(
-			type="schema.eduworks.com.ebac.0.1.encryptedValue",
-			id=saltedId
-		).cget(payload="")
-	).valueSet().union().getIndex(index="0")
+	payload=getAnyBySaltedId
 );
 
 payload=#object(
@@ -209,10 +211,7 @@ storeFormally = #object(
 #skyidStore = storeFormally;
 
 create=#if(
-	operator=#skyrepoGet(
-		type="schema.eduworks.com.ebac.0.2.encryptedValue",
-		id=saltedId
-	),
+	operator=getAnyBySaltedId,
 	operand="",
 	eq=store
 );

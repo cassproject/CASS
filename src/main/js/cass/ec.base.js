@@ -104,6 +104,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         $.ajax(p);
     };
 }, {}, {});
+var EcCallbackReturn1 = function() {};
+EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
+    prototype.callback = function(param1) {};
+}, {}, {});
 var EcArray = function() {};
 EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
     constructor.isArray = function(o) {

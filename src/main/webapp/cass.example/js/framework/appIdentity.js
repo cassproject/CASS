@@ -23,6 +23,27 @@ function login() {
     loginProcess();
 }
 
+function changePassword() {
+    var username = $("#currentUsername").val().toLowerCase().trim();
+    var oldPassword = $("#currentPassword").val();
+    var newPassword = $("#newPassword1").val();
+    var newPassword2 = $("#newPassword2").val();
+    if (newPassword != newPassword2) {
+        error("Passwords do not match.");
+        return;
+    }
+    $(".status").text("Changing password...");
+    EcRepository.cache = {};
+    if (loginServer.changePassword(username, oldPassword, newPassword))
+        loginServer.commit(
+            function (p1) {
+                $("#changePassword").foundation('close');
+                alert("Password change successful.");
+            },
+            errorLogin
+        );
+}
+
 function loginProcess() {
     loginServer.fetch(
         function (p1) {
@@ -94,9 +115,12 @@ logout = function () {
     $("#loginButton,.loggedOut").show();
     $("#logoutButton").hide();
     $(".requiresLogin,.loggedIn").hide();
-    frameworkSearch();
+    if (typeof (frameworkSearch) == "function")
+        frameworkSearch();
     if (typeof (oneToOneSearch) == "function")
         oneToOneSearch();
+    if (typeof (profileSearch) == "function")
+        profileSearch();
     populateContactsActual();
 }
 

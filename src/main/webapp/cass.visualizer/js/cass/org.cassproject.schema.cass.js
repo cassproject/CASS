@@ -26,7 +26,7 @@ Level = stjs.extend(Level, Thing, [], function(constructor, prototype) {
     prototype.performance = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Level.TYPE_0_1)) {
+        if (Level.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -62,7 +62,7 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
     prototype.agent = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Relation.TYPE_0_1)) {
+        if (Relation.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -105,7 +105,7 @@ Source = stjs.extend(Source, Thing, [], function(constructor, prototype) {
     prototype.target = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Source.TYPE_0_1)) {
+        if (Source.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -141,7 +141,7 @@ Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
     prototype.source = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Framework.TYPE_0_1)) {
+        if (Framework.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -175,7 +175,7 @@ Profile = stjs.extend(Profile, Thing, [], function(constructor, prototype) {
     prototype.acceptance = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Profile.TYPE_0_1)) {
+        if (Profile.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -210,7 +210,7 @@ Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
     prototype.negative = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Assertion.TYPE_0_1)) {
+        if (Assertion.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -242,7 +242,7 @@ Competency = stjs.extend(Competency, Thing, [], function(constructor, prototype)
     prototype.scope = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(Competency.TYPE_0_1)) {
+        if (Competency.TYPE_0_1.equals(this.type)) {
             if (this.url != null && this.sameAs == null) {
                 this.sameAs = this.url;
                 this.url = null;

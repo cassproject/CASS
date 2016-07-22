@@ -396,8 +396,8 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs anonymization of the user.
  *  
- *  Requires initialization with server specific salts. Server specific
- *  salts prevent co-occurrence attacks, should credentials on one server be
+ *  Requires initialization with server specific salts. Server specific salts
+ *  prevent co-occurrence attacks, should credentials on one server be
  *  compromised (intercepted in transit).
  *  
  *  Transmits hashed username, hashed password, and encrypts credentials using
@@ -551,6 +551,36 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         arys.push(username, password);
         var secret = this.splicePasswords(arys);
         this.secretWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(secret, this.secretSalt, this.secretIterations, 32));
+    };
+    /**
+     *  Change password of user in memory. Does not automatically commit new credentials.
+     *  
+     *  Please clear username and password fields after this function is called.
+     *  
+     *  @param username
+     *             Username
+     *  @param oldPassword
+     *             Current password
+     *  @param newPassword
+     *             Desired password
+     */
+    prototype.changePassword = function(username, oldPassword, newPassword) {
+        var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
+        if (!this.usernameWithSalt.equals(usernameHash)) {
+            alert("Username does not match. Aborting password change.");
+            return false;
+        }
+        var oldPasswordHash = forge.util.encode64(forge.pkcs5.pbkdf2(oldPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
+        if (!this.passwordWithSalt.equals(oldPasswordHash)) {
+            alert("Old password does not match. Aborting password change.");
+            return false;
+        }
+        this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(newPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
+        var arys = new Array();
+        arys.push(username, newPassword);
+        var secret = this.splicePasswords(arys);
+        this.secretWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(secret, this.secretSalt, this.secretIterations, 32));
+        return true;
     };
     /**
      *  Fetch credentials from server, invoking events based on login success or

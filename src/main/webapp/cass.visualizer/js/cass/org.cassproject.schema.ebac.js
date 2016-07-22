@@ -30,7 +30,7 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
     prototype.password = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentialRequest.TYPE_0_1)) {
+        if (EbacCredentialRequest.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -74,7 +74,7 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
     prototype.contacts = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentials.TYPE_0_1)) {
+        if (EbacCredentials.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -119,7 +119,7 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
     prototype.displayName = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredential.TYPE_0_1)) {
+        if (EbacCredential.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -166,7 +166,7 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
     prototype.source = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacContact.TYPE_0_1)) {
+        if (EbacContact.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -238,7 +238,7 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacEncryptedSecret.TYPE_0_1)) {
+        if (EbacEncryptedSecret.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -286,7 +286,7 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
     prototype.server = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacSignature.TYPE_0_1)) {
+        if (EbacSignature.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -340,7 +340,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacEncryptedValue.TYPE_0_1)) {
+        if (EbacEncryptedValue.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -375,7 +375,7 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
     prototype.responseSignature = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacContactGrant.TYPE_0_1)) {
+        if (EbacContactGrant.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -423,7 +423,7 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
     prototype.credentials = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentialCommit.TYPE_0_1)) {
+        if (EbacCredentialCommit.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];

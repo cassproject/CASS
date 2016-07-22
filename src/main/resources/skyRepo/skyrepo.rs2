@@ -77,9 +77,7 @@ search=#skyrepoSearch(
 
 /sky/repo/search=search;
 
-
 types = #skyrepoTypes();
-
 /sky/repo/types=types;
 
 performance=#reflectionPerformance().displayJson();

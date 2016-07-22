@@ -179,8 +179,6 @@ ownershipFilters = #object(bool=#if(operator=#add(a="[",b="]").toArray().append(
 	)
 );
 
-
-
 ownerOrReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="", b="@", c="reader")), operand="-1",
 	ne=#if(operator=#signatureSheet().count(), operand="0",
 		eq=#error(msg="error!"),
@@ -203,8 +201,6 @@ typeArray=#toArray(obj="@types").cforEach(
 	array="true"
 );
 
-
-//#skyRepoGetProtectedTypes
 searchObj=#object(
 	from="@start",
 	size="@size",
@@ -349,7 +345,6 @@ nonSigSearch = nonSigSearchObj.httpPost(url=searchUrl,multipart="false").toObjec
 	op=#toObject(obj="@obj").getByParam(param="_source")
 ).filterResults();
 
-
 checkRunNonSigSearch = #catch(
 	try=nonSigSearch, 
 	runtime=#toArray()
@@ -398,7 +393,7 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 					)
 				)
 			)
-		).valueSet().union()
+		).valueSet().union(unique="false")
 	),
 ).ccall(
 	sigResults=checkRunSignatureSearch
