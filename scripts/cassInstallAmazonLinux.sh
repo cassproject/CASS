@@ -98,38 +98,6 @@ echo Synchronizing Time with NIST...
 yum -q -y install ntpdate
 ntpdate -s time.nist.gov
 
-
-#Request CASS Crypto Settings
-clear
-echo "CASS uses salts to secure user's identities and login information."
-echo "Before the application starts, you will need to set these:"
-echo "(make sure each is different and sufficiently long enough)"
-echo ""
-
-echo "Type the Username salt, followed by [ENTER]:"
-read userSalt
-echo ""
-
-echo "Type the Password salt, followed by [ENTER]:"
-read passSalt
-echo ""
-
-echo "Type the Secret salt, followed by [ENTER]:"
-read secretSalt
-echo ""
-
-sed -i "54,56d" /usr/share/tomcat7/webapps/cass-0.1.0/cass.example/js/framework/app.js
-sed -i "/loginServer.configure/a '$userSalt', 5000, 64, '$passSalt', 5000, 64, '$secretSalt', 5000, 64" /usr/share/tomcat7/webapps/cass-0.1.0/cass.example/js/framework/app.js
-
-sed -i "13d" /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-sed -i "9d" /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-sed -i "5d" /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-
-sed -i "4a 'userEncryptionSalt': '$userSalt'," /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-sed -i "8a 'passwordEncryptionSalt': '$passSalt'," /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-sed -i "12a 'secretEncryptionSalt': '$secretSalt'," /usr/share/tomcat7/webapps/cass-0.1.0/cass.manager/settings/settings.js
-
-
 #Start Services
 echo -----
 echo Starting Tomcat...
