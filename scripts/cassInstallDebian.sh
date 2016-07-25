@@ -67,6 +67,9 @@ rm -rf CASS
 service tomcat7 start
 service tomcat7 stop
 
+num=`grep JkMount /etc/apache2/sites-enabled/000-default.conf | wc -l`
+if [ "$num" -eq 0 ]
+ then
 
 #Point Apache at Tomcat
 echo -----
@@ -91,6 +94,7 @@ sed -i "/<\/VirtualHost/i JkMount /cass-0.1.0/* worker" /etc/apache2/sites-enabl
 
 a2enmod rewrite
 
+fi
 
 #Some time desynchronization issues may make CASS not function correctly.
 echo -----

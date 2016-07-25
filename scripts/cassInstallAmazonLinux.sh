@@ -65,6 +65,9 @@ service tomcat7 start
 sleep 3s
 service tomcat7 stop
 
+num=`grep ProxyPass /etc/httpd/conf/httpd.conf | wc -l`
+if [ "$num" -eq 0 ]
+ then
 
 echo -----
 echo Configuring Apache and Tomcat...
@@ -84,13 +87,13 @@ echo Configuring Apache and Tomcat...
 #mkdir -p /var/run/mod_jk
 #chown apache:apache /var/run/mod_jk
 
-
 #Point Apache at Tomcat
 echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
 echo "ProxyPassReverse  /  http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
 
 sed -i~ "/<Connector port=\"8080/a proxyPort=\"80\"" /usr/share/tomcat7/conf/server.xml
 
+fi
 
 #Some time desynchronization issues may make CASS not function correctly.
 echo -----
