@@ -195,6 +195,47 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         localStorage["contacts"] = JSON.stringify(c);
     };
+    /**
+     *  Reads contact data from localstorage.
+     */
+    constructor.readIdentities = function() {
+        var localStore = localStorage["identities"];
+        if (localStore == null) 
+            return;
+        var c = JSON.parse(localStore);
+        for (var i = 0; i < c.length; i++) {
+            var identity = new EcIdentity();
+            var o = c[i];
+            var props = (o);
+            identity.displayName = props["displayName"];
+            identity.ppk = EcPpk.fromPem(props["ppk"]);
+            identity.source = props["source"];
+            var cont = false;
+            for (var j = 0; j < EcIdentityManager.ids.length; j++) {
+                if (EcIdentityManager.ids[j].ppk.toPem() == identity.ppk.toPem()) 
+                    cont = true;
+            }
+            if (cont) 
+                continue;
+            EcIdentityManager.ids.push(identity);
+        }
+    };
+    /**
+     *  Writes contact data to localstorage.
+     */
+    constructor.saveIdentities = function() {
+        var c = new Array();
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            var o = new Object();
+            var props = (o);
+            var identity = EcIdentityManager.ids[i];
+            props["displayName"] = identity.displayName;
+            props["ppk"] = identity.ppk.toPem();
+            props["source"] = identity.source;
+            c.push(o);
+        }
+        localStorage["identities"] = JSON.stringify(c);
+    };
     constructor.clearContacts = function() {
         delete localStorage["contacts"];
         EcIdentityManager.contacts = new Array();
