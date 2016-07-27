@@ -120,3 +120,7 @@ service apache2 start
 
 clear
 echo Navigate to this server to see CASS.
+echo
+echo We highly recommend the following next steps:
+echo  -Mapping DNS to this machine.
+echo  -Installing and configuring SSL.

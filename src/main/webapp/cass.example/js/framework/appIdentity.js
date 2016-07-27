@@ -58,7 +58,11 @@ function loginProcess() {
                                 function (p1) {
                                     login();
                                 },
-                                errorLogin
+                                function (error) {
+                                    identity = null;
+                                    EcIdentityManager.ids = new Array();
+                                    errorLogin(error);
+                                }
                             )
                         }
                     );
@@ -80,26 +84,32 @@ function loginProcess() {
             }
         },
         function (p1) {
-            if (confirm("Login failed. " + p1 + "Would you like to attempt to create an account using these credentials?")) {
-                loginServer.create(
-                    function (p1) {
-                        EcPpk.generateKeyAsync(
-                            function (p1) {
-                                identity = new EcIdentity();
-                                identity.ppk = p1;
-                                EcIdentityManager.addIdentity(identity);
-                                loginServer.commit(
-                                    function (p1) {
-                                        login();
-                                    },
-                                    errorLogin
-                                )
-                            }
-                        );
-                    },
-                    errorLogin
-                );
-            }
+            if (p1 == "User does not exist.")
+                if (confirm("Login failed. " + p1 + "Would you like to attempt to create an account using these credentials?")) {
+                    loginServer.create(
+                        function (p1) {
+                            EcPpk.generateKeyAsync(
+                                function (p1) {
+                                    identity = new EcIdentity();
+                                    identity.ppk = p1;
+                                    EcIdentityManager.addIdentity(identity);
+                                    loginServer.commit(
+                                        function (p1) {
+                                            login();
+                                        },
+                                        function (error) {
+                                            identity = null;
+                                            EcIdentityManager.ids = new Array();
+                                            errorLogin(error);
+                                        }
+                                    )
+                                }
+                            );
+                        },
+                        errorLogin
+                    );
+                } else
+                    alert(p1);
         }
     );
 }

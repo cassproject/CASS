@@ -43,12 +43,22 @@
                 </ul>
             </li>
         </ul>
-        <ul class="top-bar-right menu">
-            <li>
+        <ul class="top-bar-right dropdown menu" data-dropdown-menu>
+            <!--<li>
                 <span id="status" class="status" style="display:none;">Busy...</span>
                 <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
                 <button id="loginButton" type="button" class="button" data-open="login">Login</button>
                 <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
+            </li>-->
+            <li>
+                <a class="menu-text">Identity</a>
+                <span id="status" class="status" style="display:none;">Busy...</span>
+                <ul class="menu vertical">
+                    <li><a class="loggedIn" onclick="getShareString();" style="display:none;">Invite</a></li>
+                    <li><a class="loggedIn" data-open="changePassword" style="display:none;">Change Password</a></li>
+                    <li><a id="loginButton" data-open="login">Login</a></li>
+                    <li><a id="logoutButton" onclick="logout();" style="display:none;">Logout</a></li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -211,6 +221,17 @@
             <input id="loginPassword" type="password" placeholder="Password" />
             <small>An account will automatically be created if none exists.</small>
             <a class="button float-right" onclick="login();">Login</a>
+        </form>
+    </div>
+
+    <div class="small reveal" id="changePassword" data-reveal>
+        <h3>Change Password</h3>
+        <form>
+            <input id="currentUsername" type="text" placeholder="Username" />
+            <input id="currentPassword" type="password" placeholder="Current Password" />
+            <input id="newPassword1" type="password" placeholder="New Password" />
+            <input id="newPassword2" type="password" placeholder="New Password (Repeat)" />
+            <a class="button float-right" onclick="changePassword();">Change</a>
         </form>
     </div>
 
