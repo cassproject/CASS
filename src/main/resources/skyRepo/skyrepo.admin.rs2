@@ -1,0 +1,18 @@
+adminPpk=#fileLoad(path="skyAdmin.pem").fileToString();
+adminPpk=#if(
+	operator=#fileExists(path="skyAdmin.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="skyAdmin.pem"),
+		b=adminPpk
+	).cget(b=""),
+	ne=adminPpk
+).cache(name="adminPpk");
+
+#skyrepoAdminPpk = adminPpk;
+
+adminList = #append(
+	a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with="")
+);
+
+#skyrepoAdminList = adminList

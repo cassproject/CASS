@@ -1,0 +1,111 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div class="small-6 columns small-centered" >
+			<div id="identityError" class="messageContainer small callout hide" data-closable>
+				<button class="close-button" type="button" data-close>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 medium-7 columns">
+					<h3 style="margin-bottom:0px;">
+						Identity Server
+					</h3>
+					<span id="identityServerName"></span>
+					(<span id="identityServerUrl" style="font-style:italic;"></span>)					
+				</div>
+				
+				<div class="small-12 medium-5 columns">
+					<button id="openSaveModal" style="margin-top:0.75rem;" class="button float-center">Save Aliases and Contacts to Server</button>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+	<div class="row">
+		<div class="large-6 columns">
+			
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3 title="Each Alias contains an Encryption Key" style="margin-bottom:0px;"> Aliases </h3>
+					<p style="color:grey;">These will be cleared upon every page refresh.</p>
+					
+					<p id="identityKeys"></p>
+				</div>
+			</div>
+			
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3 style="margin-bottom:0px;">Add Alias</h3>
+					
+					<div style="text-align:center;">
+						<button class="button" id="importAlias" style="margin-right:1rem;">Import</button>
+						<button class="button" id="generateAlias">Generate</button>
+					</div>
+					
+					<div id="importContainer" class="hide">
+						<p style="color:grey;">
+							Importing an alias will also import its key.
+							<br>
+							Select one or more aliases to import.
+						</p>
+						
+						<input id="addKeyPpk" multiple type="file" accept=".pem" placeholder="Private Key">
+		
+						
+						<button id="importIdentity" class="button float-right">Import</button>
+					</div>
+					
+					<div id="generateContainer" class="hide">
+						<p style="color:grey;">
+							This may take a couple seconds.
+							<br>
+							We will download the alias to your computer.
+						</p>                  
+						
+						<input id="generateIdentityName" type="text" placeholder="Alias Name"/>
+						<button id="generateIdentity" class="button float-right">Generate</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="large-5 columns">
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3 style="margin-bottom:0px;">Contacts</h3>
+					
+					<p style="color:grey;">
+						User's who have shared their information with you.
+					</p>
+					
+					<p id="contactList"></p>
+				</div>
+			</div>
+			
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3 style="margin-bottom:0px;">Generate Contact Invitation</h3>
+					
+					<p style="color:grey;">
+						Share with other users so they can view your information.
+					</p>                  
+					
+					<input id="shareContactName" type="text" placeholder="Shared Identity Name"/>
+					
+					<select id="shareContactIdentity">
+						<option selected disabled class="hide">Select Identity to Share</option>
+					</select>
+					
+					<button id="generateInvitation" class="button float-right">Copy to Clipboard</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

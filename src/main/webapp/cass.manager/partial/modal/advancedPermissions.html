@@ -1,0 +1,61 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Manage Permissions
+</h3>
+
+<div class="row">
+	<div id="advancedPermissionsMessageContainer" class="small-10 small-centered columns">
+	</div>
+</div>
+
+<div class="row column" >
+	<div class="row" id="ownerRow">
+		<div class="small-3  columns">
+			<span class="prefix">Owner(s):</span>
+		</div>
+		<div class="small-9 columns">
+			<input id="advancedPermissionsAddOwner" type="text" class="typeahead" style="width:100%; margin-bottom:0px;" placeholder="Search for Contacts to Add"/>
+			<select id="advancedPermissionsOwners" class="searchSelect" multiple size="4">
+				<option id="noOwners" class="hide">No Owners (Public)</option>
+			</select>
+			<button id="advancedPermissionsDeleteOwner" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+		</div>
+	</div>
+	
+	<div class="row" id="privacyRow">
+		<div class="small-3 columns">
+			<span class="prefix">Visibility:</span>
+		</div>
+		<div class="small-9 columns">
+			<span class="prefix" style="vertical-align:30%">Public</span>
+			<div class="switch" style="display:inline-block;">
+				<input class="switch-input" id="privateSwitch" type="checkbox" name="privateSwitch">
+			  	<label class="switch-paddle" for="privateSwitch">
+			  	</label>
+			</div>
+			<span class="prefix" style="vertical-align:30%">Private</span>
+		</div>
+	</div>
+	
+	<div class="clearfix row" id="readerRow" style="display:none;">
+		<div class="small-3  columns">
+			<span class="prefix">Reader(s):</span>
+		</div>
+		<div class="small-9 columns">
+			<input id="advancedPermissionsAddReader" type="text" class="typeahead" style="width:100%; margin-bottom:0px;" placeholder="Search for Contacts to Add"/>
+			<select id="advancedPermissionsReaders" class="searchSelect empty" multiple size="4" disabled="disabled">
+				<option id="noReaders">No Readers Specified</option>
+			</select>
+			<button id="advancedPermissionsDeleteReader" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<button class="button float-right" id="advancedPermissionsSave">Save</button>
+			<button id="advancedPermissionsCancel" class="button secondary float-right" style="margin-right:1rem;">Cancel</button>
+		</div>
+	</div>
+</div>   	

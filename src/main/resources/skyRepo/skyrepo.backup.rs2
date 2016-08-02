@@ -1,0 +1,143 @@
+// Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+backupPath=#string(str="backup/");
+
+testBackupLocation=#fileSave(path=backupPath.add(z="temp.tmp"))
+checkBackupLocation=#if(
+	operator=#fileExists(path=backupPath.add(z="temp.tmp")),
+	operand="true",
+	ne=#error(code="500",msg="Backup path not created or permissions not set.")
+);
+deleteBackupTest=#fileDelete(path=backupPath.add(z="temp.tmp"));
+
+query=#object(
+	query=#object(
+		filtered=#object(
+			query=#object(
+				query_string=#object(
+					query="*:*"
+				)
+			)
+		)
+	),
+	explain="false",
+	size="50",
+	fields=#object().valueSet(),
+	sort="_doc"
+);
+
+check=#object(
+	word=#urlBase().add(
+		a="/data/",
+		b=#toObject(obj="@hit").getByParam(param="_type"),
+		c="/",
+		d=#toObject(obj="@hit").getByParam(param="_id").urlEncode()
+	).httpGet().toObject().getByParam(param="_source").toString().fileSave(
+		path=backupPath.add(
+			a="/",
+			b=#toObject(obj="@hit").getByParam(param="_type"),
+			c="/",
+			d=#toObject(obj="@hit").getByParam(param="_id").stringToHex()
+		)
+	)
+);
+
+search=query.httpPost(
+	url=#add(a=#urlBase(),z="/data/_search?scroll=1m"),
+	contentType="application/json",
+	multipart="false"	
+).debug();
+
+scroll=#object(
+	a=#toObject(obj="@search").cget(hits="").cget(hits="").cforEach(
+		paramName="hit",
+		array="true",
+		op=check
+	),
+	b=#if(
+		operator=#toObject(obj="@search").cget(hits="").cget(hits="").count().debug(),
+		operand="0",
+		eq=#error(code="200",msg="Complete.")
+	),
+	c=#toObject(obj="@search").cgetByParam(param="_scroll_id").variableSet(key="scroll")
+).call(
+	search=#httpGet(
+		obj=#add(a=#urlBase(),b="/_search/scroll?scroll=1m&scroll_id=",c=#variableGet(key="scroll")).debug(),
+		contentType="text/plain",
+		multipart="false"	
+	).debug()
+);
+
+backupActual=#object(
+	a=#toObject(obj="@search").cget(hits="").cget(hits="").cforEach(
+		paramName="hit",
+		array="true",
+		op=check
+	),
+	b=#toObject(obj="@search").cgetByParam(param="_scroll_id").debug().variableSet(key="scroll"),
+	c=scroll.while(
+		condition=#if(
+			operator=#variableGet(key="scroll").debug(),
+			operand="",
+			eq="false",
+			ne="true"
+		)
+	)
+).call(search=search).abortable();
+
+backup=#object(
+	a=testBackupLocation,
+	b=checkBackupLocation,
+	c=deleteBackupTest,
+	d=backupActual
+);
+
+backup=#if(
+	operator="@secret",
+	operand=#fileLoad(path="skyId.secret").fileToString(),
+	eq=backup,
+	ne=#error(code="401",msg="Must provide secret.")
+);
+
+/skyrepo/util/backup=backup;
+
+restore=#fileList(path=backupPath).forEach(
+	paramName="dir",
+	op=#fileList(path=backupPath.add(z="@dir")).forEach(
+		paramName="file",
+		op=#object(
+			a=#fileLoad(path=#add(_string="true",a=backupPath,aa="/",b="@dir",bb="/",f="@file")).fileToString().toObject().skyRepoCheckType(
+				type="@dir"
+			),
+			z=#fileLoad(path=#add(_string="true",a=backupPath,aa="/",b="@dir",bb="/",f="@file")).fileToString().toObject().httpPut(
+				url=#urlBase().add(
+					z="/data/",
+					zz="@dir",
+					zzz="/",
+					zzzz=#hexToString(obj="@file").urlEncode(),
+					zzzzz=#add(
+						a="?version=",
+						i=#fileLoad(
+							path=#add(_string="true",a=backupPath,aa="/",b="@dir",bb="/",f="@file")
+						).fileToString().toObject().getByParam(param=#add(a="@",b="id")).split(split="/").reverse().getIndex(index="0"),
+						j="&version_type=external&refresh=true"
+					)
+				),
+				reliable="true",
+				contentType="application/json"
+			)
+		).get(z="")
+	)
+).displayJson();
+
+restore=#if(
+	operator="@secret",
+	operand=#fileLoad(path="skyId.secret").fileToString(),
+	eq=restore,
+	ne=#error(code="401",msg="Must provide secret.")
+);
+
+/skyrepo/util/restore=restore;

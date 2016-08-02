@@ -1,0 +1,96 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="assertionViewMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+	<div class="row" >
+		<div class="large-12 small-12 columns">
+			<div class="row" style="margin-top:0px;padding-bottom:0px">
+				<div class="large-12 columns large-centered" style="margin-bottom:0px">
+					<a id="assertionViewSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
+					
+					<span id="assertionViewDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Delete</span>
+		   		</div>
+			</div>
+		
+			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+				<div class="small-12 columns">
+					<div class="row">
+						<div class="small-12 columns">
+							<h3>
+								<span class="assertionViewName">Assertion</span>
+								<a class="float-right button" id="editAssertionBtn">Edit</a>
+								<a class="float-right button hide" style='margin-right:1rem;' id="assertionToggleUnknownBtn">
+									<span id="toggleKeyword">Show</span> Unknown Fields
+									</a>
+								<br>
+								<small style="font-size:45%"><i id="assertionViewId"></i></small>
+							</h3>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="small-6 columns" id="assertionViewAgentContainer">
+							<span class="prefix">Asserted By:</span>
+							<span id="assertionViewAgent"></span>
+						</div>
+						<div class="small-6 columns" id="assertionViewSubjectContainer">
+							<span class="prefix">Subject:</span>
+							<span id="assertionViewSubject"></span>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom:1rem;">
+						<div class="small-6 columns" id="assertionViewDateContainer">
+							<span class="prefix">Date Asserted:</span> 
+							<span id="assertionViewDate"></span>
+						</div>
+						<div class="small-6 columns" id="assertionViewExpirationContainer">
+							<span class="prefix">Expiration:</span> 
+							<span id="assertionViewExpiration"></span>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom:0.35rem;">
+						<div class="small-12 columns" id="assertionViewCompetencyContainer">
+							<span class="prefix">Competency:</span>
+							<span id="assertionViewCompetency"></span>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom:1rem;">
+						<div class="small-12 columns" id="assertionViewLevelContainer">
+							<span class="prefix">Level:</span>
+							<span id="assertionViewLevel"></span>
+						</div>
+					</div>
+
+					<div class="row" style="margin-bottom:1rem;">
+						<div class="small-6 columns">
+							<span class="prefix">Recorded Confidence:</span>
+							<span id="assertionViewConfidence"></span>
+						</div>
+						<div class="small-6 columns" id="assertionViewDecayContainer">
+							<span class="prefix">Decay Type:</span>
+							<span id="assertionViewDecay"></span>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom:1rem;">
+						<div class="small-12 columns">
+							<span class="prefix">Evidences:</span> 
+							<span id="assertionViewEvidence"></span>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="small-12 columns">
+							<span class="prefix">Ownership: </span>
+							<span id="assertionViewOwner">Public</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>  
+	</div>
+</div>

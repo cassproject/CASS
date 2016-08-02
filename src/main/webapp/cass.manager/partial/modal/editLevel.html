@@ -1,0 +1,76 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns" id="editLevelModalTitle">
+	Create New Level
+</h3>
+
+<div class="row">
+	<div class="small-10 small-centered columns">
+		<div id="editLevelError" class="errorContainer"></div>
+	</div>
+</div>
+
+<div class="row column">
+	<div class="row">
+		<div class="small-12 columns">
+			<input id="editLevelName" type="text" placeholder="Level Name"/>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<input id="editLevelTitle" type="text" placeholder="Title of Level Holder"/>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<textarea id="editLevelDescription" placeholder="Level Description"></textarea>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<textarea id="editLevelPerformance" placeholder="Level Performance Measure" style="margin-bottom:0.5rem;"></textarea>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns"  >
+			<div style="padding-left: 0.5rem; margin-top:0.5rem; margin-bottom:0.5rem;">
+				<span class="prefix">Ownership:</span> 
+				<span id="editLevelOwnership" >Public</span> 
+				<small id="editLevelAdvancedOwnership" class="float-right fake-a hide">Advanced</small>
+			</div>
+		</div>
+	</div>
+	
+	<div id="editLevelVisibilityRow" class="row hide">
+		<div class="small-12 columns">
+			<div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+				<span class="prefix">Visibility:</span> 
+				<span>Private</span>
+			</div>
+		</div>
+	</div>
+	
+	<div id="editLevelReadersRow" class="row hide">
+		<div class="small-12 columns">
+			<div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+				<span class="prefix">Readers:</span>
+				<span id="editLevelReaders" style="font-style:italic">None Added Yet</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<button id="editLevelSubmit" class="button float-right">Add Level</button>
+			<button id="editLevelCancel" class="button secondary float-right" style="margin-right:1em;">Cancel</button>
+			<button id="editLevelDelete" class="button alert hide float-right"  style="margin-right:1em;">Delete</button>
+		</div>
+	</div>
+</div>   	
+
+ 

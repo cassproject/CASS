@@ -1,0 +1,4 @@
+urlBase=#add(
+	a="http://localhost:9200"
+);
+#urlBase=urlBase;

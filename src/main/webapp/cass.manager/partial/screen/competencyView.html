@@ -1,0 +1,87 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="competencyViewMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+	<div class="row" >
+		<div class="large-12 small-12 columns">
+			<div class="row" style="margin-top:0px;padding-bottom:0px">
+				<div class="large-12 columns large-centered" style="margin-bottom:0px">
+					<a id="competencyViewSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
+					
+					<span id="competencyViewDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Delete</span>
+		   		</div>
+			</div>
+		
+			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+				<div class="small-12 columns">
+					<div class="row">
+						<div class="small-12 columns">
+							<h3>
+								<i class="fa fa-unlock-alt hide" id="competencyViewerPrivateSymbol"></i>
+								<span class="competencyViewerName">Competency</span>
+								<a class="float-right button" id="editCompetencyBtn">Edit</a>
+								<br>
+								<small style="font-size:45%"><i id="competencyViewerId"></i></small>
+							</h3>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="small-12 columns">
+							<p id="competencyViewerDescription" style="padding-left:1rem;"></p>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="large-12 small-12 columns" id="competencyViewerLevels">
+							<p id="competencyViewerLevelList">
+								<span class="prefix">Levels: </span> 
+							</p>
+							
+							<div class="large-6 small-12 columns hide">
+								<span>Equivalent to:</span>
+								<ul id="competencyViewerLevelRelationEquivalent"></ul>
+							</div>
+							
+							<div class="large-6 small-12 columns hide">
+								<span>Overlaps:</span>
+								<ul id="competencyViewerLevelRelationOverlaps"></ul>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">					
+						<div class="large-6 small-12 columns">
+							<span class="prefix">Enables</span>
+							<ul id="competencyViewerRelationEnabling"></ul>
+						</div>
+						<div class="large-6 small-12 columns">
+							<span class="prefix">Related:</span>
+							<ul id="competencyViewerRelationRelated"></ul>
+						</div>
+						<div class="large-6 small-12 columns">	
+							<span class="prefix">Equivalent to:</span>
+							<ul id="competencyViewerRelationEquivalent"></ul>
+						</div>
+						<div class="large-6 small-12 columns">
+							<span class="prefix">Requires:</span>
+							<ul id="competencyViewerRelationRequires"></ul>
+						</div>
+						<div class="large-6 small-12 columns">	
+							<span class="prefix">Desires:</span>
+							<ul id="competencyViewerRelationDesires"></ul>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="small-12 columns">
+							<span class="prefix">Ownership: </span>
+							<span id="competencyViewOwner">Public</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>  
+	</div>
+</div>

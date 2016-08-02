@@ -1,0 +1,599 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+/* 
+COLORS: 
+rgb(46,205,113) - green - Framework
+rgb(92,173,226) blue - Competencies
+rgb(233,76,60) red - Rollup rules
+rgb(243,196,12) yellow - Levels
+rgb(156,89,184) purple - Relations
+*/
+
+body
+{
+    background-color: rgb(242,242,242);
+    color: rgb(68,84,106);
+}
+
+#screenContainer{
+	padding-bottom:3rem;
+}
+
+.topLevel
+{
+    margin-right:0em;
+}
+
+#status
+{
+    position: fixed;
+     bottom: 0;
+     right: 0;
+    z-index: 100;
+}
+
+/* --- MENU --- */
+
+.top-bar
+{
+    background-color: rgb(53,152,220);
+    font-size: .75rem;
+    padding-right:1em;
+}
+
+.top-bar h1 a{
+	color:white;
+}
+.top-bar h1 a:hover{
+	color:#CECECE;
+}
+
+.top-bar .menu .menu-text
+{
+    color: white;
+    background-color: rgb(53,152,220);
+}
+
+.top-bar .menu .menu-text:hover
+{
+    background-color: rgb(92,173,226);
+}
+.is-dropdown-submenu-parent.is-down-arrow > a::after
+{
+    border-color: #BCE6F3 transparent transparent;
+}
+.top-bar .menu .submenu 
+{
+    background-color: white;
+}
+.top-bar .menu .submenu a
+{
+    color: rgb(68,84,106);
+}
+.top-bar .menu .submenu a:hover
+{
+    background-color: #eee;
+}
+
+/* --- Accordians --- */
+
+.accordion-title
+{
+    color: rgb(68,84,106);
+    background-color: white;
+    margin: 1px 0;
+    padding: .6rem 1rem;
+    font-size: 1rem;
+}
+
+.accordion-title[aria-selected=true]
+{
+    color: white;
+    font-weight: bold;
+}
+
+.accordion-content
+{
+    background-color: rgb(242,242,242);
+}
+
+/* --- Common --- */
+
+.cass-framework-url,.cass-competency-url
+{
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Frameworks --- */
+
+.accordion-title.cass-framework-name { border-left: 4px solid rgb(46,205,113); }
+.cass-framework-name[aria-selected=true] { background-color: rgb(46,205,113); }
+.cass-framework.is-active > .accordion-content { border-bottom: 2px solid rgb(46,205,113); }
+
+.cass-framework-description {}
+.cass-framework-actions {float:right}
+.cass-framework-actions a {font-size:x-large;margin-left:5px;}
+
+/* --- Competencies --- */
+
+.accordion-title.cass-competency-name { border-left: 4px solid rgb(92,173,226); }
+.cass-competency-name[aria-selected=true] { background-color: rgb(92,173,226); }
+.cass-competency.is-active > .accordion-content { border-bottom: 2px solid rgb(92,173,226); }
+.cass-competency-actions {float:right}
+.cass-competency-actions a {font-size:x-large;margin-left:5px;}
+
+.assertionCompetency {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white; 
+    color:black;
+    border-left: 6px solid rgb(92,173,226); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+/* --- Relationships --- */
+.cass-relation-actions {float:right}
+.cass-relation-actions a {margin-left:5px;}
+
+.cass-relation-type
+{
+    font-weight: bold;
+    color: rgb(156,89,184);
+}
+
+.cass-relation-target,.cass-relation-source
+{
+    text-decoration: underline;
+}
+
+ul.cass-competency-relations {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li.cass-competency-relation { 
+    padding-left: 1em; 
+    text-indent: -.7em;
+}
+
+li.cass-competency-relation:before {
+    content: "■ ";
+    color: rgb(156,89,184); /* or whatever color you prefer */
+}
+
+/* --- Levels --- */
+
+.assertionLevel {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white; 
+    color:black;
+    border-left: 6px solid rgb(243,196,12); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+.cass-level-actions {float:right}
+.cass-level-actions a {font-size:x-large;margin-left:5px;}
+
+.cass-level-type
+{
+    font-weight: bold;
+    color: rgb(243,196,12);
+}
+
+.cass-level-title
+{
+    text-decoration: underline;
+}
+
+ul.cass-competency-levels {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li.cass-competency-level { 
+    padding-left: 1em; 
+    text-indent: -.7em;
+}
+
+li.cass-competency-level:before {
+    content: "■ ";
+    color: rgb(243,196,12); /* or whatever color you prefer */
+}
+
+/* --- Evidence --- */
+
+.assertionEvidence {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white; 
+    color:black;
+    border-left: 6px solid rgb(126,140,140); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+/* --- Contacts --- */
+
+.contact:before{
+    content: "👤";
+    font-size: x-large;
+}
+.assertionAgent:before,.assertionSubject:before{
+    content: "👤 ";
+}
+
+.contact,.assertionAgent,.assertionSubject {    
+    padding-left: .2em; 
+    padding-right: .5em; 
+    background-color: white; 
+    border-left: 6px solid maroon; 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+.contact[aria-selected=true] { color:white; background-color: maroon; }
+
+#contactsList{
+    margin-left: 0px;
+}
+
+/* --- Timestamp --- */
+.assertion { 
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: rgb(230,230,230);
+    color:black;
+    border-left: 6px solid orange; 
+    border-bottom: 4px solid rgb(210, 210, 210);
+}
+.assertionTimestamp,.assertionConfidence,.assertionExpirationProgress {    
+    padding-left: .5em; 
+    padding-right: .5em; 
+    background-color: white;
+    color:black;
+    border-left: 6px solid rgb(0,0,0); 
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+.fake-a{
+	color: #2199e8;
+	cursor: pointer;
+}
+
+.fake-a:hover{
+	color: #1585cf;
+}
+
+.fake-a-label:hover{
+	   color: #1585cf;
+}
+
+#modalContainer{
+	margin:0px;
+}
+
+.twitter-typeahead{
+	width:100%;
+	top: 4px;
+    position: relative;
+}
+
+.twitter-typeahead .tt-input,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+.tt-hint {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #999;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.tt-menu {
+	width:100%;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion:hover {
+    color: #fff;
+    background-color: #dfdfdf;
+    cursor: pointer;
+}
+.tt-suggestion:hover a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+
+.menu>li>div{
+	padding: .7rem 1rem;
+    line-height: 1;
+}
+
+.menu-icon:after{
+	background: #2199e8;
+	box-shadow: 0 7px 0 #2199e8, 0 14px 0 #2199e8;
+}
+
+.menu-icon:hover:after{
+	background: #1585cf;
+	box-shadow: 0 7px 0 #1585cf, 0 14px 0 #1585cf;
+}
+
+.messageContainer{
+	text-align: center;
+    font-size: small;
+}
+
+.messageContainer .close-button{
+	font-size: 1rem;
+}
+
+.messageContainer.alert{
+    color: #E04949;
+}
+.messageContainer.warning{
+	color: #B19600;
+}
+.messageContainer [data-msg]{
+	padding-right:20px;
+}
+
+
+.top-bar-title h1{
+	font-size: 1.5rem;
+	display: inline-block;
+	
+	position: relative;
+	top: 5px;
+}
+
+#appMenuPublicLogin #appMenuPublicLoginMsg{
+	display:none;
+}
+#appMenuPublicLogin:hover #appMenuPublicId{
+	display:none;
+}
+#appMenuPublicLogin:hover #appMenuPublicLoginMsg{
+	display:inline-block;
+}
+
+#appMenuIdentityList i{
+	display:none;
+	float:right;
+}
+
+#appMenuIdentityList .selected{
+	color:#0B67A2;
+}
+#appMenuIdentityList .selected i{
+	display:inline-block;
+}
+
+#datum [field]:hover p{
+	background-color: rgba(173, 216, 230, 0.4);
+}
+
+#datum [field='dataObject']:hover{
+	background-color: white;
+}
+
+#datum [field]:hover > div > .fieldBtn{
+	display: inline-block;
+}
+
+#datum [field]> .fieldBtn{
+	display:none;
+}
+
+#datum [field]:hover > .fieldBtn{
+	display: inline-block;
+}
+
+
+
+.ownershipDisplay{
+	position: relative;
+}
+.ownershipDisplay .qrcodeCanvas{
+	display:none;
+	position: absolute;
+    bottom: 1rem;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 6px 0px 4px rgba(0,0,0,.4)
+}
+
+.ownershipDisplay:hover .qrCodeCanvas{
+	display:block;
+}
+
+.prefix{
+	font-weight: bold;
+}
+
+#frameworkContents .competency:hover{
+	background-color: rgba(173, 216, 230, 0.4)
+}
+
+
+
+.searchSelect.empty{
+	text-align:center;
+}
+
+#repoSearchTypesDisplay{
+	width:100%;
+}
+
+#repoSearchTypesText{
+	max-width:90%;
+	text-overflow: ellipsis;
+	white-space:nowrap;	
+	display:inline-block;
+}
+
+#repoSearchTypesDisplay:hover{
+	cursor:pointer;
+	color: grey;
+}
+
+#repoSearchTypes{
+	padding:5px 0px;
+	list-style:none;
+	width:100%;
+}
+
+#repoSearchTypes li{
+	padding: 0px 10px;
+}
+
+#repoSearchTypesDisplay{
+	display: block;
+	padding: .7rem 1rem;
+	line-height: 1;
+	padding-right: 1.5rem;
+	position: relative;
+}
+
+
+
+.callout.dataViewResults{
+	box-shadow:6px 0px 4px rgba(0,0,0,.4);
+	margin-bottom:0px;
+	background-color: lightgrey;
+	margin-bottom:0px; 
+	padding: 0px;
+	margin-top:35px;
+}
+
+.dataViewSort{
+	position:absolute;
+	top:-35px;
+	right: 0px;
+	width:200px;
+	box-shadow: 7px -3px 4px rgba(0,0,0,.4);
+	border-right: 1px solid lightgrey;
+	background-color: lightgray;
+	border-bottom: 1px solid grey;
+}
+
+.dataViewProgress, .dataViewNone{
+	background-color:white;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	text-align: center;
+}
+
+.dataView .row{
+	border-bottom: 1px solid #B9B9B9;
+	background-color:white;
+	position:relative;
+}
+.dataView .row:last-child{
+	border-bottom: 0px;
+}
+
+.dataView .row .datum-select{
+	display:none;
+	position:absolute;
+	left: 15px;
+  	top: 33%;
+  	
+}
+
+.dataView .row .rowToolbar{
+	position:absolute;
+	right:10px; 
+	display:none;
+}
+
+.dataView .row:hover .datum-select{
+	display:inline;
+}
+
+
+.dataView .row:hover .rowToolbar{
+	display:block;
+}
+
+.dataView.selecting .row .datum-select, .dataView.selecting .row .datum-select{
+	display:inline;
+}
+
+.dataView.selecting .row:hover .rowToolbar{
+	display:none;
+}
+.dataView.selecting .row.selected{
+	background-color: #E0EEF3;
+}
+
+.dataViewBtn:hover{
+	color: grey;
+	cursor: pointer;
+}
+
+.contextMenu{
+	position:absolute;
+	box-shadow:6px 0px 4px rgba(0,0,0,.4);
+	background-color:white;
+	border: 1px solid lightgrey;
+	list-style:none;
+	margin:0px; 
+	width:200px;
+}
+.contextMenu li{
+	border-top:1px solid white;
+	padding:0px 10px;
+}
+.contextMenu li:first-child{
+	padding-top:3px;
+	border-top:0px;
+}
+.contextMenu li:last-child{
+	padding-bottom:3px;
+}
+
+.contextMenu li:hover{
+	background:lightgrey;
+	cursor:pointer;
+}
+
+
+#readerRow{
+	display:block;
+}

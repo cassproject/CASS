@@ -1,0 +1,157 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="assertionEditMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+	
+	<div class="row" >
+		<div class="large-12 small-12 columns">
+			<div class="row" style="margin-top:0px;padding-bottom:0px">
+				<div class="large-12 columns large-centered" style="margin-bottom:0px">
+					<a id="assertionEditSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
+					<a id="assertionEditViewBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">View</a>
+					<a id="assertionEditBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Edit</a>
+					
+					<span id="assertionEditSaveBtn" class="fake-a-label float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-top:0.2rem;">Save</span>
+					<span id="assertionEditDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Delete</span>
+					<span id="assertionEditCancelBtn" class="fake-a-label float-right label secondary" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Cancel</span>				
+		   		</div>
+			</div>
+			
+			<div id="datum" class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+				<h3>Assertion</h3>
+				<div class="large-12 small-12 columns">
+					<i>Permanent URL for the assertion.</i>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">URL:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input id="assertionEditId" placeholder="This isn't supposed to be empty." type="text" disabled="disabled">
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Agent:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<select id="assertionAgentInput" style="font-style:italic;">
+								<option id="noAgent" class="hide" selected>Select the asserting authority</option> 
+							</select>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Subject:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<select id="assertionSubjectInput" style="font-style:italic;">
+								<option id="noSubject" class="hide" selected>Select the subject of the assertion</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Competency:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<select id="assertionCompetencyInput" style="font-style:italic;">
+								<option id="noCompetency" class="hide" selected>Select the competency being asserted</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Level:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<select id="assertionLevelInput" style="font-style:italic;">
+								<option id="noLevel" class="hide" selected>Select the level of competency being asserted</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Confidence:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input id="assertionConfidenceInput" type="range" style="width:50%; margin-bottom:1rem;" /> 
+							<span id="assertionConfidenceDisplay">50</span>% confidence
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Evidence:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<textarea id="assertionEvidenceInput" rows='5' placeholder="Assertion Evidence (URL or plaintext, one line per piece of evidence)"></textarea>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Assertion Date:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input type="datetime-local" id="assertionDateInput"/>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Assertion Expiration:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input type="datetime-local" id="assertionExpirationInput"/>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Confidence Decay:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<select id="assertionDecayInput">
+								<option value="linear">Linear Decay</option>
+								<option value="logarithmic">Logarithmic Decay</option>
+								<option value="exponential">Exponential Decay</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="row collapse" style="margin-top:1rem;">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Assertion Owner:</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<div id="assertionEditOwner"></div>
+						</div>
+						
+					</div>
+					
+					<div class="row collapse" style="margin-top:1rem;">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">Assertion Readers:</span>
+						</div>
+						<div class="small-7 large-8 columns">
+							<div id="assertionEditReaders">
+								<span id="assertionEditNoReader">None Yet</span>
+								<span id="assertionEditReaders"></span>
+							</div>
+						</div>
+						<div class="small-1 columns">
+							<small id="assertionEditAddReader" class="fake-a float-right">Add</small>
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>  
+	</div>
+</div>
