@@ -32,6 +32,11 @@ chown tomcat:tomcat /usr/share/tomcat7/etc
 chown tomcat:tomcat /var/lib/tomcat7
 service tomcat7 stop
 
+echo -----
+echo Removing Old Versions of CASS...
+rm -rf /usr/share/tomcat7/webapps/levr*
+rm -rf /usr/share/tomcat7/webapps/cass*
+apt-get -yq install tomcat7-admin
 
 #Install Elasticsearch
 echo -----
