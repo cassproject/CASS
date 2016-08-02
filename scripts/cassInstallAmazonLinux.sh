@@ -52,7 +52,7 @@ yum -q -y install httpd
 #Download and compile CASS .war
 echo -----
 echo Downloading CASS Repo...
-git clone https://github.com/cassproject/CASS -b 0.1.0-SNAPSHOT
+git clone https://github.com/cassproject/CASS
 
 echo -----
 echo Compiling CASS...

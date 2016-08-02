@@ -58,7 +58,7 @@ apt-get -qy install apache2
 #Download and Compile CASS
 echo -----
 echo Downloading CASS Repo...
-git clone https://github.com/cassproject/CASS -b 0.1.0-SNAPSHOT
+git clone https://github.com/cassproject/CASS
 cd CASS
 mvn -q clean install
 cp target/cass-0.1.0.war /var/lib/tomcat7/webapps
