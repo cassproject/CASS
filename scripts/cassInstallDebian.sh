@@ -33,9 +33,11 @@ mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
 service tomcat7 stop
+
 echo -----
-echo Removing Old Versions of LEVR...
+echo Removing Old Versions of CASS...
 rm -rf /var/lib/tomcat7/webapps/levr*
+rm -rf /var/lib/tomcat7/webapps/cass*
 apt-get -yq install tomcat7-admin
 
 #Install Elasticsearch
@@ -58,7 +60,7 @@ apt-get -qy install apache2
 #Download and Compile CASS
 echo -----
 echo Downloading CASS Repo...
-git clone https://github.com/cassproject/CASS -b 0.1.0-SNAPSHOT
+git clone https://github.com/cassproject/CASS
 cd CASS
 mvn -q clean install
 cp target/cass-0.1.0.war /var/lib/tomcat7/webapps
