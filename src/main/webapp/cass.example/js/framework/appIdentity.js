@@ -84,7 +84,7 @@ function loginProcess() {
             }
         },
         function (p1) {
-            if (p1 == "User does not exist.")
+            if (p1.startsWith("User does not exist")) {
                 if (confirm("Login failed. " + p1 + "Would you like to attempt to create an account using these credentials?")) {
                     loginServer.create(
                         function (p1) {
@@ -108,8 +108,10 @@ function loginProcess() {
                         },
                         errorLogin
                     );
-                } else
-                    alert(p1);
+                }
+            }
+            else
+            	alert(p1);
         }
     );
 }
