@@ -38,8 +38,8 @@ function removeCompetencyFromFrameworkButton(me) {
     var competencyId = $(me).parents(".cass-competency").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
-    if (confirm("This will remove '"+$(me).parents(".cass-competency").children(".cass-competency-name").text()+"' Continue?") == true)
-    removeCompetencyFromFramework(competencyId, frameworkId);
+    if (confirm("This will remove '" + $(me).parents(".cass-competency").children(".cass-competency-name").text() + "' Continue?") == true)
+        removeCompetencyFromFramework(competencyId, frameworkId);
 }
 
 function removeCompetencyFromFramework(competencyId, frameworkId) {
@@ -71,7 +71,9 @@ function bulkFromFrameworkButton() {
     var searchString = new EcFramework().getSearchStringByType();
     if ($("#frameworkSearch").val() != "")
         searchString += " AND (" + $("#frameworkSearch").val() + ")";
-    repo.search(searchString, null,
+    repo.searchWithParams(searchString, {
+            size: 5000
+        }, null,
         function (frameworks) {
             $("#bulkFromFrameworkSource").html("");
             $("#bulkFromFrameworkSource").append("<option/>");
