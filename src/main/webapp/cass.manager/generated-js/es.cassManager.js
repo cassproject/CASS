@@ -1,3 +1,92 @@
+var ImportCompetenciesModal = function(data) {
+    EcModal.call(this);
+    this.data = data;
+};
+ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+var SaveIdModal = function(msg) {
+    EcModal.call(this);
+    this.msg = msg;
+};
+SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.msg = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+}, {onClose: "Callback0"}, {});
+var ContactGrantModal = function(contact, token, signature, close) {
+    EcModal.call(this);
+    this.contact = contact;
+    this.token = token;
+    this.signature = signature;
+    this.onClose = close;
+};
+ContactGrantModal = stjs.extend(ContactGrantModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.contact = null;
+    prototype.token = null;
+    prototype.signature = null;
+    prototype.onClose = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {contact: "EcContact", onClose: "Callback0", onClose: "Callback0"}, {});
+var ConfirmModal = function(confirmCallback, message) {
+    EcModal.call(this);
+    this.confirmCallback = confirmCallback;
+    this.message = message;
+};
+ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.message = null;
+    prototype.confirmCallback = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {confirmCallback: "Callback0", onClose: "Callback0"}, {});
+var EditLevelModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.closeCallback = callback;
+};
+EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.data = null;
+    prototype.closeCallback = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
+var LoginModal = function(success, cancel, warningMessage) {
+    EcModal.call(this);
+    this.loginSuccess = success;
+    this.onClose = cancel;
+    this.warning = warningMessage;
+};
+LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+    prototype.loginSuccess = null;
+    prototype.warning = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0", loginSuccess: "Callback0", onClose: "Callback0"}, {});
+var CreateUserModal = function() {
+    EcModal.call(this);
+};
+CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.display = function(arg0, arg1) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0"}, {});
 var AddServerModal = function(modalClose) {
     EcModal.call(this);
     this.onClose = modalClose;
@@ -9,26 +98,6 @@ AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, 
         console.error("Not Implemented Yet");
     };
 }, {onClose: "Callback0", onClose: "Callback0"}, {});
-var AddCompetenciesToFrameworkModal = function(data, callback) {
-    EcModal.call(this);
-    this.data = data;
-};
-AddCompetenciesToFrameworkModal = stjs.extend(AddCompetenciesToFrameworkModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "medium";
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
-var CreateUserModal = function() {
-    EcModal.call(this);
-};
-CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.display = function(arg0, arg1) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0"}, {});
 var AdvancedPermissionsModal = function(data, callback, onlyReaders) {
     EcModal.call(this);
     this.data = data;
@@ -60,73 +129,6 @@ AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, pr
         console.error("Not Implemented Yet");
     };
 }, {field: "Object", onClose: "Callback0"}, {});
-var LoginModal = function(success, cancel, warningMessage) {
-    EcModal.call(this);
-    this.loginSuccess = success;
-    this.onClose = cancel;
-    this.warning = warningMessage;
-};
-LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.onClose = null;
-    prototype.loginSuccess = null;
-    prototype.warning = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {onClose: "Callback0", loginSuccess: "Callback0", onClose: "Callback0"}, {});
-var ContactGrantModal = function(contact, token, signature, close) {
-    EcModal.call(this);
-    this.contact = contact;
-    this.token = token;
-    this.signature = signature;
-    this.onClose = close;
-};
-ContactGrantModal = stjs.extend(ContactGrantModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.contact = null;
-    prototype.token = null;
-    prototype.signature = null;
-    prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {contact: "EcContact", onClose: "Callback0", onClose: "Callback0"}, {});
-var SaveIdModal = function(msg) {
-    EcModal.call(this);
-    this.msg = msg;
-};
-SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "tiny";
-    prototype.msg = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-}, {onClose: "Callback0"}, {});
-var EvidenceViewModal = function(evidence) {
-    EcModal.call(this);
-    this.evidence = evidence;
-};
-EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "medium";
-    prototype.evidence = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
-var ContactAcceptModal = function(grant, close) {
-    EcModal.call(this);
-    this.grant = grant;
-    this.onClose = close;
-};
-ContactAcceptModal = stjs.extend(ContactAcceptModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.grant = null;
-    prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {grant: "EcContactGrant", onClose: "Callback0", onClose: "Callback0"}, {});
 var CopyResourceModal = function(data, callback) {
     EcModal.call(this);
     this.data = data;
@@ -140,43 +142,50 @@ CopyResourceModal = stjs.extend(CopyResourceModal, EcModal, [], function(constru
         console.error("Not Implemented Yet");
     };
 }, {data: "Object", callback: "Callback0", onClose: "Callback0"}, {});
-var EditLevelModal = function(data, callback) {
+var EvidenceViewModal = function(evidence) {
     EcModal.call(this);
-    this.data = data;
-    this.closeCallback = callback;
+    this.evidence = evidence;
 };
-EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.data = null;
-    prototype.closeCallback = null;
+EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.evidence = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet");
     };
-}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
-var ConfirmModal = function(confirmCallback, message) {
-    EcModal.call(this);
-    this.confirmCallback = confirmCallback;
-    this.message = message;
-};
-ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "tiny";
-    prototype.message = null;
-    prototype.confirmCallback = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {confirmCallback: "Callback0", onClose: "Callback0"}, {});
-var ImportCompetenciesModal = function(data) {
+}, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
+var AddCompetenciesToFrameworkModal = function(data, callback) {
     EcModal.call(this);
     this.data = data;
 };
-ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], function(constructor, prototype) {
+AddCompetenciesToFrameworkModal = stjs.extend(AddCompetenciesToFrameworkModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "medium";
     prototype.data = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet");
     };
 }, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+var ContactAcceptModal = function(grant, close) {
+    EcModal.call(this);
+    this.grant = grant;
+    this.onClose = close;
+};
+ContactAcceptModal = stjs.extend(ContactAcceptModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.grant = null;
+    prototype.onClose = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {grant: "EcContactGrant", onClose: "Callback0", onClose: "Callback0"}, {});
+var ChangeServerModal = function() {
+    EcModal.call(this);
+};
+ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
+    };
+}, {onClose: "Callback0"}, {});
 var ChangeTypeModal = function(repoEditContainer) {
     EcModal.call(this);
     this.repoEditContainer = repoEditContainer;
@@ -188,15 +197,300 @@ ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor
         console.error("Not Implemented Yet");
     };
 }, {onClose: "Callback0"}, {});
-var ChangeServerModal = function() {
-    EcModal.call(this);
-};
-ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "tiny";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+/**
+ *  Manages the current user's logged in state and interfaces with the server to 
+ *  sign in/out and create users
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var LoginController = function() {};
+LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
+    prototype.loginServer = null;
+    prototype.identity = null;
+    constructor.refreshLoggedIn = false;
+    constructor.loggedIn = false;
+    constructor.admin = false;
+    constructor.storageSystem = null;
+    /**
+     *  Setter for the boolean flag of whether or not a user is signed in
+     *  
+     *  @param val 
+     *  			true if signed in, false if signed out
+     */
+    constructor.setLoggedIn = function(val) {
+        LoginController.loggedIn = val;
+        if (LoginController.storageSystem != null) 
+            LoginController.storageSystem["cass.login"] = val;
     };
-}, {onClose: "Callback0"}, {});
+    /**
+     *  @return boolean whether or not the the user is logged in
+     */
+    constructor.getLoggedIn = function() {
+        return LoginController.loggedIn;
+    };
+    /**
+     *  Setter for boolean flag of whether or not the current user is admin
+     *  @param val 
+     *  			true = admin, false = not admin
+     */
+    prototype.setAdmin = function(val) {
+        LoginController.admin = val;
+    };
+    /**
+     *  @return - whether or not the current user is admin
+     */
+    prototype.getAdmin = function() {
+        return LoginController.admin;
+    };
+    /**
+     *  If the last time the user was using the application, they were signed in this
+     *  returns true (used to remind them to sign in again once they return)
+     *  
+     *  @return true if previously signed in, false if not signed in last time, or user is here for
+     *  the first time from this computer
+     */
+    constructor.getPreviouslyLoggedIn = function() {
+        return LoginController.refreshLoggedIn;
+    };
+    /**
+     *  Validates a username and password on the server and then parses the user's credentials and
+     *  checks if they have an admin key. Also tells the identity manager to check for contacts in
+     *  local storage after signed in.
+     *  
+     *  @param username 
+     *  			username of the user signing in
+     *  @param password
+     *  			password of the user signing in
+     *  @param success 
+     *  			callback on successful login
+     *  @param failure
+     *  			callback on error during login
+     */
+    prototype.login = function(username, password, success, failure) {
+        var identityManager = this.identity;
+        var that = this;
+        this.loginServer.startLogin(username, password);
+        this.loginServer.fetch(function(p1) {
+            if (EcIdentityManager.ids.length > 0) {
+                identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                that.loginServer.fetchServerAdminKeys(function(keys) {
+                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
+                            that.setAdmin(true);
+                        }
+                    }
+                }, function(p1) {});
+            }
+            EcIdentityManager.readContacts();
+            EcRepository.cache = new Object();
+            LoginController.setLoggedIn(true);
+            success();
+        }, function(p1) {
+            failure(p1);
+        });
+    };
+    /**
+     *  Creates a new user and saves the account details on the login server, then signs in
+     *  to the new account on successful creation
+     *  
+     *  @param username
+     *  			username of the new account
+     *  @param password
+     *  			password of the new account
+     *  @param success
+     *  			callback for successful creation and sign in 
+     *  @param failure
+     *  			callback for error during creation
+     */
+    prototype.create = function(username, password, success, failure) {
+        this.loginServer.startLogin(username, password);
+        var me = this;
+        this.loginServer.create(function(p1) {
+            me.login(username, password, success, failure);
+        }, function(p1) {
+            failure(p1);
+        }, new (stjs.extend(function LoginController$5() {
+            EcCallbackReturn0.call(this);
+        }, EcCallbackReturn0, [], function(constructor, prototype) {
+            prototype.callback = function() {
+                return "";
+            };
+        }, {}, {}))());
+    };
+    /**
+     *  Saves the users credentials and contacts to the server
+     *  
+     *  @param success
+     *  			callback for successful save
+     *  @param failure
+     *  			callback for error during save
+     */
+    prototype.save = function(success, failure) {
+        this.loginServer.commit(function(p1) {
+            success();
+        }, function(p1) {
+            failure(p1);
+        }, new (stjs.extend(function LoginController$8() {
+            EcCallbackReturn0.call(this);
+        }, EcCallbackReturn0, [], function(constructor, prototype) {
+            prototype.callback = function() {
+                return null;
+            };
+        }, {}, {}))());
+    };
+    /**
+     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
+     *  authenticated and is unidentified
+     */
+    prototype.logout = function() {
+        this.loginServer.clear();
+        this.identity.selectedIdentity = null;
+        EcRepository.cache = new Object();
+        LoginController.setLoggedIn(false);
+        EcIdentityManager.ids = new Array();
+        EcIdentityManager.clearContacts();
+    };
+}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
+(function() {
+    if (localStorage != null) 
+        LoginController.storageSystem = localStorage;
+     else if (sessionStorage != null) 
+        LoginController.storageSystem = sessionStorage;
+    if (LoginController.storageSystem["cass.login"] != null) {
+        LoginController.refreshLoggedIn = LoginController.storageSystem["cass.login"] == "true" ? true : false;
+        LoginController.storageSystem["cass.login"] = false;
+    }
+})();
+/**
+ *  Manages the current selected identity for the user, and interfaces the Identity Manager to 
+ *  provide helper functions for ownership and user identification
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var IdentityController = function() {};
+IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
+    prototype.selectedIdentity = null;
+    /**
+     *  Sets the currently selected identity to the ppk specified, only works if the ppk is in the 
+     *  list of identities that the user owns
+     *  
+     *  @param ppkPem
+     *  			PEM of the identity that will be set to the current identity
+     */
+    prototype.select = function(ppkPem) {
+        var clickedPpk = EcPpk.fromPem(ppkPem);
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+            if (EcIdentityManager.ids[i].ppk.equals(clickedPpk)) 
+                this.selectedIdentity = EcIdentityManager.ids[i];
+    };
+    /**
+     *  Clears the selected identity, so the user will be identified as public for any actions
+     *  that they make going forward
+     */
+    prototype.unselect = function() {
+        this.selectedIdentity = null;
+    };
+    /**
+     *  Returns the contact that is associated with the PEM given, looks at both the user's
+     *  identities and contacts to match the PEM. The Contact returned will contain the display
+     *  name that the user set for the PEM
+     *  
+     *  @param pkPem 
+     *  			PEM of the contact to lookup
+     *  @return Contact that contains the displayName and public key, if the user
+     *  			does not have a display name stored for the PEM in either their contacts or identities,
+     *  			will return the Unknown Contact which contains the key and a display name of "Unknown"
+     */
+    prototype.lookup = function(pkPem) {
+        var candidatePk = EcPk.fromPem(pkPem);
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcIdentityManager.ids[i].ppk.toPk().equals(candidatePk)) {
+                var newContact = new EcContact();
+                newContact.pk = candidatePk;
+                newContact.displayName = EcIdentityManager.ids[i].displayName;
+                return newContact;
+            }
+        }
+        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
+            if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
+                return EcIdentityManager.contacts[i];
+        var newContact = new EcContact();
+        newContact.pk = candidatePk;
+        newContact.displayName = "Unknown";
+        return newContact;
+    };
+    /**
+     *  Adds a Key to the list of user identities managed by the EcIdentityManager
+     *  
+     *  @param ppk
+     *  			Key to save to user identities
+     *  @param displayName 
+     *  			Name to associate with the key to be saved, to identify it
+     *  @param success
+     *  			Callback function once the key has been added
+     */
+    prototype.addKey = function(ppk, displayName, success) {
+        var ident = new EcIdentity();
+        ident.ppk = EcPpk.fromPem(ppk);
+        ident.displayName = displayName;
+        EcIdentityManager.addIdentity(ident);
+        success();
+    };
+    /**
+     *  Generates a new Encryption Key to save to the identity manager list
+     *  
+     *  @param success
+     *  			callback, once they key has been generated and added to the identity manager
+     *  @param displayName
+     *  			display name for the key that is being generated to identify it
+     */
+    prototype.generateIdentity = function(success, displayName) {
+        EcPpk.generateKeyAsync(function(p1) {
+            var ident = new EcIdentity();
+            ident.ppk = p1;
+            if (displayName != null && displayName != "") 
+                ident.displayName = displayName;
+            EcIdentityManager.addIdentity(ident);
+            success(ident);
+        });
+    };
+    /**
+     *  Helper function to determine if the logged in user owns a piece of data from the repository,
+     *  useful for showing certain actions
+     *  
+     *  @param data 
+     *  			The object to check for ownership of
+     *  @return true if owned, false if not owned by the current user
+     */
+    prototype.owns = function(data) {
+        if (data.owner == null) 
+            return false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**
+     *  Helper function to determine if the logged in user can modify a piece of data, this means 
+     *  that they either own the data, or it is public
+     *  
+     *  @param data
+     *  			The object to check for ability to edit
+     *  @return true if editable, false if not
+     */
+    prototype.canEdit = function(data) {
+        if (data.owner == null || data.owner.length == 0) 
+            return true;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (data.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                return true;
+            }
+        }
+        return false;
+    };
+}, {selectedIdentity: "EcIdentity"}, {});
 var WelcomeScreen = function() {
     EcScreen.call(this);
 };
@@ -249,6 +543,254 @@ CryptoController = stjs.extend(CryptoController, null, [], function(constructor,
         return e.decryptIntoString();
     };
 }, {identity: "IdentityController"}, {});
+/**
+ *  Provides methods to request objects from the repository on the server
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var RepositoryController = function() {};
+RepositoryController = stjs.extend(RepositoryController, null, [], function(constructor, prototype) {
+    prototype.repo = null;
+    prototype.identity = null;
+    /**
+     *  Retrieves a file from the server and downloads it to the user's computer
+     *  
+     *  @param id
+     *  			ID of the file to download
+     *  @param failure
+     *  			Callback if there is an error when retrieving the file
+     */
+    prototype.downloadFile = function(id, failure) {
+        EcRepository.get(id, function(p1) {
+            var f = new EcFile();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+            }
+            if (p1.isA(EcFile.myType)) {
+                f.copyFrom(p1);
+                f.download();
+            }
+        }, failure);
+    };
+    /**
+     *  Upload's a file to the server, encrypts it first though. This will error if there is
+     *  not a selected identity for a signed in user because it can't be encrypted
+     *  
+     *  @param name
+     *  			Name of the file to be uploaded
+     *  @param base64Data
+     *  			Data for the file to be uploaded
+     *  @param mimeType
+     *  			MIME Type of the file to be uploaded
+     *  @param success
+     *  			Callback after the file has been encrypted and uploaded successfully
+     *  @param failure
+     *  			Callback if there is an error during the encryption or upload process
+     */
+    prototype.encryptAndUploadFile = function(name, base64Data, mimeType, success, failure) {
+        if (this.identity.selectedIdentity == null) {
+            failure("User not signed in or, no Identity selected");
+            return;
+        }
+        var f = new EcFile();
+        f.generateId(this.repo.selectedServer);
+        f.data = base64Data;
+        f.name = name;
+        f.mimeType = mimeType;
+        f.addOwner(this.identity.selectedIdentity.ppk.toPk());
+        var encryptedValue = EcEncryptedValue.toEncryptedValue(f, false);
+        EcRepository.save(encryptedValue, function(p1) {
+            success();
+        }, failure);
+    };
+    /**
+     *  Upload's a file to the server without encrypting it. No owner is attached, so it will be a
+     *  public file.
+     *  
+     *  @param name
+     *  			Name of the file to be uploaded
+     *  @param base64Data
+     *  			Data for the file to be uploaded
+     *  @param mimeType
+     *  			MIME Type of the file to be uploaded
+     *  @param success
+     *  			Callback after the file has been encrypted and uploaded successfully
+     *  @param failure
+     *  			Callback if there is an error during the encryption or upload process
+     */
+    prototype.uploadFile = function(name, base64Data, mimeType, success, failure) {
+        var f = new EcFile();
+        f.data = base64Data;
+        f.name = name;
+        f.mimeType = mimeType;
+        f.generateId(this.repo.selectedServer);
+        EcRepository.save(f, function(p1) {
+            success();
+        }, failure);
+    };
+    /**
+     *  Uploads a JSON Object String to the repository
+     *  
+     *  @param data
+     *  			the JSON Object String to upload
+     *  @param success
+     *  			Callback for successful upload
+     *  @param fail
+     *  			Callback for error during upload
+     */
+    prototype.upload = function(data, success, fail) {
+        var d = new EcRemoteLinkedData(null, null);
+        d.copyFrom(JSON.parse(data));
+        if (d.invalid()) {
+            fail("Cannot save data. It is missing a vital component.");
+        }
+        EcRepository.save(d, success, fail);
+    };
+    /**
+     *  Retrieve an object from the repository (unsure of type)
+     *  @param id
+     *  			ID of the object to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the object after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.view = function(id, success, failure) {
+        EcRepository.get(id, success, failure);
+    };
+    /**
+     *  Retrieve an object from the repository and check then cast it to a competency before returning it
+     *  @param id
+     *  			ID of the competency to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the competency after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.viewCompetency = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            var competency = new EcCompetency();
+            if (p1.isAny(competency.getTypes())) {
+                competency.copyFrom(p1);
+                success(competency);
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcCompetency.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                competency.copyFrom(decrypted);
+                competency.privateEncrypted = true;
+                success(competency);
+            } else {
+                failure("Retrieved object was not a competency");
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieve an object from the repository and check then cast it to a framework before returning it
+     *  @param id
+     *  			ID of the framework to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the framework after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.viewFramework = function(id, success, failure) {
+        var me = this;
+        EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            var framework = new EcFramework();
+            if (p1.isAny(framework.getTypes())) {
+                framework.copyFrom(p1);
+                success(framework);
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcFramework.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                framework.copyFrom(decrypted);
+                framework.privateEncrypted = true;
+                success(framework);
+            } else {
+                failure("Retrieved object was not a framework");
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieve an object from the repository and check then cast it to a relation before returning it
+     *  @param id
+     *  			ID of the relation to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the relation after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.viewRelation = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            var alignment = new EcAlignment();
+            if (p1.isAny(alignment.getTypes())) {
+                alignment.copyFrom(p1);
+                success(alignment);
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcAlignment.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                alignment.copyFrom(decrypted);
+                alignment.privateEncrypted = true;
+                success(alignment);
+            } else {
+                failure("Retrieved object was not a relation");
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieve an object from the repository and check then cast it to a level before returning it
+     *  @param id
+     *  			ID of the level to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the level after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.viewLevel = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            var level = new EcLevel();
+            if (p1.isAny(level.getTypes())) {
+                level.copyFrom(p1);
+                success(level);
+            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcLevel.myType)) {
+                var decrypted = encrypted.decryptIntoObject();
+                level.copyFrom(decrypted);
+                ;
+                level.privateEncrypted = true;
+                success(level);
+            } else {
+                failure("Retrieved object was not a level");
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieve an object from the repository and check then cast it to a assertion before returning it
+     *  @param id
+     *  			ID of the assertion to retrieve from the repository
+     *  @param success
+     *  			Callback that returns the assertion after successfully retrieving it
+     *  @param failure
+     *  			Callback that returns any errors that occur during retrieval
+     */
+    prototype.viewAssertion = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var assertion = new EcAssertion();
+            if (p1.isAny(assertion.getTypes())) {
+                assertion.copyFrom(p1);
+                success(assertion);
+            } else {
+                failure("Retrieved object was not an assertion");
+            }
+        }, failure);
+    };
+}, {repo: "EcRepository", identity: "IdentityController"}, {});
 /**
  *  Search Controller interfaces with the repository to build search queries based on
  *  the type of an object desired or other parameters that can be passed in
@@ -654,254 +1196,52 @@ SearchController = stjs.extend(SearchController, null, [], function(constructor,
         }, failure, paramObj);
     };
 }, {repo: "EcRepository"}, {});
-/**
- *  Provides methods to request objects from the repository on the server
- *  
- *  @author devlin.junker@eduworks.com
- */
-var RepositoryController = function() {};
-RepositoryController = stjs.extend(RepositoryController, null, [], function(constructor, prototype) {
-    prototype.repo = null;
-    prototype.identity = null;
-    /**
-     *  Retrieves a file from the server and downloads it to the user's computer
-     *  
-     *  @param id
-     *  			ID of the file to download
-     *  @param failure
-     *  			Callback if there is an error when retrieving the file
-     */
-    prototype.downloadFile = function(id, failure) {
-        EcRepository.get(id, function(p1) {
-            var f = new EcFile();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-            }
-            if (p1.isA(EcFile.myType)) {
-                f.copyFrom(p1);
-                f.download();
-            }
-        }, failure);
+var RepoEdit = function(data, saveButtonId, messageContainerId) {
+    EcView.call(this);
+    this.data = data;
+    this.saveButtonId = saveButtonId;
+    this.messageContainerId = messageContainerId;
+};
+RepoEdit = stjs.extend(RepoEdit, EcView, [], function(constructor, prototype) {
+    prototype.data = null;
+    prototype.saveButtonId = null;
+    prototype.messageContainerId = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
     };
-    /**
-     *  Upload's a file to the server, encrypts it first though. This will error if there is
-     *  not a selected identity for a signed in user because it can't be encrypted
-     *  
-     *  @param name
-     *  			Name of the file to be uploaded
-     *  @param base64Data
-     *  			Data for the file to be uploaded
-     *  @param mimeType
-     *  			MIME Type of the file to be uploaded
-     *  @param success
-     *  			Callback after the file has been encrypted and uploaded successfully
-     *  @param failure
-     *  			Callback if there is an error during the encryption or upload process
-     */
-    prototype.encryptAndUploadFile = function(name, base64Data, mimeType, success, failure) {
-        if (this.identity.selectedIdentity == null) {
-            failure("User not signed in or, no Identity selected");
-            return;
-        }
-        var f = new EcFile();
-        f.generateId(this.repo.selectedServer);
-        f.data = base64Data;
-        f.name = name;
-        f.mimeType = mimeType;
-        f.addOwner(this.identity.selectedIdentity.ppk.toPk());
-        var encryptedValue = EcEncryptedValue.toEncryptedValue(f, false);
-        EcRepository.save(encryptedValue, function(p1) {
-            success();
-        }, failure);
+}, {data: "Object"}, {});
+var DataViewer = function(idPrefix, callbacks) {
+    EcView.call(this);
+    this.prefix = idPrefix;
+    this.callbacks = callbacks;
+    this.dataStore = new Object();
+};
+DataViewer = stjs.extend(DataViewer, EcView, [], function(constructor, prototype) {
+    prototype.prefix = null;
+    prototype.callbacks = null;
+    prototype.dataStore = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
     };
-    /**
-     *  Upload's a file to the server without encrypting it. No owner is attached, so it will be a
-     *  public file.
-     *  
-     *  @param name
-     *  			Name of the file to be uploaded
-     *  @param base64Data
-     *  			Data for the file to be uploaded
-     *  @param mimeType
-     *  			MIME Type of the file to be uploaded
-     *  @param success
-     *  			Callback after the file has been encrypted and uploaded successfully
-     *  @param failure
-     *  			Callback if there is an error during the encryption or upload process
-     */
-    prototype.uploadFile = function(name, base64Data, mimeType, success, failure) {
-        var f = new EcFile();
-        f.data = base64Data;
-        f.name = name;
-        f.mimeType = mimeType;
-        f.generateId(this.repo.selectedServer);
-        EcRepository.save(f, function(p1) {
-            success();
-        }, failure);
+}, {callbacks: "Object", dataStore: "Object"}, {});
+var AppMenu = function() {
+    EcView.call(this);
+};
+AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
     };
-    /**
-     *  Uploads a JSON Object String to the repository
-     *  
-     *  @param data
-     *  			the JSON Object String to upload
-     *  @param success
-     *  			Callback for successful upload
-     *  @param fail
-     *  			Callback for error during upload
-     */
-    prototype.upload = function(data, success, fail) {
-        var d = new EcRemoteLinkedData(null, null);
-        d.copyFrom(JSON.parse(data));
-        if (d.invalid()) {
-            fail("Cannot save data. It is missing a vital component.");
-        }
-        EcRepository.save(d, success, fail);
+}, {}, {});
+var MessageContainer = function(idPrefix) {
+    EcView.call(this);
+    this.prefix = idPrefix;
+};
+MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructor, prototype) {
+    prototype.prefix = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet");
     };
-    /**
-     *  Retrieve an object from the repository (unsure of type)
-     *  @param id
-     *  			ID of the object to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the object after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.view = function(id, success, failure) {
-        EcRepository.get(id, success, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a competency before returning it
-     *  @param id
-     *  			ID of the competency to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the competency after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewCompetency = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var competency = new EcCompetency();
-            if (p1.isAny(competency.getTypes())) {
-                competency.copyFrom(p1);
-                success(competency);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcCompetency.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                competency.copyFrom(decrypted);
-                competency.privateEncrypted = true;
-                success(competency);
-            } else {
-                failure("Retrieved object was not a competency");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a framework before returning it
-     *  @param id
-     *  			ID of the framework to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the framework after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewFramework = function(id, success, failure) {
-        var me = this;
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var framework = new EcFramework();
-            if (p1.isAny(framework.getTypes())) {
-                framework.copyFrom(p1);
-                success(framework);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcFramework.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                framework.copyFrom(decrypted);
-                framework.privateEncrypted = true;
-                success(framework);
-            } else {
-                failure("Retrieved object was not a framework");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a relation before returning it
-     *  @param id
-     *  			ID of the relation to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the relation after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewRelation = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var alignment = new EcAlignment();
-            if (p1.isAny(alignment.getTypes())) {
-                alignment.copyFrom(p1);
-                success(alignment);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcAlignment.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                alignment.copyFrom(decrypted);
-                alignment.privateEncrypted = true;
-                success(alignment);
-            } else {
-                failure("Retrieved object was not a relation");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a level before returning it
-     *  @param id
-     *  			ID of the level to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the level after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewLevel = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var level = new EcLevel();
-            if (p1.isAny(level.getTypes())) {
-                level.copyFrom(p1);
-                success(level);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcLevel.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                level.copyFrom(decrypted);
-                ;
-                level.privateEncrypted = true;
-                success(level);
-            } else {
-                failure("Retrieved object was not a level");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a assertion before returning it
-     *  @param id
-     *  			ID of the assertion to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the assertion after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewAssertion = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var assertion = new EcAssertion();
-            if (p1.isAny(assertion.getTypes())) {
-                assertion.copyFrom(p1);
-                success(assertion);
-            } else {
-                failure("Retrieved object was not an assertion");
-            }
-        }, failure);
-    };
-}, {repo: "EcRepository", identity: "IdentityController"}, {});
+}, {}, {});
 var AppSettings = function() {};
 AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype) {
     constructor.FIELD_MSG_RETURN = "returnLoginMessage";
@@ -973,346 +1313,6 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
         });
     };
 }, {}, {});
-var RepoEdit = function(data, saveButtonId, messageContainerId) {
-    EcView.call(this);
-    this.data = data;
-    this.saveButtonId = saveButtonId;
-    this.messageContainerId = messageContainerId;
-};
-RepoEdit = stjs.extend(RepoEdit, EcView, [], function(constructor, prototype) {
-    prototype.data = null;
-    prototype.saveButtonId = null;
-    prototype.messageContainerId = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {data: "Object"}, {});
-var MessageContainer = function(idPrefix) {
-    EcView.call(this);
-    this.prefix = idPrefix;
-};
-MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructor, prototype) {
-    prototype.prefix = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {}, {});
-var DataViewer = function(idPrefix, callbacks) {
-    EcView.call(this);
-    this.prefix = idPrefix;
-    this.callbacks = callbacks;
-    this.dataStore = new Object();
-};
-DataViewer = stjs.extend(DataViewer, EcView, [], function(constructor, prototype) {
-    prototype.prefix = null;
-    prototype.callbacks = null;
-    prototype.dataStore = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {callbacks: "Object", dataStore: "Object"}, {});
-var AppMenu = function() {
-    EcView.call(this);
-};
-AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
-    };
-}, {}, {});
-/**
- *  Manages the current selected identity for the user, and interfaces the Identity Manager to 
- *  provide helper functions for ownership and user identification
- *  
- *  @author devlin.junker@eduworks.com
- */
-var IdentityController = function() {};
-IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
-    prototype.selectedIdentity = null;
-    /**
-     *  Sets the currently selected identity to the ppk specified, only works if the ppk is in the 
-     *  list of identities that the user owns
-     *  
-     *  @param ppkPem
-     *  			PEM of the identity that will be set to the current identity
-     */
-    prototype.select = function(ppkPem) {
-        var clickedPpk = EcPpk.fromPem(ppkPem);
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
-            if (EcIdentityManager.ids[i].ppk.equals(clickedPpk)) 
-                this.selectedIdentity = EcIdentityManager.ids[i];
-    };
-    /**
-     *  Clears the selected identity, so the user will be identified as public for any actions
-     *  that they make going forward
-     */
-    prototype.unselect = function() {
-        this.selectedIdentity = null;
-    };
-    /**
-     *  Returns the contact that is associated with the PEM given, looks at both the user's
-     *  identities and contacts to match the PEM. The Contact returned will contain the display
-     *  name that the user set for the PEM
-     *  
-     *  @param pkPem 
-     *  			PEM of the contact to lookup
-     *  @return Contact that contains the displayName and public key, if the user
-     *  			does not have a display name stored for the PEM in either their contacts or identities,
-     *  			will return the Unknown Contact which contains the key and a display name of "Unknown"
-     */
-    prototype.lookup = function(pkPem) {
-        var candidatePk = EcPk.fromPem(pkPem);
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (EcIdentityManager.ids[i].ppk.toPk().equals(candidatePk)) {
-                var newContact = new EcContact();
-                newContact.pk = candidatePk;
-                newContact.displayName = EcIdentityManager.ids[i].displayName;
-                return newContact;
-            }
-        }
-        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
-            if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
-                return EcIdentityManager.contacts[i];
-        var newContact = new EcContact();
-        newContact.pk = candidatePk;
-        newContact.displayName = "Unknown";
-        return newContact;
-    };
-    /**
-     *  Adds a Key to the list of user identities managed by the EcIdentityManager
-     *  
-     *  @param ppk
-     *  			Key to save to user identities
-     *  @param displayName 
-     *  			Name to associate with the key to be saved, to identify it
-     *  @param success
-     *  			Callback function once the key has been added
-     */
-    prototype.addKey = function(ppk, displayName, success) {
-        var ident = new EcIdentity();
-        ident.ppk = EcPpk.fromPem(ppk);
-        ident.displayName = displayName;
-        EcIdentityManager.addIdentity(ident);
-        success();
-    };
-    /**
-     *  Generates a new Encryption Key to save to the identity manager list
-     *  
-     *  @param success
-     *  			callback, once they key has been generated and added to the identity manager
-     *  @param displayName
-     *  			display name for the key that is being generated to identify it
-     */
-    prototype.generateIdentity = function(success, displayName) {
-        EcPpk.generateKeyAsync(function(p1) {
-            var ident = new EcIdentity();
-            ident.ppk = p1;
-            if (displayName != null && displayName != "") 
-                ident.displayName = displayName;
-            EcIdentityManager.addIdentity(ident);
-            success(ident);
-        });
-    };
-    /**
-     *  Helper function to determine if the logged in user owns a piece of data from the repository,
-     *  useful for showing certain actions
-     *  
-     *  @param data 
-     *  			The object to check for ownership of
-     *  @return true if owned, false if not owned by the current user
-     */
-    prototype.owns = function(data) {
-        if (data.owner == null) 
-            return false;
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
-                return true;
-            }
-        }
-        return false;
-    };
-    /**
-     *  Helper function to determine if the logged in user can modify a piece of data, this means 
-     *  that they either own the data, or it is public
-     *  
-     *  @param data
-     *  			The object to check for ability to edit
-     *  @return true if editable, false if not
-     */
-    prototype.canEdit = function(data) {
-        if (data.owner == null || data.owner.length == 0) 
-            return true;
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (data.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
-                return true;
-            }
-        }
-        return false;
-    };
-}, {selectedIdentity: "EcIdentity"}, {});
-/**
- *  Manages the current user's logged in state and interfaces with the server to 
- *  sign in/out and create users
- *  
- *  @author devlin.junker@eduworks.com
- */
-var LoginController = function() {};
-LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
-    prototype.loginServer = null;
-    prototype.identity = null;
-    constructor.refreshLoggedIn = false;
-    constructor.loggedIn = false;
-    constructor.admin = false;
-    constructor.storageSystem = null;
-    /**
-     *  Setter for the boolean flag of whether or not a user is signed in
-     *  
-     *  @param val 
-     *  			true if signed in, false if signed out
-     */
-    constructor.setLoggedIn = function(val) {
-        LoginController.loggedIn = val;
-        if (LoginController.storageSystem != null) 
-            LoginController.storageSystem["cass.login"] = val;
-    };
-    /**
-     *  @return boolean whether or not the the user is logged in
-     */
-    constructor.getLoggedIn = function() {
-        return LoginController.loggedIn;
-    };
-    /**
-     *  Setter for boolean flag of whether or not the current user is admin
-     *  @param val 
-     *  			true = admin, false = not admin
-     */
-    prototype.setAdmin = function(val) {
-        LoginController.admin = val;
-    };
-    /**
-     *  @return - whether or not the current user is admin
-     */
-    prototype.getAdmin = function() {
-        return LoginController.admin;
-    };
-    /**
-     *  If the last time the user was using the application, they were signed in this
-     *  returns true (used to remind them to sign in again once they return)
-     *  
-     *  @return true if previously signed in, false if not signed in last time, or user is here for
-     *  the first time from this computer
-     */
-    constructor.getPreviouslyLoggedIn = function() {
-        return LoginController.refreshLoggedIn;
-    };
-    /**
-     *  Validates a username and password on the server and then parses the user's credentials and
-     *  checks if they have an admin key. Also tells the identity manager to check for contacts in
-     *  local storage after signed in.
-     *  
-     *  @param username 
-     *  			username of the user signing in
-     *  @param password
-     *  			password of the user signing in
-     *  @param success 
-     *  			callback on successful login
-     *  @param failure
-     *  			callback on error during login
-     */
-    prototype.login = function(username, password, success, failure) {
-        var identityManager = this.identity;
-        var that = this;
-        this.loginServer.startLogin(username, password);
-        this.loginServer.fetch(function(p1) {
-            if (EcIdentityManager.ids.length > 0) {
-                identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
-                that.loginServer.fetchServerAdminKeys(function(keys) {
-                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
-                            that.setAdmin(true);
-                        }
-                    }
-                }, function(p1) {});
-            }
-            EcIdentityManager.readContacts();
-            EcRepository.cache = new Object();
-            LoginController.setLoggedIn(true);
-            success();
-        }, function(p1) {
-            failure(p1);
-        });
-    };
-    /**
-     *  Creates a new user and saves the account details on the login server, then signs in
-     *  to the new account on successful creation
-     *  
-     *  @param username
-     *  			username of the new account
-     *  @param password
-     *  			password of the new account
-     *  @param success
-     *  			callback for successful creation and sign in 
-     *  @param failure
-     *  			callback for error during creation
-     */
-    prototype.create = function(username, password, success, failure) {
-        this.loginServer.startLogin(username, password);
-        var me = this;
-        this.loginServer.create(function(p1) {
-            me.login(username, password, success, failure);
-        }, function(p1) {
-            failure(p1);
-        }, new (stjs.extend(function LoginController$5() {
-            EcCallbackReturn0.call(this);
-        }, EcCallbackReturn0, [], function(constructor, prototype) {
-            prototype.callback = function() {
-                return "";
-            };
-        }, {}, {}))());
-    };
-    /**
-     *  Saves the users credentials and contacts to the server
-     *  
-     *  @param success
-     *  			callback for successful save
-     *  @param failure
-     *  			callback for error during save
-     */
-    prototype.save = function(success, failure) {
-        this.loginServer.commit(function(p1) {
-            success();
-        }, function(p1) {
-            failure(p1);
-        }, new (stjs.extend(function LoginController$8() {
-            EcCallbackReturn0.call(this);
-        }, EcCallbackReturn0, [], function(constructor, prototype) {
-            prototype.callback = function() {
-                return null;
-            };
-        }, {}, {}))());
-    };
-    /**
-     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
-     *  authenticated and is unidentified
-     */
-    prototype.logout = function() {
-        this.loginServer.clear();
-        this.identity.selectedIdentity = null;
-        EcRepository.cache = new Object();
-        LoginController.setLoggedIn(false);
-        EcIdentityManager.ids = new Array();
-        EcIdentityManager.clearContacts();
-    };
-}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
-(function() {
-    if (localStorage != null) 
-        LoginController.storageSystem = localStorage;
-     else if (sessionStorage != null) 
-        LoginController.storageSystem = sessionStorage;
-    if (LoginController.storageSystem["cass.login"] != null) {
-        LoginController.refreshLoggedIn = LoginController.storageSystem["cass.login"] == "true" ? true : false;
-        LoginController.storageSystem["cass.login"] = false;
-    }
-})();
 /**
  *  Manages the server that the search controller (through EcRepository) and
  *  the identity controller (through EcIdentityManager) communicate with. 
@@ -1455,23 +1455,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
     };
 }, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "Storage", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
-var CassManagerScreen = function() {
-    EcScreen.call(this);
-};
-CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constructor, prototype) {
-    constructor.reloadLoginCallback = function() {
-        ModalManager.hideModal();
-        ScreenManager.replaceScreen(ScreenManager.getCurrentScreen(), null);
-    };
-    constructor.reloadShowLoginCallback = function() {
-        CassManagerScreen.showLoginModalIfReload();
-    };
-    constructor.showLoginModalIfReload = function() {
-        if (LoginController.getPreviouslyLoggedIn() && !LoginController.getLoggedIn()) {
-            ModalManager.showModal(new LoginModal(CassManagerScreen.reloadLoginCallback, null, AppSettings.returnLoginMessage), null);
-        }
-    };
-}, {reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 var UserIdentityScreen = function() {
     EcScreen.call(this);
 };
@@ -1503,6 +1486,23 @@ UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(cons
         }
     });
 })();
+var CassManagerScreen = function() {
+    EcScreen.call(this);
+};
+CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.reloadLoginCallback = function() {
+        ModalManager.hideModal();
+        ScreenManager.replaceScreen(ScreenManager.getCurrentScreen(), null);
+    };
+    constructor.reloadShowLoginCallback = function() {
+        CassManagerScreen.showLoginModalIfReload();
+    };
+    constructor.showLoginModalIfReload = function() {
+        if (LoginController.getPreviouslyLoggedIn() && !LoginController.getLoggedIn()) {
+            ModalManager.showModal(new LoginModal(CassManagerScreen.reloadLoginCallback, null, AppSettings.returnLoginMessage), null);
+        }
+    };
+}, {reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 var AppController = function() {};
 AppController = stjs.extend(AppController, null, [], function(constructor, prototype) {
     constructor.topBarContainerId = "#menuContainer";
@@ -1542,138 +1542,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
 }, {serverController: "ServerController", identityController: "IdentityController", searchController: "SearchController", loginController: "LoginController", repositoryController: "RepositoryController", cryptoController: "CryptoController", repoInterface: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();
-var FileManagerScreen = function() {
-    CassManagerScreen.call(this);
-};
-FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "fileManager";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-    prototype.getDisplayName = function() {
-        return FileManagerScreen.displayName;
-    };
-}, {reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
-            ScreenManager.startupScreen = new FileManagerScreen();
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RepoCreateScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "repoCreate";
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-    prototype.getDisplayName = function() {
-        return RepoCreateScreen.displayName;
-    };
-}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
-            ScreenManager.startupScreen = new RepoCreateScreen(null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var FrameworkSearchScreen = function(lastViewed, query, ownership) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-};
-FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkSearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-    prototype.getDisplayName = function() {
-        return FrameworkSearchScreen.displayName;
-    };
-}, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new FrameworkSearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
-            }
-            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var CompetencySearchScreen = function(lastViewed, query, ownership) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-};
-CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencySearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-    prototype.getDisplayName = function() {
-        return CompetencySearchScreen.displayName;
-    };
-}, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencySearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new CompetencySearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
-            }
-            ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
 var RelationshipSearchScreen = function(lastViewed, query, ownership) {
     CassManagerScreen.call(this);
     this.lastViewed = lastViewed;
@@ -1791,162 +1659,134 @@ AssertionSearchScreen = stjs.extend(AssertionSearchScreen, CassManagerScreen, []
         }
     });
 })();
-var FrameworkViewScreen = function(data) {
+var RepoCreateScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
 };
-FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkView";
+RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoCreate";
     prototype.data = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
     prototype.getDisplayName = function() {
-        return FrameworkViewScreen.displayName;
+        return RepoCreateScreen.displayName;
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkViewScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var firstParam = hashSplit[1];
-                if (firstParam.startsWith("id")) {
-                    var paramSplit = (firstParam.split("="));
-                    if (paramSplit.length > 1) {
-                        var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
-                            ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                            CassManagerScreen.showLoginModalIfReload();
-                        }, function(p1) {
-                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
-                            CassManagerScreen.showLoginModalIfReload();
-                        });
-                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                        return;
-                    }
-                }
-            }
-            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
+        if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
+            ScreenManager.startupScreen = new RepoCreateScreen(null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });
 })();
-var FrameworkEditScreen = function(data) {
+var FileManagerScreen = function() {
     CassManagerScreen.call(this);
-    this.data = data;
 };
-FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkEdit";
-    prototype.data = null;
+FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "fileManager";
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
     prototype.getDisplayName = function() {
-        return FrameworkEditScreen.displayName;
+        return FileManagerScreen.displayName;
     };
-}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+}, {reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var firstParam = hashSplit[1];
-                if (firstParam.startsWith("id")) {
-                    var paramSplit = (firstParam.split("="));
-                    if (paramSplit.length > 1) {
-                        var id = paramSplit[1];
-                        AppController.repositoryController.viewFramework(id, function(data) {
-                            ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                        }, function(p1) {
-                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
-                        });
-                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                        return;
-                    }
-                }
-            }
-            ScreenManager.startupScreen = new FrameworkEditScreen(null);
+        if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
+            ScreenManager.startupScreen = new FileManagerScreen();
             CassManagerScreen.showLoginModalIfReload();
         }
     });
 })();
-var CompetencyEditScreen = function(data) {
+var CompetencySearchScreen = function(lastViewed, query, ownership) {
     CassManagerScreen.call(this);
-    this.data = data;
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
 };
-CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencyEdit";
-    prototype.data = null;
+CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencySearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
     prototype.display = function(containerId, callback) {
         console.error("Not Implemented Yet!");
     };
     prototype.getDisplayName = function() {
-        return CompetencyEditScreen.displayName;
+        return CompetencySearchScreen.displayName;
     };
-}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+}, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
+        if (window.document.location.hash.startsWith("#" + CompetencySearchScreen.displayName)) {
             var hashSplit = (window.document.location.hash.split("?"));
             if (hashSplit.length > 1) {
-                var firstParam = hashSplit[1];
-                if (firstParam.startsWith("id")) {
-                    var paramSplit = (firstParam.split("="));
-                    if (paramSplit.length > 1) {
-                        var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
-                            ScreenManager.replaceScreen(new CompetencyEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                        }, function(p1) {
-                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
-                        });
-                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                        return;
-                    }
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
                 }
-            }
-            ScreenManager.startupScreen = new CompetencyEditScreen(null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var CompetencyViewScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencyView";
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
-    prototype.getDisplayName = function() {
-        return CompetencyViewScreen.displayName;
-    };
-}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var firstParam = hashSplit[1];
-                if (firstParam.startsWith("id")) {
-                    var paramSplit = (firstParam.split("="));
-                    if (paramSplit.length > 1) {
-                        var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
-                            ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                            CassManagerScreen.showLoginModalIfReload();
-                        }, function(p1) {
-                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
-                            CassManagerScreen.showLoginModalIfReload();
-                        });
-                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                        return;
-                    }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new CompetencySearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
                 }
             }
             ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkSearchScreen.displayName;
+    };
+}, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new FrameworkSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });
@@ -2112,6 +1952,45 @@ AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], fu
         }
     });
 })();
+var CompetencyEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyEdit";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return CompetencyEditScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new CompetencyEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new CompetencyEditScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
 var AssertionViewScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
@@ -2149,6 +2028,127 @@ AssertionViewScreen = stjs.extend(AssertionViewScreen, CassManagerScreen, [], fu
                 }
             }
             ScreenManager.startupScreen = new AssertionSearchScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var CompetencyViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyView";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return CompetencyViewScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkEdit";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkEditScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.viewFramework(id, function(data) {
+                            ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkEditScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkView";
+    prototype.data = null;
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return FrameworkViewScreen.displayName;
+    };
+}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkViewScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var firstParam = hashSplit[1];
+                if (firstParam.startsWith("id")) {
+                    var paramSplit = (firstParam.split("="));
+                    if (paramSplit.length > 1) {
+                        var id = paramSplit[1];
+                        AppController.repositoryController.view(id, function(data) {
+                            ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        }, function(p1) {
+                            ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                            CassManagerScreen.showLoginModalIfReload();
+                        });
+                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                        return;
+                    }
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });

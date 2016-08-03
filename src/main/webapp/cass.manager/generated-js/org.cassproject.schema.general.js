@@ -104,11 +104,17 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.toSignableJson = function() {
         var d = JSON.parse(this.toJson());
-        delete (d)["@signature"];
-        delete (d)["@owner"];
-        delete (d)["@reader"];
-        delete (d)["@id"];
-        delete (d)["privateEncrypted"];
+        if (this.type.contains("http://schema.eduworks.com/") && this.type.contains("/0.1/")) {
+            delete (d)["@signature"];
+            delete (d)["@owner"];
+            delete (d)["@reader"];
+            delete (d)["@id"];
+            delete (d)["privateEncrypted"];
+        } else {
+            delete (d)["@signature"];
+            delete (d)["@id"];
+            delete (d)["privateEncrypted"];
+        }
         var e = new EcLinkedData(d.context, d.type);
         e.copyFrom(d);
         return e.toJson();
@@ -180,6 +186,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             if (this.owner[i].equals(pem)) 
                 return;
         this.owner.push(pem);
+        this.signature = null;
     };
     /**
      *  Removes an owner from the object, if the owner does exist.
@@ -194,6 +201,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         for (var i = 0; i < this.owner.length; i++) 
             if (this.owner[i].equals(pem)) 
                 this.owner.splice(i, 1);
+        this.signature = null;
     };
     /**
      *  Adds a reader to the object, if the reader does not exist.
@@ -209,6 +217,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             if (this.reader[i].equals(pem)) 
                 return;
         this.reader.push(pem);
+        this.signature = null;
     };
     /**
      *  Removes a reader from the object, if the reader does exist.
@@ -223,6 +232,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         for (var i = 0; i < this.reader.length; i++) 
             if (this.reader[i].equals(pem)) 
                 this.reader.splice(i, 1);
+        this.signature = null;
     };
     /**
      *  Determines if the object will survive and be retreivable from a server,
@@ -327,7 +337,7 @@ EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, proto
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EcFile.TYPE_0_1)) {
+        if (EcFile.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];

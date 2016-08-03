@@ -109,8 +109,9 @@ function loginProcess() {
                         errorLogin
                     );
                 }
-            } else
-                alert(p1);
+            }
+            else
+            	alert(p1);
         }
     );
 }

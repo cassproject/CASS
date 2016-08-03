@@ -204,6 +204,7 @@ typeArray=#toArray(obj="@types").cforEach(
 searchObj=#object(
 	from="@start",
 	size="@size",
+	sort=#object(a=#object(name="asc")).valueSet(),
 	query=#object(
 		bool=#object(
 			must=#object(
@@ -291,6 +292,7 @@ checkNonSigReaderFilters = #if(operator=#indexOf(str="@q", substr=#add(a="", b="
 nonSigSearchObj = #object(
 	from="@start",
 	size="@size",
+	sort=#object(a=#object(name="asc")).valueSet(),
 	query=#object(
 		filtered=#object(
 			query=#object(
@@ -397,14 +399,9 @@ search = #if(operator=#toArray(obj="@sigResults").count(), operand="@size",
 	),
 ).ccall(
 	sigResults=checkRunSignatureSearch
-).removeDuplicates().displayJson(_collapse="true");
+).displayJson(_collapse="true");
 
 #skyrepoSearch=search;
-
-
-
-
-
 
 typesObj = #object(
 	query=#object(
