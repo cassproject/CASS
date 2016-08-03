@@ -1,64 +1,4 @@
 /**
- *  An identity is an alias that a person or system may own. It consists of a
- *  private key and a display name. Using the private key we may: 1. Perform all
- *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
- *  messages, ensuring the recipient knows that we sent the message and it was
- *  not altered.
- *  
- *  @author fray
- */
-var EcIdentity = function() {
-    this.displayName = "Alias " + EcIdentity.identityCounter++;
-};
-EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
-    constructor.identityCounter = 1;
-    prototype.ppk = null;
-    prototype.displayName = null;
-    prototype.source = null;
-    prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
-            return this.ppk.equals((obj).ppk);
-        return Object.prototype.equals.call(this, obj);
-    };
-    /**
-     *  Helper function to encrypt an identity into a credential (storable
-     *  version of an identity)
-     *  
-     *  @param secret
-     *             AES secret used to encrypt the credential.
-     *  @return Encrypted credential object.
-     */
-    prototype.toCredential = function(secret) {
-        var c = new EbacCredential();
-        c.iv = EcAes.newIv(32);
-        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
-        c.displayNameIv = EcAes.newIv(32);
-        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
-        return c;
-    };
-    /**
-     *  Helper function to decrypt a credential (storable version of an identity)
-     *  into an identity)
-     *  
-     *  @param credential
-     *             Credential to decrypt.
-     *  @param secret
-     *             AES secret used to decrypt the credential.
-     *  @param source
-     *             Source of the credential, used to track where a credential
-     *             came from.
-     *  @return Decrypted identity object, ready for use.
-     */
-    constructor.fromCredential = function(credential, secret, source) {
-        var i = new EcIdentity();
-        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
-        i.source = source;
-        if (credential.displayName != null && credential.displayNameIv != null) 
-            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
-        return i;
-    };
-}, {ppk: "EcPpk"}, {});
-/**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
  *  signed message that was sent (by using the verify function of the public key)
@@ -120,6 +60,66 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
         return i;
     };
 }, {pk: "EcPk"}, {});
+/**
+ *  An identity is an alias that a person or system may own. It consists of a
+ *  private key and a display name. Using the private key we may: 1. Perform all
+ *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
+ *  messages, ensuring the recipient knows that we sent the message and it was
+ *  not altered.
+ *  
+ *  @author fray
+ */
+var EcIdentity = function() {
+    this.displayName = "Alias " + EcIdentity.identityCounter++;
+};
+EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
+    constructor.identityCounter = 1;
+    prototype.ppk = null;
+    prototype.displayName = null;
+    prototype.source = null;
+    prototype.equals = function(obj) {
+        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
+            return this.ppk.equals((obj).ppk);
+        return Object.prototype.equals.call(this, obj);
+    };
+    /**
+     *  Helper function to encrypt an identity into a credential (storable
+     *  version of an identity)
+     *  
+     *  @param secret
+     *             AES secret used to encrypt the credential.
+     *  @return Encrypted credential object.
+     */
+    prototype.toCredential = function(secret) {
+        var c = new EbacCredential();
+        c.iv = EcAes.newIv(32);
+        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
+        c.displayNameIv = EcAes.newIv(32);
+        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
+        return c;
+    };
+    /**
+     *  Helper function to decrypt a credential (storable version of an identity)
+     *  into an identity)
+     *  
+     *  @param credential
+     *             Credential to decrypt.
+     *  @param secret
+     *             AES secret used to decrypt the credential.
+     *  @param source
+     *             Source of the credential, used to track where a credential
+     *             came from.
+     *  @return Decrypted identity object, ready for use.
+     */
+    constructor.fromCredential = function(credential, secret, source) {
+        var i = new EcIdentity();
+        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
+        i.source = source;
+        if (credential.displayName != null && credential.displayNameIv != null) 
+            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
+        return i;
+    };
+}, {ppk: "EcPpk"}, {});
 /**
  *  Manages identities and contacts, provides hooks to respond to identity and
  *  contact events, and builds signatures and signature sheets for authorizing
@@ -185,6 +185,47 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             c.push(o);
         }
         localStorage["contacts"] = JSON.stringify(c);
+    };
+    /**
+     *  Reads contact data from localstorage.
+     */
+    constructor.readIdentities = function() {
+        var localStore = localStorage["identities"];
+        if (localStore == null) 
+            return;
+        var c = JSON.parse(localStore);
+        for (var i = 0; i < c.length; i++) {
+            var identity = new EcIdentity();
+            var o = c[i];
+            var props = (o);
+            identity.displayName = props["displayName"];
+            identity.ppk = EcPpk.fromPem(props["ppk"]);
+            identity.source = props["source"];
+            var cont = false;
+            for (var j = 0; j < EcIdentityManager.ids.length; j++) {
+                if (EcIdentityManager.ids[j].ppk.toPem() == identity.ppk.toPem()) 
+                    cont = true;
+            }
+            if (cont) 
+                continue;
+            EcIdentityManager.ids.push(identity);
+        }
+    };
+    /**
+     *  Writes contact data to localstorage.
+     */
+    constructor.saveIdentities = function() {
+        var c = new Array();
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            var o = new Object();
+            var props = (o);
+            var identity = EcIdentityManager.ids[i];
+            props["displayName"] = identity.displayName;
+            props["ppk"] = identity.ppk.toPem();
+            props["source"] = identity.source;
+            c.push(o);
+        }
+        localStorage["identities"] = JSON.stringify(c);
     };
     constructor.clearContacts = function() {
         delete localStorage["contacts"];
@@ -385,17 +426,17 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
- *  Performs complete anonymization of the user.
+ *  Performs anonymization of the user.
  *  
- *  Requires initialization with application specific salts. Application specific
- *  salts prevent co-occurrence attacks, should credentials in one application be
+ *  Requires initialization with server specific salts. Server specific salts
+ *  prevent co-occurrence attacks, should credentials on one server be
  *  compromised (intercepted in transit).
  *  
  *  Transmits hashed username, hashed password, and encrypts credentials using
  *  the hashed combination of the username and password. This prevents the system
  *  storing the credentials from having any knowledge of the user.
  *  
- *  Password recovery is done through, when the password changes, creating a
+ *  Password recovery is done by, when the password changes, creating a
  *  cryptographic pad (or perfect cipher) where one half is stored on the server,
  *  and the other half is stored with the user. Should the user lose this pad and
  *  forget their password, they are not able to recover or reset their password,
@@ -451,6 +492,56 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         this.secretIterations = secretIterations;
         this.configured = true;
     };
+    prototype.configureFromServer = function(success, failure) {
+        var me = this;
+        EcRemote.getExpectingObject(this.server, "sky/id/salts", function(p1) {
+            me.usernameSalt = (p1)["usernameSalt"];
+            if (me.usernameSalt.length < 16) {
+                failure("Insufficient length on Username Salt");
+                return;
+            }
+            me.usernameIterations = stjs.trunc((p1)["usernameIterations"]);
+            if (me.usernameIterations < 1000) {
+                failure("Insufficient iterations on Username Hash");
+                return;
+            }
+            me.usernameWidth = stjs.trunc((p1)["usernameLength"]);
+            if (me.usernameWidth != 64) {
+                failure("Username Hash required to be length 64.");
+                return;
+            }
+            me.passwordSalt = (p1)["passwordSalt"];
+            if (me.passwordSalt.length < 16) {
+                failure("Insufficient length on Password Salt");
+                return;
+            }
+            me.passwordIterations = stjs.trunc((p1)["passwordIterations"]);
+            if (me.passwordIterations < 1000) {
+                failure("Insufficient iterations on Password Hash");
+                return;
+            }
+            me.passwordWidth = stjs.trunc((p1)["passwordLength"]);
+            if (me.passwordWidth != 64) {
+                failure("Password Hash required to be length 64.");
+                return;
+            }
+            me.secretSalt = (p1)["secretSalt"];
+            if (me.secretSalt.length < 16) {
+                failure("Insufficient length on Secret Salt");
+                return;
+            }
+            me.secretIterations = stjs.trunc((p1)["secretIterations"]);
+            if (me.secretIterations < 1000) {
+                failure("Insufficient iterations on Secret Hash");
+                return;
+            }
+            me.configured = true;
+            success(p1);
+        }, function(p1) {
+            me.configured = false;
+            failure(p1);
+        });
+    };
     /**
      *  Wipes login data.
      */
@@ -482,14 +573,46 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *             Password
      */
     prototype.startLogin = function(username, password) {
-        if (!this.configured) 
+        if (!this.configured) {
             alert("Remote Identity not configured.");
+            return;
+        }
         this.usernameWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
         this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(password, this.passwordSalt, this.passwordIterations, this.passwordWidth));
         var arys = new Array();
         arys.push(username, password);
         var secret = this.splicePasswords(arys);
         this.secretWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(secret, this.secretSalt, this.secretIterations, 32));
+    };
+    /**
+     *  Change password of user in memory. Does not automatically commit new credentials.
+     *  
+     *  Please clear username and password fields after this function is called.
+     *  
+     *  @param username
+     *             Username
+     *  @param oldPassword
+     *             Current password
+     *  @param newPassword
+     *             Desired password
+     */
+    prototype.changePassword = function(username, oldPassword, newPassword) {
+        var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
+        if (!this.usernameWithSalt.equals(usernameHash)) {
+            alert("Username does not match. Aborting password change.");
+            return false;
+        }
+        var oldPasswordHash = forge.util.encode64(forge.pkcs5.pbkdf2(oldPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
+        if (!this.passwordWithSalt.equals(oldPasswordHash)) {
+            alert("Old password does not match. Aborting password change.");
+            return false;
+        }
+        this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(newPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
+        var arys = new Array();
+        arys.push(username, newPassword);
+        var secret = this.splicePasswords(arys);
+        this.secretWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(secret, this.secretSalt, this.secretIterations, 32));
+        return true;
     };
     /**
      *  Fetch credentials from server, invoking events based on login success or
@@ -503,8 +626,10 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  @param failure
      */
     prototype.fetch = function(success, failure) {
-        if (!this.configured) 
+        if (!this.configured) {
             alert("Remote Identity not configured.");
+            return;
+        }
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
             alert("Please log in before performing this operation.");
             return;

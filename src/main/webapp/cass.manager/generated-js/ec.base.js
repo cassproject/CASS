@@ -1,13 +1,3 @@
-var EcCallbackReturn0 = function() {};
-EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
-    prototype.callback = function() {};
-}, {}, {});
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
-    constructor.isArray = function(o) {
-        return toString.call(o) == "[object Array]";
-    };
-}, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.async = true;
@@ -104,6 +94,20 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
+}, {}, {});
+var EcCallbackReturn1 = function() {};
+EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
+    prototype.callback = function(param1) {};
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
+    };
+}, {}, {});
+var EcCallbackReturn0 = function() {};
+EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
+    prototype.callback = function() {};
 }, {}, {});
 var EcCallback = function() {};
 EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {

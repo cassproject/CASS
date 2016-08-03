@@ -21,7 +21,7 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
     prototype.password = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentialRequest.TYPE_0_1)) {
+        if (EbacCredentialRequest.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -35,6 +35,50 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Credential list along with one time pad and session-based token for use in
+ *  commit actions.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacCredentials = function() {
+    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_2);
+};
+EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
+    /**
+     *  One time pad (aka perfect cipher)
+     */
+    prototype.pad = null;
+    /**
+     *  Token provided by server to use in commit actions.
+     */
+    prototype.token = null;
+    /**
+     *  Credential array.
+     */
+    prototype.credentials = null;
+    /**
+     *  Contact array.
+     */
+    prototype.contacts = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (EbacCredentials.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Ebac.context_0_2, EbacCredentials.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(EbacCredentials.TYPE_0_2);
+        a.push(EbacCredentials.TYPE_0_1);
+        return a;
+    };
+}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  AES encrypted private key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt private identities for storage on remote
@@ -66,7 +110,7 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
     prototype.displayName = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredential.TYPE_0_1)) {
+        if (EbacCredential.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -113,7 +157,7 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
     prototype.source = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacContact.TYPE_0_1)) {
+        if (EbacContact.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -127,50 +171,6 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Credential list along with one time pad and session-based token for use in
- *  commit actions.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var EbacCredentials = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_2);
-};
-EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
-    /**
-     *  One time pad (aka perfect cipher)
-     */
-    prototype.pad = null;
-    /**
-     *  Token provided by server to use in commit actions.
-     */
-    prototype.token = null;
-    /**
-     *  Credential array.
-     */
-    prototype.credentials = null;
-    /**
-     *  Contact array.
-     */
-    prototype.contacts = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentials.TYPE_0_1)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Ebac.context_0_2, EbacCredentials.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(EbacCredentials.TYPE_0_2);
-        a.push(EbacCredentials.TYPE_0_1);
-        return a;
-    };
-}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Component of EbacEncryptedValue that contains data needed to decrypt
  *  encrypted payload. Is, in itself, encrypted.
@@ -229,7 +229,7 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacEncryptedSecret.TYPE_0_1)) {
+        if (EbacEncryptedSecret.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -277,7 +277,7 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
     prototype.server = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacSignature.TYPE_0_1)) {
+        if (EbacSignature.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -317,9 +317,21 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  object.
      */
     prototype.name = null;
+    prototype.copyFrom = function(that) {
+        var me = (this);
+        for (var key in me) 
+            delete me[key];
+        var you = (that);
+        for (var key in you) {
+            if (me[key] == null) 
+                me[key.replace("@", "")] = you[key];
+        }
+        if (!this.isAny(this.getTypes())) 
+             throw new RuntimeException("Incompatible type: " + this.getFullType());
+    };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacEncryptedValue.TYPE_0_1)) {
+        if (EbacEncryptedValue.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -354,7 +366,7 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
     prototype.responseSignature = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacContactGrant.TYPE_0_1)) {
+        if (EbacContactGrant.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
@@ -402,7 +414,7 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
     prototype.credentials = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (this.type.equals(EbacCredentialCommit.TYPE_0_1)) {
+        if (EbacCredentialCommit.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];

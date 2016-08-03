@@ -12,7 +12,9 @@ function frameworkSearch() {
     var searchString = new EcFramework().getSearchStringByType();
     //    if ($("#frameworkSearch").length > 0 && $("#frameworkSearch").val().trim() != "")
     //  searchString += " AND (" + $("#frameworkSearch").val() + ")";
-    repo.search(searchString, null,
+    repo.searchWithParams(searchString, {
+            size: 5000
+        }, null,
         function (frameworks) {
             $("#frameworks").replaceWith(frameworksTemplate);
             $("#frameworks-frameworks").html("");

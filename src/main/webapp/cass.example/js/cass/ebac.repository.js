@@ -382,9 +382,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
         hostnames.push("localhost", "localhost:8080", "localhost:9722");
         var servicePrefixes = new Array("/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/custom/");
-        for (var i = 0; i < protocols.length; i++) 
-            for (var j = 0; j < hostnames.length; j++) 
-                for (var k = 0; k < servicePrefixes.length; k++) 
+        for (var j = 0; j < hostnames.length; j++) 
+            for (var k = 0; k < servicePrefixes.length; k++) 
+                for (var i = 0; i < protocols.length; i++) 
                     if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k])) {
                         EcRemote.async = true;
                         return;

@@ -120,7 +120,7 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
     prototype.isAny = function(type) {
         var computedType = this.getFullType();
         for (var i = 0; i < type.length; i++) 
-            if (computedType.equals(type[i]) || this.type.equals(type[i])) 
+            if (type[i].equals(computedType) || type[i].equals(this.type)) 
                 return true;
         return false;
     };
@@ -154,12 +154,14 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.copyFrom = function(that) {
         var me = (this);
+        for (var key in me) 
+            delete me[key];
         var you = (that);
-        this.upgrade();
         for (var key in you) {
             if (me[key] == null) 
                 me[key.replace("@", "")] = you[key];
         }
+        this.upgrade();
         if (!this.isAny(this.getTypes())) 
              throw new RuntimeException("Incompatible type: " + this.getFullType());
     };

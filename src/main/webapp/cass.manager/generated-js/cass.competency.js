@@ -1,5 +1,64 @@
-var CompetencyManager = function() {};
-CompetencyManager = stjs.extend(CompetencyManager, null, [], null, {}, {});
+/**
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAlignment = function() {
+    Relation.call(this);
+};
+EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.source == null || this.source == "") {
+            var msg = "Source Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.target == null || this.target == "") {
+            var msg = "Target Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == "") {
+            var msg = "Relation Type cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAlignment.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an alignment.");
+                return;
+            }
+            var c = new EcAlignment();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  The sequence that assertions should be built as such:
  *  1. Generate the ID.
@@ -37,7 +96,11 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.getSubjectName = function() {
         if (this.subject == null) 
             return "Nobody";
-        var contact = EcIdentityManager.getContact(this.getSubject());
+        var subjectPk = this.getSubject();
+        var identity = EcIdentityManager.getIdentity(subjectPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(subjectPk);
         if (contact == null || contact.displayName == null) 
             return "Unknown Subject";
         return contact.displayName;
@@ -45,7 +108,11 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.getAgentName = function() {
         if (this.agent == null) 
             return "Nobody";
-        var contact = EcIdentityManager.getContact(this.getAgent());
+        var agentPk = this.getAgent();
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(agentPk);
         if (contact == null || contact.displayName == null) 
             return "Unknown Agent";
         return contact.displayName;
@@ -92,6 +159,14 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return decryptedString;
+    };
+    prototype.getNegative = function() {
+        if (this.negative == null) 
+            return false;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.decayFunction);
+        var decryptedString = v.decryptIntoString();
+        return Boolean.getBoolean(decryptedString);
     };
     /**
      *  Sets the subject of an assertion. Makes a few assumptions:
@@ -207,14 +282,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
                 failure(p1);
         });
     };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    prototype.getSearchStringByTypeAndCompetency = function(competency) {
+        return "(" + this.getSearchStringByType() + " AND competency:\"" + competency.shortId() + "\")";
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  @author fritz.ray@eduworks.com
  */
-var EcAlignment = function() {
-    Relation.call(this);
+var EcRollupRule = function() {
+    RollupRule.call(this);
 };
-EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
     prototype.setName = function(name) {
         this.name = name;
     };
@@ -222,24 +300,16 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         this.description = description;
     };
     prototype.save = function(success, failure) {
-        if (this.source == null || this.source == "") {
-            var msg = "Source Competency cannot be missing";
+        if (this.rule == null || this.rule == "") {
+            var msg = "RollupRule Rule cannot be empty";
             if (failure != null) 
                 failure(msg);
              else 
                 console.error(msg);
             return;
         }
-        if (this.target == null || this.target == "") {
-            var msg = "Target Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.relationType == null || this.relationType == "") {
-            var msg = "Relation Type cannot be missing";
+        if (this.competency == null || this.competency == "") {
+            var msg = "RollupRule's Competency cannot be empty";
             if (failure != null) 
                 failure(msg);
              else 
@@ -248,19 +318,19 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         }
         EcRepository._save(this, success, failure);
     };
-    prototype._delete = function(success, failure) {
+    prototype._delete = function(success, failure, repo) {
         EcRepository.DELETE(this, success, failure);
     };
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             if (success == null) 
                 return;
-            if (!p1.isA(EcAlignment.myType)) {
+            if (!p1.isA(EcRollupRule.myType)) {
                 if (failure != null) 
-                    failure("Resultant object is not an alignment.");
+                    failure("Resultant object is not a level.");
                 return;
             }
-            var c = new EcAlignment();
+            var c = new EcRollupRule();
             c.copyFrom(p1);
             success(c);
         }, function(p1) {
@@ -674,4 +744,4 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 failure(p1);
         });
     };
-}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
