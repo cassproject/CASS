@@ -373,8 +373,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcRemote.async = false;
         var protocols = new Array();
         protocols.push("https:");
-        if (window.location.protocol == "http:") 
-            protocols.push("http:");
+        if (window != null) 
+            if (window.location != null) 
+                if (window.location.protocol == "http:") 
+                    protocols.push("http:");
         var hostnames = new Array();
         if (window.location.host != null) 
             hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");

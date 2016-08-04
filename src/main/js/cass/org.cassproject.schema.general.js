@@ -252,8 +252,6 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     prototype.invalid = function() {
         if (this.id == null) 
             return true;
-        if (this.id.contains("http://") == false && this.id.contains("https://") == false) 
-            return true;
         if (this.context == null) 
             return true;
         if (this.getFullType() == null) 

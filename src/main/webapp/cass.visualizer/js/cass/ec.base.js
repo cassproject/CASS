@@ -17,7 +17,19 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
         var failureCallback = function(paramP1, paramP2, paramP3) {
             if (failure != null) 
-                failure(paramP1.responseText);
+                if (paramP1 != null) 
+                    if (paramP1.responseText != null) 
+                        failure("Error in AJAX request 001: " + paramP1.responseText);
+                     else if (paramP1.statusText != null) 
+                        failure("Error in AJAX request 002: " + paramP1.statusText.toString());
+                     else 
+                        failure("General error in AJAX request.");
+                 else if (paramP2 != null) 
+                    failure("Error in AJAX request 003: " + paramP2);
+                 else if (paramP3 != null) 
+                    failure("Error in AJAX request 004: " + paramP2);
+                 else 
+                    failure("General error in AJAX request.");
         };
         EcRemote.postInner(server, service, fd, successCallback, failureCallback);
     };
@@ -41,17 +53,34 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         var p = {};
         p.method = "POST";
         p.url = url;
-        p.mimeType = "multipart/form-data";
-        p.data = fd;
+        if ((fd)["_streams"] != null) {
+            var chunks = (fd)["_streams"];
+            var all = "";
+            for (var i = 0; i < chunks.length; i++) {
+                if ((typeof chunks[i]) == "function") 
+                    all = all + "\r\n";
+                 else 
+                    all = all + chunks[i];
+            }
+            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
+            p.headers = new Object();
+            p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
+            p.data = all;
+        } else {
+            p.mimeType = "multipart/form-data";
+            p.data = fd;
+        }
         (p)["contentType"] = false;
         p.cache = false;
         p.async = EcRemote.async;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
-        if (p.url.indexOf(window.location.protocol) == -1) 
-            if (!p.url.startsWith("https")) 
-                p.url = p.url.replace("http", "https");
+        if (window != null) 
+            if (window.location != null) 
+                if (p.url.indexOf(window.location.protocol) == -1) 
+                    if (!p.url.startsWith("https")) 
+                        p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor.getExpectingObject = function(server, service, success, failure) {
@@ -76,9 +105,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
-        if (p.url.indexOf(window.location.protocol) == -1) 
-            if (!p.url.startsWith("https")) 
-                p.url = p.url.replace("http", "https");
+        if (window != null) 
+            if (window.location != null) 
+                if (p.url.indexOf(window.location.protocol) == -1) 
+                    if (!p.url.startsWith("https")) 
+                        p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
     constructor._delete = function(url, signatureSheet, success, failure) {
@@ -98,9 +129,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.headers["signatureSheet"] = signatureSheet;
         p.success = successCallback;
         p.error = failureCallback;
-        if (p.url.indexOf(window.location.protocol) == -1) 
-            if (!p.url.startsWith("https")) 
-                p.url = p.url.replace("http", "https");
+        if (window != null) 
+            if (window.location != null) 
+                if (p.url.indexOf(window.location.protocol) == -1) 
+                    if (!p.url.startsWith("https")) 
+                        p.url = p.url.replace("http", "https");
         $.ajax(p);
     };
 }, {}, {});

@@ -636,11 +636,11 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      */
     prototype.fetch = function(success, failure) {
         if (!this.configured) {
-            alert("Remote Identity not configured.");
+            failure("Remote Identity not configured.");
             return;
         }
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
-            alert("Please log in before performing this operation.");
+            failure("Please log in before performing this operation.");
             return;
         }
         var r = new EbacCredentialRequest();
