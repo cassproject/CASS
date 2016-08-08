@@ -19,15 +19,15 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             if (failure != null) 
                 if (paramP1 != null) 
                     if (paramP1.responseText != null) 
-                        failure("Error in AJAX request 001: " + paramP1.responseText);
+                        failure(paramP1.responseText);
                      else if (paramP1.statusText != null) 
-                        failure("Error in AJAX request 002: " + paramP1.statusText.toString());
+                        failure(paramP1.statusText.toString());
                      else 
                         failure("General error in AJAX request.");
                  else if (paramP2 != null) 
-                    failure("Error in AJAX request 003: " + paramP2);
+                    failure(paramP2);
                  else if (paramP3 != null) 
-                    failure("Error in AJAX request 004: " + paramP2);
+                    failure(paramP2);
                  else 
                     failure("General error in AJAX request.");
         };
