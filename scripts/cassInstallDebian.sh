@@ -69,7 +69,7 @@ rm -rf CASS
 service tomcat7 start
 service tomcat7 stop
 
-num=`grep JkMount /etc/apache2/sites-enabled/000-default.conf | wc -l`
+num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
 if [ "$num" -eq 0 ]
  then
 
