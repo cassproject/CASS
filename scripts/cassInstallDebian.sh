@@ -59,7 +59,7 @@ apt-get -qy install apache2
 #Download and Compile CASS
 echo -----
 echo Downloading CASS Repo...
-git clone https://github.com/cassproject/CASS
+git clone https://github.com/cassproject/CASS -b 0.1.0-SNAPSHOT
 cd CASS
 mvn -q clean install
 cp target/cass-0.1.0.war /var/lib/tomcat7/webapps
@@ -68,32 +68,19 @@ rm -rf CASS
 service tomcat7 start
 service tomcat7 stop
 
-num=`grep JkMount /etc/apache2/sites-enabled/000-default.conf | wc -l`
+num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
 if [ "$num" -eq 0 ]
  then
 
 #Point Apache at Tomcat
 echo -----
-echo Configuring Apache and Tomcat...
+echo Configuring Apache...
 
-apt-get -yq install libapache2-mod-jk
+echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
+echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/apache2/sites-enabled/000-default.conf
+echo "ProxyPassReverse  /  http://localhost:8080/cass-0.1.0/" >> /etc/apache2/sites-enabled/000-default.conf
 
-sed -i "94d" /etc/tomcat7/server.xml 
-sed -i "95d" /etc/tomcat7/server.xml
-
-echo "worker.list=worker" >> /etc/apache2/workers.properties
-echo "worker.worker.type=ajp13" >> /etc/apache2/workers.properties
-echo "worker.worker.host=localhost" >> /etc/apache2/workers.properties
-echo "worker.worker.port=8009" >> /etc/apache2/workers.properties
-
-sed -i "/JkWorkersFile/d" /etc/apache2/mods-available/jk.conf
-sed -i "/<IfModule jk_module/a JkWorkersFile /etc/apache2/workers.properties" /etc/apache2/mods-available/jk.conf 
-
-sed -i "/<VirtualHost/a RewriteRule ^/(.*) /cass-0.1.0/\$1 [PT]" /etc/apache2/sites-enabled/000-default.conf 
-sed -i "/<VirtualHost/a RewriteEngine On" /etc/apache2/sites-enabled/000-default.conf 
-sed -i "/<\/VirtualHost/i JkMount /cass-0.1.0/* worker" /etc/apache2/sites-enabled/000-default.conf 
-
-a2enmod rewrite
+a2enmod proxy_http ssl
 
 fi
 
