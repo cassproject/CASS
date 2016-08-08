@@ -93,6 +93,7 @@ echo Configuring Apache and Tomcat...
 #chown apache:apache /var/run/mod_jk
 
 #Point Apache at Tomcat
+echo "ProxyRequests Off" >> /etc/httpd/conf/httpd.conf
 echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
 echo "ProxyPassReverse  /  http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
 
