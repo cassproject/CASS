@@ -90,11 +90,9 @@ echo "worker.worker.port=8009" >> /etc/apache2/workers.properties
 sed -i "/JkWorkersFile/d" /etc/apache2/mods-available/jk.conf
 sed -i "/<IfModule jk_module/a JkWorkersFile /etc/apache2/workers.properties" /etc/apache2/mods-available/jk.conf 
 
-sed -i "/<VirtualHost/a RewriteRule ^/(.*) /cass-0.1.0/\$1 [PT]" /etc/apache2/sites-enabled/000-default.conf 
-sed -i "/<VirtualHost/a RewriteEngine On" /etc/apache2/sites-enabled/000-default.conf 
 sed -i "/<\/VirtualHost/i JkMount /cass-0.1.0/* worker" /etc/apache2/sites-enabled/000-default.conf 
 
-a2enmod rewrite
+a2enmod rewrite ssl
 
 fi
 
