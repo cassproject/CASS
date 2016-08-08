@@ -75,9 +75,7 @@ if [ "$num" -eq 0 ]
 
 #Point Apache at Tomcat
 echo -----
-echo Configuring Apache and Tomcat...
-
-apt-get -yq install libapache2-mod-jk
+echo Configuring Apache...
 
 echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
 echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/apache2/sites-enabled/000-default.conf
