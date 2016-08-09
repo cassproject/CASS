@@ -48,6 +48,7 @@ echo -----
 echo Installing ElasticSearch 2.2...
 gdebi -q -n elasticsearch-2.2.1.deb
 rm elasticsearch-2.2.1.deb
+update-rc.d elasticsearch defaults
 
 
 #Install apache2
