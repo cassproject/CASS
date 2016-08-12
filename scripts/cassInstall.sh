@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
+if [ "$EUID" -ne 0 ];
   then echo "Please run as root."
   exit
 fi
@@ -12,52 +12,52 @@ echo Detecting Platform...
 
 platformFedora=`cat /etc/*release | grep fedora | wc -l`
 platformDebian=`cat /etc/*release | grep debian | wc -l`
-if [ "$platformDebian" -eq 0 ]
+if [ "$platformDebian" -ne 0 ];
  then
 echo Debian based platform found...
 fi
-if [ "$platformFedora" -eq 0 ]
+if [ "$platformFedora" -ne 0 ];
  then
 echo Fedora based platform found...
 fi
-if [ "$platformDebian" -eq 0 ] && [ "$platformFedora" -eq 0 ];
+if [ "$platformDebian" -ne 0 ] && [ "$platformFedora" -ne 0 ];
  then
 echo No compatible platform found. Exiting.
 exit 1
-echo
+fi
 
 echo -----
 echo Updating Repositories...
 
-if [ "$platformDebian" -eq 0 ]
+if [ "$platformDebian" -ne 0 ];
  then
 apt-get -qqy update
 fi
-if [ "$platformFedora" -eq 0 ]
+if [ "$platformFedora" -ne 0 ];
  then
 yum -y -q update
 fi
 
-if [ "$platformDebian" -eq 0 ] && [ ! -e "/usr/bin/git" ];
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
 echo -----
 echo Installing git...
 apt-get -qqy install git
 fi
-if [ "$platformFedora" -eq 0 ] && [ ! -e "/usr/bin/git" ];
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
 echo -----
 echo Installing git...
 yum install -y -q git
 fi
 
-if [ "$platformDebian" -eq 0 ] && [ ! -e "/usr/bin/mvn" ];
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
 echo -----
 echo Installing Maven...
 apt-get -qqy install maven
 fi
-if [ "$platformFedora" -eq 0 ] && [ ! -e "/usr/bin/mvn" ];
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
 echo -----
 echo Installing Maven...
@@ -66,7 +66,7 @@ sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 yum install -y -q apache-maven
 fi
 
-if [ "$platformDebian" -eq 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat 7...
@@ -75,7 +75,7 @@ mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
 fi
-if [ "$platformFedora" -eq 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat 7...
@@ -91,18 +91,18 @@ sleep 3s
 echo -----
 echo Removing Old Versions of CASS...
 
-if [ "$platformDebian" -eq 0 ]
+if [ "$platformDebian" -ne 0 ]
  then
 rm -rf /var/lib/tomcat7/webapps/levr*
 rm -rf /var/lib/tomcat7/webapps/cass*
 fi
-if [ "$platformFedora" -eq 0 ]
+if [ "$platformFedora" -ne 0 ]
  then
 rm -rf /usr/share/tomcat7/webapps/levr*
 rm -rf /usr/share/tomcat7/webapps/cass*
 fi
 
-if [ "$platformDebian" -eq 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
 echo Downloading ElasticSearch 2.2...
@@ -114,7 +114,7 @@ gdebi -q -n elasticsearch-2.2.1.deb
 rm elasticsearch-2.2.1.deb
 update-rc.d elasticsearch defaults
 fi
-if [ "$platformFedora" -eq 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
 echo Downloading ElasticSearch 2.2...
@@ -127,13 +127,13 @@ chkconfig --add elasticsearch
 chkconfig elasticsearch on
 fi
 
-if [ "$platformDebian" -eq 0 ] && [ ! -e "/etc/init.d/apache2" ];
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/apache2" ];
  then
 echo -----
 echo Installing Apache 2...
 apt-get -qqy install apache2
 fi
-if [ "$platformFedora" -eq 0 ] && [ ! -e "/etc/init.d/httpd" ];
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/httpd" ];
  then
 echo -----
 echo Installing HTTPD...
@@ -155,7 +155,7 @@ cp target/cass-*.war /var/lib/tomcat7/webapps
 cd ..
 rm -rf CASS
 
-if [ "$platformDebian" -eq 0 ];
+if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Configuring Apache
@@ -175,7 +175,7 @@ echo Configuring Apache
 	fi
 fi
 
-if [ "$platformFedora" -eq 0 ];
+if [ "$platformFedora" -ne 0 ];
  then
 	num=`grep ProxyPass /etc/httpd/conf/httpd.conf | wc -l`
 	if [ "$num" -eq 0 ]
@@ -191,7 +191,7 @@ if [ "$platformFedora" -eq 0 ];
 	fi
 fi
 
-if [ "$platformDebian" -eq 0 ];
+if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Synchronizing Time with NIST...
@@ -199,7 +199,7 @@ apt-get -qy install ntpdate
 ntpdate -s time.nist.gov
 fi
 
-if [ "$platformFedora" -eq 0 ];
+if [ "$platformFedora" -ne 0 ];
  then
 echo -----
 echo Synchronizing Time with NIST...
@@ -216,7 +216,7 @@ echo Starting ElasticSearch...
 service elasticsearch stop
 service elasticsearch start
 
-if [ "$platformDebian" -eq 0 ];
+if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Starting Apache...
@@ -224,7 +224,7 @@ service apache2 stop
 service apache2 start
 fi
 
-if [ "$platformFedora" -eq 0 ];
+if [ "$platformFedora" -ne 0 ];
  then
 echo -----
 echo Starting HTTPD...
@@ -238,4 +238,3 @@ echo
 echo We highly recommend the following next steps:
 echo  -Mapping DNS to this machine.
 echo  -Installing and configuring SSL.
-
