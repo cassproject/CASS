@@ -195,7 +195,7 @@ if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Synchronizing Time with NIST...
-apt-get -qy install ntpdate
+apt-get -qqy install ntpdate
 ntpdate -s time.nist.gov
 fi
 
@@ -232,7 +232,8 @@ service httpd stop
 service httpd start
 fi
 
-clear
+echo -----
+echo -----
 echo Navigate to this server to see CASS.
 echo
 echo We highly recommend the following next steps:
