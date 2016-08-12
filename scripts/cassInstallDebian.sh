@@ -10,25 +10,25 @@ cd
 
 echo -----
 echo Updating Repositories...
-apt-get -qy update
+apt-get -qqy update
 
 
 #Install git
 echo -----
 echo Installing git...
-apt-get -yq install git
+apt-get -qqy install git
 
 
 #Install Maven
 echo -----
 echo Installing Maven...
-apt-get -yq install maven
+apt-get -qqy install maven
 
 
 #Install Tomcat
 echo -----
 echo Installing Tomcat 7...
-apt-get -y -q install tomcat7
+apt-get -qqy install tomcat7
 mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
@@ -43,7 +43,7 @@ rm -rf /var/lib/tomcat7/webapps/cass*
 echo -----
 echo Downloading ElasticSearch 2.2...
 wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.2.1/elasticsearch-2.2.1.deb
-apt-get -yq install gdebi
+apt-get -qqy install gdebi
 echo -----
 echo Installing ElasticSearch 2.2...
 gdebi -q -n elasticsearch-2.2.1.deb
@@ -54,7 +54,7 @@ update-rc.d elasticsearch defaults
 #Install apache2
 echo -----
 echo Installing Apache 2...
-apt-get -qy install apache2
+apt-get -qqy install apache2
 
 
 #Download and Compile CASS
