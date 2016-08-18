@@ -1,8 +1,0 @@
-endpoint=#httpGet(
-	url="https://lrs.adlnet.gov/xapi/statements?format=exact",
-	X-Experience-API-Version="1.0.1",
-	Authorization="Basic eGFwaS10b29sczp4YXBpLXRvb2xz"
-).toObject();
-endpointDebug=endpoint.displayJson();
-
-/xapi/endpoint=endpointDebug;

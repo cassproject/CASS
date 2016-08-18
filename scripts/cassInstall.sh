@@ -151,7 +151,7 @@ echo Downloading CASS Repo...
 git clone https://github.com/cassproject/CASS -b $branch
 cd CASS
 mvn -q clean install
-cp target/cass-*.war /var/lib/tomcat7/webapps
+cp target/cass.war /var/lib/tomcat7/webapps
 cd ..
 rm -rf CASS
 
@@ -167,8 +167,8 @@ echo Configuring Apache
 	echo Configuring Apache...
 
 	echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
-	echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/apache2/sites-enabled/000-default.conf
-	echo "ProxyPassReverse  /  http://localhost:8080/cass-0.1.0/" >> /etc/apache2/sites-enabled/000-default.conf
+	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
+	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
 
 	a2enmod proxy_http ssl
 
@@ -185,8 +185,8 @@ if [ "$platformFedora" -ne 0 ];
 	echo Configuring HTTPD...
 
 	echo "ProxyRequests Off" >> /etc/httpd/conf/httpd.conf
-	echo "ProxyPass / http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
-	echo "ProxyPassReverse  /  http://localhost:8080/cass-0.1.0/" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
 
 	fi
 fi
