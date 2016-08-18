@@ -83,11 +83,11 @@ function searchFlr() {
 $("#alignmentTypeSelect").append("<option/>");
 $("#alignmentTypeSelect").children().last().text("No Selected Alignment Type");
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "assesses").text("Assesses");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "assesses").text("Assesses - Store in LR Sandbox");
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "teaches").text("Teaches");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "teaches").text("Teaches - Store in LR Sandbox");
 $("#alignmentTypeSelect").append("<option/>");
-$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "requires").text("Requires");
+$("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "requires").text("Requires - Store in LR Sandbox");
 
 $("#main").append("<label title='gpg --export-secret-key -a \"Your Name\"'>LR Signing Key:</label><input type='file' id='pgpkey'/>");
 
@@ -100,6 +100,7 @@ resourceCommitHooks.push(lrUpload = function () {
         var cw = new CreativeWork();
         var ao = new AlignmentObject();
         cw.url = $("#selectedResource").attr("url");
+        cw.name = $("#selectedResource").text();
         ao.alignmentType = $("#alignmentTypeSelect option:selected").attr("alignment");
         ao.targetUrl = $("#selectedCompetency").attr("url");
         ao.targetName = $("#selectedCompetency").text();

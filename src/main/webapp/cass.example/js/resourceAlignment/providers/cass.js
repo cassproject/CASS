@@ -8,12 +8,12 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-//$("#alignmentTypeSelect").append("<option/>");
-//$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","assesses").text("CASS as an LRMI (schema.org/AlignmentObject) 'assesses' alignment.");
-//$("#alignmentTypeSelect").append("<option/>");
-//$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","teaches").text("CASS as an LRMI (schema.org/AlignmentObject) 'teaches' alignment.");
-//$("#alignmentTypeSelect").append("<option/>");
-//$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","requires").text("CASS as an LRMI (schema.org/AlignmentObject) 'requires' alignment.");
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","assesses").text("Assesses - Store in CASS");
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","teaches").text("Teaches - Store in CASS");
+$("#alignmentTypeSelect").append("<option/>");
+$("#alignmentTypeSelect").children().last().attr("value","CASS-AO").attr("alignment","requires").text("Requires - Store in CASS");
 
 resourceCommitHooks.push(function(){
     
@@ -26,7 +26,8 @@ resourceCommitHooks.push(function(){
         }
         var cw = new CreativeWork();
         var ao = new AlignmentObject();
-        cw.url = $("#selectedResource").text();
+        cw.url = $("#selectedResource").attr("url");
+        cw.name = $("#selectedResource").text();
         ao.alignmentType = $("#alignmentTypeSelect option:selected").attr("alignment");
         ao.targetUrl = $("#selectedCompetency").attr("url");
         ao.targetName = $("#selectedCompetency").text();
