@@ -5,25 +5,16 @@
 	<groupId>com.eduworks</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.eduworks</groupId>
-			<artifactId>ew.levr.security</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.eduworks</groupId>
-			<artifactId>ew.levr.net</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.eduworks</groupId>
-			<artifactId>ew.levr.base</artifactId>
-			<version>3.0.0</version>
+			<artifactId>ew.levr.ebac.skyid</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>cass</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
