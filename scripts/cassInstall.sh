@@ -151,7 +151,7 @@ echo Downloading CASS Repo...
 git clone https://github.com/cassproject/CASS -b $branch
 cd CASS
 mvn -q clean install
-cp target/cass-*.war /var/lib/tomcat7/webapps
+cp target/cass.war /var/lib/tomcat7/webapps
 cd ..
 rm -rf CASS
 
