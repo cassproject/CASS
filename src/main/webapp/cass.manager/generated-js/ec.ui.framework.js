@@ -250,16 +250,6 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     });
 })();
 /**
- *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
- *  in the URL bar and in the history so the page can be loaded on back button or startup 
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
-/**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
  *  session, so  when the back button is pressed, the application will load the previous screen with any data that 
@@ -543,6 +533,16 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
+/**
+ *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
+ *  in the URL bar and in the history so the page can be loaded on back button or startup 
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays

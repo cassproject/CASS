@@ -1,4 +1,64 @@
 /**
+ *  An identity is an alias that a person or system may own. It consists of a
+ *  private key and a display name. Using the private key we may: 1. Perform all
+ *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
+ *  messages, ensuring the recipient knows that we sent the message and it was
+ *  not altered.
+ *  
+ *  @author fray
+ */
+var EcIdentity = function() {
+    this.displayName = "Alias " + EcIdentity.identityCounter++;
+};
+EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
+    constructor.identityCounter = 1;
+    prototype.ppk = null;
+    prototype.displayName = null;
+    prototype.source = null;
+    prototype.equals = function(obj) {
+        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
+            return this.ppk.equals((obj).ppk);
+        return Object.prototype.equals.call(this, obj);
+    };
+    /**
+     *  Helper function to encrypt an identity into a credential (storable
+     *  version of an identity)
+     *  
+     *  @param secret
+     *             AES secret used to encrypt the credential.
+     *  @return Encrypted credential object.
+     */
+    prototype.toCredential = function(secret) {
+        var c = new EbacCredential();
+        c.iv = EcAes.newIv(32);
+        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
+        c.displayNameIv = EcAes.newIv(32);
+        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
+        return c;
+    };
+    /**
+     *  Helper function to decrypt a credential (storable version of an identity)
+     *  into an identity)
+     *  
+     *  @param credential
+     *             Credential to decrypt.
+     *  @param secret
+     *             AES secret used to decrypt the credential.
+     *  @param source
+     *             Source of the credential, used to track where a credential
+     *             came from.
+     *  @return Decrypted identity object, ready for use.
+     */
+    constructor.fromCredential = function(credential, secret, source) {
+        var i = new EcIdentity();
+        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
+        i.source = source;
+        if (credential.displayName != null && credential.displayNameIv != null) 
+            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
+        return i;
+    };
+}, {ppk: "EcPpk"}, {});
+/**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
  *  signed message that was sent (by using the verify function of the public key)
@@ -60,66 +120,6 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
         return i;
     };
 }, {pk: "EcPk"}, {});
-/**
- *  An identity is an alias that a person or system may own. It consists of a
- *  private key and a display name. Using the private key we may: 1. Perform all
- *  operations of a EcContact. 2. Decrypt messages using our private key. 3. Sign
- *  messages, ensuring the recipient knows that we sent the message and it was
- *  not altered.
- *  
- *  @author fray
- */
-var EcIdentity = function() {
-    this.displayName = "Alias " + EcIdentity.identityCounter++;
-};
-EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
-    constructor.identityCounter = 1;
-    prototype.ppk = null;
-    prototype.displayName = null;
-    prototype.source = null;
-    prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
-            return this.ppk.equals((obj).ppk);
-        return Object.prototype.equals.call(this, obj);
-    };
-    /**
-     *  Helper function to encrypt an identity into a credential (storable
-     *  version of an identity)
-     *  
-     *  @param secret
-     *             AES secret used to encrypt the credential.
-     *  @return Encrypted credential object.
-     */
-    prototype.toCredential = function(secret) {
-        var c = new EbacCredential();
-        c.iv = EcAes.newIv(32);
-        c.ppk = EcAesCtr.encrypt(this.ppk.toPem(), secret, c.iv);
-        c.displayNameIv = EcAes.newIv(32);
-        c.displayName = EcAesCtr.encrypt(this.displayName, secret, c.iv);
-        return c;
-    };
-    /**
-     *  Helper function to decrypt a credential (storable version of an identity)
-     *  into an identity)
-     *  
-     *  @param credential
-     *             Credential to decrypt.
-     *  @param secret
-     *             AES secret used to decrypt the credential.
-     *  @param source
-     *             Source of the credential, used to track where a credential
-     *             came from.
-     *  @return Decrypted identity object, ready for use.
-     */
-    constructor.fromCredential = function(credential, secret, source) {
-        var i = new EcIdentity();
-        i.ppk = EcPpk.fromPem(EcAesCtr.decrypt(credential.ppk, secret, credential.iv));
-        i.source = source;
-        if (credential.displayName != null && credential.displayNameIv != null) 
-            i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
-        return i;
-    };
-}, {ppk: "EcPpk"}, {});
 /**
  *  Manages identities and contacts, provides hooks to respond to identity and
  *  contact events, and builds signatures and signature sheets for authorizing
@@ -283,7 +283,6 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.signatureSheetFor = function(identityPksinPem, duration, server) {
         var signatures = new Array();
-        var crypto = new EcRsaOaep();
         for (var j = 0; j < EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
             var pk = ppk.toPk();
@@ -291,10 +290,33 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                 for (var i = 0; i < identityPksinPem.length; i++) {
                     var ownerPpk = EcPk.fromPem(identityPksinPem[i].trim());
                     if (pk.equals(ownerPpk)) 
-                        signatures.push(EcIdentityManager.createSignature(duration, server, crypto, ppk).atIfy());
+                        signatures.push(EcIdentityManager.createSignature(duration, server, ppk).atIfy());
                 }
         }
         return JSON.stringify(signatures);
+    };
+    constructor.signatureSheetForAsync = function(identityPksinPem, duration, server, success) {
+        var signatures = new Array();
+        new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
+            var ppk = p1.ppk;
+            var pk = ppk.toPk();
+            var found = false;
+            if (identityPksinPem != null) 
+                for (var j = 0; j < identityPksinPem.length; j++) {
+                    var ownerPpk = EcPk.fromPem(identityPksinPem[j].trim());
+                    if (pk.equals(ownerPpk)) {
+                        found = true;
+                        EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
+                            signatures.push(p1.atIfy());
+                            incrementalSuccess();
+                        });
+                    }
+                }
+            if (!found) 
+                incrementalSuccess();
+        }, function(pks) {
+            success(JSON.stringify(signatures));
+        });
     };
     /**
      *  Create a signature sheet for all identities, authorizing movement of data
@@ -308,20 +330,41 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.signatureSheet = function(duration, server) {
         var signatures = new Array();
-        var crypto = new EcRsaOaep();
         for (var j = 0; j < EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
-            signatures.push(EcIdentityManager.createSignature(duration, server, crypto, ppk).atIfy());
+            signatures.push(EcIdentityManager.createSignature(duration, server, ppk).atIfy());
         }
         return JSON.stringify(signatures);
     };
-    constructor.createSignature = function(duration, server, crypto, ppk) {
+    constructor.signatureSheetAsync = function(duration, server, success) {
+        var signatures = new Array();
+        new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
+            var ppk = p1.ppk;
+            EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
+                signatures.push(p1.atIfy());
+                incrementalSuccess();
+            });
+        }, function(pks) {
+            success(JSON.stringify(signatures));
+        });
+    };
+    constructor.createSignature = function(duration, server, ppk) {
         var s = new EbacSignature();
         s.owner = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
         s.signature = EcRsaOaep.sign(ppk, s.toJson());
         return s;
+    };
+    constructor.createSignatureAsync = function(duration, server, ppk, success) {
+        var s = new EbacSignature();
+        s.owner = ppk.toPk().toPem();
+        s.expiry = new Date().getTime() + duration;
+        s.server = server;
+        EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
+            s.signature = p1;
+            success(s);
+        }, null);
     };
     /**
      *  Get PPK from PK (if we have it)
@@ -726,11 +769,14 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         commit.credentials.contacts = contacts;
         var fd = new FormData();
         fd.append("credentialCommit", commit.toJson());
-        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.server));
-        EcRemote.postExpectingString(this.server, service, fd, function(arg0) {
-            success(arg0);
-        }, function(arg0) {
-            failure(arg0);
+        var me = this;
+        EcIdentityManager.signatureSheetAsync(60000, this.server, function(p1) {
+            fd.append("signatureSheet", p1);
+            EcRemote.postExpectingString(me.server, service, fd, function(arg0) {
+                success(arg0);
+            }, function(arg0) {
+                failure(arg0);
+            });
         });
     };
     /**

@@ -119,6 +119,8 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.isAny = function(type) {
         var computedType = this.getFullType();
+        if (type.length == 0) 
+            return true;
         for (var i = 0; i < type.length; i++) 
             if (type[i].equals(computedType) || type[i].equals(this.type)) 
                 return true;
@@ -154,11 +156,13 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.copyFrom = function(that) {
         var me = (this);
-        for (var key in me) 
-            delete me[key];
+        for (var key in me) {
+            if ((typeof me[key]) != "function") 
+                delete me[key];
+        }
         var you = (that);
         for (var key in you) {
-            if (me[key] == null) 
+            if ((typeof you[key]) != "function") 
                 me[key.replace("@", "")] = you[key];
         }
         this.upgrade();
@@ -195,7 +199,8 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.getTypes = function() {
         var a = new Array();
-        a.push(this.type);
+        if (this.type != null) 
+            a.push(this.type);
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});

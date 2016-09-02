@@ -1,72 +1,9 @@
 /**
- *  @author fritz.ray@eduworks.com
- */
-var EcAlignment = function() {
-    Relation.call(this);
-};
-EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
-    prototype.setName = function(name) {
-        this.name = name;
-    };
-    prototype.setDescription = function(description) {
-        this.description = description;
-    };
-    prototype.save = function(success, failure) {
-        if (this.source == null || this.source == "") {
-            var msg = "Source Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.target == null || this.target == "") {
-            var msg = "Target Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.relationType == null || this.relationType == "") {
-            var msg = "Relation Type cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        EcRepository._save(this, success, failure);
-    };
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
-    };
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (success == null) 
-                return;
-            if (!p1.isA(EcAlignment.myType)) {
-                if (failure != null) 
-                    failure("Resultant object is not an alignment.");
-                return;
-            }
-            var c = new EcAlignment();
-            c.copyFrom(p1);
-            success(c);
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
-    };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  The sequence that assertions should be built as such:
- *  1. Generate the ID.
- *  2. Add the owner.
- *  3. Set the subject.
- *  4. Set the agent.
- *  Further functions may be called afterwards in any order.
- *  WARNING: The modifications of ownership and readership do not "just work".
+ *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
+ *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
+ *  called afterwards in any order. WARNING: The modifications of ownership and
+ *  readership do not "just work".
+ *  
  *  @author fritz.ray@eduworks.com
  */
 var EcAssertion = function() {
@@ -164,14 +101,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (this.negative == null) 
             return false;
         var v = new EcEncryptedValue();
-        v.copyFrom(this.decayFunction);
+        v.copyFrom(this.negative);
         var decryptedString = v.decryptIntoString();
-        return Boolean.getBoolean(decryptedString);
+        if (decryptedString != null) 
+            decryptedString.toLowerCase();
+        return "true".equals(decryptedString);
     };
     /**
-     *  Sets the subject of an assertion. Makes a few assumptions:
-     *  Owners of the object should be able to see and change the encrypted value.
-     *  Owners and readers of the object should be persisted.
+     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
+     *  object should be able to see and change the encrypted value. Owners and
+     *  readers of the object should be persisted.
+     *  
      *  @param pk
      */
     prototype.setSubject = function(pk) {
@@ -214,9 +154,12 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setDecayFunction = function(decayFunctionText) {
         this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, "decayFunction", this.subject.owner, this.subject.reader);
     };
+    prototype.setNegative = function(negativeB) {
+        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, "negative", this.subject.owner, this.subject.reader);
+    };
     prototype.save = function(success, failure) {
         if (this.competency == null || this.competency == "") {
-            var msg = "Competency cannot be missing";
+            var msg = "Failing to save: Competency cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -224,7 +167,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         if (this.subject == null) {
-            var msg = "Subject cannot be missing";
+            var msg = "Failing to save: Subject cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -232,7 +175,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         if (this.agent == null) {
-            var msg = "Subject cannot be missing";
+            var msg = "Failing to save: Agent cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -240,7 +183,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         if (this.confidence == null) {
-            var msg = "Confidence cannot be missing";
+            var msg = "Failing to save: Confidence cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -248,7 +191,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         if (this.assertionDate == null) {
-            var msg = "Assertion Date cannot be missing";
+            var msg = "Failing to save: Assertion Date cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -256,7 +199,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         if (this.decayFunction == null) {
-            var msg = "Decay Function cannot be missing";
+            var msg = "Failing to save: Decay Function cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -264,6 +207,37 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return;
         }
         EcRepository._save(this, success, failure);
+    };
+    prototype.addReader = function(newReader) {
+        if (this.agent != null) {
+            this.agent = EcEncryptedValue.revive(this.agent);
+            this.agent.addReader(newReader);
+        }
+        if (this.assertionDate != null) {
+            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
+            this.assertionDate.addReader(newReader);
+        }
+        if (this.decayFunction != null) {
+            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
+            this.decayFunction.addReader(newReader);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i < this.evidence.length; i++) {
+                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
+                this.evidence[i].addReader(newReader);
+            }
+        if (this.expirationDate != null) {
+            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
+            this.expirationDate.addReader(newReader);
+        }
+        if (this.negative != null) {
+            this.negative = EcEncryptedValue.revive(this.negative);
+            this.negative.addReader(newReader);
+        }
+        if (this.subject != null) {
+            this.subject = EcEncryptedValue.revive(this.subject);
+            this.subject.addReader(newReader);
+        }
     };
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
@@ -331,6 +305,68 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
                 return;
             }
             var c = new EcRollupRule();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  TODO: Test case where an absent relation is in the framework.
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAlignment = function() {
+    Relation.call(this);
+};
+EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.source == null || this.source == "") {
+            var msg = "Source Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.target == null || this.target == "") {
+            var msg = "Target Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == "") {
+            var msg = "Relation Type cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcAlignment.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not an alignment.");
+                return;
+            }
+            var c = new EcAlignment();
             c.copyFrom(p1);
             success(c);
         }, function(p1) {
