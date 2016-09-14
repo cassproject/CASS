@@ -66,7 +66,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			AppController.searchController.relationSearch(query, callback, errorSearching, params);
+			EcAlignment.search(AppController.repoInterface, query, callback, errorSearching, params);
 		}, 100);
 	}
 	
@@ -136,7 +136,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			
 			ViewManager.showView(new MessageContainer("relationshipSearch"), "#relationshipSearchMessageContainer");
 			
-			AppController.searchController.competencySearch("*", function(competencies){
+			EcCompetency.search(AppController.repoInterface, "*", function(competencies){
 				var cache = {};
 				for(var i in competencies){
 					cache[EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id)] = competencies[i];

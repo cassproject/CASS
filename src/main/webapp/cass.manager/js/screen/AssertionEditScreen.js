@@ -58,7 +58,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    	if(competencyOption.size() == 1){
 	    		competencyOption.attr("selected", "selected");
 	    	}else{
-	    		AppController.repositoryController.viewCompetency(assertion.competency, function(competency){
+	    		EcCompetency.get(assertion.competency, function(competency){
 	    			var competencyOption = $("#assertionCompetencyInput option[value='"+EcRemoteLinkedData.trimVersionFromUrl(competency.id)+"']");
 	    			
 	    			if(competencyOption.size() > 0){
@@ -243,7 +243,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	
 		
 		var competencyList = {};
-		AppController.searchController.competencySearch("*", function(competencies){
+		EcCompetency.search(AppController.repoInterface, "*", function(competencies){
 			for(var i in competencies){
 				competencyList[competencies[i].id] = competencies[i];
 				
@@ -272,7 +272,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 				$("#assertionLevelInput").append($("<option selected>No level selected</option"));
 			}
 				
-			AppController.searchController.levelSearchByCompetency(assertion.competency, function(levels){
+			EcLevel.searchByCompetency(AppController.repoInterface, assertion.competency, function(levels){
 				for(var i in levels){
 					var option = $("<option></option>");
 					option.text(levels[i].name);
@@ -291,7 +291,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			var competencyId = $("#assertionCompetencyInput").val();
 			$("#assertionCompetencyInput").css("font-style","normal");
 			
-			AppController.searchController.levelSearchByCompetency(competencyId, function(levels){
+			EcLevel.searchByCompetency(AppController.repoInterface, competencyId, function(levels){
 				$("#assertionLevelInput option").remove();
 				for(var i in levels){
 					var option = $("<option></option>");
@@ -532,7 +532,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			}
 			else
 			{
-				AppController.repositoryController.viewAssertion(data.id, function(assertion){
+				EcAssertion.get(data.id, function(assertion){
 					data = assertion;
 					displayAssertion(assertion)
 				}, errorRetrieving);

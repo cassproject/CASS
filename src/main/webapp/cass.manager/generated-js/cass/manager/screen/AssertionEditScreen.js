@@ -22,7 +22,7 @@ AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcAssertion.get(id, function(data) {
                             ScreenManager.replaceScreen(new AssertionEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new AssertionSearchScreen(null), CassManagerScreen.reloadShowLoginCallback);

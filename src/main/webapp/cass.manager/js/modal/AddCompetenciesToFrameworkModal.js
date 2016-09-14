@@ -8,7 +8,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 		$(containerId).load("partial/modal/addToFramework.html", function(){
 			ViewManager.showView(new MessageContainer("addToFramework"), "#addToFrameworkMessageContainer");
 			
-			AppController.searchController.frameworkSearch("*", function(frameworks){
+			EcFramework.search(AppController.repoInterface, "*", function(frameworks){
 				for(var i in frameworks){
 					if(AppController.identityController.canEdit(frameworks[i])){
 						$("#addToFrameworkList").append("<option value='"+frameworks[i].id+"'>"+frameworks[i].name+(frameworks[i].owner == undefined ? " (Public)": "")+"</option>");

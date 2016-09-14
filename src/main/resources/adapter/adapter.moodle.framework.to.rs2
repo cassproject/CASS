@@ -1,0 +1,156 @@
+//-----FRAMEWORK UPDATING-----
+
+frameworkGuid=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-2"));
+frameworkLastModified=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-1")).toLong();
+
+moodleFramework=#toArray(obj="@moodleFrameworks").forEach(array="true",paramName="moodleFramework",op=#if(
+	operator=#toObject(obj="@moodleFramework").get(idnumber=""),
+	operand=frameworkGuid,
+	eq=#toObject(obj="@moodleFramework")
+)).getIndex(index="0");
+
+addFramework=#moodleCreateCompetencyFramework(
+	id=frameworkGuid,
+	name=#toObject(obj="@framework").get(name=""),
+	description=#toObject(obj="@framework").get(description=""),
+	lastModified=#divide(numerator=frameworkLastModified,denominator="1000").toLong()
+);
+
+updateFramework=#moodleUpdateCompetencyFramework(
+	id=frameworkGuid,
+	internalId=#toObject(obj="@moodleFramework").get(id=""),
+	name=#toObject(obj="@framework").get(name=""),
+	description=#toObject(obj="@framework").get(description=""),
+	lastModified=#divide(numerator=frameworkLastModified,denominator="1000").toLong()
+);
+
+checkDateFramework=#if(
+	operator=frameworkLastModified,
+	operand=#toObject(obj="@moodleFramework").get(timemodified="").multiply(a="1000").toLong(),
+	gt=updateFramework
+);
+
+checkFramework=#if(
+	operator=#toObject(obj="@moodleFramework"),
+	operand="",
+	eq=addFramework,
+	ne=checkDateFramework
+);
+
+cassToMoodleFrameworks=#getFrameworks().forEach(
+	array="true",
+	paramName="framework",
+	op=checkFramework.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+//-----COMPETENCY UPDATING-----
+
+competencyGuid=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-2"));
+competencyLastModified=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-1")).toLong();
+
+moodleCompetency=#toArray(obj="@moodleCompetencies").forEach(array="true",paramName="moodleCompetency",op=#if(
+	operator=#toObject(obj="@moodleCompetency").get(idnumber=""),
+	operand=competencyGuid,
+	eq=#toObject(obj="@moodleCompetency")
+)).getIndex(index="0");
+
+addCompetency=#moodleCreateCompetency(
+	id=competencyGuid,
+	name=#toObject(obj="@competency").get(name=""),
+	description=#toObject(obj="@competency").get(description=""),
+	lastModified=#divide(numerator=competencyLastModified,denominator="1000").toLong()
+);
+
+updateCompetency=#moodleUpdateCompetency(
+	id=competencyGuid,
+	internalId=#toObject(obj="@moodleCompetency").get(id=""),
+	name=#toObject(obj="@competency").get(name=""),
+	description=#toObject(obj="@competency").get(description=""),
+	lastModified=#divide(numerator=competencyLastModified,denominator="1000").toLong()
+);
+
+checkDateCompetency=#if(
+	operator=competencyLastModified,
+	operand=#toObject(obj="@moodleCompetency").get(timemodified="").multiply(a="1000").toLong(),
+	gt=updateCompetency
+);
+
+checkCompetency=#if(
+	operator=#toObject(obj="@moodleCompetency"),
+	operand="",
+	eq=addCompetency,
+	ne=checkDateCompetency
+);
+
+checkCompetencies=#toObject(obj="@framework").get(competency="").forEach(
+	paramName="competencyShortId",
+	array="true",
+	op=checkCompetency.call(
+		moodleCompetency=moodleCompetency
+	).call(
+		competencyId=#toObject(obj="@competency").getByParam(param=#id()).split(split="/")
+	).call(
+		competency=#getCompetencyById(id="@competencyShortId")
+	)
+).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
+
+cassToMoodleCompetencies=#getFrameworks().forEach(
+	array="true",
+	paramName="framework",
+	op=checkCompetencies.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+//-----RELATION UPDATING-----
+
+competencyGuidFromShortId=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-1"));
+moodleCompetencyFromShortId=#toArray(obj="@moodleCompetencies").forEach(array="true",paramName="moodleCompetency",op=#if(
+	operator=#toObject(obj="@moodleCompetency").get(idnumber=""),
+	operand=competencyGuidFromShortId,
+	eq=#toObject(obj="@moodleCompetency")
+)).getIndex(index="0");
+
+relationNarrows=#moodleUpdateCompetencyParent(
+	internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+	parentId=#toObject(obj="@moodleCompetencyTarget").get(id="")
+);
+
+checkRelationNarrows=#if(
+	operator=#toObject(obj="@moodleCompetencySource").get(parentid=""),
+	operand=#toObject(obj="@moodleCompetencyTarget").get(id=""),
+	ne=relationNarrows
+);
+
+checkRelation=#if(
+	operator=#toObject(obj="@relation").get(relationType=""),
+	operand="narrows",
+	eq=checkRelationNarrows
+);
+
+checkRelations=#toObject(obj="@framework").get(relation="").forEach(
+	paramName="relationShortId",
+	array="true",
+	op=checkRelation.call(
+		moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(source="").split(split="/")),
+		moodleCompetencyTarget=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(target="").split(split="/"))
+	).call(
+		relation=#getRelationById(id="@relationShortId")
+	)
+).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
+
+cassToMoodleRelations=#getFrameworks().forEach(
+	array="true",
+	paramName="framework",
+	op=checkRelations.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+//-----CONTROL FUNCTIONS-----
+
+cassToMoodle=#object(
+	a=cassToMoodleFrameworks,
+	b=cassToMoodleCompetencies,
+	c=cassToMoodleRelations
+);
+
+cassToMoodleDebug=cassToMoodle.displayJson(_collapse="true");
+
+/moodle/cassToMoodle=cassToMoodleDebug;

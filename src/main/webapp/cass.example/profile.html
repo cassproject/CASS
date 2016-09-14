@@ -44,12 +44,6 @@
             </li>
         </ul>
         <ul class="top-bar-right dropdown menu" data-dropdown-menu>
-            <!--<li>
-                <span id="status" class="status" style="display:none;">Busy...</span>
-                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
-                <button id="loginButton" type="button" class="button" data-open="login">Login</button>
-                <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
-            </li>-->
             <li>
                 <a class="menu-text">Identity</a>
                 <span id="status" class="status" style="display:none;">Busy...</span>
@@ -86,7 +80,7 @@
                 <li id="oneToOneAssertion" class="assertion" style="list-style: none;">
                     <h3 class="assertionCompetency">Competency</h3>
                     <span class="assertionTimestamp">&lt;Restricted&gt; ago</span>,
-                    <span class="assertionAgent">&lt;Restricted&gt;</span> claimed with <span class="assertionConfidence"></span> that <span class="assertionSubject">&lt;Restricted&gt;</span> demonstrated
+                    <span class="assertionAgent">&lt;Restricted&gt;</span> claimed with <span class="assertionConfidence"></span> that <span class="assertionSubject">&lt;Restricted&gt;</span> <span class="assertionNegative">demonstrated</span>
                     <span class="assertionCompetency">Competency</span><span class="assertionOptionLevel">
                     at <span class="assertionLevel">Level</span>
                     </span>.
@@ -245,7 +239,9 @@
             <select type="text" id="newAssertionCompetency" placeholder="<Competency>"></select>
             Level:
             <select type="text" id="newAssertionLevel" placeholder="<Level>"></select>
-            Confidence:
+            Negative Assertion:
+            <input type="checkbox" id="newAssertionNegative" />
+            <br>Confidence:
             <input type="range" id="newAssertionAssertionConfidence" name="newAssertionAssertionConfidence" min="0" max="100" oninput="newAssertionAssertionConfidenceOutput.value=newAssertionAssertionConfidence.value" />
             <output name="newAssertionAssertionConfidenceOutput" for="newAssertionAssertionConfidence">50</output>
             percent.

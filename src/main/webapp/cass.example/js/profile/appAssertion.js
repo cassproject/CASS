@@ -129,6 +129,7 @@ function newAssertion() {
         level = null;
     var confidence = $("#newAssertionAssertionConfidence").val() / 100;
     var evidence = $("#newAssertionEvidence").val().split("\n");
+    var negative = $("#newAssertionNegative")[0].checked;
     var eviNew = [];
     for (var i = 0; i < evidence.length; i++)
         if (evidence[i].trim() != "")
@@ -158,6 +159,7 @@ function newAssertion() {
     assertion.setAssertionDate(assertionDateMs);
     assertion.setExpirationDate(expirationDateMs);
     assertion.setDecayFunction(decayFunction);
+    assertion.setNegative(negative);
     EcRepository.save(assertion, function (success) {
         $("#newAssertion").foundation('close');
         oneToOneSearch();

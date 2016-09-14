@@ -1,0 +1,30 @@
+token=#string(str="Moodle Web Service Token here.");
+#moodleWsToken=token;
+
+baseContext=#string(str="1");
+#moodleBaseContext=baseContext;
+
+endpoint=#string(str="http://<your moodle endpoint>/moodle/webservice/rest/server.php");
+#moodleEndpoint=endpoint;
+
+scaleConfiguration=#object(
+	a=#object(scaleid="2"),
+	b=#object(id=#toInteger(obj="1"),scaledefault=#toInteger(obj="1"),proficient=#toInteger(obj="0")),
+	c=#object(id=#toInteger(obj="2"),scaledefault=#toInteger(obj="0"),proficient=#toInteger(obj="1"))
+).valueSet().toString();
+#moodleFrameworkDefaultScaleConfiguration=scaleConfiguration;
+
+scaleId=#string(str="2");
+#moodleFrameworkDefaultScaleId=scaleId;
+
+ppk=#fileLoad(path="adapter.moodle.private.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="adapter.moodle.private.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="adapter.moodle.private.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="adapter.moodle.private.pem");
+#moodlePpk=ppk;

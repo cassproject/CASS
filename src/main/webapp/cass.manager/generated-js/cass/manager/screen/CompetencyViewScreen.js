@@ -22,7 +22,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcCompetency.get(id, function(data) {
                             ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {

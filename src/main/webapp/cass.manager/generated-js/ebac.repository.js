@@ -160,9 +160,11 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         var decrypted = new EcRemoteLinkedData("", "");
         decrypted.copyFrom(JSON.parse(decryptRaw));
         decrypted.privateEncrypted = true;
+        decrypted.id = this.id;
         return decrypted.deAtify();
     };
     prototype.decryptIntoObjectAsync = function(success, failure) {
+        var id = this.id;
         this.decryptIntoStringAsync(function(decryptRaw) {
             if (decryptRaw == null) 
                 failure("Could not decrypt data.");
@@ -171,6 +173,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
             decrypted.privateEncrypted = true;
+            decrypted.id = id;
             success(decrypted.deAtify());
         }, failure);
     };
@@ -336,6 +339,58 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 this.reader.splice(i, 1);
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  A representation of a file.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var File = function() {
+    EcRemoteLinkedData.call(this, General.context, File.myType);
+};
+File = stjs.extend(File, EcRemoteLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
+    constructor.myType = File.TYPE_0_2;
+    /**
+     *  Optional checksum of the file, used to verify if the file has been
+     *  transmitted correctly.
+     */
+    prototype.checksum = null;
+    /**
+     *  Mime type of the file.
+     */
+    prototype.mimeType = null;
+    /**
+     *  Base-64 encoded version of the bytestream of a file.
+     *  
+     *  Please note: This field will be empty in search results, but be populated
+     *  in a direct get.
+     */
+    prototype.data = null;
+    prototype.name = null;
+    /**
+     *  Helper method to force the browser to download the file.
+     */
+    prototype.download = function() {
+        var blob = base64ToBlob(this.data, this.mimeType);
+        saveAs(blob, this.name);
+    };
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (File.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(General.context_0_2, File.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(File.TYPE_0_2);
+        a.push(File.TYPE_0_1);
+        return a;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
@@ -392,6 +447,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
                 var d = new EcRemoteLinkedData("", "");
                 d.copyFrom(p1);
+                if (d.getFullType() == null) {
+                    if (failure != null) 
+                        failure(JSON.stringify(p1));
+                    return;
+                }
                 if (EcRepository.caching) 
                     (EcRepository.cache)[url] = d;
                 success(d);
@@ -424,7 +484,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param query
      *             ElasticSearch compatible query string, similar to Google query
      *             strings.
-     *  @param params
+     *  @param paramObj
      *             Additional parameters that can be used to tailor the search.
      *  @param eachSuccess
      *             Success event for each found object.
@@ -433,7 +493,40 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param failure
      *             Failure event.
      */
-    prototype.searchWithParams = function(query, params, eachSuccess, success, failure) {
+    prototype.searchWithParams = function(query, paramObj, eachSuccess, success, failure) {
+        if (paramObj == null) 
+            paramObj = new Object();
+        var params = new Object();
+        var paramProps = (params);
+        if ((paramObj)["start"] != null) 
+            paramProps["start"] = (paramObj)["start"];
+        if ((paramObj)["size"] != null) 
+            paramProps["size"] = (paramObj)["size"];
+        if ((paramObj)["types"] != null) 
+            paramProps["types"] = (paramObj)["types"];
+        if ((paramObj)["ownership"] != null) {
+            var ownership = (paramObj)["ownership"];
+            if (!query.startsWith("(") || !query.endsWith(")")) {
+                query = "(" + query + ")";
+            }
+            if (ownership.equals("public")) {
+                query += " AND (_missing_:@owner)";
+            } else if (ownership.equals("owned")) {
+                query += " AND (_exists_:@owner)";
+            } else if (ownership.equals("me")) {
+                query += " AND (";
+                for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                    if (i != 0) {
+                        query += " OR ";
+                    }
+                    var id = EcIdentityManager.ids[i];
+                    query += "@owner:\"" + id.ppk.toPk().toPem() + "\"";
+                }
+                query += ")";
+            }
+        }
+        if ((paramObj)["fields"] != null) 
+            paramProps["fields"] = (paramObj)["fields"];
         var fd = new FormData();
         fd.append("data", query);
         if (params != null) 
@@ -552,6 +645,14 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     constructor.save = function(data, success, failure) {
         console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
+        if (data.invalid()) {
+            var msg = "Cannot save data. It is missing a vital component.";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
         if (data.privateEncrypted != null && data.privateEncrypted) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcRepository._save(encrypted, success, failure);
@@ -624,3 +725,91 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         });
     };
 }, {cache: "Object"}, {});
+var EcFile = function() {
+    File.call(this);
+};
+EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Competency Name can not be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.invalid()) {
+            var msg = "Cannot save file. It is missing a vital component.";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null && this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.create = function(name, base64Data, mimeType) {
+        var f = new EcFile();
+        f.data = base64Data;
+        f.name = name;
+        f.mimeType = mimeType;
+        return f;
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var f = new EcFile();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1 != null && p1.isA(File.myType)) {
+                f.copyFrom(p1);
+                if (success != null) 
+                    success(f);
+            } else {
+                if (failure != null) 
+                    failure("Resultant object is not a competency.");
+                return;
+            }
+        }, failure);
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new File().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var file = new EcFile();
+                    if (p1[i].isAny(file.getTypes())) {
+                        file.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcFile.myType)) {
+                            var obj = val.decryptIntoObject();
+                            file.copyFrom(obj);
+                            file.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = file;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

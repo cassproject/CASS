@@ -40,13 +40,13 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationEditSourceSelected()
 	{ 
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("populateFail");
-		AppController.repositoryController.viewCompetency($("#relationEditSource option:selected").attr("value"), relationEditPopulateSource, errorPopulatingDetails);
+		EcCompetency.get($("#relationEditSource option:selected").attr("value"), relationEditPopulateSource, errorPopulatingDetails);
 	}
 
 	function relationEditTargetSelected()
 	{ 
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("populateFail");
-	    AppController.repositoryController.viewCompetency($("#relationEditTarget option:selected").attr("value"), relationEditPopulateTarget, errorPopulatingDetails);
+	    EcCompetency.get($("#relationEditTarget option:selected").attr("value"), relationEditPopulateTarget, errorPopulatingDetails);
 	}
 	
 	function relationEditPopulateSource(competency)
@@ -134,7 +134,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationshipCompetencySearch()
 	{
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("competencyFindFail");
-		AppController.searchController.competencySearch("", buildCompetencyInput, errorRetrievingCompetencies);
+		EcCompetency.search(AppController.repoInterface, "*", buildCompetencyInput, errorRetrievingCompetencies);
 	}
 
 	
@@ -183,7 +183,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			
 			if(data != undefined)
 			{
-				AppController.repositoryController.viewRelation(data.id, function(relation){
+				EcAlignment.get(data.id, function(relation){
 					data = relation;
 					relationshipEditActual(data);
 				}, errorRetrieving);
@@ -258,8 +258,8 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			    data.relationType = $("#relationEditType option:selected").attr("value");
 			    
 			    ViewManager.getView("#relationshipEditMessageContainer").clearAlert("saveFail");
-			    EcRepository.save(currentRelation, function(){
-			    	AppController.repositoryController.viewCompetency(data.source, function(competency){
+			    currentRelation.save(function(){
+			    	EcCompetency.get(data.source, function(competency){
 			    		ScreenManager.changeScreen(new RelationshipViewScreen(currentRelation));
 			    	});
 			    }, errorSaving);

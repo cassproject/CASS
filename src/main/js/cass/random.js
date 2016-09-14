@@ -1,3 +1,6 @@
+var scripts = document.getElementsByTagName("script");
+window.scriptPath = scripts[scripts.length-1].src.substr(0,scripts[scripts.length-1].src.lastIndexOf("/"))+"/";
+
 function generateUUID(){
     var d = new Date().getTime();
     if(window && window.performance && typeof window.performance.now === "function"){

@@ -81,7 +81,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    $("#frameworkEditCompetencies option").not("#noCompetencies").remove();
 	    for(var idx in framework.competency)
 	    {
-	    	AppController.repositoryController.viewCompetency(framework.competency[idx], function(competency){
+	    	EcCompetency.get(framework.competency[idx], function(competency){
 	    		if(framework.competencyObjects == undefined){
 	    			framework.competencyObjects = {};
 	    		}
@@ -95,7 +95,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    $("#frameworkEditRelations option").not("#noRelations").remove();
 	    for(var idx in framework.relation)
 	    {
-	    	AppController.repositoryController.viewRelation(framework.relation[idx], function(relation){
+	    	EcAlignment.get(framework.relation[idx], function(relation){
 	    		getRelationInfo(framework, relation, function(){
 	    			addRelation(relation);
 	    		});
@@ -126,7 +126,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    $("#frameworkEditLevels option").not("#noLevels").remove();
 	    for(var idx in framework.level)
 	    {
-	    	AppController.repositoryController.viewLevel(framework.level[idx], levelRecieved, errorRetrievingLevel);
+	    	EcLevel.get(framework.level[idx], levelRecieved, errorRetrievingLevel);
 	    }
 	}
 	
@@ -262,7 +262,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	{
 		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).indexOf(rel.source) == -1)
 		{
-			AppController.repositoryController.viewCompetency(rel.source, function(competency){
+			EcCompetency.get(rel.source, function(competency){
 				rel.sourceObj = competency;
 				
 				if(rel.targetObj != undefined && rel.sourceObj != undefined){
@@ -277,7 +277,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		
 		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).indexOf(rel.target) == -1)
 		{
-			AppController.repositoryController.viewCompetency(rel.target, function(competency){
+			EcCompetency.get(rel.target, function(competency){
 				rel.targetObj = competency;
 				
 				if(rel.targetObj != undefined && rel.sourceObj != undefined){
@@ -376,7 +376,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		  			var i = 0;
 		  			for(var id in framework.competencyObjects)
 		  			{
-		  				AppController.searchController.relationSearchBySourceOrTarget(id, function(results){
+		  				EcAlignment.searchBySource(AppController.repoInterface, id, function(results){
 		  					i++;
 		  					
 		  					for(var idx in results){
@@ -434,7 +434,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		{
 	  		name: 'competencies',
 	  		source: function(q, syncCallback, asyncCallback){
-	  			AppController.searchController.competencySearch(q, function(results){
+	  			EcCompetency.search(AppController.repoInterface, q, function(results){
 	  				var filtered = [];
 					
 					for(var idx in results){
@@ -728,7 +728,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 			    setupLevelTypeahead(data);
 			}
 			else{
-				AppController.repositoryController.viewFramework(data.id, function(framework){
+				EcFramework.get(data.id, function(framework){
 					data = framework;
 					
 					displayFramework(data);

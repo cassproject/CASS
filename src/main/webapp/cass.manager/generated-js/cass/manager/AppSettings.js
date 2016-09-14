@@ -26,8 +26,7 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
         var urlBase = window.location.host + window.location.pathname;
         if (urlBase.startsWith("localhost")) 
             urlBase = "http://" + urlBase;
-        EcRemote.postExpectingString(urlBase, "settings/settings.js", null, function(settingsObjStr) {
-            var settingsObj = JSON.parse(settingsObjStr);
+        EcRemote.getExpectingObject(urlBase, "settings/settings.js", function(settingsObj) {
             var msg = (settingsObj)[AppSettings.FIELD_MSG_RETURN];
             if (msg != null) 
                 AppSettings.returnLoginMessage = msg;

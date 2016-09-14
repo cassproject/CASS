@@ -26,8 +26,12 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 			$("#relationshipViewerPrivateSymbol").addClass("hide");
 		
 		if(relation.source != undefined){
-			AppController.repositoryController.viewCompetency(relation.source, function(competency){
+			EcCompetency.get(relation.source, function(competency){
 				$("#relationshipViewerSource").html("<a href='#"+CompetencyViewScreen.displayName+"'>"+competency.name+"</a>")
+				$("#relationshipViewerSource").click(function(event){
+					event.preventDefault();
+					ScreenManager.changeScreen(new CompetencyViewScreen(competency));
+				});
 			}, function(err){
 				try{
 					var parsedErr = JSON.parse(err);
@@ -42,8 +46,12 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 		}
 		
 		if(relation.target != undefined){
-			AppController.repositoryController.viewCompetency(relation.target, function(competency){
+			EcCompetency.get(relation.target, function(competency){
 				$("#relationshipViewerTarget").html("<a href='#"+CompetencyViewScreen.displayName+"'>"+competency.name+"</a>")
+				$("#relationshipViewerTarget").click(function(event){
+					event.preventDefault();
+					ScreenManager.changeScreen(new CompetencyViewScreen(competency));
+				});
 			}, function(err){
 				try{
 					var parsedErr = JSON.parse(err);
@@ -127,7 +135,7 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 		
 		$(containerId).load("partial/screen/relationshipView.html", function(){
 			
-			ViewManager.showView(new MessageContainer("competencyView"), "#relationshipViewMessageContainer");
+			ViewManager.showView(new MessageContainer("relationshipView"), "#relationshipViewMessageContainer");
 			
 			$("#relationshipViewSearchBtn").attr("href", "#"+RelationshipSearchScreen.prototype.displayName);
 			$("#relationshipViewSearchBtn").click(function(event){
@@ -168,7 +176,7 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 			}
 			
 			
-			AppController.repositoryController.viewRelation(data.id, function(result){
+			EcAlignment.get(data.id, function(result){
 				data = result;
 				displayRelation(result);
 			}, errorRetrieving);

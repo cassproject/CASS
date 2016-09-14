@@ -193,7 +193,7 @@ var EditLevelModal = (function(EditLevelModal){
 						return;
 					}
 					
-					EcRepository.save(level, function(){
+					level.save(function(){
 						if(modalCloseCallback != undefined)
 							modalCloseCallback(level);
 						
@@ -376,7 +376,7 @@ var EditLevelModal = (function(EditLevelModal){
 							split[split.length-1] = new Date().getTime();
 						data.id = split.join("/");
 						
-						EcRepository.save(data, function(level){
+						data.save(data, function(level){
 							if(modalCloseCallback != undefined)
 								modalCloseCallback(data);
 							

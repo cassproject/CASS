@@ -250,7 +250,7 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 				if(data.name != NEW_COMPETENCY_NAME){
 					ViewManager.getView("#competencyEditMessageContainer").clearAlert("saveFail");
 					ViewManager.getView("#competencyEditMessageContainer").clearAlert("defaultName");
-					EcRepository.save(data, saveSuccess, errorSaving);
+					data.save(saveSuccess, errorSaving);
 				}else{
 					ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency With Default Name", "defaultName");
 				}
@@ -295,7 +295,7 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 			}
 			else
 			{
-				AppController.repositoryController.viewCompetency(data.id, function(competency){
+				EcCompetency.get(data.id, function(competency){
 					data = competency;
 					displayCompetency(competency)
 				}, errorRetrieving);

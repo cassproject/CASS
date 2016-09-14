@@ -53,7 +53,7 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
     constructor.DESIRES = "desires";
     constructor.NARROWS = "narrows";
     constructor.IS_RELATED_TO = "isRelatedTo";
-    constructor.IS_EQUIVALENT_TO = "isEquivalenTo";
+    constructor.IS_EQUIVALENT_TO = "isEquivalentTo";
     prototype.source = null;
     prototype.target = null;
     prototype.relationType = null;
@@ -62,6 +62,8 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
     prototype.agent = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
+        if ("isEquivalenTo".equals(this.relationType)) 
+            this.relationType = Relation.IS_EQUIVALENT_TO;
         if (Relation.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 

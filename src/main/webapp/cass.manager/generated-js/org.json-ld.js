@@ -24,7 +24,7 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Determines which fields to serialize into @fields.
      *  
      *  @param s
-     *  @return
+     *  @return True if property is in the set of atProperties.
      */
     constructor.isAtProperty = function(s) {
         for (var i = 0; i < EcLinkedData.atProperties.length; i++) 

@@ -1,0 +1,66 @@
+frameworks=#add(a='(@type:"framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search')).toArray();
+
+#getFrameworks=frameworks;
+
+framework=#object(
+	name="@name",
+	description="@description",
+	competency=#toArray(obj="@competency"),
+	relation=#toArray(obj="@relation"),
+	level=#toArray(obj="@level")
+);
+
+framework=framework.put(_key=#context(),_value="http://schema.eduworks.com/cass/0.2/");
+framework=framework.put(_key=#type(),_value="framework");
+framework=framework.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u="@lastModified"));
+framework=framework.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
+
+frameworkSave=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=framework.skyrepoPut(
+		type="@type",
+		id="@id",
+		version="@lastModified"
+	)
+).call(type="schema.eduworks.com.cass.0.2.framework");
+
+#cassCreateCompetencyFramework=frameworkSave;
+
+null=#object();
+#cassUpdateCompetencyFramework=null;
+
+frameworkGet=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=framework.skyrepoGet(
+		type="@type",
+		id="@frameworkId"
+	)
+).call(type="schema.eduworks.com.cass.0.2.framework");
+
+addCompetencyToFramework=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@framework").put(
+		competency=#toObject(obj="@framework").get(competency="").append(append=#repoEndpoint().add(p="data/",q="schema.eduworks.com.cass.0.2.competency",r="/",s="@competencyId"))
+	).skyrepoPut(
+		type="@type",
+		id="@id",
+		version=#date(raw="true")
+	)
+).call(type="schema.eduworks.com.cass.0.2.framework",framework=frameworkGet);
+#cassAddCompetencyToFramework=addCompetencyToFramework;
+
+addRelationToFramework=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@framework").put(
+		relation=#toObject(obj="@framework").get(relation="").append(append=#repoEndpoint().add(p="data/",q="schema.eduworks.com.cass.0.2.relation",r="/",s="@relationId"))
+	).skyrepoPut(
+		type="@type",
+		id="@id",
+		version=#date(raw="true")
+	)
+).call(type="schema.eduworks.com.cass.0.2.framework",framework=frameworkGet);
+#cassAddRelationToFramework=addRelationToFramework;

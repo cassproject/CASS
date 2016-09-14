@@ -1,39 +1,3 @@
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
-    prototype.counter = null;
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                each(array[i], function() {
-                    me.counter--;
-                    if (me.counter == 0) 
-                        after(array);
-                });
-        }
-    };
-    prototype.stop = function() {
-        this.counter = -1;
-    };
-}, {}, {});
-var EcCallbackReturn0 = function() {};
-EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
-    prototype.callback = function() {};
-}, {}, {});
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
-    constructor.isArray = function(o) {
-        return toString.call(o) == "[object Array]";
-    };
-}, {}, {});
-var EcCallbackReturn1 = function() {};
-EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
-    prototype.callback = function(param1) {};
-}, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.async = true;
@@ -61,7 +25,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                  else 
                     all = all + chunks[i];
             }
-            all = all + "\r\n" + "\r\n" + "--" + (fd)["_boundary"] + "--";
+            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
             p.headers = new Object();
             p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
             p.data = all;
@@ -153,6 +117,42 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
         };
     };
+}, {}, {});
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    prototype.counter = null;
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                each(array[i], function() {
+                    me.counter--;
+                    if (me.counter == 0) 
+                        after(array);
+                });
+        }
+    };
+    prototype.stop = function() {
+        this.counter = -1;
+    };
+}, {}, {});
+var EcCallbackReturn1 = function() {};
+EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
+    prototype.callback = function(param1) {};
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
+    };
+}, {}, {});
+var EcCallbackReturn0 = function() {};
+EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
+    prototype.callback = function() {};
 }, {}, {});
 var EcCallback = function() {};
 EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {

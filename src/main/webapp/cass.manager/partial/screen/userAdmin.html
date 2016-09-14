@@ -1,0 +1,84 @@
+<div style="padding-top:50px">
+	<div class="row">
+		<div id="userAdminMessageContainer" class="small-6 columns small-centered" >
+		</div>
+	</div>
+
+	
+	<div class="row">
+		<div class="large-12 columns">
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3>Adapter Configurations </h3>
+					<p>Select and Adapter to Configure</p>
+					
+					<button id="xapiAdapterConfigureBtn" class="button">xAPI</button>
+					
+					<button id="moodleAdapterConfigureBtn" class="button disabled" style="margin-left:1rem;">Moodle</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row hide configRow" id="xapiConfiguration" >
+		<div class="large-12 columns">
+			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
+				<div class="small-12 columns">
+					<h3>xAPI Configuration </h3>
+					<p>Please modify these details and then press save to store them on the server</p>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">xAPI Endpoint</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input id="xapiEndpointInput" type="text"/>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">xAPI Hostname</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input id="xapiEndpointHostnameInput" type="text"/>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">xAPI Authentication Key</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<input id="xapiAuthKeyInput" type="text"/>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-4 large-3 columns">
+							<span class="prefix">xAPI Adapter Enabled</span>
+						</div>
+						<div class="small-8 large-9 columns">
+							<div>
+								<span style="vertical-align:30%">No</span>
+								<div class="switch" style="display:inline-block;">
+									<input class="switch-input" id="xapiAdapterEnabledSwitch" type="checkbox" name="xapiAdapterEnabledSwitch">
+								  	<label class="switch-paddle" for="xapiAdapterEnabledSwitch">
+								  	</label>
+								</div>
+								<span style="vertical-align:30%">Yes</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row collapse">
+						<div class="small-12 large-3 columns" style="text-align:right">
+							<button class="button" id="xapiSaveBtn">Save xAPI Configuration</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

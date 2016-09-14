@@ -250,6 +250,16 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     });
 })();
 /**
+ *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
+ *  in the URL bar and in the history so the page can be loaded on back button or startup 
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
+/**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
  *  session, so  when the back button is pressed, the application will load the previous screen with any data that 
@@ -455,7 +465,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  @param displayContainerId
      *  			DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)
      *  @param params
-     *  			Object containing key->value pairs that should be put in the url bar to remember state at this history point
+     *  			Object containing key to value pairs that should be put in the url bar to remember state at this history point
      */
     constructor.replaceHistory = function(screen, displayContainerId, params) {
         var name = screen.getDisplayName();
@@ -533,16 +543,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
-/**
- *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
- *  in the URL bar and in the history so the page can be loaded on back button or startup 
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays
@@ -634,7 +634,7 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
     };
     /**
      *  Hides the overlay container and sets the inOverlay flag to false, adds the last screen to the history array so
-     *  there is a chain from initial screen -> overlay (could be multiple) -> initial screen. This way we can press the
+     *  there is a chain from initial screen to overlay (could be multiple) to initial screen. This way we can press the
      *  back button and be shown the last overlay.
      */
     constructor.hideOverlay = function() {

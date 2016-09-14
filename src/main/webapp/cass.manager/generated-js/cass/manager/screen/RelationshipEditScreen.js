@@ -22,11 +22,8 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
-                            if (data.isA(EcAlignment.myType)) 
-                                ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                             else 
-                                ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                        EcAlignment.get(id, function(data) {
+                            ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
                         });

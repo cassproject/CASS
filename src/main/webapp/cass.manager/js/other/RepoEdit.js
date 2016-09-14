@@ -114,7 +114,11 @@ var RepoEdit = (function(RepoEdit){
 	    
 	    var fieldx = field.attr("field");
 	    var id = $("[field='@id']").children("p").text();
-	    var obj = AppController.cryptoController.encryptField(text,id,fieldx);
+	    
+	    if(AppController.identityController.selectedIdentity == null)
+	    	return;
+	    
+	    var obj = EcEncryptedValue.encryptValueOld(text, id, fieldx, AppController.identityController.selectedIdentity.ppk.toPk()).atIfy();
 	    if (obj != null)
 	    {
 	        if (field.find("[field='@id']").length > 0)
@@ -128,7 +132,10 @@ var RepoEdit = (function(RepoEdit){
 	    var id = field.find("[field='@id']").children("p").text();
 	    var fld = field.attr("field");
 	    
-	    var result = AppController.cryptoController.decryptField(serializeField(field));
+	    var e = new EcEncryptedValue();
+		e.copyFrom(JSGlobal.JSON.parse(serializeField(field)));
+	    
+	    var result = e.decryptIntoString();
 	    if (result != null)
 	        replaceField(field,result);
 	}
@@ -381,7 +388,9 @@ var RepoEdit = (function(RepoEdit){
 		$(this.saveButtonId).click(function(){
 			var serialized = serializeField($("#datum"));
 			if(serialized != undefined){
-				AppController.repositoryController.upload(serialized, saveSuccess, saveFailure);
+				var d = new EcRemoteLinkedData(null, null);
+				d.copyFrom(JSON.parse(serialized));
+				EcRepository.save(d, saveSuccess, saveFailure)
 			}else if(data != undefined){
 				EcRepository._delete(data, saveSuccess, saveFailure);
 			}

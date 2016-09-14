@@ -22,7 +22,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcFramework.get(id, function(data) {
                             ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {

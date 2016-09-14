@@ -22,7 +22,7 @@ RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcAlignment.get(id, function(data) {
                             ScreenManager.replaceScreen(new RelationshipViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {

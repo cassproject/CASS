@@ -148,6 +148,10 @@ var AppMenu = (function(AppMenu){
 				ModalManager.showModal(new CreateUserModal());
 			});
 			
+			$("#appMenuAdminPage").click(function(){
+				ScreenManager.changeScreen(new UserAdminScreen());
+			})
+			
 			$("#appMenuUserIdentityPage").attr("href", "#"+UserIdentityScreen.prototype.displayName);
 			$("#appMenuUserIdentityPage").click(function(event){
 				event.preventDefault();
@@ -312,6 +316,13 @@ var AppMenu = (function(AppMenu){
 	AppMenu.prototype.setLoggedIn = function(){
 		$("#appMenuPublic").addClass("hide");
 		$("#appMenuUserInfo").removeClass("hide");
+		
+		if( AppController.loginController.getAdmin() )
+		{
+			$("#appMenuAdmin").removeClass("hide");
+		}else{
+			$("#appMenuAdmin").addClass("hide");
+		}
 		
 		this.setCurrentServer();
 		buildIdentityList();

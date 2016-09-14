@@ -57,7 +57,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			AppController.searchController.competencySearch(query, callback, errorSearching, params);
+			EcCompetency.search(AppController.repoInterface, query, callback, errorSearching, params);
 		}, 100);
 	}
 	

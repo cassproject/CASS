@@ -63,7 +63,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
             for (var i = 0; i < framework.competency.length; i++) {
                 (function (i) {
                     timeout(function () {
-                        AppController.repositoryController.viewCompetency(framework.competency[i], function (competency) {
+                        EcCompetency.get(framework.competency[i], function (competency) {
                             competency.font = fonts.node;
                             competency.mass = 2;
                             nodes[competency.shortId()] = graph.newNode(competency);
@@ -76,7 +76,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                                     for (var i = 0; i < framework.relation.length; i++) {
                                         (function (i) {
                                             timeout(function () {
-                                            	AppController.repositoryController.viewRelation(framework.relation[i], function (relation) {
+                                            	EcAlignment.get(framework.relation[i], function (relation) {
                                                     if (relation.source !== undefined) {
                                                         nodes[relation.source].fixed = false;
                                                         if (nodes[relation.source].alwaysShowText === undefined)
@@ -111,7 +111,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.competency) {
             (function (idx) {
                 timeout(function () {
-                	AppController.repositoryController.viewCompetency(framework.competency[idx], function (competency) {
+                	EcCompetency.get(framework.competency[idx], function (competency) {
                         if (framework.competencyObjects == undefined) {
                             framework.competencyObjects = {};
                         }
@@ -126,7 +126,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.relation) {
             (function (idx) {
                 timeout(function () {
-                    AppController.repositoryController.viewRelation(framework.relation[idx], function (relation) {
+                	EcAlignment.get(framework.relation[idx], function (relation) {
                         addRelation(relation, framework);
                     }, errorRetrievingRelation);
                 });
@@ -136,7 +136,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         for (var idx in framework.level) {
             (function (idx) {
                 timeout(function () {
-                	AppController.repositoryController.viewLevel(framework.level[idx], addLevel, errorRetrievingLevel);
+                	EcLevel.get(framework.level[idx], addLevel, errorRetrievingLevel);
                 });
             })(idx);
         }
@@ -220,7 +220,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                 container.find("a").append(framework.competencyObjects[relation.target].name);
                 $("#competency-" + sourceId).find(".competencyRelations").append(container);
             } else {
-                AppController.repositoryController.viewCompetency(relation.target, function (competency) {
+                EcCompetency.get(relation.target, function (competency) {
                     container.find("a").append(competency.name);
                     $("#competency-" + sourceId).find(".competencyRelations").append(container);
                 }, errorRetrievingCompetency);
@@ -375,7 +375,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 				})
 			}
             
-            AppController.repositoryController.viewFramework(data.shortId(), displayFramework, errorRetrieving);
+            EcFramework.get(data.shortId(), displayFramework, errorRetrieving);
 
             if (callback != undefined)
                 callback();

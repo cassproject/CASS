@@ -162,6 +162,9 @@ function displayAssertionSearchItem(where, assertion) {
 
         ui.find(".assertionConfidence").text(Math.round(a.confidence * 100) + "% confidence");
 
+        if (a.getNegative())
+            ui.find(".assertionNegative").text("could not perform");
+
         timeout(function () {
             var agent = a.getAgent();
             if (agent != null)

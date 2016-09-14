@@ -57,7 +57,8 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
  	    	$("#competencyViewOwner").text("Public")
  	    }
 	    
-	    AppController.searchController.relationSearchBySource(EcRemoteLinkedData.trimVersionFromUrl(competency.id),
+	    EcAlignment.searchBySource(AppController.repoInterface,
+	    		EcRemoteLinkedData.trimVersionFromUrl(competency.id),
 	    		competencyViewRelationActual,
 	    		errorFindingRelationships);   
 	    
@@ -153,7 +154,7 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 
 	function fetchNameFor(dom,id)
 	{
-	    AppController.repositoryController.viewCompetency(id, function(c){
+	    EcCompetency.get(id, function(c){
 	        dom.text(c.name);        
 	        dom.click(function(e){
 	        	e.preventDefault();
@@ -235,7 +236,7 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 			}
 			
 			
-			AppController.repositoryController.viewCompetency(data.id, function(result){
+			EcCompetency.get(data.id, function(result){
 				data = result;
 				displayCompetency(result);
 			}, errorRetrieving);

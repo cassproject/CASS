@@ -49,18 +49,19 @@ function populateContactsActual() {
     var contactFilter = $("#contactSearch").val();
     if (contactFilter != null)
         contactFilter = contactFilter.trim();
-    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-        var identity = EcIdentityManager.ids[i];
-        var ui = $("#contactsList").append(contactsContact).children().last();
-        ui.find("a").hide();
-        ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
-        ui.attr("aria-selected", true);
-        if (contactFilter != null && contactFilter != "") {
-            if (identity.displayName != null)
-                if (identity.displayName.indexOf(contactFilter) == -1)
-                    ui.hide();
+    if (EcIdentityManager.ids !== undefined && EcIdentityManager.ids.length != 0)
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            var identity = EcIdentityManager.ids[i];
+            var ui = $("#contactsList").append(contactsContact).children().last();
+            ui.find("a").hide();
+            ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
+            ui.attr("aria-selected", true);
+            if (contactFilter != null && contactFilter != "") {
+                if (identity.displayName != null)
+                    if (identity.displayName.indexOf(contactFilter) == -1)
+                        ui.hide();
+            }
         }
-    }
     if (EcIdentityManager.contacts !== undefined && EcIdentityManager.contacts.length != 0)
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var contact = EcIdentityManager.contacts[i];
@@ -75,7 +76,10 @@ function populateContactsActual() {
                 }
             }
 
-        } else {
+        }
+
+    if (EcIdentityManager.contacts == undefined || EcIdentityManager.contacts.length == 0)
+        if (EcIdentityManager.ids == undefined || EcIdentityManager.ids.length == 0) {
             $("#contactsList").html("No contacts. Please log in and invite people to connect with you.");
         }
 }

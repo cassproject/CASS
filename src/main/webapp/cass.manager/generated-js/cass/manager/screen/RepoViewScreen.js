@@ -22,7 +22,7 @@ RepoViewScreen = stjs.extend(RepoViewScreen, CassManagerScreen, [], function(con
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcRepository.get(id, function(data) {
                             ScreenManager.replaceScreen(new RepoViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new RepoSearchScreen(null, null, null, null), CassManagerScreen.reloadShowLoginCallback);

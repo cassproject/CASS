@@ -74,6 +74,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  for comparison.
      *  
      *  @param pk
+     *             Public Key of the owner in object (forge) form.
      *  @return True if owner is represented by the PK, false otherwise.
      */
     prototype.hasOwner = function(pk) {
@@ -90,6 +91,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  for comparison.
      *  
      *  @param pk
+     *             Public Key of the owner in object (forge) form.
      *  @return True if owner is represented by the PK, false otherwise.
      */
     prototype.canEdit = function(pk) {
@@ -123,6 +125,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  Sign this object with a private key.
      *  
      *  @param ppk
+     *             Private Key of the owner in object (forge) form.
      */
     prototype.signWith = function(ppk) {
         var signableJson = this.toSignableJson();
@@ -191,7 +194,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Removes an owner from the object, if the owner does exist.
      *  
-     *  @param owner
+     *  @param oldOwner
      *             PK of the new owner.
      */
     prototype.removeOwner = function(oldOwner) {
@@ -264,7 +267,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     constructor.trimVersionFromUrl = function(id) {
         if (id == null) 
             return null;
-        if (id.substring(id.lastIndexOf("/")).contains("-")) 
+        if (!id.substring(id.lastIndexOf("/")).matches("^\\/[0-9]+$")) 
             return id;
         var rawId = id.substring(0, id.lastIndexOf("/"));
         if (rawId.endsWith("/")) 
@@ -282,70 +285,15 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                 result += " OR ";
             result += "@type:\"" + types[i] + "\"";
             var lastSlash = types[i].lastIndexOf("/");
-            result += " OR (@context:\"" + types[i].substring(0, lastSlash) + "\" AND @type:\"" + types[i].substring(lastSlash) + "\")";
+            result += " OR (@context:\"" + types[i].substring(0, lastSlash) + "\" AND @type:\"" + types[i].substring(lastSlash + 1) + "\")";
         }
         for (var i = 0; i < types.length; i++) {
             if (result.equals("") == false) 
                 result += " OR ";
             result += "@encryptedType:\"" + types[i] + "\"";
             var lastSlash = types[i].lastIndexOf("/");
-            result += " OR (@context:\"" + Ebac.context + "\" AND @encryptedType:\"" + types[i].substring(lastSlash) + "\")";
+            result += " OR (@context:\"" + Ebac.context + "\" AND @encryptedType:\"" + types[i].substring(lastSlash + 1) + "\")";
         }
         return "(" + result + ")";
-    };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A representation of a file.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var EcFile = function() {
-    EcRemoteLinkedData.call(this, General.context, EcFile.myType);
-};
-EcFile = stjs.extend(EcFile, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
-    constructor.myType = EcFile.TYPE_0_2;
-    /**
-     *  Optional checksum of the file, used to verify if the file has been
-     *  transmitted correctly.
-     */
-    prototype.checksum = null;
-    /**
-     *  Mime type of the file.
-     */
-    prototype.mimeType = null;
-    /**
-     *  Base-64 encoded version of the bytestream of a file.
-     *  
-     *  Please note: This field will be empty in search results, but be populated
-     *  in a direct get.
-     */
-    prototype.data = null;
-    /**
-     *  Name of the file.
-     */
-    prototype.name = null;
-    /**
-     *  Helper method to force the browser to download the file.
-     */
-    prototype.download = function() {
-        var blob = base64ToBlob(this.data, this.mimeType);
-        saveAs(blob, this.name);
-    };
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (EcFile.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(General.context_0_2, EcFile.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(EcFile.TYPE_0_2);
-        a.push(EcFile.TYPE_0_1);
-        return a;
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

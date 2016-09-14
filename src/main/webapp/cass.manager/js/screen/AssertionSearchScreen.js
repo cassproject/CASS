@@ -28,7 +28,7 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			AppController.searchController.assertionSearch("*", function(results){
+			EcAssertion.search(AppController.repoInterface, "*", function(results){
 				var waitFunc = function(){
 					if(ViewManager.getView("#assertionSearchResults") != undefined){
 						callback(results);
@@ -111,7 +111,7 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 			
 			ViewManager.showView(new MessageContainer("assertionSearch"), "#assertionSearchMessageContainer");
 			
-			AppController.searchController.competencySearch("*", function(competencies){
+			EcCompetency.search(AppController.repoInterface, "*", function(competencies){
 				var cache = {};
 				for(var i in competencies){
 					cache[EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id)] = competencies[i];

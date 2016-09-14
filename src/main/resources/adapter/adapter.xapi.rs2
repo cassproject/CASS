@@ -1,0 +1,68 @@
+ppk=#fileLoad(path="xapiAdapter.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="xapiAdapter.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="xapiAdapter.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="xapiAdapterPpk");
+
+#xapiMePpk=ppk;
+
+endpoint=#httpGet(
+	obj=#if(
+		operator=#variableGet(key="more"),
+		operand="",
+		eq=#if(
+			operator=#variableGet(key="since"),
+			operand="",
+			eq=#xapiEndpoint().add(z="statements?format=exact&limit=0"),
+			ne=#xapiEndpoint().add(z="statements?format=exact&limit=0&since=",zz=#variableGet(key="since"))
+		),
+		ne=#xapiHostname().add(z=#variableGet(key="more")).debug(prefix="moreLink:")
+	),
+	X-Experience-API-Version="1.0.1",
+	Authorization=#xapiAuth()
+).toObject();
+
+endpointDebug=endpoint.displayJson();
+//xapi/endpoint=endpointDebug;
+
+xapiConvert=#toObject(obj="@endpoint").get(statements="").forEach(
+	array="true",
+	threaded="false",
+	paramName="obj",
+	op=#xapiToAssertion()
+);
+
+cycle=#object(
+	a=xapiConvert,
+	b=#toObject(obj="@endpoint").get(more="").variableSet(key="more")
+).get(a="").call(endpoint=endpoint).while(
+	accumulate="true",
+	do="true",
+	condition=#if(
+		operator=#variableGet(key="more"),
+		operand="",
+		eq="false",
+		ne="true"
+	)
+).union().abortable().displayJson(_collapse="true");
+
+cycle=#object(
+	a=cycle,
+	z=#variableSet(key="since",obj=#date(dateFormat="yyyy-MM-dd'T'HH:mm:ssZ"))
+).get(a="").cache(global="true",name="xapiConversion",justLock="true");
+
+#xapiConvert=cycle;
+//xapi/convert=cycle;
+
+get=#httpGet(
+	obj=#xapiEndpoint().add(p="statements?format=exact&statementId=",q=#replace(obj="@urlRemainder",replace="/",with="")),
+	X-Experience-API-Version="1.0.1",
+	Authorization=#xapiAuth()
+).toObject().xapiToAssertion().filterResults().displayJson(_collapse="true");
+
+/xapi/get=get;

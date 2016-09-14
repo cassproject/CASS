@@ -72,6 +72,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         var that = this;
         this.loginServer.startLogin(username, password);
         this.loginServer.fetch(function(p1) {
+            EcIdentityManager.readContacts();
+            EcRepository.cache = new Object();
+            LoginController.setLoggedIn(true);
             if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
                 that.loginServer.fetchServerAdminKeys(function(keys) {
@@ -80,15 +83,26 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                             that.setAdmin(true);
                         }
                     }
+                    success();
                 }, function(p1) {});
+            } else {
+                success();
             }
-            EcIdentityManager.readContacts();
-            EcRepository.cache = new Object();
-            LoginController.setLoggedIn(true);
-            success();
         }, function(p1) {
             failure(p1);
         });
+    };
+    /**
+     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
+     *  authenticated and is unidentified
+     */
+    prototype.logout = function() {
+        this.loginServer.clear();
+        this.identity.selectedIdentity = null;
+        EcRepository.cache = new Object();
+        LoginController.setLoggedIn(false);
+        EcIdentityManager.ids = new Array();
+        EcIdentityManager.clearContacts();
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in
@@ -138,18 +152,6 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                 return null;
             };
         }, {}, {}))());
-    };
-    /**
-     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
-     *  authenticated and is unidentified
-     */
-    prototype.logout = function() {
-        this.loginServer.clear();
-        this.identity.selectedIdentity = null;
-        EcRepository.cache = new Object();
-        LoginController.setLoggedIn(false);
-        EcIdentityManager.ids = new Array();
-        EcIdentityManager.clearContacts();
     };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
 (function() {

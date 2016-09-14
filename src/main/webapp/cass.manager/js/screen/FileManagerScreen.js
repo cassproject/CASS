@@ -37,7 +37,10 @@ FileManagerScreen = (function(FileManagerScreen){
 	    
 	    $( "#fileManagerResults" ).on( "click", ".tile",function(){
 	    	ViewManager.getView("#fileManagerMessageContainer").clearAlert("downloadFail");
-	        AppController.repositoryController.downloadFile($(this).attr("id"), downloadFailed);
+	        
+	    	EcFile.get($(this).attr("id"), function(file){
+	        	file.download();
+	        }, downloadFailed)
 	    });
 	}
 	
@@ -45,7 +48,15 @@ FileManagerScreen = (function(FileManagerScreen){
 		var query = $("#fileManagerSearchText").val();
 
 		ViewManager.getView("#fileManagerMessageContainer").clearAlert("searchFail");
-		AppController.searchController.fileSearch(query, fileManagerSearchesPublic, displayResult, searchFailed);
+		
+		var paramObj;
+		if(fileManagerSearchesPublic){
+			paramObj = null;
+		}else{
+			paramObj = {ownership:"owned"};
+		}
+		
+		EcFile.search(AppController.repoInterface, query, displayResult, searchFailed, paramObj);
 	}
 
 
@@ -71,24 +82,18 @@ FileManagerScreen = (function(FileManagerScreen){
 	{
 	    var reader = new FileReader();
 	    reader.onload = function(event) {
-	        if (encrypt)
-	        {
-	            AppController.repositoryController.encryptAndUploadFile(files[0].name,
+	        var file = EcFile.create(files[0].name,
 	            		event.target.result.split(",")[1],
-	            		event.target.result.split(";")[0].split(":")[1],
-	            		fileUploaded,
-	            		uploadFailed
-	            );
+	            		event.target.result.split(";")[0].split(":")[1]);
+	        file.generateId(AppController.repoInterface.selectedServer)
+	    	
+	        if(encrypt){
+	        	file.privateEncrypted = true;
+	        	file.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
 	        }
-	        else
-	        {
-	        	AppController.repositoryController.uploadFile(files[0].name,
-	        			event.target.result.split(",")[1],
-	        			event.target.result.split(";")[0].split(":")[1],
-	            		fileUploaded,
-	            		uploadFailed
-	        	);
-	        }
+	        	
+	        
+	        file.save(fileUploaded, uploadFailed);
 	        
 	    };
 	    reader.readAsDataURL(files[0]);    

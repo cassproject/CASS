@@ -1,0 +1,135 @@
+listCompetencyFrameworks=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_list_competency_frameworks",
+	moodlewsrestformat="json",
+).put(_key="context[contextid]",_value=#moodleBaseContext()).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleListCompetencyFrameworks=listCompetencyFrameworks;
+
+listCompetencyFrameworksDebug=listCompetencyFrameworks.displayJson(_collapse="true");
+/moodle/test/competencyFrameworks=listCompetencyFrameworksDebug;
+
+listCompetencies=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_search_competencies",
+	moodlewsrestformat="json",
+	competencyframeworkid="@competencyframeworkid",
+	searchtext=""
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleListCompetencies=listCompetencies;
+
+listCompetenciesDebug=listCompetencies.displayJson(_collapse="true");
+/moodle/test/competencies=listCompetenciesDebug;
+
+createCompetency=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_create_competency",
+	moodlewsrestformat="json",
+).put(_key="competency[shortname]",_value=#string(str=#replace(obj="@name",replace="<[^>]*>",with="",regex="true"),op="substr",begin="0",end="100")
+).put(_key="competency[idnumber]",_value="@id"
+).put(_key="competency[description]",_value="@description"
+).put(_key="competency[descriptionformat]",_value="1"
+).put(_key="competency[competencyframeworkid]",_value="@competencyframeworkid"
+).put(_key="competency[sortorder]",_value=listCompetencies.count().toInteger()
+).put(_key="competency[timemodified]",_value="@lastmodified"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleCreateCompetency=createCompetency;
+
+createCompetencyDebug=createCompetency.displayJson(_collapse="true");
+/moodle/test/competencyCreate=createCompetencyDebug;
+
+updateCompetency=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_update_competency",
+	moodlewsrestformat="json",
+).put(_key="competency[shortname]",_value=#string(str="@name",op="substr",begin="0",end="100")
+).put(_key="competency[idnumber]",_value="@id"
+).put(_key="competency[id]",_value="@internalId"
+).put(_key="competency[description]",_value="@description"
+).put(_key="competency[descriptionformat]",_value="1"
+).put(_key="competency[competencyframeworkid]",_value="@competencyframeworkid"
+).put(_key="competency[timemodified]",_value="@lastmodified"
+).put(_key="competency[parentid]",_value="@parentId"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleUpdateCompetency=updateCompetency;
+
+updateCompetencyParent=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_set_parent_competency",
+	moodlewsrestformat="json",
+).put(_key="competencyid",_value="@internalId"
+).put(_key="parentid",_value="@parentId"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleUpdateCompetencyParent=updateCompetencyParent;
+
+updateCompetencyDebug=updateCompetency.displayJson(_collapse="true");
+/moodle/test/competencyUpdate=updateCompetencyDebug;
+
+createCompetencyFramework=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_create_competency_framework",
+	moodlewsrestformat="json",
+).put(_key="competencyframework[shortname]",_value="@name"
+).put(_key="competencyframework[idnumber]",_value="@id"
+).put(_key="competencyframework[description]",_value="@description"
+).put(_key="competencyframework[descriptionformat]",_value="1"
+).put(_key="competencyframework[scaleid]",_value=#moodleFrameworkDefaultScaleId()
+).put(_key="competencyframework[scaleconfiguration]",_value=#moodleFrameworkDefaultScaleConfiguration()
+).put(_key="competencyframework[contextid]",_value=#moodleBaseContext()
+).put(_key="competencyframework[timemodified]",_value="@lastmodified"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleCreateCompetencyFramework=createCompetencyFramework;
+
+createCompetencyFrameworkDebug=createCompetencyFramework.displayJson(_collapse="true");
+
+/moodle/test/competencyFrameworkCreate=createCompetencyFrameworkDebug;
+
+updateCompetencyFramework=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_update_competency_framework",
+	moodlewsrestformat="json",
+).put(_key="competencyframework[shortname]",_value="@name"
+).put(_key="competencyframework[idnumber]",_value="@id"
+).put(_key="competencyframework[id]",_value="@internalId"
+).put(_key="competencyframework[description]",_value="@description"
+).put(_key="competencyframework[descriptionformat]",_value="1"
+).put(_key="competencyframework[scaleid]",_value=#moodleFrameworkDefaultScaleId()
+).put(_key="competencyframework[scaleconfiguration]",_value=#moodleFrameworkDefaultScaleConfiguration()
+).put(_key="competencyframework[contextid]",_value=#moodleBaseContext()
+).put(_key="competencyframework[timemodified]",_value="@lastmodified"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleUpdateCompetencyFramework=updateCompetencyFramework;
+
+updateCompetencyFrameworkDebug=updateCompetencyFramework.displayJson(_collapse="true");
+/moodle/test/competencyFrameworkUpdate=updateCompetencyFrameworkDebug;
+
+queryGrades=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="tool_lp_data_for_user_competency_summary",
+	moodlewsrestformat="json",
+	userid="@userId",
+	competencyid="@competencyId"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleQueryGrades=queryGrades;
+
+queryGrades=queryGrades.displayJson(_collapse="true");
+/moodle/test/queryGrades=queryGrades;
+
+queryEvidence=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_read_user_evidence",
+	moodlewsrestformat="json",
+	id="@evidenceId"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleQueryEvidence=queryEvidence;
+
+queryEvidence=queryEvidence.displayJson(_collapse="true");
+/moodle/test/queryEvidence=queryEvidence;

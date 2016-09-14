@@ -280,6 +280,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         var that = this;
         this.loginServer.startLogin(username, password);
         this.loginServer.fetch(function(p1) {
+            EcIdentityManager.readContacts();
+            EcRepository.cache = new Object();
+            LoginController.setLoggedIn(true);
             if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
                 that.loginServer.fetchServerAdminKeys(function(keys) {
@@ -288,15 +291,26 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                             that.setAdmin(true);
                         }
                     }
+                    success();
                 }, function(p1) {});
+            } else {
+                success();
             }
-            EcIdentityManager.readContacts();
-            EcRepository.cache = new Object();
-            LoginController.setLoggedIn(true);
-            success();
         }, function(p1) {
             failure(p1);
         });
+    };
+    /**
+     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
+     *  authenticated and is unidentified
+     */
+    prototype.logout = function() {
+        this.loginServer.clear();
+        this.identity.selectedIdentity = null;
+        EcRepository.cache = new Object();
+        LoginController.setLoggedIn(false);
+        EcIdentityManager.ids = new Array();
+        EcIdentityManager.clearContacts();
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in
@@ -347,18 +361,6 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             };
         }, {}, {}))());
     };
-    /**
-     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
-     *  authenticated and is unidentified
-     */
-    prototype.logout = function() {
-        this.loginServer.clear();
-        this.identity.selectedIdentity = null;
-        EcRepository.cache = new Object();
-        LoginController.setLoggedIn(false);
-        EcIdentityManager.ids = new Array();
-        EcIdentityManager.clearContacts();
-    };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
 (function() {
     if (localStorage != null) 
@@ -370,6 +372,18 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.storageSystem["cass.login"] = false;
     }
 })();
+var WelcomeScreen = function() {
+    EcScreen.call(this);
+};
+WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "welcome";
+    prototype.display = function(arg0, arg1) {
+        console.error("Not Implemented Yet");
+    };
+    prototype.getDisplayName = function() {
+        return WelcomeScreen.displayName;
+    };
+}, {}, {});
 /**
  *  Manages the current selected identity for the user, and interfaces the Identity Manager to 
  *  provide helper functions for ownership and user identification
@@ -500,711 +514,6 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         return false;
     };
 }, {selectedIdentity: "EcIdentity"}, {});
-var WelcomeScreen = function() {
-    EcScreen.call(this);
-};
-WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
-    constructor.displayName = "welcome";
-    prototype.display = function(arg0, arg1) {
-        console.error("Not Implemented Yet");
-    };
-    prototype.getDisplayName = function() {
-        return WelcomeScreen.displayName;
-    };
-}, {}, {});
-/**
- *  Used to encrypt fields in the RepoEdit module, not used much in the admin UI, probably want
- *  to phase out or use better when rewriting the repoEdit/View/Create screens.
- *  
- *  @author devlin.junker@eduworks.com
- */
-var CryptoController = function() {};
-CryptoController = stjs.extend(CryptoController, null, [], function(constructor, prototype) {
-    prototype.identity = null;
-    /**
-     *  Encrypts the text passed in
-     *  
-     *  @param text 
-     *  			Value to be encrypted
-     *  @param id
-     *  			Id of the object that contains the field being encrypted
-     *  @param fieldName 
-     * 				(Not used) unsure why the encrypt function asks for this...
-     *  @return EcEncryptedValue containing the encrypted text
-     */
-    prototype.encryptField = function(text, id, fieldName) {
-        if (this.identity.selectedIdentity == null) {
-            return null;
-        }
-        return EcEncryptedValue.encryptValueOld(text, id, fieldName, this.identity.selectedIdentity.ppk.toPk()).atIfy();
-    };
-    /**
-     *  Attempts to decrypt the EcEncryptedValue passed in using the users identities stored in the 
-     *  EcIdentityManager
-     *  
-     *  @param encryptedObject
-     *  			EcEncryptedValue to be attempted to be decrypted (not sure why it is a string though...)
-     *  @return Decrypted string value
-     */
-    prototype.decryptField = function(encryptedObject) {
-        var e = new EcEncryptedValue();
-        e.copyFrom(JSON.parse(encryptedObject));
-        return e.decryptIntoString();
-    };
-}, {identity: "IdentityController"}, {});
-/**
- *  Provides methods to request objects from the repository on the server
- *  
- *  @author devlin.junker@eduworks.com
- */
-var RepositoryController = function() {};
-RepositoryController = stjs.extend(RepositoryController, null, [], function(constructor, prototype) {
-    prototype.repo = null;
-    prototype.identity = null;
-    /**
-     *  Retrieves a file from the server and downloads it to the user's computer
-     *  
-     *  @param id
-     *  			ID of the file to download
-     *  @param failure
-     *  			Callback if there is an error when retrieving the file
-     */
-    prototype.downloadFile = function(id, failure) {
-        EcRepository.get(id, function(p1) {
-            var f = new EcFile();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-            }
-            if (p1.isA(EcFile.myType)) {
-                f.copyFrom(p1);
-                f.download();
-            }
-        }, failure);
-    };
-    /**
-     *  Upload's a file to the server, encrypts it first though. This will error if there is
-     *  not a selected identity for a signed in user because it can't be encrypted
-     *  
-     *  @param name
-     *  			Name of the file to be uploaded
-     *  @param base64Data
-     *  			Data for the file to be uploaded
-     *  @param mimeType
-     *  			MIME Type of the file to be uploaded
-     *  @param success
-     *  			Callback after the file has been encrypted and uploaded successfully
-     *  @param failure
-     *  			Callback if there is an error during the encryption or upload process
-     */
-    prototype.encryptAndUploadFile = function(name, base64Data, mimeType, success, failure) {
-        if (this.identity.selectedIdentity == null) {
-            failure("User not signed in or, no Identity selected");
-            return;
-        }
-        var f = new EcFile();
-        f.generateId(this.repo.selectedServer);
-        f.data = base64Data;
-        f.name = name;
-        f.mimeType = mimeType;
-        f.addOwner(this.identity.selectedIdentity.ppk.toPk());
-        var encryptedValue = EcEncryptedValue.toEncryptedValue(f, false);
-        EcRepository.save(encryptedValue, function(p1) {
-            success();
-        }, failure);
-    };
-    /**
-     *  Upload's a file to the server without encrypting it. No owner is attached, so it will be a
-     *  public file.
-     *  
-     *  @param name
-     *  			Name of the file to be uploaded
-     *  @param base64Data
-     *  			Data for the file to be uploaded
-     *  @param mimeType
-     *  			MIME Type of the file to be uploaded
-     *  @param success
-     *  			Callback after the file has been encrypted and uploaded successfully
-     *  @param failure
-     *  			Callback if there is an error during the encryption or upload process
-     */
-    prototype.uploadFile = function(name, base64Data, mimeType, success, failure) {
-        var f = new EcFile();
-        f.data = base64Data;
-        f.name = name;
-        f.mimeType = mimeType;
-        f.generateId(this.repo.selectedServer);
-        EcRepository.save(f, function(p1) {
-            success();
-        }, failure);
-    };
-    /**
-     *  Uploads a JSON Object String to the repository
-     *  
-     *  @param data
-     *  			the JSON Object String to upload
-     *  @param success
-     *  			Callback for successful upload
-     *  @param fail
-     *  			Callback for error during upload
-     */
-    prototype.upload = function(data, success, fail) {
-        var d = new EcRemoteLinkedData(null, null);
-        d.copyFrom(JSON.parse(data));
-        if (d.invalid()) {
-            fail("Cannot save data. It is missing a vital component.");
-        }
-        EcRepository.save(d, success, fail);
-    };
-    /**
-     *  Retrieve an object from the repository (unsure of type)
-     *  @param id
-     *  			ID of the object to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the object after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.view = function(id, success, failure) {
-        EcRepository.get(id, success, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a competency before returning it
-     *  @param id
-     *  			ID of the competency to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the competency after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewCompetency = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var competency = new EcCompetency();
-            if (p1.isAny(competency.getTypes())) {
-                competency.copyFrom(p1);
-                success(competency);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcCompetency.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                competency.copyFrom(decrypted);
-                competency.privateEncrypted = true;
-                success(competency);
-            } else {
-                failure("Retrieved object was not a competency");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a framework before returning it
-     *  @param id
-     *  			ID of the framework to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the framework after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewFramework = function(id, success, failure) {
-        var me = this;
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var framework = new EcFramework();
-            if (p1.isAny(framework.getTypes())) {
-                framework.copyFrom(p1);
-                success(framework);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcFramework.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                framework.copyFrom(decrypted);
-                framework.privateEncrypted = true;
-                success(framework);
-            } else {
-                failure("Retrieved object was not a framework");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a relation before returning it
-     *  @param id
-     *  			ID of the relation to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the relation after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewRelation = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var alignment = new EcAlignment();
-            if (p1.isAny(alignment.getTypes())) {
-                alignment.copyFrom(p1);
-                success(alignment);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcAlignment.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                alignment.copyFrom(decrypted);
-                alignment.privateEncrypted = true;
-                success(alignment);
-            } else {
-                failure("Retrieved object was not a relation");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a level before returning it
-     *  @param id
-     *  			ID of the level to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the level after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewLevel = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            var level = new EcLevel();
-            if (p1.isAny(level.getTypes())) {
-                level.copyFrom(p1);
-                success(level);
-            } else if (p1.isA(EcEncryptedValue.myType) && encrypted.isAnEncrypted(EcLevel.myType)) {
-                var decrypted = encrypted.decryptIntoObject();
-                level.copyFrom(decrypted);
-                ;
-                level.privateEncrypted = true;
-                success(level);
-            } else {
-                failure("Retrieved object was not a level");
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieve an object from the repository and check then cast it to a assertion before returning it
-     *  @param id
-     *  			ID of the assertion to retrieve from the repository
-     *  @param success
-     *  			Callback that returns the assertion after successfully retrieving it
-     *  @param failure
-     *  			Callback that returns any errors that occur during retrieval
-     */
-    prototype.viewAssertion = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var assertion = new EcAssertion();
-            if (p1.isAny(assertion.getTypes())) {
-                assertion.copyFrom(p1);
-                success(assertion);
-            } else {
-                failure("Retrieved object was not an assertion");
-            }
-        }, failure);
-    };
-}, {repo: "EcRepository", identity: "IdentityController"}, {});
-/**
- *  Search Controller interfaces with the repository to build search queries based on
- *  the type of an object desired or other parameters that can be passed in
- *  
- *  @author devlin.junker@eduworks.com
- */
-var SearchController = function() {};
-SearchController = stjs.extend(SearchController, null, [], function(constructor, prototype) {
-    prototype.repo = null;
-    /**
-     *  Fetches an array of strings that identify the types present in the repository
-     *  
-     *  @param success
-     *  			Callback when the list has been returned, hands the list back to the UI
-     *  @param failure 
-     *  			Callback if an error occurs while retrieving the types, returns the 
-     *  			server response
-     */
-    prototype.getTypes = function(success, failure) {
-        this.repo.listTypes(success, failure);
-    };
-    /**
-     *  Very Basic Search, doesn't modify the query passed in except to wrap it in parenthesis
-     *  
-     *  @param query
-     *  			The query to pass to ths search web service
-     *  @param success 
-     *  			Callback when the search successfully returns a list of objects found 
-     *  			with the query
-     *  @param failure 
-     *  			Callback if an error occurs during the search, returns the server response
-     *  			as a string
-     *  @param paramObj 
-     *  			Object with parameters to pass to the search web service (allowable
-     *  			parameters include: start, size, types and ownership)
-     */
-    prototype.search = function(query, success, failure, paramObj) {
-        if (paramObj == null) 
-            paramObj = new Object();
-        var params = new Object();
-        var paramProps = (params);
-        if ((paramObj)["start"] != null) 
-            paramProps["start"] = (paramObj)["start"];
-        if ((paramObj)["size"] != null) 
-            paramProps["size"] = (paramObj)["size"];
-        if ((paramObj)["types"] != null) 
-            paramProps["types"] = (paramObj)["types"];
-        if ((paramObj)["ownership"] != null) {
-            var ownership = (paramObj)["ownership"];
-            if (!query.startsWith("(") || !query.endsWith(")")) {
-                query = "(" + query + ")";
-            }
-            if (ownership.equals("public")) {
-                query += " AND (_missing_:@owner)";
-            } else if (ownership.equals("owned")) {
-                query += " AND (_exists_:@owner)";
-            } else if (ownership.equals("me")) {
-                query += " AND (";
-                for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                    if (i != 0) {
-                        query += " OR ";
-                    }
-                    var id = EcIdentityManager.ids[i];
-                    query += "@owner:\"" + id.ppk.toPk().toPem() + "\"";
-                }
-                query += ")";
-            }
-        }
-        if ((paramObj)["fields"] != null) 
-            paramProps["fields"] = (paramObj)["fields"];
-        if (paramProps["start"] != null || paramProps["size"] != null || paramProps["ownership"] != null || paramProps["types"] != null || paramProps["fields"] != null) 
-            this.repo.searchWithParams(query, params, null, success, failure);
-         else 
-            this.repo.search(query, null, success, failure);
-    };
-    prototype.searchWithParams = function(query, params, success, failure) {
-        this.repo.searchWithParams(query, params, null, success, failure);
-    };
-    /**
-     *  Searches for files that match the query passed in, if query is blank returns list of all 
-     *  files up to the limit of returnable objects 
-     *  
-     *  @param query 
-     *  			String to match files against
-     *  @param searchPublic 
-     *  			boolean flag to search for public files only
-     *  @param success 
-     *  			Callback to return the file objects found
-     *  @param failure 
-     *  			Callback to return any errors that occured during the file search
-     */
-    prototype.fileSearch = function(query, searchPublic, success, failure) {
-        var queryAdd = "";
-        queryAdd = new EcFile().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        if (searchPublic) {
-            this.search(query, success, failure, null);
-        } else {
-            var params = new Object();
-            (params)["ownership"] = "owned";
-            this.search(query, success, failure, params);
-        }
-    };
-    /**
-     *  Searches for frameworks that match the query, if the query is blank returns list of all frameworks
-     *  up to the limit of returnable objects
-     *  
-     *  @param query 
-     *  			String to match frameworks against
-     *  @param success 
-     *  			Callback to return the frameworks found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     *  @param paramObj
-     *  			Object containing search parameters (fields: start, size, ownership)
-     */
-    prototype.frameworkSearch = function(query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcFramework().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var framework = new EcFramework();
-                    if (p1[i].isAny(framework.getTypes())) {
-                        framework.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcFramework.myType)) {
-                            var obj = val.decryptIntoObject();
-                            framework.copyFrom(obj);
-                            framework.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = framework;
-                }
-                success(ret);
-            }
-        }, failure, paramObj);
-    };
-    /**
-     *  Searches for competencies that match the query, if the query is blank returns list of all competencies
-     *  up to the limit of returnable objects
-     *  
-     *  @param query 
-     *  			String to match competencies against
-     *  @param success 
-     *  			Callback to return the competencies found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     *  @param paramObj
-     *  			Object containing search parameters (fields: start, size, ownership)
-     */
-    prototype.competencySearch = function(query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcCompetency().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcCompetency();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcCompetency.myType)) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            comp.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure, paramObj);
-    };
-    /**
-     *  Searches for the levels associated with a given competencyId, if competencyId is empty or
-     *  null, failure is invoked
-     *  
-     *  @param competencyId 
-     *  			Id of the competency to search for associated levels on
-     *  @param success 
-     *  			Callback to return the levels found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     */
-    prototype.levelSearchByCompetency = function(competencyId, success, failure) {
-        if (competencyId == null || competencyId == "") {
-            failure("No Competency Specified");
-            return;
-        }
-        var query = "(" + new EcLevel().getSearchStringByType();
-        query += " AND ( competency:\"" + competencyId + "\" OR competency:\"" + EcRemoteLinkedData.trimVersionFromUrl(competencyId) + "\"))";
-        query += " OR @encryptedType:\"" + EcLevel.myType + "\" OR @encryptedType:\"" + EcLevel.myType.replace(Cass.context + "/", "") + "\"";
-        this.search(query, function(p1) {
-            if (success != null) {
-                var levels = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var level = new EcLevel();
-                    if (p1[i].isAny(level.getTypes())) {
-                        level.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcLevel.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["competency"] != competencyId) {
-                                continue;
-                            }
-                            level.copyFrom(obj);
-                            level.privateEncrypted = true;
-                        }
-                    }
-                    level.copyFrom(p1[i]);
-                    levels[i] = level;
-                }
-                if (success != null) 
-                    success(levels);
-            }
-        }, failure, null);
-    };
-    /**
-     *  Searches for relations that match the query, if the query is blank returns list of all relations
-     *  up to the limit of returnable objects
-     *  
-     *  @param query 
-     *  			String to match relations against
-     *  @param success 
-     *  			Callback to return the relations found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     *  * @param paramObj
-     *  			Object containing search parameters (fields: start, size, ownership)
-     */
-    prototype.relationSearch = function(query, success, failure, paramObj) {
-        var queryAdd = new EcAlignment().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure, paramObj);
-    };
-    /**
-     *  Searches for relationships that have the source competency specified by sourceId
-     *  
-     *  @param sourceId 
-     *  			ID of the competency for which relationships are returned that contain this ID 
-     *  			in the source field
-     *  @param success 
-     *  			Callback to return the relations found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     */
-    prototype.relationSearchBySource = function(sourceId, success, failure) {
-        var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
-        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
-        if (noVersion == sourceId) {
-            query += " AND (source:\"" + sourceId + "\"))";
-        } else {
-            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
-        }
-        query += " OR @encryptedType:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType.replace(Cass.context + "/", "") + "\")";
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != sourceId && (obj)["source"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure, null);
-    };
-    /**
-     *  Searches for relationships that have either the source or target competency specified 
-     *  by competencyId
-     *  
-     *  @param competencyId 
-     * 				ID of the competency for which relationships are returned that 
-     *  			contain this ID in the source or target field
-     *  @param success 
-     *  			Callback to return the relations found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     */
-    prototype.relationSearchBySourceOrTarget = function(competencyId, success, failure) {
-        var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
-        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
-        if (noVersion == competencyId) {
-            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\"))";
-        } else {
-            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\"))";
-        }
-        query += " OR @encryptedType:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType.replace(Cass.context + "/", "") + "\")";
-        var fields = ["source", "target", "relationType"];
-        var params = new Object();
-        (params)["fields"] = fields;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != competencyId && (obj)["source"] != noVersion && (obj)["target"] != competencyId && (obj)["target"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure, params);
-    };
-    /**
-     *  Searches for assertion that match the query, if the query is blank returns list of all relations
-     *  up to the limit of returnable objects
-     *  
-     *  @param query 
-     *  			String to match assertion against
-     *  @param success 
-     *  			Callback to return the assertions found
-     *  @param failure 
-     *  			Callback to return any errors during search
-     *  @param paramObj
-     *  			Object containing search parameters (fields: start, size)
-     */
-    prototype.assertionSearch = function(query, success, failure, paramObj) {
-        var queryAdd = new EcAssertion().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        this.search(query, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var assertion = new EcAssertion();
-                    assertion.copyFrom(p1[i]);
-                    ret[i] = assertion;
-                }
-                success(ret);
-            }
-        }, failure, paramObj);
-    };
-}, {repo: "EcRepository"}, {});
 var RepoEdit = function(data, saveButtonId, messageContainerId) {
     EcView.call(this);
     this.data = data;
@@ -1279,8 +588,7 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
         var urlBase = window.location.host + window.location.pathname;
         if (urlBase.startsWith("localhost")) 
             urlBase = "http://" + urlBase;
-        EcRemote.postExpectingString(urlBase, "settings/settings.js", null, function(settingsObjStr) {
-            var settingsObj = JSON.parse(settingsObjStr);
+        EcRemote.getExpectingObject(urlBase, "settings/settings.js", function(settingsObj) {
             var msg = (settingsObj)[AppSettings.FIELD_MSG_RETURN];
             if (msg != null) 
                 AppSettings.returnLoginMessage = msg;
@@ -1517,27 +825,22 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.topBarContainerId = "#menuContainer";
     constructor.serverController = null;
     constructor.identityController = new IdentityController();
-    constructor.searchController = new SearchController();
     constructor.loginController = new LoginController();
-    constructor.repositoryController = new RepositoryController();
-    constructor.cryptoController = new CryptoController();
     constructor.repoInterface = new EcRepository();
     constructor.loginServer = new EcRemoteIdentityManager();
     constructor.main = function(args) {
         AppSettings.loadSettings();
         AppController.repoInterface.autoDetectRepository();
-        if (AppController.repoInterface.selectedServer == null) 
+        if (AppController.repoInterface.selectedServer == null) {
             AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
-         else 
+        } else {
             AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "This Server (" + window.location.host + ")");
+            AppController.serverController.addServer(AppSettings.defaultServerName, AppSettings.defaultServerUrl, null, null);
+        }
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
-        AppController.searchController.repo = AppController.repoInterface;
-        AppController.repositoryController.repo = AppController.repoInterface;
         AppController.loginServer.configure(AppSettings.defaultServerUserSalt, AppSettings.defaultServerUserIterations, AppSettings.defaultServerUserLength, AppSettings.defaultServerPasswordSalt, AppSettings.defaultServerPasswordIterations, AppSettings.defaultServerPasswordLength, AppSettings.defaultServerSecretSalt, AppSettings.defaultServerSecretIterations);
         AppController.loginController.loginServer = AppController.loginServer;
-        AppController.repositoryController.identity = AppController.identityController;
-        AppController.cryptoController.identity = AppController.identityController;
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());
         EcIdentityManager.clearContacts();
@@ -1548,7 +851,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
             return true;
         });
     };
-}, {serverController: "ServerController", identityController: "IdentityController", searchController: "SearchController", loginController: "LoginController", repositoryController: "RepositoryController", cryptoController: "CryptoController", repoInterface: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
+}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", repoInterface: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();
 var RelationshipSearchScreen = function(lastViewed, query, ownership) {
@@ -1800,6 +1103,42 @@ FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, []
         }
     });
 })();
+var UserAdminScreen = function() {
+    EcScreen.call(this);
+};
+UserAdminScreen = stjs.extend(UserAdminScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "admin";
+    prototype.display = function(containerId, callback) {
+        console.error("Not Implemented Yet!");
+    };
+    prototype.getDisplayName = function() {
+        return UserAdminScreen.displayName;
+    };
+}, {}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + UserAdminScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (LoginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
+                ScreenManager.startupScreen = new UserAdminScreen();
+                ModalManager.showModal(new LoginModal(function() {
+                    ModalManager.hideModal();
+                    if (!AppController.loginController.getAdmin()) {
+                        ScreenManager.replaceScreen(new UserIdentityScreen(), null);
+                    }
+                }, function() {
+                    if (!LoginController.getLoggedIn()) {
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null);
+                    } else if (LoginController.admin) {
+                        ScreenManager.replaceScreen(new UserIdentityScreen(), null);
+                    } else {
+                        ScreenManager.reloadCurrentScreen(null);
+                    }
+                }, AppSettings.returnLoginMessage), null);
+            }
+        }
+    });
+})();
 var RelationshipViewScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
@@ -1824,7 +1163,7 @@ RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcAlignment.get(id, function(data) {
                             ScreenManager.replaceScreen(new RelationshipViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {
@@ -1865,11 +1204,8 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
-                            if (data.isA(EcAlignment.myType)) 
-                                ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                             else 
-                                ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
+                        EcAlignment.get(id, function(data) {
+                            ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
                         });
@@ -1907,7 +1243,7 @@ RepoViewScreen = stjs.extend(RepoViewScreen, CassManagerScreen, [], function(con
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcRepository.get(id, function(data) {
                             ScreenManager.replaceScreen(new RepoViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new RepoSearchScreen(null, null, null, null), CassManagerScreen.reloadShowLoginCallback);
@@ -1946,7 +1282,7 @@ AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcAssertion.get(id, function(data) {
                             ScreenManager.replaceScreen(new AssertionEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new AssertionSearchScreen(null), CassManagerScreen.reloadShowLoginCallback);
@@ -1985,7 +1321,7 @@ CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcCompetency.get(id, function(data) {
                             ScreenManager.replaceScreen(new CompetencyEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
@@ -2024,7 +1360,7 @@ AssertionViewScreen = stjs.extend(AssertionViewScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcAssertion.get(id, function(data) {
                             ScreenManager.replaceScreen(new AssertionViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {
@@ -2065,7 +1401,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcCompetency.get(id, function(data) {
                             ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {
@@ -2106,7 +1442,7 @@ FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.viewFramework(id, function(data) {
+                        EcFramework.get(id, function(data) {
                             ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
                         }, function(p1) {
                             ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
@@ -2145,7 +1481,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                     var paramSplit = (firstParam.split("="));
                     if (paramSplit.length > 1) {
                         var id = paramSplit[1];
-                        AppController.repositoryController.view(id, function(data) {
+                        EcFramework.get(id, function(data) {
                             ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback);
                             CassManagerScreen.showLoginModalIfReload();
                         }, function(p1) {

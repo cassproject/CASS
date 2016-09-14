@@ -56,7 +56,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    
 	    var competency = assertion.competency;
 	    if(competency != undefined){
-	    	AppController.repositoryController.viewCompetency(competency, function(competency){
+	    	EcCompetency.get(competency, function(competency){
 	    		if(competency != undefined){
 	    			var el = $("<a href='"+CompetencyViewScreen.displayName+"?id="+competency.id+"'>"+competency.name+"</a>");
 	    			el.click(function(ev){
@@ -96,7 +96,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    
 	    var level = assertion.level
 	    if(level != undefined){
-	    	AppController.repositoryController.viewLevel(level, function(level){
+	    	EcLevel.get(level, function(level){
 	    		if(level != undefined){
 	    			var tip = "";
 	    			if(level.description != undefined && level.description != "")
@@ -306,7 +306,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
 			}
 			
 			
-			AppController.repositoryController.viewAssertion(data.id, function(result){
+			EcAssertion.get(data.id, function(result){
 				data = result;
 				displayAssertion(result);
 			}, errorRetrieving);

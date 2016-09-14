@@ -128,6 +128,17 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
             i.displayName = EcAesCtr.decrypt(credential.displayName, secret, credential.iv);
         return i;
     };
+    /**
+     *  Converts an identity to a contact.
+     *  @return Contact object.
+     */
+    prototype.toContact = function() {
+        var c = new EcContact();
+        c.displayName = this.displayName;
+        c.pk = this.ppk.toPk();
+        c.source = this.source;
+        return c;
+    };
 }, {ppk: "EcPpk"}, {});
 /**
  *  Manages identities and contacts, provides hooks to respond to identity and
@@ -292,7 +303,6 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.signatureSheetFor = function(identityPksinPem, duration, server) {
         var signatures = new Array();
-        var crypto = new EcRsaOaep();
         for (var j = 0; j < EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
             var pk = ppk.toPk();
@@ -300,10 +310,33 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                 for (var i = 0; i < identityPksinPem.length; i++) {
                     var ownerPpk = EcPk.fromPem(identityPksinPem[i].trim());
                     if (pk.equals(ownerPpk)) 
-                        signatures.push(EcIdentityManager.createSignature(duration, server, crypto, ppk).atIfy());
+                        signatures.push(EcIdentityManager.createSignature(duration, server, ppk).atIfy());
                 }
         }
         return JSON.stringify(signatures);
+    };
+    constructor.signatureSheetForAsync = function(identityPksinPem, duration, server, success) {
+        var signatures = new Array();
+        new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
+            var ppk = p1.ppk;
+            var pk = ppk.toPk();
+            var found = false;
+            if (identityPksinPem != null) 
+                for (var j = 0; j < identityPksinPem.length; j++) {
+                    var ownerPpk = EcPk.fromPem(identityPksinPem[j].trim());
+                    if (pk.equals(ownerPpk)) {
+                        found = true;
+                        EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
+                            signatures.push(p1.atIfy());
+                            incrementalSuccess();
+                        });
+                    }
+                }
+            if (!found) 
+                incrementalSuccess();
+        }, function(pks) {
+            success(JSON.stringify(signatures));
+        });
     };
     /**
      *  Create a signature sheet for all identities, authorizing movement of data
@@ -317,20 +350,41 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.signatureSheet = function(duration, server) {
         var signatures = new Array();
-        var crypto = new EcRsaOaep();
         for (var j = 0; j < EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
-            signatures.push(EcIdentityManager.createSignature(duration, server, crypto, ppk).atIfy());
+            signatures.push(EcIdentityManager.createSignature(duration, server, ppk).atIfy());
         }
         return JSON.stringify(signatures);
     };
-    constructor.createSignature = function(duration, server, crypto, ppk) {
+    constructor.signatureSheetAsync = function(duration, server, success) {
+        var signatures = new Array();
+        new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
+            var ppk = p1.ppk;
+            EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
+                signatures.push(p1.atIfy());
+                incrementalSuccess();
+            });
+        }, function(pks) {
+            success(JSON.stringify(signatures));
+        });
+    };
+    constructor.createSignature = function(duration, server, ppk) {
         var s = new EbacSignature();
         s.owner = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
         s.server = server;
         s.signature = EcRsaOaep.sign(ppk, s.toJson());
         return s;
+    };
+    constructor.createSignatureAsync = function(duration, server, ppk, success) {
+        var s = new EbacSignature();
+        s.owner = ppk.toPk().toPem();
+        s.expiry = new Date().getTime() + duration;
+        s.server = server;
+        EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
+            s.signature = p1;
+            success(s);
+        }, null);
     };
     /**
      *  Get PPK from PK (if we have it)
@@ -350,7 +404,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Get Contact from PK (if we have it)
      *  
-     *  @param fromPem
+     *  @param pk
      *             PK to use to look up PPK
      *  @return PPK or null.
      */
@@ -364,7 +418,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Get Identity from PK (if we have it)
      *  
-     *  @param fromPem
+     *  @param pk
      *             PK to use to look up PPK
      *  @return PPK or null.
      */
@@ -604,6 +658,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *             Current password
      *  @param newPassword
      *             Desired password
+     *  @return Valid password change request.
      */
     prototype.changePassword = function(username, oldPassword, newPassword) {
         var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
@@ -735,11 +790,14 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         commit.credentials.contacts = contacts;
         var fd = new FormData();
         fd.append("credentialCommit", commit.toJson());
-        fd.append("signatureSheet", EcIdentityManager.signatureSheet(60000, this.server));
-        EcRemote.postExpectingString(this.server, service, fd, function(arg0) {
-            success(arg0);
-        }, function(arg0) {
-            failure(arg0);
+        var me = this;
+        EcIdentityManager.signatureSheetAsync(60000, this.server, function(p1) {
+            fd.append("signatureSheet", p1);
+            EcRemote.postExpectingString(me.server, service, fd, function(arg0) {
+                success(arg0);
+            }, function(arg0) {
+                failure(arg0);
+            });
         });
     };
     /**

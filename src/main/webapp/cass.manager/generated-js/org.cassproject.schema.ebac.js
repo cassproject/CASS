@@ -36,6 +36,50 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Credential list along with one time pad and session-based token for use in
+ *  commit actions.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacCredentials = function() {
+    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_2);
+};
+EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
+    /**
+     *  One time pad (aka perfect cipher)
+     */
+    prototype.pad = null;
+    /**
+     *  Token provided by server to use in commit actions.
+     */
+    prototype.token = null;
+    /**
+     *  Credential array.
+     */
+    prototype.credentials = null;
+    /**
+     *  Contact array.
+     */
+    prototype.contacts = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (EbacCredentials.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Ebac.context_0_2, EbacCredentials.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(EbacCredentials.TYPE_0_2);
+        a.push(EbacCredentials.TYPE_0_1);
+        return a;
+    };
+}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  AES encrypted private key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt private identities for storage on remote
  *  systems.
@@ -127,50 +171,6 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Credential list along with one time pad and session-based token for use in
- *  commit actions.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var EbacCredentials = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_2);
-};
-EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
-    /**
-     *  One time pad (aka perfect cipher)
-     */
-    prototype.pad = null;
-    /**
-     *  Token provided by server to use in commit actions.
-     */
-    prototype.token = null;
-    /**
-     *  Credential array.
-     */
-    prototype.credentials = null;
-    /**
-     *  Contact array.
-     */
-    prototype.contacts = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (EbacCredentials.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Ebac.context_0_2, EbacCredentials.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(EbacCredentials.TYPE_0_2);
-        a.push(EbacCredentials.TYPE_0_1);
-        return a;
-    };
-}, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Component of EbacEncryptedValue that contains data needed to decrypt
  *  encrypted payload. Is, in itself, encrypted.
