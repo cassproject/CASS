@@ -170,9 +170,8 @@ echo Configuring Apache
 	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
 	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
 
-	a2enmod proxy_http ssl
-
 	fi
+	a2enmod proxy_http ssl
 fi
 
 if [ "$platformFedora" -ne 0 ];
