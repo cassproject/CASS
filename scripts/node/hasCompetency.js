@@ -3,6 +3,7 @@ var fs = require('fs');
 require("node-jquery-xhr");
 var forge = require("node-forge");
 var FormData = require('form-data');
+var antlr4 = require('antlr4/index');
 
 var window = null;
 var document = {};
@@ -22,6 +23,11 @@ eval(fs.readFileSync("../../src/main/js/cass/org.cassproject.schema.cass.js")+""
 eval(fs.readFileSync("../../src/main/js/cass/ebac.identity.js")+"");
 eval(fs.readFileSync("../../src/main/js/cass/ebac.repository.js")+"");
 eval(fs.readFileSync("../../src/main/js/cass/cass.competency.js")+"");
+eval(fs.readFileSync("../../src/main/js/cass/RollupListener.js")+"");
+eval(fs.readFileSync("../../src/main/js/cass/RollupParser.js")+"");
+eval(fs.readFileSync("../../src/main/js/cass/RollupLexer.js")+"");
+eval(fs.readFileSync("../../src/main/js/cass/cass.rollup.js")+"");
+
 
 var error = function(e){console.log(e);};
 
@@ -48,46 +54,47 @@ remoteIdentityManager.configureFromServer(function(o){
         console.log("Private Key: " + identity.ppk.toPem());
         console.log("Public Key: " + identity.ppk.toPk().toPem());
         
-        console.log("Creating framework.")
-		var f = new EcFramework();
-        f.name = "Node Script Framework";
-        f.generateId(repo.selectedServer);
-        console.log("Framework Id: " + f.shortId());
-        f.addOwner(identity.ppk.toPk());
-    	console.log("Saving framework.");
-        f.save(function(o3){
-        	console.log("Saved framework.");
-        	console.log("Creating competency.");
-        	var c = new EcCompetency();
-        	c.name = "Node Script Competency";
-        	c.generateId(repo.selectedServer);
-            console.log("Competency Id: " + f.shortId());
-        	c.addOwner(identity.ppk.toPk());
-        	console.log("Saving competency.");
-        	c.save(function(p1){
-        		console.log("Saved competency.");
-        		console.log("Adding competency to framework using short identifier.");
-        		f.addCompetency(c.shortId());
-        		console.log("Saving framework after modification.");
-        		f.save(function(o4){
-        			console.log("Saved framework.");
-        			EcRepository.get(f.shortId(),function(get0){
-        				console.log("Fetched framework from server. Looks like this:");
-        				console.log(get0);
-                    	f._delete(function(o5){
-                    		console.log("Deleted framework.");
-                    	},error);
-        			},error);
-        			EcRepository.get(c.shortId(),function(get1){
-        				console.log("Fetched competency from server. Looks like this:");
-        				console.log(get1);
-                    	c._delete(function(o6){
-                    		console.log("Deleted competency.");
-                    	},error);
-        			},error);
-        		},error);
-        	},error);
-        },error);		
+        console.log("Asking question: Do I know about X");
+        
+        var competencyId = "https://dev.cassproject.org/api/custom/data/schema.eduworks.com.cass.0.2.competency/5164fc54-3438-4367-8399-7e7ac7645dde";
+        var frameworkId = "https://dev.cassproject.org/api/custom/data/schema.eduworks.com.cass.0.2.framework/c98eb325-6569-4d5d-9fab-881baedf3f42";
+        var target = EcIdentityManager.ids[0].ppk.toPk();
+
+        EcCompetency.get(
+            competencyId,
+            function (competency) {
+                EcFramework.get(
+                    frameworkId,
+                    function (framework) {
+                        var ep = new PessimisticQuadnaryAssertionProcessor();
+                        ep.logFunction = function (data) {
+                            console.log(data);
+                        };
+                        ep.repositories.push(repo);
+                        var subject = new Array();
+                        subject.push(target);
+                        var additionalSignatures = null;
+                        ep.has(
+                            subject,
+                            competency,
+                            null,
+                            framework,
+                            additionalSignatures,
+                            function (data) {
+                            	console.log(data);
+                            },
+                            function (data) {
+                                console.log(data);
+                            },
+                            function (data) {
+                                console.log(data);
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        
 	},error);
 },error);
 
