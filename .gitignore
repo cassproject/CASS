@@ -1,0 +1,5 @@
+*.salt
+*.secret
+*.pem
+target
+scripts/node/node_modules
