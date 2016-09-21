@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  TODO: Test case where an absent relation is in the framework.
  *  @author fritz.ray@eduworks.com
@@ -420,6 +411,37 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (this.subject != null) {
             this.subject = EcEncryptedValue.revive(this.subject);
             this.subject.addReader(newReader);
+        }
+    };
+    prototype.removeReader = function(newReader) {
+        if (this.agent != null) {
+            this.agent = EcEncryptedValue.revive(this.agent);
+            this.agent.removeReader(newReader);
+        }
+        if (this.assertionDate != null) {
+            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
+            this.assertionDate.removeReader(newReader);
+        }
+        if (this.decayFunction != null) {
+            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
+            this.decayFunction.removeReader(newReader);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i < this.evidence.length; i++) {
+                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
+                this.evidence[i].removeReader(newReader);
+            }
+        if (this.expirationDate != null) {
+            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
+            this.expirationDate.removeReader(newReader);
+        }
+        if (this.negative != null) {
+            this.negative = EcEncryptedValue.revive(this.negative);
+            this.negative.removeReader(newReader);
+        }
+        if (this.subject != null) {
+            this.subject = EcEncryptedValue.revive(this.subject);
+            this.subject.removeReader(newReader);
         }
     };
     constructor.get = function(id, success, failure) {

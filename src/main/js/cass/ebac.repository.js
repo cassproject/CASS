@@ -1,12 +1,55 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
+/**
+ *  A representation of a file.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var GeneralFile = function() {
+    EcRemoteLinkedData.call(this, General.context, GeneralFile.myType);
+};
+GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
+    constructor.myType = GeneralFile.TYPE_0_2;
+    /**
+     *  Optional checksum of the file, used to verify if the file has been
+     *  transmitted correctly.
+     */
+    prototype.checksum = null;
+    /**
+     *  Mime type of the file.
+     */
+    prototype.mimeType = null;
+    /**
+     *  Base-64 encoded version of the bytestream of a file.
+     *  
+     *  Please note: This field will be empty in search results, but be populated
+     *  in a direct get.
+     */
+    prototype.data = null;
+    prototype.name = null;
+    /**
+     *  Helper method to force the browser to download the file.
+     */
+    prototype.download = function() {
+        var blob = base64ToBlob(this.data, this.mimeType);
+        saveAs(blob, this.name);
+    };
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (GeneralFile.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(General.context_0_2, GeneralFile.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(GeneralFile.TYPE_0_2);
+        a.push(GeneralFile.TYPE_0_1);
+        return a;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Represents an encrypted piece of data. Provides helper functions for
  *  encryption/decryption of JSON-LD objects, and provides some searchability of
@@ -348,58 +391,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 this.reader.splice(i, 1);
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A representation of a file.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var File = function() {
-    EcRemoteLinkedData.call(this, General.context, File.myType);
-};
-File = stjs.extend(File, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
-    constructor.myType = File.TYPE_0_2;
-    /**
-     *  Optional checksum of the file, used to verify if the file has been
-     *  transmitted correctly.
-     */
-    prototype.checksum = null;
-    /**
-     *  Mime type of the file.
-     */
-    prototype.mimeType = null;
-    /**
-     *  Base-64 encoded version of the bytestream of a file.
-     *  
-     *  Please note: This field will be empty in search results, but be populated
-     *  in a direct get.
-     */
-    prototype.data = null;
-    prototype.name = null;
-    /**
-     *  Helper method to force the browser to download the file.
-     */
-    prototype.download = function() {
-        var blob = base64ToBlob(this.data, this.mimeType);
-        saveAs(blob, this.name);
-    };
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (File.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(General.context_0_2, File.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(File.TYPE_0_2);
-        a.push(File.TYPE_0_1);
-        return a;
-    };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
@@ -735,9 +726,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
 }, {cache: "Object"}, {});
 var EcFile = function() {
-    File.call(this);
+    GeneralFile.call(this);
 };
-EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
+EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
             var msg = "Competency Name can not be empty";
@@ -781,7 +772,7 @@ EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
                 p1 = encrypted.decryptIntoObject();
                 p1.privateEncrypted = true;
             }
-            if (p1 != null && p1.isA(File.myType)) {
+            if (p1 != null && p1.isA(GeneralFile.myType)) {
                 f.copyFrom(p1);
                 if (success != null) 
                     success(f);
@@ -794,7 +785,7 @@ EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
     };
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
-        queryAdd = new File().getSearchStringByType();
+        queryAdd = new GeneralFile().getSearchStringByType();
         if (query == null || query == "") 
             query = queryAdd;
          else 
