@@ -131,6 +131,32 @@ function exportCsv() {
                 }, (i * 50));
             })(competencyUrl, fw);
         }
+        for (var i = 0; i < fw.relation.length; i++) {
+            var relationUrl = fw.relation[i];
+            (function (relationUrl, fw) {
+                timeout(function () {
+                    EcRepository.get(relationUrl, function (relation) {
+                        csvOutput.push(JSON.parse(relation.toJson()));
+                        if (csvOutput.length == fw.relation.length) {
+                            var csv = Papa.unparse(csvOutput);
+                            var pom = document.createElement('a');
+                            pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+                            pom.setAttribute('download', fw.name + "Relations.csv");
+
+                            if (document.createEvent) {
+                                var event = document.createEvent('MouseEvents');
+                                event.initEvent('click', true, true);
+                                pom.dispatchEvent(event);
+                            } else {
+                                pom.click();
+                            }
+                            $("#exportCsv").foundation('close');
+                        } else
+                            $("#exportCsvStatus").text("Getting Latest Relation Data: On " + csvOutput.length + " of " + fw.relation.length);
+                    }, error);
+                }, (i * 50));
+            })(relationUrl, fw);
+        }
     });
 }
 
