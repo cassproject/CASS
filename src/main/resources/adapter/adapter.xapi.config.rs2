@@ -1,11 +1,11 @@
-xapiEndpoint=#string(str="https://lrs.adlnet.gov/xapi/");
+xapiEndpoint=#string(str="http://localhost:8000/xapi/");
 #xapiEndpoint=xapiEndpoint;
 
-xapiHostname=#string(str="https://lrs.adlnet.gov");
+xapiHostname=#string(str="http://localhost:8000");
 #xapiHostname=xapiHostname;
 
 //This is the same auth key available in the LRS Statement Viewer demonstration.
-xapiAuth=#string(str="Basic eGFwaS10b29sczp4YXBpLXRvb2xz");
+xapiAuth=#string(str="Basic bHJzX2RqYW5nb191c2VyOnNvYXI=");
 #xapiAuth=xapiAuth;
 
 xapiAdapterEnabled=#string(str="false");
@@ -16,7 +16,7 @@ xapiImportAutoExecute=#if(
 	operator=xapiAdapterEnabled,
 	operand="true",
 	eq=#xapiConvert()
-);
+).displayJson();
 
 //Please bind a cron task to this service.
 /xapi/tick=xapiImportAutoExecute;

@@ -28,74 +28,89 @@ eval(fs.readFileSync("../../src/main/js/cass/RollupParser.js")+"");
 eval(fs.readFileSync("../../src/main/js/cass/RollupLexer.js")+"");
 eval(fs.readFileSync("../../src/main/js/cass/cass.rollup.js")+"");
 
+var competencyId = null;
+var frameworkId = null;
+var ppk = null;
+var pk = null;
+
+process.argv.forEach(function (val, index, array) {
+	if (val.split("=")[0] == "competencyId")
+		competencyId=val.split("=")[1];
+	if (val.split("=")[0] == "frameworkId")
+		frameworkId=val.split("=")[1];
+	if (val.split("=")[0] == "ppk")
+		ppk = val.replace("ppk=","");
+	if (val.split("=")[0] == "pk")
+		pk = val.replace("pk=","");
+});
+var debug = false;
+if (debug) console.log("competencyId:"+competencyId);
+if (debug) console.log("frameworkId:"+frameworkId);
+if (debug) console.log("ppk:"+ppk);
+if (debug) console.log("pk:"+pk);
+if (competencyId == null || frameworkId == null || ppk == null)
+{
+	console.log("Competency ID or Framework ID or PPK is missing.");
+    process.exit(1);
+}
 
 var error = function(e){console.log(e);};
 
 var repo = new EcRepository();
-repo.selectedServer="https://dev.cassproject.org/api/custom/";
-console.log("Remote server: " + repo.selectedServer);
+repo.selectedServer="https://localhost:8080/levr/api/custom/";
+if (debug) console.log("Remote server: " + repo.selectedServer);
 
 var remoteIdentityManager = new EcRemoteIdentityManager();
 remoteIdentityManager.server = repo.selectedServer;
-remoteIdentityManager.configureFromServer(function(o){
-	console.log("Configured salt from server.");
-	remoteIdentityManager.startLogin("username","password");
-	console.log("Salted Username: " + remoteIdentityManager.usernameWithSalt);
-	console.log("Salted Password: " + remoteIdentityManager.passwordWithSalt);
-	console.log("Salted Secret:   " + remoteIdentityManager.secretWithSalt);
-	console.log("Beginning Login.");
-	remoteIdentityManager.fetch(function(o2){
-		console.log("Logged in.");
-		console.log("Token: " + remoteIdentityManager.token);
 
-        if (EcIdentityManager.ids.length > 0)
-            identity = EcIdentityManager.ids[0];
+var identity = new EcIdentity();
+identity.ppk = EcPpk.fromPem(ppk);
+identity.displayName = "Person";
+EcIdentityManager.addIdentity(identity);
 
-        console.log("Private Key: " + identity.ppk.toPem());
-        console.log("Public Key: " + identity.ppk.toPk().toPem());
-        
-        console.log("Asking question: Do I know about X");
-        
-        var competencyId = "https://dev.cassproject.org/api/custom/data/schema.eduworks.com.cass.0.2.competency/5164fc54-3438-4367-8399-7e7ac7645dde";
-        var frameworkId = "https://dev.cassproject.org/api/custom/data/schema.eduworks.com.cass.0.2.framework/c98eb325-6569-4d5d-9fab-881baedf3f42";
-        var target = EcIdentityManager.ids[0].ppk.toPk();
+if (EcIdentityManager.ids.length > 0)
+    identity = EcIdentityManager.ids[0];
 
-        EcCompetency.get(
-            competencyId,
-            function (competency) {
-                EcFramework.get(
-                    frameworkId,
-                    function (framework) {
-                        var ep = new PessimisticQuadnaryAssertionProcessor();
-                        ep.logFunction = function (data) {
-                            console.log(data);
-                        };
-                        ep.repositories.push(repo);
-                        var subject = new Array();
-                        subject.push(target);
-                        var additionalSignatures = null;
-                        ep.has(
-                            subject,
-                            competency,
-                            null,
-                            framework,
-                            additionalSignatures,
-                            function (data) {
-                            	console.log(data);
-                            },
-                            function (data) {
-                                console.log(data);
-                            },
-                            function (data) {
-                                console.log(data);
-                            }
-                        );
+var target = EcPk.fromPem(pk);
+if (debug) console.log("Processing 1");
+EcCompetency.get(
+    competencyId,
+    function (competency) {
+
+    	if (debug) console.log("Processing 2");
+        EcFramework.get(
+            frameworkId,
+            function (framework) {
+
+            	if (debug) console.log("Processing 3");
+                var ep = new PessimisticQuadnaryAssertionProcessor();
+                ep.logFunction = function (data) {
+                	if (debug) console.log(data);
+                };
+                ep.repositories.push(repo);
+                var subject = new Array();
+                subject.push(target);
+                var additionalSignatures = null;
+                ep.has(
+                    subject,
+                    competency,
+                    null,
+                    framework,
+                    additionalSignatures,
+                    function (data) {
+                    	console.log(data.result._name);
+                    	process.exit()
+                    },
+                    function (data) {
+                        console.log("error");
+                        process.exit()
+                    },
+                    function (data) {
+                        console.log("error");
+                        process.exit()
                     }
                 );
             }
         );
-        
-	},error);
-},error);
-
- 
+    }
+);

@@ -1,0 +1,34 @@
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="hasCompetency.js", 
+		c=#add(a="competencyId=",b="@competencyId"), 
+		d=#add(a="ppk=",b=#xapiMePpk()),
+		e=#add(
+			a="pk=",
+			b=#object(
+				mbox=#add(
+					a="mailto:",
+					b="@username"
+				)
+			).xapiAgentToPk()
+		),
+		f=#add(
+			a="frameworkId=",
+			b="@frameworkId"
+		)
+	).valueSet()
+);
+
+processTest=process.displayJson();
+/learners/test/mastery = processTest;
+
+process=#object(
+	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
+	level=process.flatten(),
+	confidence=#toDouble(obj="1.0")
+).displayJson(_collapse="true");
+
+/learners/rest/mastery = process;
