@@ -32,6 +32,7 @@ var competencyId = null;
 var frameworkId = null;
 var ppk = null;
 var pk = null;
+var endpoint = null;
 
 process.argv.forEach(function (val, index, array) {
 	if (val.split("=")[0] == "competencyId")
@@ -42,22 +43,45 @@ process.argv.forEach(function (val, index, array) {
 		ppk = val.replace("ppk=","");
 	if (val.split("=")[0] == "pk")
 		pk = val.replace("pk=","");
+	if (val.split("=")[0] == "endpoint")
+		endpoint = val.replace("endpoint=","");
 });
 var debug = false;
 if (debug) console.log("competencyId:"+competencyId);
 if (debug) console.log("frameworkId:"+frameworkId);
 if (debug) console.log("ppk:"+ppk);
 if (debug) console.log("pk:"+pk);
-if (competencyId == null || frameworkId == null || ppk == null)
+if (debug) console.log("endpoint:"+pk);
+if (competencyId == null)
 {
-	console.log("Competency ID or Framework ID or PPK is missing.");
+	console.log("Competency ID is missing.");
+    process.exit(1);
+}
+if (frameworkId == null)
+{
+	console.log("Framework ID is missing.");
+    process.exit(1);
+}
+if (ppk == null)
+{
+	console.log("PPK is missing.");
+    process.exit(1);
+}
+if (pk == null)
+{
+	console.log("PK is missing.");
+    process.exit(1);
+}
+if (pk == null)
+{
+	console.log("Endpoint is missing.");
     process.exit(1);
 }
 
 var error = function(e){console.log(e);};
 
 var repo = new EcRepository();
-repo.selectedServer="https://localhost:8080/levr/api/custom/";
+repo.selectedServer=endpoint;
 if (debug) console.log("Remote server: " + repo.selectedServer);
 
 var remoteIdentityManager = new EcRemoteIdentityManager();
@@ -72,17 +96,17 @@ if (EcIdentityManager.ids.length > 0)
     identity = EcIdentityManager.ids[0];
 
 var target = EcPk.fromPem(pk);
-if (debug) console.log("Processing 1");
+if (debug) console.log("Fetching competency.");
 EcCompetency.get(
     competencyId,
     function (competency) {
 
-    	if (debug) console.log("Processing 2");
+    	if (debug) console.log("Fetching framework.");
         EcFramework.get(
             frameworkId,
             function (framework) {
 
-            	if (debug) console.log("Processing 3");
+            	if (debug) console.log("Processing assertions.");
                 var ep = new PessimisticQuadnaryAssertionProcessor();
                 ep.logFunction = function (data) {
                 	if (debug) console.log(data);
@@ -98,14 +122,17 @@ EcCompetency.get(
                     framework,
                     additionalSignatures,
                     function (data) {
+                    	if (debug) console.log(data);
                     	console.log(data.result._name);
                     	process.exit()
                     },
                     function (data) {
+                    	if (debug) console.log("Need answer to question: "+data);
                         console.log("error");
                         process.exit()
                     },
                     function (data) {
+                    	if (debug) console.log(data);
                         console.log("error");
                         process.exit()
                     }

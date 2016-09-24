@@ -18,6 +18,10 @@ process=#runProcess(
 		f=#add(
 			a="frameworkId=",
 			b="@frameworkId"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
 		)
 	).valueSet()
 );
