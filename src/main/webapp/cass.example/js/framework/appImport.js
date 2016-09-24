@@ -29,13 +29,65 @@ function analyzeCsv() {
             $("#importCsvColumnName").html("<option>N/A</option>");
             $("#importCsvColumnDescription").html("<option>N/A</option>");
             $("#importCsvColumnScope").html("<option>N/A</option>");
+            $("#importCsvColumnId").html("<option>N/A</option>");
             for (var i = 0; i < data[0].length; i++) {
                 $("#importCsvColumnName").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnDescription").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnScope").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnId").append("<option/>").children().last().text(data[0][i]).attr("index", i);
             }
         }
     });
+}
+
+function analyzeCsvRelation() {
+    var file = $("#importCsvRelation")[0].files[0];
+    if (file == null)
+        $(".importCsvRelationOptions").hide();
+    Papa.parse(file, {
+        complete: function (results) {
+            var data = results.data;
+            if (data.length === undefined || data.length == 0) {
+                alert("Invalid CSV.");
+                return;
+            }
+            $("#importCsvColumnSource").html("<option>N/A</option>");
+            $("#importCsvColumnRelationType").html("<option>N/A</option>");
+            $("#importCsvColumnTarget").html("<option>N/A</option>");            
+            $(".importCsvRelationOptions").show();
+            for (var i = 0; i < data[0].length; i++) {
+                $("#importCsvColumnSource").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnRelationType").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnTarget").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+            }
+        }
+    });
+}
+
+var importCsvLookup = {};
+
+function transformId(oldId,newObject,selectedServer)
+{
+    if (oldId.indexOf("http") != -1)
+    {
+        var parts = oldId.split("/");
+        var guid = null;
+        var timestamp = null;
+        var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        for (var i = 0;i < parts.length;i++)
+        {
+            if (!isNaN(parseInt(parts[i])))
+                timestamp = parts[i];
+            else if (pattern.test(parts[i]))
+                guid = parts[i];
+        }
+        if (guid == null)
+            newObject.assignId(selectedServer,parts[parts.length-2]);
+        else
+            newObject.assignId(selectedServer,guid);
+    }
+    else
+        newObject.assignId(selectedServer,oldId);
 }
 
 function importCsv() {
@@ -45,7 +97,7 @@ function importCsv() {
         return;
     }
     var file = $("#importCsvFile")[0].files[0];
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         if (framework.competency == null)
             framework.competency = [];
         Papa.parse(file, {
@@ -58,6 +110,7 @@ function importCsv() {
                 var nameIndex = parseInt($("#importCsvColumnName option:selected").attr("index"));
                 var descriptionIndex = parseInt($("#importCsvColumnDescription option:selected").attr("index"));
                 var scopeIndex = parseInt($("#importCsvColumnScope option:selected").attr("index"));
+                var idIndex = parseInt($("#importCsvColumnId option:selected").attr("index"));
                 for (var i = 1; i < data.length; i++) {
                     (function (i) {
                         timeout(function () {
@@ -70,10 +123,78 @@ function importCsv() {
                                 f.description = data[i][descriptionIndex];
                             if (scopeIndex !== undefined)
                                 f.scope = data[i][scopeIndex];
-                            f.generateId(repo.selectedServer);
+                            var shortId = null;
+                            if (idIndex !== undefined)
+                            {
+                                f.id = data[i][idIndex];
+                                shortId = f.shortId();
+                            }
+                            if (idIndex !== undefined)
+                                transformId(data[i][idIndex],f,repo.selectedServer);
+                            else
+                                f.generateId(repo.selectedServer);
+                            if (idIndex !== undefined)
+                                importCsvLookup[data[i][idIndex]] = f.id;
+                            importCsvLookup[f.name] = f.id;
+                            if (shortId != null)
+                                importCsvLookup[shortId] = f.id;
                             if (identity != null)
                                 f.addOwner(identity.ppk.toPk());
                             framework.competency.push(f.shortId());
+                            EcRepository.save(f, function () {}, error);
+                        });
+                    })(i);
+                }
+                timeoutAndBlock(function () {
+                    EcRepository.save(framework, function () {
+                        if (!importCsvRelations())
+                            populateFramework(frameworkId);
+                    }, error);
+                });
+                $("#importCsv").foundation('close');
+            }
+        }, error);
+    });
+}
+
+function importCsvRelations() {
+    var frameworkId = $("#frameworks").find(".is-active").attr("url");
+    if (frameworkId == null) {
+        error("Framework not selected.");
+        return;
+    }
+    var file = $("#importCsvRelation")[0].files[0];
+    if (file == null)
+        return false;
+    EcRepository.get(frameworkId, function (framework) {
+        if (framework.relation == null)
+            framework.relation = [];
+        Papa.parse(file, {
+            complete: function (results) {
+                var data = results.data;
+                if (data.length === undefined || data.length == 0) {
+                    alert("Invalid CSV.");
+                    return;
+                }
+                var sourceIndex = parseInt($("#importCsvColumnSource option:selected").attr("index"));
+                var relationTypeIndex = parseInt($("#importCsvColumnRelationType option:selected").attr("index"));
+                var targetIndex = parseInt($("#importCsvColumnTarget option:selected").attr("index"));
+                for (var i = 1; i < data.length; i++) {
+                    (function (i) {
+                        timeout(function () {
+                            var f = new EcAlignment();
+                            if (importCsvLookup[data[i][sourceIndex]] === undefined || importCsvLookup[data[i][targetIndex]] === undefined)
+                                return;
+                            if (sourceIndex !== undefined)
+                                f.source = importCsvLookup[data[i][sourceIndex]];
+                            if (relationTypeIndex !== undefined)
+                                f.relationType = data[i][relationTypeIndex];
+                            if (targetIndex !== undefined)
+                                f.target = importCsvLookup[data[i][targetIndex]];
+                            if (identity != null)
+                                f.addOwner(identity.ppk.toPk());
+                            f.generateId(repo.selectedServer);
+                            framework.relation.push(f.shortId());
                             EcRepository.save(f, function () {}, error);
                         });
                     })(i);
@@ -87,6 +208,7 @@ function importCsv() {
             }
         }, error);
     });
+    return true;
 }
 
 var csvOutput = [];
