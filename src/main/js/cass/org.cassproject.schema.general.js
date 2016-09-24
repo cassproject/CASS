@@ -70,6 +70,24 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += new Date().getTime();
     };
     /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository).
+     *  
+     *  @param server
+     *             Base URL of the server's repository functionality.
+     */
+    prototype.assignId = function(server, newId) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += "data/";
+        this.id += this.getFullType().replace("http://", "").replaceAll("/", ".");
+        this.id += "/";
+        this.id += newId;
+        this.id += "/";
+        this.id += new Date().getTime();
+    };
+    /**
      *  Determines if the object has pk as an owner. Homogenizes the PEM strings
      *  for comparison.
      *  
