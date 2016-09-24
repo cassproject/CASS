@@ -154,6 +154,12 @@ var EcCallbackReturn0 = function() {};
 EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
     prototype.callback = function() {};
 }, {}, {});
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+    constructor.isObject = function(o) {
+        return (typeof o) == "object";
+    };
+}, {}, {});
 var EcCallback = function() {};
 EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
     prototype.callback = function(result) {};
