@@ -296,10 +296,20 @@
         <input type="file" id="importCsvFile" onchange="analyzeCsv();" />
         <label>Step 2: Select the Name column.</label>
         <select id="importCsvColumnName"></select>
-        <label>Step 3: Select the Description column (if any).</label>
+        <label>Step 3: Select the Description column (optional).</label>
         <select id="importCsvColumnDescription"></select>
-        <label>Step 4: Select the Scope column (if any).</label>
+        <label>Step 4: Select the Scope column (optional).</label>
         <select id="importCsvColumnScope"></select>
+        <label>Step 5: Select the ID column (optional). If chosen, this should be a URL from another CASS system or a non-numeric ID.</label>
+        <select id="importCsvColumnId"></select>
+        <label>Step 6: Select a relation file (optional). The relation source/target must be in the form of ID or Name, and the relation types should be "requires", "desires", "narrows", "isEnabledBy", "isRelatedTo", or "isEquivalentTo".</label>
+        <input type="file" id="importCsvRelation" onchange="analyzeCsvRelation();" />
+        <label class="importCsvRelationOptions" style="display:none">Step 7: Select the Source column.</label>
+        <select class="importCsvRelationOptions" style="display:none" id="importCsvColumnSource"></select>
+        <label class="importCsvRelationOptions" style="display:none">Step 8: Select the Relation Type column.</label>
+        <select class="importCsvRelationOptions" style="display:none" id="importCsvColumnRelationType"></select>
+        <label class="importCsvRelationOptions" style="display:none">Step 9: Select the Target column.</label>
+        <select class="importCsvRelationOptions" style="display:none" id="importCsvColumnTarget"></select>
         <a class="button float-right" onclick="importCsv();">Import</a>
     </div>
 
