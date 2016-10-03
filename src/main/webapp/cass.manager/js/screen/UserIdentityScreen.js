@@ -183,83 +183,77 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    }, null, null);
 	}
 	
-	UserIdentityScreen.prototype.display = function(containerId, callback)
+	UserIdentityScreen.prototype.display = function(containerId)
 	{
 		var screen = this;
-		
-		$(containerId).load("partial/screen/userIdentity.html", function(){
 			
-			if(LoginController.getLoggedIn()){
-				checkNewContact(screen, containerId);
-				refreshContacts(EcIdentityManager.contacts);
-				checkContactGrants();
+		if(LoginController.getLoggedIn()){
+			checkNewContact(screen, containerId);
+			refreshContacts(EcIdentityManager.contacts);
+			checkContactGrants();
+		}
+		
+		refreshIdentities(EcIdentityManager.ids);
+		
+		
+		$("#identityServerName").text(AppController.serverController.selectedServerName);
+		$("#identityServerUrl").text(AppController.serverController.selectedServerUrl);
+		
+		$("#importAlias").click(function(event){
+			event.preventDefault();
+			
+			$("#importContainer").removeClass("hide");
+			$("#generateContainer").addClass("hide");
+		});
+		
+		$("#generateAlias").click(function(event){
+			event.preventDefault();
+			
+			$("#generateContainer").removeClass("hide");
+			$("#importContainer").addClass("hide");
+		})
+		
+		$("#importIdentity").click(function(event){
+			event.preventDefault();
+			
+			activateKey($('#addKeyPpk')[0].files);
+		});
+		
+		$("#generateIdentity").click(function(){
+			var name = $("#generateIdentityName").val(); 
+			AppController.identityController.generateIdentity(function(identity){
+				 refreshIdentities(EcIdentityManager.ids);
+				 download(identity.displayName+'.pem',identity.ppk.toPem());
+				 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
+			 }, name);
+		});
+		
+		$("#openSaveModal").click(function(){
+			ModalManager.showModal(new SaveIdModal());
+		});
+		
+		$("#generateInvitation").click(function(){
+			var input = $("#shareContactName").val();
+			
+			if(input == undefined || input == ""){
+				
+				return;
 			}
 			
-			refreshIdentities(EcIdentityManager.ids);
-			
-			
-			$("#identityServerName").text(AppController.serverController.selectedServerName);
-			$("#identityServerUrl").text(AppController.serverController.selectedServerUrl);
-			
-			$("#importAlias").click(function(event){
-				event.preventDefault();
+			var identityPpk = EcPpk.fromPem($("#shareContactIdentity").val());
+			if(identityPpk == undefined || identityPpk == ""){
 				
-				$("#importContainer").removeClass("hide");
-				$("#generateContainer").addClass("hide");
-			});
-			
-			$("#generateAlias").click(function(event){
-				event.preventDefault();
+				return;
+			}	
 				
-				$("#generateContainer").removeClass("hide");
-				$("#importContainer").addClass("hide");
-			})
-			
-			$("#importIdentity").click(function(event){
-				event.preventDefault();
-				
-				activateKey($('#addKeyPpk')[0].files);
-			});
-			
-			$("#generateIdentity").click(function(){
-				var name = $("#generateIdentityName").val(); 
-				AppController.identityController.generateIdentity(function(identity){
-					 refreshIdentities(EcIdentityManager.ids);
-					 download(identity.displayName+'.pem',identity.ppk.toPem());
-					 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
-				 }, name);
-			});
-			
-			$("#openSaveModal").click(function(){
-				ModalManager.showModal(new SaveIdModal());
-			});
-			
-			$("#generateInvitation").click(function(){
-				var input = $("#shareContactName").val();
-				
-				if(input == undefined || input == ""){
-					
-					return;
-				}
-				
-				var identityPpk = EcPpk.fromPem($("#shareContactIdentity").val());
-				if(identityPpk == undefined || identityPpk == ""){
-					
-					return;
-				}	
-					
-				var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
+			var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
 
-			    var iv = EcAes.newIv(32);
-			    string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
-			    
-			    copyTextToClipboard(string);
-			    
-			    alert("Invitation has been copied to your clipboard for sharing. \n\n Be careful who you share this with, anyone who accesses the invitation will be able to identify you");
-			});
-			
-			if(callback != undefined)
-				callback();
+		    var iv = EcAes.newIv(32);
+		    string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
+		    
+		    copyTextToClipboard(string);
+		    
+		    alert("Invitation has been copied to your clipboard for sharing. \n\n Be careful who you share this with, anyone who accesses the invitation will be able to identify you");
 		});
 	};
 	

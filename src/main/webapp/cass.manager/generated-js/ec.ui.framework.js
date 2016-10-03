@@ -43,15 +43,18 @@ HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, pro
 var EcView = function() {};
 EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     /**
-     *  Display function to override (usually in JavaScript) that will load the HTML into the container and then call
-     *  the callback passed in
-     *   
-     *  @param containerId
-     *  			ID of the DOM element to load the View's HTML into
-     *  @param callback
-     *  			Function to invoke after the HTML has been loaded and the view is initalized
+     *  Function to be defined in subclasses that returns the location of the main html file associated with this view
+     *  
+     *  @return
+     *  			The string path to an html file
      */
-    prototype.display = function(containerId, callback) {};
+    prototype.getHtmlLocation = function() {};
+    /**
+     *  Display function to override (usually in JavaScript) that will set up any event handlers
+     */
+    prototype.display = function(containerId) {
+        console.error("Not Implemented");
+    };
     /**
      *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
      *  current type of the view
@@ -121,8 +124,25 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      *  			Callback function to be passed in to the view's display function (to be called once the view has been displayed)
      */
     constructor.showView = function(view, containerId, callback) {
-        ViewManager.setView(containerId, view);
-        view.display(containerId, callback);
+        var htmlLocation = view.getHtmlLocation();
+        if (htmlLocation != null) {
+            ViewManager.setView(containerId, view);
+            $(containerId).load(htmlLocation, null, function(p1, p2, p3) {
+                view.display(containerId);
+                if (callback != null) 
+                    callback();
+            });
+        }
+        $(containerId).removeClass("hide");
+    };
+    /**
+     *  Hides the container specified by the containerId by adding 'hide' class
+     *  
+     *  @param containerId
+     *  			DOM Selector for the element to add the 'hide' class to
+     */
+    constructor.hideView = function(containerId) {
+        $(containerId).addClass("hide");
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 /**
@@ -152,6 +172,10 @@ EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
      *  needs to happen on the modal close 
      */
     prototype.onClose = null;
+    /**
+     *  @return tiny, small, medium, large, or full depending on how large the modal should be
+     */
+    prototype.getModalSize = function() {};
 }, {onClose: "Callback0"}, {});
 /**
  *  Subclass of view that is specific for a screen, providing a display name that will be shown in the URL bar and that
@@ -220,8 +244,9 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("medium");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("full");
-        if (modal.modalSize.equals("tiny") || modal.modalSize.equals("small") || modal.modalSize.equals("medium") || modal.modalSize.equals("large") || modal.modalSize.equals("full")) {
-            $(ModalManager.MODAL_CONTAINER_ID).addClass(modal.modalSize);
+        var modalSize = modal.getModalSize();
+        if (modalSize.equals("tiny") || modalSize.equals("small") || modalSize.equals("medium") || modalSize.equals("large") || modalSize.equals("full")) {
+            $(ModalManager.MODAL_CONTAINER_ID).addClass(modalSize);
         } else {
             $(ModalManager.MODAL_CONTAINER_ID).addClass("small");
         }
@@ -286,9 +311,8 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     constructor.LOADING_STARTUP_PAGE = new (stjs.extend(function ScreenManager$1() {
         EcScreen.call(this);
     }, EcScreen, [], function(constructor, prototype) {
-        prototype.display = function(containerId, callback) {
-            if (callback != null) 
-                callback();
+        prototype.getHtmlLocation = function() {
+            return null;
         };
     }, {}, {}))();
     /**
@@ -457,8 +481,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     };
     /**
      *  Replaces the current end of the history array with a new HistoryClosure element that contains the screen and 
-     *  containerId passed in. This can also be used to set the url parameters on a page and reload it without 
-     *  adding another history element to the history array
+     *  containerId passed in.
      *  
      *  @param screen
      *  			Screen to add to the history element that will replace the last in the history array
@@ -491,6 +514,14 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             hash = hash.substring(0, hash.length - 1);
         }
         (window.history).replaceState({name: pageName}, pageName, hash);
+    };
+    /**
+     *  Sets the url parameters on the current page
+     *  @param params
+     *  		url parameters json object
+     */
+    constructor.setScreenParameters = function(params) {
+        ScreenManager.replaceHistory(ScreenManager.myHistory[ScreenManager.myHistory.length - 1].screen, ScreenManager.SCREEN_CONTAINER_ID, params);
     };
     /**
      *  Searches through the history array for the last screen that was loaded with the name passed in, and then displays

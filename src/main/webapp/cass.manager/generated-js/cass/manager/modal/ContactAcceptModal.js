@@ -7,7 +7,10 @@ ContactAcceptModal = stjs.extend(ContactAcceptModal, EcModal, [], function(const
     prototype.modalSize = "small";
     prototype.grant = null;
     prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/contactAccept.html";
     };
 }, {grant: "EcContactGrant", onClose: "Callback0", onClose: "Callback0"}, {});

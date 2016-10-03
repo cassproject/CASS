@@ -1,5 +1,8 @@
-var scripts = document.getElementsByTagName("script");
-window.scriptPath = scripts[scripts.length-1].src.substr(0,scripts[scripts.length-1].src.lastIndexOf("/"))+"/";
+if (document && document.getElementsByTagName)
+{
+	var scripts = document.getElementsByTagName("script");
+	window.scriptPath = scripts[scripts.length-1].src.substr(0,scripts[scripts.length-1].src.lastIndexOf("/"))+"/";
+}
 
 function generateUUID(){
     var d = new Date().getTime();

@@ -5,11 +5,11 @@ var RelationshipEditScreen = function(data) {
 RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "relationEdit";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RelationshipEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipEdit.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

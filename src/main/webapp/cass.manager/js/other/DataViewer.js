@@ -681,32 +681,28 @@ var DataViewer = (function(DataViewer){
 	 * 		for overlays -> overlayContainer
 	 * 		for modals -> modalContainer
 	 */
-	DataViewer.prototype.display = function(containerId, callback){	
+	DataViewer.prototype.display = function(containerId){	
 		var prefix = this.prefix;
 		
 		var callbacks = this.callbacks;
 		
 		var self = this;
+					
 		
-		$(containerId).load("partial/other/dataViewer.html", function(){			
-			
-			$(containerId).find("[id]").each(function(i, e){
-				$(e).attr("id", prefix+"-"+$(e).attr("id"))
-			});
-			
-			var menu;
-			if(callbacks != undefined && callbacks["buildMenu"] != undefined){
-				menu = callbacks["buildMenu"]();
-			}else{
-				menu = defaultBuildMenu(prefix, self, callbacks);
-			}
-			
-			$("#"+prefix+"-menu").append(menu);
-			$("#"+prefix+"-menu").foundation();
-			
-			if(callback != undefined)
-				callback();
+		$(containerId).find("[id]").each(function(i, e){
+			$(e).attr("id", prefix+"-"+$(e).attr("id"))
 		});
+		
+		var menu;
+		if(callbacks != undefined && callbacks["buildMenu"] != undefined){
+			menu = callbacks["buildMenu"]();
+		}else{
+			menu = defaultBuildMenu(prefix, self, callbacks);
+		}
+		
+		$("#"+prefix+"-menu").append(menu);
+		$("#"+prefix+"-menu").foundation();
+		
 	}
 	
 	DataViewer.prototype.clear = function(){

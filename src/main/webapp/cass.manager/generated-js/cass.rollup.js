@@ -5,7 +5,8 @@ var InquiryPacket = function(subject, competency, level, context, success, failu
     this.subPackets = new Array();
     this.dateCreated = new Date().getTime();
     this.subject = subject;
-    this.competency = competency;
+    this.competency = new Array();
+    this.competency.push(competency);
     this.level = level;
     this.context = context;
     this.success = success;
@@ -16,7 +17,7 @@ var InquiryPacket = function(subject, competency, level, context, success, failu
     this.log = "";
 };
 InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, prototype) {
-    constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "COMBINATOR_AND", "COMBINATOR_OR", "COMBINATOR_NARROWS", "COMBINATOR_BROADENS", "COMBINATOR_REQUIRES");
+    constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "RELATION_AND", "RELATION_OR", "RELATION_NARROWS", "RELATION_BROADENS", "RELATION_REQUIRES", "RELATION_ISREQUIREDBY");
     constructor.ResultType = stjs.enumeration("TRUE", "FALSE", "UNKNOWN", "INDETERMINANT");
     prototype.subject = null;
     prototype.competency = null;
@@ -133,11 +134,36 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
-}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: "EcCompetency", context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "EcCallbackReturn1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+    prototype.hasId = function(competencyId) {
+        for (var i = 0; i < this.competency.length; i++) 
+            if (this.competency[i].isId(competencyId)) 
+                return true;
+        return false;
+    };
+}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "EcCallbackReturn1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
 var RrQuery = function() {};
 RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
     prototype.query = null;
 }, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
+    };
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);
@@ -185,25 +211,6 @@ RollupRuleInterface = stjs.extend(RollupRuleInterface, null, [], function(constr
         this.parser.s();
     };
 }, {listener: "RollupListener.RollupListener", logFunction: {name: "Callback1", arguments: ["Object"]}, parser: "RollupParser.RollupParser", processor: "RollupRuleProcessor", success: {name: "Callback1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 var RollupRulePacketGenerator = function(ip, ep) {
     this.ip = ip;
     this.ep = ep;
@@ -231,8 +238,8 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
     };
     prototype.getIPType = function() {
         if (this.hasOrOperation()) 
-            return InquiryPacket.IPType.COMBINATOR_OR;
-        return InquiryPacket.IPType.COMBINATOR_AND;
+            return InquiryPacket.IPType.RELATION_OR;
+        return InquiryPacket.IPType.RELATION_AND;
     };
     prototype.generateComboAndPacket = function() {
         var meEp = this.ep;
@@ -240,7 +247,7 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
         return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
             if (meEp != null) 
                 meEp.continueProcessing(meIp);
-        }, this.ip.failure, null, InquiryPacket.IPType.COMBINATOR_AND);
+        }, this.ip.failure, null, InquiryPacket.IPType.RELATION_AND);
     };
     prototype.generateRollupRulePacket = function(rule) {
         var meEp = this.ep;
@@ -297,14 +304,14 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
             if (meEp != null) 
                 meEp.continueProcessing(meIp);
         }, this.ip.failure, null, ipt);
-        if (InquiryPacket.IPType.COMBINATOR_AND.equals(ipt)) 
+        if (InquiryPacket.IPType.RELATION_AND.equals(ipt)) 
             this.addAllQueries(rollupIp);
          else 
             this.buildQueryTree(rollupIp);
         return rollupIp;
     };
     constructor.main = function(args) {};
-}, {queries: {name: "Array", arguments: [null]}, queryOperations: {name: "Array", arguments: [{name: "Enum", arguments: ["RollupRulePacketGenerator.OperationType"]}]}, ip: "InquiryPacket", ep: "PessimisticQuadnaryAssertionProcessor"}, {});
+}, {queries: {name: "Array", arguments: [null]}, queryOperations: {name: "Array", arguments: [{name: "Enum", arguments: ["RollupRulePacketGenerator.OperationType"]}]}, ip: "InquiryPacket", ep: "AssertionProcessor"}, {});
 if (!stjs.mainCallDisabled) 
     RollupRulePacketGenerator.main();
 var RelationshipPacketGenerator = function(ip, ep, processedAlignments) {
@@ -314,6 +321,7 @@ var RelationshipPacketGenerator = function(ip, ep, processedAlignments) {
     this.narrowsPackets = new Array();
     this.broadensPackets = new Array();
     this.requiredPackets = new Array();
+    this.isRequiredByPackets = new Array();
 };
 RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [], function(constructor, prototype) {
     prototype.failure = null;
@@ -324,6 +332,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     prototype.narrowsPackets = null;
     prototype.broadensPackets = null;
     prototype.requiredPackets = null;
+    prototype.isRequiredByPackets = null;
     prototype.processedAlignments = null;
     prototype.ep = null;
     prototype.ip = null;
@@ -342,7 +351,19 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var rootRequiredPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
                     meEp.continueProcessing(meIp);
-            }, this.ip.failure, null, InquiryPacket.IPType.COMBINATOR_REQUIRES);
+            }, this.ip.failure, null, InquiryPacket.IPType.RELATION_REQUIRES);
+            rootRequiredPacket.subPackets = this.requiredPackets;
+            this.ip.subPackets.push(rootRequiredPacket);
+        }
+    };
+    prototype.pushIsRequiredByPacketsToIp = function() {
+        if (this.isRequiredByPackets.length > 0) {
+            var meEp = this.ep;
+            var meIp = this.ip;
+            var rootRequiredPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
+                if (meEp != null) 
+                    meEp.continueProcessing(meIp);
+            }, this.ip.failure, null, InquiryPacket.IPType.RELATION_ISREQUIREDBY);
             rootRequiredPacket.subPackets = this.requiredPackets;
             this.ip.subPackets.push(rootRequiredPacket);
         }
@@ -354,7 +375,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var rootNarrowsPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
                     meEp.continueProcessing(meIp);
-            }, this.ip.failure, null, InquiryPacket.IPType.COMBINATOR_NARROWS);
+            }, this.ip.failure, null, InquiryPacket.IPType.RELATION_NARROWS);
             rootNarrowsPacket.subPackets = this.narrowsPackets;
             this.ip.subPackets.push(rootNarrowsPacket);
         }
@@ -366,7 +387,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var rootBroadensPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
                     meEp.continueProcessing(meIp);
-            }, this.ip.failure, null, InquiryPacket.IPType.COMBINATOR_BROADENS);
+            }, this.ip.failure, null, InquiryPacket.IPType.RELATION_BROADENS);
             rootBroadensPacket.subPackets = this.broadensPackets;
             this.ip.subPackets.push(rootBroadensPacket);
         }
@@ -395,12 +416,18 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
                     meEp.continueProcessing(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
         } else if (EcAlignment.REQUIRES.equals(alignment.relationType)) {
-            this.requiredPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
-                if (meEp != null) 
-                    meEp.continueProcessing(meIp);
-            }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
+            if (this.ip.hasId(alignment.source)) 
+                this.requiredPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
+                    if (meEp != null) 
+                        meEp.continueProcessing(meIp);
+                }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
+             else 
+                this.isRequiredByPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
+                    if (meEp != null) 
+                        meEp.continueProcessing(meIp);
+                }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
         } else if (EcAlignment.NARROWS.equals(alignment.relationType)) {
-            if (this.ip.competency.isId(alignment.source)) 
+            if (this.ip.hasId(alignment.source)) 
                 this.narrowsPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                     if (meEp != null) 
                         meEp.continueProcessing(meIp);
@@ -421,9 +448,9 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     prototype.processFindCompetencyRelationshipSuccess = function(alignment, ip) {
         ip.numberOfQueriesRunning--;
         var relatedCompetencyId = null;
-        if (ip.competency.isId(alignment.source)) 
+        if (ip.hasId(alignment.source)) 
             relatedCompetencyId = alignment.target;
-         else if (ip.competency.isId(alignment.target)) 
+         else if (ip.hasId(alignment.target)) 
             relatedCompetencyId = alignment.source;
          else {
             this.numberOfRelationsProcessed++;
@@ -456,7 +483,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             }
         }
     };
-}, {failure: {name: "Callback1", arguments: [null]}, success: "Callback0", logFunction: {name: "Callback1", arguments: ["Object"]}, narrowsPackets: {name: "Array", arguments: ["InquiryPacket"]}, broadensPackets: {name: "Array", arguments: ["InquiryPacket"]}, requiredPackets: {name: "Array", arguments: ["InquiryPacket"]}, processedAlignments: {name: "Map", arguments: [null, null]}, ep: "PessimisticQuadnaryAssertionProcessor", ip: "InquiryPacket"}, {});
+}, {failure: {name: "Callback1", arguments: [null]}, success: "Callback0", logFunction: {name: "Callback1", arguments: ["Object"]}, narrowsPackets: {name: "Array", arguments: ["InquiryPacket"]}, broadensPackets: {name: "Array", arguments: ["InquiryPacket"]}, requiredPackets: {name: "Array", arguments: ["InquiryPacket"]}, isRequiredByPackets: {name: "Array", arguments: ["InquiryPacket"]}, processedAlignments: {name: "Map", arguments: [null, null]}, ep: "AssertionProcessor", ip: "InquiryPacket"}, {});
 var RollupRuleGenerator = function(ip) {
     this.ip = ip;
     this.rule = "";
@@ -497,6 +524,136 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
             }
     };
 }, {failure: {name: "Callback1", arguments: [null]}, success: {name: "Callback1", arguments: [null]}, ip: "InquiryPacket"}, {});
+var AssertionProcessor = function() {
+    this.repositories = new Array();
+    this.step = AssertionProcessor.DEF_STEP;
+};
+AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(constructor, prototype) {
+    prototype.repositories = null;
+    prototype.step = false;
+    prototype.logFunction = null;
+    constructor.DEF_STEP = false;
+    prototype.processedEquivalencies = null;
+    prototype.log = function(ip, string) {
+        if (this.logFunction != null) 
+            this.logFunction(string);
+        ip.log += "\n" + string;
+    };
+    prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
+        var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
+        this.processedEquivalencies = {};
+        this.log(ip, "Created new inquiry.");
+        this.continueProcessing(ip);
+    };
+    prototype.isIn = function(ip, alreadyDone) {
+        for (var i = 0; i < alreadyDone.length; i++) 
+            if (ip == alreadyDone[i]) 
+                return true;
+        return false;
+    };
+    prototype.continueProcessing = function(ip) {
+        if (!ip.finished) {
+            if (!ip.hasCheckedAssertionsForCompetency) {
+                this.findSubjectAssertionsForCompetency(ip);
+                return true;
+            } else if (!ip.hasCheckedRelationshipsForCompetency) {
+                this.findCompetencyRelationships(ip);
+                return true;
+            } else if (!ip.hasCheckedRollupRulesForCompetency) {
+                this.findRollupRulesForCompetency(ip);
+                return true;
+            } else {
+                ip.finished = true;
+            }
+        }
+        if (ip.finished) {
+            if (this.processChildPackets(ip.equivalentPackets)) 
+                return true;
+            if (this.processChildPackets(ip.subPackets)) 
+                return true;
+        }
+        if (ip.result == null) {
+            this.determineResult(ip);
+            if (ip.result != null && ip.success != null) 
+                ip.success(ip);
+            return true;
+        }
+        return false;
+    };
+    prototype.determineResult = function(ip) {};
+    prototype.findCompetencyRelationships = function(ip) {};
+    prototype.findSubjectAssertionsForCompetency = function(ip) {};
+    prototype.processChildPackets = function(childPackets) {
+        if (childPackets != null) {
+            for (var i = 0; i < childPackets.length; i++) {
+                if (this.continueProcessing(childPackets[i])) 
+                    return true;
+            }
+        }
+        return false;
+    };
+    prototype.checkStep = function(ip) {
+        this.log(ip, "Checkstep: " + ip.numberOfQueriesRunning);
+        if (ip.numberOfQueriesRunning == 0) {
+            if (!this.step) 
+                this.continueProcessing(ip);
+        }
+    };
+    prototype.processEventFailure = function(message, ip) {
+        this.log(ip, "Event failed: " + message);
+        ip.numberOfQueriesRunning--;
+        ip.failure(message);
+    };
+    prototype.logFoundAssertion = function(a, ip) {
+        this.log(ip, "No issues found with assertion.");
+        this.log(ip, "Record Id: " + a.shortId());
+        this.log(ip, "Confidence: " + a.confidence);
+        this.log(ip, "Number of pieces of evidence: " + a.getEvidenceCount());
+        this.log(ip, "Evidence:");
+        for (var j = 0; j < a.getEvidenceCount(); j++) 
+            this.log(ip, "  " + a.getEvidence(j));
+        this.log(ip, "Recording in inquiry.");
+    };
+    prototype.buildAssertionSearchQuery = function(ip, competency) {
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) 
+            return "(" + new EcAssertion().getSearchStringByType() + ") AND (" + ip.rule + ")";
+         else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+            return new EcAssertion().getSearchStringByTypeAndCompetency(competency);
+         throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);
+    };
+    prototype.processRelationshipPacketsGenerated = function(ip, competency) {
+        this.log(ip, "Relationships succesfully processed for: " + competency.id);
+        ip.numberOfQueriesRunning--;
+        this.checkStep(ip);
+    };
+    prototype.processRollupRuleInterpretSuccess = function(status, ip) {
+        this.log(ip, "Rollup rule successfully interpreted.");
+        ip.numberOfQueriesRunning--;
+        ip.status = status;
+        this.checkStep(ip);
+    };
+    prototype.findRollupRulesForCompetency = function(ip) {
+        ip.hasCheckedRollupRulesForCompetency = true;
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            this.log(ip, "No rollup rules for combinator types");
+            this.checkStep(ip);
+            return;
+        }
+        var ep = this;
+        if (ip.getContext().rollupRule == null) 
+            this.continueProcessing(ip);
+         else 
+            for (var i = 0; i < ip.getContext().rollupRule.length; i++) {
+                ip.numberOfQueriesRunning++;
+                EcRollupRule.get(ip.getContext().rollupRule[i], function(rr) {
+                    ep.processFindRollupRuleSuccess(rr, ip);
+                }, function(p1) {
+                    ep.processEventFailure(p1, ip);
+                });
+            }
+    };
+    prototype.processFindRollupRuleSuccess = function(rr, ip) {};
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
 var RollupRuleProcessor = function(ip, ep) {
     this.ip = ip;
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
@@ -562,99 +719,18 @@ RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constr
         }
     };
 }, {success: {name: "Callback1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}, logFunction: {name: "Callback1", arguments: ["Object"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, s: "RrS", tok: "RrToken", que: "RrQuery", ip: "InquiryPacket", rollupRulePacketGenerator: "RollupRulePacketGenerator"}, {});
-var PessimisticQuadnaryAssertionProcessor = function() {
-    this.repositories = new Array();
-    this.step = PessimisticQuadnaryAssertionProcessor.DEF_STEP;
+var CombinatorAssertionProcessor = function() {
+    AssertionProcessor.call(this);
 };
-PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, null, [], function(constructor, prototype) {
-    prototype.repositories = null;
-    prototype.step = false;
-    prototype.logFunction = null;
-    constructor.DEF_STEP = false;
-    prototype.processedEquivalencies = null;
-    prototype.log = function(ip, string) {
-        if (this.logFunction != null) 
-            this.logFunction(string);
-        ip.log += "\n" + string;
-    };
-    prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
-        var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
-        this.processedEquivalencies = {};
-        this.log(ip, "Created new inquiry.");
-        this.continueProcessing(ip);
-    };
-    prototype.isIn = function(ip, alreadyDone) {
-        for (var i = 0; i < alreadyDone.length; i++) 
-            if (ip == alreadyDone[i]) 
-                return true;
-        return false;
-    };
-    prototype.continueProcessing = function(ip) {
-        if (!ip.finished) {
-            if (!ip.hasCheckedAssertionsForCompetency) {
-                this.findSubjectAssertionsForCompetency(ip);
-                return true;
-            } else if (!ip.hasCheckedRelationshipsForCompetency) {
-                this.findCompetencyRelationships(ip);
-                return true;
-            } else if (!ip.hasCheckedRollupRulesForCompetency) {
-                this.findRollupRulesForCompetency(ip);
-                return true;
-            } else {
-                ip.finished = true;
-            }
-        }
-        if (ip.finished) {
-            if (this.processChildPackets(ip.equivalentPackets)) 
-                return true;
-            if (this.processChildPackets(ip.subPackets)) 
-                return true;
-        }
-        if (ip.result == null) {
-            this.determineResult(ip);
-            if (ip.result != null && ip.success != null) 
-                ip.success(ip);
-            return true;
-        }
-        return false;
-    };
-    prototype.processChildPackets = function(childPackets) {
-        if (childPackets != null) {
-            for (var i = 0; i < childPackets.length; i++) {
-                if (this.continueProcessing(childPackets[i])) 
-                    return true;
-            }
-        }
-        return false;
-    };
-    prototype.checkStep = function(ip) {
-        this.log(ip, "Checkstep: " + ip.numberOfQueriesRunning);
-        if (ip.numberOfQueriesRunning == 0) {
-            if (!this.step) 
-                this.continueProcessing(ip);
-        }
-    };
-    prototype.processEventFailure = function(message, ip) {
-        this.log(ip, "Event failed: " + message);
-        ip.numberOfQueriesRunning--;
-        ip.failure(message);
-    };
-    prototype.logFoundAssertion = function(a, ip) {
-        this.log(ip, "No issues found with assertion.");
-        this.log(ip, "Record Id: " + a.shortId());
-        this.log(ip, "Confidence: " + a.confidence);
-        this.log(ip, "Number of pieces of evidence: " + a.getEvidenceCount());
-        this.log(ip, "Evidence:");
-        for (var j = 0; j < a.getEvidenceCount(); j++) 
-            this.log(ip, "  " + a.getEvidence(j));
-        this.log(ip, "Recording in inquiry.");
-    };
+CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, AssertionProcessor, [], function(constructor, prototype) {
     prototype.processFoundAssertion = function(searchData, ip) {
         var a = new EcAssertion();
         a.copyFrom(searchData);
         var currentSubject;
         for (var i = 0; i < ip.subject.length; i++) {
             currentSubject = ip.subject[i];
+            if (a.getSubject() == null) 
+                continue;
             if (a.getSubject().equals(currentSubject)) {
                 this.log(ip, "Matching Assertion found.");
                 if (a.getAssertionDate() > stjs.trunc(new Date().getTime())) {
@@ -683,67 +759,57 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         ip.numberOfQueriesRunning--;
         this.checkStep(ip);
     };
-    prototype.buildAssertionSearchQuery = function(ip) {
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) 
-            return "(" + new EcAssertion().getSearchStringByType() + ") AND (" + ip.rule + ")";
-         else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
-            return new EcAssertion().getSearchStringByTypeAndCompetency(ip.competency);
-         throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);
-    };
     prototype.findSubjectAssertionsForCompetency = function(ip) {
         ip.hasCheckedAssertionsForCompetency = true;
-        if (InquiryPacket.IPType.COMBINATOR_AND.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_OR.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_NARROWS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_BROADENS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_REQUIRES.equals(ip.type)) {
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
             this.log(ip, "No assertions for combinator types");
             this.checkStep(ip);
             return;
         }
         var ep = this;
-        this.log(ip, "Querying repositories for subject assertions on competency: " + ip.competency.id);
         for (var i = 0; i < this.repositories.length; i++) {
             var currentRepository = this.repositories[i];
             ip.numberOfQueriesRunning++;
             this.log(ip, "Searching: " + currentRepository.selectedServer);
-            currentRepository.search(this.buildAssertionSearchQuery(ip), function(p1) {
-                ep.processFoundAssertion(p1, ip);
-            }, function(p1) {
-                ep.processFindAssertionsSuccess(p1, ip);
-            }, function(p1) {
-                ep.processEventFailure(p1, ip);
-            });
+            for (var h = 0; h < ip.competency.length; h++) {
+                var competency = ip.competency[h];
+                this.log(ip, "Querying repositories for subject assertions on competency: " + competency.id);
+                currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {
+                    ep.processFoundAssertion(p1, ip);
+                }, function(p1) {
+                    ep.processFindAssertionsSuccess(p1, ip);
+                }, function(p1) {
+                    ep.processEventFailure(p1, ip);
+                });
+            }
         }
-    };
-    prototype.processRelationshipPacketsGenerated = function(ip) {
-        this.log(ip, "Relationships succesfully processed for: " + ip.competency.id);
-        ip.numberOfQueriesRunning--;
-        this.checkStep(ip);
     };
     prototype.findCompetencyRelationships = function(ip) {
         ip.hasCheckedRelationshipsForCompetency = true;
-        if (InquiryPacket.IPType.COMBINATOR_AND.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_OR.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_NARROWS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_BROADENS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_REQUIRES.equals(ip.type)) {
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
             this.log(ip, "No relationships for combinator types");
             this.checkStep(ip);
             return;
         }
         var ep = this;
-        this.log(ip, "Finding relationships for competency: " + ip.competency.id);
+        for (var i = 0; i < ip.competency.length; i++) {
+            this.log(ip, "Finding relationships for competency: " + ip.competency[i]);
+            this.findCompetencyRelationship(ip, ep, ip.competency[i]);
+        }
+    };
+    prototype.findCompetencyRelationship = function(ip, ep, c) {
         var rpg = new RelationshipPacketGenerator(ip, ep, this.processedEquivalencies);
         rpg.failure = ip.failure;
         rpg.logFunction = this.logFunction;
         rpg.success = function() {
-            ep.processRelationshipPacketsGenerated(ip);
+            ep.processRelationshipPacketsGenerated(ip, c);
         };
         this.log(ip, "Executing relationship packet generator");
         ip.numberOfQueriesRunning++;
         rpg.go();
     };
-    prototype.processRollupRuleInterpretSuccess = function(status, ip) {
-        this.log(ip, "Rollup rule successfully interpreted.");
-        ip.numberOfQueriesRunning--;
-        ip.status = status;
-        this.checkStep(ip);
-    };
     prototype.processFindRollupRuleSuccess = function(rr, ip) {
-        if (!ip.competency.isId(rr.competency)) 
+        if (!ip.hasId(rr.competency)) 
             return;
         var ep = this;
         this.log(ip, "Found rollup rule: " + rr.rule);
@@ -759,27 +825,12 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         this.log(ip, "Executing rollup rule interpreter");
         rri.go();
     };
-    prototype.findRollupRulesForCompetency = function(ip) {
-        ip.hasCheckedRollupRulesForCompetency = true;
-        if (InquiryPacket.IPType.COMBINATOR_AND.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_OR.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_NARROWS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_BROADENS.equals(ip.type) || InquiryPacket.IPType.COMBINATOR_REQUIRES.equals(ip.type)) {
-            this.log(ip, "No rollup rules for combinator types");
-            this.checkStep(ip);
-            return;
-        }
-        this.log(ip, "Finding rollup rules for competency: " + ip.competency.id);
-        var ep = this;
-        if (ip.getContext().rollupRule == null) 
-            this.continueProcessing(ip);
-         else 
-            for (var i = 0; i < ip.getContext().rollupRule.length; i++) {
-                ip.numberOfQueriesRunning++;
-                EcRollupRule.get(ip.getContext().rollupRule[i], function(rr) {
-                    ep.processFindRollupRuleSuccess(rr, ip);
-                }, function(p1) {
-                    ep.processEventFailure(p1, ip);
-                });
-            }
-    };
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
+var PessimisticQuadnaryAssertionProcessor = function() {
+    CombinatorAssertionProcessor.call(this);
+};
+PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
+    prototype.transferIndeterminateOptimistically = true;
     prototype.determineCombinatorAndResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
@@ -793,17 +844,31 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
     prototype.determineCombinatorNarrowsResult = function(ip) {
         if (ip.anyChildPacketsAreTrue()) 
             ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorBroadensResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorRequiresResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorIsRequiredByResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
             ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
@@ -834,7 +899,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
          else if (ip.allEquivalentPacketsUnknown()) {
             if (ip.allSubPacketsTrueOrUnknown()) 
                 ip.result = InquiryPacket.ResultType.TRUE;
-             else if (ip.allEquivalentPacketsFalseOrUnknown()) 
+             else if (ip.allSubPacketsFalseOrUnknown()) 
                 ip.result = InquiryPacket.ResultType.FALSE;
              else 
                 ip.result = InquiryPacket.ResultType.INDETERMINANT;
@@ -921,16 +986,18 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
     };
     prototype.determineResult = function(ip) {
         if (ip.numberOfQueriesRunning == 0) {
-            if (InquiryPacket.IPType.COMBINATOR_AND.equals(ip.type)) 
+            if (InquiryPacket.IPType.RELATION_AND.equals(ip.type)) 
                 this.determineCombinatorAndResult(ip);
-             else if (InquiryPacket.IPType.COMBINATOR_OR.equals(ip.type)) 
+             else if (InquiryPacket.IPType.RELATION_OR.equals(ip.type)) 
                 this.determineCombinatorOrResult(ip);
-             else if (InquiryPacket.IPType.COMBINATOR_NARROWS.equals(ip.type)) 
+             else if (InquiryPacket.IPType.RELATION_NARROWS.equals(ip.type)) 
                 this.determineCombinatorNarrowsResult(ip);
-             else if (InquiryPacket.IPType.COMBINATOR_BROADENS.equals(ip.type)) 
+             else if (InquiryPacket.IPType.RELATION_BROADENS.equals(ip.type)) 
                 this.determineCombinatorBroadensResult(ip);
-             else if (InquiryPacket.IPType.COMBINATOR_REQUIRES.equals(ip.type)) 
+             else if (InquiryPacket.IPType.RELATION_REQUIRES.equals(ip.type)) 
                 this.determineCombinatorRequiresResult(ip);
+             else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
+                this.determineCombinatorIsRequiredByResult(ip);
              else 
                 this.determineCompetencyRollupRuleResult(ip);
         } else {

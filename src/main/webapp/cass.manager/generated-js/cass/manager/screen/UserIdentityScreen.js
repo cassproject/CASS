@@ -3,11 +3,11 @@ var UserIdentityScreen = function() {
 };
 UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(constructor, prototype) {
     constructor.displayName = "identity";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return UserIdentityScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userIdentity.html";
     };
 }, {}, {});
 (function() {

@@ -49,45 +49,41 @@ var CopyResourceModal = (function(CopyResourceModal){
 		$("#copyResources").append($("<li>"+resource.name+"</li>"));
 	}
 	
-	CopyResourceModal.prototype.display = function(containerId, callback)
+	CopyResourceModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		var cb = this.callback;
-		
-		$(containerId).load("partial/modal/copyResource.html", function(){
-			ViewManager.showView(new MessageContainer("copyResource"), "#copyResourceMessageContainer");
+	
+		ViewManager.showView(new MessageContainer("copyResource"), "#copyResourceMessageContainer");
 
-			if(data instanceof Array){
-				for(var i = 0; i < data.length; i++){
-					addResourceToList(data[i]);
-				}
-			}else{
-				addResourceToList(data);
+		if(data instanceof Array){
+			for(var i = 0; i < data.length; i++){
+				addResourceToList(data[i]);
 			}
-			
-			$("#submitCopyResources").click(function(){
-				submitCopy(data, cb);
-			});
-			
-			$("#cancelCopyResources").click(function(){
-				ModalManager.hideModal();
-			});
-			
-			if(AppController.identityController.selectedIdentity != undefined){
-				var ownerElement = $(createContactSmall(AppController.identityController.selectedIdentity.ppk.toPk().toPem()));
-				ownerElement.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(AppController.identityController.selectedIdentity.ppk.toPk().toPem().replaceAll("-----.*-----","").trim())
-	            });  
-				$("#copyOwner").append(ownerElement);
-			}else{
-				$("#copyOwner").text("Public");
-			}
-			
-			if(callback != undefined)
-				callback();
+		}else{
+			addResourceToList(data);
+		}
+		
+		$("#submitCopyResources").click(function(){
+			submitCopy(data, cb);
 		});
+		
+		$("#cancelCopyResources").click(function(){
+			ModalManager.hideModal();
+		});
+		
+		if(AppController.identityController.selectedIdentity != undefined){
+			var ownerElement = $(createContactSmall(AppController.identityController.selectedIdentity.ppk.toPk().toPem()));
+			ownerElement.children(".qrcodeCanvas").qrcode({
+                width:128,
+                height:128,
+                text:forge.util.decode64(AppController.identityController.selectedIdentity.ppk.toPk().toPem().replaceAll("-----.*-----","").trim())
+            });  
+			$("#copyOwner").append(ownerElement);
+		}else{
+			$("#copyOwner").text("Public");
+		}
+			
 	}
 	
 	return CopyResourceModal;

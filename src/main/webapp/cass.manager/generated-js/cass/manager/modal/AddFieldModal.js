@@ -7,7 +7,10 @@ AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, pr
     prototype.modalSize = "small";
     prototype.field = null;
     prototype.repoEditContainer = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addField.html";
     };
 }, {field: "Object", onClose: "Callback0"}, {});

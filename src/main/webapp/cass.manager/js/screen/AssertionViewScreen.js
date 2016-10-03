@@ -241,79 +241,74 @@ AssertionViewScreen = (function(AssertionViewScreen){
 		ViewManager.getView("#assertionViewMessageContainer").displayAlert(err, "getLevel");
 	}
 	
-	AssertionViewScreen.prototype.display = function(containerId, callback)
+	AssertionViewScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data.id != null)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id});
+		}
+			
+		ViewManager.showView(new MessageContainer("assertionView"), "#assertionViewMessageContainer");
+		
+		$("#assertionViewSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
+		$("#assertionViewSearchBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionSearchScreen(data))
+		});
+		
+		$("#assertionViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
+		$("#assertionViewBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		$("#assertionToggleUnknownBtn").click(function(ev){
+			ev.preventDefault();
+			if($("#assertionToggleUnknownBtn #toggleKeyword").text() == "Show"){
+				$("#assertionToggleUnknownBtn #toggleKeyword").text("Hide");
+				$(".unknown").slideDown();
+			}else{
+				$("#assertionToggleUnknownBtn #toggleKeyword").text("Show");
+				$(".unknown").slideUp()	
+			}
+			
+			
+		})
+		
+		
+		if(AppController.identityController.canEdit(data)){
+			$("#editAssertionBtn").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new AssertionEditScreen(data))
+			})
+		}else{
+			$("#editAssertionBtn").remove();
 		}
 		
-		$(containerId).load("partial/screen/assertionView.html", function(){
-			
-			ViewManager.showView(new MessageContainer("assertionView"), "#assertionViewMessageContainer");
-			
-			$("#assertionViewSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
-			$("#assertionViewSearchBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen(data))
-			});
-			
-			$("#assertionViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
-			$("#assertionViewBtn").click(function(event){
-				event.preventDefault();
-			});
-			
-			$("#assertionToggleUnknownBtn").click(function(ev){
-				ev.preventDefault();
-				if($("#assertionToggleUnknownBtn #toggleKeyword").text() == "Show"){
-					$("#assertionToggleUnknownBtn #toggleKeyword").text("Hide");
-					$(".unknown").slideDown();
-				}else{
-					$("#assertionToggleUnknownBtn #toggleKeyword").text("Show");
-					$(".unknown").slideUp()	
-				}
-				
-				
+		if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+			$("#assertionViewDeleteBtn").remove();
+		}else{
+			$("#assertionViewDeleteBtn").click(function(){
+				ModalManager.showModal(new ConfirmModal(function(){
+					EcRepository._delete(data, function(){
+						ScreenManager.changeScreen(new AssertionSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete assertion";
+						ViewManager.getView("#assertionViewMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this assertion?"))
 			})
+		}
+		
+		
+		EcAssertion.get(data.id, function(result){
+			data = result;
+			displayAssertion(result);
+		}, errorRetrieving);
 			
-			
-			if(AppController.identityController.canEdit(data)){
-				$("#editAssertionBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new AssertionEditScreen(data))
-				})
-			}else{
-				$("#editAssertionBtn").remove();
-			}
-			
-			if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
-				$("#assertionViewDeleteBtn").remove();
-			}else{
-				$("#assertionViewDeleteBtn").click(function(){
-					ModalManager.showModal(new ConfirmModal(function(){
-						EcRepository._delete(data, function(){
-							ScreenManager.changeScreen(new AssertionSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete assertion";
-							ViewManager.getView("#assertionViewMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this assertion?"))
-				})
-			}
-			
-			
-			EcAssertion.get(data.id, function(result){
-				data = result;
-				displayAssertion(result);
-			}, errorRetrieving);
-			
-			if(callback != undefined)
-				callback();
-		});
 	};
 	
 	return AssertionViewScreen;

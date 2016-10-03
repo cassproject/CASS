@@ -358,13 +358,13 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err);
 	}
 	
-	AssertionEditScreen.prototype.display = function(containerId, callback)
+	AssertionEditScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data != undefined && data.id != undefined)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id});
 		}
 		
 		var newAssertion = false;
@@ -379,168 +379,163 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
 		    }
 		}
+	
+		ViewManager.showView(new MessageContainer("assertionEdit"), "#assertionEditMessageContainer", function(){
+			if(newAssertion && !LoginController.getLoggedIn())
+			{
+				ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Unless you Identify yourself by logging in");
+			}
+		});
 		
-		$(containerId).load("partial/screen/assertionEdit.html", function(){
-			ViewManager.showView(new MessageContainer("assertionEdit"), "#assertionEditMessageContainer", function(){
-				if(newAssertion && !LoginController.getLoggedIn())
-				{
-					ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Unless you Identify yourself by logging in");
-				}
-			});
-			
-			$("#assertionEditSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
-			$("#assertionEditSearchBtn").click(function(event){
+		$("#assertionEditSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
+		$("#assertionEditSearchBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionSearchScreen())
+		});
+		
+		if(newAssertion)
+		{
+			$("#assertionEditViewBtn").hide();
+		}
+		else
+		{
+			$("#assertionEditViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
+			$("#assertionEditViewBtn").click(function(event){
 				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen())
+				ScreenManager.changeScreen(new AssertionViewScreen(data))
 			});
-			
-			if(newAssertion)
-			{
-				$("#assertionEditViewBtn").hide();
-			}
-			else
-			{
-				$("#assertionEditViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
-				$("#assertionEditViewBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new AssertionViewScreen(data))
-				});
-			}
-			
-			
-			$("#assertionEditBtn").attr("href", "#"+AssertionEditScreen.prototype.displayName);
-			$("#assertionEditBtn").click(function(event){
+		}
+		
+		
+		$("#assertionEditBtn").attr("href", "#"+AssertionEditScreen.prototype.displayName);
+		$("#assertionEditBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		$("#assertionEditCancelBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionViewScreen());
+		});
+		
+		if(newAssertion){
+			$("#assertionEditDeleteBtn").remove();	
+		}else{
+			$("#assertionEditDeleteBtn").click(function(event){
 				event.preventDefault();
-			});
-			
-			$("#assertionEditCancelBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionViewScreen());
-			});
-			
-			if(newAssertion){
-				$("#assertionEditDeleteBtn").remove();	
-			}else{
-				$("#assertionEditDeleteBtn").click(function(event){
-					event.preventDefault();
-					ModalManager.showModal(new ConfirmModal(function(){
-						EcRepository._delete(data, function(){
-							ScreenManager.changeScreen(new AssertionSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete assertion";
-							ViewManager.getView("#assertionEditMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this assertion?"));
-				})
-			}
-			
-			if(newAssertion && (!LoginController.getLoggedIn() || !AppController.identityController.canEdit(data))){
-				$("#assertionEditSaveBtn").removeClass("fake-a-label");
-				$("#assertionEditSaveBtn").css('cursor', "default");
-				
-				$("#assertionAgentInput").attr("disabled", "disabled");
-				$("#assertionSubjectInput").attr("disabled", "disabled");
-				$("#assertionCompetencyInput").attr("disabled", "disabled");
-				$("#assertionLevelInput").attr("disabled", "disabled");
-				$("#assertionConfidenceInput").attr("disabled", "disabled");
-				$("#assertionEvidenceInput").attr("disabled", "disabled");
-				$("#assertionDateInput").attr("disabled", "disabled");
-				$("#assertionExpirationInput").attr("disabled", "disabled");
-				$("#assertionDecayInput").attr("disabled", "disabled");
-			}else{
-				$("#assertionEditSaveBtn").click(function(event){
-					event.preventDefault();
-					
-					if($("#assertionSubjectInput").val() == undefined || $("#assertionSubjectInput").val() == "" || $("#assertionSubjectInput").val() == $("#assertionSubjectInput #noSubject").text()){
-						ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Subject");
-						return;
-					}
-					data.setSubject(EcPk.fromPem($("#assertionSubjectInput").val()))
-					
-					if($("#assertionAgentInput").val() == undefined || $("#assertionAgentInput").val() == "" || $("#assertionAgentInput").val() == $("#assertionAgentInput #noAgent").text()){
-						ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Specifying Agent");
-						return;
-					}
-					data.setAgent(EcPk.fromPem($("#assertionAgentInput").val()))
-					
-					if($("#assertionCompetencyInput").val() == undefined || $("#assertionCompetencyInput").val() == "" || $("#assertionCompetencyInput").val() == $("#assertionCompetencyInput #noCompetency").text()){
-						ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Specifying Competency");
-						return;
-					}
-					data.setCompetency($("#assertionCompetencyInput").val());
-					
-					if($("#assertionLevelInput").val() == undefined || $("#assertionLevelInput").val() == "" 
-						|| $("#assertionLevelInput").val() == $("#assertionLevelInput #noLevel").text() || $("#assertionLevelInput").val() == "held"){
-						data.setLevel("");
-					}else{
-						data.setLevel($("#assertionLevelInput").val());
-					}
-					
-					var confidence = $("#assertionConfidenceInput").val();
-					
-					if(confidence > 1){
-						confidence = confidence/100;
-					}
-					data.setConfidence(confidence);
-					
-					var evidences = $("#assertionEvidenceInput").val().split(/\n/);
-					if(evidences != undefined && evidences.length == 1 && evidences[0] == undefined || evidences[0] == ""){
-						data.evidence = undefined;
-					}else{
-						data.setEvidence(evidences);	
-					}
-					
-					
-					var dateSplit = new Date($("#assertionDateInput").val()).toUTCString().split(" ");
-					dateSplit.splice(5,1);
-					
-					var expireSplit = new Date($("#assertionExpirationInput").val()).toUTCString().split(" ");
-					expireSplit.splice(5,1);
-					
-					data.setAssertionDate(new Date(dateSplit.join(" ")).getTime());
-					data.setExpirationDate(new Date(expireSplit.join(" ")).getTime());
-					data.setDecayFunction($("#assertionDecayInput").val());
-
-					data.save(saveSuccess, errorSaving);
-				})
-				
-				$("#assertionEditSaveBtn").on("mousemove", function(){
-					var url = $("#assertionEditId").val();
-					var split = url.split("\/");
-					if (split[split.length-4] == "data") 
-						split[split.length-1] = new Date().getTime();
-					$("#assertionEditId").val(split.join("/"));
-				});
-				
-				buildForm(data);
-			}
-			
-			$("#assertionEditAddReader").click(function(ev){
-				ev.preventDefault();
-				
-				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
-					displayAssertion(dataAfter);
+				ModalManager.showModal(new ConfirmModal(function(){
+					EcRepository._delete(data, function(){
+						ScreenManager.changeScreen(new AssertionSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete assertion";
+						ViewManager.getView("#assertionEditMessageContainer").displayAlert(err)
+					});
 					ModalManager.hideModal();
-				}, true));
+				}, "Are you sure you want to delete this assertion?"));
+			})
+		}
+		
+		if(newAssertion && (!LoginController.getLoggedIn() || !AppController.identityController.canEdit(data))){
+			$("#assertionEditSaveBtn").removeClass("fake-a-label");
+			$("#assertionEditSaveBtn").css('cursor', "default");
+			
+			$("#assertionAgentInput").attr("disabled", "disabled");
+			$("#assertionSubjectInput").attr("disabled", "disabled");
+			$("#assertionCompetencyInput").attr("disabled", "disabled");
+			$("#assertionLevelInput").attr("disabled", "disabled");
+			$("#assertionConfidenceInput").attr("disabled", "disabled");
+			$("#assertionEvidenceInput").attr("disabled", "disabled");
+			$("#assertionDateInput").attr("disabled", "disabled");
+			$("#assertionExpirationInput").attr("disabled", "disabled");
+			$("#assertionDecayInput").attr("disabled", "disabled");
+		}else{
+			$("#assertionEditSaveBtn").click(function(event){
+				event.preventDefault();
+				
+				if($("#assertionSubjectInput").val() == undefined || $("#assertionSubjectInput").val() == "" || $("#assertionSubjectInput").val() == $("#assertionSubjectInput #noSubject").text()){
+					ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Subject");
+					return;
+				}
+				data.setSubject(EcPk.fromPem($("#assertionSubjectInput").val()))
+				
+				if($("#assertionAgentInput").val() == undefined || $("#assertionAgentInput").val() == "" || $("#assertionAgentInput").val() == $("#assertionAgentInput #noAgent").text()){
+					ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Specifying Agent");
+					return;
+				}
+				data.setAgent(EcPk.fromPem($("#assertionAgentInput").val()))
+				
+				if($("#assertionCompetencyInput").val() == undefined || $("#assertionCompetencyInput").val() == "" || $("#assertionCompetencyInput").val() == $("#assertionCompetencyInput #noCompetency").text()){
+					ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Without Specifying Competency");
+					return;
+				}
+				data.setCompetency($("#assertionCompetencyInput").val());
+				
+				if($("#assertionLevelInput").val() == undefined || $("#assertionLevelInput").val() == "" 
+					|| $("#assertionLevelInput").val() == $("#assertionLevelInput #noLevel").text() || $("#assertionLevelInput").val() == "held"){
+					data.setLevel("");
+				}else{
+					data.setLevel($("#assertionLevelInput").val());
+				}
+				
+				var confidence = $("#assertionConfidenceInput").val();
+				
+				if(confidence > 1){
+					confidence = confidence/100;
+				}
+				data.setConfidence(confidence);
+				
+				var evidences = $("#assertionEvidenceInput").val().split(/\n/);
+				if(evidences != undefined && evidences.length == 1 && evidences[0] == undefined || evidences[0] == ""){
+					data.evidence = undefined;
+				}else{
+					data.setEvidence(evidences);	
+				}
+				
+				
+				var dateSplit = new Date($("#assertionDateInput").val()).toUTCString().split(" ");
+				dateSplit.splice(5,1);
+				
+				var expireSplit = new Date($("#assertionExpirationInput").val()).toUTCString().split(" ");
+				expireSplit.splice(5,1);
+				
+				data.setAssertionDate(new Date(dateSplit.join(" ")).getTime());
+				data.setExpirationDate(new Date(expireSplit.join(" ")).getTime());
+				data.setDecayFunction($("#assertionDecayInput").val());
+
+				data.save(saveSuccess, errorSaving);
 			})
 			
-			if(newAssertion)
-			{
-				displayAssertion(data);
-			}
-			else
-			{
-				EcAssertion.get(data.id, function(assertion){
-					data = assertion;
-					displayAssertion(assertion)
-				}, errorRetrieving);
-			}
-						
-			if(callback != undefined)
-				callback();
-		});
+			$("#assertionEditSaveBtn").on("mousemove", function(){
+				var url = $("#assertionEditId").val();
+				var split = url.split("\/");
+				if (split[split.length-4] == "data") 
+					split[split.length-1] = new Date().getTime();
+				$("#assertionEditId").val(split.join("/"));
+			});
+			
+			buildForm(data);
+		}
+		
+		$("#assertionEditAddReader").click(function(ev){
+			ev.preventDefault();
+			
+			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+				displayAssertion(dataAfter);
+				ModalManager.hideModal();
+			}, true));
+		})
+		
+		if(newAssertion)
+		{
+			displayAssertion(data);
+		}
+		else
+		{
+			EcAssertion.get(data.id, function(assertion){
+				data = assertion;
+				displayAssertion(assertion)
+			}, errorRetrieving);
+		}
 	};
 	
 	return AssertionEditScreen;

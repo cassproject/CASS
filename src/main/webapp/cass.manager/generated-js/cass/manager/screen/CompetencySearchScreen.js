@@ -9,11 +9,11 @@ CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, 
     prototype.lastViewed = null;
     prototype.query = null;
     prototype.ownership = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return CompetencySearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencySearch.html";
     };
 }, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

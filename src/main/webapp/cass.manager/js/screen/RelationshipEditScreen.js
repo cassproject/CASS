@@ -164,127 +164,123 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	
 	var NEW_RELATION_NAME = "_New Relation";
 	
-	RelationshipEditScreen.prototype.display = function(containerId, callback)
+	RelationshipEditScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data != undefined && data.id != null)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id} )
 		}
 		
-		$(containerId).load("partial/screen/relationshipEdit.html", function(){
-			ViewManager.showView(new MessageContainer("relationshipEdit"), "#relationshipEditMessageContainer", function(){
-				if(data.name == "_New Relation" && AppController.identityController.selectedIdentity == undefined)
-				{
-					ViewManager.getView("#relationshipEditMessageContainer").displayWarning("You are Creating a Public Relationship, this relationship can be modified by anyone");	
-				}
-			});
-			
-			if(data != undefined)
+		ViewManager.showView(new MessageContainer("relationshipEdit"), "#relationshipEditMessageContainer", function(){
+			if(data.name == "_New Relation" && AppController.identityController.selectedIdentity == undefined)
 			{
-				EcAlignment.get(data.id, function(relation){
-					data = relation;
-					relationshipEditActual(data);
-				}, errorRetrieving);
+				ViewManager.getView("#relationshipEditMessageContainer").displayWarning("You are Creating a Public Relationship, this relationship can be modified by anyone");	
 			}
-			else
-			{
-				data = new EcAlignment();
-			    data.generateId(AppController.repoInterface.selectedServer);
-			    data.name = NEW_RELATION_NAME;
-			    if(AppController.identityController.selectedIdentity != undefined)
-			    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
-			    
-			    relationshipEditActual(data);
-			    	
-			}
-			
-			relationshipCompetencySearch();
-
-			$("#relationEditSource").change(relationEditSourceSelected);
-			$("#relationEditTarget").change(relationEditTargetSelected);
-			
-			$("#relationshipEditCancelBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RelationshipViewScreen(data))
-			});
-			
-			if(data.name == NEW_RELATION_NAME){
-				$("#relationshipEditDeleteBtn").remove();	
-			}else{
-				$("#relationshipEditDeleteBtn").click(function(event){
-					event.preventDefault();
-					
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new RelationshipSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete relationship";
-							ViewManager.getView("#relationshipEditMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this relationship?"));
-				})
-			}
-			
-			$("#relationshipEditSaveBtn").click(function(ev){
-				ev.preventDefault();
-				
-				var name = $("#relationEditName").val();
-				if(name == NEW_RELATION_NAME)
-				{
-					ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation with the Default Name");
-					return;
-				}
-			    
-				data.source = $("#relationEditSource option:selected").val();
-			    if(data.source == "")
-			    {
-			    	ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation without Source Competency Specified");
-					return;
-			    }
-			    
-			    data.target = $("#relationEditTarget option:selected").val();
-			    if(data.target == "")
-			    {
-			    	ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation without Target Competency Specified");
-					return;
-			    }
-			    
-			    data.name = name;
-			    data.description = $("#relationEditDescription").val();
-			    data.relationType = $("#relationEditType option:selected").attr("value");
-			    
-			    ViewManager.getView("#relationshipEditMessageContainer").clearAlert("saveFail");
-			    currentRelation.save(function(){
-			    	EcCompetency.get(data.source, function(competency){
-			    		ScreenManager.changeScreen(new RelationshipViewScreen(currentRelation));
-			    	});
-			    }, errorSaving);
-			});
-			
-			$("#relationEditOwnerAdvanced").click(function(ev){
-				ev.preventDefault();
-				
-				data.name = $("#relationEditName").val();
-				data.description = $("#relationEditDescription").val();
-				
-				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
-					data.owner = dataAfter.owner;
-					data.privateEncrypted = dataAfter.privateEncrypted;
-					data.reader = dataAfter.reader;
-					
-					relationshipEditActual(data);
-					
-					ModalManager.hideModal();
-				}))
-			})
-			
-			if(callback != undefined)
-				callback();
 		});
+		
+		if(data != undefined)
+		{
+			EcAlignment.get(data.id, function(relation){
+				data = relation;
+				relationshipEditActual(data);
+			}, errorRetrieving);
+		}
+		else
+		{
+			data = new EcAlignment();
+		    data.generateId(AppController.repoInterface.selectedServer);
+		    data.name = NEW_RELATION_NAME;
+		    if(AppController.identityController.selectedIdentity != undefined)
+		    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+		    
+		    relationshipEditActual(data);
+		    	
+		}
+		
+		relationshipCompetencySearch();
+
+		$("#relationEditSource").change(relationEditSourceSelected);
+		$("#relationEditTarget").change(relationEditTargetSelected);
+		
+		$("#relationshipEditCancelBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RelationshipViewScreen(data))
+		});
+		
+		if(data.name == NEW_RELATION_NAME){
+			$("#relationshipEditDeleteBtn").remove();	
+		}else{
+			$("#relationshipEditDeleteBtn").click(function(event){
+				event.preventDefault();
+				
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new RelationshipSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete relationship";
+						ViewManager.getView("#relationshipEditMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this relationship?"));
+			})
+		}
+		
+		$("#relationshipEditSaveBtn").click(function(ev){
+			ev.preventDefault();
+			
+			var name = $("#relationEditName").val();
+			if(name == NEW_RELATION_NAME)
+			{
+				ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation with the Default Name");
+				return;
+			}
+		    
+			data.source = $("#relationEditSource option:selected").val();
+		    if(data.source == "")
+		    {
+		    	ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation without Source Competency Specified");
+				return;
+		    }
+		    
+		    data.target = $("#relationEditTarget option:selected").val();
+		    if(data.target == "")
+		    {
+		    	ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation without Target Competency Specified");
+				return;
+		    }
+		    
+		    data.name = name;
+		    data.description = $("#relationEditDescription").val();
+		    data.relationType = $("#relationEditType option:selected").attr("value");
+		    
+		    ViewManager.getView("#relationshipEditMessageContainer").clearAlert("saveFail");
+		    currentRelation.save(function(){
+		    	EcCompetency.get(data.source, function(competency){
+		    		ScreenManager.changeScreen(new RelationshipViewScreen(currentRelation));
+		    	});
+		    }, errorSaving);
+		});
+		
+		$("#relationEditOwnerAdvanced").click(function(ev){
+			ev.preventDefault();
+			
+			data.name = $("#relationEditName").val();
+			data.description = $("#relationEditDescription").val();
+			
+			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+				data.owner = dataAfter.owner;
+				data.privateEncrypted = dataAfter.privateEncrypted;
+				data.reader = dataAfter.reader;
+				
+				relationshipEditActual(data);
+				
+				ModalManager.hideModal();
+			}))
+		})
+			
 	};
 	
 	return RelationshipEditScreen;

@@ -3,11 +3,11 @@ var UserAdminScreen = function() {
 };
 UserAdminScreen = stjs.extend(UserAdminScreen, EcScreen, [], function(constructor, prototype) {
     constructor.displayName = "admin";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return UserAdminScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userAdmin.html";
     };
 }, {}, {});
 (function() {

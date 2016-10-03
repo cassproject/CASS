@@ -7,7 +7,10 @@ ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prot
     prototype.modalSize = "tiny";
     prototype.message = null;
     prototype.confirmCallback = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/confirm.html";
     };
 }, {confirmCallback: "Callback0", onClose: "Callback0"}, {});

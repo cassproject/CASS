@@ -3,11 +3,11 @@ var FileManagerScreen = function() {
 };
 FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "fileManager";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return FileManagerScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/fileManager.html";
     };
 }, {reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

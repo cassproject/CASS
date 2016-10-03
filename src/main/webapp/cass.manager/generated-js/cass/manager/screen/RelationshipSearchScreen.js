@@ -9,11 +9,11 @@ RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScre
     prototype.lastViewed = null;
     prototype.query = null;
     prototype.ownership = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RelationshipSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipSearch.html";
     };
 }, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

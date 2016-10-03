@@ -3,7 +3,10 @@ var CreateUserModal = function() {
 };
 CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
-    prototype.display = function(arg0, arg1) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/createUser.html";
     };
 }, {onClose: "Callback0"}, {});

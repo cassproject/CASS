@@ -49,44 +49,39 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 		}
 	}
 	
-	ChangeTypeModal.prototype.display = function(containerId, callback)
+	ChangeTypeModal.prototype.display = function(containerId)
 	{	
 		typeSelected = [];
 		var dataEdit = ViewManager.getView(this.repoEditContainer);
 		
-		$(containerId).load("partial/modal/changeType.html", function(){
-			
-			var thing = new Thing();
-			thing.name = "New Thing";
-			addOptionToTypeSelect(thing);
-			
-			if(dataEdit != undefined)
-			{
-				$("#changeTypeSubmit").click(function(){
-					submitChangeType(dataEdit);
-				});
-			}
-			else
-			{
-				displayError("");
-			}
-			
-			$("#changeTypeSelect").change(function(){
-				if($("#changeTypeSelect").val() == "other"){
-					$("#changeTypeOtherContainer").removeClass("hide");
-				}else{
-					$("#changeTypeOtherContainer").addClass("hide");
-				}
+		var thing = new Thing();
+		thing.name = "New Thing";
+		addOptionToTypeSelect(thing);
+		
+		if(dataEdit != undefined)
+		{
+			$("#changeTypeSubmit").click(function(){
+				submitChangeType(dataEdit);
 			});
-			
-			
-			$("#changeTypeCancel").click(function(){
-				ModalManager.hideModal();
-			})
-			
-			if(callback != undefined)
-				callback();
+		}
+		else
+		{
+			displayError("");
+		}
+		
+		$("#changeTypeSelect").change(function(){
+			if($("#changeTypeSelect").val() == "other"){
+				$("#changeTypeOtherContainer").removeClass("hide");
+			}else{
+				$("#changeTypeOtherContainer").addClass("hide");
+			}
 		});
+		
+		
+		$("#changeTypeCancel").click(function(){
+			ModalManager.hideModal();
+		})
+		
 	}
 	
 	return ChangeTypeModal;

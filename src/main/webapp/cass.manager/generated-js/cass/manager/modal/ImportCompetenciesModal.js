@@ -5,7 +5,10 @@ var ImportCompetenciesModal = function(data) {
 ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "medium";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/importCompetencies.html";
     };
 }, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});

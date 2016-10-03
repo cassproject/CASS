@@ -11,11 +11,11 @@ RepoSearchScreen = stjs.extend(RepoSearchScreen, CassManagerScreen, [], function
     prototype.query = null;
     prototype.ownership = null;
     prototype.types = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RepoSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/repoSearch.html";
     };
 }, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

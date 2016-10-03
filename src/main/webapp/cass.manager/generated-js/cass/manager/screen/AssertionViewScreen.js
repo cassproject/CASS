@@ -5,11 +5,11 @@ var AssertionViewScreen = function(data) {
 AssertionViewScreen = stjs.extend(AssertionViewScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "assertionView";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return AssertionViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/assertionView.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

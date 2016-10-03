@@ -117,110 +117,105 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}
 	
-	FrameworkSearchScreen.prototype.display = function(containerId, callback)
+	FrameworkSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;
 		
 		var query = this.query;
 		var ownership = this.ownership;
-		
-		$(containerId).load("partial/screen/frameworkSearch.html", function(){
-			
-			ViewManager.showView(new MessageContainer("frameworkSearch"), "#frameworkSearchMessageContainer");
-			
-			ViewManager.showView(new DataViewer("frameworkResults", {
-				sort:{},
-				clickDataEdit:function(datum){
-					ScreenManager.changeScreen(new FrameworkEditScreen(datum));
-				},
-				buildData:function(id, datum){
-					var comps = (datum.competency == undefined ? 0 : datum.competency.length);
-					var rels = (datum.relation == undefined ? 0 : datum.relation.length)
-					
-					var html = "<div class='small-4 columns'><a class='datum-name'>"+datum.name+"</a></div>" +
-								"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
-								"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
-								"<div class='small-4 columns'>{{dataOwner}}</div>";
-					
-					if(datum["owner"] != undefined && datum["owner"].length > 0){
-						var owner = "";
-						for(var i in datum["owner"]){
-							owner+= createContactSmall(datum["owner"][i])+ ", "
-						}
-						owner = owner.substring(0, owner.length-2);
-						html = html.replaceAll(/{{dataOwner}}/g, owner);
-					}else{
-						html = html.replaceAll(/{{dataOwner}}/g, "Public");
-					}
-					
-					var el = $(html)
-					
-					el.find(".ownershipDisplay").each(function(i, element){
-						$(element).children(".qrcodeCanvas").qrcode({
-			                width:128,
-			                height:128,
-			                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
-			            });  
-					})
-					
-					el.find(".datum-name").click(function(ev){
-						ev.preventDefault();
-						ScreenManager.changeScreen(new FrameworkViewScreen(datum));
-					});
-					
-					return el;
-				}
-			}), "#frameworkSearchResults");
-			
-			$("#frameworkSearchSubmit").click(function(event){
-				event.preventDefault();
-				runFrameworkSearch();
-			});			
-			$("#frameworkSearchOwnership").change(function(event){
-				event.preventDefault();
-				runFrameworkSearch();
-			});
 	
-			
-			$("#frameworkSearchText").keypress(function(e){
-				var key = e.which;
-				if(key == 13)  // the enter key code
-				{
-					runFrameworkSearch();
-				}
-			});
-			
-			if(query != null)
-				$("#frameworkSearchText").val(query)
-			
-			if(LoginController.getLoggedIn())
-			{
-				$("#frameworkSearchOwnership").attr("max", 4);
-				$("#frameworkSearchOwnershipLoggedIn").removeClass("hide");
-				$("#frameworkSearchOwnershipPublic").addClass("hide");
-			}
-			else
-			{
-				$("#frameworkSearchOwnershipLoggedIn").addClass("hide");
-				$("#frameworkSearchOwnershipPublic").removeClass("hide");
-			}
-			
-			if(ownership != null){
-				if(ownership == "public")
-					ownership = 1;
-				else if(ownership == "owned")
-					ownership = 3;
-				else if(ownership == "me")
-					ownership = 4
+		ViewManager.showView(new MessageContainer("frameworkSearch"), "#frameworkSearchMessageContainer");
+		
+		ViewManager.showView(new DataViewer("frameworkResults", {
+			sort:{},
+			clickDataEdit:function(datum){
+				ScreenManager.changeScreen(new FrameworkEditScreen(datum));
+			},
+			buildData:function(id, datum){
+				var comps = (datum.competency == undefined ? 0 : datum.competency.length);
+				var rels = (datum.relation == undefined ? 0 : datum.relation.length)
 				
-				$("#frameworkSearchOwnership").val(ownership);
+				var html = "<div class='small-4 columns'><a class='datum-name'>"+datum.name+"</a></div>" +
+							"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
+							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
+							"<div class='small-4 columns'>{{dataOwner}}</div>";
+				
+				if(datum["owner"] != undefined && datum["owner"].length > 0){
+					var owner = "";
+					for(var i in datum["owner"]){
+						owner+= createContactSmall(datum["owner"][i])+ ", "
+					}
+					owner = owner.substring(0, owner.length-2);
+					html = html.replaceAll(/{{dataOwner}}/g, owner);
+				}else{
+					html = html.replaceAll(/{{dataOwner}}/g, "Public");
+				}
+				
+				var el = $(html)
+				
+				el.find(".ownershipDisplay").each(function(i, element){
+					$(element).children(".qrcodeCanvas").qrcode({
+		                width:128,
+		                height:128,
+		                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
+		            });  
+				})
+				
+				el.find(".datum-name").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new FrameworkViewScreen(datum));
+				});
+				
+				return el;
 			}
-			
+		}), "#frameworkSearchResults");
+		
+		$("#frameworkSearchSubmit").click(function(event){
+			event.preventDefault();
 			runFrameworkSearch();
-			
-			if(callback != undefined)
-				callback();
+		});			
+		$("#frameworkSearchOwnership").change(function(event){
+			event.preventDefault();
+			runFrameworkSearch();
 		});
+
+		
+		$("#frameworkSearchText").keypress(function(e){
+			var key = e.which;
+			if(key == 13)  // the enter key code
+			{
+				runFrameworkSearch();
+			}
+		});
+		
+		if(query != null)
+			$("#frameworkSearchText").val(query)
+		
+		if(LoginController.getLoggedIn())
+		{
+			$("#frameworkSearchOwnership").attr("max", 4);
+			$("#frameworkSearchOwnershipLoggedIn").removeClass("hide");
+			$("#frameworkSearchOwnershipPublic").addClass("hide");
+		}
+		else
+		{
+			$("#frameworkSearchOwnershipLoggedIn").addClass("hide");
+			$("#frameworkSearchOwnershipPublic").removeClass("hide");
+		}
+		
+		if(ownership != null){
+			if(ownership == "public")
+				ownership = 1;
+			else if(ownership == "owned")
+				ownership = 3;
+			else if(ownership == "me")
+				ownership = 4
+			
+			$("#frameworkSearchOwnership").val(ownership);
+		}
+		
+		runFrameworkSearch();
+			
 	};
 	
 	return FrameworkSearchScreen;

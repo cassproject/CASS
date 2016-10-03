@@ -24,27 +24,23 @@ var AddServerModal = (function(AddServerModal){
 		$(ERROR_CONTAINER_ID).addClass("hide");
 	}
 	
-	AddServerModal.prototype.display = function(containerId, callback)
+	AddServerModal.prototype.display = function(containerId)
 	{
 		var closeCallback = this.onClose;
 		
-		$(containerId).load("partial/modal/addServer.html", function(){
-			clearError();
-			
-			$("#addServerForm").submit(function(event){
-				event.preventDefault();
-				submitAddServer(closeCallback);
-			});
-			
-			$("#addServerCancel").click(function(event){
-				event.preventDefault();
-				ModalManager.hideModal();
-				closeCallback();
-			});
-			
-			if(callback != undefined)
-				callback();
+		clearError();
+		
+		$("#addServerForm").submit(function(event){
+			event.preventDefault();
+			submitAddServer(closeCallback);
 		});
+		
+		$("#addServerCancel").click(function(event){
+			event.preventDefault();
+			ModalManager.hideModal();
+			closeCallback();
+		});
+		
 	}
 	
 	return AddServerModal;

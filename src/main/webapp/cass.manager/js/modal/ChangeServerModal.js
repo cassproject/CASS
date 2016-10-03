@@ -19,64 +19,60 @@ var ChangeServerModal = (function(ChangeServerModal){
 		$(ERROR_CONTAINER_ID).addClass("hide");
 	}
 	
-	ChangeServerModal.prototype.display = function(containerId, callback)
+	ChangeServerModal.prototype.display = function(containerId)
 	{
 		var view = this;
 		
-		$(containerId).load("partial/modal/changeServer.html", function(){
-			clearError();
-			
-			$("#changeServerCurrentServer").text(AppController.serverController.selectedServerName);
-			$("#changeServerCurrentServer").attr('title', AppController.serverController.selectedServerUrl);
-			
-			if($(AppController.serverController.serverList).size() > 0 ){
-				$("#newServer").html("");
-				for(var serverName in AppController.serverController.serverList){
-					var serverUrl = AppController.serverController.serverList[serverName];
-					
-					var option = $("<option></option>");
-					
-					if(serverName == AppController.serverController.selectedServerName)
-						option.attr("selected", "selected")
-					option.attr("value", serverUrl);
-					option.text(serverName);
-					
-					$("#newServer").append(option);
-				}
-			}
-			
-			if(LoginController.getLoggedIn()){
-				displayError("Cannot change server when logged in, please log out to continue");
+		clearError();
+		
+		$("#changeServerCurrentServer").text(AppController.serverController.selectedServerName);
+		$("#changeServerCurrentServer").attr('title', AppController.serverController.selectedServerUrl);
+		
+		if($(AppController.serverController.serverList).size() > 0 ){
+			$("#newServer").html("");
+			for(var serverName in AppController.serverController.serverList){
+				var serverUrl = AppController.serverController.serverList[serverName];
 				
-				$("#newServer").attr("disabled", "disabled");
+				var option = $("<option></option>");
 				
-				$("#changeServerForm").submit(function(event){
-					event.preventDefault();
-					return;
-				});
-			}
-			else
-			{
-				$("#addServer").click(function(){
-					ModalManager.showModal(new AddServerModal(function(){
-						ModalManager.showModal(new ChangeServerModal());
-					}));
-				});
+				if(serverName == AppController.serverController.selectedServerName)
+					option.attr("selected", "selected")
+				option.attr("value", serverUrl);
+				option.text(serverName);
 				
-				$("#changeServerForm").submit(function(event){
-					event.preventDefault();
-					submitChange();
-				});
+				$("#newServer").append(option);
 			}
+		}
+		
+		if(LoginController.getLoggedIn()){
+			displayError("Cannot change server when logged in, please log out to continue");
 			
-			$("#changeServerCancel").click(function(event){
+			$("#newServer").attr("disabled", "disabled");
+			
+			$("#changeServerForm").submit(function(event){
 				event.preventDefault();
-				ModalManager.hideModal();
+				return;
+			});
+		}
+		else
+		{
+			$("#addServer").click(function(){
+				ModalManager.showModal(new AddServerModal(function(){
+					ModalManager.showModal(new ChangeServerModal());
+				}));
 			});
 			
-			if(callback != undefined)
-				callback();
+			$("#changeServerForm").submit(function(event){
+				event.preventDefault();
+				submitChange();
+			});
+		}
+		
+		$("#changeServerCancel").click(function(event){
+			event.preventDefault();
+			ModalManager.hideModal();
 		});
+		
 	}
 	
 	return ChangeServerModal;

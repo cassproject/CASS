@@ -5,11 +5,11 @@ var CompetencyViewScreen = function(data) {
 CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "competencyView";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return CompetencyViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencyView.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

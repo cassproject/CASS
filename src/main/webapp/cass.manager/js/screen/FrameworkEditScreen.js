@@ -432,6 +432,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	  		minLength: 2,
 		},
 		{
+			limit: 25,
 	  		name: 'competencies',
 	  		source: function(q, syncCallback, asyncCallback){
 	  			EcCompetency.search(AppController.repoInterface, q, function(results){
@@ -451,7 +452,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 			async:true,
 	  		display: function(data){ return data["name"]; },
 	  		templates:{
-	  			suggestion:function(data){ return "<div>" + data["name"] + "</div>"; }
+	  			suggestion:function(data){ return "<div title='"+data["title"]+"'>" + data["name"] + "</div>"; }
 	  		}
 		}).bind("typeahead:selected", function(ev, data){
 			$('#frameworkEditAddCompetency').typeahead('val', "");
@@ -480,7 +481,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		
 		if(data != undefined && data.id != undefined)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id": EcRemoteLinkedData.trimVersionFromUrl(data.id)} )
+			ScreenManager.setScreenParameters({"id": EcRemoteLinkedData.trimVersionFromUrl(data.id)} )
 		}
 		
 		if(data == undefined){
@@ -494,254 +495,271 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		    }
 		}
 		
-		$(containerId).load("partial/screen/frameworkEdit.html", function(){
-			ViewManager.showView(new MessageContainer("frameworkEdit"), "#frameworkEditMessageContainer", function(){
-				if(data.name == NEW_FRAMEWORK_NAME && AppController.identityController.selectedIdentity == undefined)
-				{
-					ViewManager.getView("#frameworkEditMessageContainer").displayWarning("You are Creating a Public Framework, this competency can be modified by anyone")
-				}
-			});
-			
-			$("#frameworkEditSearchBtn").attr("href", "#"+FrameworkSearchScreen.prototype.displayName);
-			$("#frameworkEditSearchBtn").click(function(event){
-				event.preventDefault();
-				if(data.name == NEW_FRAMEWORK_NAME)
-				{
-					ScreenManager.changeScreen(new FrameworkSearchScreen())
-				}
-				else
-				{
-					ScreenManager.changeScreen(new FrameworkSearchScreen(data));
-				}
-				
-			});
-			
+		ViewManager.showView(new MessageContainer("frameworkEdit"), "#frameworkEditMessageContainer", function(){
+			if(data.name == NEW_FRAMEWORK_NAME && AppController.identityController.selectedIdentity == undefined)
+			{
+				ViewManager.getView("#frameworkEditMessageContainer").displayWarning("You are Creating a Public Framework, this competency can be modified by anyone")
+			}
+		});
+
+		$("#frameworkEditSearchBtn").attr("href", "#"+FrameworkSearchScreen.prototype.displayName);
+		$("#frameworkEditSearchBtn").click(function(event){
+			event.preventDefault();
 			if(data.name == NEW_FRAMEWORK_NAME)
 			{
-				$("#frameworkEditViewBtn").hide();
-				
+				ScreenManager.changeScreen(new FrameworkSearchScreen())
 			}
 			else
 			{
-				$("#frameworkEditViewBtn").attr("href", "#"+FrameworkViewScreen.prototype.displayName);
-				$("#frameworkEditViewBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new FrameworkViewScreen(data))
-				});
+				ScreenManager.changeScreen(new FrameworkSearchScreen(data));
 			}
 			
+		});
+
+		if(data.name == NEW_FRAMEWORK_NAME)
+		{
+			$("#frameworkEditCreateCompetency").hide();
 			
-			$("#frameworkEditBtn").attr("href", "#"+FrameworkEditScreen.prototype.displayName);
-			$("#frameworkEditBtn").click(function(event){
+		}
+		else
+		{
+			$("#frameworkEditCreateCompetency").attr("href", "#"+FrameworkEditScreen.prototype.displayName+"?frameworkId="+EcRemoteLinkedData.trimVersionFromUrl(data.id));
+			$("#frameworkEditCreateCompetency").click(function(event){
 				event.preventDefault();
+				if(data.name == NEW_FRAMEWORK_NAME)
+				{
+				}
+				else
+				{
+					var newData = JSON.parse(JSON.stringify(data));
+					data.frameworkId=EcRemoteLinkedData.trimVersionFromUrl(data.id);
+					ScreenManager.changeScreen(new CompetencyEditScreen(data));
+				}			
 			});
+		}
+		
+		if(data.name == NEW_FRAMEWORK_NAME)
+		{
+			$("#frameworkEditViewBtn").hide();
 			
-			$("#frameworkEditCancelBtn").click(function(event){
+		}
+		else
+		{
+			$("#frameworkEditViewBtn").attr("href", "#"+FrameworkViewScreen.prototype.displayName);
+			$("#frameworkEditViewBtn").click(function(event){
 				event.preventDefault();
 				ScreenManager.changeScreen(new FrameworkViewScreen(data))
 			});
-			
-			if(data.name == NEW_FRAMEWORK_NAME){
-				$("#frameworkEditDeleteBtn").remove();	
-			}else{
-				$("#frameworkEditDeleteBtn").click(function(event){
-					event.preventDefault();
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new FrameworkSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete framework";
-							ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this framework?"))
-				})
-			}
-			
-			
-			$("#frameworkEditSaveBtn").click(function(event){
+		}
+		
+		
+		$("#frameworkEditBtn").attr("href", "#"+FrameworkEditScreen.prototype.displayName);
+		$("#frameworkEditBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		$("#frameworkEditCancelBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new FrameworkViewScreen(data))
+		});
+		
+		if(data.name == NEW_FRAMEWORK_NAME){
+			$("#frameworkEditDeleteBtn").remove();	
+		}else{
+			$("#frameworkEditDeleteBtn").click(function(event){
 				event.preventDefault();
-				 
-				data.name = $("#frameworkEditName").val();
-				data.description = $("#frameworkEditDescription").val();
-				data.id = $("#frameworkEditId").val();
-				
-				if(data.name != NEW_FRAMEWORK_NAME){
-					ViewManager.getView("#frameworkEditMessageContainer").clearAlert("saveFail");
-					ViewManager.getView("#frameworkEditMessageContainer").clearAlert("defaultName");
-					
-					var savingData = new EcFramework();
-					for(var key in data){
-						if(key != "competencyObjects")
-							savingData[key] = data[key];
-					}
-					
-					savingData.save(function(str){
-						data.id = savingData.id;
-						$("#frameworkEditId").val(data.id);
-						saveSuccess(str);
-					}, errorSaving);
-				}else{
-					ViewManager.getView("#frameworkEditMessageContainer").displayAlert("Cannot Save Framework With Default Name", "defaultName");
-				}
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new FrameworkSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete framework";
+						ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this framework?"))
 			})
+		}
+		
+		
+		$("#frameworkEditSaveBtn").click(function(event){
+			event.preventDefault();
+			 
+			data.name = $("#frameworkEditName").val();
+			data.description = $("#frameworkEditDescription").val();
+			data.id = $("#frameworkEditId").val();
 			
-			$("#frameworkEditSaveBtn").on("mousemove", function(){
-				var url = $("#frameworkEditId").val();
-				var split = url.split("\/");
-				if (split[split.length-4] == "data") 
-					split[split.length-1] = new Date().getTime();
-				$("#frameworkEditId").val(split.join("/"));
-			});
-			
-			$("#importCompetenciesBtn").click(function(){
-				ModalManager.showModal(new ImportCompetenciesModal(data));
-			})
-			
-			$("#frameworkEditCompetencies").focus(function(){
-				setTimeout(function(){
-					if($("#frameworkEditCompetencies").val() != undefined && $("#frameworkEditCompetencies").val() != "")
-					{
-						$("#frameworkEditCompetencies").css("margin-bottom", "0rem");
-						$("#frameworkEditDeleteCompetency").slideDown();
-					}
-				}, 100)
-			});
-			$("#frameworkEditCompetencies").blur(function(){
-				$("#frameworkEditDeleteCompetency").slideUp(function(){
-					$("#frameworkEditCompetencies").css("margin-bottom", "1rem");
-				});
-			});
-			$("#frameworkEditDeleteCompetency").click(function(ev){
-				ev.preventDefault();
-				var ids = $("#frameworkEditCompetencies").val();
+			if(data.name != NEW_FRAMEWORK_NAME){
+				ViewManager.getView("#frameworkEditMessageContainer").clearAlert("saveFail");
+				ViewManager.getView("#frameworkEditMessageContainer").clearAlert("defaultName");
 				
-				for(var idx in ids){
-					var id = ids[idx];
-					
-					data.removeCompetency(id, function(){
-						$("#frameworkEditOwner").text("");
-						$("#frameworkEditCompetencies").html("");
-						$("#frameworkEditRelations").html("");
-						$("#frameworkEditLevels").html("");
-						
-						data.name = $("#frameworkEditName").val();
-						data.description = $("#frameworkEditDescription").val();
-						
-						displayFramework(data);
-					}, errorRemovingCompetency);
-				}
-			});
-			
-			$("#frameworkEditRelations").focus(function(){
-				setTimeout(function(){
-					if($("#frameworkEditRelations").val() != undefined && $("#frameworkEditRelations").val() != "")
-					{
-						$("#frameworkEditRelations").css("margin-bottom", "0rem");
-						$("#frameworkEditDeleteRelation").slideDown();
-					}
-				}, 100);
-			});
-			$("#frameworkEditRelations").blur(function(){
-				$("#frameworkEditDeleteRelation").slideUp(function(){
-					$("#frameworkEditRelations").css("margin-bottom", "1rem");
-				});
-			});
-			$("#frameworkEditDeleteRelation").click(function(ev){
-				ev.preventDefault();
-				var ids = $("#frameworkEditRelations").val();
-				
-				for(var idx in ids){
-					var id = ids[idx];
-					
-					data.removeRelation(id);
-
-					var basicId = EcRemoteLinkedData.trimVersionFromUrl(id).split("/");
-					basicId = basicId[basicId.length-1];
-					$("#frameworkEditRelations #"+basicId).remove();
+				var savingData = new EcFramework();
+				for(var key in data){
+					if(key != "competencyObjects")
+						savingData[key] = data[key];
 				}
 				
-				$("#frameworkEditRelations optgroup").each(function(idx, el){
-					if($(el).children().size() == 0)
-						$(el).remove();
-				})
-			});
-			
-			$("#frameworkEditLevels").focus(function(){
-				setTimeout(function(){
-					if($("#frameworkEditLevels").val() != undefined && $("#frameworkEditLevels").val() != "")
-					{
-						$("#frameworkEditLevels").css("margin-bottom", "0rem");
-						$("#frameworkEditDeleteLevel").slideDown();
-					}
-				}, 100);
-			});
-			$("#frameworkEditLevels").blur(function(){
-				$("#frameworkEditDeleteLevel").slideUp(function(){
-					$("#frameworkEditLevels").css("margin-bottom", "1rem");
-				});
-			});
-			$("#frameworkEditDeleteLevel").click(function(ev){
-				ev.preventDefault();
-				var ids = $("#frameworkEditLevels").val();
-				
-				for(var idx in ids){
-					var id = ids[idx];
-					
-					data.removeLevel(id);
-					
-					var basicId = EcRemoteLinkedData.trimVersionFromUrl(id).split("/");
-					basicId = basicId[basicId.length-1];
-					$("#frameworkEditLevels #"+basicId).remove();
+				savingData.save(function(str){
+					data.id = savingData.id;
+					$("#frameworkEditId").val(data.id);
+					saveSuccess(str);
+				}, errorSaving);
+			}else{
+				ViewManager.getView("#frameworkEditMessageContainer").displayAlert("Cannot Save Framework With Default Name", "defaultName");
+			}
+		})
+		
+		$("#frameworkEditSaveBtn").on("mousemove", function(){
+			var url = $("#frameworkEditId").val();
+			var split = url.split("\/");
+			if (split[split.length-4] == "data") 
+				split[split.length-1] = new Date().getTime();
+			$("#frameworkEditId").val(split.join("/"));
+		});
+		
+		$("#importCompetenciesBtn").click(function(){
+			ModalManager.showModal(new ImportCompetenciesModal(data));
+		})
+		
+		$("#frameworkEditCompetencies").focus(function(){
+			setTimeout(function(){
+				if($("#frameworkEditCompetencies").val() != undefined && $("#frameworkEditCompetencies").val() != "")
+				{
+					$("#frameworkEditCompetencies").css("margin-bottom", "0rem");
+					$("#frameworkEditDeleteCompetency").slideDown();
 				}
-				
-				$("#frameworkEditLevels optgroup").each(function(idx, el){
-					if($(el).children().size() == 0)
-						$(el).remove();
-				})
+			}, 100)
+		});
+		$("#frameworkEditCompetencies").blur(function(){
+			$("#frameworkEditDeleteCompetency").slideUp(function(){
+				$("#frameworkEditCompetencies").css("margin-bottom", "1rem");
 			});
+		});
+		$("#frameworkEditDeleteCompetency").click(function(ev){
+			ev.preventDefault();
+			var ids = $("#frameworkEditCompetencies").val();
 			
-			$("#frameworkEditOwnerAdvanced").click(function(ev){
-				ev.preventDefault();
+			for(var idx in ids){
+				var id = ids[idx];
 				
-				data.name = $("#frameworkEditName").val();
-				data.description = $("#frameworkEditDescription").val();
-				
-				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
-					data.owner = dataAfter.owner;
-					data.privateEncrypted = dataAfter.privateEncrypted;
-					data.reader = dataAfter.reader;
+				data.removeCompetency(id, function(){
+					$("#frameworkEditOwner").text("");
+					$("#frameworkEditCompetencies").html("");
+					$("#frameworkEditRelations").html("");
+					$("#frameworkEditLevels").html("");
+					
+					data.name = $("#frameworkEditName").val();
+					data.description = $("#frameworkEditDescription").val();
 					
 					displayFramework(data);
-					
-					ModalManager.hideModal();
-				}))
+				}, errorRemovingCompetency);
+			}
+		});
+		
+		$("#frameworkEditRelations").focus(function(){
+			setTimeout(function(){
+				if($("#frameworkEditRelations").val() != undefined && $("#frameworkEditRelations").val() != "")
+				{
+					$("#frameworkEditRelations").css("margin-bottom", "0rem");
+					$("#frameworkEditDeleteRelation").slideDown();
+				}
+			}, 100);
+		});
+		$("#frameworkEditRelations").blur(function(){
+			$("#frameworkEditDeleteRelation").slideUp(function(){
+				$("#frameworkEditRelations").css("margin-bottom", "1rem");
+			});
+		});
+		$("#frameworkEditDeleteRelation").click(function(ev){
+			ev.preventDefault();
+			var ids = $("#frameworkEditRelations").val();
+			
+			for(var idx in ids){
+				var id = ids[idx];
+				
+				data.removeRelation(id);
+
+				var basicId = EcRemoteLinkedData.trimVersionFromUrl(id).split("/");
+				basicId = basicId[basicId.length-1];
+				$("#frameworkEditRelations #"+basicId).remove();
+			}
+			
+			$("#frameworkEditRelations optgroup").each(function(idx, el){
+				if($(el).children().size() == 0)
+					$(el).remove();
 			})
+		});
+		
+		$("#frameworkEditLevels").focus(function(){
+			setTimeout(function(){
+				if($("#frameworkEditLevels").val() != undefined && $("#frameworkEditLevels").val() != "")
+				{
+					$("#frameworkEditLevels").css("margin-bottom", "0rem");
+					$("#frameworkEditDeleteLevel").slideDown();
+				}
+			}, 100);
+		});
+		$("#frameworkEditLevels").blur(function(){
+			$("#frameworkEditDeleteLevel").slideUp(function(){
+				$("#frameworkEditLevels").css("margin-bottom", "1rem");
+			});
+		});
+		$("#frameworkEditDeleteLevel").click(function(ev){
+			ev.preventDefault();
+			var ids = $("#frameworkEditLevels").val();
 			
+			for(var idx in ids){
+				var id = ids[idx];
+				
+				data.removeLevel(id);
+				
+				var basicId = EcRemoteLinkedData.trimVersionFromUrl(id).split("/");
+				basicId = basicId[basicId.length-1];
+				$("#frameworkEditLevels #"+basicId).remove();
+			}
 			
-			if(data.name == NEW_FRAMEWORK_NAME)
-			{
+			$("#frameworkEditLevels optgroup").each(function(idx, el){
+				if($(el).children().size() == 0)
+					$(el).remove();
+			})
+		});
+		
+		$("#frameworkEditOwnerAdvanced").click(function(ev){
+			ev.preventDefault();
+			
+			data.name = $("#frameworkEditName").val();
+			data.description = $("#frameworkEditDescription").val();
+			
+			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+				data.owner = dataAfter.owner;
+				data.privateEncrypted = dataAfter.privateEncrypted;
+				data.reader = dataAfter.reader;
+				
+				displayFramework(data);
+				
+				ModalManager.hideModal();
+			}))
+		})
+		
+		
+		if(data.name == NEW_FRAMEWORK_NAME)
+		{
+			displayFramework(data);
+			setupCompetencyTypeahead(data);
+		    setupRelationTypeahead(data);
+		    setupLevelTypeahead(data);
+		}
+		else{
+			EcFramework.get(data.id, function(framework){
+				data = framework;
+				
 				displayFramework(data);
 				setupCompetencyTypeahead(data);
 			    setupRelationTypeahead(data);
 			    setupLevelTypeahead(data);
-			}
-			else{
-				EcFramework.get(data.id, function(framework){
-					data = framework;
-					
-					displayFramework(data);
-					setupCompetencyTypeahead(data);
-				    setupRelationTypeahead(data);
-				    setupLevelTypeahead(data);
-				}, errorRetrieving);
-			}
+			}, errorRetrieving);
+		}
 			
-						
-			if(callback != undefined)
-				callback();
-		});
 	};
 	
 	FrameworkEditScreen.prototype.addCompetency = function(competency){

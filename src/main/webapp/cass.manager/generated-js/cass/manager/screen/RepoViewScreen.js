@@ -5,11 +5,11 @@ var RepoViewScreen = function(data) {
 RepoViewScreen = stjs.extend(RepoViewScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "repoView";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RepoViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/repoView.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

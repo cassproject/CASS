@@ -420,155 +420,151 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	}
 	
 	
-	ImportCompetenciesModal.prototype.display = function(containerId, callback)
+	ImportCompetenciesModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
-		
-		$(containerId).load("partial/modal/importCompetencies.html", function(){
-			ViewManager.showView(new MessageContainer("importCompetencies"), "#importCompetenciesMessageContainer", function(){
-				if(AppController.identityController.selectedIdentity == undefined)
-				{
-					ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("Competencies that are imported will be Public and can be modified by anyone", "noOwner");
-				}
-				
-				if(data == undefined)
-				{
-					ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("No Framework Specified, Competencies will not be attached to any frameworks when imported", "noFrameworkSelected");
-				}
-			});
+	
+		ViewManager.showView(new MessageContainer("importCompetencies"), "#importCompetenciesMessageContainer", function(){
+			if(AppController.identityController.selectedIdentity == undefined)
+			{
+				ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("Competencies that are imported will be Public and can be modified by anyone", "noOwner");
+			}
 			
-			if(data == undefined){
-				EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"public"});
-				EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"me"});
+			if(data == undefined)
+			{
+				ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("No Framework Specified, Competencies will not be attached to any frameworks when imported", "noFrameworkSelected");
+			}
+		});
+		
+		if(data == undefined){
+			EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"public"});
+			EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"me"});
+		}else{
+			$("#selectFramework").removeClass("hide");
+			
+			// TODO:
+			
+			addLocationFramework(data);
+			$("#noLocation").removeAttr('selected');
+			
+			var id = data.shortId().split("/");
+			var id = id[id.length-1];
+			$("#importLocationSelect option[value="+id+"]").attr("selected", "selected");
+			
+			$("#importLocationSelect").attr("disabled","disabled")
+		}
+		
+		$("#importLocationSelect").change(function(ev){
+			if($("#importLocationSelect").val() == ""){
+				$("#selectFramework").addClass("hide");
+				$("#frameworkSourceRow").addClass("hide");
+				ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("No Framework Specified, Competencies will not be attached to any frameworks when imported", "noFrameworkSelected");
 			}else{
 				$("#selectFramework").removeClass("hide");
-				
-				// TODO:
-				
-				addLocationFramework(data);
-				$("#noLocation").removeAttr('selected');
-				
-				var id = data.shortId().split("/");
-				var id = id[id.length-1];
-				$("#importLocationSelect option[value="+id+"]").attr("selected", "selected");
-				
-				$("#importLocationSelect").attr("disabled","disabled")
+				ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noFrameworkSelected");
 			}
+		});
+		
+		
+		$("#selectCSV").click(function(ev){
+			ev.preventDefault();
+			$(".sourceRow").addClass("hide");
+			$("#csvSourceRow").removeClass("hide");
+			$("#modalContainer").foundation("open")
+		});
+		
+		$("#selectMedbiq").click(function(ev){
+			ev.preventDefault();
+			$(".sourceRow").addClass("hide");
+			$("#medbiqSourceRow").removeClass("hide");
+			$("#modalContainer").foundation("open")
+		});
+		
+		$("#selectFramework").click(function(ev){
+			ev.preventDefault();
+			$(".sourceRow").addClass("hide");
+			$("#frameworkSourceRow").removeClass("hide");
+			$("#modalContainer").foundation("open")
 			
-			$("#importLocationSelect").change(function(ev){
-				if($("#importLocationSelect").val() == ""){
-					$("#selectFramework").addClass("hide");
-					$("#frameworkSourceRow").addClass("hide");
-					ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("No Framework Specified, Competencies will not be attached to any frameworks when imported", "noFrameworkSelected");
+			EcFramework.search(AppController.repoInterface, "*", addSourceFrameworks, errorFindingFrameworks);
+			
+			ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noOwner");
+			
+			$("#copySwitch").change(function(){
+				if($("#copySwitch").is(":checked")){
+					$("#importFrameworkOwner").fadeIn();
+					if(AppController.identityController.selectedIdentity == undefined)
+						ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("Competencies that are copied will be Public and can be modified by anyone", "noOwner");
 				}else{
-					$("#selectFramework").removeClass("hide");
-					ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noFrameworkSelected");
+					$("#importFrameworkOwner").fadeOut();
+					ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noOwner");
 				}
-			});
+			})
 			
+			$("#importSourceSelect").change(function(ev){
+				$("#submitImportFramework").removeAttr("disabled");
+				$("#submitImportFramework").click(function(ev){
+					ev.preventDefault();
+					importFromFramework(data);
+				})
+			})
+		});
+		
+		$("#selectASN").click(function(ev){
+			ev.preventDefault();
+			$(".sourceRow").addClass("hide");
+			$("#asnSourceRow").removeClass("hide");
+			$("#modalContainer").foundation("open");
 			
-			$("#selectCSV").click(function(ev){
-				ev.preventDefault();
-				$(".sourceRow").addClass("hide");
-				$("#csvSourceRow").removeClass("hide");
-				$("#modalContainer").foundation("open")
-			});
-			
-			$("#selectMedbiq").click(function(ev){
-				ev.preventDefault();
-				$(".sourceRow").addClass("hide");
-				$("#medbiqSourceRow").removeClass("hide");
-				$("#modalContainer").foundation("open")
-			});
-			
-			$("#selectFramework").click(function(ev){
-				ev.preventDefault();
-				$(".sourceRow").addClass("hide");
-				$("#frameworkSourceRow").removeClass("hide");
-				$("#modalContainer").foundation("open")
+			if(data == undefined){
+				$("#createFrameworkInputs").removeClass("hide");
+				$("#noCreateFrameworkInputs").addClass("hide");
 				
-				EcFramework.search(AppController.repoInterface, "*", addSourceFrameworks, errorFindingFrameworks);
-				
-				ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noOwner");
-				
-				$("#copySwitch").change(function(){
-					if($("#copySwitch").is(":checked")){
-						$("#importFrameworkOwner").fadeIn();
-						if(AppController.identityController.selectedIdentity == undefined)
-							ViewManager.getView("#importCompetenciesMessageContainer").displayWarning("Competencies that are copied will be Public and can be modified by anyone", "noOwner");
+				var newFrameworkOption = $("<option selected>New ASN Framework</option>");
+				$("#createFrameworkSwitch").change(function(){
+					if($("#createFrameworkSwitch").is(":checked")){
+						$("#importLocationSelect").attr("disabled", "disabled");
+						$("#importLocationSelect").append(newFrameworkOption)
 					}else{
-						$("#importFrameworkOwner").fadeOut();
-						ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noOwner");
+						$("#importLocationSelect").removeAttr("disabled");
+						newFrameworkOption.remove();
 					}
 				})
-				
-				$("#importSourceSelect").change(function(ev){
-					$("#submitImportFramework").removeAttr("disabled");
-					$("#submitImportFramework").click(function(ev){
-						ev.preventDefault();
-						importFromFramework(data);
-					})
-				})
-			});
-			
-			$("#selectASN").click(function(ev){
-				ev.preventDefault();
-				$(".sourceRow").addClass("hide");
-				$("#asnSourceRow").removeClass("hide");
-				$("#modalContainer").foundation("open");
-				
-				if(data == undefined){
-					$("#createFrameworkInputs").removeClass("hide");
-					$("#noCreateFrameworkInputs").addClass("hide");
-					
-					var newFrameworkOption = $("<option selected>New ASN Framework</option>");
-					$("#createFrameworkSwitch").change(function(){
-						if($("#createFrameworkSwitch").is(":checked")){
-							$("#importLocationSelect").attr("disabled", "disabled");
-							$("#importLocationSelect").append(newFrameworkOption)
-						}else{
-							$("#importLocationSelect").removeAttr("disabled");
-							newFrameworkOption.remove();
-						}
-					})
-				}else{
-					$("#createFrameworkInputs").addClass("hide");
-					$("#noCreateFrameworkInputs").removeClass("hide");
-				}
-			})
-			
-			
-			$("#importASNFile").change(function(){
-				analyzeASN(data);
-			})
-			
-			$("#importCsvFile").change(function(){
-				analyzeCsv(data);
-			})
-			
-			$("#importMedbiqFile").change(function(){
-				analyzeMedbiq(data);
-			})
-			
-			$(".cancelImport").click(function(ev){
-				ev.preventDefault();
-				ModalManager.hideModal();
-			})
-			
-			if(AppController.identityController.selectedIdentity != undefined){
-				var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
-				var contact = $(createContactSmall(pem));
-				$(".importCompetenciesOwner").html(contact);
-				contact.children(".qrcodeCanvas").qrcode({
-					width : 128,
-					height : 128,
-					text : forge.util.decode64(pem.replaceAll("-----.*-----", "").trim())
-				});
+			}else{
+				$("#createFrameworkInputs").addClass("hide");
+				$("#noCreateFrameworkInputs").removeClass("hide");
 			}
+		})
+		
+		
+		$("#importASNFile").change(function(){
+			analyzeASN(data);
+		})
+		
+		$("#importCsvFile").change(function(){
+			analyzeCsv(data);
+		})
+		
+		$("#importMedbiqFile").change(function(){
+			analyzeMedbiq(data);
+		})
+		
+		$(".cancelImport").click(function(ev){
+			ev.preventDefault();
+			ModalManager.hideModal();
+		})
+		
+		if(AppController.identityController.selectedIdentity != undefined){
+			var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
+			var contact = $(createContactSmall(pem));
+			$(".importCompetenciesOwner").html(contact);
+			contact.children(".qrcodeCanvas").qrcode({
+				width : 128,
+				height : 128,
+				text : forge.util.decode64(pem.replaceAll("-----.*-----", "").trim())
+			});
+		}
 
-			if(callback != undefined)
-				callback();
-		});
 	}
 	
 	return ImportCompetenciesModal;

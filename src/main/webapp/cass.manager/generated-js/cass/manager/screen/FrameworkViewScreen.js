@@ -5,11 +5,11 @@ var FrameworkViewScreen = function(data) {
 FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "frameworkView";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return FrameworkViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/frameworkView.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

@@ -1,21 +1,14 @@
 UserAdminScreen = (function(UserAdminScreen){
 	
-	UserAdminScreen.prototype.display = function(containerId, callback)
-	{
-		var screen = this;
+	UserAdminScreen.prototype.display = function(containerId)
+	{			
+		ViewManager.showView(new MessageContainer("userAdmin"), "#userAdminMessageContainer");
 		
-		$(containerId).load("partial/screen/userAdmin.html", function(){
-			
-			ViewManager.showView(new MessageContainer("userAdmin"), "#userAdminMessageContainer");
-			
-			$("#xapiAdapterConfigureBtn").click(function(ev){
-				ev.preventDefault();
-				$("#xapiConfiguration").removeClass("hide");
-			})
-			
-			if(callback != undefined)
-				callback();
-		});
+		$("#xapiAdapterConfigureBtn").click(function(ev){
+			ev.preventDefault();
+			$("#xapiConfiguration").removeClass("hide");
+		})
+
 	};
 	
 	return UserAdminScreen;

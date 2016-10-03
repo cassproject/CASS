@@ -7,7 +7,10 @@ CopyResourceModal = stjs.extend(CopyResourceModal, EcModal, [], function(constru
     prototype.modalSize = "medium";
     prototype.data = null;
     prototype.callback = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/copyResource.html";
     };
 }, {data: "Object", callback: "Callback0", onClose: "Callback0"}, {});

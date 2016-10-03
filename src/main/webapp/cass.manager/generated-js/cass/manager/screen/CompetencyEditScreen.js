@@ -5,11 +5,11 @@ var CompetencyEditScreen = function(data) {
 CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "competencyEdit";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return CompetencyEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencyEdit.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

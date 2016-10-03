@@ -5,7 +5,10 @@ var EvidenceViewModal = function(evidence) {
 EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "medium";
     prototype.evidence = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/viewEvidence.html";
     };
 }, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});

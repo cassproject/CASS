@@ -5,11 +5,11 @@ var AssertionEditScreen = function(data) {
 AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "assertionEdit";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return AssertionEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/assertionEdit.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

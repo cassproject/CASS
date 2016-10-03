@@ -130,60 +130,56 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 		
 		if(data.id != null)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters( {"id":data.id} )
 		}
 		
-		$(containerId).load("partial/screen/relationshipView.html", function(){
 			
-			ViewManager.showView(new MessageContainer("relationshipView"), "#relationshipViewMessageContainer");
-			
-			$("#relationshipViewSearchBtn").attr("href", "#"+RelationshipSearchScreen.prototype.displayName);
-			$("#relationshipViewSearchBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RelationshipSearchScreen(data))
-			});
-			
-			$("#relationshipViewBtn").attr("href", "#"+RelationshipViewScreen.prototype.displayName);
-			$("#relationshipViewBtn").click(function(event){
-				event.preventDefault();
-			});
-			
-			
-			if(AppController.identityController.canEdit(data)){
-				$("#editRelationshipBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new RelationshipEditScreen(data))
-				})
-			}else{
-				$("#editRelationshipBtn").remove();
-			}
-			
-			if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
-				$("#relationshipViewDeleteBtn").remove();
-			}else{
-				$("#relationshipViewDeleteBtn").click(function(){
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new RelationshipSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete relationship";
-							ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this relationship?"))
-				})
-			}
-			
-			
-			EcAlignment.get(data.id, function(result){
-				data = result;
-				displayRelation(result);
-			}, errorRetrieving);
-			
-			if(callback != undefined)
-				callback();
+		ViewManager.showView(new MessageContainer("relationshipView"), "#relationshipViewMessageContainer");
+		
+		$("#relationshipViewSearchBtn").attr("href", "#"+RelationshipSearchScreen.prototype.displayName);
+		$("#relationshipViewSearchBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RelationshipSearchScreen(data))
 		});
+		
+		$("#relationshipViewBtn").attr("href", "#"+RelationshipViewScreen.prototype.displayName);
+		$("#relationshipViewBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		
+		if(AppController.identityController.canEdit(data)){
+			$("#editRelationshipBtn").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new RelationshipEditScreen(data))
+			})
+		}else{
+			$("#editRelationshipBtn").remove();
+		}
+		
+		if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+			$("#relationshipViewDeleteBtn").remove();
+		}else{
+			$("#relationshipViewDeleteBtn").click(function(){
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new RelationshipSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete relationship";
+						ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this relationship?"))
+			})
+		}
+		
+		
+		EcAlignment.get(data.id, function(result){
+			data = result;
+			displayRelation(result);
+		}, errorRetrieving);
+		
 	};
 	
 	return RelationshipViewScreen;

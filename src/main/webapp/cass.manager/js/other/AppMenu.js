@@ -106,166 +106,182 @@ var AppMenu = (function(AppMenu){
 	
 	/**
 	 * The display function defines how this view should be displayed
-	 * @param containerId: defines the container that this view should be displayed in
-	 * 		for screens -> screenContainer
-	 * 		for overlays -> overlayContainer
-	 * 		for modals -> modalContainer
 	 */
-	AppMenu.prototype.display = function(containerId, callback)
+	AppMenu.prototype.display = function()
 	{
 		var view = this;
-		
-		$(containerId).load("partial/other/appMenu.html", function(){			
-			$("#appMenuToggle").click(function(ev){
-				ev.preventDefault();
-				return false;
-			});
-			
-			AppMenu.prototype.setCurrentServer();
-			
-			$("#appMenuPublicChangeServer").click(function(){
-				ModalManager.showModal(new ChangeServerModal());
-			});
-			
-			$("#appMenuUserChangeServer").click(function(){
-				ModalManager.showModal(new ChangeServerModal());
-			});
-			
-			$("#appMenuHeader").attr("href", "#"+WelcomeScreen.prototype.displayName)
-			$("#appMenuHeader").click(function(ev){
-				ev.preventDefault();
-				ScreenManager.changeScreen(new WelcomeScreen());
-				return false;
-			});
-			
-			$("#appMenuPublicTop").click(function(){
-				ModalManager.showModal(new LoginModal(loginModalCallback));
-			})
-			$("#appMenuLogin").click(function(){
-				ModalManager.showModal(new LoginModal(loginModalCallback));
-			});
-			$("#appMenuCreateAccount").click(function(){
-				ModalManager.showModal(new CreateUserModal());
-			});
-			
-			$("#appMenuAdminPage").click(function(){
-				ScreenManager.changeScreen(new UserAdminScreen());
-			})
-			
-			$("#appMenuUserIdentityPage").attr("href", "#"+UserIdentityScreen.prototype.displayName);
-			$("#appMenuUserIdentityPage").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new UserIdentityScreen());
-			});
-			
-			$("#appMenuUserLogout").click(function(event){
-				event.preventDefault();
 				
-				AppController.loginController.save(function(){
-					AppController.loginController.logout();
-					AppMenu.prototype.setLoggedOut();
-					ScreenManager.changeScreen(new WelcomeScreen());
-				});
+		$("#appMenuToggle").click(function(ev){
+			ev.preventDefault();
+			return false;
+		});
+		
+		AppMenu.prototype.setCurrentServer();
+		
+		$("#appMenuPublicChangeServer").click(function(){
+			ModalManager.showModal(new ChangeServerModal());
+		});
+		
+		$("#appMenuUserChangeServer").click(function(){
+			ModalManager.showModal(new ChangeServerModal());
+		});
+		
+		$("#appMenuHeader").attr("href", "#"+WelcomeScreen.prototype.displayName)
+		$("#appMenuHeader").click(function(ev){
+			ev.preventDefault();
+			ScreenManager.changeScreen(new WelcomeScreen());
+			return false;
+		});
+		
+		$("#appMenuPublicTop").click(function(){
+			ModalManager.showModal(new LoginModal(loginModalCallback));
+		})
+		$("#appMenuLogin").click(function(){
+			ModalManager.showModal(new LoginModal(loginModalCallback));
+		});
+		$("#appMenuCreateAccount").click(function(){
+			ModalManager.showModal(new CreateUserModal());
+		});
+		
+		$("#appMenuAdminPage").click(function(){
+			ScreenManager.changeScreen(new UserAdminScreen());
+		})
+		
+		$("#appMenuUserIdentityPage").attr("href", "#"+UserIdentityScreen.prototype.displayName);
+		$("#appMenuUserIdentityPage").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new UserIdentityScreen());
+		});
+		
+		$("#appMenuUserLogout").click(function(event){
+			event.preventDefault();
+			
+			AppController.loginController.save(function(){
+				AppController.loginController.logout();
+				AppMenu.prototype.setLoggedOut();
+				ScreenManager.changeScreen(new WelcomeScreen());
 			});
+		});
+		
+		$("#appMenuRepoSearch").attr("href", "#"+RepoSearchScreen.prototype.displayName);
+		$("#appMenuRepoSearch").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RepoSearchScreen());
+		});
+		$("#appMenuRepository").attr("href", "#"+RepoSearchScreen.prototype.displayName);
+		$("#appMenuRepository").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RepoSearchScreen());
+		})
+		
+		
+		$("#appMenuRepoCreate").attr("href", "#"+RepoCreateScreen.prototype.displayName);
+		$("#appMenuRepoCreate").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RepoCreateScreen());
+		});
+		
+		$("#appMenuFileManager").attr("href", "#"+FileManagerScreen.prototype.displayName);
+		$("#appMenuFileManager").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new FileManagerScreen());
+		});
+		
+		$("#appMenuFrameworks").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#appMenuFrameworks").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new FrameworkSearchScreen());
+		});
+		
+		$("#appMenuFrameworkSearch").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#appMenuFrameworkSearch").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new FrameworkSearchScreen());
+		});
+		
+		$("#appMenuFrameworkCreate").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
+		$("#appMenuFrameworkCreate").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new FrameworkEditScreen());
+		});
+		
+		$("#appMenuCompetencies").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#appMenuCompetencies").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new CompetencySearchScreen());
+		});
+		
+		$("#appMenuCompetencySearch").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#appMenuCompetencySearch").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new CompetencySearchScreen());
+		});
+		
+		$("#appMenuCompetencyCreate").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
+		$("#appMenuCompetencyCreate").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new CompetencyEditScreen());
+		});
+		
+		$("#appMenuCompetencyImport").click(function(event){
+			event.preventDefault();
+			ModalManager.showModal(new ImportCompetenciesModal());
+		})
+		
+		
+		$("#appMenuRelationshipSearch").attr("href", "#"+RelationshipSearchScreen.prototype.displayName);
+		$("#appMenuRelationshipSearch").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RelationshipSearchScreen());
+		});
+		
+		$("#appMenuRelationshipCreate").attr("href", "#"+RelationshipEditScreen.prototype.displayName);
+		$("#appMenuRelationshipCreate").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new RelationshipEditScreen());
+		});
+		
+		
+		$("#appMenuProfile").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
+		$("#appMenuProfile").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionSearchScreen());
+		});
+		
+		$("#appMenuAssertionSearch").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
+		$("#appMenuAssertionSearch").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionSearchScreen());
+		});
+		
+		$("#appMenuAssertionCreate").attr("href", "#"+AssertionEditScreen.prototype.displayName);
+		$("#appMenuAssertionCreate").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionEditScreen());
+		});
+		
+		if(Foundation.MediaQuery.atLeast("medium"))
+		{
+			$("#appMenuMain").removeClass("vertical");
+			$("#appMenuPublic").removeClass("vertical");
+			$("#appMenuUserInfo").removeClass("vertical");
+			$("#appMenuUserInfo").addClass("align-right");
+			$("#appMenuUserIdentitySubMenu").removeClass("hide");
+			buildIdentityList();
+		}
 			
-			$("#appMenuRepoSearch").attr("href", "#"+RepoSearchScreen.prototype.displayName);
-			$("#appMenuRepoSearch").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RepoSearchScreen());
-			});
-			$("#appMenuRepository").attr("href", "#"+RepoSearchScreen.prototype.displayName);
-			$("#appMenuRepository").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RepoSearchScreen());
-			})
-			
-			
-			$("#appMenuRepoCreate").attr("href", "#"+RepoCreateScreen.prototype.displayName);
-			$("#appMenuRepoCreate").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RepoCreateScreen());
-			});
-			
-			$("#appMenuFileManager").attr("href", "#"+FileManagerScreen.prototype.displayName);
-			$("#appMenuFileManager").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new FileManagerScreen());
-			});
-			
-			$("#appMenuFrameworks").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#appMenuFrameworks").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new FrameworkSearchScreen());
-			});
-			
-			$("#appMenuFrameworkSearch").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#appMenuFrameworkSearch").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new FrameworkSearchScreen());
-			});
-			
-			$("#appMenuFrameworkCreate").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
-			$("#appMenuFrameworkCreate").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new FrameworkEditScreen());
-			});
-			
-			$("#appMenuCompetencies").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#appMenuCompetencies").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new CompetencySearchScreen());
-			});
-			
-			$("#appMenuCompetencySearch").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#appMenuCompetencySearch").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new CompetencySearchScreen());
-			});
-			
-			$("#appMenuCompetencyCreate").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
-			$("#appMenuCompetencyCreate").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new CompetencyEditScreen());
-			});
-			
-			$("#appMenuCompetencyImport").click(function(event){
-				event.preventDefault();
-				ModalManager.showModal(new ImportCompetenciesModal());
-			})
-			
-			
-			$("#appMenuRelationshipSearch").attr("href", "#"+RelationshipSearchScreen.prototype.displayName);
-			$("#appMenuRelationshipSearch").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RelationshipSearchScreen());
-			});
-			
-			$("#appMenuRelationshipCreate").attr("href", "#"+RelationshipEditScreen.prototype.displayName);
-			$("#appMenuRelationshipCreate").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new RelationshipEditScreen());
-			});
-			
-			
-			$("#appMenuProfile").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
-			$("#appMenuProfile").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen());
-			});
-			
-			$("#appMenuAssertionSearch").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
-			$("#appMenuAssertionSearch").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen());
-			});
-			
-			$("#appMenuAssertionCreate").attr("href", "#"+AssertionEditScreen.prototype.displayName);
-			$("#appMenuAssertionCreate").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionEditScreen());
-			});
-			
-			if(Foundation.MediaQuery.atLeast("medium"))
+		
+		$(window).on('changed.zf.mediaquery', function(event, name) {
+			if(name == "small")
+			{
+				$("#appMenuMain").addClass("vertical");
+				$("#appMenuPublic").addClass("vertical");
+				$("#appMenuUserInfo").addClass("vertical");
+				$("#appMenuUserInfo").removeClass("align-right");
+				$("#appMenuUserIdentitySubMenu").addClass("hide");
+				
+			}
+			else
 			{
 				$("#appMenuMain").removeClass("vertical");
 				$("#appMenuPublic").removeClass("vertical");
@@ -274,32 +290,8 @@ var AppMenu = (function(AppMenu){
 				$("#appMenuUserIdentitySubMenu").removeClass("hide");
 				buildIdentityList();
 			}
-				
-			
-			$(window).on('changed.zf.mediaquery', function(event, name) {
-				if(name == "small")
-				{
-					$("#appMenuMain").addClass("vertical");
-					$("#appMenuPublic").addClass("vertical");
-					$("#appMenuUserInfo").addClass("vertical");
-					$("#appMenuUserInfo").removeClass("align-right");
-					$("#appMenuUserIdentitySubMenu").addClass("hide");
-					
-				}
-				else
-				{
-					$("#appMenuMain").removeClass("vertical");
-					$("#appMenuPublic").removeClass("vertical");
-					$("#appMenuUserInfo").removeClass("vertical");
-					$("#appMenuUserInfo").addClass("align-right");
-					$("#appMenuUserIdentitySubMenu").removeClass("hide");
-					buildIdentityList();
-				}
-			});
-			
-			if(callback != undefined)
-				callback();
 		});
+			
 	}
 	
 	AppMenu.prototype.rebuildIdentityList = function(){

@@ -7,27 +7,16 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var EcAesParameters = function(iv) {
-    this.iv = forge.util.decode64(iv);
-};
-EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
+var AlgorithmIdentifier = function() {};
+AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.modulusLength = 0;
+    prototype.length = 0;
+    prototype.publicExponent = null;
+    prototype.hash = null;
     prototype.iv = null;
-}, {iv: "forge.payload"}, {});
-/**
- *  AES encryption tasks common across all variants of AES. 
- *  @author fray
- */
-var EcAes = function() {};
-EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
-    /**
-     *  Generates a random Initialization Vector of length @i
-     *  @param i Length of initialization Vector
-     *  @return String representing the new Initialization Vector in Base64 Encoding.
-     */
-    constructor.newIv = function(i) {
-        return forge.util.encode64(forge.random.getBytesSync(i));
-    };
-}, {}, {});
+    prototype.counter = null;
+}, {iv: "ArrayBuffer", counter: "ArrayBuffer"}, {});
 var EcPk = function() {};
 EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     constructor.fromPem = function(pem) {
@@ -52,6 +41,30 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
         return this.pk.verify(bytes, decode64);
     };
 }, {pk: "forge.pk"}, {});
+var jwk = function() {};
+jwk = stjs.extend(jwk, null, [], function(constructor, prototype) {
+    prototype.kty = null;
+    prototype.k = null;
+    prototype.alg = null;
+    prototype.ext = null;
+}, {}, {});
+/**
+ *  AES encryption tasks common across all variants of AES. 
+ *  @author fray
+ */
+var EcAes = function() {};
+EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
+    /**
+     *  Generates a random Initialization Vector of length @i
+     *  @param i Length of initialization Vector
+     *  @return String representing the new Initialization Vector in Base64 Encoding.
+     */
+    constructor.newIv = function(i) {
+        return forge.util.encode64(forge.random.getBytesSync(i));
+    };
+}, {}, {});
+var CryptoKey = function() {};
+CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 var EcRsaOaep = function() {};
 EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
     constructor.encrypt = function(pk, text) {
@@ -80,6 +93,12 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
         }
     };
 }, {}, {});
+var EcAesParameters = function(iv) {
+    this.iv = forge.util.decode64(iv);
+};
+EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
+    prototype.iv = null;
+}, {iv: "forge.payload"}, {});
 var EcRsa = function() {};
 EcRsa = stjs.extend(EcRsa, null, [], function(constructor, prototype) {
     prototype.encrypt = function(pk, text) {};
@@ -87,23 +106,65 @@ EcRsa = stjs.extend(EcRsa, null, [], function(constructor, prototype) {
     prototype.sign = function(ppk, text) {};
     prototype.verify = function(pk, text, signature) {};
 }, {}, {});
-var EcAesCtr = function() {};
-EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
-    constructor.encrypt = function(text, secret, iv) {
-        var c = forge.cipher.createCipher("AES-CTR", forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(text));
-        c.finish();
-        var encrypted = c.output;
-        return forge.util.encode64(encrypted.bytes());
+var SubtleCrypto = function() {};
+SubtleCrypto = stjs.extend(SubtleCrypto, null, [], function(constructor, prototype) {
+    prototype.encrypt = function(algorithm, key, data) {
+        return null;
     };
-    constructor.decrypt = function(text, secret, iv) {
-        var c = forge.cipher.createDecipher("AES-CTR", forge.util.decode64(secret));
-        c.start(new EcAesParameters(iv));
-        c.update(forge.util.createBuffer(forge.util.decode64(text)));
-        c.finish();
-        var decrypted = c.output;
-        return decrypted.data;
+    prototype.decrypt = function(algorithm, key, data) {
+        return null;
+    };
+    prototype.sign = function(algorithm, key, data) {
+        return null;
+    };
+    prototype.verify = function(algorithm, key, signature, data) {
+        return null;
+    };
+    prototype.generateKey = function(algorithm, extractable, keyUsages) {
+        return null;
+    };
+    prototype.deriveBits = function(algorithm, baseKey, length) {
+        return null;
+    };
+    prototype.importKey = function(format, keyData, algorithm, extractable, keyUsages) {
+        return null;
+    };
+}, {}, {});
+var EcAesCtrAsyncNative = function() {};
+EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constructor, prototype) {
+    constructor.encrypt = function(text, secret, iv, success, failure) {
+        var keyUsages = new Array();
+        keyUsages.push("encrypt", "decrypt");
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = "AES-CTR";
+        algorithm.iv = base64.decode(iv);
+        algorithm.counter = new ArrayBuffer(16);
+        algorithm.length = 128;
+        var data;
+        data = str2ab(text);
+        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.encrypt(algorithm, key, data);
+            p.then(function(p1) {
+                success(base64.encode(p1));
+            });
+        });
+    };
+    constructor.decrypt = function(text, secret, iv, success, failure) {
+        var keyUsages = new Array();
+        keyUsages.push("encrypt", "decrypt");
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = "AES-CTR";
+        algorithm.iv = base64.decode(iv);
+        algorithm.counter = new ArrayBuffer(16);
+        algorithm.length = 128;
+        var data;
+        data = base64.decode(text);
+        window.crypto.subtle.importKey("raw", base64.decode(secret), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.decrypt(algorithm, key, data);
+            p.then(function(p1) {
+                success(ab2str(p1));
+            });
+        });
     };
 }, {}, {});
 var EcPpk = function() {};
@@ -259,6 +320,25 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
     };
 }, {w: {name: "Worker", arguments: ["Object"]}, q1: {name: "Array", arguments: ["Callback1"]}, q2: {name: "Array", arguments: ["Callback1"]}}, {});
+var EcAesCtr = function() {};
+EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
+    constructor.encrypt = function(text, secret, iv) {
+        var c = forge.cipher.createCipher("AES-CTR", forge.util.decode64(secret));
+        c.start(new EcAesParameters(iv));
+        c.update(forge.util.createBuffer(text));
+        c.finish();
+        var encrypted = c.output;
+        return forge.util.encode64(encrypted.bytes());
+    };
+    constructor.decrypt = function(text, secret, iv) {
+        var c = forge.cipher.createDecipher("AES-CTR", forge.util.decode64(secret));
+        c.start(new EcAesParameters(iv));
+        c.update(forge.util.createBuffer(forge.util.decode64(text)));
+        c.finish();
+        var decrypted = c.output;
+        return decrypted.data;
+    };
+}, {}, {});
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
     constructor.w = null;

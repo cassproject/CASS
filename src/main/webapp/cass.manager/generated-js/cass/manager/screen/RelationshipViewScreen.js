@@ -5,11 +5,11 @@ var RelationshipViewScreen = function(data) {
 RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "relationView";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RelationshipViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipView.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

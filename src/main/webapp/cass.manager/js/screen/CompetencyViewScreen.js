@@ -185,65 +185,62 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 		ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getLevels");
 	}
 	
-	CompetencyViewScreen.prototype.display = function(containerId, callback)
+	CompetencyViewScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data.id != null)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id});
 		}
 		
-		$(containerId).load("partial/screen/competencyView.html", function(){
 			
-			ViewManager.showView(new MessageContainer("competencyView"), "#competencyViewMessageContainer");
-			
-			$("#competencyViewSearchBtn").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#competencyViewSearchBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new CompetencySearchScreen(data))
-			});
-			
-			$("#competencyViewBtn").attr("href", "#"+CompetencyViewScreen.prototype.displayName);
-			$("#competencyViewBtn").click(function(event){
-				event.preventDefault();
-			});
-			
-			if(AppController.identityController.canEdit(data)){
-				$("#editCompetencyBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new CompetencyEditScreen(data))
-				})
-			}else{
-				$("#editCompetencyBtn").remove();
-			}
-			
-			if(AppController.identityController.owns(data) || AppController.loginController.getAdmin()){
-				$("#competencyViewDeleteBtn").click(function(){
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new CompetencySearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete competenncy";
-							ViewManager.getView("#competencyViewMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this competency?"))
-				})
-			}else{
-				$("#competencyViewDeleteBtn").remove();
-			}
-			
-			
-			EcCompetency.get(data.id, function(result){
-				data = result;
-				displayCompetency(result);
-			}, errorRetrieving);
-			
-			if(callback != undefined)
-				callback();
+		ViewManager.showView(new MessageContainer("competencyView"), "#competencyViewMessageContainer");
+		
+		$("#competencyViewSearchBtn").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#competencyViewSearchBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new CompetencySearchScreen(data))
 		});
+		
+		$("#competencyViewBtn").attr("href", "#"+CompetencyViewScreen.prototype.displayName);
+		$("#competencyViewBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		if(AppController.identityController.canEdit(data)){
+			$("#editCompetencyBtn").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new CompetencyEditScreen(data))
+			})
+		}else{
+			$("#editCompetencyBtn").remove();
+		}
+		
+		if(AppController.identityController.owns(data) || AppController.loginController.getAdmin()){
+			$("#competencyViewDeleteBtn").click(function(){
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new CompetencySearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete competenncy";
+						ViewManager.getView("#competencyViewMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this competency?"))
+			})
+		}else{
+			$("#competencyViewDeleteBtn").remove();
+		}
+		
+		
+		EcCompetency.get(data.id, function(result){
+			data = result;
+			displayCompetency(result);
+		}, errorRetrieving);
+		
+
 	};
 	
 	return CompetencyViewScreen;

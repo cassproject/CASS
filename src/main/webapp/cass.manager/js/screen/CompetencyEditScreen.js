@@ -153,13 +153,13 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	
 	var NEW_COMPETENCY_NAME = "_New Competency";
 	
-	CompetencyEditScreen.prototype.display = function(containerId, callback)
+	CompetencyEditScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data != undefined && data.id != undefined)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id} );
 		}
 		
 		if(data == undefined){
@@ -173,137 +173,133 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 		    }
 		}
 		
-		$(containerId).load("partial/screen/competencyEdit.html", function(){
-			ViewManager.showView(new MessageContainer("competencyEdit"), "#competencyEditMessageContainer", function(){
-				if(data.name == NEW_COMPETENCY_NAME && AppController.identityController.selectedIdentity == undefined)
-				{
-					ViewManager.getView("#competencyEditMessageContainer").displayWarning("You are Creating a Public Competency, this competency can be modified by anyone")
-				}
-			});
-			
-			$("#competencyEditSearchBtn").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
-			$("#competencyEditSearchBtn").click(function(event){
-				event.preventDefault();
-				if(data.name == NEW_COMPETENCY_NAME)
-				{
-					ScreenManager.changeScreen(new CompetencySearchScreen())
-				}
-				else
-				{
-					ScreenManager.changeScreen(new CompetencySearchScreen(data));
-				}
-				
-			});
-			
+		ViewManager.showView(new MessageContainer("competencyEdit"), "#competencyEditMessageContainer", function(){
+			if(data.name == NEW_COMPETENCY_NAME && AppController.identityController.selectedIdentity == undefined)
+			{
+				ViewManager.getView("#competencyEditMessageContainer").displayWarning("You are Creating a Public Competency, this competency can be modified by anyone")
+			}
+		});
+		
+		$("#competencyEditSearchBtn").attr("href", "#"+CompetencySearchScreen.prototype.displayName);
+		$("#competencyEditSearchBtn").click(function(event){
+			event.preventDefault();
 			if(data.name == NEW_COMPETENCY_NAME)
 			{
-				$("#competencyEditViewBtn").hide();
-				
+				ScreenManager.changeScreen(new CompetencySearchScreen())
 			}
 			else
 			{
-				$("#competencyEditViewBtn").attr("href", "#"+CompetencyViewScreen.prototype.displayName);
-				$("#competencyEditViewBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new CompetencyViewScreen(data))
-				});
+				ScreenManager.changeScreen(new CompetencySearchScreen(data));
 			}
 			
+		});
+		
+		if(data.name == NEW_COMPETENCY_NAME)
+		{
+			$("#competencyEditViewBtn").hide();
 			
-			$("#competencyEditBtn").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
-			$("#competencyEditBtn").click(function(event){
-				event.preventDefault();
-			});
-			
-			$("#competencyEditCancelBtn").click(function(event){
+		}
+		else
+		{
+			$("#competencyEditViewBtn").attr("href", "#"+CompetencyViewScreen.prototype.displayName);
+			$("#competencyEditViewBtn").click(function(event){
 				event.preventDefault();
 				ScreenManager.changeScreen(new CompetencyViewScreen(data))
 			});
-			
-			if(data.name == NEW_COMPETENCY_NAME){
-				$("#competencyEditDeleteBtn").remove();	
-			}else{
-				$("#competencyEditDeleteBtn").click(function(event){
-					event.preventDefault();
-					
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new CompetencySearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete framework";
-							ViewManager.getView("#competencyEditMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this competency?"))
-				})
-			}
-			
-			$("#competencyEditSaveBtn").click(function(event){
-				event.preventDefault();
-				 
-				data.name = $("#competencyEditName").val();
-				data.description = $("#competencyEditDescription").val();
-				data.scope = $("#competencyEditScope").val();
-				
-				
-				if(data.name != NEW_COMPETENCY_NAME){
-					ViewManager.getView("#competencyEditMessageContainer").clearAlert("saveFail");
-					ViewManager.getView("#competencyEditMessageContainer").clearAlert("defaultName");
-					data.save(saveSuccess, errorSaving);
-				}else{
-					ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency With Default Name", "defaultName");
-				}
-			})
-			
-			$("#competencyEditSaveBtn").on("mousemove", function(){
-				var url = $("#competencyEditId").val();
-				var split = url.split("\/");
-				if (split[split.length-4] == "data") 
-					split[split.length-1] = new Date().getTime();
-				$("#competencyEditId").val(split.join("/"));
-			});
-			
-			$("#competencyAddLevel").click(function(ev){
-				ev.preventDefault();
-				ModalManager.showModal(new EditLevelModal(data, function(level){
-					addLevel(level);
-				}));
-			});
-			
-			$("#competencyEditOwnerAdvanced").click(function(ev){
-				ev.preventDefault();
-				
-				data.name = $("#competencyEditName").val();
-				data.description = $("#competencyEditDescription").val();
-				data.scope = $("#competencyEditScope").val();
-				
-				ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
-					data.owner = dataAfter.owner;
-					data.privateEncrypted = dataAfter.privateEncrypted;
-					data.reader = dataAfter.reader;
-					
-					displayCompetency(data);
-					
-					ModalManager.hideModal();
-				}))
-			})
-			
-			if(data.name == NEW_COMPETENCY_NAME)
-			{
-				displayCompetency(data);
-			}
-			else
-			{
-				EcCompetency.get(data.id, function(competency){
-					data = competency;
-					displayCompetency(competency)
-				}, errorRetrieving);
-			}
-						
-			if(callback != undefined)
-				callback();
+		}
+		
+		
+		$("#competencyEditBtn").attr("href", "#"+CompetencyEditScreen.prototype.displayName);
+		$("#competencyEditBtn").click(function(event){
+			event.preventDefault();
 		});
+		
+		$("#competencyEditCancelBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new CompetencyViewScreen(data))
+		});
+		
+		if(data.name == NEW_COMPETENCY_NAME){
+			$("#competencyEditDeleteBtn").remove();	
+		}else{
+			$("#competencyEditDeleteBtn").click(function(event){
+				event.preventDefault();
+				
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new CompetencySearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete framework";
+						ViewManager.getView("#competencyEditMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this competency?"))
+			})
+		}
+		
+		$("#competencyEditSaveBtn").click(function(event){
+			event.preventDefault();
+			 
+			data.name = $("#competencyEditName").val();
+			data.description = $("#competencyEditDescription").val();
+			data.scope = $("#competencyEditScope").val();
+			
+			
+			if(data.name != NEW_COMPETENCY_NAME){
+				ViewManager.getView("#competencyEditMessageContainer").clearAlert("saveFail");
+				ViewManager.getView("#competencyEditMessageContainer").clearAlert("defaultName");
+				data.save(saveSuccess, errorSaving);
+			}else{
+				ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency With Default Name", "defaultName");
+			}
+		})
+		
+		$("#competencyEditSaveBtn").on("mousemove", function(){
+			var url = $("#competencyEditId").val();
+			var split = url.split("\/");
+			if (split[split.length-4] == "data") 
+				split[split.length-1] = new Date().getTime();
+			$("#competencyEditId").val(split.join("/"));
+		});
+		
+		$("#competencyAddLevel").click(function(ev){
+			ev.preventDefault();
+			ModalManager.showModal(new EditLevelModal(data, function(level){
+				addLevel(level);
+			}));
+		});
+		
+		$("#competencyEditOwnerAdvanced").click(function(ev){
+			ev.preventDefault();
+			
+			data.name = $("#competencyEditName").val();
+			data.description = $("#competencyEditDescription").val();
+			data.scope = $("#competencyEditScope").val();
+			
+			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
+				data.owner = dataAfter.owner;
+				data.privateEncrypted = dataAfter.privateEncrypted;
+				data.reader = dataAfter.reader;
+				
+				displayCompetency(data);
+				
+				ModalManager.hideModal();
+			}))
+		})
+		
+		if(data.name == NEW_COMPETENCY_NAME)
+		{
+			displayCompetency(data);
+		}
+		else
+		{
+			EcCompetency.get(data.id, function(competency){
+				data = competency;
+				displayCompetency(competency)
+			}, errorRetrieving);
+		}
+						
 	};
 	
 	return CompetencyEditScreen;

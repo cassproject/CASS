@@ -5,11 +5,11 @@ var FrameworkEditScreen = function(data) {
 FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "frameworkEdit";
     prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return FrameworkEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/frameworkEdit.html";
     };
 }, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

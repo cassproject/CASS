@@ -31,7 +31,7 @@ var RepoEdit = (function(RepoEdit){
 
 	    $( "#datum" ).on( "click", ".label:contains('decrypt')",function(){
 	        var field = $(this).parents("[field]").first();
-	        if (field.find("[field='@type']").children("p").text() == EbacEncryptedValue.type)
+	        if (field.find("[field='@type']").children("p").text() == new EcEncryptedValue().type)
 	            decryptField(field);
 	    });
 
@@ -118,7 +118,7 @@ var RepoEdit = (function(RepoEdit){
 	    if(AppController.identityController.selectedIdentity == null)
 	    	return;
 	    
-	    var obj = EcEncryptedValue.encryptValueOld(text, id, fieldx, AppController.identityController.selectedIdentity.ppk.toPk()).atIfy();
+	    var obj = EcEncryptedValue.encryptValueOld(text, id, fieldx, AppController.identityController.selectedIdentity.ppk.toPk());
 	    if (obj != null)
 	    {
 	        if (field.find("[field='@id']").length > 0)
@@ -150,7 +150,7 @@ var RepoEdit = (function(RepoEdit){
 	    return data.verify();
 	}
 	
-	function replaceField(field,obj,parentField)
+	function replaceField(field,data,parentField)
 	{
 		field.children("section").remove();
 	    field.children("p").remove();
@@ -158,11 +158,12 @@ var RepoEdit = (function(RepoEdit){
 	    field.children("ul").remove();
 	    field.children("span").remove();
 	    
+	    var obj;
 	    try{
-	    	obj = JSON.parse(obj.toJson());
+	    	obj = JSON.parse(data.toJson());
 	    }catch(ex){
 	    	try{
-		        obj=JSON.parse(obj);
+		        obj=JSON.parse(data);
 		    }
 		    catch(ex)
 		    {
@@ -194,30 +195,30 @@ var RepoEdit = (function(RepoEdit){
 	            }
 	        );
 	    }
-	    else if (isArray(obj))
+	    else if (isArray(data))
 	    {
 	        field.append("<ul style='margin-left:30px;'></ul>");
-	        for (var index in obj)
+	        for (var index in data)
 	        {
-	            addField(field,parentField,obj[index]);
+	            addField(field,parentField,data[index]);
 	        }
 	    }
 	    else
 	    {
 	        if (field.children("label").text() == "@owner" || field.parent().parent().children("label").text() == "@owner")
 	        {
-	        	var contact = $(createContactSmall(obj));
+	        	var contact = $(createContactSmall(data));
 	            field.append(contact);            
 	            contact.children(".qrcodeCanvas").qrcode({
 	                width:128,
 	                height:128,
-	                text:forge.util.decode64(obj.replaceAll("-----.*-----","").trim())
+	                text:forge.util.decode64(data.replaceAll("-----.*-----","").trim())
 	            });
 	        }
 	        else
-	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+obj+"</p>");
+	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+data+"</p>");
 	    }
-	    decorate(field,field.children("label").text(), obj);
+	    decorate(field,field.children("label").text(), data);
 	    contextualEnable(field,obj);
 	    field.effect("highlight", {}, 1500);
 	}
@@ -247,17 +248,23 @@ var RepoEdit = (function(RepoEdit){
 	    {
 	    	var buttonStr = "<section style='display:block' class='clearfix'>"+decorationButton("X","Deletes this field.");
 	    	
-	    	if(obj != undefined && obj["@signature"] != undefined)
+	    	if(obj != undefined && obj["signature"] != undefined)
 	    	{
 	    		buttonStr += decorationButton("verify","Verifies the object using the @signature to ensure it has not been changed by anyone but the @owner.")
 	    	}
     		
 	    	
-	    	if(obj != undefined && obj["@owner"] == undefined)
+	    	if(obj != undefined && obj["owner"] == undefined)
 	    	{
 	    		buttonStr += decorationButton("+","Add a new field to the object."); 
 	    	}else if(AppController.identityController.owns(obj)){
-	    		buttonStr+=decorationButton("+","Add a new field to the object.")+decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
+	    		buttonStr+=decorationButton("+","Add a new field to the object.");
+	    		if(obj.isAny(new EcEncryptedValue().getTypes())){
+	    			buttonStr+=decorationButton("decrypt","Decrypts the field so that it is no longer private.");
+	    		}else{
+	    			buttonStr+=decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
+	    		}
+	    		
 	    	}
 	    		
 	    	buttonStr += "</section>";
@@ -377,7 +384,7 @@ var RepoEdit = (function(RepoEdit){
 	 * 		for overlays -> overlayContainer
 	 * 		for modals -> modalContainer
 	 */
-	RepoEdit.prototype.display = function(containerId, callback)
+	RepoEdit.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		this.containerId = containerId;
@@ -406,13 +413,7 @@ var RepoEdit = (function(RepoEdit){
 			})
 		});
 		
-		$(containerId).load("partial/other/repoEdit.html", function(){			
-			
-			buildDisplay(data, containerId);
-			
-			if(callback != undefined)
-				callback();
-		});
+		buildDisplay(data, containerId);
 	}
 	
 	RepoEdit.prototype.addField = function(field, f, value){

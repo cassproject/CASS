@@ -39,56 +39,51 @@ var LoginModal = (function(LoginModal){
 		);
 	}
 	
-	LoginModal.prototype.display = function(containerId, callback)
+	LoginModal.prototype.display = function(containerId)
 	{
 		var view = this;
 		
 		var warning = this.warning;
 		
-		$(containerId).load("partial/modal/login.html", function(){
-			ViewManager.showView(new MessageContainer("login"), "#loginMessageContainer", function(){
-				if(warning != undefined)
-					ViewManager.getView("#loginMessageContainer").displayWarning(warning);
-			});
+		ViewManager.showView(new MessageContainer("login"), "#loginMessageContainer", function(){
+			if(warning != undefined)
+				ViewManager.getView("#loginMessageContainer").displayWarning(warning);
+		});
+		
+		if($(AppController.serverController.serverList).size() > 0 ){
+			$("#loginServer").html("");
+		}
+		for(var serverName in AppController.serverController.serverList){
+			var serverUrl = AppController.serverController.serverList[serverName];
 			
-			if($(AppController.serverController.serverList).size() > 0 ){
-				$("#loginServer").html("");
-			}
-			for(var serverName in AppController.serverController.serverList){
-				var serverUrl = AppController.serverController.serverList[serverName];
-				
-				var option = $("<option></option>");
-				option.attr("value", serverUrl);
-				option.text(serverName);
-				
-				if(serverName == AppController.serverController.selectedServerName)
-					option.attr("selected", "selected")
-				
-				$("#loginServer").append(option);
-			}
+			var option = $("<option></option>");
+			option.attr("value", serverUrl);
+			option.text(serverName);
 			
-			$("#loginAddServer").click(function(){
-				ModalManager.showModal(new AddServerModal(function(){
-					ModalManager.showModal(new LoginModal());
-				}));
-			});
+			if(serverName == AppController.serverController.selectedServerName)
+				option.attr("selected", "selected")
 			
-			$("#loginCreateAccount").click(function(){
-				ModalManager.showModal(new CreateUserModal());
-			});
-			
-			$("#loginForm").submit(function(event){
-				event.preventDefault();
-				submitLogin(view);
-			});
-			
-			$("#loginCancel").click(function(event){
-				event.preventDefault();
-				ModalManager.hideModal();
-			});
-			
-			if(callback != undefined)
-				callback();
+			$("#loginServer").append(option);
+		}
+		
+		$("#loginAddServer").click(function(){
+			ModalManager.showModal(new AddServerModal(function(){
+				ModalManager.showModal(new LoginModal());
+			}));
+		});
+		
+		$("#loginCreateAccount").click(function(){
+			ModalManager.showModal(new CreateUserModal());
+		});
+		
+		$("#loginForm").submit(function(event){
+			event.preventDefault();
+			submitLogin(view);
+		});
+		
+		$("#loginCancel").click(function(event){
+			event.preventDefault();
+			ModalManager.hideModal();
 		});
 	}
 	

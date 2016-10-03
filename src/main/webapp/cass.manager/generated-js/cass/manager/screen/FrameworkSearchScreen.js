@@ -9,11 +9,11 @@ FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, []
     prototype.lastViewed = null;
     prototype.query = null;
     prototype.ownership = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return FrameworkSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/frameworkSearch.html";
     };
 }, {lastViewed: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
 (function() {

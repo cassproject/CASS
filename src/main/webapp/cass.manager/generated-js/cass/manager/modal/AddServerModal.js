@@ -5,7 +5,10 @@ var AddServerModal = function(modalClose) {
 AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
     prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addServer.html";
     };
 }, {onClose: "Callback0", onClose: "Callback0"}, {});

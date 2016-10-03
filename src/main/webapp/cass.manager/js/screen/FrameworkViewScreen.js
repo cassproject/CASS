@@ -325,61 +325,53 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err, "getLevel");
     }
 
-    FrameworkViewScreen.prototype.display = function (containerId, callback) {
+    FrameworkViewScreen.prototype.display = function (containerId) {
         var data = this.data;
 
         if (data.id != null) {
-            ScreenManager.replaceHistory(this, containerId, {
-                "id": data.shortId()
-            })
+            ScreenManager.setScreenParameters({"id": data.shortId()})
         }
 
-        $(containerId).load("partial/screen/frameworkView.html", function () {
+        ViewManager.showView(new MessageContainer("frameworkView"), "#frameworkViewMessageContainer");
 
-            ViewManager.showView(new MessageContainer("frameworkView"), "#frameworkViewMessageContainer");
-
-            $("#frameworkViewSearchBtn").attr("href", "#" + FrameworkSearchScreen.prototype.displayName);
-            $("#frameworkViewSearchBtn").click(function (event) {
-                event.preventDefault();
-                ScreenManager.changeScreen(new FrameworkSearchScreen(data))
-            });
-
-            $("#frameworkViewBtn").attr("href", "#" + FrameworkViewScreen.prototype.displayName);
-            $("#frameworkViewBtn").click(function (event) {
-                event.preventDefault();
-            });
-
-            if (AppController.identityController.canEdit(data)) {
-                $("#editFrameworkBtn").click(function (event) {
-                    event.preventDefault();
-                    ScreenManager.changeScreen(new FrameworkEditScreen(data))
-                })
-            } else {
-                $("#editFrameworkBtn").remove();
-            }
-
-            if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
-				$("#frameworkViewDeleteBtn").remove();
-			}else{
-				$("#frameworkViewDeleteBtn").click(function(){
-					ModalManager.showModal(new ConfirmModal(function(){
-						data._delete(function(){
-							ScreenManager.changeScreen(new FrameworkSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete framework";
-							ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this framework?"))
-				})
-			}
-            
-            EcFramework.get(data.shortId(), displayFramework, errorRetrieving);
-
-            if (callback != undefined)
-                callback();
+        $("#frameworkViewSearchBtn").attr("href", "#" + FrameworkSearchScreen.prototype.displayName);
+        $("#frameworkViewSearchBtn").click(function (event) {
+            event.preventDefault();
+            ScreenManager.changeScreen(new FrameworkSearchScreen(data))
         });
+
+        $("#frameworkViewBtn").attr("href", "#" + FrameworkViewScreen.prototype.displayName);
+        $("#frameworkViewBtn").click(function (event) {
+            event.preventDefault();
+        });
+
+        if (AppController.identityController.canEdit(data)) {
+            $("#editFrameworkBtn").click(function (event) {
+                event.preventDefault();
+                ScreenManager.changeScreen(new FrameworkEditScreen(data))
+            })
+        } else {
+            $("#editFrameworkBtn").remove();
+        }
+
+        if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+			$("#frameworkViewDeleteBtn").remove();
+		}else{
+			$("#frameworkViewDeleteBtn").click(function(){
+				ModalManager.showModal(new ConfirmModal(function(){
+					data._delete(function(){
+						ScreenManager.changeScreen(new FrameworkSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete framework";
+						ViewManager.getView("#frameworkViewMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this framework?"))
+			})
+		}
+        
+        EcFramework.get(data.shortId(), displayFramework, errorRetrieving);
     };
 
     return FrameworkViewScreen;

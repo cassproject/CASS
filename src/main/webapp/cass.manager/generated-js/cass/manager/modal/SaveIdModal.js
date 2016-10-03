@@ -5,7 +5,10 @@ var SaveIdModal = function(msg) {
 SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "tiny";
     prototype.msg = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/saveId.html";
     };
 }, {onClose: "Callback0"}, {});
