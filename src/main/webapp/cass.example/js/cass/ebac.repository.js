@@ -24,6 +24,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     constructor.toEncryptedValue = function(d, hideType) {
+        if (d.privateEncrypted != null) 
+            delete (d)["privateEncrypted"];
         d.updateTimestamp();
         var v = new EcEncryptedValue();
         if (!hideType) 
@@ -405,6 +407,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.selectedServer = null;
     constructor.caching = false;
     constructor.cache = new Object();
+    constructor.fetching = new Object();
     prototype.precache = function(urls) {
         var cacheUrls = new Array();
         for (var i = 0; i < urls.length; i++) {
@@ -447,13 +450,27 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.get = function(url, success, failure) {
         if (EcRepository.caching) 
             if ((EcRepository.cache)[url] != null) {
+                setTimeout(function() {
+                    success((EcRepository.cache)[url]);
+                }, 0);
+                return;
+            }
+        if ((EcRepository.fetching)[url] > new Date().getMilliseconds() - 1000) {
+            setTimeout(function() {
+                EcRepository.get(url, success, failure);
+            }, 100);
+            return;
+        }
+        (EcRepository.fetching)[url] = new Date().getMilliseconds();
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
+            if ((EcRepository.cache)[url] != null) {
                 success((EcRepository.cache)[url]);
                 return;
             }
-        var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
             fd.append("signatureSheet", p1);
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
+                delete (EcRepository.fetching)[url];
                 var d = new EcRemoteLinkedData("", "");
                 d.copyFrom(p1);
                 if (d.getFullType() == null) {
@@ -466,6 +483,29 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 success(d);
             }, failure);
         });
+    };
+    constructor.getBlocking = function(url) {
+        if (EcRepository.caching) 
+            if ((EcRepository.cache)[url] != null) {
+                return (EcRepository.cache)[url];
+            }
+        var fd = new FormData();
+        var p1 = EcIdentityManager.signatureSheet(60000, url);
+        fd.append("signatureSheet", p1);
+        EcRemote.async = false;
+        EcRemote.postExpectingObject(url, null, fd, function(p1) {
+            var d = new EcRemoteLinkedData("", "");
+            d.copyFrom(p1);
+            if (d.getFullType() == null) {
+                return;
+            }
+            (EcRepository.cache)[url] = d;
+        }, null);
+        EcRemote.async = true;
+        var result = (EcRepository.cache)[url];
+        if (!EcRepository.caching) 
+            (EcRepository.cache)[url] = null;
+        return result;
     };
     /**
      *  Search a repository for JSON-LD compatible data.
@@ -653,7 +693,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         return s;
     };
     constructor.save = function(data, success, failure) {
-        console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
         if (data.invalid()) {
             var msg = "Cannot save data. It is missing a vital component.";
             if (failure != null) 
@@ -666,6 +705,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcRepository._save(encrypted, success, failure);
         } else {
+            if (data.privateEncrypted != null) 
+                delete (data)["privateEncrypted"];
             EcRepository._save(data, success, failure);
         }
     };
@@ -721,7 +762,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param failure
      */
     constructor._delete = function(data, success, failure) {
-        console.warn("Watch out! " + data.id + " is being deleted with the repository delete function, no clean up delete operations will occur");
         EcRepository.DELETE(data, success, failure);
     };
     constructor.DELETE = function(data, success, failure) {
@@ -733,7 +773,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcRemote._delete(data.shortId(), signatureSheet, success, failure);
         });
     };
-}, {cache: "Object"}, {});
+}, {cache: "Object", fetching: "Object"}, {});
 var EcFile = function() {
     GeneralFile.call(this);
 };

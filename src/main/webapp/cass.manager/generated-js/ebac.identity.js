@@ -590,10 +590,14 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
                 return;
             }
             me.configured = true;
-            success(p1);
+            if (success != null) 
+                success(p1);
         }, function(p1) {
             me.configured = false;
-            failure(p1);
+            if (failure != null) 
+                failure(p1);
+             else 
+                console.error(p1);
         });
     };
     /**

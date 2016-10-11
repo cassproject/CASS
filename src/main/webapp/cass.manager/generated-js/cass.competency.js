@@ -848,6 +848,24 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        var competency = new EcCompetency();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            p1.privateEncrypted = true;
+        }
+        if (p1.isAny(competency.getTypes())) {
+            competency.copyFrom(p1);
+            return competency;
+        } else {
+            var msg = "Retrieved object was not a competency";
+            console.error(msg);
+            return null;
+        }
+    };
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
         queryAdd = new EcCompetency().getSearchStringByType();

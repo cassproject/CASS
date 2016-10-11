@@ -7,6 +7,11 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
+var PapaParseParams = function() {};
+PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
+    prototype.complete = null;
+    prototype.error = null;
+}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 var Importer = function() {};
 Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     constructor.isObject = function(obj) {
@@ -16,62 +21,6 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
         return toString.call(obj) == "[object Array]";
     };
 }, {}, {});
-var PapaParseParams = function() {};
-PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
-    prototype.complete = null;
-    prototype.error = null;
-}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
-var CSVImport = function() {};
-CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
-    constructor.analyzeFile = function(file, success, failure) {
-        Papa.parse(file, {complete: function(results) {
-            var tabularData = (results)["data"];
-            success(tabularData);
-        }, error: failure});
-    };
-    constructor.competencies = null;
-    constructor.saved = 0;
-    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, success, failure) {
-        if (nameIndex < 0) {
-            failure("Name Index not Set");
-            return;
-        }
-        Papa.parse(file, {complete: function(results) {
-            var tabularData = (results)["data"];
-            CSVImport.competencies = [];
-            for (var i = 1; i < tabularData.length; i++) {
-                var competency = new EcCompetency();
-                if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == "") {
-                    failure("Name column contained blank value or could not be found in the CSV");
-                    return;
-                }
-                competency.name = tabularData[i][nameIndex];
-                if (descriptionIndex >= 0) 
-                    competency.description = tabularData[i][descriptionIndex];
-                if (scopeIndex >= 0) 
-                    competency.scope = tabularData[i][scopeIndex];
-                competency.generateId(serverUrl);
-                if (owner != null) 
-                    competency.addOwner(owner.ppk.toPk());
-                CSVImport.competencies.push(competency);
-            }
-            CSVImport.saved = 0;
-            for (var i = 0; i < CSVImport.competencies.length; i++) {
-                var comp = CSVImport.competencies[i];
-                comp.save(function(results) {
-                    CSVImport.saved++;
-                    if (CSVImport.saved == CSVImport.competencies.length) 
-                        success(CSVImport.competencies);
-                }, function(results) {
-                    failure("Failed to save competency");
-                    for (var j = 0; j < CSVImport.competencies.length; j++) {
-                        CSVImport.competencies[j]._delete(null, null, null);
-                    }
-                });
-            }
-        }, error: failure});
-    };
-}, {competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
 var MedbiqImport = function() {
     Importer.call(this);
 };
@@ -140,77 +89,146 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         }
     };
 }, {medbiqXmlCompetencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
-var FrameworkImport = function() {};
-FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
+var CSVImport = function() {};
+CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
+    constructor.analyzeFile = function(file, success, failure) {
+        Papa.parse(file, {complete: function(results) {
+            var tabularData = (results)["data"];
+            success(tabularData);
+        }, error: failure});
+    };
+    constructor.importCsvLookup = null;
     constructor.saved = 0;
-    constructor.targetUsable = null;
-    constructor.competencies = null;
-    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
-        if (source == null) {
-            failure("Source Framework not set");
+    constructor.transformId = function(oldId, newObject, selectedServer) {
+        if (oldId.indexOf("http") != -1) {
+            var parts = (oldId).split("/");
+            var guid = null;
+            var timestamp = null;
+            var pattern = new RegExp("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", "i");
+            for (var i = 0; i < parts.length; i++) {
+                if (!isNaN(parseInt(parts[i]))) 
+                    timestamp = parts[i];
+                 else if (pattern.test(parts[i])) 
+                    guid = parts[i];
+            }
+            if (guid == null) 
+                newObject.assignId(selectedServer, parts[parts.length - 2]);
+             else 
+                newObject.assignId(selectedServer, guid);
+        } else 
+            newObject.assignId(selectedServer, oldId);
+    };
+    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure) {
+        CSVImport.importCsvLookup = new Object();
+        if (nameIndex < 0) {
+            failure("Name Index not Set");
             return;
         }
-        if (target == null) {
-            failure("Target Framework not Set");
-            return;
-        }
-        FrameworkImport.targetUsable = target;
-        if (source.competency == null || source.competency.length == 0) {
-            failure("Source Has No Competencies");
-            return;
-        }
-        FrameworkImport.competencies = [];
-        if (copy) {
-            FrameworkImport.saved = 0;
-            for (var i = 0; i < source.competency.length; i++) {
-                var id = source.competency[i];
-                EcCompetency.get(id, function(comp) {
-                    var competency = new EcCompetency();
-                    competency.copyFrom(comp);
+        var competencies = [];
+        Papa.parse(file, {complete: function(results) {
+            var tabularData = (results)["data"];
+            for (var i = 1; i < tabularData.length; i++) {
+                var competency = new EcCompetency();
+                if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == "") {
+                    failure("One or more names is blank or could not be found in the CSV.");
+                    return;
+                }
+                competency.name = tabularData[i][nameIndex];
+                if (descriptionIndex >= 0) 
+                    competency.description = tabularData[i][descriptionIndex];
+                if (scopeIndex >= 0) 
+                    competency.scope = tabularData[i][scopeIndex];
+                var shortId = null;
+                if (idIndex != null) {
+                    competency.id = tabularData[i][idIndex];
+                    shortId = competency.shortId();
+                }
+                if (idIndex != null) 
+                    CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
+                 else 
                     competency.generateId(serverUrl);
-                    if (owner != null) 
-                        competency.addOwner(owner.ppk.toPk());
-                    var id = competency.id;
-                    competency.save(function(str) {
-                        FrameworkImport.saved++;
-                        FrameworkImport.targetUsable.addCompetency(id);
-                        if (FrameworkImport.saved == FrameworkImport.competencies.length) {
-                            FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
-                            }, function(p1) {
-                                failure(p1);
-                            });
-                        }
-                    }, function(str) {
-                        failure("Trouble Saving Copied Competency");
-                    });
-                    FrameworkImport.competencies.push(competency);
-                }, function(str) {
-                    failure(str);
+                if (idIndex != null) 
+                    (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
+                (CSVImport.importCsvLookup)[competency.name] = competency.shortId();
+                if (shortId != null) 
+                    (CSVImport.importCsvLookup)[shortId] = competency.shortId();
+                if (owner != null) 
+                    competency.addOwner(owner.ppk.toPk());
+                competencies.push(competency);
+            }
+            CSVImport.saved = 0;
+            for (var i = 0; i < competencies.length; i++) {
+                var comp = competencies[i];
+                comp.save(function(results) {
+                    CSVImport.saved++;
+                    if (CSVImport.saved == competencies.length) {
+                        if (relations == null) 
+                            success(competencies, new Array());
+                         else 
+                            CSVImport.importRelations(serverUrl, owner, relations, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure);
+                    }
+                }, function(results) {
+                    failure("Failed to save competency");
+                    for (var j = 0; j < competencies.length; j++) {
+                        competencies[j]._delete(null, null, null);
+                    }
                 });
             }
-        } else {
-            for (var i = 0; i < source.competency.length; i++) {
-                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 && target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
-                    EcCompetency.get(source.competency[i], function(comp) {
-                        FrameworkImport.competencies.push(comp);
-                        FrameworkImport.targetUsable.addCompetency(comp.id);
-                        if (FrameworkImport.competencies.length == source.competency.length) {
-                            delete (FrameworkImport.targetUsable)["competencyObjects"];
-                            FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
-                            }, function(p1) {
-                                failure(p1);
-                            });
-                        }
-                    }, function(p1) {
-                        failure(p1);
-                    });
-                }
-            }
-        }
+        }, error: failure});
     };
-}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
+    constructor.importRelations = function(serverUrl, owner, file, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure) {
+        var relations = new Array();
+        if (sourceIndex == null || sourceIndex < 0) {
+            failure("Source Index not Set");
+            return;
+        }
+        if (relationTypeIndex == null || relationTypeIndex < 0) {
+            failure("Relation Type Index not Set");
+            return;
+        }
+        if (destIndex == null || destIndex < 0) {
+            failure("Destination Index not Set");
+            return;
+        }
+        Papa.parse(file, {complete: function(results) {
+            var tabularData = (results)["data"];
+            for (var i = 1; i < tabularData.length; i++) {
+                var alignment = new EcAlignment();
+                var sourceKey = tabularData[i][sourceIndex];
+                var relationTypeKey = tabularData[i][relationTypeIndex];
+                var destKey = tabularData[i][destIndex];
+                if ((CSVImport.importCsvLookup)[sourceKey] == null) 
+                    return;
+                if ((CSVImport.importCsvLookup)[destKey] == null) 
+                    return;
+                alignment.source = (CSVImport.importCsvLookup)[sourceKey];
+                alignment.relationType = relationTypeKey;
+                alignment.target = (CSVImport.importCsvLookup)[destKey];
+                alignment.addOwner(owner.ppk.toPk());
+                alignment.generateId(serverUrl);
+                relations.push(alignment);
+            }
+            CSVImport.saved = 0;
+            for (var i = 0; i < relations.length; i++) {
+                var comp = relations[i];
+                comp.save(function(results) {
+                    CSVImport.saved++;
+                    if (CSVImport.saved == relations.length) {
+                        success(competencies, relations);
+                    }
+                }, function(results) {
+                    failure("Failed to save competency or relation");
+                    for (var j = 0; j < competencies.length; j++) {
+                        competencies[j]._delete(null, null, null);
+                    }
+                    for (var j = 0; j < relations.length; j++) {
+                        relations[j]._delete(null, null);
+                    }
+                });
+            }
+        }, error: failure});
+    };
+}, {importCsvLookup: "Object"}, {});
 var ASNImport = function() {
     Importer.call(this);
 };
@@ -362,3 +380,74 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         });
     };
 }, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}}, {});
+var FrameworkImport = function() {};
+FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
+    constructor.saved = 0;
+    constructor.targetUsable = null;
+    constructor.competencies = null;
+    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
+        if (source == null) {
+            failure("Source Framework not set");
+            return;
+        }
+        if (target == null) {
+            failure("Target Framework not Set");
+            return;
+        }
+        FrameworkImport.targetUsable = target;
+        if (source.competency == null || source.competency.length == 0) {
+            failure("Source Has No Competencies");
+            return;
+        }
+        FrameworkImport.competencies = [];
+        if (copy) {
+            FrameworkImport.saved = 0;
+            for (var i = 0; i < source.competency.length; i++) {
+                var id = source.competency[i];
+                EcCompetency.get(id, function(comp) {
+                    var competency = new EcCompetency();
+                    competency.copyFrom(comp);
+                    competency.generateId(serverUrl);
+                    if (owner != null) 
+                        competency.addOwner(owner.ppk.toPk());
+                    var id = competency.id;
+                    competency.save(function(str) {
+                        FrameworkImport.saved++;
+                        FrameworkImport.targetUsable.addCompetency(id);
+                        if (FrameworkImport.saved == FrameworkImport.competencies.length) {
+                            FrameworkImport.targetUsable.save(function(p1) {
+                                success(FrameworkImport.competencies);
+                            }, function(p1) {
+                                failure(p1);
+                            });
+                        }
+                    }, function(str) {
+                        failure("Trouble Saving Copied Competency");
+                    });
+                    FrameworkImport.competencies.push(competency);
+                }, function(str) {
+                    failure(str);
+                });
+            }
+        } else {
+            for (var i = 0; i < source.competency.length; i++) {
+                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 && target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
+                    EcCompetency.get(source.competency[i], function(comp) {
+                        FrameworkImport.competencies.push(comp);
+                        FrameworkImport.targetUsable.addCompetency(comp.id);
+                        if (FrameworkImport.competencies.length == source.competency.length) {
+                            delete (FrameworkImport.targetUsable)["competencyObjects"];
+                            FrameworkImport.targetUsable.save(function(p1) {
+                                success(FrameworkImport.competencies);
+                            }, function(p1) {
+                                failure(p1);
+                            });
+                        }
+                    }, function(p1) {
+                        failure(p1);
+                    });
+                }
+            }
+        }
+    };
+}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});

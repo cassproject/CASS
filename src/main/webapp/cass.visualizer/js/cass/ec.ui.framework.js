@@ -85,6 +85,22 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
             }
         return null;
     };
+    prototype.getUrlParameters = function() {
+        return EcView.urlParameters();
+    };
+    constructor.urlParameters = function() {
+        var hashSplit = (window.document.location.hash.split("?"));
+        if (hashSplit.length > 1) {
+            var o = null;
+            var params = (o = new Object());
+            var paramString = hashSplit[1];
+            var parts = (paramString).split("&");
+            for (var i = 0; i < parts.length; i++) 
+                params[parts[i].split("=")[0]] = parts[i].replace(parts[i].split("=")[0] + "=", "");
+            return o;
+        }
+        return new Object();
+    };
 }, {}, {});
 /**
  *  Parent class of all view manager classes, stores a cache of the views and their corresponding DOM selectors
@@ -187,8 +203,9 @@ EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
     prototype.getModalSize = function() {};
 }, {onClose: "Callback0"}, {});
 /**
- *  Subclass of view that is specific for a screen, providing a display name that will be shown in the URL bar and that
- *  can be used on startup to check if the URL is asking for a certain page on startup.
+ *  Subclass of view that is specific for a screen, providing a display name that
+ *  will be shown in the URL bar and that can be used on startup to check if the
+ *  URL is asking for a certain page on startup.
  *  
  *  @author devlin.junker@eduworks.com
  */
@@ -197,19 +214,20 @@ var EcScreen = function() {
 };
 EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
     /**
-     *  Name that identifies a certain type of screen, shown in the URL bar to help the user understand the page that they
-     *  are on and used during startup to decide whether or not to load a specifici page on startup.
+     *  Name that identifies a certain type of screen, shown in the URL bar to
+     *  help the user understand the page that they are on and used during
+     *  startup to decide whether or not to load a specifici page on startup.
      */
     prototype.displayName = "";
     /**
      *  Getter for the display name
      *  
-     *  @return
-     *  			The display name for the screen
+     *  @return The display name for the screen
      */
     prototype.getDisplayName = function() {
         return this.displayName;
     };
+    prototype.setData = function(data) {};
 }, {}, {});
 /**
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that 
