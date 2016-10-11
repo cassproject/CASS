@@ -194,11 +194,12 @@ checkMoodleRelations=checkMoodleRelations.call(
 	relationsByGuid=#toObject(obj="@framework").get(relation="").forEach(
 		paramName="relation",
 		array="true",
+		threaded="false",
 		op=#if(
 			operator=#toObject(obj="@relation").get(relationType=""),
 			operand="narrows",
 			eq=#toObject(obj="@relation").put(
-				competencySourceGuid=#toArray(obj="@competencySource").getIndex(index=#toArray(obj="@competencyId").count().add(z="-2"))
+				competencySourceGuid=#toArray(obj="@competencySource").getIndex(index=#toArray(obj="@competencySource").count().add(z="-1"))
 			).call(
 				competencySource=#toObject(obj="@relation").get(source="").split(split="/"),
 				competencyTarget=#toObject(obj="@relation").get(target="").split(split="/")
@@ -206,7 +207,7 @@ checkMoodleRelations=checkMoodleRelations.call(
 		).call(
 			relation=#getRelationById(id="@relation")
 		)
-	).collapse(keyKey="competencySourceGuid",accumulate="false").debug(prefix="relationsByGuid:")
+	).collapse(keyKey="competencySourceGuid",accumulate="false")
 ).call(
 	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
 );
@@ -228,9 +229,14 @@ moodleToCass=#object(
 	b=moodleToCassCompetencies,
 	c=moodleToCassRelations
 );
-	//b=moodleToCassCompetencies,
-	//c=moodleToCassRelations
-
 moodleToCassDebug=moodleToCass.displayJson(_collapse="true");
+
+moodleToCassIf=#if(
+	operator=#moodleAdapterEnabled(),
+	operand="true",
+	eq=moodleToCass
+);
+
+#moodleToCass=moodleToCassIf;
 
 /moodle/moodleToCass=moodleToCassDebug;

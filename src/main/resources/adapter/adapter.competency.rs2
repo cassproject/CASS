@@ -1,4 +1,4 @@
-getCompetencyById=#httpGet(obj="@id").toObject();
+getCompetencyById=#httpGet(obj=#add(a="@id",b="?noExternal=true")).toObject();
 
 #getCompetencyById=getCompetencyById;
 

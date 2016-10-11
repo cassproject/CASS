@@ -153,4 +153,12 @@ cassToMoodle=#object(
 
 cassToMoodleDebug=cassToMoodle.displayJson(_collapse="true");
 
+cassToMoodleIf=#if(
+	operator=#moodleAdapterEnabled(),
+	operand="true",
+	eq=cassToMoodle
+);
+
+#cassToMoodle=cassToMoodleIf;
+
 /moodle/cassToMoodle=cassToMoodleDebug;
