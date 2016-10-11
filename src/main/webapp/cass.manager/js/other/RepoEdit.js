@@ -133,11 +133,16 @@ var RepoEdit = (function(RepoEdit){
 	    var fld = field.attr("field");
 	    
 	    var e = new EcEncryptedValue();
-		e.copyFrom(JSGlobal.JSON.parse(serializeField(field)));
+		e.copyFrom(JSON.parse(serializeField(field)));
 	    
-	    var result = e.decryptIntoString();
+	    var result = e.decryptIntoObject();
 	    if (result != null)
 	        replaceField(field,result);
+	    else
+	    	result = e.decryptIntoString();
+	    
+	    if(result != null)
+	    	replaceField(field, result);
 	}
 
 	function verifyField(field)
@@ -225,19 +230,29 @@ var RepoEdit = (function(RepoEdit){
 
 	function addField(field,f,value)
 	{
-	    if (field.children("div").length > 0)
-	    {
-	        field.children("div").append('<div field="'+f+'"></div>');
-	        field.children("div").children("[field='"+f+"']").append('<label>'+f+'</label>');
-	        replaceField(field.children("div").children("[field='"+f+"']"),value, f);
-	    }
-	    else if (field.children("ul").length > 0)
-	    {
-	    	var idx = field.children("ul").children("li").length;
-	        field.children("ul").append('<li field="'+f+'['+idx+']"></li>');
-	        //field.children("ul").children("li").last().append('<label>'+(field.children("ul").children("li").length-1)+'</label>');
-	        replaceField(field.children("ul").children("li").last(),value,f);
-	    }
+		if(f === "privateEncrypted"){
+			field.children("div").append('<div field="'+f+'"></div>');
+			field.children("div").children("[field='"+f+"']").append("<label class='prefix'>Encrypt on Save</label>");
+			field.children("div").children("[field='"+f+"']").append("<span id='privateEncryptedSwitchContainer'/>")
+			
+			ViewManager.showView(new Switch(function(ev){
+				alert("test");
+			}, value), "#privateEncryptedSwitchContainer");
+		}else{
+			if (field.children("div").length > 0)
+		    {
+		        field.children("div").append('<div field="'+f+'"></div>');
+		        field.children("div").children("[field='"+f+"']").append('<label>'+f+'</label>');
+		        replaceField(field.children("div").children("[field='"+f+"']"),value, f);
+		    }
+		    else if (field.children("ul").length > 0)
+		    {
+		    	var idx = field.children("ul").children("li").length;
+		        field.children("ul").append('<li field="'+f+'['+idx+']"></li>');
+		        //field.children("ul").children("li").last().append('<label>'+(field.children("ul").children("li").length-1)+'</label>');
+		        replaceField(field.children("ul").children("li").last(),value,f);
+		    }	
+		}
 	}
 
 	function decorate(field,f,obj)
@@ -335,6 +350,8 @@ var RepoEdit = (function(RepoEdit){
 	
 	function serializeField(field,child)
 	{
+		if(field.children("span").length == 1)
+			return field.find("input[type='checkbox']").prop("checked");
 	    if (field.children("p").length == 1)
 	        return field.children("p").text();
 	    else if (field.children("span.contactKey").length == 1)

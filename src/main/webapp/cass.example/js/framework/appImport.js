@@ -134,10 +134,10 @@ function importCsv() {
                             else
                                 f.generateId(repo.selectedServer);
                             if (idIndex !== undefined)
-                                importCsvLookup[data[i][idIndex]] = f.id;
-                            importCsvLookup[f.name] = f.id;
+                                importCsvLookup[data[i][idIndex]] = f.shortId();
+                            importCsvLookup[f.name] = f.shortId();
                             if (shortId != null)
-                                importCsvLookup[shortId] = f.id;
+                                importCsvLookup[shortId] = f.shortId();
                             if (identity != null)
                                 f.addOwner(identity.ppk.toPk());
                             framework.competency.push(f.shortId());

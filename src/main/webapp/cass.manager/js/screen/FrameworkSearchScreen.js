@@ -155,9 +155,9 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 				
 				el.find(".ownershipDisplay").each(function(i, element){
 					$(element).children(".qrcodeCanvas").qrcode({
-		                width:128,
-		                height:128,
-		                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
+		                width:256,
+		                height:256,
+		                text:forge.util.decode64($(element).find(".contactText").attr("title"))
 		            });  
 				})
 				

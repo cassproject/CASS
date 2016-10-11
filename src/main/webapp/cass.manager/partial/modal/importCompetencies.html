@@ -46,7 +46,30 @@
 		<em>Step 6: Select the Competency Scope Column (if exists)</em>
 		<select id="importCsvColumnScope"></select>
 		
-		<em>Step 7: Verify Ownership</em>
+		<em>Step 7: Select the Competency Id column (if exists)</em>
+		<select id="importCsvColumnId"></select>
+		
+		<em>Step 8: Select a Relation CSV File on your computer (if exists)</em>
+		<input type="file" id="importCsvRelation"/>
+	</div>
+</div>
+
+<div class="row hide sourceRow" id="csvRelationRow">
+	<div class="small-12 columns">
+		<em>Step 9: Select the Relation Source Column</em>
+		<select id="importCsvColumnSource"></select>
+		
+		<em>Step 10: Select the Relation Type Column</em>
+		<select id="importCsvColumnRelationType"></select>
+		
+		<em>Step 11: Select the Relation Target Column</em>
+		<select id="importCsvColumnTarget"></select>		
+	</div>
+</div>
+		
+<div class="row hide sourceRow" id="csvActionRow">
+	<div class="small-12 columns">
+		<em>Step 8: Verify Ownership</em>
 		<div class="importCompetenciesOwner">Public</div>
 		
 		<button class="button float-right" disabled='disabled' id="submitImportCsv"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from CSV</span></button>

@@ -103,7 +103,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "findCompetencies");
 	}
-	
+
 	function analyzeCsv(framework) {
 	    var file = $("#importCsvFile")[0].files[0];
 	    
@@ -120,16 +120,43 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
             $("#importCsvColumnName").html("<option index='-1'>N/A</option>");
             $("#importCsvColumnDescription").html("<option index='-1'>N/A</option>");
             $("#importCsvColumnScope").html("<option index='-1'>N/A</option>");
+            $("#importCsvColumnId").html("<option index='-1'>N/A</option>");
             for (var i = 0; i < data[0].length; i++) {
                 $("#importCsvColumnName").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnDescription").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnScope").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnId").append("<option/>").children().last().text(data[0][i]).attr("index", i);
             }
             
             $("#submitImportCsv").on("click", function(ev){
 				ev.preventDefault();
 				importCsv(framework);
 			})
+	    }, errorParsing)
+	}
+
+	function analyzeRelationCsv(framework) {
+	    var file = $("#importCsvRelation")[0].files[0];
+	    
+	    CSVImport.analyzeFile(file, function(data){
+	    	if (data.length === undefined || data.length == 0) {
+            	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert("CSV could not be parsed", "parseCSV");
+            	$("#submitImportCsv").attr("disabled", "disabled")
+            	$("#submitImportCsv").off("click");
+                return;
+            }
+            $("#submitImportCsv").removeAttr("disabled");
+            ViewManager.getView("#importCompetenciesMessageContainer").clearAlert("parseCSV");
+            
+            $("#importCsvColumnSource").html("<option index='-1'>N/A</option>");
+            $("#importCsvColumnRelationType").html("<option index='-1'>N/A</option>");
+            $("#importCsvColumnTarget").html("<option index='-1'>N/A</option>");
+            for (var i = 0; i < data[0].length; i++) {
+                $("#importCsvColumnSource").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnRelationType").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+                $("#importCsvColumnTarget").append("<option/>").children().last().text(data[0][i]).attr("index", i);
+            }
+            
 	    }, errorParsing)
 	}
 	
@@ -139,12 +166,17 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			editingFramework = false;
 			framework = cached_frameworks[$("#importLocationSelect").val()]
 		}
-		
+
 	    var file = $("#importCsvFile")[0].files[0];
+	    var relation = $("#importCsvRelation")[0].files[0];
 	    
 	    var nameIndex = parseInt($("#importCsvColumnName option:selected").attr("index"));
         var descriptionIndex = parseInt($("#importCsvColumnDescription option:selected").attr("index"));
         var scopeIndex = parseInt($("#importCsvColumnScope option:selected").attr("index"));
+        var idIndex = parseInt($("#importCsvColumnId option:selected").attr("index"));
+        var sourceIndex = parseInt($("#importCsvColumnSource option:selected").attr("index"));
+        var relationTypeIndex = parseInt($("#importCsvColumnRelationType option:selected").attr("index"));
+        var targetIndex = parseInt($("#importCsvColumnTarget option:selected").attr("index"));
         
         if(nameIndex == -1 ){
         	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert("Must select a column that contains competency names", "selectName");
@@ -161,14 +193,30 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
         ViewManager.getView("#importCompetenciesMessageContainer").clearAlert("selectName");
 	    
         CSVImport.importCompetencies(file, AppController.serverController.selectedServerUrl, AppController.identityController.selectedIdentity,
-        		nameIndex, descriptionIndex, scopeIndex, function(savedCompetencies){
+        		nameIndex, descriptionIndex, scopeIndex, idIndex,relation,sourceIndex,relationTypeIndex,targetIndex,function(savedCompetencies,savedRelations){
         	var query = "";
             for(var i = 0; i < savedCompetencies.length; i++)
             {
-            	var comp = savedCompetencies[i]
+            	var comp = savedCompetencies[i];
             	
             	if(framework != undefined){
             		framework.addCompetency(comp.id)
+            	}else{
+            		var id = comp.shortId().split("/");
+            		id = id[id.length - 1];
+            		
+            		if(i > 0)
+            			query += " OR ";
+            		query += id;
+            	}
+            }
+
+            for(var i = 0; i < savedRelations.length; i++)
+            {
+            	var comp = savedRelations[i];
+            	
+            	if(framework != undefined){
+            		framework.addRelation(comp.id)
             	}else{
             		var id = comp.shortId().split("/");
             		id = id[id.length - 1];
@@ -188,6 +236,9 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
     			}else{
     				for(var i = 0; i < savedCompetencies.length; i++){
     					ScreenManager.getCurrentScreen().addCompetency(savedCompetencies[i]);
+    				}
+    				for(var i = 0; i < savedRelations.length; i++){
+    					ScreenManager.getCurrentScreen().addRelation(savedRelations[i]);
     				}
     			}
     		}else{
@@ -465,12 +516,21 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			}
 		});
 		
-		
+
 		$("#selectCSV").click(function(ev){
 			ev.preventDefault();
 			$(".sourceRow").addClass("hide");
 			$("#csvSourceRow").removeClass("hide");
+			$("#csvActionRow").removeClass("hide");
 			$("#modalContainer").foundation("open")
+		});
+
+		$("#importCsvRelation").change(function(ev){
+			ev.preventDefault();
+			if ($("#importCsvFile")[0].files.length > 0)
+				$("#csvRelationRow").removeClass("hide");
+			else
+				$("#csvRelationRow").addClass("hide");
 		});
 		
 		$("#selectMedbiq").click(function(ev){
@@ -543,6 +603,10 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		
 		$("#importCsvFile").change(function(){
 			analyzeCsv(data);
+		})
+		
+		$("#importCsvRelation").change(function(){
+			analyzeRelationCsv(data);
 		})
 		
 		$("#importMedbiqFile").change(function(){

@@ -15,25 +15,27 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         isEquivalentTo: "Equivalent To"
     }
 
-    var competencyContainer = "<li class='competency' style='margin-top:0.5rem;cursor:pointer;'><h6 class='competencyName' style='margin-bottom:0px;'><a></a> <small class='competencyId'></small></a></h6>" +
-        "<div class='hide competencyDetails'>" +
-        "<small class='competencyDescription' style='font-size:65%; margin-left:1.25rem;'></small>" +
-        "<small class='competencyLevels hide' style='margin-left:1.25rem;display:block;'><span class='prefix'>Levels:</span> </small>" +
-        "<ul class='competencyRelations' style='list-style:none; line-height:0.75rem;'></ul>" +
-        "</div></li>";
+//    var competencyContainer = "<li class='competency' style='margin-top:0.5rem;cursor:pointer;'><h6 class='competencyName' style='margin-bottom:0px;'><a></a> <small class='competencyId'></small></a></h6>" +
+//        "<div class='hide competencyDetails'>" +
+//        "<small class='competencyDescription' style='font-size:65%; margin-left:1.25rem;'></small>" +
+//        "<small class='competencyLevels hide' style='margin-left:1.25rem;display:block;'><span class='prefix'>Levels:</span> </small>" +
+//        "<ul class='competencyRelations' style='list-style:none; line-height:0.75rem;'></ul>" +
+//        "</div></li>";
 
-    var relationContainer = "<li class='relation'><small><a><i class='relationType'></i> </a></small></li>";
+//    var relationContainer = "<li class='relation'><small><a><i class='relationType'></i> </a></small></li>";
 
     function createContactSmall(pem) {
         var ident = AppController.identityController.lookup(pem);
         return '<span class="ownershipDisplay has-tip" tabindex>' + '<span class="qrcodeCanvas"></span>' + '<span class="contactText" title="' + pem + '">' + ident.displayName + '</span>' + '</span>';
     }
 
+    var fetches = 0;
+    
     function displayFramework(framework) {
-        $("#frameworkViewerId").text(framework.shortId());
-        $(".frameworkViewerName").text(framework.name);
-        $("#frameworkViewerDescription").text(framework.description);
-        $("#frameworkViewerLevels").html("");
+    	
+    	CassManagerScreen.autoRemove($("body"),"framework");
+    	CassManagerScreen.autoAppend($("body"),"framework");
+    	CassManagerScreen.autoFill($("body"),framework);
 
         if(framework.privateEncrypted)
 			$("#frameworkViewerPrivateSymbol").removeClass("hide");
@@ -61,9 +63,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 
         if (framework.competency != undefined)
             for (var i = 0; i < framework.competency.length; i++) {
+            	fetches++;
                 (function (i) {
                     timeout(function () {
                         EcCompetency.get(framework.competency[i], function (competency) {
+                        	fetches--;
                             competency.font = fonts.node;
                             competency.mass = 2;
                             nodes[competency.shortId()] = graph.newNode(competency);
@@ -71,27 +75,29 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                             nodes[competency.shortId()].fixed = true;
                             if (framework.competency.length < 20)
                                 nodes[competency.shortId()].alwaysShowText = true;
-                            if (competency.shortId() == framework.competency[framework.competency.length - 1]) {
+                            if (fetches == 0) {
                                 if (framework.relation != undefined)
                                     for (var i = 0; i < framework.relation.length; i++) {
                                         (function (i) {
                                             timeout(function () {
                                             	EcAlignment.get(framework.relation[i], function (relation) {
                                                     if (relation.source !== undefined) {
-                                                        nodes[relation.source].fixed = false;
-                                                        if (nodes[relation.source].alwaysShowText === undefined)
-                                                            nodes[relation.source].alwaysShowText = false;
-                                                        nodes[relation.target].alwaysShowText = true;
+                                                    	var shortSource = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
+                                                    	var shortTarget = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
+                                                        nodes[shortSource].fixed = false;
+                                                        if (nodes[shortSource].alwaysShowText === undefined)
+                                                            nodes[shortSource].alwaysShowText = false;
+                                                        nodes[shortTarget].alwaysShowText = true;
                                                         if (relation.relationType == "requires") {
-                                                            nodes[relation.source].gravity -= 1.0;
+                                                            nodes[shortSource].gravity -= 1.0;
                                                             relation.color = "#880000";
                                                         }
                                                         if (relation.relationType == "narrows") {
-                                                            nodes[relation.source].gravity += 1.0;
+                                                            nodes[shortSource].gravity += 1.0;
                                                             relation.color = "#008800";
                                                         }
                                                         relation.font = fonts.edge;
-                                                        graph.newEdge(nodes[relation.source], nodes[relation.target], relation);
+                                                        graph.newEdge(nodes[shortSource], nodes[shortTarget], relation);
                                                     }
                                                 }, function(){});
                                             });
@@ -108,38 +114,38 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
             $("#frameworkViewerContents").addClass("hide");
         }
 
-        for (var idx in framework.competency) {
-            (function (idx) {
-                timeout(function () {
-                	EcCompetency.get(framework.competency[idx], function (competency) {
-                        if (framework.competencyObjects == undefined) {
-                            framework.competencyObjects = {};
-                        }
-                        framework.competencyObjects[competency.shortId()] = competency;
-
-                        addCompetency(competency);
-                    }, errorRetrievingCompetency);
-                });
-            })(idx);
-        }
-
-        for (var idx in framework.relation) {
-            (function (idx) {
-                timeout(function () {
-                	EcAlignment.get(framework.relation[idx], function (relation) {
-                        addRelation(relation, framework);
-                    }, errorRetrievingRelation);
-                });
-            })(idx);
-        }
-
-        for (var idx in framework.level) {
-            (function (idx) {
-                timeout(function () {
-                	EcLevel.get(framework.level[idx], addLevel, errorRetrievingLevel);
-                });
-            })(idx);
-        }
+//        for (var idx in framework.competency) {
+//            (function (idx) {
+//                timeout(function () {
+//                	EcCompetency.get(framework.competency[idx], function (competency) {
+//                        if (framework.competencyObjects == undefined) {
+//                            framework.competencyObjects = {};
+//                        }
+//                        framework.competencyObjects[competency.shortId()] = competency;
+//
+//                        addCompetency(competency);
+//                    }, errorRetrievingCompetency);
+//                });
+//            })(idx);
+//        }
+//
+//        for (var idx in framework.relation) {
+//            (function (idx) {
+//                timeout(function () {
+//                	EcAlignment.get(framework.relation[idx], function (relation) {
+//                        addRelation(relation, framework);
+//                    }, errorRetrievingRelation);
+//                });
+//            })(idx);
+//        }
+//
+//        for (var idx in framework.level) {
+//            (function (idx) {
+//                timeout(function () {
+//                	EcLevel.get(framework.level[idx], addLevel, errorRetrievingLevel);
+//                });
+//            })(idx);
+//        }
 
         if (framework.owner != undefined && framework.owner.length > 0) {
             $("#frameworkViewOwner").text("")
@@ -168,9 +174,9 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         id = id.split("/");
         id = id[id.length - 1]
 
-        var container = $(competencyContainer);
-        container.attr('id', "competency-" + id);
-
+    	var container = CassManagerScreen.autoAppend($("[ec-container='framework']"),"competency");
+    	CassManagerScreen.autoFill(container,competency);
+        
         container.find(".competencyName").find('a').attr('href', "#" + CompetencyViewScreen + "?id=" + competency.id);
         container.find(".competencyName").find('a').click(function (ev) {
             ev.preventDefault();
@@ -182,12 +188,6 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
             $(container).find(".competencyDetails").toggleClass("hide")
         })
 
-
-        container.find(".competencyName").find('a').text(competency.name);
-        container.find(".competencyId").text(competency.shortId());
-        container.find(".competencyDescription").text(competency.description);
-
-        $("#frameworkContents").append(container);
     }
 
     var _addRelation = addRelation;
@@ -334,6 +334,8 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 
         ViewManager.showView(new MessageContainer("frameworkView"), "#frameworkViewMessageContainer");
 
+        CassManagerScreen.autoConfigure($(containerId));
+        
         $("#frameworkViewSearchBtn").attr("href", "#" + FrameworkSearchScreen.prototype.displayName);
         $("#frameworkViewSearchBtn").click(function (event) {
             event.preventDefault();
@@ -348,7 +350,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         if (AppController.identityController.canEdit(data)) {
             $("#editFrameworkBtn").click(function (event) {
                 event.preventDefault();
-                ScreenManager.changeScreen(new FrameworkEditScreen(data))
+                ScreenManager.changeScreen(new FrameworkEditScreen(data));
             })
         } else {
             $("#editFrameworkBtn").remove();

@@ -1,5 +1,8 @@
 CompetencyEditScreen = (function(CompetencyEditScreen){
 	
+	var frameworkId = null;
+	var data = null;
+	
 	function createContactSmall(pem)
 	{
 		var ident = AppController.identityController.lookup(pem);
@@ -124,9 +127,25 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 		
 		new Foundation.Tooltip(container, {"tipText":tip});
 	}
-	
-	function saveSuccess(){
+
+		
+	function saveSuccess() {
 		$("#datum").effect("highlight", {}, 1500);
+		if (frameworkId != null) {
+			EcFramework.get(frameworkId, function(framework) {
+				framework.addCompetency(data.id);
+				data.levels(AppController.repoInterface, function(level) {
+					framework.addLevel(level.id);
+				}, errorRetrievingLevels, function(levels) {
+					framework.save(function(s) {
+						ScreenManager.changeScreen(new FrameworkEditScreen({
+							id : EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+						}));
+					}, errorSaving);
+				});
+
+			}, errorRetrieving);
+		}
 	}
 	
 	function errorRetrieving(err)
@@ -135,11 +154,19 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 			err = "Unable to Connect to Server to Retrieve Competency for Editing";
 		ViewManager.getView("#competencyEditMessageContainer").displayAlert(err);
 	}
-	
+
 	function errorSaving(err)
 	{
 		if(err == undefined)
 			err = "Unable to Connect to Server to Save Competency";
+		
+		ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "saveFail");
+	}
+
+	function errorUpdatingFramework(err)
+	{
+		if(err == undefined)
+			err = "Unable to update Framework.";
 		
 		ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "saveFail");
 	}
@@ -155,14 +182,21 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	
 	CompetencyEditScreen.prototype.display = function(containerId)
 	{
-		var data = this.data;
+		data = this.data;
+		if (data == null)
+			data = {};
 		
-		if(data != undefined && data.id != undefined)
-		{
-			ScreenManager.setScreenParameters({"id":data.id} );
-		}
+		if(data.id != undefined)
+			ScreenManager.setScreenParameters({"id":data.id});
+
+		if (this.frameworkId != null)
+			ScreenManager.setScreenParameters({"frameworkId":this.frameworkId});
+		else if (data.frameworkId != null)
+			ScreenManager.setScreenParameters({"frameworkId":this.frameworkId=data.frameworkId});
 		
-		if(data == undefined){
+		frameworkId = this.frameworkId;
+		
+		if(data.id == undefined){
 			data = new EcCompetency();
 		    data.generateId(AppController.repoInterface.selectedServer);
 		    data.name = NEW_COMPETENCY_NAME;
@@ -244,7 +278,6 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 			data.name = $("#competencyEditName").val();
 			data.description = $("#competencyEditDescription").val();
 			data.scope = $("#competencyEditScope").val();
-			
 			
 			if(data.name != NEW_COMPETENCY_NAME){
 				ViewManager.getView("#competencyEditMessageContainer").clearAlert("saveFail");

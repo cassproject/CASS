@@ -18,7 +18,7 @@ var LoginModal = (function(LoginModal){
 			function(){
 				if(view.loginSuccess != undefined)
 				{
-					view.loginSuccess();
+					view.loginSuccess(EcView.urlParameters());
 				}
 				else
 				{

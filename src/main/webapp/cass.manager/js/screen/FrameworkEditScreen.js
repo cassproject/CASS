@@ -81,52 +81,19 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    $("#frameworkEditCompetencies option").not("#noCompetencies").remove();
 	    for(var idx in framework.competency)
 	    {
-	    	EcCompetency.get(framework.competency[idx], function(competency){
-	    		if(framework.competencyObjects == undefined){
-	    			framework.competencyObjects = {};
-	    		}
-	    		framework.competencyObjects[competency.id] = competency;
-	    		
-	    		
-	    		addCompetency(competency);
-	    	}, errorRetrievingCompetency);
+	    	EcCompetency.get(framework.competency[idx], addCompetency, errorRetrievingCompetency);
 	    }
 
 	    $("#frameworkEditRelations option").not("#noRelations").remove();
 	    for(var idx in framework.relation)
 	    {
-	    	EcAlignment.get(framework.relation[idx], function(relation){
-	    		getRelationInfo(framework, relation, function(){
-	    			addRelation(relation);
-	    		});
-	    	}, errorRetrievingRelation)
-	    }
-	    
-	    var levelRecieved = function(level){
-	    	if(framework.competencyObjects == undefined){
-	    		setTimeout(function(){ levelRecieved(level) }, 100);
-	    	}
-	    	else if(framework.competencyObjects[level.competency] == undefined)
-	    	{
-	    		for (var id in framework.competencyObjects){
-	    			if(framework.competencyObjects[id].shortId() == level.competency){
-	    				addLevel(framework, level);
-	    				return;
-	    			}
-	    		}
-	    		setTimeout(function(){ levelRecieved(level) }, 100);
-	    	}	
-	    	else
-	    	{
-	    		addLevel(framework, level);
-	    	}
-	    		
+	    	EcAlignment.get(framework.relation[idx], addRelation, errorRetrievingRelation)
 	    }
 	    
 	    $("#frameworkEditLevels option").not("#noLevels").remove();
 	    for(var idx in framework.level)
 	    {
-	    	EcLevel.get(framework.level[idx], levelRecieved, errorRetrievingLevel);
+	    	EcLevel.get(framework.level[idx], function(level){addLevel(framework,level);}, errorRetrievingLevel);
 	    }
 	}
 	
@@ -145,20 +112,20 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		$("#frameworkEditRelations").removeAttr("disabled");
 		$("#frameworkEditRelations").removeClass("empty");
 		
-		var sourceId = relation.sourceObj.shortId().split("/");
+		var sourceId = EcRemoteLinkedData.trimVersionFromUrl(relation.source).split("/");
 		sourceId = sourceId[sourceId.length-1] + "-relations";
 		
 		
 		var competencyGroup = $("#frameworkEditRelations optgroup#"+sourceId);
 		if(competencyGroup.size() == 0){
-			competencyGroup = $("<optgroup id='"+sourceId+"' label='"+relation.sourceObj.name+"'></optgroup>");
+			competencyGroup = $("<optgroup id='"+sourceId+"' label='"+EcCompetency.getBlocking(relation.source).name+"'></optgroup>");
 			$("#frameworkEditRelations").append(competencyGroup);
 		}
 		
 		var basicId = relation.shortId().split("/");
 		basicId = basicId[basicId.length-1];
 		
-		competencyGroup.append("<option id='"+basicId+"' value='"+relation.id+"' style='font-style:italic;'>"+relation["relationType"]+" "+relation.targetObj.name+"</option>")
+		competencyGroup.append("<option id='"+basicId+"' value='"+relation.id+"' style='font-style:italic;'>"+relation["relationType"]+" "+EcCompetency.getBlocking(relation.target).name+"</option>")
 		
 	}
 	
@@ -168,18 +135,16 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		$("#frameworkEditLevels").removeAttr("disabled");
 		$("#frameworkEditLevels").removeClass("empty");
 		
-		var competency = framework.competencyObjects[level.competency];
+		var competency = EcCompetency.getBlocking(level.competency);
 		
-		if(competency == undefined){
-			for(var id in framework.competencyObjects)
-					if(framework.competencyObjects[id].shortId() == level.competency)
-						competency = framework.competencyObjects[id];
-		}
-		
+		if(competency == undefined)
+			competency = EcCompetency.getBlocking(EcRemoteLinkedData.trimVersionFromUrl(level.competency));
+				
 		var competencyId = competency.shortId().split("/");
 		competencyId = competencyId[competencyId.length-1] + "-levels";
 		
 		var competencyGroup = $("#frameworkEditLevels optgroup#"+competencyId);
+		
 		if(competencyGroup.size() == 0){
 			competencyGroup = $("<optgroup id='"+competencyId+"' label='"+competency.name+"'></optgroup>");
 			$("#frameworkEditLevels").append(competencyGroup);
@@ -256,78 +221,30 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "removeCompetency");
 	}
 	
-	
-	
-	function getRelationInfo(framework, rel, callback)
-	{
-		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).indexOf(rel.source) == -1)
-		{
-			EcCompetency.get(rel.source, function(competency){
-				rel.sourceObj = competency;
-				
-				if(rel.targetObj != undefined && rel.sourceObj != undefined){
-					callback(rel);
-				}
-			}, errorRetrievingCompetency);
-		}
-		else
-		{
-			rel.sourceObj = framework.competencyObjects[rel.source];
-		}
-		
-		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).indexOf(rel.target) == -1)
-		{
-			EcCompetency.get(rel.target, function(competency){
-				rel.targetObj = competency;
-				
-				if(rel.targetObj != undefined && rel.sourceObj != undefined){
-					callback(rel);
-				}
-			}, errorRetrievingCompetency);
-		}
-		else
-		{
-			rel.targetObj = framework.competencyObjects[rel.target];
-			
-			if(rel.targetObj != undefined && rel.sourceObj != undefined){
-				callback(rel);
-			}
-		}
-	}
-	
 	var _setupLevelTypeahead = setupLevelTypeahead;
 	function setupLevelTypeahead(framework){
-		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).length != framework.competency.length){
-			setTimeout(function(){_setupLevelTypeahead(framework) }, 100);
-		}else{
-			$("#frameworkEditAddLevel").typeahead({
-		  		hint: false,
-		  		highlight: true,
-		  		minLength: 2,
-			},
-			{
-		  		name: 'levels',
-		  		source: function(q, syncCallback, asyncCallback){
-		  			var levels = {};
-		  			
-		  			var i = 0;
-		  			for(var id in framework.competencyObjects)
-		  			{
-		  				framework.competencyObjects[id].levels(AppController.repoInterface, undefined, errorSearchingLevels, function(results){
+		$("#frameworkEditAddLevel").typeahead({
+	  		hint: false,
+	  		highlight: true,
+	  		minLength: 2,
+		},
+		{
+	  		name: 'levels',
+	  		source: function(q, syncCallback, asyncCallback){
+	  			var levels = {};
+	  			
+	  			var i = 0;
+	  			for(var id in framework.competency)
+	  			{
+	  				EcCompetency.get(id,function(competency){
+		  				competency.levels(AppController.repoInterface, undefined, errorSearchingLevels, function(results){
 		  					i++;
 		  					
 		  					for(var idx in results){
 		  						levels[results[idx].id] = results[idx];
-		  						
-		  						if(framework.competencyObjects[results[idx].competency] != undefined)
-		  							levels[results[idx].id].competencyObj = framework.competencyObjects[results[idx].competency];
-		  						else
-		  							for(var id in framework.competencyObjects)
-		  								if(framework.competencyObjects[id].shortId() == results[idx].competency)
-		  									levels[results[idx].id].competencyObj = framework.competencyObjects[id];
 		  					}
 		  					
-		  					if(i == Object.keys(framework.competencyObjects).length){
+		  					if(i == framework.competency.length){
 		  						var ret = [];
 		  						for(var id in levels){
 		  							if(framework.level == undefined || framework.level.indexOf(id) == -1 && framework.level.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
@@ -339,90 +256,85 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		  						asyncCallback(ret);		  					
 		  					}
 		  				});
-		  			}
-				},
-				async:true,
-		  		display: function(data){ return data.competencyObj["name"]+" - "+data.name+" (Title: "+ data["title"]+ ")"; },
-		  		templates:{
-		  			suggestion:function(data){ return "<div>"+data.competencyObj["name"]+" - <i>"+data["name"]+" (Title: "+data["title"]+ ")</i></div>"; }
-		  		}
-			}).bind("typeahead:selected", function(ev, data){
-				$('#frameworkEditAddLevel').typeahead('val', "");
-				framework.addLevel(data.id);
-				addLevel(framework, data);
-			}).bind("typeahead:autocompleted", function(obj, data){
-				$('#frameworkEditAddLevel').typeahead('val', "");
-				framework.addLevel(data.id);
-				addLevel(framework, data);
-			});
-		}
+	  				});
+	  			}
+			},
+			async:true,
+	  		display: function(data){ return EcCompetency.getBlocking(data.competency).name +" - "+data.name+" (Title: "+ data["title"]+ ")"; },
+	  		templates:{
+	  			suggestion:function(data){ return "<div>"+EcCompetency.getBlocking(data.competency).name+" - <i>"+data["name"]+" (Title: "+data["title"]+ ")</i></div>"; }
+	  		}
+		}).bind("typeahead:selected", function(ev, data){
+			$('#frameworkEditAddLevel').typeahead('val', "");
+			framework.addLevel(data.id);
+			addLevel(framework, data);
+		}).bind("typeahead:autocompleted", function(obj, data){
+			$('#frameworkEditAddLevel').typeahead('val', "");
+			framework.addLevel(data.id);
+			addLevel(framework, data);
+		});
 	}
 	
 	var _setupRelationTypehead = setupRelationTypeahead;
 	function setupRelationTypeahead(framework){
-		if(framework.competencyObjects == undefined || Object.keys(framework.competencyObjects).length != framework.competency.length){
-			setTimeout(function(){_setupRelationTypehead(framework) }, 100);
-		}else{
-			$("#frameworkEditAddRelation").typeahead({
-		  		hint: false,
-		  		highlight: true,
-		  		minLength: 2,
+		$("#frameworkEditAddRelation").typeahead({
+	  		hint: false,
+	  		highlight: true,
+	  		minLength: 2,
+		},
+		{
+	  		name: 'relations',
+	  		source: function(q, syncCallback, asyncCallback){
+	  			var relations = {};
+	  			
+	  			var i = 0;
+	  			for(var id in framework.competency)
+	  			{
+	  				EcAlignment.searchBySource(AppController.repoInterface, id, function(results){
+	  					i++;
+	  					
+	  					for(var idx in results){
+	  						relations[results[idx].id] = results[idx];
+	  					}
+	  					
+	  					if(i == framework.competency.length){
+	  						var ret = [];
+	  						for(var id in relations){
+	  							if(framework.relation == undefined || framework.relation.indexOf(id) == -1 && framework.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
+	  							{
+	  								var rel = relations[id];			  							
+	  								ret.push(rel);
+  									if(ret.length == Object.keys(relations).length)
+  										asyncCallback(ret);
+	  							}
+	  							else
+	  							{
+	  								delete relations[id]
+	  							}
+	  						}
+	  							
+	  						
+	  						
+	  					}
+	  				}, errorSearchingRelations);
+	  			}
 			},
-			{
-		  		name: 'relations',
-		  		source: function(q, syncCallback, asyncCallback){
-		  			var relations = {};
-		  			
-		  			var i = 0;
-		  			for(var id in framework.competencyObjects)
-		  			{
-		  				EcAlignment.searchBySource(AppController.repoInterface, id, function(results){
-		  					i++;
-		  					
-		  					for(var idx in results){
-		  						relations[results[idx].id] = results[idx];
-		  					}
-		  					
-		  					if(i == Object.keys(framework.competencyObjects).length){
-		  						var ret = [];
-		  						for(var id in relations){
-		  							if(framework.relation == undefined || framework.relation.indexOf(id) == -1 && framework.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1)
-		  							{
-		  								var rel = relations[id];
-			  							
-			  							getRelationInfo(framework, rel, function(){
-			  								ret.push(rel);
-		  									if(ret.length == Object.keys(relations).length)
-		  										asyncCallback(ret);
-			  							})
-		  							}
-		  							else
-		  							{
-		  								delete relations[id]
-		  							}
-		  						}
-		  							
-		  						
-		  						
-		  					}
-		  				}, errorSearchingRelations);
-		  			}
-				},
-				async:true,
-		  		display: function(data){ return data.sourceObj["name"]+" "+relationTypes[data["relationType"]]+" "+data.targetObj["name"]; },
-		  		templates:{
-		  			suggestion:function(data){ return "<div>"+data["name"]+" ("+ data.sourceObj["name"]+" <i>"+relationTypes[data["relationType"]]+"</i> "+data.targetObj["name"] + ")</div>"; }
-		  		}
-			}).bind("typeahead:selected", function(ev, data){
-				$('#frameworkEditAddRelation').typeahead('val', "");
-				framework.addRelation(data.id);
-				addRelation(data);
-			}).bind("typeahead:autocompleted", function(obj, data){
-				$('#frameworkEditAddRelation').typeahead('val', "");
-				framework.addRelation(data.id);
-				addRelation(data);
-			});
-		}
+			async:true,
+	  		display: function(data){ 
+	  			return EcCompetency.getBlocking(data.source).name+" "+relationTypes[data["relationType"]]+" "+EcCompetency.getBlocking(data.target).name; 
+	  		},
+	  		templates:{
+	  			suggestion:function(data){ return "<div>"+data["name"]+" ("+ EcCompetency.getBlocking(data.source).name+" <i>"+relationTypes[data["relationType"]]+"</i> "+EcCompetency.getBlocking(data.target).name + ")</div>"; }
+	  		}
+		}).bind("typeahead:selected", function(ev, data){
+			$('#frameworkEditAddRelation').typeahead('val', "");
+			framework.addRelation(data.id);
+			addRelation(data);
+		}).bind("typeahead:autocompleted", function(obj, data){
+			$('#frameworkEditAddRelation').typeahead('val', "");
+			framework.addRelation(data.id);
+			addRelation(data);
+		});
 	}
 	
 	function setupCompetencyTypeahead(framework){		
@@ -459,17 +371,11 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 			framework.addCompetency(data.id);
 			addCompetency(data);
 			
-			if(framework.competencyObjects == undefined)
-				framework.competencyObjects = {};
-			framework.competencyObjects[data.id] = data;
 		}).bind("typeahead:autocompleted", function(obj, data){
 			$('#frameworkEditAddCompetency').typeahead('val', "");
 			framework.addCompetency(data.id);
 			addCompetency(data);
 			
-			if(framework.competencyObjects == undefined)
-				framework.competencyObjects = {};
-			framework.competencyObjects[data.id] = data;
 		});
 	}
 	
@@ -531,9 +437,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 				}
 				else
 				{
-					var newData = JSON.parse(JSON.stringify(data));
-					data.frameworkId=EcRemoteLinkedData.trimVersionFromUrl(data.id);
-					ScreenManager.changeScreen(new CompetencyEditScreen(data));
+					ScreenManager.changeScreen(new CompetencyEditScreen(null,data.id));
 				}			
 			});
 		}
@@ -595,8 +499,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 				
 				var savingData = new EcFramework();
 				for(var key in data){
-					if(key != "competencyObjects")
-						savingData[key] = data[key];
+					savingData[key] = data[key];
 				}
 				
 				savingData.save(function(str){
@@ -761,9 +664,13 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		}
 			
 	};
-	
+
 	FrameworkEditScreen.prototype.addCompetency = function(competency){
 		addCompetency(competency);
+	}
+	
+	FrameworkEditScreen.prototype.addRelation = function(relation){
+		addRelation(relation);
 	}
 	
 	return FrameworkEditScreen;
