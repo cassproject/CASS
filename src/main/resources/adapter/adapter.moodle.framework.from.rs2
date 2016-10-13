@@ -194,7 +194,6 @@ checkMoodleRelations=checkMoodleRelations.call(
 	relationsByGuid=#toObject(obj="@framework").get(relation="").forEach(
 		paramName="relation",
 		array="true",
-		threaded="false",
 		op=#if(
 			operator=#toObject(obj="@relation").get(relationType=""),
 			operand="narrows",
