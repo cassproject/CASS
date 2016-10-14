@@ -1,4 +1,56 @@
 /**
+ *  A representation of a file.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var GeneralFile = function() {
+    EcRemoteLinkedData.call(this, General.context, GeneralFile.myType);
+};
+GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
+    constructor.myType = GeneralFile.TYPE_0_2;
+    /**
+     *  Optional checksum of the file, used to verify if the file has been
+     *  transmitted correctly.
+     */
+    prototype.checksum = null;
+    /**
+     *  Mime type of the file.
+     */
+    prototype.mimeType = null;
+    /**
+     *  Base-64 encoded version of the bytestream of a file.
+     *  
+     *  Please note: This field will be empty in search results, but be populated
+     *  in a direct get.
+     */
+    prototype.data = null;
+    prototype.name = null;
+    /**
+     *  Helper method to force the browser to download the file.
+     */
+    prototype.download = function() {
+        var blob = base64ToBlob(this.data, this.mimeType);
+        saveAs(blob, this.name);
+    };
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (GeneralFile.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(General.context_0_2, GeneralFile.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(GeneralFile.TYPE_0_2);
+        a.push(GeneralFile.TYPE_0_1);
+        return a;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Represents an encrypted piece of data. Provides helper functions for
  *  encryption/decryption of JSON-LD objects, and provides some searchability of
  *  the data within.
@@ -341,64 +393,11 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 this.reader.splice(i, 1);
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A representation of a file.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var GeneralFile = function() {
-    EcRemoteLinkedData.call(this, General.context, GeneralFile.myType);
-};
-GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
-    constructor.myType = GeneralFile.TYPE_0_2;
-    /**
-     *  Optional checksum of the file, used to verify if the file has been
-     *  transmitted correctly.
-     */
-    prototype.checksum = null;
-    /**
-     *  Mime type of the file.
-     */
-    prototype.mimeType = null;
-    /**
-     *  Base-64 encoded version of the bytestream of a file.
-     *  
-     *  Please note: This field will be empty in search results, but be populated
-     *  in a direct get.
-     */
-    prototype.data = null;
-    prototype.name = null;
-    /**
-     *  Helper method to force the browser to download the file.
-     */
-    prototype.download = function() {
-        var blob = base64ToBlob(this.data, this.mimeType);
-        saveAs(blob, this.name);
-    };
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (GeneralFile.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(General.context_0_2, GeneralFile.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(GeneralFile.TYPE_0_2);
-        a.push(GeneralFile.TYPE_0_1);
-        return a;
-    };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
     constructor.caching = false;
     constructor.cache = new Object();
-    constructor.fetching = new Object();
     prototype.precache = function(urls) {
         var cacheUrls = new Array();
         for (var i = 0; i < urls.length; i++) {
@@ -441,27 +440,13 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.get = function(url, success, failure) {
         if (EcRepository.caching) 
             if ((EcRepository.cache)[url] != null) {
-                setTimeout(function() {
-                    success((EcRepository.cache)[url]);
-                }, 0);
-                return;
-            }
-        if ((EcRepository.fetching)[url] > new Date().getMilliseconds() - 1000) {
-            setTimeout(function() {
-                EcRepository.get(url, success, failure);
-            }, 100);
-            return;
-        }
-        (EcRepository.fetching)[url] = new Date().getMilliseconds();
-        var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
-            if ((EcRepository.cache)[url] != null) {
                 success((EcRepository.cache)[url]);
                 return;
             }
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
             fd.append("signatureSheet", p1);
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
-                delete (EcRepository.fetching)[url];
                 var d = new EcRemoteLinkedData("", "");
                 d.copyFrom(p1);
                 if (d.getFullType() == null) {
@@ -764,7 +749,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcRemote._delete(data.shortId(), signatureSheet, success, failure);
         });
     };
-}, {cache: "Object", fetching: "Object"}, {});
+}, {cache: "Object"}, {});
 var EcFile = function() {
     GeneralFile.call(this);
 };

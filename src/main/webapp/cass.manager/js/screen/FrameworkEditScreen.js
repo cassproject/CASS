@@ -137,14 +137,16 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		
 		var competency = EcCompetency.getBlocking(level.competency);
 		
-		if(competency == undefined)
-			competency = EcCompetency.getBlocking(EcRemoteLinkedData.trimVersionFromUrl(level.competency));
-				
+		if(competency == undefined){
+			for(var id in framework.competency)
+				if(EcCompetency.getBlocking(id).shortId() == level.competency)
+					competency = EcCompetency.getBlocking(id);
+		}
+		
 		var competencyId = competency.shortId().split("/");
 		competencyId = competencyId[competencyId.length-1] + "-levels";
 		
 		var competencyGroup = $("#frameworkEditLevels optgroup#"+competencyId);
-		
 		if(competencyGroup.size() == 0){
 			competencyGroup = $("<optgroup id='"+competencyId+"' label='"+competency.name+"'></optgroup>");
 			$("#frameworkEditLevels").append(competencyGroup);

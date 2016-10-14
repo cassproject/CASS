@@ -1,14 +1,56 @@
-token=#string(str="Moodle Web Service Token here.");
+
+configFilePath=#string(str="adapter.moodle.json");
+
+
+postData=#fileFromDatastream(name="config");
+postObject=postData.fileToString().toObject();
+
+configObject=#if(operator=#if(operator=#cFileExists(path=configFilePath), operand="true",
+	eq=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject(),
+	ne=#object(
+		moodleEndpoint="",
+		moodleToken=""
+		enabled=#false()
+	)
+);
+configObject=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject();
+
+configVal=configObject.getByParam(param="@key");
+#configVal=configVal;
+
+
+configSet=postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
+
+/adapter/moodle/config/set=configSet;
+
+
+
+configGet = configObject.displayJson(_collapse="true");
+
+/adapter/moodle/config/get=configGet;
+
+
+token=#configVal(key="moodleToken");
 #moodleWsToken=token;
+
+endpointStart = #configVal(key="moodleEndpoint");
+endpoint=#add(
+	a=#if(operator=#indexOf(str="@endpointStart", substr="http"), operand="0",
+			ne="http://",
+			eq=""
+		),
+	b="@endpointStart",
+	c="/moodle/webservice/rest/server.php"
+);
+#moodleEndpoint=endpoint;
+
+
+enabled=#configVal(key="enabled"); 
+#moodleAdapterEnabled=enabled;
+
 
 baseContext=#string(str="1");
 #moodleBaseContext=baseContext;
-
-endpoint=#string(str="http://<your moodle endpoint>/moodle/webservice/rest/server.php");
-#moodleEndpoint=endpoint;
-
-moodleAdapterEnabled=#string(str="false");
-#moodleAdapterEnabled=moodleAdapterEnabled;
 
 scaleConfiguration=#object(
 	a=#object(scaleid="2"),

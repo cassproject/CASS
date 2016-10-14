@@ -647,6 +647,198 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
         }, failure);
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var EcFramework = function() {
+    Framework.call(this);
+};
+EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prototype) {
+    prototype.addCompetency = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.competency == null) 
+            this.competency = new Array();
+        for (var i = 0; i < this.competency.length; i++) 
+            if (this.competency[i].equals(id)) 
+                return;
+        this.competency.push(id);
+    };
+    constructor.relDone = {};
+    constructor.levelDone = {};
+    prototype.removeCompetency = function(id, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.competency == null) 
+            this.competency = new Array();
+        for (var i = 0; i < this.competency.length; i++) 
+            if (this.competency[i].equals(shortId) || this.competency[i].equals(id)) 
+                this.competency.splice(i, 1);
+        if (this.relation == null && this.level == null) 
+            if (success != null) 
+                success("");
+        EcFramework.relDone[id] = false;
+        EcFramework.levelDone[id] = false;
+        if (this.relation != null) {
+            this.removeRelationshipsThatInclude(id, 0, function(p1) {
+                if (EcFramework.levelDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.relDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.relDone[id] = true;
+        }
+        if (this.level != null) {
+            this.removeLevelsThatInclude(id, 0, function(p1) {
+                if (EcFramework.relDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.levelDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.levelDone[id] = true;
+        }
+    };
+    prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        var me = this;
+        if (i >= this.relation.length && success != null) 
+            success("");
+         else 
+            EcRepository.get(this.relation[i], function(p1) {
+                var a = new EcAlignment();
+                a.copyFrom(p1);
+                if (a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
+                    me.relation.splice(i, 1);
+                    me.removeRelationshipsThatInclude(id, i, success, failure);
+                } else 
+                    me.removeRelationshipsThatInclude(id, i + 1, success, failure);
+            }, failure);
+    };
+    prototype.removeLevelsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        var me = this;
+        if (i >= this.level.length && success != null) 
+            success("");
+         else 
+            EcRepository.get(this.level[i], function(p1) {
+                var a = new EcLevel();
+                a.copyFrom(p1);
+                if (a.competency == shortId || a.competency == id) {
+                    me.level.splice(i, 1);
+                    me.removeLevelsThatInclude(id, i, success, failure);
+                } else 
+                    me.removeLevelsThatInclude(id, i + 1, success, failure);
+            }, failure);
+    };
+    prototype.addRelation = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.relation == null) 
+            this.relation = new Array();
+        for (var i = 0; i < this.relation.length; i++) 
+            if (this.relation[i].equals(id)) 
+                return;
+        this.relation.push(id);
+    };
+    prototype.removeRelation = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.relation == null) 
+            this.relation = new Array();
+        for (var i = 0; i < this.relation.length; i++) 
+            if (this.relation[i].equals(id)) 
+                this.relation.splice(i, 1);
+    };
+    prototype.addLevel = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.level == null) 
+            this.level = new Array();
+        for (var i = 0; i < this.level.length; i++) 
+            if (this.level[i].equals(id)) 
+                return;
+        this.level.push(id);
+    };
+    prototype.removeLevel = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.level == null) 
+            this.level = new Array();
+        for (var i = 0; i < this.level.length; i++) 
+            if (this.level[i].equals(id)) 
+                this.level.splice(i, 1);
+    };
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Framework Name Cannot be Empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null && this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var framework = new EcFramework();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(framework.getTypes())) {
+                framework.copyFrom(p1);
+                if (success != null) 
+                    success(framework);
+            } else {
+                var msg = "Resultant object is not a framework.";
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new EcFramework().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var framework = new EcFramework();
+                    if (p1[i].isAny(framework.getTypes())) {
+                        framework.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcFramework.myType)) {
+                            var obj = val.decryptIntoObject();
+                            framework.copyFrom(obj);
+                            framework.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = framework;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  @author fritz.ray@eduworks.com
  */
@@ -896,195 +1088,3 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         }, failure);
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-var EcFramework = function() {
-    Framework.call(this);
-};
-EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prototype) {
-    prototype.addCompetency = function(id) {
-        id = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.competency == null) 
-            this.competency = new Array();
-        for (var i = 0; i < this.competency.length; i++) 
-            if (this.competency[i].equals(id)) 
-                return;
-        this.competency.push(id);
-    };
-    constructor.relDone = {};
-    constructor.levelDone = {};
-    prototype.removeCompetency = function(id, success, failure) {
-        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.competency == null) 
-            this.competency = new Array();
-        for (var i = 0; i < this.competency.length; i++) 
-            if (this.competency[i].equals(shortId) || this.competency[i].equals(id)) 
-                this.competency.splice(i, 1);
-        if (this.relation == null && this.level == null) 
-            if (success != null) 
-                success("");
-        EcFramework.relDone[id] = false;
-        EcFramework.levelDone[id] = false;
-        if (this.relation != null) {
-            this.removeRelationshipsThatInclude(id, 0, function(p1) {
-                if (EcFramework.levelDone[id]) {
-                    if (success != null) 
-                        success(p1);
-                } else {
-                    EcFramework.relDone[id] = true;
-                }
-            }, failure);
-        } else {
-            EcFramework.relDone[id] = true;
-        }
-        if (this.level != null) {
-            this.removeLevelsThatInclude(id, 0, function(p1) {
-                if (EcFramework.relDone[id]) {
-                    if (success != null) 
-                        success(p1);
-                } else {
-                    EcFramework.levelDone[id] = true;
-                }
-            }, failure);
-        } else {
-            EcFramework.levelDone[id] = true;
-        }
-    };
-    prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
-        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
-        var me = this;
-        if (i >= this.relation.length && success != null) 
-            success("");
-         else 
-            EcRepository.get(this.relation[i], function(p1) {
-                var a = new EcAlignment();
-                a.copyFrom(p1);
-                if (a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
-                    me.relation.splice(i, 1);
-                    me.removeRelationshipsThatInclude(id, i, success, failure);
-                } else 
-                    me.removeRelationshipsThatInclude(id, i + 1, success, failure);
-            }, failure);
-    };
-    prototype.removeLevelsThatInclude = function(id, i, success, failure) {
-        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
-        var me = this;
-        if (i >= this.level.length && success != null) 
-            success("");
-         else 
-            EcRepository.get(this.level[i], function(p1) {
-                var a = new EcLevel();
-                a.copyFrom(p1);
-                if (a.competency == shortId || a.competency == id) {
-                    me.level.splice(i, 1);
-                    me.removeLevelsThatInclude(id, i, success, failure);
-                } else 
-                    me.removeLevelsThatInclude(id, i + 1, success, failure);
-            }, failure);
-    };
-    prototype.addRelation = function(id) {
-        id = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.relation == null) 
-            this.relation = new Array();
-        for (var i = 0; i < this.relation.length; i++) 
-            if (this.relation[i].equals(id)) 
-                return;
-        this.relation.push(id);
-    };
-    prototype.removeRelation = function(id) {
-        id = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.relation == null) 
-            this.relation = new Array();
-        for (var i = 0; i < this.relation.length; i++) 
-            if (this.relation[i].equals(id)) 
-                this.relation.splice(i, 1);
-    };
-    prototype.addLevel = function(id) {
-        id = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.level == null) 
-            this.level = new Array();
-        for (var i = 0; i < this.level.length; i++) 
-            if (this.level[i].equals(id)) 
-                return;
-        this.level.push(id);
-    };
-    prototype.removeLevel = function(id) {
-        id = EcRemoteLinkedData.trimVersionFromUrl(id);
-        if (this.level == null) 
-            this.level = new Array();
-        for (var i = 0; i < this.level.length; i++) 
-            if (this.level[i].equals(id)) 
-                this.level.splice(i, 1);
-    };
-    prototype.save = function(success, failure) {
-        if (this.name == null || this.name == "") {
-            var msg = "Framework Name Cannot be Empty";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
-    };
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
-    };
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var framework = new EcFramework();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
-            }
-            if (p1.isAny(framework.getTypes())) {
-                framework.copyFrom(p1);
-                if (success != null) 
-                    success(framework);
-            } else {
-                var msg = "Resultant object is not a framework.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
-    };
-    constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcFramework().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var framework = new EcFramework();
-                    if (p1[i].isAny(framework.getTypes())) {
-                        framework.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcFramework.myType)) {
-                            var obj = val.decryptIntoObject();
-                            framework.copyFrom(obj);
-                            framework.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = framework;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
-}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, source: "Source", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

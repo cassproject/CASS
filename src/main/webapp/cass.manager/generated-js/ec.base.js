@@ -1,70 +1,3 @@
-var Triple = function() {};
-Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
-    prototype.source = null;
-    prototype.destination = null;
-    prototype.edge = null;
-    prototype.equals = function(obj) {
-        if (Object.prototype.equals.call(this, obj)) 
-            return true;
-        if (stjs.isInstanceOf(obj.constructor, Triple)) {
-            var t = obj;
-            if (this.source.equals(t.source) && this.destination.equals(t.destination) && this.edge.equals(t.edge)) 
-                return true;
-        }
-        return false;
-    };
-}, {}, {});
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    constructor.isObject = function(o) {
-        return (typeof o) == "object";
-    };
-}, {}, {});
-var EcCallbackReturn0 = function() {};
-EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
-    prototype.callback = function() {};
-}, {}, {});
-var EcCallback = function() {};
-EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
-    prototype.callback = function(result) {};
-}, {}, {});
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
-    constructor.isArray = function(o) {
-        return toString.call(o) == "[object Array]";
-    };
-    constructor.removeDuplicates = function(a) {
-        for (var i = 0; i < a.length; i++) 
-            for (var j = i; j < a.length; j++) {
-                if (j == i) 
-                    continue;
-                if (a[i] == a[j]) 
-                    a.splice(j, 1);
-            }
-    };
-}, {}, {});
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
-    prototype.counter = null;
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                each(array[i], function() {
-                    me.counter--;
-                    if (me.counter == 0) 
-                        after(array);
-                });
-        }
-    };
-    prototype.stop = function() {
-        this.counter = -1;
-    };
-}, {}, {});
 /**
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
  *  set of hyperedges of type <code>E</code> which connect the vertices. This is
@@ -510,10 +443,6 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
-var EcCallbackReturn1 = function() {};
-EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
-    prototype.callback = function(param1) {};
-}, {}, {});
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.async = true;
@@ -541,7 +470,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                  else 
                     all = all + chunks[i];
             }
-            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
+            all = all + "\r\n" + "\r\n" + "--" + (fd)["_boundary"] + "--";
             p.headers = new Object();
             p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
             p.data = all;
@@ -633,6 +562,77 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
         };
     };
+}, {}, {});
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    prototype.counter = null;
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                each(array[i], function() {
+                    me.counter--;
+                    if (me.counter == 0) 
+                        after(array);
+                });
+        }
+    };
+    prototype.stop = function() {
+        this.counter = -1;
+    };
+}, {}, {});
+var EcCallback = function() {};
+EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
+    prototype.callback = function(result) {};
+}, {}, {});
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+    constructor.isObject = function(o) {
+        return (typeof o) == "object";
+    };
+}, {}, {});
+var EcCallbackReturn0 = function() {};
+EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
+    prototype.callback = function() {};
+}, {}, {});
+var Triple = function() {};
+Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
+    prototype.source = null;
+    prototype.destination = null;
+    prototype.edge = null;
+    prototype.equals = function(obj) {
+        if (Object.prototype.equals.call(this, obj)) 
+            return true;
+        if (stjs.isInstanceOf(obj.constructor, Triple)) {
+            var t = obj;
+            if (this.source.equals(t.source) && this.destination.equals(t.destination) && this.edge.equals(t.edge)) 
+                return true;
+        }
+        return false;
+    };
+}, {}, {});
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    constructor.isArray = function(o) {
+        return toString.call(o) == "[object Array]";
+    };
+    constructor.removeDuplicates = function(a) {
+        for (var i = 0; i < a.length; i++) 
+            for (var j = i; j < a.length; j++) {
+                if (j == i) 
+                    continue;
+                if (a[i] == a[j]) 
+                    a.splice(j, 1);
+            }
+    };
+}, {}, {});
+var EcCallbackReturn1 = function() {};
+EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
+    prototype.callback = function(param1) {};
 }, {}, {});
 /**
  *  A graph consisting of a set of vertices of type <code>V</code>

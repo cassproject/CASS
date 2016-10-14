@@ -1,14 +1,51 @@
-xapiEndpoint=#string(str="https://lrs.adlnet.gov/xapi/");
+
+configFilePath=#string(str="adapter.xapi.json");
+
+
+postData=#fileFromDatastream(name="config");
+postObject=postData.fileToString().toObject();
+
+configObject=#if(operator=#if(operator=#cFileExists(path=configFilePath), operand="true",
+	eq=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject(),
+	ne=#object(
+		xapiEndpoint="",
+		xapiHostName="",
+		xapiAuth="",
+		enabled=#false()
+	)
+);
+
+configVal=configObject.getByParam(param="@key");
+#configVal=configVal;
+
+
+
+
+configSet=postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
+
+/adapter/xapi/config/set=configSet;
+
+
+
+configGet = configObject.displayJson(_collapse="true");
+
+/adapter/xapi/config/get=configGet;
+
+
+
+
+
+xapiEndpoint=#configVal(key="xapiEndpoint");
 #xapiEndpoint=xapiEndpoint;
 
-xapiHostname=#string(str="https://lrs.adlnet.gov");
+xapiHostname=#configVal(key="xapiHostName");
 #xapiHostname=xapiHostname;
 
 //This is the same auth key available in the LRS Statement Viewer demonstration.
-xapiAuth=#string(str="Basic eGFwaS10b29sczp4YXBpLXRvb2xz");
+xapiAuth=#configVal(key="xapiAuth");
 #xapiAuth=xapiAuth;
 
-xapiAdapterEnabled=#string(str="false");
+xapiAdapterEnabled=#configVal(key="enabled");
 
 //If the adapter is enabled, we convert and store all XAPI conversions upon system startup. This is done every startup, as alignments may change.
 //As such, eventual consistency, especially when a new alignment is introduced, is limited to after startup.

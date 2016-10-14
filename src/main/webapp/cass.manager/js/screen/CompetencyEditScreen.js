@@ -250,7 +250,12 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 		
 		$("#competencyEditCancelBtn").click(function(event){
 			event.preventDefault();
-			ScreenManager.changeScreen(new CompetencyViewScreen(data))
+			if(frameworkId == null)
+				ScreenManager.changeScreen(new CompetencyViewScreen(data))
+			else
+				ScreenManager.changeScreen(new FrameworkEditScreen({
+					id : EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+				}));
 		});
 		
 		if(data.name == NEW_COMPETENCY_NAME){

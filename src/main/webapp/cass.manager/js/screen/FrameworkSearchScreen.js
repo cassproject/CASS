@@ -5,7 +5,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	function createContactSmall(pk)
 	{
 		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
+	    return '<span class="ownershipDisplay has-tip right" tabindex>'
 	    	+ '<span class="qrcodeCanvas"></span>'
 	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
 	    	+ '</span>';

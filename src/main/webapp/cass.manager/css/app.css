@@ -431,11 +431,23 @@ li.cass-competency-level:before {
 .ownershipDisplay .qrcodeCanvas{
 	display:none;
 	position: absolute;
-    bottom: 1rem;
     padding: 10px;
     background-color: white;
     border: 1px solid black;
-    box-shadow: 6px 0px 4px rgba(0,0,0,.4)
+    box-shadow: 6px 0px 4px rgba(0,0,0,.4);
+    z-index:5;
+    bottom:1rem;
+}
+
+.ownershipDisplay.right .qrcodeCanvas{
+	left:1rem;
+	bottom: inherit;
+	top: 1rem;
+}
+
+.ownershipDisplay.bottom .qrcodeCanvas{
+	top:1rem;
+	bottom: inherit;
 }
 
 .ownershipDisplay:hover .qrCodeCanvas{

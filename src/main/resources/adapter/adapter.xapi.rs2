@@ -28,7 +28,7 @@ endpoint=#httpGet(
 ).toObject();
 
 endpointDebug=endpoint.displayJson();
-//xapi/endpoint=endpointDebug;
+/xapi/endpoint=endpointDebug;
 
 xapiConvert=#toObject(obj="@endpoint").get(statements="").forEach(
 	array="true",
