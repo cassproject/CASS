@@ -18,6 +18,12 @@ afterSave=#if(
 	eq=afterSave
 );
 
+afterSave=#if(
+	operator="@noExternal",
+	operand="true",
+	ne=afterSave
+);
+
 #afterSave=afterSave;
 
 beforeGet=#if(

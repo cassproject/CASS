@@ -7,6 +7,9 @@ baseContext=#string(str="1");
 endpoint=#string(str="http://<your moodle endpoint>/moodle/webservice/rest/server.php");
 #moodleEndpoint=endpoint;
 
+moodleAdapterEnabled=#string(str="false");
+#moodleAdapterEnabled=moodleAdapterEnabled;
+
 scaleConfiguration=#object(
 	a=#object(scaleid="2"),
 	b=#object(id=#toInteger(obj="1"),scaledefault=#toInteger(obj="1"),proficient=#toInteger(obj="0")),
