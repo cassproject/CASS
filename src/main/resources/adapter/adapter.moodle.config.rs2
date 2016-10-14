@@ -5,11 +5,11 @@ configFilePath=#string(str="adapter.moodle.json");
 postData=#fileFromDatastream(name="config");
 postObject=postData.fileToString().toObject();
 
-configObject=#if(operator=#if(operator=#cFileExists(path=configFilePath), operand="true",
+configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
 	eq=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject(),
 	ne=#object(
 		moodleEndpoint="",
-		moodleToken=""
+		moodleToken="",
 		enabled=#false()
 	)
 );
