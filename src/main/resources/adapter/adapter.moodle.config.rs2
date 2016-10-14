@@ -19,15 +19,28 @@ configVal=configObject.getByParam(param="@key");
 #configVal=configVal;
 
 
-configSet=postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
+isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
+	operand="0",
+	gt=#true(),
+	eq=#false()
+);
 
+configSet=postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
+checkConfigSet=#if(operator=isSkyAdmin, operand=#true(),
+	eq=configSet,
+	ne=#error(code="403", msg="Only those with the admin key can modify the adapter configuration")
+);
 /adapter/moodle/config/set=configSet;
 
 
-
 configGet = configObject.displayJson(_collapse="true");
-
+checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
+	eq=configGet,
+	ne=#error(code="403", msg="Only those with the admin key can view the adapter configuration")
+);
 /adapter/moodle/config/get=configGet;
+
+
 
 
 token=#configVal(key="moodleToken");

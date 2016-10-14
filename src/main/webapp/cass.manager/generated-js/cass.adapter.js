@@ -9,10 +9,17 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
     prototype.save = function(serverUrl, success, failure) {
         var fd = new FormData();
         fd.append("config", JSON.stringify(this));
-        EcRemote.postExpectingObject(serverUrl, "adapter/xapi/config/set", fd, success, failure);
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, "adapter/xapi/config/set", fd, success, failure);
+        });
     };
     constructor.get = function(serverUrl, success, failure) {
-        EcRemote.getExpectingObject(serverUrl, "adapter/xapi/config/get", success, failure);
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, "adapter/xapi/config/get", fd, success, failure);
+        });
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 var MoodleConfig = function() {
@@ -25,9 +32,16 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
     prototype.save = function(serverUrl, success, failure) {
         var fd = new FormData();
         fd.append("config", JSON.stringify(this));
-        EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/set", fd, success, failure);
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/set", fd, success, failure);
+        });
     };
     constructor.get = function(serverUrl, success, failure) {
-        EcRemote.getExpectingObject(serverUrl, "adapter/moodle/config/get", success, failure);
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/get", fd, success, failure);
+        });
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});

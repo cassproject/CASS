@@ -20,16 +20,27 @@ configVal=configObject.getByParam(param="@key");
 
 
 
+isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
+	operand="0",
+	gt=#true(),
+	eq=#false()
+);
 
-configSet=postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
-
-/adapter/xapi/config/set=configSet;
+configSet = postObject.displayJson(_collapse="true").fileSave(path=configFilePath);
+checkConfigSet=#if(operator=isSkyAdmin, operand=#true(),
+	eq=configSet,
+	ne=#error(code="403", msg="Only those with the admin key can modify the adapter configuration")
+);
+/adapter/xapi/config/set=checkConfigSet;
 
 
 
 configGet = configObject.displayJson(_collapse="true");
-
-/adapter/xapi/config/get=configGet;
+checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
+	eq=configGet,
+	ne=#error(code="403", msg="Only those with the admin key can view the adapter configuration")
+);
+/adapter/xapi/config/get=checkConfigGet;
 
 
 
