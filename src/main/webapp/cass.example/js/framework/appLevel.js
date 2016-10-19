@@ -63,9 +63,10 @@ function insertNewLevel() {
     $("#newLevelTitle").html("");
     $("#newLevelDescription").html("");
     $("#newLevel").foundation('open');
+    $("#newLevelName").select();
 }
 
-function newLevel(frameworkId) {
+function newLevel(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -90,8 +91,11 @@ function newLevel(frameworkId) {
         return;
     }
     EcRepository.save(f, function () {
-        insertLevelIntoFramework(f.shortId(), frameworkId);
-        $("#newLevel").foundation('close');
+        insertLevelIntoFramework(f.shortId(), frameworkId);        
+        if (close == null || close == true)
+            $("#newLevel").foundation('close');
+        else
+            $("#newLevelName").select();
     }, error);
 }
 

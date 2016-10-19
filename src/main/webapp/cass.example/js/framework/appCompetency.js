@@ -15,9 +15,10 @@ function insertNewCompetency() {
         return;
     }
     $("#newCompetency").foundation('open');
+    $("#newCompetencyName").select();
 }
 
-function newCompetency(frameworkId) {
+function newCompetency(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -36,7 +37,10 @@ function newCompetency(frameworkId) {
     }
     EcRepository.save(f, function () {
         insertCompetencyIntoFramework(f.shortId(), frameworkId);
-        $("#newCompetency").foundation('close');
+        if (close == null || close == true)
+            $("#newCompetency").foundation('close');
+        else
+            $("#newCompetencyName").select();
     }, error);
 }
 
@@ -55,6 +59,7 @@ function editCompetency(competencyId) {
         $("#editCompetencyName").val(competency.name);
         $("#editCompetencyDescription").val(competency.description);
         $("#editCompetency").foundation('open');
+        $("#editCompetency").select();
     }, error);
 }
 

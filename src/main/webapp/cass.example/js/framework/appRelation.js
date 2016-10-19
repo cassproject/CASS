@@ -95,10 +95,11 @@ function insertNewRelation() {
             }, error);
         }
         $("#newRelation").foundation('open');
+        $("#newRelationSource").select();
     }, error);
 }
 
-function newRelation(frameworkId) {
+function newRelation(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -128,7 +129,8 @@ function newRelation(frameworkId) {
     }
     EcRepository.save(f, function () {
         insertRelationIntoFramework(f.shortId(), frameworkId);
-        $("#newRelation").foundation('close');
+        if (close == null || close == true)
+            $("#newRelation").foundation('close');    
     }, error);
 }
 

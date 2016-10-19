@@ -154,14 +154,14 @@
 
     <div class="tiny reveal" id="newFramework" data-reveal>
         <h3>New Framework</h3>
-        <input id="newFrameworkName" type="text" placeholder="Name" />
-        <textarea id="newFrameworkDescription" placeholder="Description"></textarea>
+        <input id="newFrameworkName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#newFrameworkDescription').select();"  />
+        <textarea id="newFrameworkDescription" placeholder="Description" onkeypress="newFramework();" ></textarea>
         <a class="button float-right" onclick="newFramework();">Create</a>
     </div>
 
     <div class="tiny reveal" id="editFramework" data-reveal>
         <h3>Edit Framework</h3>
-        <input id="editFrameworkName" type="text" placeholder="Name" />
+        <input id="editFrameworkName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#editFrameworkDescription').select();" />
         <textarea id="editFrameworkDescription" placeholder="Description"></textarea>
         <a class="button float-right" onclick="editFrameworkSave();">Save</a>
         <a class="button alert" onclick="editFrameworkDelete();">Delete</a>
@@ -169,10 +169,11 @@
 
     <div class="tiny reveal" id="newCompetency" data-reveal>
         <h3>New Competency</h3>
-        <input id="newCompetencyName" type="text" placeholder="Name" />
-        <textarea id="newCompetencyDescription" placeholder="Description"></textarea>
+        <input id="newCompetencyName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#newCompetencyDescription').select();" />
+        <textarea id="newCompetencyDescription" placeholder="Description" onkeypress="if(event.keyCode==13)$('#newCompetencyScope').select();" ></textarea>
         <input id="newCompetencyScope" type="text" placeholder="Scope" />
-        <a class="button float-right" onclick="newCompetency();">Create</a>
+        <a class="button float-right" style="margin-left:5px;" onclick="newCompetency(true);">Create</a>
+        <a class="button float-right" style="margin-left:5px;" onclick="newCompetency(false);">Create Another</a>
     </div>
 
     <div class="small reveal" id="editCompetency" data-reveal>
@@ -212,9 +213,10 @@
         <div class="large-5 small-12 columns">
             <select type="text" id="newRelationTarget" placeholder="Search..."></select>
         </div>
-        <input id="newRelationName" type="text" placeholder="Relation Name" />
-        <textarea id="newRelationDescription" placeholder="Relation Description"></textarea>
-        <a class="button float-right" onclick="newRelation();">Create</a>
+        <input id="newRelationName" type="text" style="display:none;" placeholder="Relation Name" />
+        <textarea id="newRelationDescription" style="display:none;" placeholder="Relation Description"></textarea>
+        <a class="button float-right" style="margin-left:5px;" onclick="newRelation(true);">Create</a>
+        <a class="button float-right" style="margin-left:5px;" onclick="newRelation(false);">Create Another</a>
     </div>
 
     <div class="large reveal" id="editRelation" data-reveal>
@@ -245,10 +247,11 @@
 
     <div class="small reveal" id="newLevel" data-reveal>
         <h3>New Level</h3>
-        <input id="newLevelName" type="text" placeholder="Level Name" />
-        <input id="newLevelTitle" type="text" placeholder="Title of a holder of this level." />
+        <input id="newLevelName" type="text" placeholder="Level Name"  onkeypress="if(event.keyCode==13)$('#newLevelTitle').select();" />
+        <input id="newLevelTitle" type="text" placeholder="Title of a holder of this level." onkeypress="if(event.keyCode==13)$('#newLevelDescription').select();" />
         <textarea id="newLevelDescription" placeholder="Level Description"></textarea>
-        <a class="button float-right" onclick="newLevel();">Create</a>
+        <a class="button float-right" style="margin-left:5px;" onclick="newLevel(true);">Create</a>
+        <a class="button float-right" style="margin-left:5px;" onclick="newLevel(false);">Create Another</a>
     </div>
 
     <div class="small reveal" id="editLevel" data-reveal>
