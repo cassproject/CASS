@@ -99,27 +99,26 @@ function editCompetencyDelete() {
 
 function populateCompetency(id) {
     if (id == null) return;
-    EcRepository.get(id, function (competency) {
-        var ui = $("[url='" + competency.shortId() + "']");
-        ui.children(".cass-competency-name").text(competency.name);
-        if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
-            $("#selectedCompetency").text(competency.name).show();
-            $("#selectedFramework").hide();
-        }
-        ui.find(".cass-competency-description").text(competency.description);
-        var url = competency.shortId();
-        if (competency.sameAs != null)
-            url = competency.sameAs;
-        ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
-            e.preventDefault();
-            if (confirm("This will navigate to another page. Continue?"))
-                window.open($(this).attr("href"), "_blank");
-        });
-        if (identity != null && competency.canEdit(identity.ppk.toPk()))
-            $(".canEditCompetency").show();
-        else
-            $(".canEditCompetency").hide();
-    }, error);
+    var competency =EcRepository.getBlocking(id);
+    var ui = $("[url='" + competency.shortId() + "']");
+    ui.children(".cass-competency-name").text(competency.name);
+    if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
+        $("#selectedCompetency").text(competency.name).show();
+        $("#selectedFramework").hide();
+    }
+    ui.find(".cass-competency-description").text(competency.description);
+    var url = competency.shortId();
+    if (competency.sameAs != null)
+        url = competency.sameAs;
+    ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
+        e.preventDefault();
+        if (confirm("This will navigate to another page. Continue?"))
+            window.open($(this).attr("href"), "_blank");
+    });
+    if (identity != null && competency.canEdit(identity.ppk.toPk()))
+        $(".canEditCompetency").show();
+    else
+        $(".canEditCompetency").hide();
 }
 
 function insertExistingCompetency() {
