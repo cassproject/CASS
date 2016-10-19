@@ -130,8 +130,11 @@ function insertExistingCompetency() {
     repo.search(searchString, null,
         function (competencies) {
             $("#insertExistingCompetencyResults").html(competencyTemplate);
-            $("#insertExistingCompetencyResults").children("#competency").html("");
             var results = $("#insertExistingCompetencyResults").children("#competency");
+            if (competencies.length == 0)
+                results.html("No competencies found.");
+            else
+                results.html("");
             for (var i = 0; i < competencies.length; i++) {
                 var competency = competencies[i];
                 results.append(cassCompetencyTemplate);
@@ -141,9 +144,9 @@ function insertExistingCompetency() {
                     ui.find(".cass-competency-name").text(competency.name);
                 ui.find(".cass-competency-description").text(competency.description);
                 if ($("[url='" + frameworkId + "']").find("[url='" + competency.shortId() + "']").length > 0)
-                    ui.find(".cass-competency-actions").prepend("<a class='button disabled float-right'>Exists</a>");
+                    ui.find(".cass-competency-actions").html("<a class='button small disabled float-right'>Exists</a>");
                 else
-                    ui.find(".cass-competency-actions").prepend("<a class='button float-right' onclick='insertExistingCompetencyIntoFramework();'>Insert</a>");
+                    ui.find(".cass-competency-actions").html("<a class='button small float-right' onclick='insertExistingCompetencyIntoFramework();'>Insert</a>");
                 ui.find(".cass-competency-relations").html("");
             }
             results.foundation();

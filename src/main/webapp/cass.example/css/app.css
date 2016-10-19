@@ -134,7 +134,7 @@ body
 
 /* --- Relationships --- */
 .cass-relation-actions {float:right}
-.cass-relation-actions a {margin-left:5px;}
+.cass-relation-actions a {margin-left:5px; margin-bottom:0px;}
 
 .cass-relation-type
 {
@@ -156,7 +156,10 @@ ul.cass-competency-relations {
 
 li.cass-competency-relation { 
     padding-left: 1em; 
-    text-indent: -.7em;
+}
+
+#insertExistingRelation .cass-competency-relations .cass-competency-relation{
+    margin-bottom: 4px;
 }
 
 li.cass-competency-relation:before {
@@ -191,7 +194,6 @@ ul.cass-competency-levels {
 
 li.cass-competency-level { 
     padding-left: 1em; 
-    text-indent: -.7em;
 }
 
 li.cass-competency-level:before {
