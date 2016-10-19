@@ -341,10 +341,9 @@
     <script src="js/profile/appView.js"></script>
     <script>
         $(document).foundation();
-        timeout(function() {
-            if (identity == null)
+        timeout(function() { 
+            if (localStorage["usernameWithSalt"] == null || localStorage["passwordWithSalt"] == null || localStorage["secretWithSalt"] == null)
                 $("#login").foundation('open');
-
         });
 
         function afterLogin() {
