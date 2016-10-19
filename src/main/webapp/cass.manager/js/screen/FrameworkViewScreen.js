@@ -84,17 +84,18 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                                                         if (nodes[shortSource].alwaysShowText === undefined)
                                                             nodes[shortSource].alwaysShowText = false;
                                                         nodes[shortTarget].alwaysShowText = true;
+                                                        relation.font = fonts.edge;
                                                         if (relation.relationType == "requires") {
                                                             nodes[shortSource].gravity -= 1.0;
                                                             relation.color = "#880000";
+                                                            graph.newEdge(nodes[shortSource], nodes[shortTarget], relation);
                                                         }
                                                         if (relation.relationType == "narrows") {
                                                             nodes[shortSource].gravity += 1.0;
                                                             relation.color = "#008800";
-                                                        }
-                                                        relation.font = fonts.edge;
-                                                        graph.newEdge(nodes[shortSource], nodes[shortTarget], relation);
-                                                    }
+                                                            graph.newEdge(nodes[shortTarget], nodes[shortSource], relation);
+                                                            
+                                                        }}
                                                 }, function(){});
                                             });
                                         })(i);

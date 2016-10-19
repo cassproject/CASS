@@ -35,17 +35,20 @@
     <br>
     <div class="row" id="main">
         <div id="alignmentProcess" class="topLevel large-12 columns large-centered">
+            <h3>To align a learning resource to a competency:</h3><p>1. Select a resource using one of the provided tools under the '...' at the right.</p>
             <button class="float-right button tiny" data-open="resourceSelector">...</button>
             <h5 id="selectedResource" class="resourceStyle">No Selected Resource</h3>
+            <p>2. Next, select an alignment and location to store the alignment from the below box.</p>
             <select id="alignmentTypeSelect" class="" style="width:300px;">
             </select>
-            <br>
+            <p>3. Select the competency you wish to align the resource to.</p>
             <button class="float-right button tiny" data-open="competencySelector">...</button>
             <h5 id="selectedCompetency" class="competency">No Selected Competency</h3>
-            <br>
+            <p>4. Click 'Create Alignment' and follow the provided instructions.</p>
             <button class="float-right button" onclick="createAlignment();">Create Alignment</button>
             <br>
             <br>
+            <h3>Additional options:</h3>
         </div>
     </div>
     <div class="small reveal" data-reveal id="competencySelector">

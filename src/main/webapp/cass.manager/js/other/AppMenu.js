@@ -325,5 +325,14 @@ var AppMenu = (function(AppMenu){
 		$("#appMenuUserInfo").addClass("hide");
 	}
 	
+	AppMenu.prototype.checkAdmin = function(){
+		if( AppController.loginController.getAdmin() )
+		{
+			$("#appMenuAdmin").removeClass("hide");
+		}else{
+			$("#appMenuAdmin").addClass("hide");
+		}
+	}
+	
 	return AppMenu;
 })(AppMenu);

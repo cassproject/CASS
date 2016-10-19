@@ -15,7 +15,8 @@ var InquiryPacket = function(subject, competency, level, context, success, failu
     this.dateCreated = new Date().getTime();
     this.subject = subject;
     this.competency = new Array();
-    this.competency.push(competency);
+    if (competency != null) 
+        this.competency.push(competency);
     this.level = level;
     this.context = context;
     this.success = success;

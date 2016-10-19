@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# To install CASS:
+# 1. wget https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh
+# 2. chmod +x cassInstall.sh
+# 3. sudo ./cassInstall.sh
+#
+# This is best run on a fresh and new machine. If installing on the same machine as other services, it is recommended to run this script piecewise and by hand.
+
 if [ "$EUID" -ne 0 ];
   then echo "Please run as root."
   exit

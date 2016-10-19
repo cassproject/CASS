@@ -6,19 +6,72 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    $("#addKeyIv").val("");
 	    for (var index in identities)
 	    {
-	    	var ppk = identities[index].ppk.toPem().replaceAll("\r?\n","");
-	        var name = identities[index].displayName;
+	    	var wrapper = $("<div class='identityKey' style='min-height:1.33rem;'></div>");
+	    	
+	    	var id = identities[index];
+	    	
+	    	var ppk = id.ppk.toPem().replaceAll("\r?\n","");
+	        var name = id.displayName;
 	        
-	        var element = $("<span></span>");
+	        var element = $("<span class='has-tip'></span>");
 	        
 	        element.attr("title", ppk);
-	        element.click(function(){
+	        
+	        var clickFunction = function(){
 	        	copyTextToClipboard(ppk);
 	        	alert("Copied Key to Clipboard");
-	        });
+	        };
+	        
+	        element.on("click", clickFunction);
 	        element.text(name);
-	        $("#identityKeys").append(element);
-	        $("#identityKeys").append($("<br/>"));
+	        wrapper.append(element);
+	        
+	        var editNameBtn = $("<i class='fa fa-pencil float-right'></i>");
+	        
+	        editNameBtn.on("click", function(){
+	        	var text = element.text();
+	        	
+	        	editNameBtn.addClass("hide")
+	        	
+	        	element.off("click");
+	        	element.removeClass("has-tip");
+	        	element.attr("contenteditable", true);
+	        	element.focus();
+	        	var sel, range
+	        	if (window.getSelection && document.createRange) {
+	                range = document.createRange();
+	                range.selectNodeContents(element.get(0));
+	                range.collapse(true);
+	                sel = window.getSelection();
+	                sel.removeAllRanges();
+	                sel.addRange(range);
+	            } else if (document.body.createTextRange) {
+	                range = document.body.createTextRange();
+	                range.moveToElementText(element.get(0));
+	                range.collapse(true);
+	                range.select();
+	            }
+	        	
+	        	element.blur(function(){
+	        		if(element.text() == ""){
+	        			element.text(text);
+	        		}else if(text != element.text()){
+	        			id.displayName=element.text();
+	        			ModalManager.showModal(new SaveIdModal());
+	        		}
+	        		
+	        		element.off("click");
+	        		element.on("click", clickFunction)
+	        		element.addClass("has-tip");
+	        		
+	        		editNameBtn.removeClass("hide")
+	        		
+	        	});
+	        });
+	        
+	        wrapper.append(editNameBtn);
+	        
+	        $("#identityKeys").append(wrapper);
 	        
 	        var invitationOption = $("<option></option>");
 	        invitationOption.attr("value", ppk);
@@ -69,11 +122,29 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	           
 	            fr.onload=(function(file,fr){
 	                return function(event){
-	                	AppController.identityController.addKey(fr.result, file.name, function(){
+	                	AppController.identityController.addKey(fr.result, file.name.replace(".pem", ""), function(){
 	                		refreshIdentities(EcIdentityManager.ids);
+	                		
+	            			AppController.loginController.loginServer.fetchServerAdminKeys(function(keys){
+	            				for(var i = 0; i < EcIdentityManager.ids.length; i++){
+	            					if(keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1){
+	            						AppController.loginController.setAdmin(true);
+	            						ViewManager.getView("#menuContainer").checkAdmin()
+	            					}
+	            				}
+	            			},function(){
+	            				
+	            			});
+	            			
+	            			if(EcIdentityManager.ids.length == 1){
+	            				AppController.identityController.select(EcIdentityManager.ids[0].ppk.toPem());
+	            			}
+	                		
 	                		ModalManager.showModal(new SaveIdModal());
 	                		
 	                		$("#addKeyPpk").replaceWith($("#addKeyPpk").val('').clone(true));
+	                		
+	                		ViewManager.getView("#menuContainer").rebuildIdentityList();
 	                	});
 	                }
 	            })(file,fr);
@@ -84,12 +155,7 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    }
 	    else
 	    {
-	    	AppController.identityController.addKey(fr.result, file.name, function(){
-	    		refreshIdentities(EcIdentityManager.ids);
-	    		ModalManager.showModal(new SaveIdModal());
-	    		
-	    		$("#addKeyPpk").replaceWith($("#addKeyPpk").val('').clone(true));
-	    	});
+
 	    }
 	}
 	
@@ -217,6 +283,7 @@ UserIdentityScreen = (function(UserIdentityScreen){
 			event.preventDefault();
 			
 			activateKey($('#addKeyPpk')[0].files);
+			
 		});
 		
 		$("#generateIdentity").click(function(){

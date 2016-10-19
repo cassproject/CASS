@@ -35,15 +35,17 @@
     <br>
     <div class="row" id="main">
         <div id="evidenceProcess" class="topLevel large-12 columns large-centered">
+            <h3>To calculate whether an individual has competence in a competency:</h3><p>1. Select a contact using one of the provided tools under the '...' at the right.</p>
             <button class="float-right button tiny" data-open="contactSelector">...</button>
             <h5 id="selectedContact" class="contactStyle">No Selected Contact</h3>
-            <br>
+            <p>2. Next, select an competency.</p>
             <button class="float-right button tiny" data-open="competencySelector">...</button>
             <h5 id="selectedCompetency" class="competency">No Selected Competency</h3>
-            <br>
+            <p>3. Click 'Detect Competence' and follow the provided instructions.</p>
             <button class="float-right button" id="detectButton" onclick="detectCompetence();">Detect Competence</button>
-            <br>
-            <br>
+            <br><br>
+            <h3>Additional Information:</h3>
+            <p>Please note that the provided method is <u>one possible method</u> of determining competence. The graph shows how information flows from other competencies into the queried competency, and is only concerned with determining the truth of the queried competency.</p><p>As a result, the states of all competencies except for the queried competency <u>do not represent the truth states of those competencies</u>.</p>
         </div>
     </div>
     <div class="small reveal" data-reveal id="competencySelector">
