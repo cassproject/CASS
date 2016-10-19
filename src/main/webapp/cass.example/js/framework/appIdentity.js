@@ -146,4 +146,6 @@ timeout(function () {
         loginServer.configured = true;
         loginProcess();
     }
+    else
+        frameworkSearch();
 });
