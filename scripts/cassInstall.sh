@@ -148,10 +148,14 @@ yum -q -y install httpd
 fi
 
 echo -----
-echo Recommended Version: 0.1.0-SNAPSHOT
+echo Available Recommended Versions:
+
+git ls-remote http://github.com/cassproject/CASS | grep \\. | grep -v - | sed 's/refs\/heads\///g' | awk '{print $2}' | sort
+
+echo
 echo Experimental Version: master
 
-read -p "Version to install: " -i "0.1.0-SNAPSHOT" branch
+read -p "Version to install: " -i "master" branch
 
 echo -----
 echo Downloading CASS Repo...
@@ -166,7 +170,7 @@ if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Configuring Apache
-	num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
+num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
 	if [ "$num" -eq 0 ]
 	 then
 
