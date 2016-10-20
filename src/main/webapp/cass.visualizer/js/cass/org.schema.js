@@ -121,6 +121,28 @@ AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, 
     prototype.targetName = null;
     prototype.targetUrl = null;
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var Demand = function() {
+    Thing.call(this);
+};
+Demand = stjs.extend(Demand, Thing, [], function(constructor, prototype) {
+    prototype.acceptedPaymentMethod = null;
+    prototype.areaServed = null;
+    prototype.availabilityEnds = null;
+    prototype.availabilityStarts = null;
+    prototype.eligibleTransactionVolume = null;
+    prototype.gtin12 = null;
+    prototype.gtin13 = null;
+    prototype.gtin14 = null;
+    prototype.gtin8 = null;
+    prototype.inventoryLevel = null;
+    prototype.itemOffered = null;
+    prototype.mpn = null;
+    prototype.seller = null;
+    prototype.serialNumber = null;
+    prototype.sku = null;
+    prototype.validFrom = null;
+    prototype.validThrough = null;
+}, {acceptedPaymentMethod: "Thing", areaServed: "Thing", availabilityEnds: "Date", availabilityStarts: "Date", eligibleTransactionVolume: "Thing", inventoryLevel: "Thing", itemOffered: "Service", seller: "Thing", validFrom: "Date", validThrough: "Date", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Person = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
@@ -175,7 +197,23 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     prototype.weight = null;
     prototype.workLocation = null;
     prototype.worksFor = null;
-}, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Object", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Demand", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+var Service = function() {
+    Thing.call(this);
+};
+Service = stjs.extend(Service, Thing, [], function(constructor, prototype) {
+    prototype.areaServed = null;
+    prototype.award = null;
+    prototype.brand = null;
+    prototype.category = null;
+    prototype.isRelatedTo = null;
+    prototype.isSimilarTo = null;
+    prototype.logo = null;
+    prototype.provider = null;
+    prototype.providerMobility = null;
+    prototype.serviceOutput = null;
+    prototype.serviceType = null;
+}, {areaServed: "Thing", brand: "Organization", category: "Thing", isRelatedTo: "Thing", isSimilarTo: "Thing", logo: "Thing", provider: "Person", serviceOutput: "Thing", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Action = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
