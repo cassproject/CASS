@@ -37,9 +37,9 @@ function insertExistingRelation() {
                     ui.find(".cass-relation-target").attr("url", target);
                     ui.find(".cass-relation-type").text(relation.relationType);
                     if ($("[url='" + frameworkId + "']").find("[url='" + competencyId + "']").find("[url='" + relation.shortId() + "']").length > 0)
-                        ui.find(".cass-relation-actions").prepend("<a class='disabled'>Exists</a>");
+                        ui.find(".cass-relation-actions").html("<a class='button tiny disabled'>Exists</a>");
                     else
-                        ui.find(".cass-relation-actions").prepend("<a class='' onclick='insertExistingRelationIntoFramework(this);setTimeout(function(){insertExistingRelation();},1000);'>Insert</a>");
+                        ui.find(".cass-relation-actions").html("<a class='button tiny' onclick='insertExistingRelationIntoFramework(this);setTimeout(function(){insertExistingRelation();},1000);'>Insert</a>");
                     populateCompetency(source);
                     populateCompetency(target);
                 }, error);
@@ -95,10 +95,11 @@ function insertNewRelation() {
             }, error);
         }
         $("#newRelation").foundation('open');
+        $("#newRelationSource").select();
     }, error);
 }
 
-function newRelation(frameworkId) {
+function newRelation(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -128,7 +129,8 @@ function newRelation(frameworkId) {
     }
     EcRepository.save(f, function () {
         insertRelationIntoFramework(f.shortId(), frameworkId);
-        $("#newRelation").foundation('close');
+        if (close == null || close == true)
+            $("#newRelation").foundation('close');    
     }, error);
 }
 

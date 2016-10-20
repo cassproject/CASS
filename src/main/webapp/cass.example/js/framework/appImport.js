@@ -134,10 +134,10 @@ function importCsv() {
                             else
                                 f.generateId(repo.selectedServer);
                             if (idIndex !== undefined)
-                                importCsvLookup[data[i][idIndex]] = f.id;
-                            importCsvLookup[f.name] = f.id;
+                                importCsvLookup[data[i][idIndex]] = f.shortId();
+                            importCsvLookup[f.name] = f.shortId();
                             if (shortId != null)
-                                importCsvLookup[shortId] = f.id;
+                                importCsvLookup[shortId] = f.shortId();
                             if (identity != null)
                                 f.addOwner(identity.ppk.toPk());
                             framework.competency.push(f.shortId());
@@ -212,6 +212,7 @@ function importCsvRelations() {
 }
 
 var csvOutput = [];
+var csvRelationOutput = [];
 
 function exportCsv() {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
@@ -222,6 +223,7 @@ function exportCsv() {
     $("#exportCsvStatus").text("Getting Latest Framework Data...")
     $("#exportCsv").foundation('open');
     csvOutput = [];
+    csvRelationOutput = [];
     EcRepository.get(frameworkId, function (fw) {
         if (fw.competency === undefined || fw.competency.length == 0)
             timeout(function () {
@@ -258,9 +260,9 @@ function exportCsv() {
             (function (relationUrl, fw) {
                 timeout(function () {
                     EcRepository.get(relationUrl, function (relation) {
-                        csvOutput.push(JSON.parse(relation.toJson()));
-                        if (csvOutput.length == fw.relation.length) {
-                            var csv = Papa.unparse(csvOutput);
+                    	csvRelationOutput.push(JSON.parse(relation.toJson()));
+                        if (csvRelationOutput.length == fw.relation.length) {
+                            var csv = Papa.unparse(csvRelationOutput);
                             var pom = document.createElement('a');
                             pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
                             pom.setAttribute('download', fw.name + "Relations.csv");

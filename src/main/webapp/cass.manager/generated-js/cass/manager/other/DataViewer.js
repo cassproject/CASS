@@ -8,7 +8,7 @@ DataViewer = stjs.extend(DataViewer, EcView, [], function(constructor, prototype
     prototype.prefix = null;
     prototype.callbacks = null;
     prototype.dataStore = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getHtmlLocation = function() {
+        return "partial/other/dataViewer.html";
     };
 }, {callbacks: "Object", dataStore: "Object"}, {});

@@ -58,9 +58,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
     prototype.atIfyArray = function(o) {
         var a = new Array();
         for (var i = 0; i < o.length; i++) {
-            if (stjs.isInstanceOf(o[i].constructor, EcLinkedData)) 
-                a[i] = this.atIfyObject(o[i]);
-             else if (EcArray.isArray(o[i])) 
+            if (EcObject.isObject(o[i])) {
+                if (stjs.isInstanceOf(o[i].constructor, EcLinkedData)) 
+                    a[i] = this.atIfyObject(o[i]);
+            } else if (EcArray.isArray(o[i])) 
                 a[i] = this.atIfyArray(o[i]);
              else 
                 a[i] = o[i];

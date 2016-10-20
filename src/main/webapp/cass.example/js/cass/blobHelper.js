@@ -18,3 +18,11 @@ function base64ToBlob(base64Data, contentType) {
     }
     return new Blob(byteArrays, { type: contentType });
 }
+
+function ab2str(buf) {
+	return new TextDecoder("utf-8").decode(buf);
+}
+
+function str2ab(str) {
+	return new TextEncoder("utf-8").encode(str).buffer;
+}

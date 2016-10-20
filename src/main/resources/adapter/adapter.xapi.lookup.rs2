@@ -134,6 +134,15 @@ payloadStore=signatureSheet.toDatastream(
 	op=payloadStore
 );
 
-lookup=#if(operator="@lookup",operand="",eq=payloadStore,ne="@lookup").call(lookup=getBySaltedMbox).cache(name=#add(a="lookup",b="@obj"));
+lookup=#if(
+	operator="@lookup",
+	operand="",
+	eq=payloadStore,
+	ne="@lookup"
+).call(
+	lookup=getBySaltedMbox
+).cache(
+	name=#add(a="lookup",b="@obj")
+);
 
 #xapiAgentToPk=lookup;

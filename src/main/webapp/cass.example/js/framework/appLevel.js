@@ -24,7 +24,10 @@ function insertExistingLevel() {
     searchString += " AND (competency:\"" + competencyId + "\")";
     repo.search(searchString, null,
         function (levels) {
-            $("#insertExistingLevelsResults").html("");
+            if (levels.length == 0)
+                $("#insertExistingLevelsResults").html("No levels found.");
+            else
+                $("#insertExistingLevelsResults").html("");
             for (var i = 0; i < levels.length; i++) {
                 EcRepository.get(levels[i].shortId(), function (level) {
                     var ui = $("#insertExistingLevel");
@@ -35,9 +38,9 @@ function insertExistingLevel() {
                     ui.find(".cass-level-title").text(level.title);
                     ui.find(".cass-level-description").text(level.description);
                     if ($("[url='" + frameworkId + "']").find("[url='" + competencyId + "']").find("[url='" + level.shortId() + "']").length > 0)
-                        ui.find(".cass-level-actions").prepend("<a class='float-right disabled'>Exists</a>&nbsp;");
+                        ui.find(".cass-level-actions").html("<a class='button tiny float-right disabled'>Exists</a>&nbsp;");
                     else
-                        ui.find(".cass-level-actions").prepend("<a class='float-right' onclick='insertExistingLevelIntoFramework(this);setTimeout(function(){insertExistingLevel();},1000);'>Insert</a>&nbsp;");
+                        ui.find(".cass-level-actions").html("<a class='button tiny float-right' onclick='insertExistingLevelIntoFramework(this);setTimeout(function(){insertExistingLevel();},1000);'>Insert</a>&nbsp;");
                 }, error);
             }
             $("#insertExistingLevel").foundation('open');
@@ -60,9 +63,10 @@ function insertNewLevel() {
     $("#newLevelTitle").html("");
     $("#newLevelDescription").html("");
     $("#newLevel").foundation('open');
+    $("#newLevelName").select();
 }
 
-function newLevel(frameworkId) {
+function newLevel(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -87,8 +91,11 @@ function newLevel(frameworkId) {
         return;
     }
     EcRepository.save(f, function () {
-        insertLevelIntoFramework(f.shortId(), frameworkId);
-        $("#newLevel").foundation('close');
+        insertLevelIntoFramework(f.shortId(), frameworkId);        
+        if (close == null || close == true)
+            $("#newLevel").foundation('close');
+        else
+            $("#newLevelName").select();
     }, error);
 }
 

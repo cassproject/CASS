@@ -121,80 +121,76 @@ FileManagerScreen = (function(FileManagerScreen){
 	var files;
 	var timeout;
 	
-	FileManagerScreen.prototype.display = function(containerId, callback)
-	{
-		$(containerId).load("partial/screen/fileManager.html", function(){
-			ViewManager.showView(new MessageContainer("fileSearch"), "#fileManagerMessageContainer");
-			
-			fileSearch();
+	FileManagerScreen.prototype.display = function(containerId)
+{
+		ViewManager.showView(new MessageContainer("fileSearch"), "#fileManagerMessageContainer");
+		
+		fileSearch();
 
-			$( "#fileManagerSearchText" ).on( "keyup", function(event){
-				fileSearch();
-			});
-			
-			$( "#fileManagerSearchBtn" ).click(fileSearch);
-			
-			$("#fileManagerEncrypted").change(function(){
-			    fileManagerEncrypted = this.checked;
-			    fileSearch();
-			})
-			$("#fileManagerPublic").change(function(){
-			    fileManagerSearchesPublic = this.checked;
-			    fileSearch();
-			})
-			
-			$("#dragTarget").on('dragenter', function (e)
-			{
-				e.stopPropagation();
-				e.preventDefault();
-				brdr = '2px solid #0B85A1';
-			});
-			$("#dragTarget").on('dragover', function (e) 
-			{
-				e.stopPropagation();
-			    e.preventDefault();
-			    brdr = '2px solid #0B85A1';
-				$("#dragTarget").css('border', brdr);
-			});
-			
-			$("body").on('dragover', function (e) 
-			{
-				clearTimeout( timeout );
-				timeout = setTimeout( function(){         
-					$("#dragTarget").css('border', '');
-				}, 200);
-				$("#dragTarget").css('border', brdr);
-			});
-			$("#dragTarget").on('dragleave', function (e) 
-			{
-				e.stopPropagation();
-				e.preventDefault();
-				brdr = '2px dotted #0B85A1';
-			});
-			
-			$("#dragTarget").on('drop', function (e) 
-			{
-				$(this).css('border', '');
-				e.preventDefault();
-				var fileContainer = e.originalEvent.dataTransfer.files;
-				if (fileManagerEncrypted && AppController.identityController.selectedIdentity == null)
-				{
-					ViewManager.getView("#fileManagerMessageContainer").displayAlert("Cannot Encrypt, User Not Logged In or Identity Not Selected", "noIdentity");
-					return;
-				}else{
-					ViewManager.getView("#fileManagerMessageContainer").clearAlert("noIdentity");
-				}
-				
-				files = [];
-				for (var index = 0;index < fileContainer.length;index++)
-					files.push(fileContainer[index]);
-				$("#fileManagerResults").html("");
-				startFileUpload();
-			});
-			
-			if(callback != undefined)
-				callback();
+		$( "#fileManagerSearchText" ).on( "keyup", function(event){
+			fileSearch();
 		});
+		
+		$( "#fileManagerSearchBtn" ).click(fileSearch);
+		
+		$("#fileManagerEncrypted").change(function(){
+		    fileManagerEncrypted = this.checked;
+		    fileSearch();
+		})
+		$("#fileManagerPublic").change(function(){
+		    fileManagerSearchesPublic = this.checked;
+		    fileSearch();
+		})
+		
+		$("#dragTarget").on('dragenter', function (e)
+		{
+			e.stopPropagation();
+			e.preventDefault();
+			brdr = '2px solid #0B85A1';
+		});
+		$("#dragTarget").on('dragover', function (e) 
+		{
+			e.stopPropagation();
+		    e.preventDefault();
+		    brdr = '2px solid #0B85A1';
+			$("#dragTarget").css('border', brdr);
+		});
+		
+		$("body").on('dragover', function (e) 
+		{
+			clearTimeout( timeout );
+			timeout = setTimeout( function(){         
+				$("#dragTarget").css('border', '');
+			}, 200);
+			$("#dragTarget").css('border', brdr);
+		});
+		$("#dragTarget").on('dragleave', function (e) 
+		{
+			e.stopPropagation();
+			e.preventDefault();
+			brdr = '2px dotted #0B85A1';
+		});
+		
+		$("#dragTarget").on('drop', function (e) 
+		{
+			$(this).css('border', '');
+			e.preventDefault();
+			var fileContainer = e.originalEvent.dataTransfer.files;
+			if (fileManagerEncrypted && AppController.identityController.selectedIdentity == null)
+			{
+				ViewManager.getView("#fileManagerMessageContainer").displayAlert("Cannot Encrypt, User Not Logged In or Identity Not Selected", "noIdentity");
+				return;
+			}else{
+				ViewManager.getView("#fileManagerMessageContainer").clearAlert("noIdentity");
+			}
+			
+			files = [];
+			for (var index = 0;index < fileContainer.length;index++)
+				files.push(fileContainer[index]);
+			$("#fileManagerResults").html("");
+			startFileUpload();
+		});
+
 	};
 	
 	return FileManagerScreen;

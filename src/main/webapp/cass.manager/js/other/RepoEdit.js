@@ -7,15 +7,6 @@ var RepoEdit = (function(RepoEdit){
 	 * Server Manager methods to affect the server, but that shouldn't be built by the UI developer)
 	 */
 
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span><span class="contactKey" style="display:none;">'+pk+'</span>';
-	}
-	
 	function buildDisplay(data, myContainerId){
 		$('#datum').remove();
 	    if ($('#datum').length == 0)
@@ -31,7 +22,7 @@ var RepoEdit = (function(RepoEdit){
 
 	    $( "#datum" ).on( "click", ".label:contains('decrypt')",function(){
 	        var field = $(this).parents("[field]").first();
-	        if (field.find("[field='@type']").children("p").text() == EbacEncryptedValue.type)
+	        if (field.find("[field='@type']").children("p").text() == new EcEncryptedValue().type)
 	            decryptField(field);
 	    });
 
@@ -118,7 +109,7 @@ var RepoEdit = (function(RepoEdit){
 	    if(AppController.identityController.selectedIdentity == null)
 	    	return;
 	    
-	    var obj = EcEncryptedValue.encryptValueOld(text, id, fieldx, AppController.identityController.selectedIdentity.ppk.toPk()).atIfy();
+	    var obj = EcEncryptedValue.encryptValueOld(text, id, fieldx, AppController.identityController.selectedIdentity.ppk.toPk());
 	    if (obj != null)
 	    {
 	        if (field.find("[field='@id']").length > 0)
@@ -133,11 +124,16 @@ var RepoEdit = (function(RepoEdit){
 	    var fld = field.attr("field");
 	    
 	    var e = new EcEncryptedValue();
-		e.copyFrom(JSGlobal.JSON.parse(serializeField(field)));
+		e.copyFrom(JSON.parse(serializeField(field)));
 	    
-	    var result = e.decryptIntoString();
+	    var result = e.decryptIntoObject();
 	    if (result != null)
 	        replaceField(field,result);
+	    else
+	    	result = e.decryptIntoString();
+	    
+	    if(result != null)
+	    	replaceField(field, result);
 	}
 
 	function verifyField(field)
@@ -150,7 +146,7 @@ var RepoEdit = (function(RepoEdit){
 	    return data.verify();
 	}
 	
-	function replaceField(field,obj,parentField)
+	function replaceField(field,data,parentField)
 	{
 		field.children("section").remove();
 	    field.children("p").remove();
@@ -158,11 +154,12 @@ var RepoEdit = (function(RepoEdit){
 	    field.children("ul").remove();
 	    field.children("span").remove();
 	    
+	    var obj;
 	    try{
-	    	obj = JSON.parse(obj.toJson());
+	    	obj = JSON.parse(data.toJson());
 	    }catch(ex){
 	    	try{
-		        obj=JSON.parse(obj);
+		        obj=JSON.parse(data);
 		    }
 		    catch(ex)
 		    {
@@ -194,49 +191,54 @@ var RepoEdit = (function(RepoEdit){
 	            }
 	        );
 	    }
-	    else if (isArray(obj))
+	    else if (isArray(data))
 	    {
 	        field.append("<ul style='margin-left:30px;'></ul>");
-	        for (var index in obj)
+	        for (var index in data)
 	        {
-	            addField(field,parentField,obj[index]);
+	            addField(field,parentField,data[index]);
 	        }
 	    }
 	    else
 	    {
 	        if (field.children("label").text() == "@owner" || field.parent().parent().children("label").text() == "@owner")
 	        {
-	        	var contact = $(createContactSmall(obj));
-	            field.append(contact);            
-	            contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(obj.replaceAll("-----.*-----","").trim())
-	            });
+	        	var contact = $(createContactSmall(data));
+	            field.append(contact);  
 	        }
 	        else
-	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+obj+"</p>");
+	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+data+"</p>");
 	    }
-	    decorate(field,field.children("label").text(), obj);
+	    decorate(field,field.children("label").text(), data);
 	    contextualEnable(field,obj);
 	    field.effect("highlight", {}, 1500);
 	}
 
 	function addField(field,f,value)
 	{
-	    if (field.children("div").length > 0)
-	    {
-	        field.children("div").append('<div field="'+f+'"></div>');
-	        field.children("div").children("[field='"+f+"']").append('<label>'+f+'</label>');
-	        replaceField(field.children("div").children("[field='"+f+"']"),value, f);
-	    }
-	    else if (field.children("ul").length > 0)
-	    {
-	    	var idx = field.children("ul").children("li").length;
-	        field.children("ul").append('<li field="'+f+'['+idx+']"></li>');
-	        //field.children("ul").children("li").last().append('<label>'+(field.children("ul").children("li").length-1)+'</label>');
-	        replaceField(field.children("ul").children("li").last(),value,f);
-	    }
+		if(f === "privateEncrypted"){
+			field.children("div").append('<div field="'+f+'"></div>');
+			field.children("div").children("[field='"+f+"']").append("<label class='prefix'>Encrypt on Save</label>");
+			field.children("div").children("[field='"+f+"']").append("<span id='privateEncryptedSwitchContainer'/>")
+			
+			ViewManager.showView(new Switch(function(ev){
+				alert("test");
+			}, value), "#privateEncryptedSwitchContainer");
+		}else{
+			if (field.children("div").length > 0)
+		    {
+		        field.children("div").append('<div field="'+f+'"></div>');
+		        field.children("div").children("[field='"+f+"']").append('<label>'+f+'</label>');
+		        replaceField(field.children("div").children("[field='"+f+"']"),value, f);
+		    }
+		    else if (field.children("ul").length > 0)
+		    {
+		    	var idx = field.children("ul").children("li").length;
+		        field.children("ul").append('<li field="'+f+'['+idx+']"></li>');
+		        //field.children("ul").children("li").last().append('<label>'+(field.children("ul").children("li").length-1)+'</label>');
+		        replaceField(field.children("ul").children("li").last(),value,f);
+		    }	
+		}
 	}
 
 	function decorate(field,f,obj)
@@ -247,17 +249,23 @@ var RepoEdit = (function(RepoEdit){
 	    {
 	    	var buttonStr = "<section style='display:block' class='clearfix'>"+decorationButton("X","Deletes this field.");
 	    	
-	    	if(obj != undefined && obj["@signature"] != undefined)
+	    	if(obj != undefined && obj["signature"] != undefined)
 	    	{
 	    		buttonStr += decorationButton("verify","Verifies the object using the @signature to ensure it has not been changed by anyone but the @owner.")
 	    	}
     		
 	    	
-	    	if(obj != undefined && obj["@owner"] == undefined)
+	    	if(obj != undefined && obj["owner"] == undefined)
 	    	{
 	    		buttonStr += decorationButton("+","Add a new field to the object."); 
 	    	}else if(AppController.identityController.owns(obj)){
-	    		buttonStr+=decorationButton("+","Add a new field to the object.")+decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
+	    		buttonStr+=decorationButton("+","Add a new field to the object.");
+	    		if(obj.isAny(new EcEncryptedValue().getTypes())){
+	    			buttonStr+=decorationButton("decrypt","Decrypts the field so that it is no longer private.");
+	    		}else{
+	    			buttonStr+=decorationButton("encrypt","Encrypts the field so nobody but you and the people you authorize can see the data.");
+	    		}
+	    		
 	    	}
 	    		
 	    	buttonStr += "</section>";
@@ -328,6 +336,8 @@ var RepoEdit = (function(RepoEdit){
 	
 	function serializeField(field,child)
 	{
+		if(field.children("span").length == 1)
+			return field.find("input[type='checkbox']").prop("checked");
 	    if (field.children("p").length == 1)
 	        return field.children("p").text();
 	    else if (field.children("span.contactKey").length == 1)
@@ -377,7 +387,7 @@ var RepoEdit = (function(RepoEdit){
 	 * 		for overlays -> overlayContainer
 	 * 		for modals -> modalContainer
 	 */
-	RepoEdit.prototype.display = function(containerId, callback)
+	RepoEdit.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		this.containerId = containerId;
@@ -406,13 +416,7 @@ var RepoEdit = (function(RepoEdit){
 			})
 		});
 		
-		$(containerId).load("partial/other/repoEdit.html", function(){			
-			
-			buildDisplay(data, containerId);
-			
-			if(callback != undefined)
-				callback();
-		});
+		buildDisplay(data, containerId);
 	}
 	
 	RepoEdit.prototype.addField = function(field, f, value){

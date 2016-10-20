@@ -8,6 +8,51 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 /**
+ *  AES encrypted private key and display name. Contains Initialization Vectors,
+ *  but not secrets. Used to encrypt private identities for storage on remote
+ *  systems.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EbacCredential = function() {
+    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_2);
+};
+EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credential";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
+    /**
+     *  AES Initialization Vector used to decode PPK.
+     */
+    prototype.iv = null;
+    /**
+     *  AES encrypted Private Key in PEM form.
+     */
+    prototype.ppk = null;
+    /**
+     *  AES Initialization Vector used to decode displayName.
+     */
+    prototype.displayNameIv = null;
+    /**
+     *  AES encrypted display name for identity.
+     */
+    prototype.displayName = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (EbacCredential.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Ebac.context_0_2, EbacCredential.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(EbacCredential.TYPE_0_2);
+        a.push(EbacCredential.TYPE_0_1);
+        return a;
+    };
+}, {atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  Message used to retrieve credentials from a remote system.
  *  
  *  TODO: Vulnerable to replay attacks.
@@ -88,51 +133,6 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
         return a;
     };
 }, {credentials: {name: "Array", arguments: ["EbacCredential"]}, contacts: {name: "Array", arguments: ["EbacContact"]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  AES encrypted private key and display name. Contains Initialization Vectors,
- *  but not secrets. Used to encrypt private identities for storage on remote
- *  systems.
- *  
- *  @author fritz.ray@eduworks.com
- */
-var EbacCredential = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_2);
-};
-EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credential";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
-    /**
-     *  AES Initialization Vector used to decode PPK.
-     */
-    prototype.iv = null;
-    /**
-     *  AES encrypted Private Key in PEM form.
-     */
-    prototype.ppk = null;
-    /**
-     *  AES Initialization Vector used to decode displayName.
-     */
-    prototype.displayNameIv = null;
-    /**
-     *  AES encrypted display name for identity.
-     */
-    prototype.displayName = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (EbacCredential.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Ebac.context_0_2, EbacCredential.TYPE_0_2);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(EbacCredential.TYPE_0_2);
-        a.push(EbacCredential.TYPE_0_1);
-        return a;
-    };
-}, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  AES encrypted public key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt public identities for storage on remote

@@ -1,14 +1,5 @@
 AssertionViewScreen = (function(AssertionViewScreen){
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function displayAssertion(assertion)
 	{	    
 	    $("#assertionViewId").text(assertion.id);
@@ -17,11 +8,6 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    if(agent != undefined){
 	    	var contact = $(createContactSmall(agent.toPem()));
 	    	$("#assertionViewAgent").html(contact);
-	    	contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(agent.toPem().replaceAll("-----.*-----","").trim())
-            });
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewAgentContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -37,11 +23,6 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    if(sub != undefined){
 	    	var contact = $(createContactSmall(sub.toPem()));
 	    	$("#assertionViewSubject").html(contact);
-	    	contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(sub.toPem().replaceAll("-----.*-----","").trim())
-            });
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewSubjectContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -208,12 +189,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
  	    		var pem = assertion.owner[i];
  	    		
  	    		var contact = $(createContactSmall(pem));
- 	    		$("#assertionViewOwner").append(contact);            
- 	    		contact.children(".qrcodeCanvas").qrcode({
- 	                width:128,
- 	                height:128,
- 	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
- 	            });   
+ 	    		$("#assertionViewOwner").append(contact); 
  	    	}
 	    }
 	    
@@ -241,79 +217,74 @@ AssertionViewScreen = (function(AssertionViewScreen){
 		ViewManager.getView("#assertionViewMessageContainer").displayAlert(err, "getLevel");
 	}
 	
-	AssertionViewScreen.prototype.display = function(containerId, callback)
+	AssertionViewScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
 		
 		if(data.id != null)
 		{
-			ScreenManager.replaceHistory(this, containerId, {"id":data.id} )
+			ScreenManager.setScreenParameters({"id":data.id});
+		}
+			
+		ViewManager.showView(new MessageContainer("assertionView"), "#assertionViewMessageContainer");
+		
+		$("#assertionViewSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
+		$("#assertionViewSearchBtn").click(function(event){
+			event.preventDefault();
+			ScreenManager.changeScreen(new AssertionSearchScreen(data))
+		});
+		
+		$("#assertionViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
+		$("#assertionViewBtn").click(function(event){
+			event.preventDefault();
+		});
+		
+		$("#assertionToggleUnknownBtn").click(function(ev){
+			ev.preventDefault();
+			if($("#assertionToggleUnknownBtn #toggleKeyword").text() == "Show"){
+				$("#assertionToggleUnknownBtn #toggleKeyword").text("Hide");
+				$(".unknown").slideDown();
+			}else{
+				$("#assertionToggleUnknownBtn #toggleKeyword").text("Show");
+				$(".unknown").slideUp()	
+			}
+			
+			
+		})
+		
+		
+		if(AppController.identityController.canEdit(data)){
+			$("#editAssertionBtn").click(function(event){
+				event.preventDefault();
+				ScreenManager.changeScreen(new AssertionEditScreen(data))
+			})
+		}else{
+			$("#editAssertionBtn").remove();
 		}
 		
-		$(containerId).load("partial/screen/assertionView.html", function(){
-			
-			ViewManager.showView(new MessageContainer("assertionView"), "#assertionViewMessageContainer");
-			
-			$("#assertionViewSearchBtn").attr("href", "#"+AssertionSearchScreen.prototype.displayName);
-			$("#assertionViewSearchBtn").click(function(event){
-				event.preventDefault();
-				ScreenManager.changeScreen(new AssertionSearchScreen(data))
-			});
-			
-			$("#assertionViewBtn").attr("href", "#"+AssertionViewScreen.prototype.displayName);
-			$("#assertionViewBtn").click(function(event){
-				event.preventDefault();
-			});
-			
-			$("#assertionToggleUnknownBtn").click(function(ev){
-				ev.preventDefault();
-				if($("#assertionToggleUnknownBtn #toggleKeyword").text() == "Show"){
-					$("#assertionToggleUnknownBtn #toggleKeyword").text("Hide");
-					$(".unknown").slideDown();
-				}else{
-					$("#assertionToggleUnknownBtn #toggleKeyword").text("Show");
-					$(".unknown").slideUp()	
-				}
-				
-				
+		if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+			$("#assertionViewDeleteBtn").remove();
+		}else{
+			$("#assertionViewDeleteBtn").click(function(){
+				ModalManager.showModal(new ConfirmModal(function(){
+					EcRepository._delete(data, function(){
+						ScreenManager.changeScreen(new AssertionSearchScreen());
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete assertion";
+						ViewManager.getView("#assertionViewMessageContainer").displayAlert(err)
+					});
+					ModalManager.hideModal();
+				}, "Are you sure you want to delete this assertion?"))
 			})
+		}
+		
+		
+		EcAssertion.get(data.id, function(result){
+			data = result;
+			displayAssertion(result);
+		}, errorRetrieving);
 			
-			
-			if(AppController.identityController.canEdit(data)){
-				$("#editAssertionBtn").click(function(event){
-					event.preventDefault();
-					ScreenManager.changeScreen(new AssertionEditScreen(data))
-				})
-			}else{
-				$("#editAssertionBtn").remove();
-			}
-			
-			if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
-				$("#assertionViewDeleteBtn").remove();
-			}else{
-				$("#assertionViewDeleteBtn").click(function(){
-					ModalManager.showModal(new ConfirmModal(function(){
-						EcRepository._delete(data, function(){
-							ScreenManager.changeScreen(new AssertionSearchScreen());
-						}, function(err){
-							if(err == undefined)
-								err = "Unable to connect to server to delete assertion";
-							ViewManager.getView("#assertionViewMessageContainer").displayAlert(err)
-						});
-						ModalManager.hideModal();
-					}, "Are you sure you want to delete this assertion?"))
-				})
-			}
-			
-			
-			EcAssertion.get(data.id, function(result){
-				data = result;
-				displayAssertion(result);
-			}, errorRetrieving);
-			
-			if(callback != undefined)
-				callback();
-		});
 	};
 	
 	return AssertionViewScreen;

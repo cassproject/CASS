@@ -89,7 +89,7 @@ $("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("align
 $("#alignmentTypeSelect").append("<option/>");
 $("#alignmentTypeSelect").children().last().attr("value", "LR-LRMI").attr("alignment", "requires").text("Requires - Store in LR Sandbox");
 
-$("#main").append("<label title='gpg --export-secret-key -a \"Your Name\"'>LR Signing Key:</label><input type='file' id='pgpkey'/>");
+$("#main").append("<label title='gpg --export-secret-key -a \"Your Name\"'>LR Signing Key (if storing in the Learning Registry):</label><input type='file' id='pgpkey'/>");
 
 var lrUsername = "";
 var lrPassword = "";

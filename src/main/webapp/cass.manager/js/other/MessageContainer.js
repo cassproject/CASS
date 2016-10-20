@@ -52,25 +52,20 @@ var MessageContainer = (function(MessageContainer){
 	 * 		for overlays -> overlayContainer
 	 * 		for modals -> modalContainer
 	 */
-	MessageContainer.prototype.display = function(containerId, callback)
+	MessageContainer.prototype.display = function(containerId)
 	{	
 		var prefix = this.prefix;
-		
-		$(containerId).load("partial/other/messageContainer.html", function(){			
 			
-			$(containerId).find("[id]").each(function(i, e){
-				$(e).attr("id", prefix+"-"+$(e).attr("id"))
-			});
-			
-			$(containerId).find(".messageContainer").each(function(i, e){
-				$(e).find('button').click(function(){
-					hideMessageBox("#"+$(e).attr("id"));
-				})
-			})
-			
-			if(callback != undefined)
-				callback();
+		$(containerId).find("[id]").each(function(i, e){
+			$(e).attr("id", prefix+"-"+$(e).attr("id"))
 		});
+		
+		$(containerId).find(".messageContainer").each(function(i, e){
+			$(e).find('button').click(function(){
+				hideMessageBox("#"+$(e).attr("id"));
+			})
+		})
+	
 	}
 	
 	MessageContainer.prototype.displayAlert = function(msg, msgId){

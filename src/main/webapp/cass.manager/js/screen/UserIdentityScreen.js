@@ -6,19 +6,72 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    $("#addKeyIv").val("");
 	    for (var index in identities)
 	    {
-	    	var ppk = identities[index].ppk.toPem().replaceAll("\r?\n","");
-	        var name = identities[index].displayName;
+	    	var wrapper = $("<div class='identityKey' style='min-height:1.33rem;'></div>");
+	    	
+	    	var id = identities[index];
+	    	
+	    	var ppk = id.ppk.toPem().replaceAll("\r?\n","");
+	        var name = id.displayName;
 	        
-	        var element = $("<span></span>");
+	        var element = $("<span class='has-tip'></span>");
 	        
 	        element.attr("title", ppk);
-	        element.click(function(){
+	        
+	        var clickFunction = function(){
 	        	copyTextToClipboard(ppk);
 	        	alert("Copied Key to Clipboard");
-	        });
+	        };
+	        
+	        element.on("click", clickFunction);
 	        element.text(name);
-	        $("#identityKeys").append(element);
-	        $("#identityKeys").append($("<br/>"));
+	        wrapper.append(element);
+	        
+	        var editNameBtn = $("<i class='fa fa-pencil float-right'></i>");
+	        
+	        editNameBtn.on("click", function(){
+	        	var text = element.text();
+	        	
+	        	editNameBtn.addClass("hide")
+	        	
+	        	element.off("click");
+	        	element.removeClass("has-tip");
+	        	element.attr("contenteditable", true);
+	        	element.focus();
+	        	var sel, range
+	        	if (window.getSelection && document.createRange) {
+	                range = document.createRange();
+	                range.selectNodeContents(element.get(0));
+	                range.collapse(true);
+	                sel = window.getSelection();
+	                sel.removeAllRanges();
+	                sel.addRange(range);
+	            } else if (document.body.createTextRange) {
+	                range = document.body.createTextRange();
+	                range.moveToElementText(element.get(0));
+	                range.collapse(true);
+	                range.select();
+	            }
+	        	
+	        	element.blur(function(){
+	        		if(element.text() == ""){
+	        			element.text(text);
+	        		}else if(text != element.text()){
+	        			id.displayName=element.text();
+	        			ModalManager.showModal(new SaveIdModal());
+	        		}
+	        		
+	        		element.off("click");
+	        		element.on("click", clickFunction)
+	        		element.addClass("has-tip");
+	        		
+	        		editNameBtn.removeClass("hide")
+	        		
+	        	});
+	        });
+	        
+	        wrapper.append(editNameBtn);
+	        
+	        $("#identityKeys").append(wrapper);
 	        
 	        var invitationOption = $("<option></option>");
 	        invitationOption.attr("value", ppk);
@@ -69,11 +122,29 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	           
 	            fr.onload=(function(file,fr){
 	                return function(event){
-	                	AppController.identityController.addKey(fr.result, file.name, function(){
+	                	AppController.identityController.addKey(fr.result, file.name.replace(".pem", ""), function(){
 	                		refreshIdentities(EcIdentityManager.ids);
+	                		
+	            			AppController.loginController.loginServer.fetchServerAdminKeys(function(keys){
+	            				for(var i = 0; i < EcIdentityManager.ids.length; i++){
+	            					if(keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1){
+	            						AppController.loginController.setAdmin(true);
+	            						ViewManager.getView("#menuContainer").checkAdmin()
+	            					}
+	            				}
+	            			},function(){
+	            				
+	            			});
+	            			
+	            			if(EcIdentityManager.ids.length == 1){
+	            				AppController.identityController.select(EcIdentityManager.ids[0].ppk.toPem());
+	            			}
+	                		
 	                		ModalManager.showModal(new SaveIdModal());
 	                		
 	                		$("#addKeyPpk").replaceWith($("#addKeyPpk").val('').clone(true));
+	                		
+	                		ViewManager.getView("#menuContainer").rebuildIdentityList();
 	                	});
 	                }
 	            })(file,fr);
@@ -84,12 +155,7 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    }
 	    else
 	    {
-	    	AppController.identityController.addKey(fr.result, file.name, function(){
-	    		refreshIdentities(EcIdentityManager.ids);
-	    		ModalManager.showModal(new SaveIdModal());
-	    		
-	    		$("#addKeyPpk").replaceWith($("#addKeyPpk").val('').clone(true));
-	    	});
+
 	    }
 	}
 	
@@ -183,83 +249,78 @@ UserIdentityScreen = (function(UserIdentityScreen){
 	    }, null, null);
 	}
 	
-	UserIdentityScreen.prototype.display = function(containerId, callback)
+	UserIdentityScreen.prototype.display = function(containerId)
 	{
 		var screen = this;
-		
-		$(containerId).load("partial/screen/userIdentity.html", function(){
 			
-			if(LoginController.getLoggedIn()){
-				checkNewContact(screen, containerId);
-				refreshContacts(EcIdentityManager.contacts);
-				checkContactGrants();
+		if(LoginController.getLoggedIn()){
+			checkNewContact(screen, containerId);
+			refreshContacts(EcIdentityManager.contacts);
+			checkContactGrants();
+		}
+		
+		refreshIdentities(EcIdentityManager.ids);
+		
+		
+		$("#identityServerName").text(AppController.serverController.selectedServerName);
+		$("#identityServerUrl").text(AppController.serverController.selectedServerUrl);
+		
+		$("#importAlias").click(function(event){
+			event.preventDefault();
+			
+			$("#importContainer").removeClass("hide");
+			$("#generateContainer").addClass("hide");
+		});
+		
+		$("#generateAlias").click(function(event){
+			event.preventDefault();
+			
+			$("#generateContainer").removeClass("hide");
+			$("#importContainer").addClass("hide");
+		})
+		
+		$("#importIdentity").click(function(event){
+			event.preventDefault();
+			
+			activateKey($('#addKeyPpk')[0].files);
+			
+		});
+		
+		$("#generateIdentity").click(function(){
+			var name = $("#generateIdentityName").val(); 
+			AppController.identityController.generateIdentity(function(identity){
+				 refreshIdentities(EcIdentityManager.ids);
+				 download(identity.displayName+'.pem',identity.ppk.toPem());
+				 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
+			 }, name);
+		});
+		
+		$("#openSaveModal").click(function(){
+			ModalManager.showModal(new SaveIdModal());
+		});
+		
+		$("#generateInvitation").click(function(){
+			var input = $("#shareContactName").val();
+			
+			if(input == undefined || input == ""){
+				
+				return;
 			}
 			
-			refreshIdentities(EcIdentityManager.ids);
-			
-			
-			$("#identityServerName").text(AppController.serverController.selectedServerName);
-			$("#identityServerUrl").text(AppController.serverController.selectedServerUrl);
-			
-			$("#importAlias").click(function(event){
-				event.preventDefault();
+			var identityPpk = EcPpk.fromPem($("#shareContactIdentity").val());
+			if(identityPpk == undefined || identityPpk == ""){
 				
-				$("#importContainer").removeClass("hide");
-				$("#generateContainer").addClass("hide");
-			});
-			
-			$("#generateAlias").click(function(event){
-				event.preventDefault();
+				return;
+			}	
 				
-				$("#generateContainer").removeClass("hide");
-				$("#importContainer").addClass("hide");
-			})
-			
-			$("#importIdentity").click(function(event){
-				event.preventDefault();
-				
-				activateKey($('#addKeyPpk')[0].files);
-			});
-			
-			$("#generateIdentity").click(function(){
-				var name = $("#generateIdentityName").val(); 
-				AppController.identityController.generateIdentity(function(identity){
-					 refreshIdentities(EcIdentityManager.ids);
-					 download(identity.displayName+'.pem',identity.ppk.toPem());
-					 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
-				 }, name);
-			});
-			
-			$("#openSaveModal").click(function(){
-				ModalManager.showModal(new SaveIdModal());
-			});
-			
-			$("#generateInvitation").click(function(){
-				var input = $("#shareContactName").val();
-				
-				if(input == undefined || input == ""){
-					
-					return;
-				}
-				
-				var identityPpk = EcPpk.fromPem($("#shareContactIdentity").val());
-				if(identityPpk == undefined || identityPpk == ""){
-					
-					return;
-				}	
-					
-				var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
+			var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
 
-			    var iv = EcAes.newIv(32);
-			    string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
-			    
-			    copyTextToClipboard(string);
-			    
-			    alert("Invitation has been copied to your clipboard for sharing. \n\n Be careful who you share this with, anyone who accesses the invitation will be able to identify you");
-			});
-			
-			if(callback != undefined)
-				callback();
+		    var iv = EcAes.newIv(32);
+		    string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
+		    
+		    copyTextToClipboard(string);
+		    
+		    alert("Invitation has been copied to your clipboard for sharing. \n\n Be careful who you share this with, anyone who accesses the invitation will be able to identify you");
 		});
 	};
 	

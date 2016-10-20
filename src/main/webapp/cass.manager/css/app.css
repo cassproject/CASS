@@ -403,6 +403,10 @@ li.cass-competency-level:before {
 	display:inline-block;
 }
 
+#appMenuUserIdentityPage::after{
+	margin-top:0.5px;
+}
+
 #datum [field]:hover p{
 	background-color: rgba(173, 216, 230, 0.4);
 }
@@ -431,11 +435,23 @@ li.cass-competency-level:before {
 .ownershipDisplay .qrcodeCanvas{
 	display:none;
 	position: absolute;
-    bottom: 1rem;
     padding: 10px;
     background-color: white;
     border: 1px solid black;
-    box-shadow: 6px 0px 4px rgba(0,0,0,.4)
+    box-shadow: 6px 0px 4px rgba(0,0,0,.4);
+    z-index:5;
+    bottom:1rem;
+}
+
+.ownershipDisplay.right .qrcodeCanvas{
+	left:1rem;
+	bottom: inherit;
+	top: 1rem;
+}
+
+.ownershipDisplay.bottom .qrcodeCanvas{
+	top:1rem;
+	bottom: inherit;
 }
 
 .ownershipDisplay:hover .qrCodeCanvas{
@@ -567,6 +583,11 @@ li.cass-competency-level:before {
 	cursor: pointer;
 }
 
+.toggleSelectData{
+	position:absolute;
+	margin:5px 15px;
+}
+
 .contextMenu{
 	position:absolute;
 	box-shadow:6px 0px 4px rgba(0,0,0,.4);
@@ -596,4 +617,21 @@ li.cass-competency-level:before {
 
 #readerRow{
 	display:block;
+}
+
+.identityKey:hover{
+	background-color:#E0EEF3;
+}
+.identityKey .fa-pencil{
+	display: none;
+	margin-top:5px;
+	margin-right:5px;
+	cursor:pointer;
+}
+.identityKey:hover .fa-pencil{
+	display:block;
+}
+
+.identityKey .fa-pencil:hover{
+	color:grey;
 }

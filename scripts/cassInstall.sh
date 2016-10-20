@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# To install CASS:
+# 1. wget https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh
+# 2. chmod +x cassInstall.sh
+# 3. sudo ./cassInstall.sh
+#
+# This is best run on a fresh and new machine. If installing on the same machine as other services, it is recommended to run this script piecewise and by hand.
+
 if [ "$EUID" -ne 0 ];
   then echo "Please run as root."
   exit
@@ -140,11 +147,20 @@ echo Installing HTTPD...
 yum -q -y install httpd
 fi
 
+if [ "$1" -ne 0 ];
+ then
 echo -----
-echo Recommended Version: 0.1.0-SNAPSHOT
+echo Available Recommended Versions:
+
+git ls-remote http://github.com/cassproject/CASS | grep \\. | grep -v - | sed 's/refs\/heads\///g' | awk '{print $2}' | sort
+
+echo
 echo Experimental Version: master
 
-read -p "Version to install: " -i "0.1.0-SNAPSHOT" branch
+read -p "Version to install: " -i "master" branch
+ else
+branch=$1
+fi
 
 echo -----
 echo Downloading CASS Repo...
@@ -159,7 +175,7 @@ if [ "$platformDebian" -ne 0 ];
  then
 echo -----
 echo Configuring Apache
-	num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
+num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
 	if [ "$num" -eq 0 ]
 	 then
 

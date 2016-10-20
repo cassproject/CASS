@@ -23,27 +23,33 @@
                 </ul>
             </li>
         </ul>
-        <ul class="top-bar-right menu">
+        <ul class="top-bar-right dropdown menu" data-dropdown-menu>
             <li>
+                <a id="identityMenu" style="font-size: x-large;padding: 4px 10px 4px 10px;" class="menu-text">👤</a>
                 <span id="status" class="status" style="display:none;">Busy...</span>
-                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
-                <button id="loginButton" type="button" class="button" data-open="login">Login</button>
-                <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
+                <ul class="menu vertical">
+                    <li><a class="loggedIn" onclick="getShareString();" style="display:none;">Invite</a></li>
+                    <li><a class="loggedIn" data-open="changePassword" style="display:none;">Change Password</a></li>
+                    <li><a id="loginButton" data-open="login">Login</a></li>
+                    <li><a id="logoutButton" onclick="logout();" style="display:none;">Logout</a></li>
+                </ul>
             </li>
         </ul>
     </div>
     <br>
     <div class="row" id="main">
         <div id="evidenceProcess" class="topLevel large-12 columns large-centered">
+            <h3>To calculate whether an individual has competence in a competency:</h3><p>1. Select a contact using one of the provided tools under the '...' at the right.</p>
             <button class="float-right button tiny" data-open="contactSelector">...</button>
             <h5 id="selectedContact" class="contactStyle">No Selected Contact</h3>
-            <br>
+            <p>2. Next, select an competency.</p>
             <button class="float-right button tiny" data-open="competencySelector">...</button>
             <h5 id="selectedCompetency" class="competency">No Selected Competency</h3>
-            <br>
+            <p>3. Click 'Detect Competence' and follow the provided instructions.</p>
             <button class="float-right button" id="detectButton" onclick="detectCompetence();">Detect Competence</button>
-            <br>
-            <br>
+            <br><br>
+            <h3>Additional Information:</h3>
+            <p>Please note that the provided method is <u>one possible method</u> of determining competence. The graph shows how information flows from other competencies into the queried competency, and is only concerned with determining the truth of the queried competency.</p><p>As a result, the states of all competencies except for the queried competency <u>do not represent the truth states of those competencies</u>.</p>
         </div>
     </div>
     <div class="small reveal" data-reveal id="competencySelector">
@@ -111,6 +117,17 @@
                 </div>
             </li>
         </ul>
+    </div>
+    
+    <div class="small reveal" id="changePassword" data-reveal>
+        <h3>Change Password</h3>
+        <form>
+            <input id="currentUsername" type="text" placeholder="Username" />
+            <input id="currentPassword" type="password" placeholder="Current Password" />
+            <input id="newPassword1" type="password" placeholder="New Password" />
+            <input id="newPassword2" type="password" placeholder="New Password (Repeat)" />
+            <a class="button float-right" onclick="changePassword();">Change</a>
+        </form>
     </div>
 
     <div class="small reveal" id="login" data-reveal>

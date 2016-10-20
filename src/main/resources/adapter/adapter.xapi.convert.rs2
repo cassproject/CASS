@@ -1,9 +1,9 @@
 
 xapiObj=#toObject(obj="@obj");
 
-actorAsCassIdentity=xapiObj.get(actor="").xapiAgentToPk();
+actorAsCassIdentity=xapiObj.get(actor="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 actorMbox=xapiObj.get(actor="").toArray(wrap="true").getMbox();
-authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk();
+authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
 
 objectId=xapiObj.get(object="").get(id="");
@@ -40,35 +40,35 @@ coverage=#toDouble(obj="1.0");
 
 convert=#object(
 	subject=actorAsCassIdentity.cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
 		).valueSet()
 	),
 	agent=authorityAsCassIdentity.cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
 		).valueSet()
 	),
 	assertionDate=#date(input=xapiObj.get(timestamp=""),raw="true").debug(prefix="Assertion Date:").cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
 		).valueSet()
 	),
 	expirationDate=#date(input=xapiObj.get(timestamp=""),addYears="1",raw="true").debug(prefix="Expiration Date:").cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
 		).valueSet()
 	),
 	decayFunction=#string(str="t").cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
@@ -77,7 +77,7 @@ convert=#object(
 	competency="@competency",
 	confidence=xapiScore,
 	evidence=#xapiEndpoint().add(z="statements?statementId=",zz=xapiObj.get(id="")).debug(prefix="Evidence:").cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"),
+		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
@@ -89,7 +89,7 @@ convert=#object(
 convert=convert.put(_key=#context(),_value="http://schema.eduworks.com/cass/0.2/");
 convert=convert.put(_key=#type(),_value="assertion");
 convert=convert.put(_key=#id(),_value=#repoEndpoint().add(y="xapi/get/",z=xapiObj.get(id="")));
-convert=convert.put(_key=#owner(),_value=#xapiMePpk().rsaPpkToPk().toArray(_wrap="true"));
+convert=convert.put(_key=#owner(),_value=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"));
 
 convert=#toObject(obj="@cvt").put(_key=#signature(),_value=#rsaSign(obj=#string(str="@cvt"),ppk=#xapiMePpk()).toArray(_wrap="true")).call(cvt=convert);
 

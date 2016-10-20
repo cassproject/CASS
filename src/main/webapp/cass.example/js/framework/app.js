@@ -14,9 +14,9 @@ var repo = new EcRepository();
 EcRepository.caching = true;
 
 var identity = null;
-var frameworksTemplate = $("#frameworks").outerHTML();
+var frameworksTemplate = $("#frameworks").outerHTML().replace('style="display:none;"',"");
 var cassFrameworkTemplate = $(".cass-framework").outerHTML();
-var competencyTemplate = $("#competency").outerHTML();
+var competencyTemplate = $("#competency").outerHTML().replace('style="display:none;"',"");
 var cassLevelTemplate = $(".cass-competency-level").outerHTML();
 $(".cass-competency-level").remove();
 var cassCompetencyTemplate = $(".cass-competency").outerHTML();
@@ -50,5 +50,5 @@ function helpAssist(selector) {
 timeout(function () {
     repo.autoDetectRepository();
     loginServer.setDefaultIdentityManagementServer(repo.selectedServer);
-    loginServer.configureFromServer(function(obj){frameworkSearch();},error);
+    loginServer.configureFromServer(function(obj){},error);
 });

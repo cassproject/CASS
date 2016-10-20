@@ -26,42 +26,37 @@ RepoCreateScreen = (function(RepoCreateScreen){
 		errorContainer.html("");
 	}
 	
-	RepoCreateScreen.prototype.display = function(containerId, callback)
+	RepoCreateScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
+	
+		if(data == undefined)
+		{
+			var t = new Thing();
+			t.generateId(AppController.repoInterface.selectedServer);
+			t.name = "New Object";
+	    
+			if(AppController.identityController.selectedIdentity != undefined)
+		    {
+		    	t.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+		    }
+			
+			data = t;
+		}
+		else if(data.hasOwner == undefined && data["@owner"] == undefined)
+		{
+			if(AppController.identityController.selectedIdentity != undefined)
+		    {
+		    	data["@owner"] = [];
+		    	data["@owner"][0] = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
+		    }
+		}
 		
-		$(containerId).load("partial/screen/repoCreate.html", function(){
-			
-			if(data == undefined)
-			{
-				var t = new Thing();
-				t.generateId(AppController.repoInterface.selectedServer);
-				t.name = "New Object";
-		    
-				if(AppController.identityController.selectedIdentity != undefined)
-			    {
-			    	t.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
-			    }
-				
-				data = t;
-			}
-			else if(data.hasOwner == undefined && data["@owner"] == undefined)
-			{
-				if(AppController.identityController.selectedIdentity != undefined)
-			    {
-			    	data["@owner"] = [];
-			    	data["@owner"][0] = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
-			    }
-			}
-			
-			ViewManager.showView(new RepoEdit(data, "#repoCreateSaveBtn", "#repoCreateMessageContainer"), "#repoCreateData", function(){
-				if(data.name == "New Object" && AppController.identityController.selectedIdentity == undefined)
-					 ViewManager.getView("#repoCreateMessageContainer").displayWarning("You are Creating a Public Repository Item, this item can be modified by anyone", "warning");
-			});
-			
-			if(callback != undefined)
-				callback();
+		ViewManager.showView(new RepoEdit(data, "#repoCreateSaveBtn", "#repoCreateMessageContainer"), "#repoCreateData", function(){
+			if(data.name == "New Object" && AppController.identityController.selectedIdentity == undefined)
+				 ViewManager.getView("#repoCreateMessageContainer").displayWarning("You are Creating a Public Repository Item, this item can be modified by anyone", "warning");
 		});
+
 	};
 	
 	return RepoCreateScreen;

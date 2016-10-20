@@ -148,3 +148,23 @@ function trim(str, characters) {
 
   return str.replace(new RegExp('^[' + result + ']+|['+ result +']+$', 'g'), '');
 }
+
+function createContactSmall(pem) {
+    var ident = AppController.identityController.lookup(pem);
+    var contact = '<span class="ownershipDisplay has-tip" tabindex pk="' + pem + '">' + '<span class="qrcodeCanvas"></span>' + '<span class="contactText" >' + ident.displayName + '</span>' + '</span>';
+    
+    timeout(function(){
+        $('[pk="'+pem+'"]').children(".qrcodeCanvas:empty").html("").qrcode({
+	            width: 256,
+	            height: 256,
+	            text: forge.util.decode64(pem.replaceAll(/[\r\n]/g, "").trim())
+        }).off("click.qr").on("click.qr",null,null,
+        	function(){
+        		copyTextToClipboard(pem);
+        		alert("Public key copied to clipboard.");
+        	}
+        );
+    });
+    
+    return contact;
+}

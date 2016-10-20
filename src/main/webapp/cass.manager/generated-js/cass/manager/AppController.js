@@ -9,6 +9,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.main = function(args) {
         AppSettings.loadSettings();
         AppController.repoInterface.autoDetectRepository();
+        EcRepository.caching = true;
         if (AppController.repoInterface.selectedServer == null) {
             AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
         } else {
@@ -17,7 +18,9 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         }
         AppController.serverController.setRepoInterface(AppController.repoInterface);
         AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
-        AppController.loginServer.configure(AppSettings.defaultServerUserSalt, AppSettings.defaultServerUserIterations, AppSettings.defaultServerUserLength, AppSettings.defaultServerPasswordSalt, AppSettings.defaultServerPasswordIterations, AppSettings.defaultServerPasswordLength, AppSettings.defaultServerSecretSalt, AppSettings.defaultServerSecretIterations);
+        AppController.loginServer.configureFromServer(null, function(p1) {
+            alert(p1);
+        });
         AppController.loginController.loginServer = AppController.loginServer;
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());

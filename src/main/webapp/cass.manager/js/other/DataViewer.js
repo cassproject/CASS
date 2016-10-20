@@ -21,15 +21,6 @@
  */
 var DataViewer = (function(DataViewer){
 
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function sortData(prefix, data, callbacks){
 		if(data == undefined){
 			return;
@@ -174,6 +165,8 @@ var DataViewer = (function(DataViewer){
 			return;
 		}
 		
+		$(".toggleSelectData").removeClass("hide");
+		
 		if(self.dataStore == undefined)
 			self.dataStore = {};
 		
@@ -263,6 +256,12 @@ var DataViewer = (function(DataViewer){
 		row.on("click", ".datum-select", function(ev){
 			if(callbacks != undefined && callbacks["clickDataSelect"] != undefined){
 				callbacks["clickDataSelect"](ev, id, datum, prefix);
+			}
+			
+			if($(".dataView").find(".datum-select:checked").size() == $("#"+prefix+"-data .row").size()){
+				$(".toggleSelectData").text("Unselect All");
+			}else{
+				$(".toggleSelectData").text("Select All");
 			}
 			
 			if($(ev.target).is(":checked")){
@@ -496,14 +495,6 @@ var DataViewer = (function(DataViewer){
 			el.find(".datum-name").css("font-size", "0.8rem");
 		}
 		
-		el.find(".ownershipDisplay").each(function(i, element){
-			$(element).children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
-            });  
-		})
-		
 		el.find("a.datum-name").click(function(ev){
 			ev.preventDefault();
 			if(callbacks != undefined && callbacks["clickName"] != undefined){
@@ -538,6 +529,7 @@ var DataViewer = (function(DataViewer){
 		
 		row.find(".deselectData").click(function(ev){
 			deselectAll(prefix)
+			$(".toggleSelectData").text("Select All");
 		})
 		
 		row.find(".fa-clone").click(function(){
@@ -645,6 +637,8 @@ var DataViewer = (function(DataViewer){
 		$("#"+prefix+"-progress").addClass("hide");
 		$("#"+prefix+"-menu").addClass("hide");
 		$("#"+prefix+"-data").addClass("hide");
+		
+		$(".selectData").addClass("hide");
 	}
 	
 	function showProgressMessage(prefix){
@@ -681,31 +675,68 @@ var DataViewer = (function(DataViewer){
 	 * 		for overlays -> overlayContainer
 	 * 		for modals -> modalContainer
 	 */
-	DataViewer.prototype.display = function(containerId, callback){	
+	DataViewer.prototype.display = function(containerId){	
 		var prefix = this.prefix;
 		
 		var callbacks = this.callbacks;
 		
 		var self = this;
+					
 		
-		$(containerId).load("partial/other/dataViewer.html", function(){			
-			
-			$(containerId).find("[id]").each(function(i, e){
-				$(e).attr("id", prefix+"-"+$(e).attr("id"))
-			});
-			
-			var menu;
-			if(callbacks != undefined && callbacks["buildMenu"] != undefined){
-				menu = callbacks["buildMenu"]();
+		$(containerId).find("[id]").each(function(i, e){
+			$(e).attr("id", prefix+"-"+$(e).attr("id"))
+		});
+		
+		var menu;
+		if(callbacks != undefined && callbacks["buildMenu"] != undefined){
+			menu = callbacks["buildMenu"]();
+		}else{
+			menu = defaultBuildMenu(prefix, self, callbacks);
+		}
+		
+		$("#"+prefix+"-menu").append(menu);
+		$("#"+prefix+"-menu").foundation();
+		
+		
+		$(".toggleSelectData").click(function(){
+			if($(".dataView").find(".datum-select:checked").size() == $("#"+prefix+"-data .row").size()){
+				deselectAll(prefix);
+				$(".toggleSelectData").text("Select All");
 			}else{
-				menu = defaultBuildMenu(prefix, self, callbacks);
+				$(".dataView").find(".row").addClass("selected");
+				
+				$(".dataView").addClass("selecting");
+				
+				$(".dataView .datum-select").prop("checked", true);
+				
+				$(".dataViewMenu .dataViewSelected").text($(".dataView").find(".datum-select:checked").size());
+				
+				if(!$("#"+prefix+"-menu").is(":visible")){
+					$("#"+prefix+"-menu").slideDown();
+				}
+				
+				$(".toggleSelectData").text("Unselect All");
+				
+				var allOwned = true;
+				var allData = getSelectedData(prefix, self);
+				for(var i in allData){
+					if(!AppController.identityController.owns(allData[i])){
+						allOwned = false;
+						$("#"+prefix+"-menu").find(".fa-group").addClass("hide");
+						$("#"+prefix+"-menu").find(".fa-trash").addClass("hide");
+					}
+				}
+				if(allOwned){
+					$("#"+prefix+"-menu").find(".fa-group").removeClass("hide");
+					$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
+				}
+				
+				if(AppController.loginController.getAdmin()){
+					$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
+				}
 			}
 			
-			$("#"+prefix+"-menu").append(menu);
-			$("#"+prefix+"-menu").foundation();
 			
-			if(callback != undefined)
-				callback();
 		});
 	}
 	

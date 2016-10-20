@@ -1,26 +1,26 @@
 var UserIdentityScreen = function() {
-    EcScreen.call(this);
+    CassManagerScreen.call(this);
 };
-UserIdentityScreen = stjs.extend(UserIdentityScreen, EcScreen, [], function(constructor, prototype) {
+UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "identity";
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return UserIdentityScreen.displayName;
     };
-}, {}, {});
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userIdentity.html";
+    };
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
             var hashSplit = (window.document.location.hash.split("?"));
             if (LoginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
                 ScreenManager.startupScreen = new UserIdentityScreen();
-                ModalManager.showModal(new LoginModal(function() {
+                ModalManager.showModal(new LoginModal(function(o) {
                     ModalManager.hideModal();
                 }, function() {
                     if (!LoginController.getLoggedIn()) {
-                        ScreenManager.replaceScreen(new WelcomeScreen(), null);
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
                     } else {
                         ScreenManager.reloadCurrentScreen(null);
                     }

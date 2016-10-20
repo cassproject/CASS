@@ -15,9 +15,10 @@ function insertNewCompetency() {
         return;
     }
     $("#newCompetency").foundation('open');
+    $("#newCompetencyName").select();
 }
 
-function newCompetency(frameworkId) {
+function newCompetency(close) {
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
     if (frameworkId == null) {
         error("Framework not selected.");
@@ -36,7 +37,10 @@ function newCompetency(frameworkId) {
     }
     EcRepository.save(f, function () {
         insertCompetencyIntoFramework(f.shortId(), frameworkId);
-        $("#newCompetency").foundation('close');
+        if (close == null || close == true)
+            $("#newCompetency").foundation('close');
+        else
+            $("#newCompetencyName").select();
     }, error);
 }
 
@@ -55,6 +59,7 @@ function editCompetency(competencyId) {
         $("#editCompetencyName").val(competency.name);
         $("#editCompetencyDescription").val(competency.description);
         $("#editCompetency").foundation('open');
+        $("#editCompetency").select();
     }, error);
 }
 
@@ -94,27 +99,26 @@ function editCompetencyDelete() {
 
 function populateCompetency(id) {
     if (id == null) return;
-    EcRepository.get(id, function (competency) {
-        var ui = $("[url='" + competency.shortId() + "']");
-        ui.children(".cass-competency-name").text(competency.name);
-        if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
-            $("#selectedCompetency").text(competency.name).show();
-            $("#selectedFramework").hide();
-        }
-        ui.find(".cass-competency-description").text(competency.description);
-        var url = competency.shortId();
-        if (competency.sameAs != null)
-            url = competency.sameAs;
-        ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
-            e.preventDefault();
-            if (confirm("This will navigate to another page. Continue?"))
-                window.open($(this).attr("href"), "_blank");
-        });
-        if (identity != null && competency.canEdit(identity.ppk.toPk()))
-            $(".canEditCompetency").show();
-        else
-            $(".canEditCompetency").hide();
-    }, error);
+    var competency =EcRepository.getBlocking(id);
+    var ui = $("[url='" + competency.shortId() + "']");
+    ui.children(".cass-competency-name").text(competency.name);
+    if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
+        $("#selectedCompetency").text(competency.name).show();
+        $("#selectedFramework").hide();
+    }
+    ui.find(".cass-competency-description").text(competency.description);
+    var url = competency.shortId();
+    if (competency.sameAs != null)
+        url = competency.sameAs;
+    ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
+        e.preventDefault();
+        if (confirm("This will navigate to another page. Continue?"))
+            window.open($(this).attr("href"), "_blank");
+    });
+    if (identity != null && competency.canEdit(identity.ppk.toPk()))
+        $(".canEditCompetency").show();
+    else
+        $(".canEditCompetency").hide();
 }
 
 function insertExistingCompetency() {
@@ -130,8 +134,11 @@ function insertExistingCompetency() {
     repo.search(searchString, null,
         function (competencies) {
             $("#insertExistingCompetencyResults").html(competencyTemplate);
-            $("#insertExistingCompetencyResults").children("#competency").html("");
             var results = $("#insertExistingCompetencyResults").children("#competency");
+            if (competencies.length == 0)
+                results.html("No competencies found.");
+            else
+                results.html("");
             for (var i = 0; i < competencies.length; i++) {
                 var competency = competencies[i];
                 results.append(cassCompetencyTemplate);
@@ -141,9 +148,9 @@ function insertExistingCompetency() {
                     ui.find(".cass-competency-name").text(competency.name);
                 ui.find(".cass-competency-description").text(competency.description);
                 if ($("[url='" + frameworkId + "']").find("[url='" + competency.shortId() + "']").length > 0)
-                    ui.find(".cass-competency-actions").prepend("<a class='button disabled float-right'>Exists</a>");
+                    ui.find(".cass-competency-actions").html("<a class='button small disabled float-right'>Exists</a>");
                 else
-                    ui.find(".cass-competency-actions").prepend("<a class='button float-right' onclick='insertExistingCompetencyIntoFramework();'>Insert</a>");
+                    ui.find(".cass-competency-actions").html("<a class='button small float-right' onclick='insertExistingCompetencyIntoFramework();'>Insert</a>");
                 ui.find(".cass-competency-relations").html("");
             }
             results.foundation();

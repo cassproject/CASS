@@ -1,15 +1,8 @@
 WelcomeScreen = (function(WelcomeScreen){
 	
-	WelcomeScreen.prototype.display = function(containerId, callback)
+	WelcomeScreen.prototype.display = function(containerId)
 	{
-		var view = this;
-		var welcomeMessage = this.welcomeMessage;
-		$(containerId).load("partial/screen/welcome.html", function(){
-
-			
-			if(callback != undefined)
-				callback();
-		});
+		
 	};
 	
 	return WelcomeScreen;

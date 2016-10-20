@@ -1,57 +1,73 @@
-<div style="padding-top:10px">
+<div style="padding-top: 10px">
 	<div class="row">
-		<div id="frameworkViewMessageContainer" class="small-6 columns small-centered" >
-		</div>
+		<div id="frameworkViewMessageContainer" class="small-6 columns small-centered"></div>
 	</div>
-	<div class="row" >
+	<div class="row">
 		<div class="large-12 small-12 columns">
-			<div class="row" style="margin-top:0px;padding-bottom:0px">
-				<div class="large-12 columns large-centered" style="margin-bottom:0px">
-					<a id="frameworkViewSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
-					
-					<span id="frameworkViewDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Delete</span>
-		   		</div>
+			<div class="row" style="margin-top: 0px; padding-bottom: 0px">
+				<div class="large-12 columns large-centered" style="margin-bottom: 0px">
+					<a id="frameworkViewSearchBtn" class="label" style="box-shadow: 6px 0px 4px rgba(0, 0, 0, .4); cursor: pointer;">Search</a>
+					<span id="frameworkViewDeleteBtn" class="float-right label alert"
+						style="box-shadow: 6px 0px 4px rgba(0, 0, 0, .4); cursor: pointer;">Delete</span>
+				</div>
 			</div>
-		
-			<div class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
-				<div class="small-12 columns">
+			<div ec-container="framework" class="row callout"
+				style="box-shadow: 6px 0px 4px rgba(0, 0, 0, .4); margin-bottom: 0px">
+				<div ec-template="framework" class="small-12 columns">
 					<div class="row">
 						<div class="small-12 columns">
 							<h3>
-								<i class="fa fa-unlock-alt hide" id="frameworkViewerPrivateSymbol"></i>
-								<span class="frameworkViewerName">Framework</span>
-								<a class="float-right button" id="editFrameworkBtn">Edit</a>
-								<br>
-								<small style="font-size:45%"><i id="frameworkViewerId"></i></small>
-							</h3>	
+								<i class="fa fa-unlock-alt hide" id="frameworkViewerPrivateSymbol"></i> <span class="frameworkViewerName"
+									ec-field="name">Framework</span> <a class="float-right button" id="editFrameworkBtn">Edit</a> <br>
+								<small style="font-size: 45%"><i id="frameworkViewerId" ec-field="id"></i></small>
+							</h3>
 						</div>
 					</div>
-					
 					<div class="row">
 						<div class="small-12 columns">
-							<p id="frameworkViewerDescription" style="padding-left:1rem;"></p>
+							<p id="frameworkViewerDescription" style="padding-left: 1rem;" ec-field="description"></p>
 						</div>
 					</div>
-                    
-                    <canvas id="frameworkViewCanvas" width="1280" height="700"></canvas>
-
-					
+					<canvas id="frameworkViewCanvas" width="1280" height="700"></canvas>
 					<div class="row" id="frameworkViewerContents">
 						<div class="small-12 columns">
 							<span class="prefix">Competencies: </span>
-					
-							<ul id="frameworkContents" style="list-style:none;"></ul>
+							<ul ec-container="competency" id="frameworkContents" style="list-style: none;">
+								<li class='competency' ec-template="competency" ec-attr-id style='margin-top: 0.5rem; cursor: pointer;'>
+									<div class='competencyDetails'>
+										<h6 class='competencyName' style='margin-bottom: 0px;'>
+											<a ec-field="name"></a><br>
+											<small class='competencyId' ec-field="id"></small>
+										</h6>
+										<small class='competencyDescription' ec-field="description" style='font-size: 65%; margin-left: 1.25rem;'></small>
+										<ul ec-container="level" ec-attr-shortId ec-condition-shortId-competency ec-attr-id ec-condition-id-competency class='competencyLevels' style='list-style: none; line-height: 0.75rem;'>
+											<li ec-template="level" class='level' ec-attr-id>
+												<a ec-field="name"></a><small ec-field="title"></small><p ec-field="description"></p>
+											</li>
+										</ul>
+										<ul ec-container="relation" ec-attr-shortId ec-condition-shortId-source ec-condition-shortId-target ec-attr-id ec-condition-id-source ec-condition-id-target class='competencyRelations' style='list-style: none; line-height: 0.75rem;'>
+											<li ec-template="relation" class='relation' ec-attr-id="">
+												<small>
+													<a ec-reference="source" ec-field="name" ec-attr-id>
+													</a>
+													<i class='relationType' ec-field="relationType"></i>
+													<a ec-reference="target" ec-field="name" ec-attr-id>
+													</a>
+												</small>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</div>
-					
 					<div class="row">
 						<div class="small-12 columns">
-							<span class="prefix">Ownership: </span>
-							<span id="frameworkViewOwner">Public</span>
+							<span class="prefix">Ownership: </span> <span id="frameworkViewOwner">Public</span>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>  
+		</div>
 	</div>
 </div>

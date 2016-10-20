@@ -49,19 +49,22 @@ function populateContactsActual() {
     var contactFilter = $("#contactSearch").val();
     if (contactFilter != null)
         contactFilter = contactFilter.trim();
+    
     if (EcIdentityManager.ids !== undefined && EcIdentityManager.ids.length != 0)
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var identity = EcIdentityManager.ids[i];
             var ui = $("#contactsList").append(contactsContact).children().last();
             ui.find("a").hide();
             ui.find("#identity").attr("title", identity.ppk.toPk().toPem()).text("(You) " + identity.displayName);
-            ui.attr("aria-selected", true);
+            if (i == 0)
+                ui.attr("aria-selected", true);
             if (contactFilter != null && contactFilter != "") {
                 if (identity.displayName != null)
                     if (identity.displayName.indexOf(contactFilter) == -1)
                         ui.hide();
             }
         }
+    
     if (EcIdentityManager.contacts !== undefined && EcIdentityManager.contacts.length != 0)
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var contact = EcIdentityManager.contacts[i];
@@ -75,7 +78,6 @@ function populateContactsActual() {
                             ui.hide();
                 }
             }
-
         }
 
     if (EcIdentityManager.contacts == undefined || EcIdentityManager.contacts.length == 0)

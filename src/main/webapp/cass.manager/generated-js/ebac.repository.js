@@ -15,6 +15,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     constructor.toEncryptedValue = function(d, hideType) {
+        if (d.privateEncrypted != null) 
+            delete (d)["privateEncrypted"];
         d.updateTimestamp();
         var v = new EcEncryptedValue();
         if (!hideType) 
@@ -344,13 +346,13 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
  *  
  *  @author fritz.ray@eduworks.com
  */
-var File = function() {
-    EcRemoteLinkedData.call(this, General.context, File.myType);
+var GeneralFile = function() {
+    EcRemoteLinkedData.call(this, General.context, GeneralFile.myType);
 };
-File = stjs.extend(File, EcRemoteLinkedData, [], function(constructor, prototype) {
+GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/general/0.1/file";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/general/0.2/file";
-    constructor.myType = File.TYPE_0_2;
+    constructor.myType = GeneralFile.TYPE_0_2;
     /**
      *  Optional checksum of the file, used to verify if the file has been
      *  transmitted correctly.
@@ -377,17 +379,17 @@ File = stjs.extend(File, EcRemoteLinkedData, [], function(constructor, prototype
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (File.TYPE_0_1.equals(this.type)) {
+        if (GeneralFile.TYPE_0_1.equals(this.type)) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
-            this.setContextAndType(General.context_0_2, File.TYPE_0_2);
+            this.setContextAndType(General.context_0_2, GeneralFile.TYPE_0_2);
         }
     };
     prototype.getTypes = function() {
         var a = new Array();
-        a.push(File.TYPE_0_2);
-        a.push(File.TYPE_0_1);
+        a.push(GeneralFile.TYPE_0_2);
+        a.push(GeneralFile.TYPE_0_1);
         return a;
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
@@ -396,7 +398,13 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.selectedServer = null;
     constructor.caching = false;
     constructor.cache = new Object();
-    prototype.precache = function(urls) {
+    constructor.fetching = new Object();
+    prototype.precache = function(urls, success) {
+        if (urls == null) {
+            if (success != null) 
+                success();
+            return;
+        }
         var cacheUrls = new Array();
         for (var i = 0; i < urls.length; i++) {
             var url = urls[i];
@@ -404,8 +412,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 cacheUrls.push(url.replace(this.selectedServer, ""));
             }
         }
-        if (cacheUrls.length == 0) 
+        if (cacheUrls.length == 0) {
+            if (success != null) 
+                success();
             return;
+        }
         var fd = new FormData();
         fd.append("data", JSON.stringify(cacheUrls));
         var me = this;
@@ -420,6 +431,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     if (EcRepository.caching) 
                         (EcRepository.cache)[d.shortId()] = d;
                 }
+                if (success != null) 
+                    success();
             }, null);
         });
     };
@@ -438,13 +451,27 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.get = function(url, success, failure) {
         if (EcRepository.caching) 
             if ((EcRepository.cache)[url] != null) {
+                setTimeout(function() {
+                    success((EcRepository.cache)[url]);
+                }, 0);
+                return;
+            }
+        if ((EcRepository.fetching)[url] > new Date().getMilliseconds() - 1000) {
+            setTimeout(function() {
+                EcRepository.get(url, success, failure);
+            }, 100);
+            return;
+        }
+        (EcRepository.fetching)[url] = new Date().getMilliseconds();
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
+            if ((EcRepository.cache)[url] != null) {
                 success((EcRepository.cache)[url]);
                 return;
             }
-        var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
             fd.append("signatureSheet", p1);
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
+                delete (EcRepository.fetching)[url];
                 var d = new EcRemoteLinkedData("", "");
                 d.copyFrom(p1);
                 if (d.getFullType() == null) {
@@ -455,8 +482,35 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 if (EcRepository.caching) 
                     (EcRepository.cache)[url] = d;
                 success(d);
-            }, failure);
+            }, function(p1) {
+                delete (EcRepository.fetching)[url];
+                if (failure != null) 
+                    failure(p1);
+            });
         });
+    };
+    constructor.getBlocking = function(url) {
+        if (EcRepository.caching) 
+            if ((EcRepository.cache)[url] != null) {
+                return (EcRepository.cache)[url];
+            }
+        var fd = new FormData();
+        var p1 = EcIdentityManager.signatureSheet(60000, url);
+        fd.append("signatureSheet", p1);
+        EcRemote.async = false;
+        EcRemote.postExpectingObject(url, null, fd, function(p1) {
+            var d = new EcRemoteLinkedData("", "");
+            d.copyFrom(p1);
+            if (d.getFullType() == null) {
+                return;
+            }
+            (EcRepository.cache)[url] = d;
+        }, null);
+        EcRemote.async = true;
+        var result = (EcRepository.cache)[url];
+        if (!EcRepository.caching) 
+            (EcRepository.cache)[url] = null;
+        return result;
     };
     /**
      *  Search a repository for JSON-LD compatible data.
@@ -644,7 +698,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         return s;
     };
     constructor.save = function(data, success, failure) {
-        console.warn("Watch out! " + data.id + " is being saved with the repository save function, no value checking will occur");
         if (data.invalid()) {
             var msg = "Cannot save data. It is missing a vital component.";
             if (failure != null) 
@@ -657,6 +710,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcRepository._save(encrypted, success, failure);
         } else {
+            if (data.privateEncrypted != null) 
+                delete (data)["privateEncrypted"];
             EcRepository._save(data, success, failure);
         }
     };
@@ -712,7 +767,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @param failure
      */
     constructor._delete = function(data, success, failure) {
-        console.warn("Watch out! " + data.id + " is being deleted with the repository delete function, no clean up delete operations will occur");
         EcRepository.DELETE(data, success, failure);
     };
     constructor.DELETE = function(data, success, failure) {
@@ -724,11 +778,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcRemote._delete(data.shortId(), signatureSheet, success, failure);
         });
     };
-}, {cache: "Object"}, {});
+}, {cache: "Object", fetching: "Object"}, {});
 var EcFile = function() {
-    File.call(this);
+    GeneralFile.call(this);
 };
-EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
+EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
             var msg = "Competency Name can not be empty";
@@ -772,7 +826,7 @@ EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
                 p1 = encrypted.decryptIntoObject();
                 p1.privateEncrypted = true;
             }
-            if (p1 != null && p1.isA(File.myType)) {
+            if (p1 != null && p1.isA(GeneralFile.myType)) {
                 f.copyFrom(p1);
                 if (success != null) 
                     success(f);
@@ -785,7 +839,7 @@ EcFile = stjs.extend(EcFile, File, [], function(constructor, prototype) {
     };
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
-        queryAdd = new File().getSearchStringByType();
+        queryAdd = new GeneralFile().getSearchStringByType();
         if (query == null || query == "") 
             query = queryAdd;
          else 

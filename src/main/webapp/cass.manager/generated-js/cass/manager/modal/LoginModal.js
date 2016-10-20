@@ -9,7 +9,10 @@ LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototyp
     prototype.onClose = null;
     prototype.loginSuccess = null;
     prototype.warning = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
     };
-}, {onClose: "Callback0", loginSuccess: "Callback0", onClose: "Callback0"}, {});
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/login.html";
+    };
+}, {onClose: "Callback0", loginSuccess: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});

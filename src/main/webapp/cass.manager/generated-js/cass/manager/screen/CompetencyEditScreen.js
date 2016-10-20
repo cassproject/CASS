@@ -1,38 +1,33 @@
-var CompetencyEditScreen = function(data) {
+var CompetencyEditScreen = function(data, frameworkIdToAddCompetencyTo) {
     CassManagerScreen.call(this);
     this.data = data;
+    this.frameworkId = frameworkIdToAddCompetencyTo;
 };
 CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
     constructor.displayName = "competencyEdit";
-    prototype.data = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
+    prototype.frameworkId = null;
     prototype.getDisplayName = function() {
         return CompetencyEditScreen.displayName;
     };
-}, {data: "Object", reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencyEdit.html";
+    };
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var firstParam = hashSplit[1];
-                if (firstParam.startsWith("id")) {
-                    var paramSplit = (firstParam.split("="));
-                    if (paramSplit.length > 1) {
-                        var id = paramSplit[1];
-                        EcCompetency.get(id, function(data) {
-                            ScreenManager.replaceScreen(new CompetencyEditScreen(data), CassManagerScreen.reloadShowLoginCallback);
-                        }, function(p1) {
-                            ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback);
-                        });
-                        ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                        return;
-                    }
-                }
+            var urlParameters = (EcView.urlParameters());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcCompetency.get(id, function(data) {
+                    ScreenManager.replaceScreen(new CompetencyEditScreen(data, urlParameters["frameworkId"]), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
             }
-            ScreenManager.startupScreen = new CompetencyEditScreen(null);
+            ScreenManager.startupScreen = new CompetencyEditScreen(null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });

@@ -11,37 +11,27 @@ RepoSearchScreen = stjs.extend(RepoSearchScreen, CassManagerScreen, [], function
     prototype.query = null;
     prototype.ownership = null;
     prototype.types = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet!");
-    };
     prototype.getDisplayName = function() {
         return RepoSearchScreen.displayName;
     };
-}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, reloadLoginCallback: "Callback0", reloadShowLoginCallback: "Callback0"}, {});
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/repoSearch.html";
+    };
+}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RepoSearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var types = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("types")) 
-                        types = (paramSplit[i].split("=")[1].split(","));
-                }
-                if (query != null || ownership != null || types != null) {
-                    ScreenManager.startupScreen = new RepoSearchScreen(null, query, ownership, types);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
+            var urlParameters = (EcView.urlParameters());
+            var query = urlParameters["query"];
+            var ownership = urlParameters["ownership"];
+            var ts = urlParameters["types"];
+            var types = null;
+            if (ts != null) 
+                types = (ts.toString().split(","));
+            if (query != null || ownership != null || types != null) {
+                ScreenManager.startupScreen = new RepoSearchScreen(null, query, ownership, types);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
             }
             ScreenManager.startupScreen = new RepoSearchScreen(null, null, null, null);
             CassManagerScreen.showLoginModalIfReload();

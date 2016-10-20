@@ -1,4 +1,4 @@
-frameworks=#add(a='(@type:"framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search')).toArray();
+frameworks=#add(a='(@type:"framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
 #getFrameworks=frameworks;
 
@@ -43,7 +43,14 @@ addCompetencyToFramework=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
 	op=#toObject(obj="@framework").put(
-		competency=#toObject(obj="@framework").get(competency="").append(append=#repoEndpoint().add(p="data/",q="schema.eduworks.com.cass.0.2.competency",r="/",s="@competencyId"))
+		competency=#toObject(
+			obj="@framework"
+		).get(competency="").append(
+			append=#repoEndpoint().add(
+				p="data/",
+				q="schema.eduworks.com.cass.0.2.competency",r="/",s="@competencyId"
+			)
+		).removeDuplicates()
 	).skyrepoPut(
 		type="@type",
 		id="@id",

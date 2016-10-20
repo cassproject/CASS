@@ -25,42 +25,39 @@ var CreateUserModal = (function(CreateUserModal){
 		    );
 	}
 	
-	CreateUserModal.prototype.display = function(containerId, callback)
+	CreateUserModal.prototype.display = function(containerId)
 	{
 		var view = this;
-		$(containerId).load("partial/modal/createUser.html", function(){
-			ViewManager.showView(new MessageContainer("createUser"), "#createMessageContainer");
+		
+		ViewManager.showView(new MessageContainer("createUser"), "#createMessageContainer");
+		
+		if($(AppController.serverController.serverList).size() > 0 ){
+			$("#createServer").html("");
+		}
+		for(var serverName in AppController.serverController.serverList){
+			var serverUrl = AppController.serverController.serverList[serverName];
 			
-			if($(AppController.serverController.serverList).size() > 0 ){
-				$("#createServer").html("");
-			}
-			for(var serverName in AppController.serverController.serverList){
-				var serverUrl = AppController.serverController.serverList[serverName];
-				
-				var option = $("<option></option>");
-				option.attr("value", serverUrl);
-				option.text(serverName);
-				
-				if(serverName == AppController.serverController.selectedServerName)
-					option.attr("selected", "selected")
-				
-				$("#createServer").append(option);
-			}
+			var option = $("<option></option>");
+			option.attr("value", serverUrl);
+			option.text(serverName);
 			
-			$("#createAddServer").click(function(){
-				ModalManager.showModal(new AddServerModal(function(){
-					ModalManager.showModal(new CreateUserModal());
-				}));
-			});
+			if(serverName == AppController.serverController.selectedServerName)
+				option.attr("selected", "selected")
 			
-			$("#createForm").submit(function(event){
-				event.preventDefault();
-				submitCreateForm(view);
-			})
-			
-			if(callback != undefined)
-				callback();
+			$("#createServer").append(option);
+		}
+		
+		$("#createAddServer").click(function(){
+			ModalManager.showModal(new AddServerModal(function(){
+				ModalManager.showModal(new CreateUserModal());
+			}));
 		});
+		
+		$("#createForm").submit(function(event){
+			event.preventDefault();
+			submitCreateForm(view);
+		})
+		
 	}
 	
 	return CreateUserModal;

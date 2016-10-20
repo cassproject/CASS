@@ -7,17 +7,17 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var Ebac = function() {};
-Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
-    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
-    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
-    constructor.context = "http://schema.eduworks.com/ebac/0.2";
-}, {}, {});
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
     constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
     constructor.context = "http://schema.eduworks.com/general/0.2";
+}, {}, {});
+var Ebac = function() {};
+Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
+    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
+    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
+    constructor.context = "http://schema.eduworks.com/ebac/0.2";
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary fields for
@@ -75,6 +75,24 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += this.getFullType().replace("http://", "").replaceAll("/", ".");
         this.id += "/";
         this.id += generateUUID();
+        this.id += "/";
+        this.id += new Date().getTime();
+    };
+    /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository).
+     *  
+     *  @param server
+     *             Base URL of the server's repository functionality.
+     */
+    prototype.assignId = function(server, newId) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += "data/";
+        this.id += this.getFullType().replace("http://", "").replaceAll("/", ".");
+        this.id += "/";
+        this.id += newId;
         this.id += "/";
         this.id += new Date().getTime();
     };

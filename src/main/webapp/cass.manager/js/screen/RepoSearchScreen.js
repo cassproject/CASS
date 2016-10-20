@@ -261,61 +261,56 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		var query = this.query;
 		var ownership = this.ownership;
 		urlTypes = this.types;
+	
+		ViewManager.showView(new MessageContainer("repoSearch"), "#repoSearchMessageContainer");
 		
-		$(containerId).load("partial/screen/repoSearch.html", function(){
-			ViewManager.showView(new MessageContainer("repoSearch"), "#repoSearchMessageContainer");
-			
-			ViewManager.showView(new DataViewer("repoResults", {}), "#repoSearchResults");
-			
-			$("#repoSearchBtn").click(function(event){
-				event.preventDefault();
-				runRepoSearch();
-			});
-			$("#repoSearchOwnership").change(function(event){
-				event.preventDefault();
-				runRepoSearch();
-			});
-			
-			
-			$("#repoSearchText").keypress(function(e){
-				var key = e.which;
-				if(key == 13)  // the enter key code
-				{
-					runRepoSearch();
-				}
-			});
-			if(query != null)
-				$("#repoSearchText").val(query);
-			
-			if(LoginController.getLoggedIn())
-			{
-				$("#repoSearchOwnership").attr("max", 4);
-				$("#repoSearchOwnershipLoggedIn").removeClass("hide");
-				$("#repoSearchOwnershipPublic").addClass("hide");
-			}
-			else
-			{
-				$("#repoSearchOwnershipLoggedIn").addClass("hide");
-				$("#repoSearchOwnershipPublic").removeClass("hide");
-			}
-			if(ownership != null){
-				if(ownership == "public")
-					ownership = 1;
-				else if(ownership == "owned")
-					ownership = 3;
-				else if(ownership == "me")
-					ownership = 4
-				
-				$("#repoSearchOwnership").val(ownership);
-			}
-				
-			AppController.repoInterface.listTypes(displayTypes, errorDisplayingTypes);
-			
+		ViewManager.showView(new DataViewer("repoResults", {}), "#repoSearchResults");
+		
+		$("#repoSearchBtn").click(function(event){
+			event.preventDefault();
 			runRepoSearch();
-			
-			if(callback != undefined)
-				callback();
 		});
+		$("#repoSearchOwnership").change(function(event){
+			event.preventDefault();
+			runRepoSearch();
+		});
+		
+		
+		$("#repoSearchText").keypress(function(e){
+			var key = e.which;
+			if(key == 13)  // the enter key code
+			{
+				runRepoSearch();
+			}
+		});
+		if(query != null)
+			$("#repoSearchText").val(query);
+		
+		if(LoginController.getLoggedIn())
+		{
+			$("#repoSearchOwnership").attr("max", 4);
+			$("#repoSearchOwnershipLoggedIn").removeClass("hide");
+			$("#repoSearchOwnershipPublic").addClass("hide");
+		}
+		else
+		{
+			$("#repoSearchOwnershipLoggedIn").addClass("hide");
+			$("#repoSearchOwnershipPublic").removeClass("hide");
+		}
+		if(ownership != null){
+			if(ownership == "public")
+				ownership = 1;
+			else if(ownership == "owned")
+				ownership = 3;
+			else if(ownership == "me")
+				ownership = 4
+			
+			$("#repoSearchOwnership").val(ownership);
+		}
+			
+		AppController.repoInterface.listTypes(displayTypes, errorDisplayingTypes);
+		
+		runRepoSearch();
 	};
 	
 	return RepoSearchScreen;

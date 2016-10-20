@@ -1,173 +1,4 @@
 /**
- *  TODO: Test case where an absent relation is in the framework.
- *  @author fritz.ray@eduworks.com
- */
-var EcAlignment = function() {
-    Relation.call(this);
-};
-EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
-    prototype.setName = function(name) {
-        this.name = name;
-    };
-    prototype.setDescription = function(description) {
-        this.description = description;
-    };
-    prototype.save = function(success, failure) {
-        if (this.source == null || this.source == "") {
-            var msg = "Source Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.target == null || this.target == "") {
-            var msg = "Target Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.relationType == null || this.relationType == "") {
-            var msg = "Relation Type cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
-    };
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
-    };
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var relation = new EcAlignment();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
-            }
-            if (p1.isAny(relation.getTypes())) {
-                relation.copyFrom(p1);
-                if (success != null) 
-                    success(relation);
-            } else {
-                var msg = "Resultant object is not a relation.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
-    };
-    constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = new EcAlignment().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
-    constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
-        var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
-        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
-        if (noVersion == sourceId) {
-            query += " AND (source:\"" + sourceId + "\"))";
-        } else {
-            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
-        }
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != sourceId && (obj)["source"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
-    constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
-        var query = "";
-        query = "(" + new EcAlignment().getSearchStringByType();
-        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
-        if (noVersion == competencyId) {
-            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\"))";
-        } else {
-            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\"))";
-        }
-        query += " OR @encryptedType:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType.replace(Cass.context + "/", "") + "\")";
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var alignment = new EcAlignment();
-                    if (p1[i].isAny(alignment.getTypes())) {
-                        alignment.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcAlignment.myType)) {
-                            var obj = val.decryptIntoObject();
-                            if ((obj)["source"] != competencyId && (obj)["source"] != noVersion && (obj)["target"] != competencyId && (obj)["target"] != noVersion) {
-                                continue;
-                            }
-                            alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
-                        }
-                    }
-                    ret[i] = alignment;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
-}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
  *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
  *  called afterwards in any order. WARNING: The modifications of ownership and
@@ -541,6 +372,175 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
     };
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  TODO: Test case where an absent relation is in the framework.
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAlignment = function() {
+    Relation.call(this);
+};
+EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.source == null || this.source == "") {
+            var msg = "Source Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.target == null || this.target == "") {
+            var msg = "Target Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == "") {
+            var msg = "Relation Type cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null && this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var relation = new EcAlignment();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(relation.getTypes())) {
+                relation.copyFrom(p1);
+                if (success != null) 
+                    success(relation);
+            } else {
+                var msg = "Resultant object is not a relation.";
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = new EcAlignment().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
+        var query = "";
+        query = "(" + new EcAlignment().getSearchStringByType();
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
+        if (noVersion == sourceId) {
+            query += " AND (source:\"" + sourceId + "\"))";
+        } else {
+            query += " AND (source:\"" + sourceId + "\" OR source:\"" + noVersion + "\"))";
+        }
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["source"] != sourceId && (obj)["source"] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
+        var query = "";
+        query = "(" + new EcAlignment().getSearchStringByType();
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
+        if (noVersion == competencyId) {
+            query += " AND (source:\"" + competencyId + "\" OR target:\"" + competencyId + "\"))";
+        } else {
+            query += " AND (source:\"" + competencyId + "\" OR source:\"" + noVersion + "\" OR target:\"" + competencyId + "\" OR target:\"" + noVersion + "\"))";
+        }
+        query += " OR @encryptedType:\"" + EcAlignment.myType + "\" OR @encryptedType:\"" + EcAlignment.myType.replace(Cass.context + "/", "") + "\")";
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["source"] != competencyId && (obj)["source"] != noVersion && (obj)["target"] != competencyId && (obj)["target"] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
  *  @author fritz.ray@eduworks.com
  */
 var EcLevel = function() {
@@ -847,6 +847,24 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                     console.error(msg);
             }
         }, failure);
+    };
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        var competency = new EcCompetency();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            p1.privateEncrypted = true;
+        }
+        if (p1.isAny(competency.getTypes())) {
+            competency.copyFrom(p1);
+            return competency;
+        } else {
+            var msg = "Retrieved object was not a competency";
+            console.error(msg);
+            return null;
+        }
     };
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";

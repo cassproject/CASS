@@ -11,7 +11,10 @@ ContactGrantModal = stjs.extend(ContactGrantModal, EcModal, [], function(constru
     prototype.token = null;
     prototype.signature = null;
     prototype.onClose = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/contactGrant.html";
     };
 }, {contact: "EcContact", onClose: "Callback0", onClose: "Callback0"}, {});

@@ -122,6 +122,18 @@ queryGrades=#object(
 queryGrades=queryGrades.displayJson(_collapse="true");
 /moodle/test/queryGrades=queryGrades;
 
+queryGrades=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="tool_lp_data_for_user_evidence_list_page",
+	moodlewsrestformat="json",
+	userid="@userId"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleQueryEvidence=queryEvidence;
+
+queryEvidence=queryEvidence.displayJson(_collapse="true");
+/moodle/test/queryEvidence=queryEvidence;
+
 queryEvidence=#object(
 	wstoken=#moodleWsToken(),
 	wsfunction="core_competency_read_user_evidence",

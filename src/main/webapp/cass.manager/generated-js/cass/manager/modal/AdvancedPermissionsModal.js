@@ -12,7 +12,10 @@ AdvancedPermissionsModal = stjs.extend(AdvancedPermissionsModal, EcModal, [], fu
     prototype.data = null;
     prototype.saveCallback = null;
     prototype.onlyReaders = false;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/advancedPermissions.html";
     };
 }, {data: "EcRemoteLinkedData", saveCallback: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});

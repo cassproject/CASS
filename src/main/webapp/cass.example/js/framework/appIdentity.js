@@ -79,6 +79,7 @@ function loginProcess() {
                 $("#logoutButton,.loggedIn").show();
                 frameworkSearch();
                 populateContacts();
+                $("#identityMenu").css("color","lime");
                 if (typeof (afterLogin) == "function")
                     afterLogin();
             }
@@ -117,6 +118,7 @@ function loginProcess() {
 }
 
 logout = function () {
+    $("#identityMenu").css("color","");
     loginServer.clear();
     delete localStorage["usernameWithSalt"];
     delete localStorage["passwordWithSalt"];
@@ -146,4 +148,6 @@ timeout(function () {
         loginServer.configured = true;
         loginProcess();
     }
+    else
+        frameworkSearch();
 });

@@ -23,29 +23,36 @@
                 </ul>
             </li>
         </ul>
-        <ul class="top-bar-right menu">
+        <ul class="top-bar-right dropdown menu" data-dropdown-menu>
             <li>
+                <a id="identityMenu" style="font-size: x-large;padding: 4px 10px 4px 10px;" class="menu-text">👤</a>
                 <span id="status" class="status" style="display:none;">Busy...</span>
-                <button type="button" class="button loggedIn" onclick="getShareString();" style="display:none;">Invite</button>
-                <button id="loginButton" type="button" class="button" data-open="login">Login</button>
-                <button id="logoutButton" type="button" class="button" onclick="logout();" style="display:none;">Logout</button>
+                <ul class="menu vertical">
+                    <li><a class="loggedIn" onclick="getShareString();" style="display:none;">Invite</a></li>
+                    <li><a class="loggedIn" data-open="changePassword" style="display:none;">Change Password</a></li>
+                    <li><a id="loginButton" data-open="login">Login</a></li>
+                    <li><a id="logoutButton" onclick="logout();" style="display:none;">Logout</a></li>
+                </ul>
             </li>
         </ul>
     </div>
     <br>
     <div class="row" id="main">
         <div id="alignmentProcess" class="topLevel large-12 columns large-centered">
+            <h3>To align a learning resource to a competency:</h3><p>1. Select a resource using one of the provided tools under the '...' at the right.</p>
             <button class="float-right button tiny" data-open="resourceSelector">...</button>
             <h5 id="selectedResource" class="resourceStyle">No Selected Resource</h3>
+            <p>2. Next, select an alignment and location to store the alignment from the below box.</p>
             <select id="alignmentTypeSelect" class="" style="width:300px;">
             </select>
-            <br>
+            <p>3. Select the competency you wish to align the resource to.</p>
             <button class="float-right button tiny" data-open="competencySelector">...</button>
             <h5 id="selectedCompetency" class="competency">No Selected Competency</h3>
-            <br>
+            <p>4. Click 'Create Alignment' and follow the provided instructions.</p>
             <button class="float-right button" onclick="createAlignment();">Create Alignment</button>
             <br>
             <br>
+            <h3>Additional options:</h3>
         </div>
     </div>
     <div class="small reveal" data-reveal id="competencySelector">
@@ -92,6 +99,17 @@
                 </ul>
             </div>
         </div>
+    </div>
+    
+    <div class="small reveal" id="changePassword" data-reveal>
+        <h3>Change Password</h3>
+        <form>
+            <input id="currentUsername" type="text" placeholder="Username" />
+            <input id="currentPassword" type="password" placeholder="Current Password" />
+            <input id="newPassword1" type="password" placeholder="New Password" />
+            <input id="newPassword2" type="password" placeholder="New Password (Repeat)" />
+            <a class="button float-right" onclick="changePassword();">Change</a>
+        </form>
     </div>
 
     <div id="hidey hidey" class="topLevel" style="display:none;">

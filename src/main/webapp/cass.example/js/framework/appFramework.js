@@ -73,6 +73,13 @@ function newFramework() {
 
 function populateFramework(frameworkId) {
     EcRepository.get(frameworkId, function (fw) {
+        if (fw.competency != null)
+            repo.precache(fw.competency);
+        if (fw.relation != null)
+            repo.precache(fw.relation);
+        if (fw.level != null)
+            repo.precache(fw.level);
+        
         var fwui = $("[url='" + fw.shortId() + "']");
         fwui.find(".cass-framework-name").text(fw.name);
         if ($("#frameworks").find(".is-active").attr("url") == null) {
@@ -98,7 +105,6 @@ function populateFramework(frameworkId) {
         fwui.find(".cass-framework-competencies").html(competencyTemplate);
         fwui.find("#competency").html("");
         if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
-            repo.precache(fw.competency);
             for (var i = 0; i < fw.competency.length; i++) {
                 var competencyUrl = fw.competency[i];
                 fwui.find("#competency").append(cassCompetencyTemplate);

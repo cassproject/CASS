@@ -45,7 +45,7 @@
         </ul>
         <ul class="top-bar-right dropdown menu" data-dropdown-menu>
             <li>
-                <a class="menu-text">Identity</a>
+                <a id="identityMenu" style="font-size: x-large;padding: 4px 10px 4px 10px;" class="menu-text">👤</a>
                 <span id="status" class="status" style="display:none;">Busy...</span>
                 <ul class="menu vertical">
                     <li><a class="loggedIn" onclick="getShareString();" style="display:none;">Invite</a></li>
@@ -341,10 +341,9 @@
     <script src="js/profile/appView.js"></script>
     <script>
         $(document).foundation();
-        timeout(function() {
-            if (identity == null)
+        timeout(function() { 
+            if (localStorage["usernameWithSalt"] == null || localStorage["passwordWithSalt"] == null || localStorage["secretWithSalt"] == null)
                 $("#login").foundation('open');
-
         });
 
         function afterLogin() {

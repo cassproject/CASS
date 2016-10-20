@@ -8,7 +8,7 @@ RepoEdit = stjs.extend(RepoEdit, EcView, [], function(constructor, prototype) {
     prototype.data = null;
     prototype.saveButtonId = null;
     prototype.messageContainerId = null;
-    prototype.display = function(containerId, callback) {
-        console.error("Not Implemented Yet");
+    prototype.getHtmlLocation = function() {
+        return "partial/other/repoEdit.html";
     };
 }, {data: "Object"}, {});

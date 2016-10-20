@@ -1,0 +1,52 @@
+urlBase=#add(
+	a="http://localhost:9200"
+);
+#urlBase=urlBase;
+
+afterSave=#if(
+	operator=#variableGet(key="afterSave"),
+	operand=#date(raw="true").add(a="-10000"),
+	lt=#object(
+		a=#cassToMoodle(),
+		b=#variableSet(key="afterSave",obj=#date(raw="true"))
+	)
+).cache(name="afterSave",justLock="true");
+
+afterSave=#if(
+	operator=#object(a="127.0.0.1",b="localhost").valueSet().has(has="@ip"),
+	operand="false",
+	eq=afterSave
+);
+
+afterSave=#if(
+	operator="@noExternal",
+	operand="true",
+	ne=afterSave
+);
+
+#afterSave=afterSave;
+
+beforeGet=#if(
+	operator=#variableGet(key="beforeGet"),
+	operand=#date(raw="true").add(a="-10000"),
+	lt=#object(,
+		a=#variableSet(key="beforeGet",obj=#date(raw="true")),
+		b=#moodleToCass(),
+		c=#variableSet(key="beforeGet",obj=#date(raw="true"))
+	)
+).cache(name="beforeGet",justLock="true");
+
+beforeGet=#if(
+	operator=#object(a="127.0.0.1",b="localhost").valueSet().has(has="@ip"),
+	operand="false",
+	eq=beforeGet,
+	ne=#debug(obj="Skipping.")
+);
+
+beforeGet=#if(
+	operator="@noExternal",
+	operand="true",
+	ne=beforeGet
+);
+
+#beforeGet=beforeGet;

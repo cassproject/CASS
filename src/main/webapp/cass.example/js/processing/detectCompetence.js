@@ -72,9 +72,9 @@ function getImgSrc(result) {
 }
 
 function getNodeName(ip) {
-    if (ip.type == "COMPETENCY") return ip.competency.name;
+    if (ip.type == "COMPETENCY") return ip.competency[0].name;
     else if (ip.type == "ROLLUPRULE") return ip.type;
-    else if (ip.type != null) return ip.type._name.replace("COMBINATOR_", "");
+    else if (ip.type != null) return ip.type._name.replace("RELATION_", "");
 }
 
 function displayInquiryPacketDetails(ip) {
@@ -113,7 +113,8 @@ function addInquiryPacketNodes(ip, parentNode, isEquivalency, parentMass) {
     });
     //    }
     if (ip.competency != null)
-        nodes[ip.competency.shortId()] = ipNode;
+        for (var i = 0;i < ip.competency.length;i++)
+            nodes[ip.competency[i].shortId()] = ipNode;
 
     if (parentNode) {
         ipNode.gravity = true;
