@@ -12,7 +12,7 @@ CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], 
     prototype.getHtmlLocation = function() {
         return "partial/screen/competencyEdit.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", nameToTemplate: "Object"}, {});
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {

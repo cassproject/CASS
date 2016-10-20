@@ -1,3 +1,8 @@
+var PapaParseParams = function() {};
+PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
+    prototype.complete = null;
+    prototype.error = null;
+}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 var Importer = function() {};
 Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     constructor.isObject = function(obj) {
@@ -7,11 +12,6 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
         return toString.call(obj) == "[object Array]";
     };
 }, {}, {});
-var PapaParseParams = function() {};
-PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
-    prototype.complete = null;
-    prototype.error = null;
-}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 var MedbiqImport = function() {
     Importer.call(this);
 };

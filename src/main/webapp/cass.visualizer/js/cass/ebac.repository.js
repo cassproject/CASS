@@ -408,7 +408,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.caching = false;
     constructor.cache = new Object();
     constructor.fetching = new Object();
-    prototype.precache = function(urls) {
+    prototype.precache = function(urls, success) {
+        if (urls == null) {
+            if (success != null) 
+                success();
+            return;
+        }
         var cacheUrls = new Array();
         for (var i = 0; i < urls.length; i++) {
             var url = urls[i];
@@ -416,8 +421,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 cacheUrls.push(url.replace(this.selectedServer, ""));
             }
         }
-        if (cacheUrls.length == 0) 
+        if (cacheUrls.length == 0) {
+            if (success != null) 
+                success();
             return;
+        }
         var fd = new FormData();
         fd.append("data", JSON.stringify(cacheUrls));
         var me = this;
@@ -432,6 +440,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     if (EcRepository.caching) 
                         (EcRepository.cache)[d.shortId()] = d;
                 }
+                if (success != null) 
+                    success();
             }, null);
         });
     };
@@ -481,7 +491,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 if (EcRepository.caching) 
                     (EcRepository.cache)[url] = d;
                 success(d);
-            }, failure);
+            }, function(p1) {
+                delete (EcRepository.fetching)[url];
+                if (failure != null) 
+                    failure(p1);
+            });
         });
     };
     constructor.getBlocking = function(url) {

@@ -1,14 +1,5 @@
 var CopyResourceModal = (function(CopyResourceModal){
 	
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function submitCopy(data, callback){
 		if(data instanceof Array){
 			var copied = 0;
@@ -74,11 +65,6 @@ var CopyResourceModal = (function(CopyResourceModal){
 		
 		if(AppController.identityController.selectedIdentity != undefined){
 			var ownerElement = $(createContactSmall(AppController.identityController.selectedIdentity.ppk.toPk().toPem()));
-			ownerElement.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(AppController.identityController.selectedIdentity.ppk.toPk().toPem().replaceAll("-----.*-----","").trim())
-            });  
 			$("#copyOwner").append(ownerElement);
 		}else{
 			$("#copyOwner").text("Public");

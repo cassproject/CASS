@@ -2,14 +2,6 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 
 	var currentRelation = null;
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
 	
 	function buildCompetencyInput(results){
         $("#relationEditSource").html("<option selected disabled='disabled' class='hide'>Select Source Competency</option>");
@@ -85,12 +77,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    		var pem = relation.owner[i];
 	    		
 	    		var contact = $(createContactSmall(pem));
-	    		$("#relationEditOwner").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-	            });   
+	    		$("#relationEditOwner").append(contact);  
 	    	}
 	    }
 	    else
@@ -113,11 +100,6 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 		    		
 		    		var contact = $(createContactSmall(pk));
 		    		$("#relationEditReaders").append(contact);            
-		    		contact.children(".qrcodeCanvas").qrcode({
-		                width:128,
-		                height:128,
-		                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
-		            });
 		    		
 		    		if(i < relation.reader.length-1)
 		    			$("#relationEditReaders").append(", ");

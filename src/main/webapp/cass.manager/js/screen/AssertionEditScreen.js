@@ -1,14 +1,5 @@
 AssertionEditScreen = (function(AssertionEditScreen){
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function dateToLocalString(d){
 		d = new Date(d.toUTCString());
 		
@@ -142,12 +133,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    		var pem = assertion.owner[i];
 	    		
 	    		var contact = $(createContactSmall(pem));
-	    		$("#assertionEditOwner").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-	            });   
+	    		$("#assertionEditOwner").append(contact);  
 	    	}
 	    }else{
 	    	$("#assertionEditOwner").text("N/A")
@@ -165,12 +151,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    		var pem = assertion.reader[i];
 	    		
 	    		var contact = $(createContactSmall(pem));
-	    		$("#assertionEditReaders").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-	            });   
+	    		$("#assertionEditReaders").append(contact); 
 	    	}
 	    }else{
 	    	$("#assertionEditNoReader").removeClass("hide");
@@ -192,12 +173,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			var pem = $("#assertionAgentInput").val();
     		
     		var contact = $(createContactSmall(pem));
-    		$("#assertionEditOwner").html(contact);            
-    		contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-            });   
+    		$("#assertionEditOwner").html(contact);     
 		})
 	
 		for(var i in EcIdentityManager.contacts){
@@ -231,12 +207,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		$("#assertionSubjectInput").change(function(){
 			var pem = $("#assertionSubjectInput").val();
 			var contact = $(createContactSmall(pem));
-    		$("#assertionEditSubject").html(contact);            
-    		contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-            });   
+    		$("#assertionEditSubject").html(contact);
     		$("#assertionSubjectInput").css("font-style","normal");
 		})
 		

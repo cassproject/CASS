@@ -9,14 +9,6 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
 	    isEquivalentTo:"#competencyViewerRelationEquivalent"
 	}
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
 	
 	function displayCompetency(competency)
 	{
@@ -46,12 +38,6 @@ CompetencyViewScreen = (function(CompetencyViewScreen){
  	    		var pem = competency.owner[i];
  	    		
  	    		var contact = $(createContactSmall(pem));
- 	    		$("#competencyViewOwner").append(contact);            
- 	    		contact.children(".qrcodeCanvas").qrcode({
- 	                width:128,
- 	                height:128,
- 	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
- 	            });   
  	    	}
 	    }else{
  	    	$("#competencyViewOwner").text("Public")

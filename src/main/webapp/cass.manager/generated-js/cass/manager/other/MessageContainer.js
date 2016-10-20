@@ -7,4 +7,5 @@ MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructo
     prototype.getHtmlLocation = function() {
         return "partial/other/messageContainer.html";
     };
+    prototype.displayAlert = function(msg, msgId) {};
 }, {}, {});

@@ -1,14 +1,5 @@
 AssertionViewScreen = (function(AssertionViewScreen){
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function displayAssertion(assertion)
 	{	    
 	    $("#assertionViewId").text(assertion.id);
@@ -17,11 +8,6 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    if(agent != undefined){
 	    	var contact = $(createContactSmall(agent.toPem()));
 	    	$("#assertionViewAgent").html(contact);
-	    	contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(agent.toPem().replaceAll("-----.*-----","").trim())
-            });
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewAgentContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -37,11 +23,6 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    if(sub != undefined){
 	    	var contact = $(createContactSmall(sub.toPem()));
 	    	$("#assertionViewSubject").html(contact);
-	    	contact.children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64(sub.toPem().replaceAll("-----.*-----","").trim())
-            });
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewSubjectContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -208,12 +189,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
  	    		var pem = assertion.owner[i];
  	    		
  	    		var contact = $(createContactSmall(pem));
- 	    		$("#assertionViewOwner").append(contact);            
- 	    		contact.children(".qrcodeCanvas").qrcode({
- 	                width:128,
- 	                height:128,
- 	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
- 	            });   
+ 	    		$("#assertionViewOwner").append(contact); 
  	    	}
 	    }
 	    

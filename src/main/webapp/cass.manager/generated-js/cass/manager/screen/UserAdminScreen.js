@@ -9,7 +9,7 @@ UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(c
     prototype.getHtmlLocation = function() {
         return "partial/screen/userAdmin.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", nameToTemplate: "Object"}, {});
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + UserAdminScreen.displayName)) {

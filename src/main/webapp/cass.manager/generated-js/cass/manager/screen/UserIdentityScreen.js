@@ -9,7 +9,7 @@ UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], func
     prototype.getHtmlLocation = function() {
         return "partial/screen/userIdentity.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", nameToTemplate: "Object"}, {});
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {

@@ -3,15 +3,6 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	var frameworkId = null;
 	var data = null;
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function displayCompetency(competency)
 	{
 		$('#competencyEditor').show();
@@ -31,12 +22,7 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 	    		var pem = competency.owner[i];
 	    		
 	    		var contact = $(createContactSmall(pem));
-	    		$("#competencyEditOwner").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-	            });   
+	    		$("#competencyEditOwner").append(contact); 
 	    	}
 	    }else{
 	    	$("#competencyEditOwner").text("Public")
@@ -56,12 +42,7 @@ CompetencyEditScreen = (function(CompetencyEditScreen){
 		    		var pk = competency.reader[i];
 		    		
 		    		var contact = $(createContactSmall(pk));
-		    		$("#competencyEditReaders").append(contact);            
-		    		contact.children(".qrcodeCanvas").qrcode({
-		                width:128,
-		                height:128,
-		                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
-		            });
+		    		$("#competencyEditReaders").append(contact); 
 		    		
 		    		if(i < competency.reader.length-1)
 		    			$("#competencyEditReaders").append(", ");

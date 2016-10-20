@@ -2,15 +2,6 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 	
 	var maxLength = 24;
 	
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	var searchHandle = null;
 	
 	function runAssertionSearch(start){
@@ -156,13 +147,6 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 					
 					var el = $(html);
 					
-					el.find(".ownershipDisplay").each(function(i, element){
-						$(element).children(".qrcodeCanvas").qrcode({
-			                width:128,
-			                height:128,
-			                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
-			            });  
-					})
 					
 					el.find("a").click(function(ev){
 						ev.preventDefault();

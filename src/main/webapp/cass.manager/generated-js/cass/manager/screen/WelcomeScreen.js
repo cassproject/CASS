@@ -9,4 +9,4 @@ WelcomeScreen = stjs.extend(WelcomeScreen, CassManagerScreen, [], function(const
     prototype.getHtmlLocation = function() {
         return "partial/screen/welcome.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", nameToTemplate: "Object"}, {});
+}, {data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});

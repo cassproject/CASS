@@ -1,14 +1,14 @@
-var Ebac = function() {};
-Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
-    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
-    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
-    constructor.context = "http://schema.eduworks.com/ebac/0.2";
-}, {}, {});
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
     constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
     constructor.context = "http://schema.eduworks.com/general/0.2";
+}, {}, {});
+var Ebac = function() {};
+Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
+    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
+    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
+    constructor.context = "http://schema.eduworks.com/ebac/0.2";
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary fields for

@@ -7,15 +7,6 @@ var RepoEdit = (function(RepoEdit){
 	 * Server Manager methods to affect the server, but that shouldn't be built by the UI developer)
 	 */
 
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span><span class="contactKey" style="display:none;">'+pk+'</span>';
-	}
-	
 	function buildDisplay(data, myContainerId){
 		$('#datum').remove();
 	    if ($('#datum').length == 0)
@@ -213,12 +204,7 @@ var RepoEdit = (function(RepoEdit){
 	        if (field.children("label").text() == "@owner" || field.parent().parent().children("label").text() == "@owner")
 	        {
 	        	var contact = $(createContactSmall(data));
-	            field.append(contact);            
-	            contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(data.replaceAll("-----.*-----","").trim())
-	            });
+	            field.append(contact);  
 	        }
 	        else
 	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+data+"</p>");

@@ -1,14 +1,5 @@
 var EditLevelModal = (function(EditLevelModal){	
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function saveLevelFail(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Save Level";
@@ -50,12 +41,7 @@ var EditLevelModal = (function(EditLevelModal){
 				var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem()
 				
 				var contact = $(createContactSmall(pem));
-				$("#editLevelOwnership").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-	            });
+				$("#editLevelOwnership").append(contact);    
 	    		
 	    		$("#editLevelAdvancedOwnership").removeClass("hide");
 				$("#editLevelAdvancedOwnership").click(function(ev){
@@ -103,12 +89,7 @@ var EditLevelModal = (function(EditLevelModal){
 									var pem = permissionedLevel.owner[i];
 									
 									var contact = $(createContactSmall(pem));
-									$("#editLevelOwnership").append(contact);            
-						    		contact.children(".qrcodeCanvas").qrcode({
-						                width:128,
-						                height:128,
-						                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-						            });   
+									$("#editLevelOwnership").append(contact); 
 								}
 							}else{
 								$("#editLevelOwnership").text("Public");
@@ -131,12 +112,7 @@ var EditLevelModal = (function(EditLevelModal){
 										var pem = permissionedLevel.reader[i];
 										
 										var contact = $(createContactSmall(pem));
-										$("#editLevelReaders").append(contact);            
-							    		contact.children(".qrcodeCanvas").qrcode({
-							                width:128,
-							                height:128,
-							                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-							            });   
+										$("#editLevelReaders").append(contact);    
 									}
 								}else{
 									$("#editLevelReaders").text("None Added Yet");
@@ -228,12 +204,7 @@ var EditLevelModal = (function(EditLevelModal){
 						var pem = data.reader[i];
 						
 						var contact = $(createContactSmall(pem));
-						$("#editLevelReaders").append(contact);            
-			    		contact.children(".qrcodeCanvas").qrcode({
-			                width:128,
-			                height:128,
-			                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-			            });   
+						$("#editLevelReaders").append(contact);    
 					}
 				}else{
 					$("#editLevelReaders").text("None Added Yet");
@@ -252,12 +223,7 @@ var EditLevelModal = (function(EditLevelModal){
 					var pem = data.owner[i];
 					
 					var contact = $(createContactSmall(pem));
-					$("#editLevelOwnership").append(contact);            
-		    		contact.children(".qrcodeCanvas").qrcode({
-		                width:128,
-		                height:128,
-		                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-		            });   
+					$("#editLevelOwnership").append(contact);   
 				}
 			}
 			
@@ -314,12 +280,7 @@ var EditLevelModal = (function(EditLevelModal){
 										var pem = permissionedLevel.reader[i];
 										
 										var contact = $(createContactSmall(pem));
-										$("#editLevelReaders").append(contact);            
-							    		contact.children(".qrcodeCanvas").qrcode({
-							                width:128,
-							                height:128,
-							                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
-							            });   
+										$("#editLevelReaders").append(contact);  
 									}
 								}else{
 									$("#editLevelReaders").text("None Added Yet");

@@ -142,6 +142,29 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         return false;
     };
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "EcCallbackReturn1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
+    };
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);
@@ -189,69 +212,109 @@ RollupRuleInterface = stjs.extend(RollupRuleInterface, null, [], function(constr
         this.parser.s();
     };
 }, {listener: "RollupListener.RollupListener", logFunction: {name: "Callback1", arguments: ["Object"]}, parser: "RollupParser.RollupParser", processor: "RollupRuleProcessor", success: {name: "Callback1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
-var RollupRuleGenerator = function(ip) {
+var RollupRulePacketGenerator = function(ip, ep) {
     this.ip = ip;
-    this.rule = "";
-    this.outerRule = "";
+    this.ep = ep;
+    this.queries = new Array();
+    this.queryOperations = new Array();
 };
-RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constructor, prototype) {
-    prototype.failure = null;
-    prototype.success = null;
-    prototype.rule = null;
-    prototype.outerRule = null;
+RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], function(constructor, prototype) {
+    constructor.OperationType = stjs.enumeration("AND", "OR");
+    prototype.queries = null;
+    prototype.queryOperations = null;
     prototype.ip = null;
-    prototype.go = function() {
-        var me = this;
-        if (this.ip.getContext().relation == null) 
-            this.success(null);
-         else 
-            for (var i = 0; i < this.ip.getContext().relation.length; i++) {
-                this.ip.numberOfQueriesRunning++;
-                EcAlignment.get(this.ip.getContext().relation[i], function(p1) {
-                    me.ip.numberOfQueriesRunning--;
-                    if (!p1.source.equals(me.ip.competency) && !p1.target.equals(me.ip.competency)) 
-                        return;
-                    if (p1.source.equals(me.ip.competency)) {
-                        if (p1.relationType.equals(EcAlignment.REQUIRES)) {
-                            if (me.rule != null && me.rule != "") 
-                                me.rule += " AND ";
-                            me.rule += "[notNegative competency:\"" + p1.target + "\"]";
-                        }
-                        if (p1.relationType.equals(EcAlignment.NARROWS)) {
-                            if (me.outerRule != null && me.outerRule != "") 
-                                me.outerRule += " OR ";
-                            me.outerRule += "[competency:\"" + p1.target + "\"]";
-                        }
-                    }
-                }, function(p1) {
-                    me.ip.numberOfQueriesRunning--;
-                });
-            }
+    prototype.ep = null;
+    prototype.addQuery = function(query) {
+        this.queries.push(query);
     };
-}, {failure: {name: "Callback1", arguments: [null]}, success: {name: "Callback1", arguments: [null]}, ip: "InquiryPacket"}, {});
+    prototype.addQueryOperation = function(operation) {
+        this.queryOperations.push(operation);
+    };
+    prototype.hasOrOperation = function() {
+        for (var i = 0; i < this.queryOperations.length; i++) {
+            if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[i])) 
+                return true;
+        }
+        return false;
+    };
+    prototype.getIPType = function() {
+        if (this.hasOrOperation()) 
+            return InquiryPacket.IPType.RELATION_OR;
+        return InquiryPacket.IPType.RELATION_AND;
+    };
+    prototype.generateComboAndPacket = function() {
+        var meEp = this.ep;
+        var meIp = this.ip;
+        return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
+            if (meEp != null) 
+                meEp.continueProcessing(meIp);
+        }, this.ip.failure, null, InquiryPacket.IPType.RELATION_AND);
+    };
+    prototype.generateRollupRulePacket = function(rule) {
+        var meEp = this.ep;
+        var meIp = this.ip;
+        return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
+            if (meEp != null) 
+                meEp.continueProcessing(meIp);
+        }, this.ip.failure, rule, InquiryPacket.IPType.ROLLUPRULE);
+    };
+    prototype.addAllQueries = function(rollupIp) {
+        for (var i = 0; i < this.queries.length; i++) {
+            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+        }
+    };
+    prototype.buildQueryTree = function(rollupIp) {
+        if (this.queryOperations.length <= 0) 
+            return;
+        var currentAndPacket = this.generateComboAndPacket();
+        var priorOt;
+        if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[0])) 
+            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[0]));
+         else 
+            currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[0]));
+        priorOt = this.queryOperations[0];
+        for (var i = 1; i < this.queryOperations.length; i++) {
+            if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[i])) {
+                if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) 
+                    rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+                 else {
+                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+                    rollupIp.subPackets.push(currentAndPacket);
+                }
+            } else {
+                if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) {
+                    currentAndPacket = this.generateComboAndPacket();
+                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+                } else 
+                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+            }
+            priorOt = this.queryOperations[i];
+        }
+        if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) 
+            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[this.queries.length - 1]));
+         else {
+            currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[this.queries.length - 1]));
+            rollupIp.subPackets.push(currentAndPacket);
+        }
+    };
+    prototype.generatePacket = function() {
+        var ipt = this.getIPType();
+        var meEp = this.ep;
+        var meIp = this.ip;
+        var rollupIp = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
+            if (meEp != null) 
+                meEp.continueProcessing(meIp);
+        }, this.ip.failure, null, ipt);
+        if (InquiryPacket.IPType.RELATION_AND.equals(ipt)) 
+            this.addAllQueries(rollupIp);
+         else 
+            this.buildQueryTree(rollupIp);
+        return rollupIp;
+    };
+    constructor.main = function(args) {};
+}, {queries: {name: "Array", arguments: [null]}, queryOperations: {name: "Array", arguments: [{name: "Enum", arguments: ["RollupRulePacketGenerator.OperationType"]}]}, ip: "InquiryPacket", ep: "AssertionProcessor"}, {});
+if (!stjs.mainCallDisabled) 
+    RollupRulePacketGenerator.main();
 var RelationshipPacketGenerator = function(ip, ep, processedAlignments) {
     this.ip = ip;
     this.ep = ep;
@@ -422,109 +485,46 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
         }
     };
 }, {failure: {name: "Callback1", arguments: [null]}, success: "Callback0", logFunction: {name: "Callback1", arguments: ["Object"]}, narrowsPackets: {name: "Array", arguments: ["InquiryPacket"]}, broadensPackets: {name: "Array", arguments: ["InquiryPacket"]}, requiredPackets: {name: "Array", arguments: ["InquiryPacket"]}, isRequiredByPackets: {name: "Array", arguments: ["InquiryPacket"]}, processedAlignments: {name: "Map", arguments: [null, null]}, ep: "AssertionProcessor", ip: "InquiryPacket"}, {});
-var RollupRulePacketGenerator = function(ip, ep) {
+var RollupRuleGenerator = function(ip) {
     this.ip = ip;
-    this.ep = ep;
-    this.queries = new Array();
-    this.queryOperations = new Array();
+    this.rule = "";
+    this.outerRule = "";
 };
-RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], function(constructor, prototype) {
-    constructor.OperationType = stjs.enumeration("AND", "OR");
-    prototype.queries = null;
-    prototype.queryOperations = null;
+RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constructor, prototype) {
+    prototype.failure = null;
+    prototype.success = null;
+    prototype.rule = null;
+    prototype.outerRule = null;
     prototype.ip = null;
-    prototype.ep = null;
-    prototype.addQuery = function(query) {
-        this.queries.push(query);
-    };
-    prototype.addQueryOperation = function(operation) {
-        this.queryOperations.push(operation);
-    };
-    prototype.hasOrOperation = function() {
-        for (var i = 0; i < this.queryOperations.length; i++) {
-            if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[i])) 
-                return true;
-        }
-        return false;
-    };
-    prototype.getIPType = function() {
-        if (this.hasOrOperation()) 
-            return InquiryPacket.IPType.RELATION_OR;
-        return InquiryPacket.IPType.RELATION_AND;
-    };
-    prototype.generateComboAndPacket = function() {
-        var meEp = this.ep;
-        var meIp = this.ip;
-        return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
-            if (meEp != null) 
-                meEp.continueProcessing(meIp);
-        }, this.ip.failure, null, InquiryPacket.IPType.RELATION_AND);
-    };
-    prototype.generateRollupRulePacket = function(rule) {
-        var meEp = this.ep;
-        var meIp = this.ip;
-        return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
-            if (meEp != null) 
-                meEp.continueProcessing(meIp);
-        }, this.ip.failure, rule, InquiryPacket.IPType.ROLLUPRULE);
-    };
-    prototype.addAllQueries = function(rollupIp) {
-        for (var i = 0; i < this.queries.length; i++) {
-            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
-        }
-    };
-    prototype.buildQueryTree = function(rollupIp) {
-        if (this.queryOperations.length <= 0) 
-            return;
-        var currentAndPacket = this.generateComboAndPacket();
-        var priorOt;
-        if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[0])) 
-            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[0]));
+    prototype.go = function() {
+        var me = this;
+        if (this.ip.getContext().relation == null) 
+            this.success(null);
          else 
-            currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[0]));
-        priorOt = this.queryOperations[0];
-        for (var i = 1; i < this.queryOperations.length; i++) {
-            if (RollupRulePacketGenerator.OperationType.OR.equals(this.queryOperations[i])) {
-                if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) 
-                    rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
-                 else {
-                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
-                    rollupIp.subPackets.push(currentAndPacket);
-                }
-            } else {
-                if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) {
-                    currentAndPacket = this.generateComboAndPacket();
-                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
-                } else 
-                    currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[i]));
+            for (var i = 0; i < this.ip.getContext().relation.length; i++) {
+                this.ip.numberOfQueriesRunning++;
+                EcAlignment.get(this.ip.getContext().relation[i], function(p1) {
+                    me.ip.numberOfQueriesRunning--;
+                    if (!p1.source.equals(me.ip.competency) && !p1.target.equals(me.ip.competency)) 
+                        return;
+                    if (p1.source.equals(me.ip.competency)) {
+                        if (p1.relationType.equals(EcAlignment.REQUIRES)) {
+                            if (me.rule != null && me.rule != "") 
+                                me.rule += " AND ";
+                            me.rule += "[notNegative competency:\"" + p1.target + "\"]";
+                        }
+                        if (p1.relationType.equals(EcAlignment.NARROWS)) {
+                            if (me.outerRule != null && me.outerRule != "") 
+                                me.outerRule += " OR ";
+                            me.outerRule += "[competency:\"" + p1.target + "\"]";
+                        }
+                    }
+                }, function(p1) {
+                    me.ip.numberOfQueriesRunning--;
+                });
             }
-            priorOt = this.queryOperations[i];
-        }
-        if (RollupRulePacketGenerator.OperationType.OR.equals(priorOt)) 
-            rollupIp.subPackets.push(this.generateRollupRulePacket(this.queries[this.queries.length - 1]));
-         else {
-            currentAndPacket.subPackets.push(this.generateRollupRulePacket(this.queries[this.queries.length - 1]));
-            rollupIp.subPackets.push(currentAndPacket);
-        }
     };
-    prototype.generatePacket = function() {
-        var ipt = this.getIPType();
-        var meEp = this.ep;
-        var meIp = this.ip;
-        var rollupIp = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
-            if (meEp != null) 
-                meEp.continueProcessing(meIp);
-        }, this.ip.failure, null, ipt);
-        if (InquiryPacket.IPType.RELATION_AND.equals(ipt)) 
-            this.addAllQueries(rollupIp);
-         else 
-            this.buildQueryTree(rollupIp);
-        return rollupIp;
-    };
-    constructor.main = function(args) {};
-}, {queries: {name: "Array", arguments: [null]}, queryOperations: {name: "Array", arguments: [{name: "Enum", arguments: ["RollupRulePacketGenerator.OperationType"]}]}, ip: "InquiryPacket", ep: "AssertionProcessor"}, {});
-if (!stjs.mainCallDisabled) 
-    RollupRulePacketGenerator.main();
+}, {failure: {name: "Callback1", arguments: [null]}, success: {name: "Callback1", arguments: [null]}, ip: "InquiryPacket"}, {});
 var AssertionProcessor = function() {
     this.repositories = new Array();
     this.step = AssertionProcessor.DEF_STEP;

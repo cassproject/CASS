@@ -8,9 +8,10 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 /**
- *  Parent class of all view manager classes, stores a cache of the views and their corresponding DOM selectors
- *  and provides functions for setting a view to correspond to a selector and displaying a view after it has 
- *  been added to the cache. 
+ *  Parent class of all view manager classes, stores a cache of the views and
+ *  their corresponding DOM selectors and provides functions for setting a view
+ *  to correspond to a selector and displaying a view after it has been added to
+ *  the cache.
  *  
  *  @author devlin.junker@eduworks.com
  */
@@ -24,34 +25,36 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      *  Set's the view instance for a specific DOM selector
      *  
      *  @param containerId
-     *  			DOM Selector for the element that will correspond to the view
+     *             DOM Selector for the element that will correspond to the view
      *  @param view
-     *  			View that will correspond to the DOM Selector
+     *             View that will correspond to the DOM Selector
      */
     constructor.setView = function(containerId, view) {
         ViewManager.viewMap[containerId] = view;
     };
     /**
-     *  Returns the view instance that currently corresponds to a specific DOM selector
+     *  Returns the view instance that currently corresponds to a specific DOM
+     *  selector
      *  
      *  @param containerId
-     *  			DOM Selector that corresponds to the view to be returned
-     *  @return
-     *  			The view that corresponds to the DOM Selector passed in, or null if no view corresponds with it
+     *             DOM Selector that corresponds to the view to be returned
+     *  @return The view that corresponds to the DOM Selector passed in, or null
+     *          if no view corresponds with it
      */
     constructor.getView = function(containerId) {
         return ViewManager.viewMap[containerId];
     };
     /**
-     *  Relates the view to a DOM Selector and calls the view's display function to populate the inner html
-     *  of the DOM Selector Element
+     *  Relates the view to a DOM Selector and calls the view's display function
+     *  to populate the inner html of the DOM Selector Element
      *  
      *  @param view
-     *  			View to be displayed in the DOM Selector Element
+     *             View to be displayed in the DOM Selector Element
      *  @param containerId
-     *  			DOM Selector for element that the view will be displayed in
+     *             DOM Selector for element that the view will be displayed in
      *  @param callback
-     *  			Callback function to be passed in to the view's display function (to be called once the view has been displayed)
+     *             Callback function to be passed in to the view's display
+     *             function (to be called once the view has been displayed)
      */
     constructor.showView = function(view, containerId, callback) {
         var htmlLocation = view.getHtmlLocation();
@@ -69,7 +72,7 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      *  Hides the container specified by the containerId by adding 'hide' class
      *  
      *  @param containerId
-     *  			DOM Selector for the element to add the 'hide' class to
+     *             DOM Selector for the element to add the 'hide' class to
      */
     constructor.hideView = function(containerId) {
         $(containerId).addClass("hide");

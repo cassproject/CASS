@@ -1,9 +1,8 @@
 /**
-<<<<<<< Updated upstream
-=======
- *  Parent class of all view manager classes, stores a cache of the views and their corresponding DOM selectors
- *  and provides functions for setting a view to correspond to a selector and displaying a view after it has 
- *  been added to the cache. 
+ *  Parent class of all view manager classes, stores a cache of the views and
+ *  their corresponding DOM selectors and provides functions for setting a view
+ *  to correspond to a selector and displaying a view after it has been added to
+ *  the cache.
  *  
  *  @author devlin.junker@eduworks.com
  */
@@ -17,34 +16,36 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      *  Set's the view instance for a specific DOM selector
      *  
      *  @param containerId
-     *  			DOM Selector for the element that will correspond to the view
+     *             DOM Selector for the element that will correspond to the view
      *  @param view
-     *  			View that will correspond to the DOM Selector
+     *             View that will correspond to the DOM Selector
      */
     constructor.setView = function(containerId, view) {
         ViewManager.viewMap[containerId] = view;
     };
     /**
-     *  Returns the view instance that currently corresponds to a specific DOM selector
+     *  Returns the view instance that currently corresponds to a specific DOM
+     *  selector
      *  
      *  @param containerId
-     *  			DOM Selector that corresponds to the view to be returned
-     *  @return
-     *  			The view that corresponds to the DOM Selector passed in, or null if no view corresponds with it
+     *             DOM Selector that corresponds to the view to be returned
+     *  @return The view that corresponds to the DOM Selector passed in, or null
+     *          if no view corresponds with it
      */
     constructor.getView = function(containerId) {
         return ViewManager.viewMap[containerId];
     };
     /**
-     *  Relates the view to a DOM Selector and calls the view's display function to populate the inner html
-     *  of the DOM Selector Element
+     *  Relates the view to a DOM Selector and calls the view's display function
+     *  to populate the inner html of the DOM Selector Element
      *  
      *  @param view
-     *  			View to be displayed in the DOM Selector Element
+     *             View to be displayed in the DOM Selector Element
      *  @param containerId
-     *  			DOM Selector for element that the view will be displayed in
+     *             DOM Selector for element that the view will be displayed in
      *  @param callback
-     *  			Callback function to be passed in to the view's display function (to be called once the view has been displayed)
+     *             Callback function to be passed in to the view's display
+     *             function (to be called once the view has been displayed)
      */
     constructor.showView = function(view, containerId, callback) {
         var htmlLocation = view.getHtmlLocation();
@@ -62,7 +63,7 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      *  Hides the container specified by the containerId by adding 'hide' class
      *  
      *  @param containerId
-     *  			DOM Selector for the element to add the 'hide' class to
+     *             DOM Selector for the element to add the 'hide' class to
      */
     constructor.hideView = function(containerId) {
         $(containerId).addClass("hide");
@@ -106,7 +107,6 @@ HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, pro
     prototype.screenParameters = null;
 }, {screen: "EcScreen", screenParameters: "Object"}, {});
 /**
->>>>>>> Stashed changes
  *  Class that represents a "view" that can be displayed in an container element on the page. The View should define 
  *  a display function that loads HTML into the container element on the page and then finally calls the callback once
  *  the view has been completely initialized
@@ -167,180 +167,15 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
-<<<<<<< Updated upstream
- *  Parent class of all view manager classes, stores a cache of the views and their corresponding DOM selectors
- *  and provides functions for setting a view to correspond to a selector and displaying a view after it has 
- *  been added to the cache. 
- *  
- *  @author devlin.junker@eduworks.com
- */
-var ViewManager = function() {};
-ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype) {
-    /**
-     *  Storage that maps view class instances to DOM Elements
-     */
-    constructor.viewMap = {};
-    /**
-     *  Set's the view instance for a specific DOM selector
-     *  
-     *  @param containerId
-     *  			DOM Selector for the element that will correspond to the view
-     *  @param view
-     *  			View that will correspond to the DOM Selector
-     */
-    constructor.setView = function(containerId, view) {
-        ViewManager.viewMap[containerId] = view;
-    };
-    /**
-     *  Returns the view instance that currently corresponds to a specific DOM selector
-     *  
-     *  @param containerId
-     *  			DOM Selector that corresponds to the view to be returned
-     *  @return
-     *  			The view that corresponds to the DOM Selector passed in, or null if no view corresponds with it
-     */
-    constructor.getView = function(containerId) {
-        return ViewManager.viewMap[containerId];
-    };
-    /**
-     *  Relates the view to a DOM Selector and calls the view's display function to populate the inner html
-     *  of the DOM Selector Element
-     *  
-     *  @param view
-     *  			View to be displayed in the DOM Selector Element
-     *  @param containerId
-     *  			DOM Selector for element that the view will be displayed in
-     *  @param callback
-     *  			Callback function to be passed in to the view's display function (to be called once the view has been displayed)
-     */
-    constructor.showView = function(view, containerId, callback) {
-        var htmlLocation = view.getHtmlLocation();
-        if (htmlLocation != null) {
-            ViewManager.setView(containerId, view);
-            $(containerId).load(htmlLocation, null, function(p1, p2, p3) {
-                view.display(containerId);
-                if (callback != null) 
-                    callback();
-            });
-        }
-        $(containerId).removeClass("hide");
-    };
-    /**
-     *  Hides the container specified by the containerId by adding 'hide' class
-     *  
-     *  @param containerId
-     *  			DOM Selector for the element to add the 'hide' class to
-     */
-    constructor.hideView = function(containerId) {
-        $(containerId).addClass("hide");
-    };
-}, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
-/**
- *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and 
- *  which DOM element they were displayed in
- *  
- *  @author devlin.junker@eduworks.com
- */
-var HistoryClosure = /**
- *  Constructor for the HistoryClosure Object
- *  
- *  @param name
- *  			Page Name associated with this page (used for loading history screens)
- *  @param screen
- *  			Screen to associate with the page name (to display when loading history screens)
- *  @param containerId
- *  			DOM Selector (ID) of the HTML container to display the screen in on load history
- */
-function(name, screen, containerId, params) {
-    this.pageName = name;
-    this.screen = screen;
-    this.containerId = containerId;
-    this.screenParameters = params;
-};
-HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
-    /**
-     *  Name of the page (used to retrieve the correct screen on a back/forward button press)
-     */
-    prototype.pageName = null;
-    /**
-     *  Screen to store and associate with the page name so that it can be loaded if necessary
-     */
-    prototype.screen = null;
-    /**
-     *  ID of the container to display the screen in, once it has been found by page name
-     */
-    prototype.containerId = null;
-    prototype.screenParameters = null;
-}, {screen: "EcScreen", screenParameters: "Object"}, {});
-/**
  *  STJS Wrapper for the Browser Native History Object
  *  
  *  @author devlin.junker@eduworks.com
  */
-=======
- *  STJS Wrapper for the Browser Native History Object
- *  
- *  @author devlin.junker@eduworks.com
- */
->>>>>>> Stashed changes
 var HistoryObject = function() {};
 HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
     prototype.name = null;
 }, {}, {});
 /**
-<<<<<<< Updated upstream
- *  Subclass of view that is specific for a screen, providing a display name that
- *  will be shown in the URL bar and that can be used on startup to check if the
- *  URL is asking for a certain page on startup.
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcScreen = function() {
-    EcView.call(this);
-};
-EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
-    /**
-     *  Name that identifies a certain type of screen, shown in the URL bar to
-     *  help the user understand the page that they are on and used during
-     *  startup to decide whether or not to load a specifici page on startup.
-     */
-    prototype.displayName = "";
-    /**
-     *  Getter for the display name
-     *  
-     *  @return The display name for the screen
-     */
-    prototype.getDisplayName = function() {
-        return this.displayName;
-    };
-    prototype.setData = function(data) {};
-}, {}, {});
-/**
- *  View Subclass representing modal views that are displayed in the modal container
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    /**
-     *  To be overrided in subclasses, lets the developer define the size of the modal
-     */
-    prototype.modalSize = "small";
-    /**
-     *  Function to be invoked when the modal is closed, can be overriden or left blank if nothing
-     *  needs to happen on the modal close 
-     */
-    prototype.onClose = null;
-    /**
-     *  @return tiny, small, medium, large, or full depending on how large the modal should be
-     */
-    prototype.getModalSize = function() {};
-}, {onClose: "Callback0"}, {});
-/**
-=======
->>>>>>> Stashed changes
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that 
  *  they work properly
  *  
@@ -413,8 +248,6 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     });
 })();
 /**
-<<<<<<< Updated upstream
-=======
  *  View Subclass representing modal views that are displayed in the modal container
  *  
  *  @author devlin.junker@eduworks.com
@@ -465,7 +298,6 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
     prototype.setData = function(data) {};
 }, {}, {});
 /**
->>>>>>> Stashed changes
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
  *  session, so  when the back button is pressed, the application will load the previous screen with any data that 
@@ -777,36 +609,6 @@ var EcOverlay = function() {
     EcScreen.call(this);
 };
 EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
-<<<<<<< Updated upstream
-var URLParams = function() {};
-URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
-    constructor.getParams = function() {
-        var params = {};
-        var hashParams = window.location.hash.substring(window.location.hash.indexOf("?") + 1);
-        if (hashParams == window.location.hash) 
-            return params;
-        var URLAssignments = (hashParams.split("&"));
-        for (var i = 0; i < URLAssignments.length; i++) {
-            var splitParam = (URLAssignments[i].split("="));
-            if (splitParam.length == 2) 
-                params[splitParam[0]] = splitParam[1];
-        }
-        return params;
-    };
-    constructor.get = function(param) {
-        return URLParams.getParams()[param];
-    };
-    constructor.set = function(param, val) {
-        var params = URLParams.getParams();
-        params[param] = val;
-        ScreenManager.setScreenParameters(params);
-    };
-    constructor.setAll = function(params) {
-        ScreenManager.setScreenParameters(params);
-    };
-}, {}, {});
-=======
->>>>>>> Stashed changes
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays

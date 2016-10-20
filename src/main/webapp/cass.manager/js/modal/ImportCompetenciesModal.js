@@ -1,13 +1,5 @@
 var ImportCompetenciesModal = (function(ImportCompetenciesModal){	
 	
-	function createContactSmall(pem) {
-		var ident = AppController.identityController.lookup(pem);
-		return '<span class="ownershipDisplay has-tip" tabindex>'
-				+ '<span class="qrcodeCanvas"></span>'
-				+ '<span class="contactText" title="' + pem + '">'
-				+ ident.displayName + '</span>' + '</span>';
-	}
-	
 	var cached_frameworks = {};
 
 	function addLocationFramework(framework){
@@ -622,11 +614,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
 			var contact = $(createContactSmall(pem));
 			$(".importCompetenciesOwner").html(contact);
-			contact.children(".qrcodeCanvas").qrcode({
-				width : 128,
-				height : 128,
-				text : forge.util.decode64(pem.replaceAll("-----.*-----", "").trim())
-			});
 		}
 
 	}

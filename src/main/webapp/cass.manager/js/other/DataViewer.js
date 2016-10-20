@@ -21,15 +21,6 @@
  */
 var DataViewer = (function(DataViewer){
 
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function sortData(prefix, data, callbacks){
 		if(data == undefined){
 			return;
@@ -503,14 +494,6 @@ var DataViewer = (function(DataViewer){
 		if(datum["name"] == undefined){
 			el.find(".datum-name").css("font-size", "0.8rem");
 		}
-		
-		el.find(".ownershipDisplay").each(function(i, element){
-			$(element).children(".qrcodeCanvas").qrcode({
-                width:128,
-                height:128,
-                text:forge.util.decode64($(element).find(".contactText").attr("title").replaceAll("-----.*-----","").trim())
-            });  
-		})
 		
 		el.find("a.datum-name").click(function(ev){
 			ev.preventDefault();

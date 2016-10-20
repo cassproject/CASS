@@ -8,15 +8,6 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    isEquivalentTo:"Equivalent To"
 	}
 	
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function displayFramework(framework)
 	{
 	    $("#frameworkEditId").val(framework.id);
@@ -31,12 +22,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 	    		var pk = framework.owner[i];
 	    		
 	    		var contact = $(createContactSmall(pk));
-	    		$("#frameworkEditOwner").append(contact);            
-	    		contact.children(".qrcodeCanvas").qrcode({
-	                width:128,
-	                height:128,
-	                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
-	            });
+	    		$("#frameworkEditOwner").append(contact); 
 	    		
 	    		if(i < framework.owner.length-1)
 	    			$("#frameworkEditOwner").append(", ");
@@ -60,12 +46,7 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		    		var pk = framework.reader[i];
 		    		
 		    		var contact = $(createContactSmall(pk));
-		    		$("#frameworkEditReaders").append(contact);            
-		    		contact.children(".qrcodeCanvas").qrcode({
-		                width:128,
-		                height:128,
-		                text:forge.util.decode64(pk.replaceAll("-----.*-----","").trim())
-		            });
+		    		$("#frameworkEditReaders").append(contact);   
 		    		
 		    		if(i < framework.reader.length-1)
 		    			$("#frameworkEditReaders").append(", ");
@@ -137,16 +118,14 @@ FrameworkEditScreen = (function(FrameworkEditScreen){
 		
 		var competency = EcCompetency.getBlocking(level.competency);
 		
-		if(competency == undefined){
-			for(var id in framework.competency)
-				if(EcCompetency.getBlocking(id).shortId() == level.competency)
-					competency = EcCompetency.getBlocking(id);
-		}
-		
+		if(competency == undefined)
+			competency = EcCompetency.getBlocking(EcRemoteLinkedData.trimVersionFromUrl(level.competency));
+				
 		var competencyId = competency.shortId().split("/");
 		competencyId = competencyId[competencyId.length-1] + "-levels";
 		
 		var competencyGroup = $("#frameworkEditLevels optgroup#"+competencyId);
+		
 		if(competencyGroup.size() == 0){
 			competencyGroup = $("<optgroup id='"+competencyId+"' label='"+competency.name+"'></optgroup>");
 			$("#frameworkEditLevels").append(competencyGroup);

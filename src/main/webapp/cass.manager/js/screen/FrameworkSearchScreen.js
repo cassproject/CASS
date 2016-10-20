@@ -1,16 +1,6 @@
 FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
 	var maxLength = 24;
-	
-	function createContactSmall(pk)
-	{
-		var ident = AppController.identityController.lookup(pk);
-	    return '<span class="ownershipDisplay has-tip right" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pk+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	var searchHandle = null;
 	
 	function runFrameworkSearch(start){
@@ -152,14 +142,6 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 				}
 				
 				var el = $(html)
-				
-				el.find(".ownershipDisplay").each(function(i, element){
-					$(element).children(".qrcodeCanvas").qrcode({
-		                width:256,
-		                height:256,
-		                text:forge.util.decode64($(element).find(".contactText").attr("title"))
-		            });  
-				})
 				
 				el.find(".datum-name").click(function(ev){
 					ev.preventDefault();

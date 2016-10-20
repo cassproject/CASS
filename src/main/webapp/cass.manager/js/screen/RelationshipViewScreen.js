@@ -8,15 +8,6 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 	    isEquivalentTo:"is Equivalent to"
 	}
 	
-	function createContactSmall(pem)
-	{
-		var ident = AppController.identityController.lookup(pem);
-	    return '<span class="ownershipDisplay has-tip" tabindex>'
-	    	+ '<span class="qrcodeCanvas"></span>'
-	    	+ '<span class="contactText" title="'+pem+'">'+ident.displayName+'</span>'
-	    	+ '</span>';
-	}
-	
 	function displayRelation(relation)
 	{
 	    
@@ -86,12 +77,7 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
  	    		var pem = relation.owner[i];
  	    		
  	    		var contact = $(createContactSmall(pem));
- 	    		$("#relationshipViewerOwner").append(contact);            
- 	    		contact.children(".qrcodeCanvas").qrcode({
- 	                width:128,
- 	                height:128,
- 	                text:forge.util.decode64(pem.replaceAll("-----.*-----","").trim())
- 	            });   
+ 	    		$("#relationshipViewerOwner").append(contact);    
  	    	}
 	    }else{
  	    	$("#relationshipViewerOwner").text("Public")
