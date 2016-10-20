@@ -147,6 +147,8 @@ echo Installing HTTPD...
 yum -q -y install httpd
 fi
 
+if [ "$1" -ne 0 ];
+ then
 echo -----
 echo Available Recommended Versions:
 
@@ -156,6 +158,9 @@ echo
 echo Experimental Version: master
 
 read -p "Version to install: " -i "master" branch
+ else
+branch=$1
+fi
 
 echo -----
 echo Downloading CASS Repo...
