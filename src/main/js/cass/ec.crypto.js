@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-var EcAesParameters = function(iv) {
-    this.iv = forge.util.decode64(iv);
-};
-EcAesParameters = stjs.extend(EcAesParameters, null, [], function(constructor, prototype) {
-=======
 /*
  Copyright 2015-2016 Eduworks Corporation and other contributing parties.
 
@@ -20,7 +14,6 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
     prototype.length = 0;
     prototype.publicExponent = null;
     prototype.hash = null;
->>>>>>> master
     prototype.iv = null;
     prototype.counter = null;
 }, {iv: "ArrayBuffer", counter: "ArrayBuffer"}, {});

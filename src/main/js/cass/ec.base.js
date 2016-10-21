@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /*
  Copyright 2015-2016 Eduworks Corporation and other contributing parties.
 
@@ -525,7 +523,6 @@ var EcCallbackReturn1 = function() {};
 EcCallbackReturn1 = stjs.extend(EcCallbackReturn1, null, [], function(constructor, prototype) {
     prototype.callback = function(param1) {};
 }, {}, {});
->>>>>>> master
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.async = true;
@@ -553,7 +550,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                  else 
                     all = all + chunks[i];
             }
-            all = all + "\r\n" + "\r\n" + "--" + (fd)["_boundary"] + "--";
+            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
             p.headers = new Object();
             p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
             p.data = all;
@@ -902,23 +899,6 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
         EcArray.removeDuplicates(results);
         return results;
     };
-<<<<<<< HEAD
-}, {}, {});
-var EcCallbackReturn0 = function() {};
-EcCallbackReturn0 = stjs.extend(EcCallbackReturn0, null, [], function(constructor, prototype) {
-    prototype.callback = function() {};
-}, {}, {});
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    constructor.isObject = function(o) {
-        return (typeof o) == "object";
-    };
-}, {}, {});
-var EcCallback = function() {};
-EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) {
-    prototype.callback = function(result) {};
-}, {}, {});
-=======
     prototype.findEdge = function(v1, v2) {
         for (var i = 0; i < this.edges.length; i++) {
             if (v1.equals(this.edges[i].source) && v2.equals(this.edges[i].destination)) 
@@ -1129,4 +1109,3 @@ EcCallback = stjs.extend(EcCallback, null, [], function(constructor, prototype) 
         return null;
     };
 }, {edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
->>>>>>> master

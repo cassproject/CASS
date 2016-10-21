@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-var Ebac = function() {};
-Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
-    constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
-    constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
-    constructor.context = "http://schema.eduworks.com/ebac/0.2";
-}, {}, {});
-=======
 /*
  Copyright 2015-2016 Eduworks Corporation and other contributing parties.
 
@@ -15,7 +7,6 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
->>>>>>> master
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";

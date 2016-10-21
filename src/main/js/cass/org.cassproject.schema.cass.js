@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 var Cass = function() {};
 Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_1 = "http://schema.eduworks.com/cass/0.1";
@@ -74,12 +83,8 @@ Level = stjs.extend(Level, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/level";
     constructor.myType = Level.TYPE_0_2;
     prototype.competency = null;
-<<<<<<< HEAD
-    prototype.language = null;
-=======
     prototype.title = null;
     prototype.performance = null;
->>>>>>> master
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
         if (Level.TYPE_0_1.equals(this.type)) {

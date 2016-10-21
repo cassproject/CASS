@@ -1,5 +1,5 @@
 var Thing = function() {
-    EcRemoteLinkedData.call(this, "http://schema.org/", "http://schema.org/Thing");
+    EcRemoteLinkedData.call(this, "http://schema.org/", "Thing");
 };
 Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.newThing = function() {
@@ -28,7 +28,7 @@ EntryPoint = stjs.extend(EntryPoint, Thing, [], function(constructor, prototype)
 var CreativeWork = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
-    this.type = "http://schema.org/CreativeWork";
+    this.type = "CreativeWork";
 };
 CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, prototype) {
     prototype.about = null;
@@ -103,7 +103,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
 var AlignmentObject = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
-    this.type = "http://schema.org/AlignmentObject";
+    this.type = "AlignmentObject";
 };
 AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, prototype) {
     prototype.alignmentType = null;
@@ -114,6 +114,8 @@ AlignmentObject = stjs.extend(AlignmentObject, Thing, [], function(constructor, 
 }, {mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Demand = function() {
     Thing.call(this);
+    this.context = "http://schema.org/";
+    this.type = "Demand";
 };
 Demand = stjs.extend(Demand, Thing, [], function(constructor, prototype) {
     prototype.acceptedPaymentMethod = null;
@@ -137,7 +139,7 @@ Demand = stjs.extend(Demand, Thing, [], function(constructor, prototype) {
 var Person = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
-    this.type = "http://schema.org/Person";
+    this.type = "Person";
 };
 Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     prototype.additionalName = null;
@@ -191,6 +193,8 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
 }, {affiliation: "Organization", alumniOf: "Organization", birthDate: "Date", birthPlace: "Object", brand: "Object", children: "Person", colleague: "Person", contactPoint: "Object", deathdate: "Date", deathPlace: "Object", follows: "Person", hasOfferCatalog: "Object", hasPOS: "Object", height: "Object", homeLocation: "Object", knows: "Person", makesOffer: "Object", memberOf: "Object", nationality: "Object", netWorth: "Object", owns: "Object", parent: "Person", performerIn: "Object", relatedTo: "Person", seeks: "Demand", sibling: "Person", spouse: "Person", weight: "Object", workLocation: "Object", worksFor: "Organization", mainEntityOfPage: "Object", image: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 var Service = function() {
     Thing.call(this);
+    this.context = "http://schema.org/";
+    this.type = "Service";
 };
 Service = stjs.extend(Service, Thing, [], function(constructor, prototype) {
     prototype.areaServed = null;
@@ -208,7 +212,7 @@ Service = stjs.extend(Service, Thing, [], function(constructor, prototype) {
 var Action = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
-    this.type = "http://schema.org/Action";
+    this.type = "Action";
 };
 Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     prototype.agent = null;
@@ -225,7 +229,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
 var Organization = function() {
     Thing.call(this);
     this.context = "http://schema.org/";
-    this.type = "http://schema.org/Organization";
+    this.type = "Organization";
 };
 Organization = stjs.extend(Organization, Thing, [], function(constructor, prototype) {
     prototype.address = null;
