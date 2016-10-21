@@ -294,6 +294,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             var helper = new EcAsyncHelper();
             helper.each(this.secret, function(decryptionSecret, decrement) {
                 EcRsaOaepAsync.decrypt(decryptionKey, decryptionSecret, function(decryptedSecret) {
+                    if (helper.counter == -1) 
+                        return;
                     if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
                         decrement();
                      else {
@@ -406,6 +408,7 @@ var EcRepository = function() {};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
     constructor.caching = false;
+    constructor.cachingSearch = false;
     constructor.cache = new Object();
     constructor.fetching = new Object();
     prototype.precache = function(urls, success) {
@@ -590,6 +593,25 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         if ((paramObj)["fields"] != null) 
             paramProps["fields"] = (paramObj)["fields"];
+        var cacheKey;
+        if (EcRepository.cachingSearch) {
+            cacheKey = JSON.stringify(paramProps) + query;
+            if ((EcRepository.cache)[cacheKey] != null) {
+                var results = (EcRepository.cache)[cacheKey];
+                for (var i = 0; i < results.length; i++) {
+                    var d = new EcRemoteLinkedData(null, null);
+                    d.copyFrom(results[i]);
+                    results[i] = d;
+                    if (EcRepository.caching) 
+                        (EcRepository.cache)[d.shortId()] = d;
+                    if (eachSuccess != null) 
+                        eachSuccess(results[i]);
+                }
+                if (success != null) 
+                    success(results);
+            }
+        } else 
+            cacheKey = null;
         var fd = new FormData();
         fd.append("data", query);
         if (params != null) 
@@ -598,6 +620,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
+                if (EcRepository.cachingSearch) {
+                    (EcRepository.cache)[cacheKey] = p1;
+                }
                 var results = p1;
                 for (var i = 0; i < results.length; i++) {
                     var d = new EcRemoteLinkedData(null, null);

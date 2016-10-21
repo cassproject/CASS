@@ -1,5 +1,22 @@
 var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal){
 	
+	function displayError(err)
+	{
+		ViewManager.getView("#addToFrameworkMessageContainer").displayAlert(err);
+	}
+	function clearError()
+	{
+		ViewManager.getView("#addToFrameworkMessageContainer").clearAlert();
+	}
+	
+	function buildFrameworkOption(framework){
+		var option = $("<option></option>");
+		option.val(framework.id);
+		option.text(framework.name + (frameworks[i].owner == undefined ? " (Public)": ""));
+		
+		return option;
+	}
+	
 	AddCompetenciesToFrameworkModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
@@ -11,7 +28,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 		EcFramework.search(AppController.repoInterface, "*", function(frameworks){
 			for(var i in frameworks){
 				if(AppController.identityController.canEdit(frameworks[i])){
-					$("#addToFrameworkList").append("<option value='"+frameworks[i].id+"'>"+frameworks[i].name+(frameworks[i].owner == undefined ? " (Public)": "")+"</option>");
+					$("#addToFrameworkList").append(buildFrameworkOption(frameworks[i]));
 				}
 			}
 			
@@ -21,9 +38,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 				
 				ViewManager.getView("#addToFrameworkMessageContainer").displayAlert("Must have editing priviledges on a framework to add competencies");
 			}
-		}, function(err){
-			
-		})
+		}, displayError)
 		
 		$("#addToFrameworkSave").click(function(ev){
 			ev.preventDefault();
@@ -42,12 +57,8 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 				result.save(function(){
 					ModalManager.hideModal();
 					ScreenManager.changeScreen(new FrameworkViewScreen(result));
-				},function(err){
-					
-				})
-			}, function(err){
-				
-			});
+				},displayError)
+			}, displayError);
 			
 			
 			

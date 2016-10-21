@@ -156,11 +156,9 @@ var AppMenu = (function(AppMenu){
 		$("#appMenuUserLogout").click(function(event){
 			event.preventDefault();
 			
-			AppController.loginController.save(function(){
-				AppController.loginController.logout();
-				AppMenu.prototype.setLoggedOut();
-				ScreenManager.changeScreen(new WelcomeScreen());
-			});
+			AppController.loginController.logout();
+			AppMenu.prototype.setLoggedOut();
+			ScreenManager.changeScreen(new WelcomeScreen());
 		});
 		
 		$("#appMenuRepoSearch").attr("href", "#"+RepoSearchScreen.prototype.displayName);

@@ -1,14 +1,12 @@
 var AddFieldModal = (function(AddFieldModal){	
-	var ERROR_CONTAINER_ID = "#loginError";
 	
-	function displayError(err)
+	function displayError(err, errId)
 	{
-		$(ERROR_CONTAINER_ID).text(err);
-		$(ERROR_CONTAINER_ID).show();
+		ViewManager.getView("#addFieldMessageContainer").displayAlert(err, errId);
 	}
 	function clearError()
 	{
-		$(ERROR_CONTAINER_ID).hide();
+		ViewManager.getView("#addFieldMessageContainer").clearAlert();
 	}
 	
 	AddFieldModal.prototype.display = function(containerId)
@@ -17,6 +15,7 @@ var AddFieldModal = (function(AddFieldModal){
 		
 		var dataEdit = ViewManager.getView(this.repoEditContainer);
 		
+		ViewManager.showView(new MessageContainer("addField"), "#addFieldMessageContainer");
 		
 		if (addingTo.children("ul").length > 0)
 			$(".objectProperties").hide();
@@ -35,7 +34,7 @@ var AddFieldModal = (function(AddFieldModal){
 				}
 				else
 				{
-					displayError("");
+					displayError("Unable to add Text without a field name", "addField");
 				}
 			});
 
@@ -49,7 +48,7 @@ var AddFieldModal = (function(AddFieldModal){
 				}
 				else
 				{
-					displayError("");
+					displayError("Unable to add Array without a field name", "addField");
 				}
 			});
 
@@ -63,7 +62,7 @@ var AddFieldModal = (function(AddFieldModal){
 				}
 				else
 				{
-					displayError("");
+					displayError("Unable to add Object without a field name", "addField");
 				}
 			});
 
@@ -78,13 +77,13 @@ var AddFieldModal = (function(AddFieldModal){
 				}
 				else
 				{
-					displayError("");
+					displayError("Unable to add DECAL without a field name", "addField");
 				}
 			});
 		}
 		else
 		{
-			displayError("");
+			displayError("Unable to add Field, are you sure you're on the right page?", "addField");
 		}
 		
 		

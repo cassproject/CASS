@@ -16,19 +16,18 @@ var AddServerModal = (function(AddServerModal){
 	}
 	function displayError(err)
 	{
-		$(ERROR_CONTAINER_ID).text(err);
-		$(ERROR_CONTAINER_ID).removeClass("hide");
+		ViewManager.getView("#addServerMessageContainer").displayAlert(err);
 	}
 	function clearError()
 	{
-		$(ERROR_CONTAINER_ID).addClass("hide");
+		ViewManager.getView("#addServerMessageContainer").clearAlert();
 	}
 	
 	AddServerModal.prototype.display = function(containerId)
 	{
 		var closeCallback = this.onClose;
 		
-		clearError();
+		ViewManager.showView(new MessageContainer("addServer"), "#addServerMessageContainer");
 		
 		$("#addServerForm").submit(function(event){
 			event.preventDefault();

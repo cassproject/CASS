@@ -415,7 +415,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                     for (var i = 0; i < EcIdentityManager.ids.length; i++) {
                         if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
                             that.setAdmin(true);
+                            break;
                         }
+                        that.setAdmin(false);
                     }
                     success();
                 }, function(p1) {});
@@ -437,6 +439,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
+        this.setAdmin(false);
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in
@@ -793,26 +796,39 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
      */
     prototype.selectServer = function(identifier, success, failure) {
         if (LoginController.getLoggedIn()) {
-            if (failure != null) 
-                failure("Must be logged out to change servers");
-        } else {
-            for (var serverName in this.serverList) {
-                if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
-                    this.selectedServerName = serverName;
-                    this.selectedServerUrl = this.serverList[serverName];
-                    if (this.repoInterface != null) 
-                        this.repoInterface.selectedServer = this.selectedServerUrl;
-                    if (this.remoteIdentityManager != null) 
-                        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-                    this.storageSystem["cass.server.selected"] = this.selectedServerName;
+            LoginController.setLoggedIn(false);
+        }
+        var that = this;
+        var oldServer = this.selectedServerUrl;
+        var oldServerName = this.selectedServerName;
+        for (var serverName in this.serverList) {
+            if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
+                this.selectedServerName = serverName;
+                this.selectedServerUrl = this.serverList[serverName];
+                if (this.repoInterface != null) 
+                    this.repoInterface.selectedServer = this.selectedServerUrl;
+                if (this.remoteIdentityManager != null) 
+                    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+                this.remoteIdentityManager.configureFromServer(function(p1) {
+                    that.storageSystem["cass.server.selected"] = that.selectedServerName;
                     if (success != null) 
                         success();
-                    return;
-                }
+                }, function(p1) {
+                    if (that.repoInterface != null) 
+                        that.repoInterface.selectedServer = oldServer;
+                    if (that.remoteIdentityManager != null) 
+                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
+                    that.selectedServerUrl = oldServer;
+                    that.selectedServerName = oldServerName;
+                    that.remoteIdentityManager.configureFromServer(null, null);
+                    if (failure != null) 
+                        failure(p1);
+                });
+                return;
             }
-            if (failure != null) 
-                failure("Unable to select server requested: " + identifier);
         }
+        if (failure != null) 
+            failure("Unable to select server requested: " + identifier);
     };
     prototype.repoInterface = null;
     prototype.remoteIdentityManager = null;

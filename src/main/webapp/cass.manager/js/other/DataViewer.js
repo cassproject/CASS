@@ -152,7 +152,8 @@ var DataViewer = (function(DataViewer){
 
 			if(urlParams["sort"] == "timestamp")
 				delete urlParams["sort"];
-			ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
+			
+			ScreenManager.setScreenParameters(urlParams);
 			
 			$("#"+prefix+"-data").find(".row").remove();
 			populateData(self.dataStore, self, prefix, callbacks);

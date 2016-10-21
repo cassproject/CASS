@@ -90,6 +90,7 @@ $(ppk)
 
 Thank you."	
 );
+xapiAdapterEmail=#debug(obj="@ppk",prefix="@user");
 #xapiAdapterEmail=xapiAdapterEmail;
 
 

@@ -3,8 +3,38 @@ process=#runProcess(
 	timeout="50000",
 	args=#object(
 		a="node",
-		b="hasCompetency.js", 
+		b="tla/hasCompetency.js", 
 		c=#add(a="competencyId=",b="@competencyId"), 
+		d=#add(a="ppk=",b=#xapiMePpk().debug(prefix="ppk:")),
+		e=#add(
+			a="pk=",
+			b=#object(
+				mbox=#add(
+					a="mailto:",
+					b="@username"
+				)
+			).xapiAgentToPk().debug(prefix="pk:")
+		),
+		f=#add(
+			a="frameworkId=",
+			b="@frameworkId"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		)
+	).valueSet()
+);
+
+processTest=process.displayJson();
+/learners/test/mastery = processTest;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/getProfile.js", 
 		d=#add(a="ppk=",b=#xapiMePpk()),
 		e=#add(
 			a="pk=",
@@ -24,10 +54,10 @@ process=#runProcess(
 			b=#repoEndpoint()
 		)
 	).valueSet()
-);
+).flatten().toObject();
 
 processTest=process.displayJson();
-/learners/test/mastery = processTest;
+/learners/test/profile = processTest;
 
 process=#object(
 	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",

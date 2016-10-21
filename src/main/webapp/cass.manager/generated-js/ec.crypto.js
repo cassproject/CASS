@@ -28,6 +28,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     prototype.toPem = function() {
         return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
     };
+    prototype.toRsaPublicKey = function() {
+        return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll("\r?\n", "");
+    };
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
     };
@@ -128,8 +131,7 @@ EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constr
         keyUsages.push("encrypt", "decrypt");
         var algorithm = new AlgorithmIdentifier();
         algorithm.name = "AES-CTR";
-        algorithm.iv = base64.decode(iv);
-        algorithm.counter = new ArrayBuffer(16);
+        algorithm.counter = base64.decode(iv);
         algorithm.length = 128;
         var data;
         data = str2ab(text);
@@ -145,8 +147,7 @@ EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constr
         keyUsages.push("encrypt", "decrypt");
         var algorithm = new AlgorithmIdentifier();
         algorithm.name = "AES-CTR";
-        algorithm.iv = base64.decode(iv);
-        algorithm.counter = new ArrayBuffer(16);
+        algorithm.counter = base64.decode(iv);
         algorithm.length = 128;
         var data;
         data = base64.decode(text);
@@ -197,6 +198,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     prototype.toPem = function() {
         return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
     };
+    prototype.toPKCS8 = function() {
+        return forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk));
+    };
     prototype.toPk = function() {
         var pk = new EcPk();
         pk.pk = forge.pki.rsa.setPublicKey(this.ppk.n, this.ppk.e);
@@ -212,6 +216,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
 }, {ppk: "forge.ppk"}, {});
 var EcRsaOaepAsync = function() {};
 EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
+    constructor.rotator = 0;
     constructor.w = null;
     constructor.q1 = null;
     constructor.q2 = null;
@@ -222,19 +227,29 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             return;
         if (EcRsaOaepAsync.w != null) 
             return;
+        EcRsaOaepAsync.rotator = 0;
         EcRsaOaepAsync.q1 = new Array();
         EcRsaOaepAsync.q2 = new Array();
-        EcRsaOaepAsync.w = new Worker((window)["scriptPath"] + "forgeAsync.js");
-        EcRsaOaepAsync.w.onmessage = function(p1) {
+        EcRsaOaepAsync.w = new Array();
+        for (var index = 0; index < 8; index++) {
+            EcRsaOaepAsync.createWorker(index);
+        }
+    };
+    constructor.createWorker = function(index) {
+        EcRsaOaepAsync.q1.push(new Array());
+        EcRsaOaepAsync.q2.push(new Array());
+        var wkr;
+        EcRsaOaepAsync.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
+        wkr.onmessage = function(p1) {
             var o = p1.data;
-            var success = EcRsaOaepAsync.q1.shift();
-            var failure = EcRsaOaepAsync.q2.shift();
+            var success = EcRsaOaepAsync.q1[index].shift();
+            var failure = EcRsaOaepAsync.q2[index].shift();
             if (success != null) 
                 success((o)["result"]);
         };
-        EcRsaOaepAsync.w.onerror = function(p1) {
-            var success = EcRsaOaepAsync.q1.shift();
-            var failure = EcRsaOaepAsync.q2.shift();
+        wkr.onerror = function(p1) {
+            var success = EcRsaOaepAsync.q1[index].shift();
+            var failure = EcRsaOaepAsync.q2[index].shift();
             if (failure != null) 
                 failure(p1.toString());
         };
@@ -244,13 +259,15 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
             success(EcRsaOaep.encrypt(pk, text));
         } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["pk"] = pk.toPem();
             (o)["text"] = text;
             (o)["cmd"] = "encryptRsaOaep";
-            EcRsaOaepAsync.q1.push(success);
-            EcRsaOaepAsync.q2.push(failure);
-            EcRsaOaepAsync.w.postMessage(o);
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
     constructor.decrypt = function(ppk, text, success, failure) {
@@ -258,13 +275,15 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
             success(EcRsaOaep.decrypt(ppk, text));
         } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["ppk"] = ppk.toPem();
             (o)["text"] = text;
             (o)["cmd"] = "decryptRsaOaep";
-            EcRsaOaepAsync.q1.push(success);
-            EcRsaOaepAsync.q2.push(failure);
-            EcRsaOaepAsync.w.postMessage(o);
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
     constructor.sign = function(ppk, text, success, failure) {
@@ -272,13 +291,15 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
             success(EcRsaOaep.sign(ppk, text));
         } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["ppk"] = ppk.toPem();
             (o)["text"] = text;
             (o)["cmd"] = "signRsaOaep";
-            EcRsaOaepAsync.q1.push(success);
-            EcRsaOaepAsync.q2.push(failure);
-            EcRsaOaepAsync.w.postMessage(o);
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
     constructor.signSha256 = function(ppk, text, success, failure) {
@@ -286,13 +307,15 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
             success(EcRsaOaep.signSha256(ppk, text));
         } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["ppk"] = ppk.toPem();
             (o)["text"] = text;
             (o)["cmd"] = "signSha256RsaOaep";
-            EcRsaOaepAsync.q1.push(success);
-            EcRsaOaepAsync.q2.push(failure);
-            EcRsaOaepAsync.w.postMessage(o);
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
     constructor.verify = function(pk, text, signature, success, failure) {
@@ -300,17 +323,19 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
             success(EcRsaOaep.verify(pk, text, signature));
         } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["pk"] = pk.toPem();
             (o)["text"] = text;
             (o)["signature"] = signature;
             (o)["cmd"] = "verifyRsaOaep";
-            EcRsaOaepAsync.q1.push(success);
-            EcRsaOaepAsync.q2.push(failure);
-            EcRsaOaepAsync.w.postMessage(o);
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
-}, {w: {name: "Worker", arguments: ["Object"]}, q1: {name: "Array", arguments: ["Callback1"]}, q2: {name: "Array", arguments: ["Callback1"]}}, {});
+}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
 var EcAesCtr = function() {};
 EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
     constructor.encrypt = function(text, secret, iv) {
@@ -332,6 +357,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
 }, {}, {});
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
+    constructor.rotator = 0;
     constructor.w = null;
     constructor.q1 = null;
     constructor.q2 = null;
@@ -342,19 +368,29 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             return;
         if (EcAesCtrAsync.w != null) 
             return;
+        EcAesCtrAsync.rotator = 0;
         EcAesCtrAsync.q1 = new Array();
         EcAesCtrAsync.q2 = new Array();
-        EcAesCtrAsync.w = new Worker((window)["scriptPath"] + "forgeAsync.js");
-        EcAesCtrAsync.w.onmessage = function(p1) {
+        EcAesCtrAsync.w = new Array();
+        for (var index = 0; index < 8; index++) {
+            EcAesCtrAsync.createWorker(index);
+        }
+    };
+    constructor.createWorker = function(index) {
+        EcAesCtrAsync.q1.push(new Array());
+        EcAesCtrAsync.q2.push(new Array());
+        var wkr;
+        EcAesCtrAsync.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
+        wkr.onmessage = function(p1) {
             var o = p1.data;
-            var success = EcAesCtrAsync.q1.shift();
-            var failure = EcAesCtrAsync.q2.shift();
+            var success = EcAesCtrAsync.q1[index].shift();
+            var failure = EcAesCtrAsync.q2[index].shift();
             if (success != null) 
                 success((o)["result"]);
         };
-        EcAesCtrAsync.w.onerror = function(p1) {
-            var success = EcAesCtrAsync.q1.shift();
-            var failure = EcAesCtrAsync.q2.shift();
+        wkr.onerror = function(p1) {
+            var success = EcAesCtrAsync.q1[index].shift();
+            var failure = EcAesCtrAsync.q2[index].shift();
             if (failure != null) 
                 failure(p1.toString());
         };
@@ -364,14 +400,16 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         if (!EcRemote.async || EcAesCtrAsync.w == null) {
             success(EcAesCtr.encrypt(text, secret, iv));
         } else {
+            var worker = EcAesCtrAsync.rotator++;
+            EcAesCtrAsync.rotator = EcAesCtrAsync.rotator % 8;
             var o = new Object();
             (o)["secret"] = secret;
             (o)["iv"] = iv;
             (o)["text"] = text;
             (o)["cmd"] = "encryptAesCtr";
-            EcAesCtrAsync.q1.push(success);
-            EcAesCtrAsync.q2.push(failure);
-            EcAesCtrAsync.w.postMessage(o);
+            EcAesCtrAsync.q1[worker].push(success);
+            EcAesCtrAsync.q2[worker].push(failure);
+            EcAesCtrAsync.w[worker].postMessage(o);
         }
     };
     constructor.decrypt = function(text, secret, iv, success, failure) {
@@ -379,14 +417,16 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         if (!EcRemote.async || EcAesCtrAsync.w == null) {
             success(EcAesCtr.decrypt(text, secret, iv));
         } else {
+            var worker = EcAesCtrAsync.rotator++;
+            EcAesCtrAsync.rotator = EcAesCtrAsync.rotator % 8;
             var o = new Object();
             (o)["secret"] = secret;
             (o)["iv"] = iv;
             (o)["text"] = text;
             (o)["cmd"] = "decryptAesCtr";
-            EcAesCtrAsync.q1.push(success);
-            EcAesCtrAsync.q2.push(failure);
-            EcAesCtrAsync.w.postMessage(o);
+            EcAesCtrAsync.q1[worker].push(success);
+            EcAesCtrAsync.q2[worker].push(failure);
+            EcAesCtrAsync.w[worker].postMessage(o);
         }
     };
-}, {w: {name: "Worker", arguments: ["Object"]}, q1: {name: "Array", arguments: ["Callback1"]}, q2: {name: "Array", arguments: ["Callback1"]}}, {});
+}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
