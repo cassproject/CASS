@@ -4,6 +4,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         isEnabledBy: "Enabled By",
         requires: "Requires",
         desires: "Desires",
+        narrows: "Narrows",
         isRelatedTo: "Related To",
         isEquivalentTo: "Equivalent To"
     }
@@ -85,13 +86,13 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         $("#frameworkEditCompetencies").removeAttr("disabled");
         $("#frameworkEditCompetencies").removeClass("empty");
 
-		var option = $("<option></option>");
-		option.attr("title", competency.id);
-		option.attr("id", competency.id);
-		option.attr("value", competency.id);
-		option.text(competency.name+(competency.description == undefined ? "" : " - "+competency.description));
-		$("#frameworkEditCompetencies").append(option);
-		formDirty = true;
+        var option = $("<option></option>");
+        option.attr("title", competency.id);
+        option.attr("id", competency.id);
+        option.attr("value", competency.id);
+        option.text(competency.name + (competency.description == undefined ? "" : " - " + competency.description));
+        $("#frameworkEditCompetencies").append(option);
+        formDirty = true;
     }
 
     function addRelation(relation) {
@@ -106,22 +107,22 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
         var competencyGroup = $("#frameworkEditRelations optgroup#" + sourceId);
         if (competencyGroup.size() == 0) {
-			competencyGroup = $("<optgroup></optgroup>");
-			competencyGroup.attr("id", sourceId);
-			competencyGroup.attr("label", EcCompetency.getBlocking(relation.source).name)
+            competencyGroup = $("<optgroup></optgroup>");
+            competencyGroup.attr("id", sourceId);
+            competencyGroup.attr("label", EcCompetency.getBlocking(relation.source).name)
             $("#frameworkEditRelations").append(competencyGroup);
         }
 
         var basicId = relation.shortId().split("/");
         basicId = basicId[basicId.length - 1];
 
-		var option = $("<option style='font-style:italic;'></option>");
-		option.attr("id", basicId);
-		option.val(relation.id);
-		option.text(relation["relationType"]+" "+EcCompetency.getBlocking(relation.target).name);
+        var option = $("<option style='font-style:italic;'></option>");
+        option.attr("id", basicId);
+        option.val(relation.id);
+        option.text(relation["relationType"] + " " + EcCompetency.getBlocking(relation.target).name);
 
-		competencyGroup.append(option)
-		formDirty = true;
+        competencyGroup.append(option)
+        formDirty = true;
     }
 
     function addLevel(framework, level) {
@@ -141,23 +142,23 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         var competencyGroup = $("#frameworkEditLevels optgroup#" + competencyId);
 
         if (competencyGroup.size() == 0) {
-			competencyGroup = $("<optgroup></optgroup>");
-			competencyGroup.attr("id", competencyId);
-			competencyGroup.attr("label", competency.name);
+            competencyGroup = $("<optgroup></optgroup>");
+            competencyGroup.attr("id", competencyId);
+            competencyGroup.attr("label", competency.name);
             $("#frameworkEditLevels").append(competencyGroup);
         }
 
         var basicId = level.shortId().split("/");
         basicId = basicId[basicId.length - 1];
 
-		var option = $("<option style='font-style:italic'></option>");
-		option.attr("id", basicId);
-		option.val(level.id);
-		option.attr("title", (level.performance == undefined ? level.description : level.performance)+"'>"+level.name+" (Title: "+level.title+")");		
-		option.text(level.name);
-		competencyGroup.append(option);
+        var option = $("<option style='font-style:italic'></option>");
+        option.attr("id", basicId);
+        option.val(level.id);
+        option.attr("title", (level.performance == undefined ? level.description : level.performance) + "'>" + level.name + " (Title: " + level.title + ")");
+        option.text(level.name);
+        competencyGroup.append(option);
 
-		formDirty = true;
+        formDirty = true;
 
     }
 
@@ -178,29 +179,29 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         var competencyGroup = $("#frameworkEditRollupRules optgroup#" + competencyId);
 
         if (competencyGroup.size() == 0) {
-			competencyGroup = $("<optgroup></optgroup>");
-			competencyGroup.attr("id", competencyId);
-			competencyGroup.attr("label", competency.name);
+            competencyGroup = $("<optgroup></optgroup>");
+            competencyGroup.attr("id", competencyId);
+            competencyGroup.attr("label", competency.name);
             $("#frameworkEditRollupRules").append(competencyGroup);
         }
 
         var basicId = rollupRule.shortId().split("/");
         basicId = basicId[basicId.length - 1];
 
-		var option = $("<option style='font-style:italic'></option>");
-		option.attr("id", basicId);
-		option.val(rollupRule.id);
-		option.attr("title",rollupRule.description);		
-		option.text(rollupRule.name);
-		competencyGroup.append(option);
+        var option = $("<option style='font-style:italic'></option>");
+        option.attr("id", basicId);
+        option.val(rollupRule.id);
+        option.attr("title", rollupRule.description);
+        option.text(rollupRule.name);
+        competencyGroup.append(option);
 
-		formDirty = true;
+        formDirty = true;
 
     }
 
     function saveSuccess() {
         $("#datum").effect("highlight", {}, 1500);
-		formDirty = false;
+        formDirty = false;
     }
 
     function errorRetrieving(err) {
@@ -289,8 +290,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 var levels = {};
 
                 var i = 0;
-                for (var j = 0;j < framework.competency.length;j++) {
-                	var id = framework.competency[i];
+                for (var j = 0; j < framework.competency.length; j++) {
+                    var id = framework.competency[i];
                     EcCompetency.get(id, function (competency) {
                         competency.levels(AppController.repoInterface, undefined, errorSearchingLevels, function (results) {
                             i++;
@@ -346,8 +347,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 var rollupRules = {};
 
                 var i = 0;
-                for (var j = 0;j < framework.competency.length;j++) {
-                	var id = framework.competency[j];
+                for (var j = 0; j < framework.competency.length; j++) {
+                    var id = framework.competency[j];
                     var competency = EcCompetency.getBlocking(id);
                     competency.rollupRules(AppController.repoInterface, undefined, errorSearchingRollupRules, function (results) {
                         i++;
@@ -402,11 +403,10 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 var relations = {};
 
                 var i = 0;
-	  			for(var id in framework.competency)
-	  			{
-	  				var compId = framework.competency[id];
-	  				
-	  				EcAlignment.searchBySource(AppController.repoInterface, compId, function(results){
+                for (var id in framework.competency) {
+                    var compId = framework.competency[id];
+
+                    EcAlignment.searchBySource(AppController.repoInterface, compId, function (results) {
                         i++;
 
                         for (var idx in results) {
@@ -500,11 +500,12 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
     FrameworkEditScreen.prototype.display = function (containerId, callback) {
         var data = this.data;
 
-		formDirty = false;
-		
-		if(data != undefined && data.id != undefined)
-		{
-			ScreenManager.setScreenParameters({"id": EcRemoteLinkedData.trimVersionFromUrl(data.id)} )
+        formDirty = false;
+
+        if (data != undefined && data.id != undefined) {
+            ScreenManager.setScreenParameters({
+                "id": EcRemoteLinkedData.trimVersionFromUrl(data.id)
+            })
         }
 
         if (data == undefined) {
@@ -541,14 +542,10 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditCreateCompetency").attr("href", "#" + FrameworkEditScreen.prototype.displayName + "?frameworkId=" + EcRemoteLinkedData.trimVersionFromUrl(data.id));
             $("#frameworkEditCreateCompetency").click(function (event) {
                 event.preventDefault();
-				if(data.name == NEW_FRAMEWORK_NAME)
-				{
-				}
-				else
-				{
-					ModalManager.showModal(new ConfirmModal(function(){
-						ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
-					}));
+                if (data.name == NEW_FRAMEWORK_NAME) {} else {
+                    ModalManager.showModal(new ConfirmModal(function () {
+                        ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
+                    }));
                 }
             });
         }
@@ -663,7 +660,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                     displayFramework(data);
                 }, errorRemovingCompetency);
             }
-			formDirty = true;
+            formDirty = true;
         });
         $("#frameworkEditRelations").focus(function () {
             setTimeout(function () {
@@ -695,11 +692,11 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditRelations optgroup").each(function (idx, el) {
                 if ($(el).children().size() == 0)
                     $(el).remove();
+            });
+
+            formDirty = true;
         });
 
-			formDirty = true;
-		});
-		
         $("#frameworkEditLevels").focus(function () {
             setTimeout(function () {
                 if ($("#frameworkEditLevels").val() != undefined && $("#frameworkEditLevels").val() != "") {
@@ -731,7 +728,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 if ($(el).children().size() == 0)
                     $(el).remove();
             })
-            
+
             formDirty = true;
         });
 
