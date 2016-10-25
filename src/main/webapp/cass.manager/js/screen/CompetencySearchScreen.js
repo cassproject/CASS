@@ -138,44 +138,40 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 				return el;
 			},
 			buildData:function(id, datum){
-				var html = "<div class='small-8 columns'>" +
-				"<a class='datum-name'>{{dataName}}</a>" +
-				"<span class='datum-description'>{{dataDescription}}</span>" +
-				"</div>" +
-				"<div class='small-4 columns datum-owner'>{{dataOwner}}</div>";
-
-			html = html.replaceAll(/{{dataId}}/g, id);
-			
-			if(datum["name"] != undefined)
-				html = html.replaceAll(/{{dataName}}/g, datum["name"])
-			else
-				html = html.replaceAll(/{{dataName}}/g, id);
-		
-			if(datum["description"] != undefined)
-				html = html.replaceAll(/{{dataDescription}}/g, " - "+datum["description"])
-			else
-				html = html.replaceAll(/{{dataDescription}}/g, "");
+				var el = $(	"<div>"+ 
+								"<div class='small-8 columns'>" +
+								"<a class='datum-name'></a>" +
+								"<span class='datum-description'></span>" +
+								"</div>" +
+								"<div class='small-4 columns datum-owner'></div>" +
+							"</div>");
+				if(datum["name"] != undefined)
+					el.find(".datum-name").text(datum["name"]);
+				else
+					el.find(".datum-name").text(id);
 				
-			
-			if(datum["owner"] != undefined && datum["owner"].length > 0){
-				var owner = "";
-				for(var i in datum["owner"]){
-					owner+= createContactSmall(datum["owner"][i])+ ", "
+				if(datum["description"] != undefined)
+					el.find(".datum-description").text(" - "+datum["description"]);
+				else
+					el.find(".datum-description").text("");
+				
+				if(datum["owner"] != undefined && datum["owner"].length > 0){
+					var owner = "";
+					for(var i in datum["owner"]){
+						owner+= createContactSmall(datum["owner"][i])+ ", ";
+					}
+					owner = owner.substring(0, owner.length-2);
+					el.find(".datum-owner").html(owner);
+				}else{
+					el.find(".datum-owner").text("Public");
 				}
-				owner = owner.substring(0, owner.length-2);
-				html = html.replaceAll(/{{dataOwner}}/g, owner);
-			}else{
-				html = html.replaceAll(/{{dataOwner}}/g, "Public");
-			}
-			
-			var el = $(html)
-			
-			el.find("a.datum-name").click(function(ev){
-				ev.preventDefault();
-				ScreenManager.changeScreen(new CompetencyViewScreen(datum));
-			})
-			
-			return el;
+				
+				el.find("a.datum-name").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new CompetencyViewScreen(datum));
+				})
+				
+				return el.children();
 			}
 		}), "#competencySearchResults");
 		

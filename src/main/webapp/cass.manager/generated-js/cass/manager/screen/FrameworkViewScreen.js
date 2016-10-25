@@ -25,19 +25,21 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
         var me = this;
         EcFramework.get(this.getData().id, function(framework) {
             me.data = framework;
-            me.bindControls();
-            me.predisplayFramework();
+            me.predisplayFramework(function() {
+                me.bindControls();
+            });
         }, function(msg) {
             EcFramework.get(EcRemoteLinkedData.trimVersionFromUrl(me.getData().id), function(framework) {
                 me.data = framework;
-                me.bindControls();
-                me.predisplayFramework();
+                me.predisplayFramework(function() {
+                    me.bindControls();
+                });
             }, function(msg) {
                 me.errorRetrieving(msg);
             });
         });
     };
-    prototype.predisplayFramework = function() {
+    prototype.predisplayFramework = function(callback) {
         var me = this;
         AppController.repoInterface.precache(this.getData().competency, function() {
             AppController.repoInterface.precache(me.getData().relation, function() {
@@ -46,6 +48,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                     me.autoAppend($("body"), "framework");
                     me.autoFill($("body"), me.getData());
                     me.displayVisualization();
+                    callback();
                 });
             });
         });

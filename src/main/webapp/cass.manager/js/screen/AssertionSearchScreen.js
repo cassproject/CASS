@@ -101,66 +101,59 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 		
 		ViewManager.showView(new MessageContainer("assertionSearch"), "#assertionSearchMessageContainer");
 		
-		EcCompetency.search(AppController.repoInterface, "*", function(competencies){
-			var cache = {};
-			for(var i in competencies){
-				cache[EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id)] = competencies[i];
-			}
-			
-			ViewManager.showView(new DataViewer("assertionResults", {
-				sort:{},
-				clickDataEdit:function(datum){
-					ScreenManager.changeScreen(new AssertionEditScreen(datum));
-				},
-				buildData:function(id, datum){
-					var html = "<div class='small-5 columns'>" +
-								"<a>Assertion about <span class='datum-competency' style='font-style:italic'>{{dataCompetency}}</span></a>" +
+		ViewManager.showView(new DataViewer("assertionResults", {
+			sort:{},
+			clickDataEdit:function(datum){
+				ScreenManager.changeScreen(new AssertionEditScreen(datum));
+			},
+			buildData:function(id, datum){
+				var el = $( "<div>"+
+								"<div class='small-5 columns'>" +
+								"<a>Assertion about <span class='datum-competency' style='font-style:italic'></span></a>" +
 								"</div>" + 
-								"<div class='small-2 columns datum-subject'>{{dataSubject}}</div>" +
-								"<div class='small-2 columns datum-agent'>{{dataAgent}}</div>" +
-								"<div class='small-3 columns datum-owner'>{{dataOwner}}</div>";
-					
-					if(cache[EcRemoteLinkedData.trimVersionFromUrl(datum.competency)] != undefined){
-						html = html.replaceAll(/{{dataCompetency}}/, cache[EcRemoteLinkedData.trimVersionFromUrl(datum.competency)].name)
-					}else{
-						html = html.replaceAll(/{{dataCompetency}}/, "Unknown Competency");
-					}
-					
-					var owner = "";
-					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", "
-					}
-					owner = owner.substring(0, owner.length-2);
-					html = html.replaceAll(/{{dataOwner}}/g, owner);
-					
-					var agent = datum.getAgent();
-					if(agent == undefined)
-						html = html.replaceAll(/{{dataAgent}}/, "by <span style='font-style:italic;'>Unknown</span>");
-					else
-						html = html.replaceAll(/{{dataAgent}}/, "by " + createContactSmall(agent.toPem()));
-					
-					var sub = datum.getSubject();
-					if(sub == undefined)
-						html = html.replaceAll(/{{dataSubject}}/, "on <span style='font-style:italic;'>Unknown</span>");
-					else
-						html = html.replaceAll(/{{dataSubject}}/, "on " + createContactSmall(sub.toPem()));
-					
-					var el = $(html);
-					
-					
-					el.find("a").click(function(ev){
-						ev.preventDefault();
-						ScreenManager.changeScreen(new AssertionViewScreen(datum));
-					})
-					
-					return el;
+								"<div class='small-2 columns datum-subject'></div>" +
+								"<div class='small-2 columns datum-agent'></div>" +
+								"<div class='small-3 columns datum-owner'></div>" +
+							"</div>");
+				
+				EcCompetency.get(datum.competency, function(competency){
+					$("[data-id='"+datum.id+"']").find(".datum-competency").text(competency.name)
+				}, function(){
+					el.find(".datum-competency").text("Unknown Competency");
+				})
+				el.find(".datum-competency").text("Loading..");
+				
+				
+				var owner = "";
+				for(var i in datum["owner"]){
+					owner+= createContactSmall(datum["owner"][i])+ ", "
 				}
-			}), "#assertionSearchResults");
-			
-			runAssertionSearch();
-		}, function(err){
-			
-		});
+				owner = owner.substring(0, owner.length-2);
+				el.find(".datum-owner").html(owner);
+				
+				var agent = datum.getAgent();
+				if(agent == undefined)
+					el.find(".datum-agent").html("by <span style='font-style:italic;'>Unknown</span>");
+				else
+					el.find(".datum-agent").html("by " + createContactSmall(agent.toPem()))
+				
+				var sub = datum.getSubject();
+				if(sub == undefined)
+					el.find(".datum-subject").html("by <span style='font-style:italic;'>Unknown</span>");
+				else
+					el.find(".datum-subject").html("on " + createContactSmall(sub.toPem()))
+				
+				
+				el.find("a").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new AssertionViewScreen(datum));
+				})
+				
+				return el.children();
+			}
+		}), "#assertionSearchResults");
+		
+		runAssertionSearch();
 			
 	};
 	

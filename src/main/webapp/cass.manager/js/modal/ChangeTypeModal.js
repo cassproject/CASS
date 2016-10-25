@@ -1,14 +1,12 @@
 var ChangeTypeModal = (function(ChangeTypeModal){	
-	var ERROR_CONTAINER_ID = "#changeTypeError";
 	
 	function displayError(err)
 	{
-		$(ERROR_CONTAINER_ID).text(err);
-		$(ERROR_CONTAINER_ID).show();
+		ViewManager.getView("#changeTypeMessageContainer").displayAlert(err);
 	}
 	function clearError()
 	{
-		$(ERROR_CONTAINER_ID).hide();
+		ViewManager.getView("#changeTypeMessageContainer").clearAlert();
 	}
 	
 	var typeSelected = {};
@@ -54,6 +52,8 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 		typeSelected = [];
 		var dataEdit = ViewManager.getView(this.repoEditContainer);
 		
+		ViewManager.showView(new MessageContainer("changeType"), "#changeTypeMessageContainer");
+		
 		var thing = new Thing();
 		thing.name = "New Thing";
 		addOptionToTypeSelect(thing);
@@ -66,7 +66,7 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 		}
 		else
 		{
-			displayError("");
+			displayError("Cannot Change Type, are you sure you're on the right screen?");
 		}
 		
 		$("#changeTypeSelect").change(function(){

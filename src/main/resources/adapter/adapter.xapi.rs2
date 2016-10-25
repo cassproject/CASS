@@ -7,7 +7,7 @@ ppk=#if(
 		b=ppk
 	).cget(b=""),
 	ne=ppk
-).cache(name="xapiAdapterPpk");
+).replace(replace="\r?\n", with="").cache(name="xapiAdapterPpk");
 
 #xapiMePpk=ppk;
 

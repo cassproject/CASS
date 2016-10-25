@@ -169,8 +169,9 @@ RollupRule = stjs.extend(RollupRule, Thing, [], function(constructor, prototype)
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
     constructor.myType = RollupRule.TYPE_0_2;
     prototype.rule = null;
+    prototype.outcome = null;
     prototype.competency = null;
-    prototype.language = null;
+    prototype.mime = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
     };

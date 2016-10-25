@@ -98,7 +98,9 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    			}
 	    			tip += level.id;
 	    			
-	    			$("#assertionViewLevel").html("<span class='has-tip' style='font-weight:normal'>"+level.name+"</span>");
+	    			var span = $("<span class='has-tip' style='font-weight:normal'></span>");
+	    			span.text(level.name);
+	    			$("#assertionViewLevel").append(span);
 	    			
 	    			new Foundation.Tooltip($("#assertionViewLevel .has-tip"), {"tipText":tip});
 	    		}else{

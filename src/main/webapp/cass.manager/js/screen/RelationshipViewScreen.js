@@ -18,7 +18,9 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 		
 		if(relation.source != undefined){
 			EcCompetency.get(relation.source, function(competency){
-				$("#relationshipViewerSource").html("<a href='#"+CompetencyViewScreen.displayName+"'>"+competency.name+"</a>")
+				var a = $("<a></a>");
+				a.attr("href", "#"+CompetencyViewScreen.displayName);
+				a.text(competency.name)
 				$("#relationshipViewerSource").click(function(event){
 					event.preventDefault();
 					ScreenManager.changeScreen(new CompetencyViewScreen(competency));
@@ -38,7 +40,10 @@ RelationshipViewScreen = (function(RelationshipViewScreen){
 		
 		if(relation.target != undefined){
 			EcCompetency.get(relation.target, function(competency){
-				$("#relationshipViewerTarget").html("<a href='#"+CompetencyViewScreen.displayName+"'>"+competency.name+"</a>")
+				var a = $("<a></a>");
+				a.attr("href", "#"+CompetencyViewScreen.displayName);
+				a.text(competency.name)
+				$("#relationshipViewerTarget").append(a);
 				$("#relationshipViewerTarget").click(function(event){
 					event.preventDefault();
 					ScreenManager.changeScreen(new CompetencyViewScreen(competency));

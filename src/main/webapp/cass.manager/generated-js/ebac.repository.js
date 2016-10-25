@@ -588,18 +588,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.cachingSearch) {
             cacheKey = JSON.stringify(paramProps) + query;
             if ((EcRepository.cache)[cacheKey] != null) {
-                var results = (EcRepository.cache)[cacheKey];
-                for (var i = 0; i < results.length; i++) {
-                    var d = new EcRemoteLinkedData(null, null);
-                    d.copyFrom(results[i]);
-                    results[i] = d;
-                    if (EcRepository.caching) 
-                        (EcRepository.cache)[d.shortId()] = d;
-                    if (eachSuccess != null) 
-                        eachSuccess(results[i]);
-                }
-                if (success != null) 
-                    success(results);
+                this.handleSearchResults((EcRepository.cache)[cacheKey], eachSuccess, success);
+                return;
             }
         } else 
             cacheKey = null;
@@ -611,21 +601,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
-                if (EcRepository.cachingSearch) {
+                if (EcRepository.cachingSearch) 
                     (EcRepository.cache)[cacheKey] = p1;
-                }
-                var results = p1;
-                for (var i = 0; i < results.length; i++) {
-                    var d = new EcRemoteLinkedData(null, null);
-                    d.copyFrom(results[i]);
-                    results[i] = d;
-                    if (EcRepository.caching) 
-                        (EcRepository.cache)[d.shortId()] = d;
-                    if (eachSuccess != null) 
-                        eachSuccess(results[i]);
-                }
-                if (success != null) 
-                    success(results);
+                me.handleSearchResults(p1, eachSuccess, success);
             }, failure);
         });
     };
@@ -695,6 +673,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (success != null) 
                 success(results);
         }, failure);
+    };
+    prototype.handleSearchResults = function(results, eachSuccess, success) {
+        for (var i = 0; i < results.length; i++) {
+            var d = new EcRemoteLinkedData(null, null);
+            d.copyFrom(results[i]);
+            results[i] = d;
+            if (EcRepository.caching) 
+                (EcRepository.cache)[d.shortId()] = d;
+            if (eachSuccess != null) 
+                eachSuccess(results[i]);
+        }
+        if (success != null) 
+            success(results);
     };
     constructor.escapeSearch = function(query) {
         var s = null;

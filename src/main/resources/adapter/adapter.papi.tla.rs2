@@ -29,9 +29,17 @@ process=#runProcess(
 processTest=process.displayJson();
 /learners/test/mastery = processTest;
 
+process=#object(
+	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
+	level=process.flatten(),
+	confidence=#toDouble(obj="1.0")
+).displayJson(_collapse="true");
+
+/learners/rest/mastery = process;
+
 process=#runProcess(
 	workingDirectory="scripts/node",
-	timeout="50000",
+	timeout="500000",
 	args=#object(
 		a="node",
 		b="tla/getProfile.js", 
@@ -59,10 +67,47 @@ process=#runProcess(
 processTest=process.displayJson();
 /learners/test/profile = processTest;
 
-process=#object(
-	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
-	level=process.flatten(),
-	confidence=#toDouble(obj="1.0")
+process=process.forEach(
+	paramName="key",
+	valueName="val",
+	op=#object(
+		measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
+		level="@val",
+		confidence=#toDouble(obj="1.0")
+	)
 ).displayJson(_collapse="true");
 
-/learners/rest/mastery = process;
+/learners/rest/profile = process;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/addAssertion.js",		
+		c=#add(a="competencyId=",b="@competencyId"), 
+		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		e=#add(
+			a="subject=",
+			b=#object(
+				mbox=#add(
+					a="mailto:",
+					b="@username"
+				)
+			).xapiAgentToPk().replace(replace="\r?\n", with="")
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		),
+		h=#add(
+			a="confidence=",
+			b="@confidence"
+		)
+	).valueSet()
+);
+
+processTest=process.displayJson();
+/learners/test/addAssertion = processTest;
+

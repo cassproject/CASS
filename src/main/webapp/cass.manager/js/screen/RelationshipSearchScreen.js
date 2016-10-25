@@ -126,72 +126,63 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			
 		ViewManager.showView(new MessageContainer("relationshipSearch"), "#relationshipSearchMessageContainer");
 		
-		EcCompetency.search(AppController.repoInterface, "*", function(competencies){
-			var cache = {};
-			for(var i in competencies){
-				cache[EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id)] = competencies[i];
-			}
-		
-			ViewManager.showView(new DataViewer("relationshipResults", {
-				sort:{},
-				clickDataEdit:function(datum){
-					ScreenManager.changeScreen(new RelationshipEditScreen(datum));
-				},
-				buildData:function(id, datum){
-					var html = "<div>" +
-									"<a>" +
-										"<div class='small-3 columns' style='font-weight:bold'>{{dataSource}}</div> " +
-										"<div class='small-2 columns' style='font-style:italic'>{{dataRelationType}}</div>" +
-										"<div class='small-3 columns end'>{{dataTarget}}</div>" +
-									"</a>" +
-									"<div class='small-4 columns datum-owner'>{{dataOwner}}</div>" +
-								"</div>";
-					
-					if(cache[EcRemoteLinkedData.trimVersionFromUrl(datum.source)] != undefined){
-						html = html.replaceAll(/{{dataSource}}/, cache[EcRemoteLinkedData.trimVersionFromUrl(datum.source)].name)
-					}else{
-						html = html.replaceAll(/{{dataSource}}/, "Unknown Competency");
+		ViewManager.showView(new DataViewer("relationshipResults", {
+			sort:{},
+			clickDataEdit:function(datum){
+				ScreenManager.changeScreen(new RelationshipEditScreen(datum));
+			},
+			buildData:function(id, datum){				
+				var el = $("<div>" +
+								"<a>" +
+									"<div class='small-3 columns datum-source' style='font-weight:bold'></div> " +
+									"<div class='small-2 columns datum-type' style='font-style:italic'></div>" +
+									"<div class='small-3 columns end datum-target'></div>" +
+								"</a>" +
+								"<div class='small-4 columns datum-owner'></div>" +
+							"</div>");
+				
+				var owner = "";
+				if(datum["owner"] == undefined || datum["owner"].length == 0){
+					owner = "Public"
+				}else{
+					for(var i in datum["owner"]){
+						owner+= createContactSmall(datum["owner"][i])+ ", "
 					}
-					
-					if(cache[EcRemoteLinkedData.trimVersionFromUrl(datum.target)] != undefined){
-						html = html.replaceAll(/{{dataTarget}}/, cache[EcRemoteLinkedData.trimVersionFromUrl(datum.target)].name)
-					}else{
-						html = html.replaceAll(/{{dataTarget}}/, "Unknown Competency");
-					}
-					
-					if(relationTypes[datum.relationType] != undefined){
-						html = html.replaceAll(/{{dataRelationType}}/, relationTypes[datum.relationType])
-					}else{
-						html = html.replaceAll(/{{dataRelationType}}/, "has a relationship with");
-					}
-					
-					var owner = "";
-					if(datum["owner"] == undefined || datum["owner"].length == 0){
-						owner = "Public"
-					}else{
-						for(var i in datum["owner"]){
-							owner+= createContactSmall(datum["owner"][i])+ ", "
-						}
-						owner = owner.substring(0, owner.length-2);
-					}
-					
-					html = html.replaceAll(/{{dataOwner}}/g, owner);
-					
-					var el = $(html);
-					
-					el.find("a").click(function(ev){
-						ev.preventDefault();
-						ScreenManager.changeScreen(new RelationshipViewScreen(datum));
-					})
-					
-					return el;
+					owner = owner.substring(0, owner.length-2);
 				}
-			}), "#relationshipSearchResults");
-			
-			runRelationshipSearch();
-		}, function(err){
-			
-		});
+				el.find(".datum-owner").html(owner);
+				
+				EcCompetency.get(datum.source, function(competency){
+					$("[data-id='"+datum.id+"']").find(".datum-source").text(competency.name)
+				}, function(){
+					el.find(".datum-source").text("Unknown Competency");
+				})
+				el.find(".datum-source").text("Loading..");
+				
+				EcCompetency.get(datum.target, function(competency){
+					$("[data-id='"+datum.id+"']").find(".datum-target").text(competency.name)
+				}, function(){
+					el.find(".datum-target").text("Unknown Competency");
+				})
+				el.find(".datum-target").text("Loading..");
+				
+				if(relationTypes[datum.relationType] != undefined){
+					el.find(".datum-type").text(relationTypes[datum.relationType])
+		
+				}else{
+					el.find(".datum-type").text("has a relationship with");
+				}
+				
+				el.find("a").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new RelationshipViewScreen(datum));
+				})
+				
+				return el;
+			}
+		}), "#relationshipSearchResults");
+		
+		
 		
 		$("#relationshipSearchSubmit").click(function(event){
 			event.preventDefault();
@@ -236,6 +227,8 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			
 			$("#relationshipSearchOwnership").val(ownership);
 		}
+		
+		runRelationshipSearch();
 	};
 	
 	return RelationshipSearchScreen;

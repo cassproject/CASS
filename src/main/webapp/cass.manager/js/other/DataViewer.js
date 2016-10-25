@@ -237,7 +237,9 @@ var DataViewer = (function(DataViewer){
 	
 	function buildData(id, datum, prefix, callbacks, self){
 		
-		var row = $("<div class='row column' datum-id='"+id+"' title='"+id+"' style='padding:7px 2px;padding-left:40px;'></div>");
+		var row = $("<div class='row column' style='padding:7px 2px;padding-left:40px;'></div>");
+		row.attr("data-id", id);
+		row.attr("title", id);
 		
 		var dataSelect = $("<input type='checkbox' class='datum-select'></input>)");
 		
@@ -267,7 +269,7 @@ var DataViewer = (function(DataViewer){
 			
 			if($(ev.target).is(":checked")){
 				$(ev.target).closest(".row").addClass("selected");
-				//row.find(".datum-id").slideDown();
+				//row.find(".data-id").slideDown();
 				
 				if(!AppController.identityController.owns(datum)){
 					$("#"+prefix+"-menu").find(".fa-group").addClass("hide");
@@ -278,11 +280,11 @@ var DataViewer = (function(DataViewer){
 				}
 			}else{
 				$(ev.target).closest(".row").removeClass("selected");
-				//row.find(".datum-id").slideUp();
+				//row.find(".data-id").slideUp();
 				
 				var selected = [];
 				$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-					selected.push(self.dataStore[$(obj).attr("datum-id")]);
+					selected.push(self.dataStore[$(obj).attr("data-id")]);
 				});
 				
 				if(!AppController.identityController.owns(datum)){
@@ -452,31 +454,29 @@ var DataViewer = (function(DataViewer){
 	
 	
 	function defaultBuildRow(id, datum, callbacks){
-		var html = "<div class='small-6 columns'>" +
-						"<a class='datum-name'>{{dataName}}</a>" +
-						"<span class='datum-description'>{{dataDescription}}</span>" +
-						//"<div class='datum-id' style='font-size:small;display:none;'>{{dataId}}</div>" + 
-					"</div>" +
-					"<div class='small-2 columns datum-type'>{{dataType}}</div>" +
-					"<div class='small-4 columns datum-owner'>{{dataOwner}}</div>";
 		
-		html = html.replaceAll(/{{dataId}}/g, id);
+		var el = $("<div>"+
+					"<div class='small-6 columns'>" +
+						"<a class='datum-name'></a>" +
+						"<span class='datum-description'></span>" +
+						"</div>" +
+					"<div class='small-2 columns datum-type'></div>" +
+					"<div class='small-4 columns datum-owner'></div>"+
+					"</div>")
 		
-		if(datum["name"] != undefined)
-			html = html.replaceAll(/{{dataName}}/g, datum["name"])
-		else
-			html = html.replaceAll(/{{dataName}}/g, id);
-	
+		if(datum["name"] != undefined){
+			el.find(".datum-name").text(datum["name"]);
+		}else{
+			el.find(".datum-name").text(id);
+			el.find(".datum-name").css("font-size", "0.8rem");
+		}
+		
 		if(datum["description"] != undefined)
-			html = html.replaceAll(/{{dataDescription}}/g, " - "+datum["description"])
-		else
-			html = html.replaceAll(/{{dataDescription}}/g, "");
-			
+			el.find(".datum-description").text(" - "+datum["description"]);
+		
 		if(datum["type"] != undefined){
 			var typeSplit = datum["type"].split("/");
-			html = html.replaceAll(/{{dataType}}/g, typeSplit[typeSplit.length-1]);
-		}else{
-			html = html.replaceAll(/{{dataType}}/g, "");
+			el.find(".datum-type").text(typeSplit[typeSplit.length-1]);
 		}
 		
 		if(datum["owner"] != undefined && datum["owner"].length > 0){
@@ -485,16 +485,11 @@ var DataViewer = (function(DataViewer){
 				owner+= createContactSmall(datum["owner"][i])+ ", "
 			}
 			owner = owner.substring(0, owner.length-2);
-			html = html.replaceAll(/{{dataOwner}}/g, owner);
+			el.find(".datum-owner").html(owner);
 		}else{
-			html = html.replaceAll(/{{dataOwner}}/g, "Public");
+			el.find(".datum-owner").text("Public");
 		}
 		
-		var el = $(html)
-		
-		if(datum["name"] == undefined){
-			el.find(".datum-name").css("font-size", "0.8rem");
-		}
 		
 		el.find("a.datum-name").click(function(ev){
 			ev.preventDefault();
@@ -505,7 +500,7 @@ var DataViewer = (function(DataViewer){
 			}
 		})
 		
-		return el;
+		return el.children();
 	}
 
 	function defaultBuildMenu(prefix, self, callbacks){
@@ -536,7 +531,7 @@ var DataViewer = (function(DataViewer){
 		row.find(".fa-clone").click(function(){
 			var selected = [];
 			$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-				selected.push(self.dataStore[$(obj).attr("datum-id")]);
+				selected.push(self.dataStore[$(obj).attr("data-id")]);
 			});
 			
 			ModalManager.showModal(new CopyResourceModal(selected, function(){
@@ -547,7 +542,7 @@ var DataViewer = (function(DataViewer){
 		row.find(".fa-trash").click(function(){
 			var selected = [];
 			$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-				selected.push(self.dataStore[$(obj).attr("datum-id")]);
+				selected.push(self.dataStore[$(obj).attr("data-id")]);
 			});
 			
 			if(callbacks != undefined && callbacks["clickMenuDelete"] != undefined){
@@ -558,7 +553,7 @@ var DataViewer = (function(DataViewer){
 					
 					var runDelete = function(id, datum){
 						EcRepository._delete(datum, function(){
-							$("#"+prefix+"-data").find(".row[datum-id='"+id+"']").remove();
+							$("#"+prefix+"-data").find(".row[data-id='"+id+"']").remove();
 							
 							deleted++;
 							if(deleted == selected.length){
@@ -582,7 +577,7 @@ var DataViewer = (function(DataViewer){
 		row.find(".fa-group").click(function(){
 			var selected = [];
 			$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-				selected.push(self.dataStore[$(obj).attr("datum-id")]);
+				selected.push(self.dataStore[$(obj).attr("data-id")]);
 			});
 			
 			if(selected.length == 1)
@@ -664,7 +659,7 @@ var DataViewer = (function(DataViewer){
 	function getSelectedData(prefix, self){
 		var selected = [];
 		$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-			selected.push(self.dataStore[$(obj).attr("datum-id")]);
+			selected.push(self.dataStore[$(obj).attr("data-id")]);
 		});
 		return selected;
 	}

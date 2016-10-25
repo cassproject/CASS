@@ -125,10 +125,14 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 				var comps = (datum.competency == undefined ? 0 : datum.competency.length);
 				var rels = (datum.relation == undefined ? 0 : datum.relation.length)
 				
-				var html = "<div class='small-4 columns'><a class='datum-name'>"+datum.name+"</a></div>" +
-							"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
-							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
-							"<div class='small-4 columns'>{{dataOwner}}</div>";
+				var el = $(	"<div>"+
+								"<div class='small-4 columns'><a class='datum-name'></a></div>" +
+								"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
+								"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
+								"<div class='small-4 columns datum-owner'></div>" +
+							"</div>");
+				
+				el.find(".datum-name").text(datum.name);
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
 					var owner = "";
@@ -136,19 +140,18 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 						owner+= createContactSmall(datum["owner"][i])+ ", "
 					}
 					owner = owner.substring(0, owner.length-2);
-					html = html.replaceAll(/{{dataOwner}}/g, owner);
+					el.find(".datum-owner").html(owner);
 				}else{
-					html = html.replaceAll(/{{dataOwner}}/g, "Public");
+					el.find(".datum-owner").text("Public");
 				}
 				
-				var el = $(html)
 				
 				el.find(".datum-name").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new FrameworkViewScreen(datum));
 				});
 				
-				return el;
+				return el.children();
 			}
 		}), "#frameworkSearchResults");
 		

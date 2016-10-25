@@ -1,130 +1,143 @@
 <div style="padding-top:50px">
-	<div class="row">
-		<div id="frameworkEditMessageContainer" class="small-6 columns small-centered" >
-		</div>
-	</div>
-	<div class="row" >
-		<div class="large-12 small-12 columns">
-			<div class="row" style="margin-top:0px;padding-bottom:0px">
-				<div class="large-12 columns large-centered" style="margin-bottom:0px">
-					<a id="frameworkEditSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
-					<a id="frameworkEditViewBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">View</a>
-					<a id="frameworkEditBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Edit</a>
-					
-					<span id="frameworkEditSaveBtn" class="float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-top:0.2rem;">Save</span>
-					<span id="frameworkEditDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Delete</span>
-					<span id="frameworkEditCancelBtn" class="fake-a-label float-right label secondary" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Cancel</span>				
-		   		</div>
-			</div>
-			
-			<div id="datum" class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
-				<h3>
+    <div class="row">
+        <div id="frameworkEditMessageContainer" class="small-6 columns small-centered">
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 small-12 columns">
+            <div class="row" style="margin-top:0px;padding-bottom:0px">
+                <div class="large-12 columns large-centered" style="margin-bottom:0px">
+                    <a id="frameworkEditSearchBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Search</a>
+                    <a id="frameworkEditViewBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">View</a>
+                    <a id="frameworkEditBtn" class="label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">Edit</a>
+
+                    <span id="frameworkEditSaveBtn" class="float-right label" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-top:0.2rem;">Save</span>
+                    <span id="frameworkEditDeleteBtn" class="float-right label alert" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Delete</span>
+                    <span id="frameworkEditCancelBtn" class="fake-a-label float-right label secondary" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;margin-right:0.3rem;margin-top:0.2rem;">Cancel</span>
+                </div>
+            </div>
+
+            <div id="datum" class="row callout" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:0px">
+                <h3>
 					Edit Framework
 					<button class="float-right button" id="importCompetenciesBtn">Import Competencies</button>	
 				</h3>
-				<div class="large-12 small-12 columns">
-					<div class="row collapse">
-						<i>Permanant URL for the framework.</i>
-						<div class="small-4 large-3 columns">
-							<span class="prefix">URL:</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="frameworkEditId" placeholder="This isn't supposed to be empty." type="text" disabled="disabled">
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Name:</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="frameworkEditName" type="text"/>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Description:</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<textarea id="frameworkEditDescription"></textarea>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Competencies</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<a id="frameworkEditCreateCompetency" class="label" style="float:right;box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">New</a>
-							<input id="frameworkEditAddCompetency" type="text" class="typeahead" style="width:100%; margin-bottom:0px;" placeholder="Search for Competency to Add"/>
-							<select id="frameworkEditCompetencies" class="searchSelect empty" multiple size="4" disabled="disabled" >
-								<option id="noCompetencies">No Competencies in this Framework Yet</option>
-							</select>
-							<button id="frameworkEditDeleteCompetency" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Relations</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="frameworkEditAddRelation" type="text" style="margin-bottom:0px;" placeholder="Search for Relation to Add by Competency"/>
-							<select id="frameworkEditRelations" multiple size="4" disabled="disabled" class="searchSelect empty">
-								<option id="noRelations">No Relations in this Framework Yet</option>
-							</select>
-							<button id="frameworkEditDeleteRelation" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Levels</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="frameworkEditAddLevel" type="text" style="margin-bottom:0px;" placeholder="Search for Level to Add by Competency"/>
-							<select id="frameworkEditLevels" multiple size="4" disabled="disabled" class="searchSelect empty">
-								<option id="noLevels">No Levels in this Framework Yet</option>
-							</select>
-							<button id="frameworkEditDeleteLevel" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
-						</div>
-					</div>
-					
-					<div class="row collapse" style="margin-bottom:1rem;">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Ownership:</span>
-						</div>
-						<div class="small-7 large-8 columns">
-							<div id="frameworkEditOwner"></div>
-						</div>
-						<div class="small-1 columns">
-							<small id="frameworkEditOwnerAdvanced" class="fake-a float-right">Advanced</small>
-						</div>
-					</div>
-					
-					<div id="privateRow" style="display:none;">
-						<div class="row collapse " style="margin-bottom:1rem;">
-							<div class="small-4 large-3 columns">
-								<span class="prefix">Visibility:</span>
-							</div>
-							<div class="small-8 large-9 columns">
-								Private
-							</div>
-						</div>
-						
-						<div class="row collapse" style="margin-bottom:1rem;">
-							<div class="small-4 large-3 columns">
-								<span class="prefix">Readers:</span>
-							</div>
-							<div class="small-8 large-9 columns">
-								<span id="frameworkEditNoReaders" style="font-style:italic">None Added Yet</span>
-								<span id="frameworkEditReaders"></span>
-							</div>
-						</div>
-					</div>
-				</div> 
-			</div>
-		</div>  
-	</div>
+                <div class="large-12 small-12 columns">
+                    <div class="row collapse">
+                        <i>Permanant URL for the framework.</i>
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">URL:</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <input id="frameworkEditId" placeholder="This isn't supposed to be empty." type="text" disabled="disabled">
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Name:</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <input id="frameworkEditName" type="text" />
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Description:</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <textarea id="frameworkEditDescription"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Competencies</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <a id="frameworkEditCreateCompetency" class="label" style="float:right;box-shadow:6px 0px 4px rgba(0,0,0,.4);cursor:pointer;">New</a>
+                            <input id="frameworkEditAddCompetency" type="text" class="typeahead" style="width:100%; margin-bottom:0px;" placeholder="Search for Competency to Add" />
+                            <select id="frameworkEditCompetencies" class="searchSelect empty" multiple size="4" disabled="disabled">
+                                <option id="noCompetencies">No Competencies in this Framework Yet</option>
+                            </select>
+                            <button id="frameworkEditDeleteCompetency" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Relations</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <input id="frameworkEditAddRelation" type="text" style="margin-bottom:0px;" placeholder="Search for Relation to Add by Competency" />
+                            <select id="frameworkEditRelations" multiple size="4" disabled="disabled" class="searchSelect empty">
+                                <option id="noRelations">No Relations in this Framework Yet</option>
+                            </select>
+                            <button id="frameworkEditDeleteRelation" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Levels</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <input id="frameworkEditAddLevel" type="text" style="margin-bottom:0px;" placeholder="Search for Level to Add by Competency" />
+                            <select id="frameworkEditLevels" multiple size="4" disabled="disabled" class="searchSelect empty">
+                                <option id="noLevels">No Levels in this Framework Yet</option>
+                            </select>
+                            <button id="frameworkEditDeleteLevel" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="row collapse">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Rollup Rules</span>
+                        </div>
+                        <div class="small-8 large-9 columns">
+                            <input id="frameworkEditAddRollupRule" type="text" style="margin-bottom:0px;" placeholder="Search for Rollup Rule to Add by Competency" />
+                            <select id="frameworkEditRollupRules" multiple size="4" disabled="disabled" class="searchSelect empty">
+                                <option id="noRollupRules">No Rollup Rules in this Framework Yet</option>
+                            </select>
+                            <button id="frameworkEditDeleteRollupRule" class="button alert" style="font-weight:bold; width:100%; display:none;">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="row collapse" style="margin-bottom:1rem;">
+                        <div class="small-4 large-3 columns">
+                            <span class="prefix">Ownership:</span>
+                        </div>
+                        <div class="small-7 large-8 columns">
+                            <div id="frameworkEditOwner"></div>
+                        </div>
+                        <div class="small-1 columns">
+                            <small id="frameworkEditOwnerAdvanced" class="fake-a float-right">Advanced</small>
+                        </div>
+                    </div>
+
+                    <div id="privateRow" style="display:none;">
+                        <div class="row collapse " style="margin-bottom:1rem;">
+                            <div class="small-4 large-3 columns">
+                                <span class="prefix">Visibility:</span>
+                            </div>
+                            <div class="small-8 large-9 columns">
+                                Private
+                            </div>
+                        </div>
+
+                        <div class="row collapse" style="margin-bottom:1rem;">
+                            <div class="small-4 large-3 columns">
+                                <span class="prefix">Readers:</span>
+                            </div>
+                            <div class="small-8 large-9 columns">
+                                <span id="frameworkEditNoReaders" style="font-style:italic">None Added Yet</span>
+                                <span id="frameworkEditReaders"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

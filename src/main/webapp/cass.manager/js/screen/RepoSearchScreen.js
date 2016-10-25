@@ -178,27 +178,26 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			var shortType = typeSplit[typeSplit.length-1];
 			shortType = shortType.slice(0,1).toUpperCase() + shortType.slice(1, shortType.length);
 
+			var el;
 			if(urlTypes == undefined){
-				var html = '<li class="type"><label title="'+fullType+'">'
-	    			+ '<input type="checkbox" style="margin-bottom:0.5rem;" checked>'
-	    			+ shortType+' ('+count+')'
-	    			+'</label></li>';
+				el = $("<li class='type'><label></label></li>");
+				el.find("label").attr("title", fullType);
+				el.find("label").text(shortType+' ('+count+')');
+				el.find("label").prepend("<input type='checkbox' style='margin-bottom:0.5rem;' checked='checked'/>");
 			}else{
-				var html = '<li class="type"><label title="'+fullType+'">'
-    			+ '<input type="checkbox" style="margin-bottom:0.5rem;"';
-				
-				html += $.inArray(fullType, urlTypes) != -1 ? "checked" : "";
-				
-				html += '>'
-    			+ shortType+' ('+count+')'
-    			+'</label></li>';
+				el = $("<li class='type'><label></label></li>");
+				el.find("label").attr("title", fullType);
+				el.find("label").text(shortType+' ('+count+')');
+				el.find("label").prepend("<input type='checkbox' style='margin-bottom:0.5rem;'/>");
+				if($.inArray(fullType, urlTypes) != -1)
+					el.find("input").attr("checked", "checked");
 				
 				if(urlTypes.length == 1 && $.inArray(fullType, urlTypes) != -1){
 					$("#repoSearchTypesText").text(shortType+' ('+count+')');
 				}
 			}
 				
-			$("#repoSearchTypes").prepend(html);
+			$("#repoSearchTypes").prepend(el);
 		}
 		
 		if(urlTypes != undefined && urlTypes.length > 1){

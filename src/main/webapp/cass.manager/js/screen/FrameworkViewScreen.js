@@ -101,15 +101,6 @@ FrameworkViewScreen.prototype.bindControls = function () {
         $("#frameworkViewerContents").addClass("hide");
     }
 
-    if (AppController.identityController.canEdit(framework)) {
-        $("#editFrameworkBtn").click(function (event) {
-            event.preventDefault();
-            ScreenManager.changeScreen(new FrameworkEditScreen(framework));
-        })
-    } else {
-        $("#editFrameworkBtn").hide();
-    }
-
     if (framework.owner != undefined && framework.owner.length > 0) {
         $("#frameworkViewOwner").text("")
         for (var i = 0; i < framework.owner.length; i++) {
