@@ -147,7 +147,7 @@ echo Installing HTTPD...
 yum -q -y install httpd
 fi
 
-if [ "$1" -ne 0 ];
+if [ -z "$1" ];
  then
 echo -----
 echo Available Recommended Versions:
