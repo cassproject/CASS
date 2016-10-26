@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/foundation.joyride.css" />
     <link rel="stylesheet" href="css/app.css" />
+    <style>
+        .cass-competency-actions a {
+            display: none;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -39,7 +45,8 @@
     <br>
     <div class="row" id="main">
         <div id="evidenceProcess" class="topLevel large-12 columns large-centered">
-            <h3>To calculate whether an individual has competence in a competency:</h3><p>1. Select a contact using one of the provided tools under the '...' at the right.</p>
+            <h3>To calculate whether an individual has competence in a competency:</h3>
+            <p>1. Select a contact using one of the provided tools under the '...' at the right.</p>
             <button class="float-right button tiny" data-open="contactSelector">...</button>
             <h5 id="selectedContact" class="contactStyle">No Selected Contact</h3>
             <p>2. Next, select an competency.</p>
@@ -60,7 +67,6 @@
                     <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
                         <a class="accordion-title cass-framework-name">Framework 1</a>
                         <div class="accordion-content" data-tab-content>
-                            <span class="cass-competency-actions"><a class="float-right"  onclick="permissionsOn(this);">🔒</a></span>
                             <i class="cass-framework-description">Loading...</i>
                             <br>
                             <small><a class="cass-framework-url"></a></small>

@@ -88,18 +88,19 @@ function editCompetencyDelete() {
         return;
     }
     var competencyId = $("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url");
-    if (confirm("This will delete the selected competency. Continue?") == true)
+    if (confirm("This will delete the selected competency. Continue?") == true) {
         EcRepository.get(competencyId, function (competency) {
             EcRepository._delete(competency, function (response) {
-                populateFramework(frameworkId);
                 $("#editCompetency").foundation('close');
+                removeCompetencyFromFramework(competencyId, frameworkId);
             }, error);
         });
+    }
 }
 
 function populateCompetency(id) {
     if (id == null) return;
-    var competency =EcRepository.getBlocking(id);
+    var competency = EcRepository.getBlocking(id);
     var ui = $("[url='" + competency.shortId() + "']");
     ui.children(".cass-competency-name").text(competency.name);
     if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
