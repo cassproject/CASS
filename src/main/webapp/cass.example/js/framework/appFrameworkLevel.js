@@ -22,8 +22,6 @@ function populateFrameworkLevels(frameworkId) {
                     ui.find(".cass-level-name").text(level.name);
                     ui.find(".cass-level-title").text(level.title);
                     ui.find(".cass-level-description").text(level.description);
-                    ui.find(".cass-level-actions").append("<a class='canEditLevel' onclick='removeLevelFromFrameworkButton(this);' style='display:none;'>X</a>");
-                    ui.find(".cass-level-actions").prepend("<a class='canEditLevel' onclick='editLevelButton(this);' style='display:none;'>✎</a>");
                     if (identity != null && level.canEdit(identity.ppk.toPk()))
                         ui.find(".canEditLevel").show();
                     else
@@ -69,8 +67,8 @@ function removeLevelFromFrameworkButton(me) {
     var levelId = $(me).parents(".cass-competency-level").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
-    if (confirm("This will remove '"+$(me).parents(".cass-competency-level").children(".cass-level-name").text()+"' Continue?") == true)
-    removeLevelFromFramework(levelId, frameworkId);
+    if (confirm("This will remove '" + $(me).parents(".cass-competency-level").children(".cass-level-name").text() + "' Continue?") == true)
+        removeLevelFromFramework(levelId, frameworkId);
 }
 
 function removeLevelFromFramework(levelId, frameworkId) {

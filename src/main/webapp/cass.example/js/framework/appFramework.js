@@ -79,7 +79,7 @@ function populateFramework(frameworkId) {
             repo.precache(fw.relation);
         if (fw.level != null)
             repo.precache(fw.level);
-        
+
         var fwui = $("[url='" + fw.shortId() + "']");
         fwui.find(".cass-framework-name").text(fw.name);
         if ($("#frameworks").find(".is-active").attr("url") == null) {
@@ -111,8 +111,6 @@ function populateFramework(frameworkId) {
                 var ui = fwui.find("#competency").children().last();
                 ui.attr("url", competencyUrl);
                 ui.find(".cass-competency-relations").html("");
-                ui.find(".cass-competency-actions").prepend("<a class='canEditCompetency' onclick='editCompetencyButton(this);' style='display:none;'>✎</a>");
-                ui.find(".cass-competency-actions").append("<a class='canEditFramework' onclick='removeCompetencyFromFrameworkButton(this);' style='display:none;'>X</a>");
                 (function (competencyUrl, i) {
                     timeout(function () {
                         populateCompetency(competencyUrl);

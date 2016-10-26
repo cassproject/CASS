@@ -89,7 +89,7 @@
             <li class="accordion-item accordion-navigation cass-framework" data-accordion-item>
                 <a class="accordion-title cass-framework-name">Framework 1</a>
                 <div class="accordion-content" data-tab-content>
-                    <span class="cass-framework-actions"><a class="float-right cass-framework-security"  onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
+                    <span class="cass-framework-actions"><a class="float-right cass-framework-security" onclick="permissionsOn(this);">🔒</a><a class="float-right canEditFramework" onclick="editFramework(event);" style='display:none;'>✎</a></span>
                     <i class="cass-framework-description">Loading...</i>
                     <br>
                     <small><a class="cass-framework-url" target="_blank"></a></small>
@@ -107,13 +107,14 @@
         <li class="accordion-item accordion-navigation cass-competency" data-accordion-item>
             <a class="accordion-title cass-competency-name">Loading...</a>
             <div class="accordion-content" data-tab-content>
-                <span class="cass-competency-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
+                <span class="cass-competency-actions"><a class='canEditCompetency' onclick='editCompetencyButton(this);' style='display:none;'>✎</a><a  onclick="permissionsOn(this);">🔒</a><a class='canEditFramework' onclick='removeCompetencyFromFrameworkButton(this);' style='display:none;'>X</a>
+                </span>
                 <i class="cass-competency-description">No Description.</i>
                 <br>
                 <small><a class="cass-competency-url" target="_blank"></a></small>
                 <ul class="cass-competency-levels">
                     <li class="cass-competency-level">
-                        <span class="cass-level-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
+                        <span class="cass-level-actions"><a class='canEditLevel' onclick='editLevelButton(this);' style='display:none;'>✎</a><a  onclick="permissionsOn(this);">🔒</a><a class='canEditLevel' onclick='removeLevelFromFrameworkButton(this);' style='display:none;'>X</a></span>
                         <span class="cass-level-name"></span> <i class="cass-level-title">No Title.</i>
                         <br>
                         <i class="cass-level-description">No Description.</i>
@@ -121,7 +122,7 @@
                 </ul>
                 <ul class="cass-competency-relations">
                     <li class="cass-competency-relation">
-                        <span class="cass-relation-actions"><a  onclick="permissionsOn(this);">🔒</a></span>
+                        <span class="cass-relation-actions"><a class='canEditRelation' onclick='editRelationButton(this);' style='display:none;'>✎</a><a onclick="permissionsOn(this);">🔒</a><a class='canEditFramework' onclick='removeRelationFromFrameworkButton(this);' style='display:none;'>X</a></span>
                         <span class="cass-relation-source"><span class="cass-competency-name"></span></span>
                         <span class="cass-relation-type"></span>
                         <span class="cass-relation-target"><span class="cass-competency-name"></span></span>
@@ -154,8 +155,8 @@
 
     <div class="tiny reveal" id="newFramework" data-reveal>
         <h3>New Framework</h3>
-        <input id="newFrameworkName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#newFrameworkDescription').select();"  />
-        <textarea id="newFrameworkDescription" placeholder="Description" onkeypress="newFramework();" ></textarea>
+        <input id="newFrameworkName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#newFrameworkDescription').select();" />
+        <textarea id="newFrameworkDescription" placeholder="Description" onkeypress="newFramework();"></textarea>
         <a class="button float-right" onclick="newFramework();">Create</a>
     </div>
 
@@ -170,7 +171,7 @@
     <div class="tiny reveal" id="newCompetency" data-reveal>
         <h3>New Competency</h3>
         <input id="newCompetencyName" type="text" placeholder="Name" onkeypress="if(event.keyCode==13)$('#newCompetencyDescription').select();" />
-        <textarea id="newCompetencyDescription" placeholder="Description" onkeypress="if(event.keyCode==13)$('#newCompetencyScope').select();" ></textarea>
+        <textarea id="newCompetencyDescription" placeholder="Description" onkeypress="if(event.keyCode==13)$('#newCompetencyScope').select();"></textarea>
         <input id="newCompetencyScope" type="text" placeholder="Scope" />
         <a class="button float-right" style="margin-left:5px;" onclick="newCompetency(true);">Create</a>
         <a class="button float-right" style="margin-left:5px;" onclick="newCompetency(false);">Create Another</a>

@@ -21,32 +21,30 @@ function populateFrameworkRelations(frameworkId) {
 }
 
 function populateFrameworkRelation(fw, relationId) {
-    timeout(function(){
-    EcRepository.get(relationId, function (relation) {
-        var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
-        var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
-        $("[url='" + fw.shortId() + "']").find("[url='" + relation.shortId() + "']").remove();
-        var ui = $("[url='" + fw.shortId() + "']").find("[url='" + source + "']");
-        ui.find(".cass-competency-relations").append(cassRelationTemplate);
-        ui = ui.find(".cass-competency-relations").children().last();
-        ui.attr("url", relation.shortId());
-        ui.find(".cass-relation-source").attr("url", source);
-        ui.find(".cass-relation-target").attr("url", target);
-        ui.find(".cass-relation-actions").append("<a class='canEditFramework' onclick='removeRelationFromFrameworkButton(this);' style='display:none;'>X</a>");
-        ui.find(".cass-relation-actions").prepend("<a class='canEditRelation' onclick='editRelationButton(this);' style='display:none;'>✎</a>");
-        ui.find(".cass-relation-type").text(relation.relationType);
-        populateCompetency(source);
-        populateCompetency(target);
-        if (identity != null && relation.canEdit(identity.ppk.toPk()))
-            ui.find(".canEditRelation").show();
-        else
-            ui.find(".canEditRelation").hide();
-        if (identity != null && fw.canEdit(identity.ppk.toPk()))
-            ui.find(".canEditFramework").show();
-        else
-            ui.find(".canEditFramework").hide();
-        $("[url='" + fw.shortId() + "']").find("[url='" + target + "']").find(".cass-competency-relations").append(ui.clone());
-    }, error);
+    timeout(function () {
+        EcRepository.get(relationId, function (relation) {
+            var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
+            var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
+            $("[url='" + fw.shortId() + "']").find("[url='" + relation.shortId() + "']").remove();
+            var ui = $("[url='" + fw.shortId() + "']").find("[url='" + source + "']");
+            ui.find(".cass-competency-relations").append(cassRelationTemplate);
+            ui = ui.find(".cass-competency-relations").children().last();
+            ui.attr("url", relation.shortId());
+            ui.find(".cass-relation-source").attr("url", source);
+            ui.find(".cass-relation-target").attr("url", target);
+            ui.find(".cass-relation-type").text(relation.relationType);
+            populateCompetency(source);
+            populateCompetency(target);
+            if (identity != null && relation.canEdit(identity.ppk.toPk()))
+                ui.find(".canEditRelation").show();
+            else
+                ui.find(".canEditRelation").hide();
+            if (identity != null && fw.canEdit(identity.ppk.toPk()))
+                ui.find(".canEditFramework").show();
+            else
+                ui.find(".canEditFramework").hide();
+            $("[url='" + fw.shortId() + "']").find("[url='" + target + "']").find(".cass-competency-relations").append(ui.clone());
+        }, error);
     });
 }
 
@@ -83,8 +81,8 @@ function removeRelationFromFrameworkButton(me) {
     var relationId = $(me).parents(".cass-competency-relation").attr("url");
     var frameworkId = $("#frameworks").find(".is-active").attr("url");
 
-    if (confirm("This will remove '"+$(me).parents(".cass-competency-relation").find(".cass-relation-source").text()+" "+$(me).parents(".cass-competency-relation").find(".cass-relation-type").text()+" "+$(me).parents(".cass-competency-relation").find(".cass-relation-target").text()+"' Continue?") == true)
-    removeRelationFromFramework(relationId, frameworkId);
+    if (confirm("This will remove '" + $(me).parents(".cass-competency-relation").find(".cass-relation-source").text() + " " + $(me).parents(".cass-competency-relation").find(".cass-relation-type").text() + " " + $(me).parents(".cass-competency-relation").find(".cass-relation-target").text() + "' Continue?") == true)
+        removeRelationFromFramework(relationId, frameworkId);
 }
 
 function removeRelationFromFramework(relationId, frameworkId) {
