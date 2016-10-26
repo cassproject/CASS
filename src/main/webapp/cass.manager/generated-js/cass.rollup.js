@@ -633,9 +633,14 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         ip.status = status;
         this.checkStep(ip);
     };
+    prototype.processRollupRuleInterpretSkipped = function(ip) {
+        this.log(ip, "Rollup rule skipped.");
+        ip.numberOfQueriesRunning--;
+        this.checkStep(ip);
+    };
     prototype.findRollupRulesForCompetency = function(ip) {
         ip.hasCheckedRollupRulesForCompetency = true;
-        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
             this.log(ip, "No rollup rules for combinator types");
             this.checkStep(ip);
             return;
@@ -770,12 +775,24 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         var ep = this;
         for (var i = 0; i < this.repositories.length; i++) {
             var currentRepository = this.repositories[i];
-            ip.numberOfQueriesRunning++;
-            this.log(ip, "Searching: " + currentRepository.selectedServer);
+            if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+                this.log(ip, "Searching: " + currentRepository.selectedServer);
             for (var h = 0; h < ip.competency.length; h++) {
+                ip.numberOfQueriesRunning++;
                 var competency = ip.competency[h];
                 this.log(ip, "Querying repositories for subject assertions on competency: " + competency.id);
                 currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {
+                    ep.processFoundAssertion(p1, ip);
+                }, function(p1) {
+                    ep.processFindAssertionsSuccess(p1, ip);
+                }, function(p1) {
+                    ep.processEventFailure(p1, ip);
+                });
+            }
+            if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+                ip.numberOfQueriesRunning++;
+                this.log(ip, "Searching: " + currentRepository.selectedServer);
+                currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {
                     ep.processFoundAssertion(p1, ip);
                 }, function(p1) {
                     ep.processFindAssertionsSuccess(p1, ip);
@@ -787,7 +804,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
     };
     prototype.findCompetencyRelationships = function(ip) {
         ip.hasCheckedRelationshipsForCompetency = true;
-        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+        if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
             this.log(ip, "No relationships for combinator types");
             this.checkStep(ip);
             return;
@@ -810,9 +827,11 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         rpg.go();
     };
     prototype.processFindRollupRuleSuccess = function(rr, ip) {
-        if (!ip.hasId(rr.competency)) 
-            return;
         var ep = this;
+        if (!ip.hasId(rr.competency)) {
+            ep.processRollupRuleInterpretSkipped(ip);
+            return;
+        }
         this.log(ip, "Found rollup rule: " + rr.rule);
         var rrp = new RollupRuleProcessor(ip, this);
         rrp.positive = ip.positive;
@@ -974,7 +993,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
      *  ELSE INDETERMINANT
      *  
      */
-    prototype.determineCompetencyRollupRuleResult = function(ip) {
+    prototype.determineCompetencyOrRollupRuleResult = function(ip) {
         var assertionResult = this.getPacketAssertionResult(ip);
         if (InquiryPacket.ResultType.INDETERMINANT.equals(assertionResult) || ip.anyIndeterminantChildPackets()) 
             ip.result = InquiryPacket.ResultType.INDETERMINANT;
@@ -1000,7 +1019,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
              else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
                 this.determineCombinatorIsRequiredByResult(ip);
              else 
-                this.determineCompetencyRollupRuleResult(ip);
+                this.determineCompetencyOrRollupRuleResult(ip);
         } else {
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }

@@ -1,0 +1,74 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns" id="editRollupRuleModalTitle">
+	Create New Rullup Rule
+</h3>
+
+<div class="row">
+    <div class="small-10 small-centered columns">
+        <div id="editRollupRuleError" class="errorContainer"></div>
+    </div>
+</div>
+
+<div class="row column">
+    <div class="row">
+        <div class="small-12 columns">
+            <input id="editRollupRuleName" type="text" placeholder="Rollup Rule Name" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <textarea id="editRollupRuleDescription" placeholder="Rollup Rule Description"></textarea>
+        </div>
+    </div>
+
+    <div class="row hide">
+        <div class="small-12 columns">
+            <input type="text" id="editRollupRuleOutcome" placeholder="Rollup Rule Outcome" style="margin-bottom:0.5rem;" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <textarea id="editRollupRuleRule" placeholder="Code for Rollup Rule"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <div style="padding-left: 0.5rem; margin-top:0.5rem; margin-bottom:0.5rem;">
+                <span class="prefix">Ownership:</span>
+                <span id="editRollupRuleOwnership">Public</span>
+                <small id="editRollupRuleAdvancedOwnership" class="float-right fake-a hide">Advanced</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="editRollupRuleVisibilityRow" class="row hide">
+        <div class="small-12 columns">
+            <div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+                <span class="prefix">Visibility:</span>
+                <span>Private</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="editRollupRuleReadersRow" class="row hide">
+        <div class="small-12 columns">
+            <div style="padding-left: 0.5rem; margin-top:0.5rem;margin-bottom:0.5rem;">
+                <span class="prefix">Readers:</span>
+                <span id="editRollupRuleReaders" style="font-style:italic">None Added Yet</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <button id="editRollupRuleSubmit" class="button float-right">Add Rollup Rule</button>
+            <button id="editRollupRuleCancel" class="button secondary float-right" style="margin-right:1em;">Cancel</button>
+            <button id="editRollupRuleDelete" class="button alert hide float-right" style="margin-right:1em;">Delete</button>
+        </div>
+    </div>
+</div>

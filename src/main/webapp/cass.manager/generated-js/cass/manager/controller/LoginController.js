@@ -81,7 +81,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                     for (var i = 0; i < EcIdentityManager.ids.length; i++) {
                         if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
                             that.setAdmin(true);
+                            break;
                         }
+                        that.setAdmin(false);
                     }
                     success();
                 }, function(p1) {});
@@ -103,6 +105,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
+        this.setAdmin(false);
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in

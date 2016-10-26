@@ -12,6 +12,9 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
             this.fillInnerString(scope, obj, key);
         }
         for (var key in props) {
+            this.fillInnerStringReferences(scope, obj, key);
+        }
+        for (var key in props) {
             this.fillInnerArray(scope, obj, key);
         }
     };
@@ -32,13 +35,6 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
                 scope.attr(key, v);
                 scope.attr(key.toLowerCase(), v);
             }
-            var referenceTypes = scope.find("[ec-reference='" + key + "']");
-            if (referenceTypes.length > 0) {
-                if (s.startsWith("http")) {
-                    var p1 = EcRepository.getBlocking(s);
-                    this.autoFill(referenceTypes, p1);
-                }
-            }
         }
         if ((typeof v) == "function") {
             if ((v)["length"] == 0) {
@@ -52,6 +48,21 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
                 }
             }
         }
+    };
+    prototype.fillInnerStringReferences = function(scope, dataObj, key) {
+        var a = (dataObj);
+        var v = a[key];
+        if ((typeof v) == "string") {
+            var s = v;
+            var referenceTypes = scope.find("[ec-reference='" + key + "']");
+            if (referenceTypes.length > 0) {
+                if (s.startsWith("http")) {
+                    var p1 = EcRepository.getBlocking(s);
+                    this.autoFill(referenceTypes, p1);
+                }
+            }
+        }
+        if ((typeof v) == "function") {}
     };
     prototype.fillInnerArray = function(scope, dataObj, key) {
         var props = (dataObj);

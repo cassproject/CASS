@@ -20,11 +20,18 @@ var EvidenceViewModal = (function(EvidenceViewModal){
 			var ev = evidence[i];
 			
 			if(ev.startsWith("http") || ev.startsWith("www")){
-				var a = $("<li><a href='"+ev+"'>"+ev+"</a></li>");
+				var a = $("<a></a>");
+				a.attr("href", ev);
+				a.text(ev);
 				
-				$("#evidenceList").append(a);
+				var li = $("<li></li>");
+				li.append(a);
+				
+				$("#evidenceList").append(li);
 			}else{
-				$("#evidenceList").append("<li>"+ev+"</li>");
+				var li = $("<li></li>");
+				li.text(ev);
+				$("#evidenceList").append(li);
 			}
 		}
 		

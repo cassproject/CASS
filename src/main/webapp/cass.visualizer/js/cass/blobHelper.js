@@ -1,7 +1,7 @@
 function base64ToBlob(base64Data, contentType) {
     contentType = contentType || '';
     var sliceSize = 1024;
-    var byteCharacters = atob(base64Data);
+    var byteCharacters = forge.util.decode64(base64Data);
     var bytesLength = byteCharacters.length;
     var slicesCount = Math.ceil(bytesLength / sliceSize);
     var byteArrays = new Array(slicesCount);

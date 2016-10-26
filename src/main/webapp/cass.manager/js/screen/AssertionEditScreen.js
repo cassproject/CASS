@@ -37,7 +37,9 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    	if(subjectOption.size() == 1){
 	    		subjectOption.attr("selected", "selected");
 	    	}else{
-	    		$("#assertionSubjectInput").append("<option value='"+assertion.getSubject().toPem()+"' selected='selected'>Unknown Subject</option>");
+	    		var option = $("<option selected='selected'>Unknown Subject</option>");
+	    		option.attr("value", assertion.getSubject().toPem());
+	    		$("#assertionSubjectInput").append(option);
 	    	}
 	    	$("#assertionSubjectInput").css("font-style","normal");
 	    }
@@ -66,7 +68,9 @@ AssertionEditScreen = (function(AssertionEditScreen){
 						$("#assertionCompetencyInput").append(option);
 	    			}
 	    		}, function(err){
-	    			$("#assertionCompetencyInput").append("<option value='"+assertion.competency+"' selected='selected'>Unknown Competency</option>");
+	    			var option = $("<option selected='selected'>Unknown Competency</option>");
+		    		option.attr("value", assertion.competency);
+	    			$("#assertionCompetencyInput").append(option);
 	    			
 	    			ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to find assertion's competency");
 	    		});
@@ -80,7 +84,9 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		    	if(levelOption.size() == 1){
 		    		levelOption.attr("selected", "selected");
 		    	}else{
-		    		$("#assertionLevelInput").append("<option value='"+assertion.level+"' selected='selected'>Unknown Level</option>");
+		    		var option = $("<option selected='selected'>Unknown Level</option>");
+		    		option.attr("value", assertion.level);
+		    		$("#assertionLevelInput").append(option);
 		    	}
 		    }else{
 		    	$("#assertionLevelInput").append("<option value='held' selected='selected'>Held (Demonstrated, but with no performance measures)</option>");

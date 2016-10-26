@@ -14,27 +14,26 @@ var RollupListener = require('./RollupListener').RollupListener;
 var grammarFileName = "Rollup.g4";
 
 var serializedATN = ["\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\3\fM\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\5\2\17\n\2\3\2",
+    "\3\fJ\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\5\2\17\n\2\3\2",
     "\5\2\22\n\2\3\2\3\2\5\2\26\n\2\3\2\3\2\5\2\32\n\2\7\2\34\n\2\f\2\16",
     "\2\37\13\2\3\3\3\3\3\3\5\3$\n\3\3\4\3\4\5\4(\n\4\3\4\3\4\5\4,\n\4\3",
-    "\4\3\4\3\5\3\5\5\5\62\n\5\3\5\3\5\5\5\66\n\5\3\5\3\5\5\5:\n\5\3\5\5",
-    "\5=\n\5\3\5\3\5\5\5A\n\5\3\5\7\5D\n\5\f\5\16\5G\13\5\3\6\3\6\5\6K\n",
-    "\6\3\6\2\2\7\2\4\6\b\n\2\2W\2\f\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b/\3\2",
-    "\2\2\nJ\3\2\2\2\f\16\5\4\3\2\r\17\7\b\2\2\16\r\3\2\2\2\16\17\3\2\2\2",
-    "\17\35\3\2\2\2\20\22\7\b\2\2\21\20\3\2\2\2\21\22\3\2\2\2\22\23\3\2\2",
-    "\2\23\25\5\n\6\2\24\26\7\b\2\2\25\24\3\2\2\2\25\26\3\2\2\2\26\27\3\2",
-    "\2\2\27\31\5\4\3\2\30\32\7\b\2\2\31\30\3\2\2\2\31\32\3\2\2\2\32\34\3",
-    "\2\2\2\33\21\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3",
-    "\3\2\2\2\37\35\3\2\2\2 $\7\3\2\2!$\5\6\4\2\"$\7\4\2\2# \3\2\2\2#!\3",
-    "\2\2\2#\"\3\2\2\2$\5\3\2\2\2%\'\7\n\2\2&(\7\b\2\2\'&\3\2\2\2\'(\3\2",
-    "\2\2()\3\2\2\2)+\5\b\5\2*,\7\b\2\2+*\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\7",
-    "\13\2\2.\7\3\2\2\2/\61\7\t\2\2\60\62\7\b\2\2\61\60\3\2\2\2\61\62\3\2",
-    "\2\2\62\63\3\2\2\2\63\65\7\7\2\2\64\66\7\b\2\2\65\64\3\2\2\2\65\66\3",
-    "\2\2\2\669\3\2\2\2\67:\7\f\2\28:\7\3\2\29\67\3\2\2\298\3\2\2\2:<\3\2",
-    "\2\2;=\7\b\2\2<;\3\2\2\2<=\3\2\2\2=E\3\2\2\2>@\7\5\2\2?A\7\b\2\2@?\3",
-    "\2\2\2@A\3\2\2\2AB\3\2\2\2BD\5\b\5\2C>\3\2\2\2DG\3\2\2\2EC\3\2\2\2E",
-    "F\3\2\2\2F\t\3\2\2\2GE\3\2\2\2HK\7\5\2\2IK\7\6\2\2JH\3\2\2\2JI\3\2\2",
-    "\2K\13\3\2\2\2\21\16\21\25\31\35#\'+\61\659<@EJ"].join("");
+    "\4\3\4\3\5\3\5\3\5\5\5\63\n\5\3\5\3\5\5\5\67\n\5\3\5\5\5:\n\5\3\5\3",
+    "\5\5\5>\n\5\3\5\7\5A\n\5\f\5\16\5D\13\5\3\6\3\6\5\6H\n\6\3\6\2\2\7\2",
+    "\4\6\b\n\2\2S\2\f\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b/\3\2\2\2\nG\3\2\2",
+    "\2\f\16\5\4\3\2\r\17\7\b\2\2\16\r\3\2\2\2\16\17\3\2\2\2\17\35\3\2\2",
+    "\2\20\22\7\b\2\2\21\20\3\2\2\2\21\22\3\2\2\2\22\23\3\2\2\2\23\25\5\n",
+    "\6\2\24\26\7\b\2\2\25\24\3\2\2\2\25\26\3\2\2\2\26\27\3\2\2\2\27\31\5",
+    "\4\3\2\30\32\7\b\2\2\31\30\3\2\2\2\31\32\3\2\2\2\32\34\3\2\2\2\33\21",
+    "\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3\3\2\2\2\37\35",
+    "\3\2\2\2 $\7\3\2\2!$\5\6\4\2\"$\7\4\2\2# \3\2\2\2#!\3\2\2\2#\"\3\2\2",
+    "\2$\5\3\2\2\2%\'\7\n\2\2&(\7\b\2\2\'&\3\2\2\2\'(\3\2\2\2()\3\2\2\2)",
+    "+\5\b\5\2*,\7\b\2\2+*\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\7\13\2\2.\7\3\2",
+    "\2\2/\60\7\t\2\2\60\62\7\7\2\2\61\63\7\b\2\2\62\61\3\2\2\2\62\63\3\2",
+    "\2\2\63\66\3\2\2\2\64\67\7\f\2\2\65\67\7\3\2\2\66\64\3\2\2\2\66\65\3",
+    "\2\2\2\679\3\2\2\28:\7\b\2\298\3\2\2\29:\3\2\2\2:B\3\2\2\2;=\7\5\2\2",
+    "<>\7\b\2\2=<\3\2\2\2=>\3\2\2\2>?\3\2\2\2?A\5\b\5\2@;\3\2\2\2AD\3\2\2",
+    "\2B@\3\2\2\2BC\3\2\2\2C\t\3\2\2\2DB\3\2\2\2EH\7\5\2\2FH\7\6\2\2GE\3",
+    "\2\2\2GF\3\2\2\2H\13\3\2\2\2\20\16\21\25\31\35#\'+\62\669=BG"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -502,62 +501,55 @@ RollupParser.prototype.innerquery = function() {
         this.enterOuterAlt(localctx, 1);
         this.state = 45;
         localctx.cKey = this.match(RollupParser.KEY);
-        this.state = 47;
-        _la = this._input.LA(1);
-        if(_la===RollupParser.WS) {
-            this.state = 46;
-            this.match(RollupParser.WS);
-        }
-
-        this.state = 49;
+        this.state = 46;
         localctx.cOperator = this.match(RollupParser.QUANTATIVE_OPERATOR);
-        this.state = 51;
+        this.state = 48;
         _la = this._input.LA(1);
         if(_la===RollupParser.WS) {
-            this.state = 50;
+            this.state = 47;
             this.match(RollupParser.WS);
         }
 
-        this.state = 55;
+        this.state = 52;
         switch(this._input.LA(1)) {
         case RollupParser.VALUE:
-            this.state = 53;
+            this.state = 50;
             localctx.cValue = this.match(RollupParser.VALUE);
             break;
         case RollupParser.NUMBER:
-            this.state = 54;
+            this.state = 51;
             localctx.cNumber = this.match(RollupParser.NUMBER);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
         }
-        this.state = 58;
-        var la_ = this._interp.adaptivePredict(this._input,11,this._ctx);
+        this.state = 55;
+        var la_ = this._interp.adaptivePredict(this._input,10,this._ctx);
         if(la_===1) {
-            this.state = 57;
+            this.state = 54;
             this.match(RollupParser.WS);
 
         }
-        this.state = 67;
+        this.state = 64;
         this._errHandler.sync(this);
-        var _alt = this._interp.adaptivePredict(this._input,13,this._ctx)
+        var _alt = this._interp.adaptivePredict(this._input,12,this._ctx)
         while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
             if(_alt===1) {
-                this.state = 60;
+                this.state = 57;
                 localctx.cLogic = this.match(RollupParser.LOGICAL_OPERATOR);
-                this.state = 62;
+                this.state = 59;
                 _la = this._input.LA(1);
                 if(_la===RollupParser.WS) {
-                    this.state = 61;
+                    this.state = 58;
                     this.match(RollupParser.WS);
                 }
 
-                this.state = 64;
+                this.state = 61;
                 this.innerquery(); 
             }
-            this.state = 69;
+            this.state = 66;
             this._errHandler.sync(this);
-            _alt = this._interp.adaptivePredict(this._input,13,this._ctx);
+            _alt = this._interp.adaptivePredict(this._input,12,this._ctx);
         }
 
     } catch (re) {
@@ -622,16 +614,16 @@ RollupParser.prototype.logical_or_math_operator = function() {
     var localctx = new Logical_or_math_operatorContext(this, this._ctx, this.state);
     this.enterRule(localctx, 8, RollupParser.RULE_logical_or_math_operator);
     try {
-        this.state = 72;
+        this.state = 69;
         switch(this._input.LA(1)) {
         case RollupParser.LOGICAL_OPERATOR:
             this.enterOuterAlt(localctx, 1);
-            this.state = 70;
+            this.state = 67;
             localctx.cLogic = this.match(RollupParser.LOGICAL_OPERATOR);
             break;
         case RollupParser.MATH_OPERATOR:
             this.enterOuterAlt(localctx, 2);
-            this.state = 71;
+            this.state = 68;
             localctx.cMath = this.match(RollupParser.MATH_OPERATOR);
             break;
         default:

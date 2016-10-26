@@ -672,6 +672,9 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         EcRepository.save(a, success, failure);
         return a;
     };
+    prototype.relations = function(repo, eachSuccess, failure, successAll) {
+        this.relationships(repo, eachSuccess, failure, successAll);
+    };
     prototype.relationships = function(repo, eachSuccess, failure, successAll) {
         repo.search(new EcAlignment().getSearchStringByType() + " AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
             var a = new EcAlignment();
@@ -748,6 +751,66 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                 }
                 if (successAll != null) 
                     successAll(levels);
+            }
+        }, failure);
+    };
+    prototype.addRollupRule = function(name, description, owner, server, success, failure) {
+        var r = new EcRollupRule();
+        r.generateId(server);
+        r.competency = this.shortId();
+        r.description = description;
+        r.name = name;
+        r.addOwner(owner.toPk());
+        EcRepository.save(r, success, failure);
+        return r;
+    };
+    prototype.rollupRules = function(repo, success, failure, successAll) {
+        var query = "(" + new EcRollupRule().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
+        query += " OR @encryptedType:\"" + EcRollupRule.myType + "\" OR @encryptedType:\"" + EcRollupRule.myType.replace(Cass.context + "/", "") + "\"";
+        var competencyId = this.id;
+        var shortId = this.shortId();
+        repo.search(query, function(p1) {
+            if (success != null) {
+                var a = new EcRollupRule();
+                if (p1.isA(EcRollupRule.myType)) {
+                    a.copyFrom(p1);
+                } else if (p1.isA(EcEncryptedValue.myType)) {
+                    var val = new EcEncryptedValue();
+                    val.copyFrom(p1);
+                    if (val.isAnEncrypted(EcRollupRule.myType)) {
+                        var obj = val.decryptIntoObject();
+                        if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
+                            return;
+                        }
+                        a.copyFrom(obj);
+                        a.privateEncrypted = true;
+                    }
+                }
+                success(a);
+            }
+        }, function(p1) {
+            if (successAll != null) {
+                var rollupRules = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var a = new EcRollupRule();
+                    if (p1[i].isA(EcRollupRule.myType)) {
+                        a.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcRollupRule.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)["competency"] != competencyId && (obj)["competency"] != shortId) {
+                                continue;
+                            }
+                            a.copyFrom(obj);
+                            a.privateEncrypted = true;
+                        }
+                    }
+                    rollupRules[i] = a;
+                }
+                if (successAll != null) 
+                    successAll(rollupRules);
             }
         }, failure);
     };
@@ -1013,6 +1076,23 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
         for (var i = 0; i < this.level.length; i++) 
             if (this.level[i].equals(id)) 
                 this.level.splice(i, 1);
+    };
+    prototype.addRollupRule = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.rollupRule == null) 
+            this.rollupRule = new Array();
+        for (var i = 0; i < this.rollupRule.length; i++) 
+            if (this.rollupRule[i].equals(id)) 
+                return;
+        this.rollupRule.push(id);
+    };
+    prototype.removeRollupRule = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.rollupRule == null) 
+            this.rollupRule = new Array();
+        for (var i = 0; i < this.rollupRule.length; i++) 
+            if (this.rollupRule[i].equals(id)) 
+                this.rollupRule.splice(i, 1);
     };
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {

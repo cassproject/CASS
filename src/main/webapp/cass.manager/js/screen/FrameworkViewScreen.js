@@ -9,6 +9,7 @@ FrameworkViewScreen.prototype.relationTypes = {
     isEnabledBy: "Enabled By",
     requires: "Requires",
     desires: "Desires",
+    narrows: "Narrows",
     isRelatedTo: "Related To",
     isEquivalentTo: "Equivalent To"
 }
@@ -16,7 +17,7 @@ FrameworkViewScreen.prototype.relationTypes = {
 FrameworkViewScreen.prototype.fetches = 0;
 
 FrameworkViewScreen.prototype.displayVisualization = function () {
-	var framework = this.getData();
+    var framework = this.getData();
     var canvas = $("#frameworkViewCanvas").get(0);
     var ctx = canvas.getContext("2d");
 
@@ -61,21 +62,22 @@ FrameworkViewScreen.prototype.displayVisualization = function () {
                                                 if (relation.source !== undefined) {
                                                     var shortSource = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
                                                     var shortTarget = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
-                                                    nodes[shortSource].fixed = false;
                                                     if (nodes[shortSource].alwaysShowText === undefined)
                                                         nodes[shortSource].alwaysShowText = false;
-                                                    nodes[shortTarget].alwaysShowText = true;
                                                     relation.font = fonts.edge;
                                                     if (relation.relationType == "requires") {
-                                                        nodes[shortSource].gravity -= 1.0;
+                                                        nodes[shortSource].alwaysShowText = true;
+                                                        nodes[shortTarget].fixed = false;
+                                                        nodes[shortTarget].gravity += 1.0;
                                                         relation.color = "#880000";
                                                         graph.newEdge(nodes[shortSource], nodes[shortTarget], relation);
                                                     }
                                                     if (relation.relationType == "narrows") {
+                                                        nodes[shortTarget].alwaysShowText = true;
+                                                        nodes[shortSource].fixed = false;
                                                         nodes[shortSource].gravity += 1.0;
                                                         relation.color = "#008800";
                                                         graph.newEdge(nodes[shortTarget], nodes[shortSource], relation);
-
                                                     }
                                                 }
                                             }, function () {});
@@ -99,15 +101,6 @@ FrameworkViewScreen.prototype.bindControls = function () {
 
     if (framework.competency == undefined || framework.competency.length == 0) {
         $("#frameworkViewerContents").addClass("hide");
-    }
-
-    if (AppController.identityController.canEdit(framework)) {
-        $("#editFrameworkBtn").click(function (event) {
-            event.preventDefault();
-            ScreenManager.changeScreen(new FrameworkEditScreen(framework));
-        })
-    } else {
-        $("#editFrameworkBtn").hide();
     }
 
     if (framework.owner != undefined && framework.owner.length > 0) {

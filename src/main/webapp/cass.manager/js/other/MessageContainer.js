@@ -15,7 +15,11 @@ var MessageContainer = (function(MessageContainer){
 		
 		messages.find("[data-msg='"+identifier+"']").remove();
 		
-		messages.append("<div data-msg='"+identifier+"'>"+msg+"</div>");
+		var div = $("<div></div>");
+		div.attr("data-msg", identifier);
+		div.text(msg);
+		
+		messages.append(div);
 	}
 	
 	function clearMessage(containerId, msgId){

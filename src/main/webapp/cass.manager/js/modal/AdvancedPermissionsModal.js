@@ -15,7 +15,9 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 			$("#advancedPermissionsOwners").removeAttr("disabled");
 		}
 		
-		var option = $("<option value='"+pk.toPem()+"'>"+contact.displayName+"</option>");
+		var option = $("<option></option>");
+		option.val(pk.toPem());
+		option.text(contact.displayName);
 		$("#advancedPermissionsOwners").append(option);
 	}
 	
@@ -34,7 +36,9 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 			$("#advancedPermissionsReaders").removeAttr("disabled");
 		}
 		
-		var option = $("<option value='"+pk.toPem()+"'>"+contact.displayName+"</option>");
+		var option = $("<option></option>");
+		option.val(pk.toPem());
+		option.text(contact.displayName);
 		$("#advancedPermissionsReaders").append(option);
 	}
 	
@@ -290,10 +294,9 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 			
 			if(data instanceof Array){
 				if(AppController.identityController.selectedIdentity != undefined){
-					var option = $("<option value='"+AppController.identityController.selectedIdentity.ppk.toPk().toPem()+"' title='"+AppController.identityController.selectedIdentity.ppk.toPk().toPem()+"'>"+
-							AppController.identityController.selectedIdentity.displayName +
-						"</option>");
-		
+					var option = $("<option></option>");
+					option.val(AppController.identityController.selectedIdentity.ppk.toPk().toPem());
+					option.text(AppController.identityController.selectedIdentity.displayName);
 					$("#advancedPermissionsOwners").append(option);
 				}else{
 					$("#noOwners").removeClass("hide");
@@ -302,18 +305,18 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 				}
 			}else{
 				for(var i in data.owner){
-					var option = $("<option value='"+data.owner[i]+"' title='"+data.owner[i]+"'>"+
-							AppController.identityController.lookup(data.owner[i]).displayName +
-						"</option>");
-		
+					var option = $("<option></option>");
+					option.val(data.owner[i]);
+					option.attr("title", data.owner[i]);
+					option.text(AppController.identityController.lookup(data.owner[i]).displayName);
 					$("#advancedPermissionsOwners").append(option);
 				}
 				
 				for(var i in data.reader){
-					var option = $("<option value='"+data.reader[i]+"' title='"+data.reader[i]+"'>"+
-							AppController.identityController.lookup(data.reader[i]).displayName +
-						"</option>");
-		
+					var option = $("<option></option>");
+					option.val(data.reader[i]);
+					option.attr("title", data.reader[i]);
+					option.text(AppController.identityController.lookup(data.reader[i]).displayName);
 					$("#advancedPermissionsReaders").append(option);
 					
 					$("#noReaders").addClass("hide");

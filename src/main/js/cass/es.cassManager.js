@@ -130,6 +130,22 @@ ContactAcceptModal = stjs.extend(ContactAcceptModal, EcModal, [], function(const
         return "partial/modal/contactAccept.html";
     };
 }, {grant: "EcContactGrant", onClose: "Callback0", onClose: "Callback0"}, {});
+var EditRollupRuleModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.closeCallback = callback;
+};
+EditRollupRuleModal = stjs.extend(EditRollupRuleModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.data = null;
+    prototype.closeCallback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/editRollupRule.html";
+    };
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcRollupRule"]}, onClose: "Callback0"}, {});
 var LoginModal = function(success, cancel, warningMessage) {
     EcModal.call(this);
     this.loginSuccess = success;
@@ -424,7 +440,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
                     for (var i = 0; i < EcIdentityManager.ids.length; i++) {
                         if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
                             that.setAdmin(true);
+                            break;
                         }
+                        that.setAdmin(false);
                     }
                     success();
                 }, function(p1) {});
@@ -446,6 +464,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
+        this.setAdmin(false);
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in
@@ -512,25 +531,9 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
     constructor.FIELD_MSG_RETURN = "returnLoginMessage";
     constructor.FIELD_SERVER_URL = "defaultServerUrl";
     constructor.FIELD_SERVER_NAME = "defaultServerName";
-    constructor.FIELD_SALT_USER = "userEncryptionSalt";
-    constructor.FIELD_SALT_PASS = "passwordEncryptionSalt";
-    constructor.FIELD_SALT_SECRET = "secretEncryptionSalt";
-    constructor.FIELD_ITERATIONS_USER = "userEncryptionIterations";
-    constructor.FIELD_ITERATIONS_PASS = "passwordEncryptionIterations";
-    constructor.FIELD_ITERATIONS_SECRET = "secretEncryptionIterations";
-    constructor.FIELD_LENGTH_USER = "userEncryptionLength";
-    constructor.FIELD_LENGTH_PASS = "passwordEncryptionLength";
     constructor.returnLoginMessage = "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.";
     constructor.defaultServerUrl = "https://sandbox.service.cassproject.org/";
     constructor.defaultServerName = "CASS Sandbox";
-    constructor.defaultServerUserSalt = "BasicUsernameSalt";
-    constructor.defaultServerUserIterations = 5000;
-    constructor.defaultServerUserLength = 64;
-    constructor.defaultServerPasswordSalt = "BasicPasswordSalt";
-    constructor.defaultServerPasswordIterations = 5000;
-    constructor.defaultServerPasswordLength = 64;
-    constructor.defaultServerSecretSalt = "BasicSecretSalt";
-    constructor.defaultServerSecretIterations = 5000;
     constructor.loadSettings = function() {
         var urlBase = window.location.host + window.location.pathname;
         if (urlBase.startsWith("localhost")) 
@@ -545,33 +548,6 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
             var serverName = (settingsObj)[AppSettings.FIELD_SERVER_NAME];
             if (serverName != null) 
                 AppSettings.defaultServerUrl = serverName;
-            var salt = (settingsObj)[AppSettings.FIELD_SALT_USER];
-            if (salt != null) 
-                AppSettings.defaultServerUserSalt = salt;
-            salt = null;
-            salt = (settingsObj)[AppSettings.FIELD_SALT_PASS];
-            if (salt != null) 
-                AppSettings.defaultServerPasswordSalt = salt;
-            salt = null;
-            salt = (settingsObj)[AppSettings.FIELD_SALT_SECRET];
-            if (salt != null) 
-                AppSettings.defaultServerSecretSalt = salt;
-            salt = null;
-            var iter = parseInt((settingsObj)[AppSettings.FIELD_ITERATIONS_USER]);
-            if (!iter.equals(NaN)) 
-                AppSettings.defaultServerUserIterations = iter.intValue();
-            iter = parseInt((settingsObj)[AppSettings.FIELD_ITERATIONS_PASS]);
-            if (!iter.equals(NaN)) 
-                AppSettings.defaultServerPasswordIterations = iter.intValue();
-            iter = parseInt((settingsObj)[AppSettings.FIELD_ITERATIONS_SECRET]);
-            if (!iter.equals(NaN)) 
-                AppSettings.defaultServerSecretIterations = iter.intValue();
-            var len = parseInt((settingsObj)[AppSettings.FIELD_LENGTH_USER]);
-            if (!len.equals(NaN)) 
-                AppSettings.defaultServerUserLength = len.intValue();
-            len = parseInt((settingsObj)[AppSettings.FIELD_LENGTH_PASS]);
-            if (!len.equals(NaN)) 
-                AppSettings.defaultServerPasswordLength = len.intValue();
         }, function(p1) {
             console.error("Unable to load settings file");
         });
@@ -802,26 +778,39 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
      */
     prototype.selectServer = function(identifier, success, failure) {
         if (LoginController.getLoggedIn()) {
-            if (failure != null) 
-                failure("Must be logged out to change servers");
-        } else {
-            for (var serverName in this.serverList) {
-                if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
-                    this.selectedServerName = serverName;
-                    this.selectedServerUrl = this.serverList[serverName];
-                    if (this.repoInterface != null) 
-                        this.repoInterface.selectedServer = this.selectedServerUrl;
-                    if (this.remoteIdentityManager != null) 
-                        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-                    this.storageSystem["cass.server.selected"] = this.selectedServerName;
+            LoginController.setLoggedIn(false);
+        }
+        var that = this;
+        var oldServer = this.selectedServerUrl;
+        var oldServerName = this.selectedServerName;
+        for (var serverName in this.serverList) {
+            if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
+                this.selectedServerName = serverName;
+                this.selectedServerUrl = this.serverList[serverName];
+                if (this.repoInterface != null) 
+                    this.repoInterface.selectedServer = this.selectedServerUrl;
+                if (this.remoteIdentityManager != null) 
+                    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+                this.remoteIdentityManager.configureFromServer(function(p1) {
+                    that.storageSystem["cass.server.selected"] = that.selectedServerName;
                     if (success != null) 
                         success();
-                    return;
-                }
+                }, function(p1) {
+                    if (that.repoInterface != null) 
+                        that.repoInterface.selectedServer = oldServer;
+                    if (that.remoteIdentityManager != null) 
+                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
+                    that.selectedServerUrl = oldServer;
+                    that.selectedServerName = oldServerName;
+                    that.remoteIdentityManager.configureFromServer(null, null);
+                    if (failure != null) 
+                        failure(p1);
+                });
+                return;
             }
-            if (failure != null) 
-                failure("Unable to select server requested: " + identifier);
         }
+        if (failure != null) 
+            failure("Unable to select server requested: " + identifier);
     };
     prototype.repoInterface = null;
     prototype.remoteIdentityManager = null;
@@ -861,6 +850,9 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
             this.fillInnerString(scope, obj, key);
         }
         for (var key in props) {
+            this.fillInnerStringReferences(scope, obj, key);
+        }
+        for (var key in props) {
             this.fillInnerArray(scope, obj, key);
         }
     };
@@ -881,13 +873,6 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
                 scope.attr(key, v);
                 scope.attr(key.toLowerCase(), v);
             }
-            var referenceTypes = scope.find("[ec-reference='" + key + "']");
-            if (referenceTypes.length > 0) {
-                if (s.startsWith("http")) {
-                    var p1 = EcRepository.getBlocking(s);
-                    this.autoFill(referenceTypes, p1);
-                }
-            }
         }
         if ((typeof v) == "function") {
             if ((v)["length"] == 0) {
@@ -901,6 +886,21 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
                 }
             }
         }
+    };
+    prototype.fillInnerStringReferences = function(scope, dataObj, key) {
+        var a = (dataObj);
+        var v = a[key];
+        if ((typeof v) == "string") {
+            var s = v;
+            var referenceTypes = scope.find("[ec-reference='" + key + "']");
+            if (referenceTypes.length > 0) {
+                if (s.startsWith("http")) {
+                    var p1 = EcRepository.getBlocking(s);
+                    this.autoFill(referenceTypes, p1);
+                }
+            }
+        }
+        if ((typeof v) == "function") {}
     };
     prototype.fillInnerArray = function(scope, dataObj, key) {
         var props = (dataObj);
@@ -1390,41 +1390,6 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
         }
     });
 })();
-var CompetencyViewScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencyView";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return CompetencyViewScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/competencyView.html";
-    };
-}, {data: "Object", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcCompetency.get(id, function(data) {
-                    ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                    CassManagerScreen.showLoginModalIfReload();
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                    CassManagerScreen.showLoginModalIfReload();
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
 var CompetencyEditScreen = function(data, frameworkIdToAddCompetencyTo) {
     CassManagerScreen.call(this);
     this.data = data;
@@ -1595,6 +1560,101 @@ UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], func
         }
     });
 })();
+var CompetencyViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyView";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return CompetencyViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencyView.html";
+    };
+    prototype.getData = function() {
+        return this.data;
+    };
+    prototype.mc = null;
+    prototype.display = function(containerId) {
+        if (this.getData().id != null) {
+            var params = new Object();
+            (params)["id"] = this.getData().id;
+            ScreenManager.setScreenParameters(params);
+        }
+        ViewManager.showView(this.mc = new MessageContainer("competencyView"), "#competencyViewMessageContainer", null);
+        this.autoConfigure($(containerId));
+        var me = this;
+        EcCompetency.get(this.getData().id, function(framework) {
+            me.data = framework;
+            me.bindControls();
+            me.predisplayCompetency();
+        }, function(msg) {
+            EcCompetency.get(EcRemoteLinkedData.trimVersionFromUrl(me.getData().id), function(framework) {
+                me.data = framework;
+                me.bindControls();
+                me.predisplayCompetency();
+            }, function(msg) {
+                me.errorRetrieving(msg);
+            });
+        });
+    };
+    prototype.predisplayCompetency = function() {
+        var me = this;
+        me.autoRemove($("body"), "competency");
+        me.autoRemove($("body"), "relation");
+        me.autoRemove($("body"), "rollupRule");
+        me.autoRemove($("body"), "level");
+        me.autoAppend($("body"), "competency");
+        me.autoFill($("body"), me.getData());
+        this.getData().levels(AppController.repoInterface, function(p1) {
+            me.autoFill(me.autoAppend($("[ec-container='level']"), "level"), p1);
+        }, (me)["errorFindingLevels"], function(p1) {
+            if (p1.length == 0) 
+                $("[ec-container='level']").text("None.");
+            me.getData().rollupRules(AppController.repoInterface, function(p1) {
+                me.autoFill(me.autoAppend($("[ec-container='rollupRule']"), "rollupRule"), p1);
+            }, (me)["errorFindingRollupRules"], function(p1) {
+                if (p1.length == 0) 
+                    $("[ec-container='rollupRule']").text("None.");
+                me.getData().relations(AppController.repoInterface, function(p1) {
+                    me.autoFill(me.autoAppend($("[ec-container='relation']"), "relation"), p1);
+                }, (me)["errorFindingRelations"], function(p1) {
+                    if (p1.length == 0) 
+                        $("[ec-container='relation']").text("None.");
+                });
+            });
+        });
+    };
+    prototype.errorRetrieving = function(err) {
+        if (err == null) 
+            err = "Unable to Connect to Server to Retrieve Framework";
+        this.mc.displayAlert(err, "getFramework");
+    };
+    prototype.bindControls = function() {};
+}, {data: "Object", mc: "MessageContainer", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
+            var urlParameters = (EcView.urlParameters());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcCompetency.get(id, function(data) {
+                    ScreenManager.replaceScreen(new CompetencyViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
 var FrameworkViewScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
@@ -1622,19 +1682,21 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
         var me = this;
         EcFramework.get(this.getData().id, function(framework) {
             me.data = framework;
-            me.bindControls();
-            me.predisplayFramework();
+            me.predisplayFramework(function() {
+                me.bindControls();
+            });
         }, function(msg) {
             EcFramework.get(EcRemoteLinkedData.trimVersionFromUrl(me.getData().id), function(framework) {
                 me.data = framework;
-                me.bindControls();
-                me.predisplayFramework();
+                me.predisplayFramework(function() {
+                    me.bindControls();
+                });
             }, function(msg) {
                 me.errorRetrieving(msg);
             });
         });
     };
-    prototype.predisplayFramework = function() {
+    prototype.predisplayFramework = function(callback) {
         var me = this;
         AppController.repoInterface.precache(this.getData().competency, function() {
             AppController.repoInterface.precache(me.getData().relation, function() {
@@ -1643,6 +1705,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                     me.autoAppend($("body"), "framework");
                     me.autoFill($("body"), me.getData());
                     me.displayVisualization();
+                    callback();
                 });
             });
         });
