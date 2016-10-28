@@ -20,7 +20,7 @@ CompetencyViewScreen.prototype.errorFindingLevels = function(err){
 		ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getLevels");
 	}
 	
-	CompetencyViewScreen.prototype.bindControls = function(containerId)
+CompetencyViewScreen.prototype.bindControls = function(containerId)
 	{
 		var data = this.data;
 		

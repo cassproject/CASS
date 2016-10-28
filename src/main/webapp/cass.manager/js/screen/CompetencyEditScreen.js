@@ -93,8 +93,13 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         container.click(function (ev) {
             ev.preventDefault();
             ModalManager.showModal(new EditLevelModal(level, function (level) {
-                container.foundation("destroy");
+                var commas = container.parent().contents().filter(function() {
+                    return this.nodeType == 3;
+                });
+                commas.last().remove();
+            	container.foundation("destroy");
                 container.remove();
+               
 
                 if (level != null)
                     addLevel(level)
@@ -142,7 +147,11 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         container.click(function (ev) {
             ev.preventDefault();
             ModalManager.showModal(new EditRollupRuleModal(rollupRule, function (rollupRule) {
-                container.foundation("destroy");
+            	var commas = container.parent().contents().filter(function() {
+                    return this.nodeType == 3;
+                });
+                commas.last().remove();
+            	container.foundation("destroy");
                 container.remove();
 
                 if (rollupRule != null)

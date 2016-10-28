@@ -146,4 +146,38 @@ FrameworkViewScreen.prototype.bindControls = function () {
             me.deleteFramework();
         })
     }
+    
+    $(".competencyName [ec-field='name']").each(function(idx, el){
+    	var id = $(el).siblings("[ec-field='id']").text();
+    		
+    	$(el).click(function(ev){
+    		ev.preventDefault();
+    		
+    		ScreenManager.changeScreen(new CompetencyViewScreen(EcRepository.getBlocking(id)));
+    		
+    		return false;
+    	});
+    });
+    
+    $(".relation").each(function(idx, el){
+    	var compId = $(el).closest(".competency").attr("id");
+    	
+    	var sourceEl = $(el).find("[ec-reference='source']");
+    	var targetEl = $(el).find("[ec-reference='target']");
+    	
+    	if(compId == sourceEl.attr("id")){
+    		targetEl.addClass("fake-a");
+    		
+    		targetEl.click(function(){
+    			ScreenManager.changeScreen(new CompetencyViewScreen(EcRepository.getBlocking(targetEl.attr("id"))));
+    		})
+    	}else if(compId == targetEl.attr("id")){
+    		sourceEl.addClass("fake-a");
+    		
+    		sourceEl.click(function(){
+    			ScreenManager.changeScreen(new CompetencyViewScreen(EcRepository.getBlocking(sourceEl.attr("id"))));
+    		})
+    	}
+    	
+    });
 };
