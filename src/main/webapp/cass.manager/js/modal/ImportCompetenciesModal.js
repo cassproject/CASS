@@ -104,6 +104,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
             	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert("CSV could not be parsed", "parseCSV");
             	$("#submitImportCsv").attr("disabled", "disabled")
             	$("#submitImportCsv").off("click");
+            	$(".importCsvRelation").addClass("hide");
                 return;
             }
             $("#submitImportCsv").removeAttr("disabled");
@@ -120,11 +121,17 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 $("#importCsvColumnId").append("<option/>").children().last().text(data[0][i]).attr("index", i);
             }
             
+            $(".importCsvRelation").removeClass("hide");
+            
             $("#submitImportCsv").on("click", function(ev){
 				ev.preventDefault();
-				importCsv(framework);
+				$("#submitImportCsv").attr("disabled", "disabled");
+				$("#submitImportCsv").find(".fa-spin").removeClass("hide");
+				setTimeout(function(){
+					importCsv(framework);
+				}, 100);
 			})
-	    }, errorParsing)
+	    }, errorParsing);
 	}
 
 	function analyzeRelationCsv(framework) {
@@ -221,7 +228,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
             
             if(framework != undefined){
     			if(!editingFramework){
-    				delete framework.competencyObjects;
 	                framework.save(function () { 
 	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
 	                }, errorSavingFramework);
@@ -239,7 +245,17 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
     		
     		ModalManager.hideModal();
         }, function(error){
-        	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(error);
+        	ViewManager.getView("#csvImportProgressMessageContainer").clearSuccess();
+        	ViewManager.getView("#csvImportProgressMessageContainer").displayAlert(error);
+        }, function(progressObj){
+        	if(progressObj != undefined && progressObj["competencies"] != undefined){
+        		if(progressObj["relations"] == undefined){
+        			ViewManager.getView("#csvImportProgressMessageContainer").displaySuccess("Sucessfully imported "+progressObj["competencies"]+" competencies", "competenciesImported")
+        		}else{
+        			ViewManager.getView("#csvImportProgressMessageContainer").displaySuccess("Sucessfully imported "+progressObj["relations"]+" relations", "relationsImported")
+        		}
+        	}
+        	
         });
         
 	}
@@ -305,7 +321,11 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	
 	function analyzeMedbiq(framework){
 		var importAllowed = function(){
-			startImportMedbiqXml(framework);
+			$("#submitImportMedbiq").attr("disabled", "disabled");
+			$("#submitImportMedbiq").find(".fa-spin").removeClass("hide");
+			setTimeout(function(){
+				startImportMedbiqXml(framework);
+			}, 100);
 		}
 		
 		var file = $("#importMedbiqFile")[0].files[0];
@@ -360,7 +380,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 
 	    	if(framework != null){
 	    		if(!editingFramework){
-    				delete framework.competencyObjects;
 	                framework.save(function () { 
 	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
 	                }, errorSavingFramework);
@@ -377,12 +396,23 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    },
 	    function(error){
 	    	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(error);
-	    });
+	    	ViewManager.getView("#importCompetenciesMessageContainer").clearSuccess();
+	    }, 
+	    function(progressObj){
+        	if(progressObj != undefined && progressObj["competencies"] != undefined){
+        		ViewManager.getView("#importCompetenciesMessageContainer").displaySuccess("Sucessfully imported "+progressObj["competencies"]+" competencies", "competenciesImported")
+        	}
+        	
+        });
 	}
 	
 	function analyzeASN(framework){
 		var importAllowed = function(){
-			startImportASN(framework);
+			$("#submitImportASN").attr("disabled", "disabled");
+			$("#submitImportASN").find(".fa-spin").removeClass("hide");
+			setTimeout(function(){
+				startImportASN(framework);
+			}, 100)
 		}
 		
 		var file = $("#importASNFile")[0].files[0];
@@ -405,6 +435,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
             $("#submitImportASN").removeAttr("disabled");
             
             $("#submitImportASN").on("click", importAllowed)
+          
 	    }, function(error){
 	    	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(error);
 	    });
@@ -440,7 +471,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 
 	    	if(framework != null){
 	    		if(!editingFramework){
-    				delete framework.competencyObjects;
 	                framework.save(function () { 
 	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
 	                }, errorSavingFramework);
@@ -459,7 +489,17 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    },
 	    function(error){
 	    	ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(error);
-	    });
+	    	ViewManager.getView("#importCompetenciesMessageContainer").clearSuccess();
+	    },
+	    function(progressObj){
+	    	if(progressObj != undefined && progressObj["competencies"] != undefined){
+        		if(progressObj["relations"] == undefined){
+        			ViewManager.getView("#importCompetenciesMessageContainer").displaySuccess("Sucessfully imported "+progressObj["competencies"]+" competencies", "competenciesImported")
+        		}else{
+        			ViewManager.getView("#importCompetenciesMessageContainer").displaySuccess("Sucessfully imported "+progressObj["relations"]+" relations", "relationsImported")
+        		}
+        	}
+        });
 	}
 	
 	
@@ -467,6 +507,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	{
 		var data = this.data;
 	
+		ViewManager.showView(new MessageContainer("csvImportProgress"), "#csvImportProgressMessageContainer");
 		ViewManager.showView(new MessageContainer("importCompetencies"), "#importCompetenciesMessageContainer", function(){
 			if(AppController.identityController.selectedIdentity == undefined)
 			{
@@ -513,6 +554,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			ev.preventDefault();
 			$(".sourceRow").addClass("hide");
 			$("#csvSourceRow").removeClass("hide");
+			$("#csvOwnerRow").removeClass("hide");
 			$("#csvActionRow").removeClass("hide");
 			$("#modalContainer").foundation("open")
 		});
@@ -557,7 +599,11 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 				$("#submitImportFramework").removeAttr("disabled");
 				$("#submitImportFramework").click(function(ev){
 					ev.preventDefault();
-					importFromFramework(data);
+					$("#submitImportFramework").attr("disabled", "disabled");
+					$("#submitImportFramework").find(".fa-spin").removeClass("hide");
+					setTimeout(function(){
+						importFromFramework(data);
+					}, 100)
 				})
 			})
 		});

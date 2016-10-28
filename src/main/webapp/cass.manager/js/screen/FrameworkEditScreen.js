@@ -505,7 +505,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         if (data != undefined && data.id != undefined) {
             ScreenManager.setScreenParameters({
                 "id": EcRemoteLinkedData.trimVersionFromUrl(data.id)
-            })
+            });
         }
 
         if (data == undefined) {
@@ -542,11 +542,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditCreateCompetency").attr("href", "#" + FrameworkEditScreen.prototype.displayName + "?frameworkId=" + EcRemoteLinkedData.trimVersionFromUrl(data.id));
             $("#frameworkEditCreateCompetency").click(function (event) {
                 event.preventDefault();
-                if (data.name == NEW_FRAMEWORK_NAME) {} else {
-                    ModalManager.showModal(new ConfirmModal(function () {
-                        ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
-                    }));
-                }
+				if(data.name == NEW_FRAMEWORK_NAME)
+				{
+				}
+				else
+				{
+					ModalManager.showModal(new ConfirmModal(function(){
+	                    ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
+	                }));
+				}
             });
         }
 
@@ -762,7 +766,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditRollupRules optgroup").each(function (idx, el) {
                 if ($(el).children().size() == 0)
                     $(el).remove();
-            })
+            });
         });
 
         $("#frameworkEditOwnerAdvanced").click(function (ev) {

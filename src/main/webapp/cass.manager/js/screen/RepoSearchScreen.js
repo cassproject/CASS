@@ -78,6 +78,8 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				
 				searchHandle = true;
 				ViewManager.getView("#repoSearchMessageContainer").clearAlert("repoSearchFail");
+				//ViewManager.getView("#repoSearchResults").showProgressMessage();
+				ViewManager.getView("#repoSearchResults").deselectAll();
 				
 				if($("#repoResults-data").first().children().size() == 0)
 					ViewManager.getView("#repoSearchResults").showProgressMessage();
@@ -103,40 +105,44 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	{ 
 		ViewManager.getView("#repoSearchResults").populate(results);
 		
+		var rows = $("#repoResults-data").first().children();
+		
 		if(results.length == 0)
 		{
 			ViewManager.getView("#repoSearchResults").showNoDataMessage();
 		}else if(results.length < maxLength){
 			$("#moreSearchResults").addClass("hide");
-			$(window).off("scroll", scrollSearchHandler);
+			//$(window).off("scroll", scrollSearchHandler);
 		}else{
 			$("#getMoreResults").click(function(){
-				$("#moreSearchResults").addClass("hide");
-				runRepoSearch(resultDiv.children().size());
+				$("#getMoreResults").addClass("hide");
+				$("#loadingMoreResults").removeClass("hide");
+				runRepoSearch($("#repoResults-data").first().children().size());
 			})
 			
-			$(window).scroll(scrollSearchHandler)
-			
+			$("#getMoreResults").removeClass("hide");
 			$("#moreSearchResults").removeClass("hide");
 			$("#loadingMoreResults").addClass("hide");
+			
+			//$(window).scroll(scrollSearchHandler)
 		}
 		
 		searchHandle = null;
 	}
 	
-	function scrollSearchHandler(){
-		var resultDiv = $("#repoResults-data").first(); 
-		
-		if(resultDiv.size() == 0){
-			$(window).off("scroll", scrollSearchHandler);
-		}
-		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-		{
-			$("#moreSearchResults").addClass("hide");
-			$("#loadingMoreResults").removeClass("hide");
-			runRepoSearch(resultDiv.children().size());
-		}
-	}
+//	function scrollSearchHandler(){
+//		var resultDiv = $("#repoResults-data").first(); 
+//		
+//		if(resultDiv.size() == 0){
+//			$(window).off("scroll", scrollSearchHandler);
+//		}
+//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+//		{
+//			//$("#moreSearchResults").addClass("hide");
+//			//$("#loadingMoreResults").removeClass("hide");
+//			runRepoSearch(resultDiv.children().size());
+//		}
+//	}
 	
 	function errorDisplayingTypes(errorMsg){
 		if(errorMsg == undefined || errorMsg == "" )

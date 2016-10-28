@@ -31,17 +31,27 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		searchHandle = setTimeout(function() {
 			
 			var urlParams = {};
+			if(window.location.hash.split("?").length > 1){
+				var hashSplit = window.location.hash.split(/[?&]/)
+				for(var i = 1; i < hashSplit.length; i++){
+					var paramSplit = hashSplit[i].split("=");
+					if(paramSplit.length == 2)
+						urlParams[paramSplit[0]] = paramSplit[1]; 
+				}
+			}
 			if(query != "*")
 				urlParams.query = query;
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
 			if(Object.keys(urlParams).length > 0)
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
+				ScreenManager.setScreenParameters(urlParams)
 			else
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
+				ScreenManager.setScreenParameters(null);
 			
 			ViewManager.getView("#competencySearchMessageContainer").clearAlert("searchFail");
+			//ViewManager.getView("#competencySearchResults").showProgressMessage();
+			ViewManager.getView("#competencySearchResults").deselectAll();
 			
 			var params = {};
 			params.ownership = ownership;
@@ -62,41 +72,43 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 	{ 
 		ViewManager.getView("#competencySearchResults").populate(results);
 		
-		if(results.length == 0)
+		
+		if(results.length == 0 && $("#competencyResults-data").first().children().size() == 0)
 		{
 			ViewManager.getView("#competencySearchResults").showNoDataMessage();
 		}else if(results.length < maxLength){
-//			$("#moreSearchResults").addClass("hide");
-			$(window).off("scroll", scrollSearchHandler);
+			$("#moreSearchResults").addClass("hide");
+			//$(window).off("scroll", scrollSearchHandler);
 		}else{
-//			$("#getMoreResults").click(function(){
-//				$("#moreSearchResults").addClass("hide");
-//				runRepoSearch(resultDiv.children().size());
-//			})
+			$("#getMoreResults").click(function(){
+				$("#getMoreResults").addClass("hide");
+				$("#loadingMoreResults").removeClass("hide");
+				runCompetencySearch($("#competencyResults-data").first().children().size());
+			})
 			
-			$(window).scroll(scrollSearchHandler)
+			$("#getMoreResults").removeClass("hide");
+			$("#moreSearchResults").removeClass("hide");
+			$("#loadingMoreResults").addClass("hide");
 			
-//			$("#moreSearchResults").removeClass("hide");
-//			$("#loadingMoreResults").addClass("hide");
-			
+			//$(window).scroll(scrollSearchHandler)
 		}
 		
 		searchHandle = null;
 	}
 	
-	function scrollSearchHandler(){
-		var resultDiv = $("#competencyResults-data").first(); 
-		
-		if(resultDiv.size() == 0){
-			$(window).off("scroll", scrollSearchHandler);
-		}
-		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-		{
-			//$("#moreSearchResults").addClass("hide");
-			//$("#loadingMoreResults").removeClass("hide");
-			runCompetencySearch(resultDiv.children().size());
-		}
-	}
+//	function scrollSearchHandler(){
+//		var resultDiv = $("#competencyResults-data").first(); 
+//		
+//		if(resultDiv.children().size() == 0){
+//			$(window).off("scroll", scrollSearchHandler);
+//		}
+//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+//		{
+//			//$("#moreSearchResults").addClass("hide");
+//			//$("#loadingMoreResults").removeClass("hide");
+//			runCompetencySearch(resultDiv.children().size() );
+//		}
+//	}
 	
 	function errorSearching(err){
 		if(err == undefined)

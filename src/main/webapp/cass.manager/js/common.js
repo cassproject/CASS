@@ -157,7 +157,7 @@ function createContactSmall(pem) {
         $('[pk="'+pem+'"]').children(".qrcodeCanvas:empty").html("").qrcode({
 	            width: 256,
 	            height: 256,
-	            text: forge.util.decode64(pem.replaceAll(/[\r\n]/g, "").trim())
+	            text: pem.replaceAll(/[\r\n]/g, "").trim()
         }).off("click.qr").on("click.qr",null,null,
         	function(){
         		copyTextToClipboard(pem);

@@ -35,7 +35,7 @@
 <div class="row hide sourceRow" id="csvSourceRow">
 	<div class="small-12 columns">
 		<em>Step 3: Select a CSV File on your computer</em>
-		<input type="file" id="importCsvFile"/>
+		<input type="file" id="importCsvFile" accept=".csv"/>
 		
 		<em>Step 4: Select the Competency Name Column</em>
 		<select id="importCsvColumnName"></select>
@@ -49,8 +49,8 @@
 		<em>Step 7: Select the Competency Id column (if exists)</em>
 		<select id="importCsvColumnId"></select>
 		
-		<em>Step 8: Select a Relation CSV File on your computer (if exists)</em>
-		<input type="file" id="importCsvRelation"/>
+		<em class="importCsvRelation hide">Step 8: Select a Relation CSV File on your computer (if exists)</em>
+		<input class="importCsvRelation hide" type="file" id="importCsvRelation" accept=".csv"/>
 	</div>
 </div>
 
@@ -67,11 +67,18 @@
 	</div>
 </div>
 		
-<div class="row hide sourceRow" id="csvActionRow">
+<div class="row hide sourceRow" id="csvOwnerRow">
 	<div class="small-12 columns">
-		<em>Step 8: Verify Ownership</em>
+		<em>Verify Ownership:</em>
 		<div class="importCompetenciesOwner">Public</div>
-		
+	</div>
+</div>
+
+<div class="row hide sourceRow" id="csvActionRow">
+	<div class="small-5 columns">
+		<div id="csvImportProgressMessageContainer"></div>
+	</div>
+	<div class="small-7 columns">
 		<button class="button float-right" disabled='disabled' id="submitImportCsv"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from CSV</span></button>
 		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
 	</div>
@@ -80,7 +87,7 @@
 <div class="row hide sourceRow" id="medbiqSourceRow">
 	<div class="small-12 columns">
 		<em>Step 3: Select a Medbiquitous XML File on your computer</em>
-		<input type="file" id="importMedbiqFile"/>
+		<input type="file" id="importMedbiqFile" accept=".xml"/>
 		
 		<em>Step 4: Wait for the file to be scanned</em>
 		<span id="medbiqAnalyzeProgress" class="fa fa-spin fa-spinner hide"></span>
@@ -91,13 +98,14 @@
 		
 		<button class="button float-right" disabled='disabled' id="submitImportMedbiq"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from Medbiquitous XML</span></button>
 		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+		
 	</div>
 </div>
 
 <div class="row hide sourceRow" id="asnSourceRow">
 	<div class="small-12 columns">
 		<em>Step 3: Select a ASN JSON File on your computer</em>
-		<input type="file" id="importASNFile"/>
+		<input type="file" id="importASNFile" accept=".json"/>
 		
 		<em>Step 4: Wait for the file to be scanned</em>
 		<span id="asnAnalyzeProgress" class="fa fa-spin fa-spinner hide"></span>
@@ -153,7 +161,9 @@
 			<div class="importCompetenciesOwner">Public</div>
 		</div>
 		
+
 		<button class="button float-right" disabled='disabled' id="submitImportFramework"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from selected framework</span></button>
 		<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+		
 	</div>
 </div>

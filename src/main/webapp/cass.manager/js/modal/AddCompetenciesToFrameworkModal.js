@@ -12,7 +12,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 	function buildFrameworkOption(framework){
 		var option = $("<option></option>");
 		option.val(framework.id);
-		option.text(framework.name + (frameworks[i].owner == undefined ? " (Public)": ""));
+		option.text(framework.name + (framework.owner == undefined ? " (Public)": ""));
 		
 		return option;
 	}
