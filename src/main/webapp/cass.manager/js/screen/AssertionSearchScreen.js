@@ -43,42 +43,42 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 	{ 
 		ViewManager.getView("#assertionSearchResults").populate(results);
 		
-		if(results.length == 0)
-		{
+		if(results.length == 0 && $("#assertionResults-data").first().children().size() == 0){
 			ViewManager.getView("#assertionSearchResults").showNoDataMessage();
 		}else if(results.length < maxLength){
-//			$("#moreSearchResults").addClass("hide");
-			$(window).off("scroll", scrollSearchHandler);
+			$("#moreSearchResults").addClass("hide");
+			//$(window).off("scroll", scrollSearchHandler);
 		}else{
-//			$("#getMoreResults").click(function(){
-//				$("#moreSearchResults").addClass("hide");
-//				runRepoSearch(resultDiv.children().size());
-//			})
+			$("#getMoreResults").click(function(){
+				$("#getMoreResults").addClass("hide");
+				$("#loadingMoreResults").removeClass("hide");
+				runAssertionSearch($("#assertionResults-data").first().children().size());
+			})
 			
-			$(window).scroll(scrollSearchHandler)
+			$("#getMoreResults").removeClass("hide");
+			$("#moreSearchResults").removeClass("hide");
+			$("#loadingMoreResults").addClass("hide");
 			
-//			$("#moreSearchResults").removeClass("hide");
-//			$("#loadingMoreResults").addClass("hide");
-			
+			//$(window).scroll(scrollSearchHandler)
 		}
 		
 		searchHandle = null;
 		
 	}
 	
-	function scrollSearchHandler(){
-		var resultDiv = $("#assertionResults-data").first(); 
-		
-		if(resultDiv.size() == 0){
-			$(window).off("scroll", scrollSearchHandler);
-		}
-		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-		{
-			//$("#moreSearchResults").addClass("hide");
-			//$("#loadingMoreResults").removeClass("hide");
-			runAssertionSearch(resultDiv.children().size());
-		}
-	}
+//	function scrollSearchHandler(){
+//		var resultDiv = $("#assertionResults-data").first(); 
+//		
+//		if(resultDiv.size() == 0){
+//			$(window).off("scroll", scrollSearchHandler);
+//		}
+//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+//		{
+//			//$("#moreSearchResults").addClass("hide");
+//			//$("#loadingMoreResults").removeClass("hide");
+//			runAssertionSearch(resultDiv.children().size());
+//		}
+//	}
 	
 	function errorSearching(err){
 		if(err == undefined)

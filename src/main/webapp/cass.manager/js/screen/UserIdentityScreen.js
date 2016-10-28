@@ -264,7 +264,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
             $("#importContainer").addClass("hide");
         })
 
-        $("#importIdentity").click(function (event) {
+        $("#createImportIdentity").click(function (event) {
             event.preventDefault();
 
             activateKey($('#addKeyPpk')[0].files);

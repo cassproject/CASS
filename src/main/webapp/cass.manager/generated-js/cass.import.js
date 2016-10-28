@@ -17,6 +17,7 @@ var MedbiqImport = function() {
 };
 MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, prototype) {
     constructor.medbiqXmlCompetencies = null;
+    constructor.INCREMENTAL_STEP = 5;
     constructor.medbiqXmlLookForCompetencyObject = function(obj) {
         if (Importer.isObject(obj) || Importer.isArray(obj)) 
             for (var key in (obj)) {
@@ -50,6 +51,13 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
             failure("No file to analyze");
             return;
         }
+        if ((file)["name"] == null) {
+            failure("Invalid file");
+            return;
+        } else if (!((file)["name"]).endsWith(".xml")) {
+            failure("Invalid file type");
+            return;
+        }
         var reader = new FileReader();
         reader.onload = function(e) {
             var result = ((e)["target"])["result"];
@@ -63,8 +71,11 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         };
         reader.readAsText(file);
     };
+    constructor.progressObject = null;
     constructor.saved = 0;
-    constructor.importCompetencies = function(serverUrl, owner, success, failure) {
+    constructor.importCompetencies = function(serverUrl, owner, success, failure, incremental) {
+        MedbiqImport.progressObject = null;
+        MedbiqImport.saved = 0;
         for (var i = 0; i < MedbiqImport.medbiqXmlCompetencies.length; i++) {
             var comp = MedbiqImport.medbiqXmlCompetencies[i];
             comp.generateId(serverUrl);
@@ -72,17 +83,38 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
                 comp.addOwner(owner.ppk.toPk());
             comp.save(function(p1) {
                 MedbiqImport.saved++;
-                if (MedbiqImport.saved == MedbiqImport.medbiqXmlCompetencies.length) 
+                if (MedbiqImport.saved % MedbiqImport.INCREMENTAL_STEP == 0) {
+                    if (MedbiqImport.progressObject == null) 
+                        MedbiqImport.progressObject = new Object();
+                    (MedbiqImport.progressObject)["competencies"] = MedbiqImport.saved;
+                    incremental(MedbiqImport.progressObject);
+                }
+                if (MedbiqImport.saved == MedbiqImport.medbiqXmlCompetencies.length) {
+                    if (MedbiqImport.progressObject == null) 
+                        MedbiqImport.progressObject = new Object();
+                    (MedbiqImport.progressObject)["competencies"] = MedbiqImport.saved;
+                    incremental(MedbiqImport.progressObject);
                     success(MedbiqImport.medbiqXmlCompetencies);
+                }
             }, function(p1) {
                 failure("Failed to Save Competency");
             });
         }
     };
-}, {medbiqXmlCompetencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
+}, {medbiqXmlCompetencies: {name: "Array", arguments: ["EcCompetency"]}, progressObject: "Object"}, {});
 var CSVImport = function() {};
 CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
+    constructor.INCREMENTAL_STEP = 5;
     constructor.analyzeFile = function(file, success, failure) {
+        if (file == null) {
+            failure("No file to analyze");
+            return;
+        }
+        if ((file)["name"] == null) {
+            failure("Invalid file");
+        } else if (!((file)["name"]).endsWith(".csv")) {
+            failure("Invalid file type");
+        }
         Papa.parse(file, {complete: function(results) {
             var tabularData = (results)["data"];
             success(tabularData);
@@ -90,6 +122,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     };
     constructor.importCsvLookup = null;
     constructor.saved = 0;
+    constructor.progressObject = null;
     constructor.transformId = function(oldId, newObject, selectedServer) {
         if (oldId.indexOf("http") != -1) {
             var parts = (oldId).split("/");
@@ -109,7 +142,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         } else 
             newObject.assignId(selectedServer, oldId);
     };
-    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure) {
+    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure, incremental) {
+        CSVImport.progressObject = null;
         CSVImport.importCsvLookup = new Object();
         if (nameIndex < 0) {
             failure("Name Index not Set");
@@ -130,18 +164,18 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 if (scopeIndex >= 0) 
                     competency.scope = tabularData[i][scopeIndex];
                 var shortId = null;
-                if (idIndex != null) {
+                if (idIndex != null && idIndex >= 0) {
                     competency.id = tabularData[i][idIndex];
                     shortId = competency.shortId();
                 }
-                if (idIndex != null) 
+                if (idIndex != null && idIndex >= 0) 
                     CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
                  else 
                     competency.generateId(serverUrl);
-                if (idIndex != null) 
+                if (idIndex != null && idIndex >= 0) 
                     (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
                 (CSVImport.importCsvLookup)[competency.name] = competency.shortId();
-                if (shortId != null) 
+                if (shortId != null && idIndex >= 0) 
                     (CSVImport.importCsvLookup)[shortId] = competency.shortId();
                 if (owner != null) 
                     competency.addOwner(owner.ppk.toPk());
@@ -152,11 +186,17 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var comp = competencies[i];
                 comp.save(function(results) {
                     CSVImport.saved++;
+                    if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) {
+                        if (CSVImport.progressObject == null) 
+                            CSVImport.progressObject = new Object();
+                        (CSVImport.progressObject)["competencies"] = CSVImport.saved;
+                        incremental(CSVImport.progressObject);
+                    }
                     if (CSVImport.saved == competencies.length) {
                         if (relations == null) 
                             success(competencies, new Array());
                          else 
-                            CSVImport.importRelations(serverUrl, owner, relations, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure);
+                            CSVImport.importRelations(serverUrl, owner, relations, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental);
                     }
                 }, function(results) {
                     failure("Failed to save competency");
@@ -167,7 +207,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             }
         }, error: failure});
     };
-    constructor.importRelations = function(serverUrl, owner, file, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure) {
+    constructor.importRelations = function(serverUrl, owner, file, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental) {
         var relations = new Array();
         if (sourceIndex == null || sourceIndex < 0) {
             failure("Source Index not Set");
@@ -204,6 +244,13 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var comp = relations[i];
                 comp.save(function(results) {
                     CSVImport.saved++;
+                    if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) {
+                        if (CSVImport.progressObject == null) 
+                            CSVImport.progressObject = new Object();
+                        (CSVImport.progressObject)["relations"] = CSVImport.saved;
+                        incremental(CSVImport.progressObject);
+                        incremental(CSVImport.saved);
+                    }
                     if (CSVImport.saved == relations.length) {
                         success(competencies, relations);
                     }
@@ -219,14 +266,17 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             }
         }, error: failure});
     };
-}, {importCsvLookup: "Object"}, {});
+}, {importCsvLookup: "Object", progressObject: "Object"}, {});
 var ASNImport = function() {
     Importer.call(this);
 };
 ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype) {
+    constructor.INCREMENTAL_STEP = 5;
     constructor.jsonFramework = null;
     constructor.frameworkUrl = null;
     constructor.jsonCompetencies = null;
+    constructor.competencyCount = 0;
+    constructor.relationCount = 0;
     constructor.asnJsonPrime = function(obj, key) {
         var value = (obj)[key];
         if (Importer.isObject(value)) {
@@ -234,9 +284,11 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 var stringVal = (((value)["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"])["0"])["value"];
                 if (stringVal == "http://purl.org/ASN/schema/core/Statement") {
                     ASNImport.jsonCompetencies[key] = value;
+                    ASNImport.competencyCount++;
                     var children = (value)["http://purl.org/gem/qualifiers/hasChild"];
                     if (children != null) 
                         for (var j = 0; j < children.length; j++) {
+                            ASNImport.relationCount++;
                             ASNImport.asnJsonPrime(obj, (children[j])["value"]);
                         }
                 }
@@ -244,6 +296,8 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         }
     };
     constructor.lookThroughSource = function(obj) {
+        ASNImport.competencyCount = 0;
+        ASNImport.relationCount = 0;
         for (var key in (obj)) {
             var value = (obj)[key];
             if (Importer.isObject(value)) {
@@ -264,7 +318,14 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     };
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
-            failure("No File to Analyze");
+            failure("No file to analyze");
+            return;
+        }
+        if ((file)["name"] == null) {
+            failure("Invalid file");
+            return;
+        } else if (!((file)["name"]).endsWith(".json")) {
+            failure("Invalid file type");
             return;
         }
         var reader = new FileReader();
@@ -285,7 +346,8 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     };
     constructor.importedFramework = null;
     constructor.competencies = null;
-    constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure) {
+    constructor.progressObject = null;
+    constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure, incremental) {
         ASNImport.competencies = {};
         if (createFramework) {
             ASNImport.importedFramework = new EcFramework();
@@ -294,20 +356,25 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         } else {
             ASNImport.importedFramework = null;
         }
-        ASNImport.createCompetencies(serverUrl, owner, failure);
-        ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonFramework, null, failure);
-        if (createFramework) {
-            ASNImport.createFramework(serverUrl, owner, success, failure);
-        } else {
-            var compList = [];
-            for (var key in ASNImport.competencies) {
-                compList.push(ASNImport.competencies[key]);
-            }
-            if (success != null) 
-                success(compList, null);
-        }
+        ASNImport.progressObject = null;
+        ASNImport.createCompetencies(serverUrl, owner, function() {
+            ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonFramework, null, function() {
+                if (createFramework) {
+                    ASNImport.createFramework(serverUrl, owner, success, failure);
+                } else {
+                    var compList = [];
+                    for (var key in ASNImport.competencies) {
+                        compList.push(ASNImport.competencies[key]);
+                    }
+                    if (success != null) 
+                        success(compList, null);
+                }
+            }, failure, incremental);
+        }, failure, incremental);
     };
-    constructor.createCompetencies = function(serverUrl, owner, failure) {
+    constructor.savedCompetencies = 0;
+    constructor.createCompetencies = function(serverUrl, owner, success, failure, incremental) {
+        ASNImport.savedCompetencies = 0;
         for (var key in ASNImport.jsonCompetencies) {
             var comp = new EcCompetency();
             var jsonComp = ASNImport.jsonCompetencies[key];
@@ -324,12 +391,32 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             if (ASNImport.importedFramework != null) 
                 ASNImport.importedFramework.addCompetency(comp.shortId());
             ASNImport.competencies[key] = comp;
-            comp.save(function(p1) {}, function(p1) {
+            comp.save(function(p1) {
+                ASNImport.savedCompetencies++;
+                if (ASNImport.savedCompetencies % ASNImport.INCREMENTAL_STEP == 0) {
+                    if (ASNImport.progressObject == null) 
+                        ASNImport.progressObject = new Object();
+                    (ASNImport.progressObject)["competencies"] = ASNImport.savedCompetencies;
+                    incremental(ASNImport.progressObject);
+                }
+                if (ASNImport.savedCompetencies == ASNImport.competencyCount) {
+                    if (ASNImport.progressObject == null) 
+                        ASNImport.progressObject = new Object();
+                    (ASNImport.progressObject)["competencies"] = ASNImport.savedCompetencies;
+                    incremental(ASNImport.progressObject);
+                    success();
+                }
+            }, function(p1) {
                 failure("Failed to save competency");
             });
         }
     };
-    constructor.createRelationships = function(serverUrl, owner, node, nodeId, failure) {
+    constructor.savedRelations = 0;
+    constructor.createRelationships = function(serverUrl, owner, node, nodeId, success, failure, incremental) {
+        ASNImport.savedRelations = 0;
+        if (ASNImport.relationCount == 0) {
+            success();
+        }
         var children = (node)["http://purl.org/gem/qualifiers/hasChild"];
         if (children != null) 
             for (var j = 0; j < children.length; j++) {
@@ -345,11 +432,22 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                         relation.addOwner(owner.ppk.toPk());
                     if (ASNImport.importedFramework != null) 
                         ASNImport.importedFramework.addRelation(relation.shortId());
-                    relation.save(function(p1) {}, function(p1) {
+                    relation.save(function(p1) {
+                        ASNImport.savedRelations++;
+                        if (ASNImport.savedRelations % ASNImport.INCREMENTAL_STEP == 0) {
+                            if (ASNImport.progressObject == null) 
+                                ASNImport.progressObject = new Object();
+                            (ASNImport.progressObject)["relations"] = ASNImport.savedRelations;
+                            incremental(ASNImport.progressObject);
+                        }
+                        if (ASNImport.savedRelations == ASNImport.relationCount) {
+                            success();
+                        }
+                    }, function(p1) {
                         failure("Failed to save Relationship");
                     });
                 }
-                ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonCompetencies[(children[j])["value"]], (children[j])["value"], failure);
+                ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonCompetencies[(children[j])["value"]], (children[j])["value"], success, failure, incremental);
             }
     };
     constructor.createFramework = function(serverUrl, owner, success, failure) {
@@ -370,7 +468,7 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             failure("Failed to save framework");
         });
     };
-}, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}}, {});
+}, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}, progressObject: "Object"}, {});
 var FrameworkImport = function() {};
 FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
     constructor.saved = 0;

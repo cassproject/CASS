@@ -147,10 +147,12 @@ var DataViewer = (function(DataViewer){
 		
 		$("#"+prefix+"-sortSelect").removeClass("hide")
 		
-		$("#"+prefix+"-sortSelect").change(function(){
+		$("#"+prefix+"-sortSelect").on("change", function(){
 			urlParams["sort"] = $("#"+prefix+"-sortSelect").val();
 
-			if(urlParams["sort"] == "timestamp")
+			if(urlParams["sort"] == "timestamp" && !LoginController.getLoggedIn())
+				delete urlParams["sort"];
+			else if(urlParams["sort"] == "owner" && LoginController.getLoggedIn())
 				delete urlParams["sort"];
 			
 			ScreenManager.setScreenParameters(urlParams);
@@ -167,6 +169,7 @@ var DataViewer = (function(DataViewer){
 		}
 		
 		$(".toggleSelectData").removeClass("hide");
+		$(".toggleSelectData").text("Select All");
 		
 		if(self.dataStore == undefined)
 			self.dataStore = {};
@@ -359,7 +362,16 @@ var DataViewer = (function(DataViewer){
 			ModalManager.showModal(new ConfirmModal(function(){
 				EcRepository._delete(datum, function(){
 					ModalManager.hideModal();
-					element.closest(".row").remove();
+					
+					var row = element.closest(".row");
+					var siblings = row.siblings(".row")
+					
+					row.remove();
+					
+					if(siblings.size() == 0){
+						showNoDataMessage(prefix);
+						$(".toggleSelectData").addClass("hide");
+					}
 				}, function(err){
 					ModalManager.getCurrentModal().displayAlertMessage(err);
 				})
@@ -555,6 +567,11 @@ var DataViewer = (function(DataViewer){
 						EcRepository._delete(datum, function(){
 							$("#"+prefix+"-data").find(".row[data-id='"+id+"']").remove();
 							
+							if($("#"+prefix+"-data").find(".row").size() == 0){
+								showNoDataMessage(prefix);
+								$(".toggleSelectData").addClass("hide");
+							}
+							
 							deleted++;
 							if(deleted == selected.length){
 								ModalManager.hideModal();
@@ -639,9 +656,9 @@ var DataViewer = (function(DataViewer){
 	
 	function showProgressMessage(prefix){
 		$("#"+prefix+"-progress").removeClass("hide");
-		$("#"+prefix+"-none").addClass("hide");
-		$("#"+prefix+"-menu").addClass("hide");
-		$("#"+prefix+"-data").addClass("hide");
+//		$("#"+prefix+"-none").addClass("hide");
+//		$("#"+prefix+"-menu").addClass("hide");
+//		$("#"+prefix+"-data").addClass("hide");
 	}
 	
 	function deselectAll(prefix){
@@ -738,6 +755,7 @@ var DataViewer = (function(DataViewer){
 	
 	DataViewer.prototype.clear = function(){
 		$("#"+this.prefix+"-data").find(".row").remove();
+		this.dataStore = {};
 	}
 	
 	DataViewer.prototype.populate = function(data){
@@ -750,7 +768,7 @@ var DataViewer = (function(DataViewer){
 		
 		if(dataSize > 0){
 			populateData(data, this, this.prefix, this.callbacks);
-		}else{
+		}else if($("#"+this.prefix+"-data").find(".row").size() == 0){
 			showNoDataMessage(this.prefix);
 		}
 	}

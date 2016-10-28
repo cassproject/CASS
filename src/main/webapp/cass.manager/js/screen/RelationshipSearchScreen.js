@@ -38,6 +38,14 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		
 		searchHandle = setTimeout(function() {
 			var urlParams = {};
+			if(window.location.hash.split("?").length > 1){
+				var hashSplit = window.location.hash.split(/[?&]/)
+				for(var i = 1; i < hashSplit.length; i++){
+					var paramSplit = hashSplit[i].split("=");
+					if(paramSplit.length == 2)
+						urlParams[paramSplit[0]] = paramSplit[1]; 
+				}
+			}
 			if(query != "*")
 				urlParams.query = query;
 			if(ownership != "all")
@@ -50,7 +58,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			
 			ViewManager.getView("#relationshipSearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#relationshipSearchResults").showProgressMessage();
-			//ViewManager.getView("#relationshipSearchResults").deselectAll();
+			ViewManager.getView("#relationshipSearchResults").deselectAll();
 			
 			var params = {};
 			params.ownership = ownership;
@@ -71,41 +79,42 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	{  
 		ViewManager.getView("#relationshipSearchResults").populate(results);
 		
-		if(results.length == 0)
+		if(results.length == 0 && $("#relationshipResults-data").first().children().size() == 0)
 		{
 			ViewManager.getView("#relationshipSearchResults").showNoDataMessage();
 		}else if(results.length < maxLength){
-//			$("#moreSearchResults").addClass("hide");
-			$(window).off("scroll", scrollSearchHandler);
+			$("#moreSearchResults").addClass("hide");
+			//$(window).off("scroll", scrollSearchHandler);
 		}else{
-//			$("#getMoreResults").click(function(){
-//				$("#moreSearchResults").addClass("hide");
-//				runRepoSearch(resultDiv.children().size());
-//			})
+			$("#getMoreResults").click(function(){
+				$("#getMoreResults").addClass("hide");
+				$("#loadingMoreResults").removeClass("hide");
+				runRelationshipSearch($("#relationshipResults-data").first().children().size());
+			})
 			
-			$(window).scroll(scrollSearchHandler)
+			$("#getMoreResults").removeClass("hide");
+			$("#moreSearchResults").removeClass("hide");
+			$("#loadingMoreResults").addClass("hide");
 			
-//			$("#moreSearchResults").removeClass("hide");
-//			$("#loadingMoreResults").addClass("hide");
-			
+			//$(window).scroll(scrollSearchHandler)
 		}
 		
 		searchHandle = null;
 	}
 	
-	function scrollSearchHandler(){
-		var resultDiv = $("#relationshipResults-data").first(); 
-		
-		if(resultDiv.size() == 0){
-			$(window).off("scroll", scrollSearchHandler);
-		}
-		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-		{
-			//$("#moreSearchResults").addClass("hide");
-			//$("#loadingMoreResults").removeClass("hide");
-			runRelationshipSearch(resultDiv.children().size());
-		}
-	}
+//	function scrollSearchHandler(){
+//		var resultDiv = $("#relationshipResults-data").first(); 
+//		
+//		if(resultDiv.size() == 0){
+//			$(window).off("scroll", scrollSearchHandler);
+//		}
+//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+//		{
+//			//$("#moreSearchResults").addClass("hide");
+//			//$("#loadingMoreResults").removeClass("hide");
+//			runRelationshipSearch(resultDiv.children().size());
+//		}
+//	}
 	
 	function errorSearching(err){
 		if(err == undefined)

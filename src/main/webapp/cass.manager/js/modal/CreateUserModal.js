@@ -2,7 +2,7 @@ var CreateUserModal = (function(CreateUserModal){
 	function submitCreateForm(view){
 		ViewManager.getView("#createMessageContainer").clearAlert("createFail");
 		
-		var server = $("#createServer").val()
+		var server = $("#createServer").val();
 		
 		AppController.serverController.selectServer(server);
 		
