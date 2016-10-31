@@ -2,7 +2,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/hasCompetency.js", 
 		c=#add(a="competencyId=",b="@competencyId"), 
 		d=#add(a="ppk=",b=#xapiMePpk().debug(prefix="ppk:")),
@@ -44,7 +44,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="500000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/getProfile.js", 
 		d=#add(a="ppk=",b=#xapiMePpk()),
 		e=#add(
@@ -88,7 +88,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/addAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
 		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
@@ -123,7 +123,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/deleteAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
 		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
@@ -157,7 +157,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/deleteAllAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
 		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
@@ -191,7 +191,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/listGoals.js",		
 		e=#add(
 			a="email=",
@@ -213,7 +213,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/addGoal.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
@@ -236,7 +236,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/deleteGoal.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
@@ -259,7 +259,7 @@ process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
 	args=#object(
-		a="node",
+		a="/usr/bin/node",
 		b="tla/deleteGoals.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
