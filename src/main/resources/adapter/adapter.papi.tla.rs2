@@ -24,7 +24,7 @@ process=#runProcess(
 			b=#repoEndpoint()
 		)
 	).valueSet()
-);
+).debug();
 
 processTest=process.displayJson();
 /learners/test/mastery = processTest;
@@ -33,11 +33,12 @@ process=#object(
 	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
 	level=process.flatten(),
 	confidence=#toDouble(obj="1.0")
-).displayJson(_collapse="true");
+);
 
 #masteryForOneCompetency=process;
 
-/learners/rest/mastery = process;
+processTest=process.displayJson();
+/learners/rest/mastery = processTest;
 
 process=#runProcess(
 	workingDirectory="scripts/node",
@@ -152,7 +153,6 @@ process=#runProcess(
 processTest=process.displayJson();
 /learners/test/deleteAssertion = processTest;
 
-
 process=#runProcess(
 	workingDirectory="scripts/node",
 	timeout="50000",
@@ -186,4 +186,95 @@ process=#runProcess(
 
 processTest=process.displayJson();
 /learners/test/deleteAllAssertion = processTest;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/listGoals.js",		
+		e=#add(
+			a="email=",
+			b="@username"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		)
+	).valueSet()
+).removeDuplicates();
+
+#goalsForAllCompetencies=process;
+
+processTest=process.displayJson();
+/learners/test/allGoals = processTest;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/addGoal.js",	
+		c=#add(a="competencyId=",b="@competencyId"), 	
+		e=#add(
+			a="email=",
+			b="@username"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		)
+	).valueSet()
+);
+
+#setGoalForOneCompetency=process;
+
+processTest=process.displayJson();
+/learners/test/setGoal = processTest;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/deleteGoal.js",	
+		c=#add(a="competencyId=",b="@competencyId"), 	
+		e=#add(
+			a="email=",
+			b="@username"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		)
+	).valueSet()
+);
+
+#deleteGoalForOneCompetency=process;
+
+processTest=process.displayJson();
+/learners/test/deleteGoal = processTest;
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/deleteGoals.js",	
+		c=#add(a="competencyId=",b="@competencyId"), 	
+		e=#add(
+			a="email=",
+			b="@username"
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		)
+	).valueSet()
+);
+
+#deleteGoalsForAllCompetencies=process;
+
+processTest=process.displayJson();
+/learners/test/deleteGoals = processTest;
 

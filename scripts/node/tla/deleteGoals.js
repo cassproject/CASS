@@ -32,21 +32,14 @@ var endpoint = null;
 var email = null;
 
 process.argv.forEach(function (val, index, array) {
-    if (val.split("=")[0] == "competencyId")
-        competencyId = val.split("=")[1];
     if (val.split("=")[0] == "endpoint")
         endpoint = val.replace("endpoint=", "");
     if (val.split("=")[0] == "email")
         email = val.replace("email=", "");
 });
 var debug = true;
-if (debug) console.log("competencyId:" + competencyId);
 if (debug) console.log("endpoint:" + endpoint);
 if (debug) console.log("email:" + email);
-if (competencyId == null) {
-    console.log("Competency ID is missing.");
-    process.exit(1);
-}
 if (endpoint == null) {
     console.log("Endpoint is missing.");
     process.exit(1);
@@ -64,23 +57,28 @@ var repo = new EcRepository();
 repo.selectedServer = endpoint;
 if (debug) console.log("Remote server: " + repo.selectedServer);
 
-if (debug) console.log("Generating Goal.");
-
-var person = new Person();
-person.email = email;
-person.seeks = new Demand();
-person.seeks.itemOffered = new Service();
-person.seeks.itemOffered.serviceOutput = competencyId;
-
-person.generateId(repo.selectedServer);
-
-if (debug) console.log(JSON.stringify(person));
-
-EcRepository.save(person,
-    function (success) {
-        if (debug) console.log(success);
-        process.exit(0);
+var counter = 0;
+if (debug) console.log("@type:Person AND email:" + email);
+repo.search("@type:Person AND email:" + email,
+    function (eachSuccess) {
+        if (debug) console.log(JSON.stringify(eachSuccess));
+        EcRepository._delete(
+            eachSuccess,
+            function (success) {
+                if (debug) console.log(JSON.stringify(success));
+                counter--;
+                if (counter == 0)
+                    process.exit(0);
+            },
+            function (failure) {
+                if (debug) console.log(JSON.stringify(failure));
+                counter--;
+                if (counter == 0)
+                    process.exit(0);
+            });
+        counter++;
     },
+    function (success) {},
     function (failure) {
         console.log(failure);
         process.exit(1);

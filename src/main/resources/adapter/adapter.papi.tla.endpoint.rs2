@@ -1,11 +1,6 @@
 //Retrieve all mastery estimates for the given learner or delete/clear mastery.
 
 mastery=#object(
-	a=#if(
-		operator="@framework",
-		operand="",
-		eq=#error(code="400",msg="Bad request. Please specify framework=<url> using URL Parameter.")
-	),
 	b=#if(
 		operator="@userId",
 		operand="",
@@ -21,10 +16,15 @@ mastery=#object(
 				competencyId="@competency",
 				username="@userId"
 	        ),
-	        ne=#masteryForOneCompetency(
-				frameworkId="@framework",
-				competencyId="@competency",
-				username="@userId"
+	        ne=#if(
+				operator="@framework",
+				operand="",
+				eq=#error(code="400",msg="Bad request. Please specify framework=<url> using URL Parameter."),
+				ne=#masteryForOneCompetency(
+					frameworkId="@framework",
+					competencyId="@competency",
+					username="@userId"
+				)
 			)
 		),
 		eq=#if(
@@ -33,9 +33,14 @@ mastery=#object(
 	        eq=#deleteMasteryForAllCompetencies(
 				username="@userId"
 	        ),
-	        ne=#masteryForAllCompetencies(
-				frameworkId="@framework",
-				username="@userId"
+	        ne=#if(
+				operator="@framework",
+				operand="",
+				eq=#error(code="400",msg="Bad request. Please specify framework=<url> using URL Parameter."),
+				ne=#masteryForAllCompetencies(
+					frameworkId="@framework",
+					username="@userId"
+				)
 			)
 		)
 	)
@@ -43,16 +48,16 @@ mastery=#object(
 	competency=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@competency"),
+		eq=#add(_string="true",a="@endpoint",b="@competency"),
 		ne="@competency"
 	),
 	framework=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@framework"),
+		eq=#add(_string="true",a="@endpoint",b="@framework"),
 		ne="@framework"
 	)
-);
+).displayJson(_collapse="true");
 
 /learner/mastery=mastery;
 
@@ -74,7 +79,7 @@ goal=#object(
 	        ),
 	        ne=#if(
 		        operator="@methodType",
-		        operand="PUT",
+		        operand="POST",
 		        eq=#setGoalForOneCompetency(
 					competencyId="@competency",
 					username="@userId"
@@ -100,16 +105,16 @@ goal=#object(
 	competency=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@competency"),
+		eq=#add(_string="true",a="@endpoint",b="@competency"),
 		ne="@competency"
-	),
+	).debug(),
 	framework=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@framework"),
+		eq=#add(_string="true",a="@endpoint",b="@framework"),
 		ne="@framework"
-	)
-);
+	).debug()
+).displayJson(_collapse="true");
 
 /learner/goal=goal;
 
@@ -138,15 +143,15 @@ contribute=#object(
 	competency=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@competency"),
+		eq=#add(_string="true",a="@endpoint",b="@competency"),
 		ne="@competency"
 	),
 	framework=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(a="@endpoint",b="@framework"),
+		eq=#add(_string="true",a="@endpoint",b="@framework"),
 		ne="@framework"
 	)
-);
+).displayJson(_collapse="true");
 
 /learner/mastery/contribute=contribute;
