@@ -35,6 +35,8 @@ process=#object(
 	confidence=#toDouble(obj="1.0")
 ).displayJson(_collapse="true");
 
+#masteryForOneCompetency=process;
+
 /learners/rest/mastery = process;
 
 process=#runProcess(
@@ -77,6 +79,8 @@ process=process.forEach(
 	)
 ).displayJson(_collapse="true");
 
+#masteryForAllCompetencies=process;
+
 /learners/rest/profile = process;
 
 process=#runProcess(
@@ -108,6 +112,78 @@ process=#runProcess(
 	).valueSet()
 );
 
+#contributeToMastery=process;
+
 processTest=process.displayJson();
 /learners/test/addAssertion = processTest;
+
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/deleteAssertion.js",		
+		c=#add(a="competencyId=",b="@competencyId"), 
+		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		e=#add(
+			a="subject=",
+			b=#object(
+				mbox=#add(
+					a="mailto:",
+					b="@username"
+				)
+			).xapiAgentToPk().replace(replace="\r?\n", with="")
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		),
+		h=#add(
+			a="confidence=",
+			b="@confidence"
+		)
+	).valueSet()
+);
+
+#deleteMasteryForOneCompetency=process;
+
+processTest=process.displayJson();
+/learners/test/deleteAssertion = processTest;
+
+
+process=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="50000",
+	args=#object(
+		a="node",
+		b="tla/deleteAllAssertion.js",		
+		c=#add(a="competencyId=",b="@competencyId"), 
+		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		e=#add(
+			a="subject=",
+			b=#object(
+				mbox=#add(
+					a="mailto:",
+					b="@username"
+				)
+			).xapiAgentToPk().replace(replace="\r?\n", with="")
+		),
+		g=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		),
+		h=#add(
+			a="confidence=",
+			b="@confidence"
+		)
+	).valueSet()
+);
+
+#deleteMasteryForAllCompetencies=process;
+
+processTest=process.displayJson();
+/learners/test/deleteAllAssertion = processTest;
 
