@@ -13,11 +13,9 @@ configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
 		enabled=#false()
 	)
 );
-configObject=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject();
 
 configVal=configObject.getByParam(param="@key");
 #configVal=configVal;
-
 
 isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
 	operand="0",
