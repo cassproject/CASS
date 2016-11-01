@@ -15,11 +15,12 @@
  *  @author fritz.ray@eduworks.com
  */
 var EbacCredential = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_3);
 };
 EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credential";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credential";
     /**
      *  AES Initialization Vector used to decode PPK.
      */
@@ -44,9 +45,13 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacCredential.TYPE_0_2);
         }
+        if (EbacCredential.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacCredential.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredential.TYPE_0_3);
         a.push(EbacCredential.TYPE_0_2);
         a.push(EbacCredential.TYPE_0_1);
         return a;
@@ -60,11 +65,12 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
  *  @author fritz.ray@eduworks.com
  */
 var EbacCredentialRequest = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_3);
 };
 EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialRequest";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialRequest";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialRequest";
     /**
      *  Hashed username.
      */
@@ -81,9 +87,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacCredentialRequest.TYPE_0_2);
         }
+        if (EbacCredentialRequest.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacCredentialRequest.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialRequest.TYPE_0_3);
         a.push(EbacCredentialRequest.TYPE_0_2);
         a.push(EbacCredentialRequest.TYPE_0_1);
         return a;
@@ -96,11 +106,12 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
  *  @author fritz.ray@eduworks.com
  */
 var EbacCredentials = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_3);
 };
 EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credentials";
     /**
      *  One time pad (aka perfect cipher)
      */
@@ -125,9 +136,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacCredentials.TYPE_0_2);
         }
+        if (EbacCredentials.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacCredentials.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentials.TYPE_0_3);
         a.push(EbacCredentials.TYPE_0_2);
         a.push(EbacCredentials.TYPE_0_1);
         return a;
@@ -141,11 +156,12 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
  *  @author fritz.ray@eduworks.com
  */
 var EbacContact = function() {
-    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_3);
 };
 EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contact";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Contact";
     /**
      *  AES Initialization Vector used to decode PPK.
      */
@@ -172,9 +188,13 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacContact.TYPE_0_2);
         }
+        if (EbacContact.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacContact.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContact.TYPE_0_3);
         a.push(EbacContact.TYPE_0_2);
         a.push(EbacContact.TYPE_0_1);
         return a;
@@ -193,11 +213,12 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
  *  @author fritz.ray@eduworks.com
  */
 var EbacEncryptedSecret = function() {
-    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_3);
 };
 EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedSecret";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedSecret";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedSecret";
     /**
      *  IV used to encrypt/decrypt payload.
      */
@@ -244,9 +265,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacEncryptedSecret.TYPE_0_2);
         }
+        if (EbacEncryptedSecret.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacEncryptedSecret.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedSecret.TYPE_0_3);
         a.push(EbacEncryptedSecret.TYPE_0_2);
         a.push(EbacEncryptedSecret.TYPE_0_1);
         return a;
@@ -259,11 +284,12 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
  *  @author fritz.ray@eduworks.com
  */
 var EbacSignature = function() {
-    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_3);
 };
 EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/timeLimitedSignature";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/timeLimitedSignature";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature";
     /**
      *  The public key of the authorizing party.
      */
@@ -292,9 +318,13 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacSignature.TYPE_0_2);
         }
+        if (EbacSignature.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacSignature.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacSignature.TYPE_0_3);
         a.push(EbacSignature.TYPE_0_2);
         a.push(EbacSignature.TYPE_0_1);
         return a;
@@ -311,7 +341,8 @@ var EbacEncryptedValue = function() {
 EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedValue";
-    constructor.myType = EbacEncryptedValue.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedValue";
+    constructor.myType = EbacEncryptedValue.TYPE_0_3;
     /**
      *  Optional Hint used to aid search, showing the type of the inner encrypted
      *  object.
@@ -346,9 +377,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacEncryptedValue.TYPE_0_2);
         }
+        if (EbacEncryptedValue.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacEncryptedValue.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedValue.TYPE_0_3);
         a.push(EbacEncryptedValue.TYPE_0_2);
         a.push(EbacEncryptedValue.TYPE_0_1);
         return a;
@@ -362,11 +397,12 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
  *  @author fritz.ray@eduworks.com
  */
 var EbacContactGrant = function() {
-    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_2);
+    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_3);
 };
 EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/contactGrant";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contactGrant";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/ContactGrant";
     prototype.iv = null;
     prototype.pk = null;
     prototype.displayName = null;
@@ -381,9 +417,13 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacContactGrant.TYPE_0_2);
         }
+        if (EbacContactGrant.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacContactGrant.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContactGrant.TYPE_0_3);
         a.push(EbacContactGrant.TYPE_0_2);
         a.push(EbacContactGrant.TYPE_0_1);
         return a;
@@ -398,12 +438,13 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
  *  @author fritz.ray@eduworks.com
  */
 var EbacCredentialCommit = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_2);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_3);
     this.credentials = new EbacCredentials();
 };
 EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialCommit";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialCommit";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialCommit";
     /**
      *  Hashed username.
      */
@@ -429,9 +470,13 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacCredentialCommit.TYPE_0_2);
         }
+        if (EbacCredentialCommit.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_3, EbacCredentialCommit.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialCommit.TYPE_0_3);
         a.push(EbacCredentialCommit.TYPE_0_2);
         a.push(EbacCredentialCommit.TYPE_0_1);
         return a;

@@ -18,10 +18,10 @@ encrypt=#object(
 	).valueSet().union()
 ).put(
 	_key=#context(),
-	_value="http://schema.eduworks.com/ebac/0.2/"
+	_value="http://schema.cassproject.org/kbac/0.2/"
 ).put(
 	_key=#type(),
-	_value="http://schema.eduworks.com/ebac/0.2/encryptedValue"
+	_value="EncryptedValue"
 ).put(
 	_key=#owner(),
 	_value=#toArray(obj="@owner")
@@ -44,7 +44,7 @@ signatureSheet=#object(
 				expiry=#date(_raw="true").add(z="10000").toLong()
 			).put(
 				_key=#type(),
-				_value="http://schema.eduworks.com/ebac/0.2/timeLimitedSignature"
+				_value="http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature"
 			).put(
 				_key=#owner(),
 				_value=#rsaPpkToPk(obj="@ppk")
