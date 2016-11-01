@@ -6,10 +6,10 @@ relation=#object(
 	source=#repoEndpoint().add(p="data/",q="@type",r="/",s="@source"),
 	target=#repoEndpoint().add(p="data/",q="@type",r="/",s="@target"),
 	relationType="@relationType"
-).call(type="schema.eduworks.com.cass.0.2.competency");
+).call(type="schema.cassproject.org.0.2.competency");
 
-relation=relation.put(_key=#context(),_value="http://schema.eduworks.com/cass/0.2/");
-relation=relation.put(_key=#type(),_value="relation");
+relation=relation.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
+relation=relation.put(_key=#type(),_value="Relation");
 relation=relation.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u=#date(raw="true")));
 relation=relation.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
 
@@ -21,6 +21,6 @@ relationSave=#cassSignatureSheet(
 		id="@id",
 		version="@lastModified"
 	)
-).call(type="schema.eduworks.com.cass.0.2.relation");
+).call(type="schema.cassproject.org.0.2.relation");
 
 #cassCreateRelation=relationSave;

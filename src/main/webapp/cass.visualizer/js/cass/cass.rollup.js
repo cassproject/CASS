@@ -748,13 +748,19 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 continue;
             if (a.getSubject().equals(currentSubject)) {
                 this.log(ip, "Matching Assertion found.");
-                if (a.getAssertionDate() > stjs.trunc(new Date().getTime())) {
-                    this.log(ip, "Assertion is made for a future date.");
-                    return;
-                } else if (a.getExpirationDate() <= stjs.trunc(new Date().getTime())) {
-                    this.log(ip, "Assertion is expired. Skipping.");
-                    return;
-                }
+                var assertionDate = a.getAssertionDate();
+                if (assertionDate != null) 
+                    if (assertionDate > stjs.trunc(new Date().getTime())) {
+                        this.log(ip, "Assertion is made for a future date.");
+                        return;
+                    } else {
+                        var expirationDate = a.getExpirationDate();
+                        if (expirationDate != null) 
+                            if (expirationDate <= stjs.trunc(new Date().getTime())) {
+                                this.log(ip, "Assertion is expired. Skipping.");
+                                return;
+                            }
+                    }
                 this.logFoundAssertion(a, ip);
                 if (a.getNegative()) {
                     this.log(ip, "Found valid negative assertion");

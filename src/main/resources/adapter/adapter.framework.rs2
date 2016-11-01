@@ -10,8 +10,8 @@ framework=#object(
 	level=#toArray(obj="@level")
 );
 
-framework=framework.put(_key=#context(),_value="http://schema.eduworks.com/cass/0.2/");
-framework=framework.put(_key=#type(),_value="framework");
+framework=framework.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
+framework=framework.put(_key=#type(),_value="Framework");
 framework=framework.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u="@lastModified"));
 framework=framework.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
 
@@ -23,7 +23,7 @@ frameworkSave=#cassSignatureSheet(
 		id="@id",
 		version="@lastModified"
 	)
-).call(type="schema.eduworks.com.cass.0.2.framework");
+).call(type="schema.cassproject.org.0.2.framework");
 
 #cassCreateCompetencyFramework=frameworkSave;
 
@@ -37,7 +37,7 @@ frameworkGet=#cassSignatureSheet(
 		type="@type",
 		id="@frameworkId"
 	)
-).call(type="schema.eduworks.com.cass.0.2.framework");
+).call(type="schema.cassproject.org.0.2.framework");
 
 addCompetencyToFramework=#cassSignatureSheet(
 ).toDatastream(
@@ -48,7 +48,7 @@ addCompetencyToFramework=#cassSignatureSheet(
 		).get(competency="").append(
 			append=#repoEndpoint().add(
 				p="data/",
-				q="schema.eduworks.com.cass.0.2.competency",r="/",s="@competencyId"
+				q="schema.cassproject.org.0.2.competency",r="/",s="@competencyId"
 			)
 		).removeDuplicates()
 	).skyrepoPut(
@@ -56,18 +56,18 @@ addCompetencyToFramework=#cassSignatureSheet(
 		id="@id",
 		version=#date(raw="true")
 	)
-).call(type="schema.eduworks.com.cass.0.2.framework",framework=frameworkGet);
+).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet);
 #cassAddCompetencyToFramework=addCompetencyToFramework;
 
 addRelationToFramework=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
 	op=#toObject(obj="@framework").put(
-		relation=#toObject(obj="@framework").get(relation="").append(append=#repoEndpoint().add(p="data/",q="schema.eduworks.com.cass.0.2.relation",r="/",s="@relationId"))
+		relation=#toObject(obj="@framework").get(relation="").append(append=#repoEndpoint().add(p="data/",q="schema.cassproject.org.0.2.relation",r="/",s="@relationId"))
 	).skyrepoPut(
 		type="@type",
 		id="@id",
 		version=#date(raw="true")
 	)
-).call(type="schema.eduworks.com.cass.0.2.framework",framework=frameworkGet);
+).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet);
 #cassAddRelationToFramework=addRelationToFramework;
