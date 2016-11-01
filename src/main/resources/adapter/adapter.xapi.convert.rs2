@@ -86,8 +86,8 @@ convert=#object(
 	description=#string(str="This result was retreived from an XAPI LRS. In the conversion process, we assume that the resources used to teach these competencies are valid, reliable, and a good predictor of performance. This assumption may be incorrect, and as such this data should be used for demonstration purposes only.")
 );
 
-convert=convert.put(_key=#context(),_value="http://schema.eduworks.com/cass/0.2/");
-convert=convert.put(_key=#type(),_value="assertion");
+convert=convert.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
+convert=convert.put(_key=#type(),_value="Assertion");
 convert=convert.put(_key=#id(),_value=#repoEndpoint().add(y="xapi/get/",z=xapiObj.get(id="")));
 convert=convert.put(_key=#owner(),_value=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"));
 
@@ -98,7 +98,7 @@ convert=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
 	op=convert.skyrepoPut(
-		type="schema.eduworks.com.cass.0.2.assertion",
+		type="schema.cassproject.org.0.2.assertion",
 		id=xapiObj.get(id="")
 	)
 );

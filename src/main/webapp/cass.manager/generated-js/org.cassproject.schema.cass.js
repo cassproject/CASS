@@ -2,7 +2,8 @@ var Cass = function() {};
 Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_1 = "http://schema.eduworks.com/cass/0.1";
     constructor.context_0_2 = "http://schema.eduworks.com/cass/0.2";
-    constructor.context = "http://schema.eduworks.com/cass/0.2";
+    constructor.context_0_3 = "http://schema.cassproject.org/0.2";
+    constructor.context = "http://schema.cassproject.org/0.2";
 }, {}, {});
 var Source = function() {
     Thing.call(this);
@@ -11,7 +12,8 @@ var Source = function() {
 Source = stjs.extend(Source, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/source";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/source";
-    constructor.myType = Source.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Source";
+    constructor.myType = Source.TYPE_0_3;
     prototype.target = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
@@ -21,9 +23,13 @@ Source = stjs.extend(Source, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Source.TYPE_0_2);
         }
+        if (Source.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Source.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Source.TYPE_0_3);
         a.push(Source.TYPE_0_2);
         a.push(Source.TYPE_0_1);
         return a;
@@ -43,7 +49,8 @@ var Competency = function() {
 Competency = stjs.extend(Competency, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/competency";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/competency";
-    constructor.myType = Competency.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Competency";
+    constructor.myType = Competency.TYPE_0_3;
     prototype.scope = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
@@ -57,9 +64,13 @@ Competency = stjs.extend(Competency, Thing, [], function(constructor, prototype)
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Competency.TYPE_0_2);
         }
+        if (Competency.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Competency.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Competency.TYPE_0_3);
         a.push(Competency.TYPE_0_2);
         a.push(Competency.TYPE_0_1);
         return a;
@@ -72,7 +83,8 @@ var Level = function() {
 Level = stjs.extend(Level, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/level";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/level";
-    constructor.myType = Level.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Level";
+    constructor.myType = Level.TYPE_0_3;
     prototype.competency = null;
     prototype.title = null;
     prototype.performance = null;
@@ -84,9 +96,13 @@ Level = stjs.extend(Level, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Level.TYPE_0_2);
         }
+        if (Level.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Level.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Level.TYPE_0_3);
         a.push(Level.TYPE_0_2);
         a.push(Level.TYPE_0_1);
         return a;
@@ -99,7 +115,8 @@ var Assertion = function() {
 Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/assertion";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
-    constructor.myType = Assertion.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
+    constructor.myType = Assertion.TYPE_0_3;
     prototype.competency = null;
     prototype.framework = null;
     prototype.level = null;
@@ -119,9 +136,13 @@ Assertion = stjs.extend(Assertion, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Assertion.TYPE_0_2);
         }
+        if (Assertion.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Assertion.TYPE_0_3);
         a.push(Assertion.TYPE_0_2);
         a.push(Assertion.TYPE_0_1);
         return a;
@@ -141,7 +162,8 @@ var Profile = function() {
 Profile = stjs.extend(Profile, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/profile";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/profile";
-    constructor.myType = Profile.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Profile";
+    constructor.myType = Profile.TYPE_0_3;
     prototype.person = null;
     prototype.assertion = null;
     prototype.acceptance = null;
@@ -153,9 +175,13 @@ Profile = stjs.extend(Profile, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Profile.TYPE_0_2);
         }
+        if (Profile.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Profile.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Profile.TYPE_0_3);
         a.push(Profile.TYPE_0_2);
         a.push(Profile.TYPE_0_1);
         return a;
@@ -167,16 +193,21 @@ var RollupRule = function() {
 };
 RollupRule = stjs.extend(RollupRule, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
-    constructor.myType = RollupRule.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
+    constructor.myType = RollupRule.TYPE_0_3;
     prototype.rule = null;
     prototype.outcome = null;
     prototype.competency = null;
     prototype.mime = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
+        if (RollupRule.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, RollupRule.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(RollupRule.TYPE_0_3);
         a.push(RollupRule.TYPE_0_2);
         return a;
     };
@@ -195,7 +226,8 @@ var Framework = function() {
 Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/framework";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/framework";
-    constructor.myType = Framework.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Framework";
+    constructor.myType = Framework.TYPE_0_3;
     prototype.competency = null;
     prototype.relation = null;
     prototype.level = null;
@@ -209,9 +241,13 @@ Framework = stjs.extend(Framework, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Framework.TYPE_0_2);
         }
+        if (Framework.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Framework.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Framework.TYPE_0_3);
         a.push(Framework.TYPE_0_2);
         a.push(Framework.TYPE_0_1);
         return a;
@@ -224,7 +260,8 @@ var Relation = function() {
 Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/relation";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/relation";
-    constructor.myType = Relation.TYPE_0_2;
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Relation";
+    constructor.myType = Relation.TYPE_0_3;
     constructor.IS_ENABLED_BY = "isEnabledBy";
     constructor.REQUIRES = "requires";
     constructor.DESIRES = "desires";
@@ -247,9 +284,13 @@ Relation = stjs.extend(Relation, Thing, [], function(constructor, prototype) {
                 me["@context"] = me["@schema"];
             this.setContextAndType(Cass.context_0_2, Relation.TYPE_0_2);
         }
+        if (Relation.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Relation.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Relation.TYPE_0_3);
         a.push(Relation.TYPE_0_2);
         a.push(Relation.TYPE_0_1);
         return a;

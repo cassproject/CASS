@@ -69,7 +69,7 @@ signatureSheet=#cassSignatureSheet(
 getBySaltedMbox=#object(
 	a=#skyrepoGet(
 		obj="",
-		type="schema.eduworks.com.ebac.0.2.encryptedValue",
+		type="schema.cassproject.org.kbac.0.2.EncryptedValue",
 		id=saltedMbox
 	).cget(payload="")
 ).valueSet().union().getIndex(index="0").aesDecrypt(
@@ -90,15 +90,15 @@ payloadMboxToPk=#object(
 	)
 ).put(
 	_key=#context(),
-	_value="http://schema.eduworks.com/ebac/0.2/"
+	_value="http://schema.cassproject.org/kbac/0.2/"
 ).put(
 	_key=#type(),
-	_value="http://schema.eduworks.com/ebac/0.2/encryptedValue"
+	_value="http://schema.cassproject.org/kbac/0.2/EncryptedValue"
 ).put(
 	_key=#owner(),
 	_value=ppk.rsaPpkToPk()
 ).skyrepoPut(
-	type="schema.eduworks.com.ebac.0.2.encryptedValue",
+	type="schema.cassproject.org.kbac.0.2.EncryptedValue",
 	id=saltedMbox
 );
 
@@ -110,15 +110,15 @@ payloadPkToMbox=#object(
 	)
 ).put(
 	_key=#context(),
-	_value="http://schema.eduworks.com/ebac/0.2/"
+	_value="http://schema.cassproject.org/kbac/0.2/"
 ).put(
 	_key=#type(),
-	_value="http://schema.eduworks.com/ebac/0.2/encryptedValue"
+	_value="http://schema.cassproject.org/kbac/0.2/EncryptedValue"
 ).put(
 	_key=#owner(),
 	_value=ppk.rsaPpkToPk()
 ).skyrepoPut(
-	type="schema.eduworks.com.ebac.0.2.encryptedValue",
+	type="schema.cassproject.org.kbac.0.2.EncryptedValue",
 	id=saltedPk
 );
 

@@ -473,7 +473,6 @@ var EcContactGrant = function() {
     EbacContactGrant.call(this);
 };
 EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.eduworks.com/ebac/0.2/contactGrant";
     prototype.valid = function() {
         if (!this.verify()) 
             return false;
