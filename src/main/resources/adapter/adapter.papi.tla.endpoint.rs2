@@ -1,43 +1,52 @@
-//Retrieve all mastery estimates for the given learner or delete/clear mastery.
+//Retrieve all competency estimates for the given learner or delete/clear competency.
 
-mastery=#object(
+competency=#object(
 	b=#if(
 		operator="@userId",
 		operand="",
-		eq=#error(code="400",msg="Bad request. Please specify userId=<userId> using URL Parameter.")
+		eq=#error(code="500",msg="Bad request. Please specify userId=<userId> using URL Parameter.")
 	),
 	z=#if(
 		operator="@competency",
 		operand="",
 		ne=#if(
 	        operator="@methodType",
-	        operand="DELETE",
-	        eq=#deleteMasteryForOneCompetency(
+	        operand="POST",
+	        eq=#createAssertionForCompetency(
 				competencyId="@competency",
-				username="@userId"
-	        ),
+				username="@userId",
+				confidence="@confidence"
+			),
 	        ne=#if(
-				operator="@framework",
-				operand="",
-				eq=#error(code="400",msg="Bad request. Please specify framework=<url> using URL Parameter."),
-				ne=#masteryForOneCompetency(
-					frameworkId="@framework",
+		        operator="@methodType",
+		        operand="DELETE",
+		        eq=#deleteAssertionsForOneCompetency(
 					competencyId="@competency",
 					username="@userId"
+		        ),
+		        ne=#if(
+					operator="@framework",
+					operand="",
+					eq=#error(code="500",msg="Bad request. Please specify framework=<url> using URL Parameter."),
+					ne=#determineCompetenceForOneCompetency(
+						frameworkId="@framework",
+						competencyId="@competency",
+						username="@userId"
+					)
 				)
 			)
 		),
 		eq=#if(
 	        operator="@methodType",
 	        operand="DELETE",
-	        eq=#deleteMasteryForAllCompetencies(
+	        eq=#deleteAssertionsForAllCompetencies(
 				username="@userId"
 	        ),
 	        ne=#if(
 				operator="@framework",
 				operand="",
-				eq=#error(code="400",msg="Bad request. Please specify framework=<url> using URL Parameter."),
-				ne=#masteryForAllCompetencies(
+				eq=#error(code="500",msg="Bad request. Please specify framework=<url> using URL Parameter."),
+				ne=#determineCompetenceForAllCompetencies(
 					frameworkId="@framework",
 					username="@userId"
 				)
@@ -59,13 +68,13 @@ mastery=#object(
 	)
 ).displayJson(_collapse="true");
 
-/learner/mastery=mastery;
+/learner/competency=competency;
 
 goal=#object(
 	b=#if(
 		operator="@userId",
 		operand="",
-		eq=#error(code="400",msg="Bad request. Please specify user=<user> using URL Parameter.")
+		eq=#error(code="500",msg="Bad request. Please specify user=<user> using URL Parameter.")
 	),
 	z=#if(
 		operator="@competency",
@@ -122,22 +131,17 @@ contribute=#object(
 	b=#if(
 		operator="@userId",
 		operand="",
-		eq=#error(code="400",msg="Bad request. Please specify user=<user> using URL Parameter.")
+		eq=#error(code="500",msg="Bad request. Please specify user=<user> using URL Parameter.")
 	),
 	c=#if(
 		operator="@confidence",
 		operand="",
-		eq=#error(code="400",msg="Bad request. Please specify confidence=[0,1] using URL Parameter.")
+		eq=#error(code="500",msg="Bad request. Please specify confidence=[0,1] using URL Parameter.")
 	),
 	z=#if(
 		operator="@competency",
 		operand="",
-		ne=#contributeToMastery(
-			frameworkId="@framework",
-			competencyId="@competency",
-			username="@userId",
-			confidence="@confidence"
-		)
+		ne=
 	)
 ).get(z="").call(
 	competency=#if(
@@ -154,4 +158,4 @@ contribute=#object(
 	)
 ).displayJson(_collapse="true");
 
-/learner/mastery/contribute=contribute;
+/learner/competency/contribute=contribute;

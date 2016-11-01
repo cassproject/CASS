@@ -27,18 +27,20 @@ process=#runProcess(
 ).debug();
 
 processTest=process.displayJson();
-/learners/test/mastery = processTest;
+/learners/test/determineCompetence = processTest;
 
 process=#object(
-	measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
-	level=process.flatten(),
+	result=#if(operator=process.flatten(),operand="TRUE",eq=#true(),ne=#false()),
 	confidence=#toDouble(obj="1.0")
-);
+).put(
+	_key=#context(),_value="http://schema.cassproject.org/assertionProcessing/0.2/").put(
+	_key=#type(),_value="binaryResult"
+	);
 
-#masteryForOneCompetency=process;
+#determineCompetenceForOneCompetency=process;
 
 processTest=process.displayJson();
-/learners/rest/mastery = processTest;
+/learners/rest/determineCompetence = processTest;
 
 process=#runProcess(
 	workingDirectory="scripts/node",
@@ -74,13 +76,15 @@ process=process.forEach(
 	paramName="key",
 	valueName="val",
 	op=#object(
-		measureType="http://schema.eduworks.com/cass/assertionProcessing/quadnary",
-		level="@val",
+		result=#if(operator="@val",operand="TRUE",eq=#true(),ne=#false()),
 		confidence=#toDouble(obj="1.0")
+	).put(
+		_key=#context(),_value="http://schema.cassproject.org/assertionProcessing/0.2/").put(
+		_key=#type(),_value="binaryResult"
 	)
 ).displayJson(_collapse="true");
 
-#masteryForAllCompetencies=process;
+#determineCompetenceForAllCompetencies=process;
 
 /learners/rest/profile = process;
 
@@ -113,11 +117,10 @@ process=#runProcess(
 	).valueSet()
 );
 
-#contributeToMastery=process;
+#createAssertionForCompetency=process;
 
 processTest=process.displayJson();
 /learners/test/addAssertion = processTest;
-
 
 process=#runProcess(
 	workingDirectory="scripts/node",
@@ -148,7 +151,7 @@ process=#runProcess(
 	).valueSet()
 );
 
-#deleteMasteryForOneCompetency=process;
+#deleteAssertionsForOneCompetency=process;
 
 processTest=process.displayJson();
 /learners/test/deleteAssertion = processTest;
@@ -182,7 +185,7 @@ process=#runProcess(
 	).valueSet()
 );
 
-#deleteMasteryForAllCompetencies=process;
+#deleteAssertionsForAllCompetencies=process;
 
 processTest=process.displayJson();
 /learners/test/deleteAllAssertion = processTest;
