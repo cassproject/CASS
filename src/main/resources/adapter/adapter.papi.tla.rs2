@@ -38,7 +38,7 @@ process=#object(
 	);
 
 process=#object(
-	level=#if(operator=process.flatten(),operand="TRUE",eq=#toDouble(obj="1.0"),ne=#toDouble(obj="0.0")),
+	level=#if(operator=process.flatten(),operand="TRUE",eq=#toDouble(obj="2.0"),ne=#toDouble(obj="0.0")),
 	confidence=#toDouble(obj="1.0")
 ).put(
 	_key="measureType",_value="http://schema.cassproject.org/assertionProcessing/0.2/binaryResult").put(
@@ -90,6 +90,18 @@ process=process.forEach(
 		_key=#context(),_value="http://schema.cassproject.org/assertionProcessing/0.2/").put(
 		_key=#type(),_value="binaryResult"
 	)
+).displayJson(_collapse="true");
+
+process=process.forEach(
+	paramName="key",
+	valueName="val",
+	op=#object(
+        level=#if(operator="@val",operand="TRUE",eq=#toDouble(obj="2.0"),ne=#toDouble(obj="0.0")),
+        confidence=#toDouble(obj="1.0")
+    ).put(
+        _key="measureType",_value="http://schema.cassproject.org/assertionProcessing/0.2/binaryResult").put(
+        _key="populationContext",_value="http://soartech.com/employees"
+    )
 ).displayJson(_collapse="true");
 
 #determineCompetenceForAllCompetencies=process;
@@ -216,6 +228,27 @@ process=#runProcess(
 ).removeDuplicates();
 
 #goalsForAllCompetencies=process;
+
+process=process.forEach(
+	paramName="key",
+	valueName="val",
+	op=#object(
+        priority=#toDouble(obj="@i"),
+        competency=#object(url="@val"),
+        masteryThreshold=#object(
+            result=#if(
+                operator="@val",
+                operand="TRUE",
+                eq=#toDouble(obj="2.0"),
+                ne=#toDouble(obj="0.0")
+            ),
+            confidence=#toDouble(obj="0.5")
+        ).put(
+            _key="measureType",_value="http://schema.cassproject.org/assertionProcessing/0.2/binaryResult").put(
+            _key="populationContext",_value="http://soartech.com/employees"
+        )
+    )    
+).displayJson(_collapse="true");
 
 processTest=process.displayJson();
 /learners/test/allGoals = processTest;
