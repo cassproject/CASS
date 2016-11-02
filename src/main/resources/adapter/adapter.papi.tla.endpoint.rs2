@@ -54,18 +54,18 @@ competency=#object(
 		)
 	)
 ).get(z="").call(
-	competency=#if(
+	competency=#if(operator="@competency",operand="",ne=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@competency"),
-		ne="@competency"
-	),
-	framework=#if(
+		ne=#add(_string="true",a="@endpoint",b="@competency"),
+		eq="@competency"
+	)),
+	framework=#if(operator="@framework",operand="",ne=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@framework"),
-		ne="@framework"
-	)
+		ne=#add(_string="true",a="@endpoint",b="@framework"),
+		eq="@framework"
+	))
 ).displayJson(_collapse="true");
 
 /learner/competency=competency;
@@ -111,51 +111,18 @@ goal=#object(
 		)
 	)
 ).get(z="").call(
-	competency=#if(
+	competency=#if(operator="@competency",operand="",ne=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@competency"),
-		ne="@competency"
-	).debug(),
-	framework=#if(
+		ne=#add(_string="true",a="@endpoint",b="@competency"),
+		eq="@competency"
+	)),
+	framework=#if(operator="@framework",operand="",ne=#if(
 		operator="@endpoint",
 		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@framework"),
-		ne="@framework"
-	).debug()
+		ne=#add(_string="true",a="@endpoint",b="@framework"),
+		eq="@framework"
+	))
 ).displayJson(_collapse="true");
 
 /learner/goal=goal;
-
-contribute=#object(
-	b=#if(
-		operator="@userId",
-		operand="",
-		eq=#error(code="500",msg="Bad request. Please specify user=<user> using URL Parameter.")
-	),
-	c=#if(
-		operator="@confidence",
-		operand="",
-		eq=#error(code="500",msg="Bad request. Please specify confidence=[0,1] using URL Parameter.")
-	),
-	z=#if(
-		operator="@competency",
-		operand="",
-		ne=
-	)
-).get(z="").call(
-	competency=#if(
-		operator="@endpoint",
-		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@competency"),
-		ne="@competency"
-	),
-	framework=#if(
-		operator="@endpoint",
-		operand="",
-		eq=#add(_string="true",a="@endpoint",b="@framework"),
-		ne="@framework"
-	)
-).displayJson(_collapse="true");
-
-/learner/competency/contribute=contribute;
