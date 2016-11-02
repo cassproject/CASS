@@ -53,7 +53,7 @@ function analyzeCsvRelation() {
             }
             $("#importCsvColumnSource").html("<option>N/A</option>");
             $("#importCsvColumnRelationType").html("<option>N/A</option>");
-            $("#importCsvColumnTarget").html("<option>N/A</option>");            
+            $("#importCsvColumnTarget").html("<option>N/A</option>");
             $(".importCsvRelationOptions").show();
             for (var i = 0; i < data[0].length; i++) {
                 $("#importCsvColumnSource").append("<option/>").children().last().text(data[0][i]).attr("index", i);
@@ -66,28 +66,24 @@ function analyzeCsvRelation() {
 
 var importCsvLookup = {};
 
-function transformId(oldId,newObject,selectedServer)
-{
-    if (oldId.indexOf("http") != -1)
-    {
+function transformId(oldId, newObject, selectedServer) {
+    if (oldId.indexOf("http") != -1) {
         var parts = oldId.split("/");
         var guid = null;
         var timestamp = null;
         var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        for (var i = 0;i < parts.length;i++)
-        {
+        for (var i = 0; i < parts.length; i++) {
             if (!isNaN(parseInt(parts[i])))
                 timestamp = parts[i];
             else if (pattern.test(parts[i]))
                 guid = parts[i];
         }
         if (guid == null)
-            newObject.assignId(selectedServer,parts[parts.length-2]);
+            newObject.assignId(selectedServer, parts[parts.length - 2]);
         else
-            newObject.assignId(selectedServer,guid);
-    }
-    else
-        newObject.assignId(selectedServer,oldId);
+            newObject.assignId(selectedServer, guid);
+    } else
+        newObject.assignId(selectedServer, oldId);
 }
 
 function importCsv() {
@@ -111,6 +107,7 @@ function importCsv() {
                 var descriptionIndex = parseInt($("#importCsvColumnDescription option:selected").attr("index"));
                 var scopeIndex = parseInt($("#importCsvColumnScope option:selected").attr("index"));
                 var idIndex = parseInt($("#importCsvColumnId option:selected").attr("index"));
+                if (isNaN(idIndex)) idIndex = undefined;
                 for (var i = 1; i < data.length; i++) {
                     (function (i) {
                         timeout(function () {
@@ -124,13 +121,12 @@ function importCsv() {
                             if (scopeIndex !== undefined)
                                 f.scope = data[i][scopeIndex];
                             var shortId = null;
-                            if (idIndex !== undefined)
-                            {
+                            if (idIndex !== undefined) {
                                 f.id = data[i][idIndex];
                                 shortId = f.shortId();
                             }
                             if (idIndex !== undefined)
-                                transformId(data[i][idIndex],f,repo.selectedServer);
+                                transformId(data[i][idIndex], f, repo.selectedServer);
                             else
                                 f.generateId(repo.selectedServer);
                             if (idIndex !== undefined)
@@ -260,7 +256,7 @@ function exportCsv() {
             (function (relationUrl, fw) {
                 timeout(function () {
                     EcRepository.get(relationUrl, function (relation) {
-                    	csvRelationOutput.push(JSON.parse(relation.toJson()));
+                        csvRelationOutput.push(JSON.parse(relation.toJson()));
                         if (csvRelationOutput.length == fw.relation.length) {
                             var csv = Papa.unparse(csvRelationOutput);
                             var pom = document.createElement('a');
@@ -299,7 +295,7 @@ function analyzeMedbiqXml() {
     if (file) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            var obj = new X2JS().xml_str2json( e.target.result );
+            var obj = new X2JS().xml_str2json(e.target.result);
             medbiqXmlCompetencies = {};
             medbiqXmlLookForCompetencyObject(obj);
             $("#importMedbiqXmlCompetencies").text("Step 3: " + Object.keys(medbiqXmlCompetencies).length + " competencies detected. Tap Import to finish.");
