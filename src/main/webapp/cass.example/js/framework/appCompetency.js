@@ -101,6 +101,7 @@ function editCompetencyDelete() {
 function populateCompetency(id) {
     if (id == null) return;
     var competency = EcRepository.getBlocking(id);
+    if (competency == null) return;
     var ui = $("[url='" + competency.shortId() + "']");
     ui.children(".cass-competency-name").text(competency.name);
     if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
