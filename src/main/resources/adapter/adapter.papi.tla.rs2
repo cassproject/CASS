@@ -37,6 +37,14 @@ process=#object(
 	_key=#type(),_value="binaryResult"
 	);
 
+process=#object(
+	level=#if(operator=process.flatten(),operand="TRUE",eq=#toDouble(obj="1.0"),ne=#toDouble(obj="0.0")),
+	confidence=#toDouble(obj="1.0")
+).put(
+	_key="measureType",_value="http://schema.cassproject.org/assertionProcessing/0.2/binaryResult").put(
+	_key="populationContext",_value="http://soartech.com/employees"
+);
+
 #determineCompetenceForOneCompetency=process;
 
 processTest=process.displayJson();
