@@ -307,3 +307,27 @@ process=#runProcess(
 processTest=process.displayJson();
 /learners/test/deleteGoals = processTest;
 
+importFramework=#runProcess(
+	workingDirectory="scripts/node",
+	timeout="500000",
+	args=#object(
+		a="/usr/bin/node",
+		b="tla/importFramework.js", 
+		d=#add(a="owner=",b=#xapiMePpk()),
+		e=#add(
+			a="endpoint=",
+			b=#repoEndpoint()
+		),
+		f="frameworkGuid=5c0b7012-b2fd-431e-aab2-ee3feb323085",
+		g="frameworkName=TLA Cybersecurity Framework (Nov 1)",
+		h=#add(
+			a="competencyPath=",
+			b="@competencyPath"
+		),
+		i=#add(
+			a="relationPath=",
+			b="@relationPath"
+		)
+	).valueSet()
+).debug().displayJson();
+/tla/import=importFramework;

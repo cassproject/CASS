@@ -4,3 +4,4 @@ npm install node-jquery-xhr
 npm install node-forge
 npm install form-data
 npm install antlr4
+npm install papaparse
