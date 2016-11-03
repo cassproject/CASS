@@ -316,7 +316,7 @@ importFramework=#runProcess(
 		d=#add(a="owner=",b=#xapiMePpk()),
 		e=#add(
 			a="endpoint=",
-			b=#repoEndpoint()
+			b=#if(operator="@endpoint",operand="",eq=#repoEndpoint(),ne="@endpoint")
 		),
 		f="frameworkGuid=5c0b7012-b2fd-431e-aab2-ee3feb323085",
 		g="frameworkName=TLA Cybersecurity Framework (Nov 1)",
