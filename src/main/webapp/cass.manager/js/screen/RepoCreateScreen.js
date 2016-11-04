@@ -4,7 +4,7 @@ RepoCreateScreen = (function(RepoCreateScreen){
 	{
 		var data = this.data;
 	
-		if(data == undefined)
+		if(data == undefined || Object.keys(data).length == 0)
 		{
 			var t = new Thing();
 			t.generateId(AppController.repoInterface.selectedServer);
@@ -17,7 +17,8 @@ RepoCreateScreen = (function(RepoCreateScreen){
 			
 			data = t;
 		}
-		else if(data.hasOwner == undefined && data["@owner"] == undefined)
+		
+		if(data.hasOwner == undefined && data["@owner"] == undefined)
 		{
 			if(AppController.identityController.selectedIdentity != undefined)
 		    {

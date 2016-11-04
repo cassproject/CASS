@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>cass.competency.js - CASS Javascript Library</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="http://www.cassproject.org/_/rsrc/1451948061999/config/customLogo.gif?revision=16" title="CASS Javascript Library"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.2</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/EcAes.html">EcAes</a></li>
+                                <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
+                                <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                                <li><a href="../classes/EcArray.html">EcArray</a></li>
+                                <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
+                                <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcObject.html">EcObject</a></li>
+                                <li><a href="../classes/EcPk.html">EcPk</a></li>
+                                <li><a href="../classes/EcPpk.html">EcPpk</a></li>
+                                <li><a href="../classes/EcRemote.html">EcRemote</a></li>
+                                <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
+                                <li><a href="../classes/Graph.html">Graph</a></li>
+                                <li><a href="../classes/Hypergraph.html">Hypergraph</a></li>
+                                <li><a href="../classes/Triple.html">Triple</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: cass.competency.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+/**
+ *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
+ *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
+ *  called afterwards in any order. WARNING: The modifications of ownership and
+ *  readership do not &quot;just work&quot;.
+ *  
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAssertion = function() {
+    Assertion.call(this);
+};
+EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    prototype.getSubject = function() {
+        if (this.subject == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.subject);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return EcPk.fromPem(decryptedString);
+    };
+    prototype.getAgent = function() {
+        if (this.agent == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.agent);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return EcPk.fromPem(decryptedString);
+    };
+    prototype.getSubjectName = function() {
+        if (this.subject == null) 
+            return &quot;Nobody&quot;;
+        var subjectPk = this.getSubject();
+        var identity = EcIdentityManager.getIdentity(subjectPk);
+        if (identity != null &amp;&amp; identity.displayName != null) 
+            return identity.displayName + &quot; (You)&quot;;
+        var contact = EcIdentityManager.getContact(subjectPk);
+        if (contact == null || contact.displayName == null) 
+            return &quot;Unknown Subject&quot;;
+        return contact.displayName;
+    };
+    prototype.getAgentName = function() {
+        if (this.agent == null) 
+            return &quot;Nobody&quot;;
+        var agentPk = this.getAgent();
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null &amp;&amp; identity.displayName != null) 
+            return identity.displayName + &quot; (You)&quot;;
+        var contact = EcIdentityManager.getContact(agentPk);
+        if (contact == null || contact.displayName == null) 
+            return &quot;Unknown Agent&quot;;
+        return contact.displayName;
+    };
+    prototype.getAssertionDate = function() {
+        if (this.assertionDate == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.assertionDate);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return Long.parseLong(decryptedString);
+    };
+    prototype.getExpirationDate = function() {
+        if (this.expirationDate == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.expirationDate);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return Long.parseLong(decryptedString);
+    };
+    prototype.getEvidenceCount = function() {
+        if (this.evidence == null) 
+            return 0;
+        return this.evidence.length;
+    };
+    prototype.getEvidence = function(index) {
+        if (this.evidence == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.evidence[index]);
+        var decryptedString = v.decryptIntoString();
+        return decryptedString;
+    };
+    prototype.getDecayFunction = function() {
+        if (this.decayFunction == null) 
+            return null;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.decayFunction);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString == null) 
+            return null;
+        return decryptedString;
+    };
+    prototype.getNegative = function() {
+        if (this.negative == null) 
+            return false;
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.negative);
+        var decryptedString = v.decryptIntoString();
+        if (decryptedString != null) 
+            decryptedString.toLowerCase();
+        return &quot;true&quot;.equals(decryptedString);
+    };
+    /**
+     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
+     *  object should be able to see and change the encrypted value. Owners and
+     *  readers of the object should be persisted.
+     *  
+     *  @param pk
+     */
+    prototype.setSubject = function(pk) {
+        var owners = new Array();
+        var readers = this.reader;
+        if (readers == null) 
+            readers = new Array();
+        if (this.subject != null) {
+            owners.concat(this.subject.owner);
+            readers.concat(this.subject.reader);
+        }
+        owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, &quot;subject&quot;, owners, readers);
+    };
+    prototype.setAgent = function(pk) {
+        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, &quot;agent&quot;, this.subject.owner, this.subject.reader);
+    };
+    prototype.setCompetency = function(competencyUrl) {
+        this.competency = competencyUrl;
+    };
+    prototype.setLevel = function(levelUrl) {
+        this.level = levelUrl;
+    };
+    prototype.setConfidence = function(confidenceZeroToOne) {
+        this.confidence = confidenceZeroToOne;
+    };
+    prototype.setEvidence = function(evidences) {
+        var encryptedValues = new Array();
+        for (var i = 0; i &lt; evidences.length; i++) 
+            encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, &quot;evidence&quot;, this.subject.owner, this.subject.reader));
+        this.evidence = encryptedValues;
+    };
+    prototype.setAssertionDate = function(assertionDateMs) {
+        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, &quot;assertionDate&quot;, this.subject.owner, this.subject.reader);
+    };
+    prototype.setExpirationDate = function(expirationDateMs) {
+        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, &quot;expirationDate&quot;, this.subject.owner, this.subject.reader);
+    };
+    prototype.setDecayFunction = function(decayFunctionText) {
+        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, &quot;decayFunction&quot;, this.subject.owner, this.subject.reader);
+    };
+    prototype.setNegative = function(negativeB) {
+        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, &quot;negative&quot;, this.subject.owner, this.subject.reader);
+    };
+    prototype.save = function(success, failure) {
+        if (this.competency == null || this.competency == &quot;&quot;) {
+            var msg = &quot;Failing to save: Competency cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.subject == null) {
+            var msg = &quot;Failing to save: Subject cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.agent == null) {
+            var msg = &quot;Failing to save: Agent cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.confidence == null) {
+            var msg = &quot;Failing to save: Confidence cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.assertionDate == null) {
+            var msg = &quot;Failing to save: Assertion Date cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.decayFunction == null) {
+            var msg = &quot;Failing to save: Decay Function cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype.addReader = function(newReader) {
+        if (this.agent != null) {
+            this.agent = EcEncryptedValue.revive(this.agent);
+            this.agent.addReader(newReader);
+        }
+        if (this.assertionDate != null) {
+            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
+            this.assertionDate.addReader(newReader);
+        }
+        if (this.decayFunction != null) {
+            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
+            this.decayFunction.addReader(newReader);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i &lt; this.evidence.length; i++) {
+                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
+                this.evidence[i].addReader(newReader);
+            }
+        if (this.expirationDate != null) {
+            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
+            this.expirationDate.addReader(newReader);
+        }
+        if (this.negative != null) {
+            this.negative = EcEncryptedValue.revive(this.negative);
+            this.negative.addReader(newReader);
+        }
+        if (this.subject != null) {
+            this.subject = EcEncryptedValue.revive(this.subject);
+            this.subject.addReader(newReader);
+        }
+    };
+    prototype.removeReader = function(newReader) {
+        if (this.agent != null) {
+            this.agent = EcEncryptedValue.revive(this.agent);
+            this.agent.removeReader(newReader);
+        }
+        if (this.assertionDate != null) {
+            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
+            this.assertionDate.removeReader(newReader);
+        }
+        if (this.decayFunction != null) {
+            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
+            this.decayFunction.removeReader(newReader);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i &lt; this.evidence.length; i++) {
+                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
+                this.evidence[i].removeReader(newReader);
+            }
+        if (this.expirationDate != null) {
+            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
+            this.expirationDate.removeReader(newReader);
+        }
+        if (this.negative != null) {
+            this.negative = EcEncryptedValue.revive(this.negative);
+            this.negative.removeReader(newReader);
+        }
+        if (this.subject != null) {
+            this.subject = EcEncryptedValue.revive(this.subject);
+            this.subject.removeReader(newReader);
+        }
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var assertion = new EcAssertion();
+            if (p1.isAny(assertion.getTypes())) {
+                assertion.copyFrom(p1);
+                if (success != null) 
+                    success(assertion);
+            } else {
+                var msg = &quot;Retrieved object was not an assertion&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = new EcAssertion().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var assertion = new EcAssertion();
+                    assertion.copyFrom(p1[i]);
+                    ret[i] = assertion;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    prototype.getSearchStringByTypeAndCompetency = function(competency) {
+        return &quot;(&quot; + this.getSearchStringByType() + &quot; AND competency:\&quot;&quot; + competency.shortId() + &quot;\&quot;)&quot;;
+    };
+}, {subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  @author fritz.ray@eduworks.com
+ */
+var EcRollupRule = function() {
+    RollupRule.call(this);
+};
+EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.rule == null || this.rule == &quot;&quot;) {
+            var msg = &quot;RollupRule Rule cannot be empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == &quot;&quot;) {
+            var msg = &quot;RollupRule&#x27;s Competency cannot be empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure, repo) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcRollupRule.myType)) {
+                if (failure != null) 
+                    failure(&quot;Resultant object is not a level.&quot;);
+                return;
+            }
+            var c = new EcRollupRule();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+}, {mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  TODO: Test case where an absent relation is in the framework.
+ *  @author fritz.ray@eduworks.com
+ */
+var EcAlignment = function() {
+    Relation.call(this);
+};
+EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.source == null || this.source == &quot;&quot;) {
+            var msg = &quot;Source Competency cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.target == null || this.target == &quot;&quot;) {
+            var msg = &quot;Target Competency cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == &quot;&quot;) {
+            var msg = &quot;Relation Type cannot be missing&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var relation = new EcAlignment();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(relation.getTypes())) {
+                relation.copyFrom(p1);
+                if (success != null) 
+                    success(relation);
+            } else {
+                var msg = &quot;Resultant object is not a relation.&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = new EcAlignment().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
+        var query = &quot;&quot;;
+        query = &quot;(&quot; + new EcAlignment().getSearchStringByType();
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(sourceId);
+        if (noVersion == sourceId) {
+            query += &quot; AND (source:\&quot;&quot; + sourceId + &quot;\&quot;))&quot;;
+        } else {
+            query += &quot; AND (source:\&quot;&quot; + sourceId + &quot;\&quot; OR source:\&quot;&quot; + noVersion + &quot;\&quot;))&quot;;
+        }
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)[&quot;source&quot;] != sourceId &amp;&amp; (obj)[&quot;source&quot;] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
+        var query = &quot;&quot;;
+        query = &quot;(&quot; + new EcAlignment().getSearchStringByType();
+        var noVersion = EcRemoteLinkedData.trimVersionFromUrl(competencyId);
+        if (noVersion == competencyId) {
+            query += &quot; AND (source:\&quot;&quot; + competencyId + &quot;\&quot; OR target:\&quot;&quot; + competencyId + &quot;\&quot;))&quot;;
+        } else {
+            query += &quot; AND (source:\&quot;&quot; + competencyId + &quot;\&quot; OR source:\&quot;&quot; + noVersion + &quot;\&quot; OR target:\&quot;&quot; + competencyId + &quot;\&quot; OR target:\&quot;&quot; + noVersion + &quot;\&quot;))&quot;;
+        }
+        query += &quot; OR @encryptedType:\&quot;&quot; + EcAlignment.myType + &quot;\&quot; OR @encryptedType:\&quot;&quot; + EcAlignment.myType.replace(Cass.context + &quot;/&quot;, &quot;&quot;) + &quot;\&quot;)&quot;;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var alignment = new EcAlignment();
+                    if (p1[i].isAny(alignment.getTypes())) {
+                        alignment.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcAlignment.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)[&quot;source&quot;] != competencyId &amp;&amp; (obj)[&quot;source&quot;] != noVersion &amp;&amp; (obj)[&quot;target&quot;] != competencyId &amp;&amp; (obj)[&quot;target&quot;] != noVersion) {
+                                continue;
+                            }
+                            alignment.copyFrom(obj);
+                            alignment.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = alignment;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  @author fritz.ray@eduworks.com
+ */
+var EcLevel = function() {
+    Level.call(this);
+};
+EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
+    prototype.addRelationship = function(level, targetLevel, alignmentType, identity, server) {
+        var a = new EcAlignment();
+        a.source = this.id;
+        a.target = targetLevel.id;
+        a.relationType = alignmentType;
+        a.addOwner(identity.toPk());
+        a.generateId(server);
+        a.signWith(identity);
+    };
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == &quot;&quot;) {
+            var msg = &quot;Level name cannot be empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == &quot;&quot;) {
+            var msg = &quot;Level&#x27;s Competency cannot be empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure, repo) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var level = new EcLevel();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(level.getTypes())) {
+                level.copyFrom(p1);
+                if (success != null) 
+                    success(level);
+            } else {
+                var msg = &quot;Resultant object is not a level.&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
+        if (competencyId == null || competencyId == &quot;&quot;) {
+            failure(&quot;No Competency Specified&quot;);
+            return;
+        }
+        var query = &quot;(&quot; + new EcLevel().getSearchStringByType();
+        query += &quot; AND ( competency:\&quot;&quot; + competencyId + &quot;\&quot; OR competency:\&quot;&quot; + EcRemoteLinkedData.trimVersionFromUrl(competencyId) + &quot;\&quot;))&quot;;
+        query += &quot; OR @encryptedType:\&quot;&quot; + EcLevel.myType + &quot;\&quot; OR @encryptedType:\&quot;&quot; + EcLevel.myType.replace(Cass.context + &quot;/&quot;, &quot;&quot;) + &quot;\&quot;&quot;;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var levels = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var level = new EcLevel();
+                    if (p1[i].isAny(level.getTypes())) {
+                        level.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcLevel.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)[&quot;competency&quot;] != competencyId) {
+                                continue;
+                            }
+                            level.copyFrom(obj);
+                            level.privateEncrypted = true;
+                        }
+                    }
+                    level.copyFrom(p1[i]);
+                    levels[i] = level;
+                }
+                if (success != null) 
+                    success(levels);
+            }
+        }, failure);
+    };
+}, {mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  @author fritz.ray@eduworks.com
+ */
+var EcCompetency = function() {
+    Competency.call(this);
+};
+EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, prototype) {
+    prototype.addAlignment = function(target, alignmentType, owner, server, success, failure) {
+        var a = new EcAlignment();
+        a.generateId(server);
+        a.source = this.shortId();
+        a.target = target.shortId();
+        a.relationType = alignmentType;
+        a.addOwner(owner.toPk());
+        EcRepository.save(a, success, failure);
+        return a;
+    };
+    prototype.relations = function(repo, eachSuccess, failure, successAll) {
+        this.relationships(repo, eachSuccess, failure, successAll);
+    };
+    prototype.relationships = function(repo, eachSuccess, failure, successAll) {
+        repo.search(new EcAlignment().getSearchStringByType() + &quot; AND (source:\&quot;&quot; + this.id + &quot;\&quot; OR target:\&quot;&quot; + this.id + &quot;\&quot; OR source:\&quot;&quot; + this.shortId() + &quot;\&quot; OR target:\&quot;&quot; + this.shortId() + &quot;\&quot;)&quot;, function(p1) {
+            var a = new EcAlignment();
+            a.copyFrom(p1);
+            if (eachSuccess != null) 
+                eachSuccess(a);
+        }, function(p1) {
+            if (successAll != null) {
+                var rels = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var a = new EcAlignment();
+                    a.copyFrom(p1[i]);
+                    rels[i] = a;
+                }
+                if (successAll != null) 
+                    successAll(rels);
+            }
+        }, failure);
+    };
+    prototype.addLevel = function(name, description, owner, server, success, failure) {
+        var l = new EcLevel();
+        l.generateId(server);
+        l.competency = this.shortId();
+        l.description = description;
+        l.name = name;
+        l.addOwner(owner.toPk());
+        EcRepository.save(l, success, failure);
+        return l;
+    };
+    prototype.levels = function(repo, success, failure, successAll) {
+        var query = &quot;(&quot; + new EcLevel().getSearchStringByType() + &quot; AND ( competency:\&quot;&quot; + this.id + &quot;\&quot; OR competency:\&quot;&quot; + this.shortId() + &quot;\&quot;))&quot;;
+        query += &quot; OR @encryptedType:\&quot;&quot; + EcLevel.myType + &quot;\&quot; OR @encryptedType:\&quot;&quot; + EcLevel.myType.replace(Cass.context + &quot;/&quot;, &quot;&quot;) + &quot;\&quot;&quot;;
+        var competencyId = this.id;
+        var shortId = this.shortId();
+        repo.search(query, function(p1) {
+            if (success != null) {
+                var a = new EcLevel();
+                if (p1.isA(EcLevel.myType)) {
+                    a.copyFrom(p1);
+                } else if (p1.isA(EcEncryptedValue.myType)) {
+                    var val = new EcEncryptedValue();
+                    val.copyFrom(p1);
+                    if (val.isAnEncrypted(EcLevel.myType)) {
+                        var obj = val.decryptIntoObject();
+                        if ((obj)[&quot;competency&quot;] != competencyId &amp;&amp; (obj)[&quot;competency&quot;] != shortId) {
+                            return;
+                        }
+                        a.copyFrom(obj);
+                        a.privateEncrypted = true;
+                    }
+                }
+                success(a);
+            }
+        }, function(p1) {
+            if (successAll != null) {
+                var levels = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var a = new EcLevel();
+                    if (p1[i].isA(EcLevel.myType)) {
+                        a.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcLevel.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)[&quot;competency&quot;] != competencyId &amp;&amp; (obj)[&quot;competency&quot;] != shortId) {
+                                continue;
+                            }
+                            a.copyFrom(obj);
+                            a.privateEncrypted = true;
+                        }
+                    }
+                    levels[i] = a;
+                }
+                if (successAll != null) 
+                    successAll(levels);
+            }
+        }, failure);
+    };
+    prototype.addRollupRule = function(name, description, owner, server, success, failure) {
+        var r = new EcRollupRule();
+        r.generateId(server);
+        r.competency = this.shortId();
+        r.description = description;
+        r.name = name;
+        r.addOwner(owner.toPk());
+        EcRepository.save(r, success, failure);
+        return r;
+    };
+    prototype.rollupRules = function(repo, success, failure, successAll) {
+        var query = &quot;(&quot; + new EcRollupRule().getSearchStringByType() + &quot; AND ( competency:\&quot;&quot; + this.id + &quot;\&quot; OR competency:\&quot;&quot; + this.shortId() + &quot;\&quot;))&quot;;
+        query += &quot; OR @encryptedType:\&quot;&quot; + EcRollupRule.myType + &quot;\&quot; OR @encryptedType:\&quot;&quot; + EcRollupRule.myType.replace(Cass.context + &quot;/&quot;, &quot;&quot;) + &quot;\&quot;&quot;;
+        var competencyId = this.id;
+        var shortId = this.shortId();
+        repo.search(query, function(p1) {
+            if (success != null) {
+                var a = new EcRollupRule();
+                if (p1.isA(EcRollupRule.myType)) {
+                    a.copyFrom(p1);
+                } else if (p1.isA(EcEncryptedValue.myType)) {
+                    var val = new EcEncryptedValue();
+                    val.copyFrom(p1);
+                    if (val.isAnEncrypted(EcRollupRule.myType)) {
+                        var obj = val.decryptIntoObject();
+                        if ((obj)[&quot;competency&quot;] != competencyId &amp;&amp; (obj)[&quot;competency&quot;] != shortId) {
+                            return;
+                        }
+                        a.copyFrom(obj);
+                        a.privateEncrypted = true;
+                    }
+                }
+                success(a);
+            }
+        }, function(p1) {
+            if (successAll != null) {
+                var rollupRules = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var a = new EcRollupRule();
+                    if (p1[i].isA(EcRollupRule.myType)) {
+                        a.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcRollupRule.myType)) {
+                            var obj = val.decryptIntoObject();
+                            if ((obj)[&quot;competency&quot;] != competencyId &amp;&amp; (obj)[&quot;competency&quot;] != shortId) {
+                                continue;
+                            }
+                            a.copyFrom(obj);
+                            a.privateEncrypted = true;
+                        }
+                    }
+                    rollupRules[i] = a;
+                }
+                if (successAll != null) 
+                    successAll(rollupRules);
+            }
+        }, failure);
+    };
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    prototype.setScope = function(scope) {
+        this.scope = scope;
+    };
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == &quot;&quot;) {
+            var msg = &quot;Competency Name can not be empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.invalid()) {
+            var msg = &quot;Cannot save competency. It is missing a vital component.&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure, repo) {
+        var me = this;
+        EcRepository.DELETE(this, function(p1) {
+            if (repo != null) {
+                me.relationships(repo, function(p1) {
+                    for (var i = 0; i &lt; EcIdentityManager.ids.length; i++) {
+                        if (p1.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                            p1._delete(null, function(p1) {
+                                if (failure != null) 
+                                    failure(&quot;Unable to Delete Competency Relation&quot;);
+                                 else 
+                                    console.error(&quot;Unable to Delete Competency Relation&quot;);
+                            });
+                            return;
+                        }
+                    }
+                }, failure, function(p1) {
+                    if (success != null) 
+                        success(&quot;&quot;);
+                });
+                me.levels(repo, function(p1) {
+                    for (var i = 0; i &lt; EcIdentityManager.ids.length; i++) {
+                        if (p1.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
+                            p1._delete(null, function(p1) {
+                                if (failure != null) 
+                                    failure(&quot;Unable to Delete Competency Relation&quot;);
+                                 else 
+                                    console.error(&quot;Unable to Delete Competency Relation&quot;);
+                            }, repo);
+                            return;
+                        }
+                    }
+                }, failure, function(p1) {
+                    if (success != null) 
+                        success(&quot;&quot;);
+                });
+            } else {
+                if (success != null) 
+                    success(p1);
+            }
+        }, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var competency = new EcCompetency();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(competency.getTypes())) {
+                competency.copyFrom(p1);
+                if (success != null) 
+                    success(competency);
+            } else {
+                var msg = &quot;Retrieved object was not a competency&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        var competency = new EcCompetency();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            p1.privateEncrypted = true;
+        }
+        if (p1.isAny(competency.getTypes())) {
+            competency.copyFrom(p1);
+            return competency;
+        } else {
+            var msg = &quot;Retrieved object was not a competency&quot;;
+            console.error(msg);
+            return null;
+        }
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = &quot;&quot;;
+        queryAdd = new EcCompetency().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var comp = new EcCompetency();
+                    if (p1[i].isAny(comp.getTypes())) {
+                        comp.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcCompetency.myType)) {
+                            var obj = val.decryptIntoObject();
+                            comp.copyFrom(obj);
+                            comp.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = comp;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+var EcFramework = function() {
+    Framework.call(this);
+};
+EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prototype) {
+    prototype.addCompetency = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.competency == null) 
+            this.competency = new Array();
+        for (var i = 0; i &lt; this.competency.length; i++) 
+            if (this.competency[i].equals(id)) 
+                return;
+        this.competency.push(id);
+    };
+    constructor.relDone = {};
+    constructor.levelDone = {};
+    prototype.removeCompetency = function(id, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.competency == null) 
+            this.competency = new Array();
+        for (var i = 0; i &lt; this.competency.length; i++) 
+            if (this.competency[i].equals(shortId) || this.competency[i].equals(id)) 
+                this.competency.splice(i, 1);
+        if (this.relation == null &amp;&amp; this.level == null) 
+            if (success != null) 
+                success(&quot;&quot;);
+        EcFramework.relDone[id] = false;
+        EcFramework.levelDone[id] = false;
+        if (this.relation != null) {
+            this.removeRelationshipsThatInclude(id, 0, function(p1) {
+                if (EcFramework.levelDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.relDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.relDone[id] = true;
+        }
+        if (this.level != null) {
+            this.removeLevelsThatInclude(id, 0, function(p1) {
+                if (EcFramework.relDone[id]) {
+                    if (success != null) 
+                        success(p1);
+                } else {
+                    EcFramework.levelDone[id] = true;
+                }
+            }, failure);
+        } else {
+            EcFramework.levelDone[id] = true;
+        }
+    };
+    prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        var me = this;
+        if (i &gt;= this.relation.length &amp;&amp; success != null) 
+            success(&quot;&quot;);
+         else 
+            EcRepository.get(this.relation[i], function(p1) {
+                var a = new EcAlignment();
+                a.copyFrom(p1);
+                if (a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
+                    me.relation.splice(i, 1);
+                    me.removeRelationshipsThatInclude(id, i, success, failure);
+                } else 
+                    me.removeRelationshipsThatInclude(id, i + 1, success, failure);
+            }, failure);
+    };
+    prototype.removeLevelsThatInclude = function(id, i, success, failure) {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
+        var me = this;
+        if (i &gt;= this.level.length &amp;&amp; success != null) 
+            success(&quot;&quot;);
+         else 
+            EcRepository.get(this.level[i], function(p1) {
+                var a = new EcLevel();
+                a.copyFrom(p1);
+                if (a.competency == shortId || a.competency == id) {
+                    me.level.splice(i, 1);
+                    me.removeLevelsThatInclude(id, i, success, failure);
+                } else 
+                    me.removeLevelsThatInclude(id, i + 1, success, failure);
+            }, failure);
+    };
+    prototype.addRelation = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.relation == null) 
+            this.relation = new Array();
+        for (var i = 0; i &lt; this.relation.length; i++) 
+            if (this.relation[i].equals(id)) 
+                return;
+        this.relation.push(id);
+    };
+    prototype.removeRelation = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.relation == null) 
+            this.relation = new Array();
+        for (var i = 0; i &lt; this.relation.length; i++) 
+            if (this.relation[i].equals(id)) 
+                this.relation.splice(i, 1);
+    };
+    prototype.addLevel = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.level == null) 
+            this.level = new Array();
+        for (var i = 0; i &lt; this.level.length; i++) 
+            if (this.level[i].equals(id)) 
+                return;
+        this.level.push(id);
+    };
+    prototype.removeLevel = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.level == null) 
+            this.level = new Array();
+        for (var i = 0; i &lt; this.level.length; i++) 
+            if (this.level[i].equals(id)) 
+                this.level.splice(i, 1);
+    };
+    prototype.addRollupRule = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.rollupRule == null) 
+            this.rollupRule = new Array();
+        for (var i = 0; i &lt; this.rollupRule.length; i++) 
+            if (this.rollupRule[i].equals(id)) 
+                return;
+        this.rollupRule.push(id);
+    };
+    prototype.removeRollupRule = function(id) {
+        id = EcRemoteLinkedData.trimVersionFromUrl(id);
+        if (this.rollupRule == null) 
+            this.rollupRule = new Array();
+        for (var i = 0; i &lt; this.rollupRule.length; i++) 
+            if (this.rollupRule[i].equals(id)) 
+                this.rollupRule.splice(i, 1);
+    };
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == &quot;&quot;) {
+            var msg = &quot;Framework Name Cannot be Empty&quot;;
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.privateEncrypted != null &amp;&amp; this.privateEncrypted) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
+            EcRepository._save(encrypted, success, failure);
+        } else {
+            EcRepository._save(this, success, failure);
+        }
+    };
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var framework = new EcFramework();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                p1.privateEncrypted = true;
+            }
+            if (p1.isAny(framework.getTypes())) {
+                framework.copyFrom(p1);
+                if (success != null) 
+                    success(framework);
+            } else {
+                var msg = &quot;Resultant object is not a framework.&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = &quot;&quot;;
+        queryAdd = new EcFramework().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var framework = new EcFramework();
+                    if (p1[i].isAny(framework.getTypes())) {
+                        framework.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcFramework.myType)) {
+                            var obj = val.decryptIntoObject();
+                            framework.copyFrom(obj);
+                            framework.privateEncrypted = true;
+                        }
+                    }
+                    ret[i] = framework;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, source: &quot;Source&quot;, mainEntityOfPage: &quot;Object&quot;, image: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, secret: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

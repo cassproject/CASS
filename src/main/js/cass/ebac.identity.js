@@ -769,7 +769,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         var credentials = new Array();
         var contacts = new Array();
         if (this.pad == null && padGenerationCallback != null) 
-            this.pad = padGenerationCallback.callback();
+            this.pad = padGenerationCallback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
             if (id.source != null && id.source.equals(this.server) == false) 
