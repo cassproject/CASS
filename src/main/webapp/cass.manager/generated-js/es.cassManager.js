@@ -477,13 +477,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             me.login(username, password, success, failure);
         }, function(p1) {
             failure(p1);
-        }, new (stjs.extend(function LoginController$5() {
-            EcCallbackReturn0.call(this);
-        }, EcCallbackReturn0, [], function(constructor, prototype) {
-            prototype.callback = function() {
-                return "";
-            };
-        }, {}, {}))());
+        }, function() {
+            return "";
+        });
     };
     /**
      *  Saves the users credentials and contacts to the server
@@ -498,13 +494,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             success();
         }, function(p1) {
             failure(p1);
-        }, new (stjs.extend(function LoginController$8() {
-            EcCallbackReturn0.call(this);
-        }, EcCallbackReturn0, [], function(constructor, prototype) {
-            prototype.callback = function() {
-                return null;
-            };
-        }, {}, {}))());
+        }, function() {
+            return null;
+        });
     };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
 (function() {

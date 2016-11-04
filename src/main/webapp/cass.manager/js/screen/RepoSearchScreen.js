@@ -6,6 +6,11 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 	function runRepoSearch(start){
 		
+		if(start == undefined || start <= 0){
+			ViewManager.getView("#repoSearchResults").clear();
+			$("#moreSearchResults").addClass("hide");
+		}
+		
 		var query = $("#repoSearchText").val();
 		
 		if (query == null || query == "")

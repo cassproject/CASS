@@ -336,12 +336,12 @@ var RepoEdit = (function(RepoEdit){
 	
 	function serializeField(field,child)
 	{
-		if(field.children("span").length == 1)
+		if (field.children(".ownershipDisplay").length == 1)
+	    	return field.children(".ownershipDisplay").attr("pk");
+		else if(field.children("span").length == 1)
 			return field.find("input[type='checkbox']").prop("checked");
 	    if (field.children("p").length == 1)
 	        return field.children("p").text();
-	    else if (field.children("span.contactKey").length == 1)
-	    	return field.children("span.contactKey").last().text();
 	    else if (field.children("div").length > 0)
 	    {
 	        var obj = {};

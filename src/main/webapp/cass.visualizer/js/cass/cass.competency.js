@@ -663,14 +663,6 @@ var EcCompetency = function() {
     Competency.call(this);
 };
 EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, prototype) {
-    constructor.RELATIONSHIP_TYPE_REQUIRES = "requires";
-    constructor.RELATIONSHIP_TYPE_DESIRES = "desires";
-    constructor.RELATIONSHIP_TYPE_IS_ENABLED_BY = "isEnabledBy";
-    constructor.RELATIONSHIP_TYPE_IS_RELATED_TO = "isRelatedTo";
-    constructor.RELATIONSHIP_TYPE_IS_EQUIVALENT_TO = "isEquivalentTo";
-    constructor.RELATIONSHIP_TYPE_LEVEL_GREATER_THAN = "greaterThan";
-    constructor.RELATIONSHIP_TYPE_LEVEL_IS_EQUIVALENT_TO = "isEquivalentTo";
-    constructor.RELATIONSHIP_TYPE_LEVEL_OVERLAPS = "overlaps";
     prototype.addAlignment = function(target, alignmentType, owner, server, success, failure) {
         var a = new EcAlignment();
         a.generateId(server);
