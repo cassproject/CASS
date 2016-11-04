@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>EcAsyncHelper - CASS Javascript Library</title>
+    <title>Action - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -98,12 +98,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>EcAsyncHelper Class</h1>
+<h1>Action Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends Thing
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/ec.base.js.html#l103"><code>ec.base.js:103</code></a>
+            Defined in: <a href="../files/org.schema.js.html#l611"><code>org.schema.js:611</code></a>
         </div>
 
 
@@ -111,10 +114,7 @@
 
 
 <div class="box intro">
-    <p>Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
-Will iterate over all items in an array and perform 'each(item,callback)'.
-Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
-When all callbacks have been called, 'after(array)' is called.</p>
+    <p><a href="http://Schema.org/Action">Schema.org/Action</a></p>
 
 </div>
 
@@ -123,7 +123,6 @@ When all callbacks have been called, 'after(array)' is called.</p>
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
@@ -131,27 +130,49 @@ When all callbacks have been called, 'after(array)' is called.</p>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_each">each</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_stop">stop</a>
-
-                            </li>
-                    </ul>
-                </div>
 
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
+                    <ul class="index-list properties extends">
                             <li class="index-item property">
-                                <a href="#property_counter">counter</a>
+                                <a href="#property_agent">agent</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_endTime">endTime</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_error">error</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_instrument">instrument</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_location">location</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_object">object</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_participant">participant</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_result">result</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_startTime">startTime</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_target">target</a>
 
                             </li>
                     </ul>
@@ -160,130 +181,13 @@ When all callbacks have been called, 'after(array)' is called.</p>
 
         </div>
 
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_each" class="method item">
-    <h3 class="name"><code>each</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>array</code>
-                </li>
-                <li class="arg">
-                        <code>each</code>
-                </li>
-                <li class="arg">
-                        <code>after</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/ec.base.js.html#l120"><code>ec.base.js:120</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>&quot;Each&quot; method. See class description.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">array</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <p>Array to iterate over.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">each</code>
-                        <span class="type">Function(item,callback)</span>
-
-
-                    <div class="param-description">
-                        <p>Method that gets invoked per item in the array.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">after</code>
-                        <span class="type">Function(array)</span>
-
-
-                    <div class="param-description">
-                        <p>Method invoked when all callbacks are called.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_stop" class="method item">
-    <h3 class="name"><code>stop</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/ec.base.js.html#l141"><code>ec.base.js:141</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Will prevent 'after' from being called.</p>
-
-    </div>
-
-
-
-
-</div>
-            </div>
 
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_counter" class="property item">
-    <h3 class="name"><code>counter</code></h3>
-    <span class="type">Integer</span>
+<div id="property_agent" class="property item">
+    <h3 class="name"><code>agent</code></h3>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a> | URL</span>
 
 
 
@@ -292,14 +196,239 @@ When all callbacks have been called, 'after(array)' is called.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.base.js.html#l114"><code>ec.base.js:114</code></a>
+        <a href="../files/org.schema.js.html#l627"><code>org.schema.js:627</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.</p>
+        <p><a href="http://Schema.org/agent">Schema.org/agent</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_endTime" class="property item">
+    <h3 class="name"><code>endTime</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l633"><code>org.schema.js:633</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/endTime">Schema.org/endTime</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_error" class="property item">
+    <h3 class="name"><code>error</code></h3>
+    <span class="type">Thing</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l651"><code>org.schema.js:651</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/error">Schema.org/error</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_instrument" class="property item">
+    <h3 class="name"><code>instrument</code></h3>
+    <span class="type">Thing</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l657"><code>org.schema.js:657</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/instrument">Schema.org/instrument</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_location" class="property item">
+    <h3 class="name"><code>location</code></h3>
+    <span class="type">Place | PostalAddress | string</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l663"><code>org.schema.js:663</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/location">Schema.org/location</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_object" class="property item">
+    <h3 class="name"><code>object</code></h3>
+    <span class="type">Thing</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l669"><code>org.schema.js:669</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/object">Schema.org/object</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_participant" class="property item">
+    <h3 class="name"><code>participant</code></h3>
+    <span class="type">Participant</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l675"><code>org.schema.js:675</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/participant">Schema.org/participant</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_result" class="property item">
+    <h3 class="name"><code>result</code></h3>
+    <span class="type">Thing</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l681"><code>org.schema.js:681</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/result">Schema.org/result</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_startTime" class="property item">
+    <h3 class="name"><code>startTime</code></h3>
+    <span class="type">DateTime</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l639"><code>org.schema.js:639</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/startTime">Schema.org/startTime</a></p>
+
+    </div>
+
+
+
+</div>
+<div id="property_target" class="property item">
+    <h3 class="name"><code>target</code></h3>
+    <span class="type">EntryPoint</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.schema.js.html#l645"><code>org.schema.js:645</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/target">Schema.org/target</a></p>
 
     </div>
 

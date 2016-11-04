@@ -59,6 +59,7 @@
                 "EcAes": 1,
                 "EcRsaOaep": 1,
                 "EcPpk": 1,
+                "EcRsaOaepAsync": 1,
                 "EcAesCtr": 1,
                 "EcAesCtrAsync": 1
             },
@@ -96,14 +97,32 @@
         "org.cassproject.schema.general.js": {
             "name": "org.cassproject.schema.general.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "General": 1,
+                "Ebac": 1,
+                "EcRemoteLinkedData": 1
+            },
             "fors": {},
             "namespaces": {}
         },
         "org.json-ld.js": {
             "name": "org.json-ld.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "EcLinkedData": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "org.schema.js": {
+            "name": "org.schema.js",
+            "modules": {},
+            "classes": {
+                "CreativeWork": 1,
+                "AlignmentObject": 1,
+                "Person": 1,
+                "Action": 1
+            },
             "fors": {},
             "namespaces": {}
         }
@@ -274,8 +293,21 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "ec.crypto.js",
-            "line": 6349,
+            "line": 6351,
             "description": "Helper classes for dealing with RSA Private Keys.",
+            "author": "fritz.ray@eduworks.com"
+        },
+        "EcRsaOaepAsync": {
+            "name": "EcRsaOaepAsync",
+            "shortname": "EcRsaOaepAsync",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "ec.crypto.js",
+            "line": 6473,
+            "description": "Asynchronous implementation of {{#crossLink \"EcRsaOaep\"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.",
             "author": "fritz.ray@eduworks.com"
         },
         "EcAesCtr": {
@@ -287,7 +319,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "ec.crypto.js",
-            "line": 6593,
+            "line": 6646,
             "description": "Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.\nOutput is encoded in base64 for easier handling.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -300,9 +332,117 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "ec.crypto.js",
-            "line": 6640,
+            "line": 6693,
             "description": "Asynchronous implementation of {{#crossLink \"EcAesCtr\"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.",
             "author": "fritz.ray@eduworks.com"
+        },
+        "General": {
+            "name": "General",
+            "shortname": "General",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.cassproject.schema.general.js",
+            "line": 10,
+            "description": "Location of strings that store the current namespace for general Eduworks Objects.",
+            "author": "fritz.ray@eduworks.com"
+        },
+        "Ebac": {
+            "name": "Ebac",
+            "shortname": "Ebac",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.cassproject.schema.general.js",
+            "line": 27,
+            "description": "Location of strings that store the current namespace for EBAC/KBAC.",
+            "author": "fritz.ray@eduworks.com"
+        },
+        "EcRemoteLinkedData": {
+            "name": "EcRemoteLinkedData",
+            "shortname": "EcRemoteLinkedData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.cassproject.schema.general.js",
+            "line": 45,
+            "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object.",
+            "extends": "EcLinkedData",
+            "author": "fritz.ray@eduworks.com"
+        },
+        "EcLinkedData": {
+            "name": "EcLinkedData",
+            "shortname": "EcLinkedData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.json-ld.js",
+            "line": 10,
+            "description": "Represents a JSON-LD linked data object and performs serialization.\nNote: Serialization and deserialization remove parameters that begin with '@'.\nNote: This Linked Data Object is not assumed to have an @id field.",
+            "author": "fritz.ray@eduworks.com"
+        },
+        "CreativeWork": {
+            "name": "CreativeWork",
+            "shortname": "CreativeWork",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.schema.js",
+            "line": 37,
+            "description": "Schema.org/CreativeWork",
+            "author": "schema.org",
+            "extends": "Thing"
+        },
+        "AlignmentObject": {
+            "name": "AlignmentObject",
+            "shortname": "AlignmentObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.schema.js",
+            "line": 462,
+            "description": "Schema.org/AlignmentObject",
+            "author": "schema.org",
+            "extends": "Thing"
+        },
+        "Person": {
+            "name": "Person",
+            "shortname": "Person",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.schema.js",
+            "line": 533,
+            "description": "Schema.org/Person.",
+            "author": "schema.org"
+        },
+        "Action": {
+            "name": "Action",
+            "shortname": "Action",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "org.schema.js",
+            "line": 611,
+            "description": "Schema.org/Action",
+            "author": "schema.org",
+            "extends": "Thing"
         }
     },
     "elements": {},
@@ -4504,7 +4644,7 @@
             "line": 4091,
             "description": "Creates a signature for the provided text using the public private keypair.\nMay be verified with the public key.\nUses SHA256 hash with a UTF8 decoding of the text.\nReturns base64 encoded signature.",
             "itemtype": "method",
-            "name": "sign",
+            "name": "signSha256",
             "static": 1,
             "params": [
                 {
@@ -4527,6 +4667,9 @@
             "file": "ec.crypto.js",
             "line": 4107,
             "description": "Verifies the integrity of the provided text using a signature and a public key.\nUses SHA1 hash with a UTF8 decoding of the text.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "verify",
             "params": [
                 {
                     "name": "pk",
@@ -4551,14 +4694,14 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4131,
+            "line": 4133,
             "description": "Javascript implementation of basic RSA algorithms.",
             "author": "Dave Longley\n\nCopyright (c) 2010-2014 Digital Bazaar, Inc.\n\nThe only algorithm currently supported for PKI is RSA.\n\nAn RSA key is often stored in ASN.1 DER format. The SubjectPublicKeyInfo\nASN.1 structure is composed of an algorithm of type AlgorithmIdentifier\nand a subjectPublicKey of type bit string.\n\nThe AlgorithmIdentifier contains an Object Identifier (OID) and parameters\nfor the algorithm, if any. In the case of RSA, there aren't any.\n\nSubjectPublicKeyInfo ::= SEQUENCE {\n  algorithm AlgorithmIdentifier,\n  subjectPublicKey BIT STRING\n}\n\nAlgorithmIdentifer ::= SEQUENCE {\n  algorithm OBJECT IDENTIFIER,\n  parameters ANY DEFINED BY algorithm OPTIONAL\n}\n\nFor an RSA public key, the subjectPublicKey is:\n\nRSAPublicKey ::= SEQUENCE {\n  modulus            INTEGER,    -- n\n  publicExponent     INTEGER     -- e\n}\n\nPrivateKeyInfo ::= SEQUENCE {\n  version                   Version,\n  privateKeyAlgorithm       PrivateKeyAlgorithmIdentifier,\n  privateKey                PrivateKey,\n  attributes           [0]  IMPLICIT Attributes OPTIONAL\n}\n\nVersion ::= INTEGER\nPrivateKeyAlgorithmIdentifier ::= AlgorithmIdentifier\nPrivateKey ::= OCTET STRING\nAttributes ::= SET OF Attribute\n\nAn RSA private key as the following structure:\n\nRSAPrivateKey ::= SEQUENCE {\n  version Version,\n  modulus INTEGER, -- n\n  publicExponent INTEGER, -- e\n  privateExponent INTEGER, -- d\n  prime1 INTEGER, -- p\n  prime2 INTEGER, -- q\n  exponent1 INTEGER, -- d mod (p-1)\n  exponent2 INTEGER, -- d mod (q-1)\n  coefficient INTEGER -- (inverse of q) mod p\n}\n\nVersion ::= INTEGER\n\nThe OID for the RSA key algorithm is: 1.2.840.113549.1.1.1",
             "class": "EcRsaOaep"
         },
         {
             "file": "ec.crypto.js",
-            "line": 4387,
+            "line": 4389,
             "description": "Wrap digest in DigestInfo object.\n\nThis function implements EMSA-PKCS1-v1_5-ENCODE as per RFC 3447.\n\nDigestInfo ::= SEQUENCE {\n  digestAlgorithm DigestAlgorithmIdentifier,\n  digest Digest\n}\n\nDigestAlgorithmIdentifier ::= AlgorithmIdentifier\nDigest ::= OCTET STRING",
             "params": [
                 {
@@ -4573,7 +4716,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4435,
+            "line": 4437,
             "description": "Performs x^c mod n (RSA encryption or decryption operation).",
             "params": [
                 {
@@ -4596,7 +4739,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4574,
+            "line": 4576,
             "description": "NOTE: THIS METHOD IS DEPRECATED, use 'sign' on a private key object or\n'encrypt' on a public key object instead.\n\nPerforms RSA encryption.\n\nThe parameter bt controls whether to put padding bytes before the\nmessage passed in. Set bt to either true or false to disable padding\ncompletely (in order to handle e.g. EMSA-PSS encoding seperately before),\nsignaling whether the encryption operation is a public key operation\n(i.e. encrypting data) or not, i.e. private key operation (data signing).\n\nFor PKCS#1 v1.5 padding pass in the block type to use, i.e. either 0x01\n(for signing) or 0x02 (for encryption). The key operation mode (private\nor public) is derived from this flag in that case).",
             "params": [
                 {
@@ -4619,7 +4762,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4635,
+            "line": 4637,
             "description": "NOTE: THIS METHOD IS DEPRECATED, use 'decrypt' on a private key object or\n'verify' on a public key object instead.\n\nPerforms RSA decryption.\n\nThe parameter ml controls whether to apply PKCS#1 v1.5 padding\nor not.  Set ml = false to disable padding removal completely\n(in order to handle e.g. EMSA-PSS later on) and simply pass back\nthe RSA encryption block.",
             "params": [
                 {
@@ -4646,7 +4789,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4699,
+            "line": 4701,
             "description": "Creates an RSA key-pair generation state object. It is used to allow\nkey-generation to be performed in steps. It also allows for a UI to\ndisplay progress updates.",
             "params": [
                 {
@@ -4670,7 +4813,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4763,
+            "line": 4765,
             "description": "Attempts to runs the key-generation algorithm for at most n seconds\n(approximately) using the given state. When key-generation has completed,\nthe keys will be stored in state.keys.\n\nTo use this function to update a UI while generating a key or to prevent\ncausing browser lockups/warnings, set \"n\" to a value other than 0. A\nsimple pattern for generating a key and showing a progress indicator is:\n\nvar state = pki.rsa.createKeyPairGenerationState(2048);\nvar step = function() {\n  // step key-generation, run algorithm for 100 ms, repeat\n  if(!forge.pki.rsa.stepKeyPairGenerationState(state, 100)) {\n    setTimeout(step, 1);\n  } else {\n    // key-generation complete\n    // TODO: turn off progress indicator here\n    // TODO: use the generated key-pair in \"state.keys\"\n  }\n};\n// TODO: turn on progress indicator here\nsetTimeout(step, 0);",
             "params": [
                 {
@@ -4689,7 +4832,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 4932,
+            "line": 4934,
             "description": "Generates an RSA public-private key pair in a single call.\n\nTo generate a key-pair in steps (to allow for progress updates and to\nprevent blocking or warnings in slow browsers) then use the key-pair\ngeneration state functions.\n\nTo generate a key-pair asynchronously (either through web-workers, if\navailable, or by breaking up the work on the main thread), pass a\ncallback function.",
             "params": [
                 {
@@ -4720,7 +4863,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5017,
+            "line": 5019,
             "description": "Sets an RSA public key from BigIntegers modulus and exponent.",
             "params": [
                 {
@@ -4739,7 +4882,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5031,
+            "line": 5033,
             "description": "Encrypts the given data with this public key. Newer applications\nshould use the 'RSA-OAEP' decryption scheme, 'RSAES-PKCS1-V1_5' is for\nlegacy applications.",
             "params": [
                 {
@@ -4762,7 +4905,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5078,
+            "line": 5080,
             "description": "Verifies the given signature against the given digest.\n\nPKCS#1 supports multiple (currently two) signature schemes:\nRSASSA-PKCS1-V1_5 and RSASSA-PSS.\n\nBy default this implementation uses the \"old scheme\", i.e.\nRSASSA-PKCS1-V1_5, in which case once RSA-decrypted, the\nsignature is an OCTET STRING that holds a DigestInfo.\n\nDigestInfo ::= SEQUENCE {\n  digestAlgorithm DigestAlgorithmIdentifier,\n  digest Digest\n}\nDigestAlgorithmIdentifier ::= AlgorithmIdentifier\nDigest ::= OCTET STRING\n\nTo perform PSS signature verification, provide an instance\nof Forge PSS object as the scheme parameter.",
             "params": [
                 {
@@ -4785,7 +4928,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5145,
+            "line": 5147,
             "description": "Sets an RSA private key from BigIntegers modulus, exponent, primes,\nprime exponents, and modular multiplicative inverse.",
             "params": [
                 {
@@ -4828,7 +4971,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5173,
+            "line": 5175,
             "description": "Decrypts the given data with this private key. The decryption scheme\nmust match the one used to encrypt the data.",
             "params": [
                 {
@@ -4851,7 +4994,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5214,
+            "line": 5216,
             "description": "Signs the given digest, producing a signature.\n\nPKCS#1 supports multiple (currently two) signature schemes:\nRSASSA-PKCS1-V1_5 and RSASSA-PSS.\n\nBy default this implementation uses the \"old scheme\", i.e.\nRSASSA-PKCS1-V1_5. In order to generate a PSS signature, provide\nan instance of Forge PSS object as the scheme parameter.",
             "params": [
                 {
@@ -4870,7 +5013,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5262,
+            "line": 5264,
             "description": "Wraps an RSAPrivateKey ASN.1 object in an ASN.1 PrivateKeyInfo object.",
             "params": [
                 {
@@ -4885,7 +5028,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5288,
+            "line": 5290,
             "description": "Converts a private key from an ASN.1 object.",
             "params": [
                 {
@@ -4900,7 +5043,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5339,
+            "line": 5341,
             "description": "Converts a private key to an ASN.1 RSAPrivateKey.",
             "params": [
                 {
@@ -4915,7 +5058,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5379,
+            "line": 5381,
             "description": "Converts a public key from an ASN.1 SubjectPublicKeyInfo or RSAPublicKey.",
             "params": [
                 {
@@ -4930,7 +5073,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5420,
+            "line": 5422,
             "description": "Converts a public key to an ASN.1 SubjectPublicKeyInfo.",
             "params": [
                 {
@@ -4945,7 +5088,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5445,
+            "line": 5447,
             "description": "Converts a public key to an ASN.1 RSAPublicKey.",
             "params": [
                 {
@@ -4960,7 +5103,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5464,
+            "line": 5466,
             "description": "Encodes a message using PKCS#1 v1.5 padding.",
             "params": [
                 {
@@ -4983,7 +5126,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5542,
+            "line": 5544,
             "description": "Decodes a message using PKCS#1 v1.5 padding.",
             "params": [
                 {
@@ -5010,7 +5153,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5617,
+            "line": 5619,
             "description": "Runs the key-generation algorithm asynchronously, either in the background\nvia Web Workers, or using the main thread and setImmediate.",
             "params": [
                 {
@@ -5031,7 +5174,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5739,
+            "line": 5741,
             "description": "Converts a positive BigInteger into 2's-complement big-endian bytes.",
             "params": [
                 {
@@ -5046,7 +5189,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5755,
+            "line": 5757,
             "description": "Returns the required number of Miller-Rabin tests to generate a\nprime with an error probability of (1/2)^80.\n\nSee Handbook of Applied Cryptography Chapter 4, Table 4.4.",
             "params": [
                 {
@@ -5061,14 +5204,14 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5843,
+            "line": 5845,
             "description": "Cipher base API.",
             "author": "Dave Longley\n\nCopyright (c) 2010-2014 Digital Bazaar, Inc.",
             "class": "EcRsaOaep"
         },
         {
             "file": "ec.crypto.js",
-            "line": 5859,
+            "line": 5861,
             "description": "Creates a cipher object that can be used to encrypt data using the given\nalgorithm and key. The algorithm may be provided as a string value for a\npreviously registered algorithm or it may be given as a cipher algorithm\nAPI object.",
             "params": [
                 {
@@ -5087,7 +5230,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5892,
+            "line": 5894,
             "description": "Creates a decipher object that can be used to decrypt data using the given\nalgorithm and key. The algorithm may be provided as a string value for a\npreviously registered algorithm or it may be given as a cipher algorithm\nAPI object.",
             "params": [
                 {
@@ -5106,7 +5249,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5925,
+            "line": 5927,
             "description": "Registers an algorithm by name. If the name was already registered, the\nalgorithm API object will be overwritten.",
             "params": [
                 {
@@ -5122,7 +5265,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5937,
+            "line": 5939,
             "description": "Gets a registered algorithm by name.",
             "params": [
                 {
@@ -5137,7 +5280,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 5964,
+            "line": 5966,
             "description": "Starts or restarts the encryption or decryption process, whichever\nwas previously configured.\n\nFor non-GCM mode, the IV may be a binary-encoded string of bytes, an array\nof bytes, a byte buffer, or an array of 32-bit integers. If the IV is in\nbytes, then it must be Nb (16) bytes in length. If the IV is given in as\n32-bit integers, then it must be 4 integers long.\n\nNote: an IV is not required or used in ECB mode.\n\nFor GCM-mode, the IV must be given as a binary-encoded string of bytes or\na byte buffer. The number of bytes should be 12 (96 bits) as recommended\nby NIST SP-800-38D but another length may be given.",
             "params": [
                 {
@@ -5149,7 +5292,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6004,
+            "line": 6006,
             "description": "Updates the next block according to the cipher mode.",
             "params": [
                 {
@@ -5161,7 +5304,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6023,
+            "line": 6025,
             "description": "Finishes encrypting or decrypting.",
             "params": [
                 {
@@ -5176,14 +5319,14 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6153,
+            "line": 6155,
             "description": "Javascript implementation of a basic Public Key Infrastructure, including\nsupport for RSA public and private keys.",
             "author": "Dave Longley\n\nCopyright (c) 2010-2013 Digital Bazaar, Inc.",
             "class": "EcRsaOaep"
         },
         {
             "file": "ec.crypto.js",
-            "line": 6171,
+            "line": 6173,
             "description": "NOTE: THIS METHOD IS DEPRECATED. Use pem.decode() instead.\n\nConverts PEM-formatted data to DER.",
             "params": [
                 {
@@ -5198,7 +5341,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6188,
+            "line": 6190,
             "description": "Converts an RSA private key from PEM format.",
             "params": [
                 {
@@ -5213,7 +5356,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6214,
+            "line": 6216,
             "description": "Converts an RSA private key to PEM format.",
             "params": [
                 {
@@ -5232,7 +5375,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6231,
+            "line": 6233,
             "description": "Converts a PrivateKeyInfo to PEM format.",
             "params": [
                 {
@@ -5251,7 +5394,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6356,
+            "line": 6358,
             "description": "Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
             "name": "fromPem",
@@ -5271,7 +5414,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6373,
+            "line": 6375,
             "description": "Generates an RSA Keypair using web workers.",
             "itemtype": "method",
             "name": "generateKeyAsync",
@@ -5287,7 +5430,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6388,
+            "line": 6390,
             "description": "Generates an RSA Keypair synchronously. Can take a while.",
             "itemtype": "method",
             "name": "generateKey",
@@ -5300,7 +5443,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6403,
+            "line": 6405,
             "description": "Returns true iff the PEM forms of the public private keypair match.\nCan also match against a public key if the public portion of the keypair match.",
             "itemtype": "method",
             "name": "equals",
@@ -5318,7 +5461,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6417,
+            "line": 6419,
             "description": "Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
             "name": "toPem",
@@ -5330,10 +5473,10 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6426,
+            "line": 6428,
             "description": "Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
-            "name": "toPem",
+            "name": "toPkcs1Pem",
             "return": {
                 "description": "PEM encoded public key without whitespace.",
                 "type": "String"
@@ -5342,10 +5485,10 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6435,
+            "line": 6437,
             "description": "Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
-            "name": "toPem",
+            "name": "toPkcs8Pem",
             "return": {
                 "description": "PEM encoded public key without whitespace.",
                 "type": "String"
@@ -5354,7 +5497,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6447,
+            "line": 6449,
             "description": "Extracts the public key portion from the public private keypair.",
             "itemtype": "method",
             "name": "toPk",
@@ -5366,7 +5509,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6457,
+            "line": 6459,
             "description": "Returns true if this PPK is in an array of PPKs.",
             "itemtype": "method",
             "name": "inArray",
@@ -5384,7 +5527,167 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6601,
+            "line": 6518,
+            "description": "Asynchronous form of {{#crossLink \"EcRsaOaep/encrypt:method\"}}EcRsaOaep.encrypt{{/crossLink}}",
+            "itemtype": "method",
+            "name": "encrypt",
+            "static": 1,
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "Public Key to use to encrypt.",
+                    "type": "EcPk"
+                },
+                {
+                    "name": "plaintext",
+                    "description": "Plaintext to encrypt.",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Success method, result is Base64 encoded Ciphertext.",
+                    "type": "Function(string)"
+                },
+                {
+                    "name": "failure",
+                    "description": "Failure method, parameter is error message.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "EcRsaOaepAsync"
+        },
+        {
+            "file": "ec.crypto.js",
+            "line": 6543,
+            "description": "Asynchronous form of {{#crossLink \"EcRsaOaep/decrypt:method\"}}EcRsaOaep.decrypt{{/crossLink}}",
+            "itemtype": "method",
+            "name": "decrypt",
+            "static": 1,
+            "params": [
+                {
+                    "name": "ppk",
+                    "description": "Public private keypair to use to decrypt.",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "ciphertext",
+                    "description": "Ciphertext to decrypt.",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Success method, result is unencoded plaintext.",
+                    "type": "Function(string)"
+                },
+                {
+                    "name": "failure",
+                    "description": "Failure method, parameter is error message.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "EcRsaOaepAsync"
+        },
+        {
+            "file": "ec.crypto.js",
+            "line": 6568,
+            "description": "Asynchronous form of {{#crossLink \"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
+            "itemtype": "method",
+            "name": "sign",
+            "static": 1,
+            "params": [
+                {
+                    "name": "ppk",
+                    "description": "Public private keypair to use to sign message.",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "text",
+                    "description": "Text to sign.",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Success method, result is Base64 encoded signature.",
+                    "type": "Function(string)"
+                },
+                {
+                    "name": "failure",
+                    "description": "Failure method, parameter is error message.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "EcRsaOaepAsync"
+        },
+        {
+            "file": "ec.crypto.js",
+            "line": 6593,
+            "description": "Asynchronous form of {{#crossLink \"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
+            "itemtype": "method",
+            "name": "signSha256",
+            "static": 1,
+            "params": [
+                {
+                    "name": "ppk",
+                    "description": "Public private keypair to use to sign message.",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "text",
+                    "description": "Text to sign.",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Success method, result is Base64 encoded signature.",
+                    "type": "Function(string)"
+                },
+                {
+                    "name": "failure",
+                    "description": "Failure method, parameter is error message.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "EcRsaOaepAsync"
+        },
+        {
+            "file": "ec.crypto.js",
+            "line": 6618,
+            "description": "Asynchronous form of {{#crossLink \"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
+            "itemtype": "method",
+            "name": "verify",
+            "static": 1,
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "Public key to use to verify message.",
+                    "type": "EcPk"
+                },
+                {
+                    "name": "text",
+                    "description": "Text to use in verification.",
+                    "type": "String"
+                },
+                {
+                    "name": "signature",
+                    "description": "Signature to use in verification.",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Success method, result is whether signature is valid.",
+                    "type": "Function(boolean)"
+                },
+                {
+                    "name": "failure",
+                    "description": "Failure method, parameter is error message.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "EcRsaOaepAsync"
+        },
+        {
+            "file": "ec.crypto.js",
+            "line": 6654,
             "description": "Encrypts plaintext using AES-256-CTR. \nPlaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.\nReturns base64 encoded ciphertext.",
             "itemtype": "method",
             "name": "encrypt",
@@ -5414,7 +5717,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6620,
+            "line": 6673,
             "description": "Decrypts ciphertext using AES-256-CTR. \nCiphertext must be base64 encoded ciphertext.\nReturns plaintext as a string (Sequence of bytes, no encoding).",
             "itemtype": "method",
             "name": "decrypt",
@@ -5444,7 +5747,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6685,
+            "line": 6738,
             "description": "Asynchronous form of {{#crossLink \"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "itemtype": "method",
             "name": "encrypt",
@@ -5480,7 +5783,7 @@
         },
         {
             "file": "ec.crypto.js",
-            "line": 6712,
+            "line": 6765,
             "description": "Asynchronous form of {{#crossLink \"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "itemtype": "method",
             "name": "decrypt",
@@ -5519,13 +5822,13 @@
             "line": 10,
             "description": "Parent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache.",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 20,
             "description": "Storage that maps view class instances to DOM Elements",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5541,7 +5844,7 @@
                     "description": "View that will correspond to the DOM Selector"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5556,7 +5859,7 @@
             "return": {
                 "description": "The view that corresponds to the DOM Selector passed in, or null\n        if no view corresponds with it"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5576,7 +5879,7 @@
                     "description": "Callback function to be passed in to the view's display\n           function (to be called once the view has been displayed)"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5588,39 +5891,39 @@
                     "description": "DOM Selector for the element to add the 'hide' class to"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 81,
             "description": "Object stored in the ScreenManager's history cache array, to keep track of the history of screens and \nwhich DOM element they were displayed in",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 104,
             "description": "Name of the page (used to retrieve the correct screen on a back/forward button press)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 108,
             "description": "Screen to store and associate with the page name so that it can be loaded if necessary",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 112,
             "description": "ID of the container to display the screen in, once it has been found by page name",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 118,
             "description": "Class that represents a \"view\" that can be displayed in an container element on the page. The View should define \na display function that loads HTML into the container element on the page and then finally calls the callback once\nthe view has been completely initialized",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5629,13 +5932,13 @@
             "return": {
                 "description": "The string path to an html file"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 134,
             "description": "Display function to override (usually in JavaScript) that will set up any event handlers",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5650,33 +5953,33 @@
             "return": {
                 "description": "The converted instance of the type passed in"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 178,
             "description": "STJS Wrapper for the Browser Native History Object",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 187,
             "description": "View Manager sub class that manages loading \"modal\"s and has a few helper functions to make sure that \nthey work properly",
             "author": "djunker",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 197,
             "description": "DOM Selector (ID) of the container to display Modal's in",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 201,
             "description": "Application flag that is set when a modal is open, so we can check from the application whether we're in a \nmodal or not.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5685,7 +5988,7 @@
             "return": {
                 "description": "EcModal instance that is currently being shown in the Modal container element"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5701,32 +6004,32 @@
                     "description": "Function to invoke after the modal has been displayed"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 244,
             "description": "Hides the modal container and returns to the screen or overlay that was being displayed beneath it",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 259,
             "description": "View Subclass representing modal views that are displayed in the modal container",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 268,
             "description": "To be overrided in subclasses, lets the developer define the size of the modal",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 272,
             "description": "Function to be invoked when the modal is closed, can be overriden or left blank if nothing\nneeds to happen on the modal close",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5734,20 +6037,20 @@
             "return": {
                 "description": "tiny, small, medium, large, or full depending on how large the modal should be"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 282,
             "description": "Subclass of view that is specific for a screen, providing a display name that\nwill be shown in the URL bar and that can be used on startup to check if the\nURL is asking for a certain page on startup.",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 293,
             "description": "Name that identifies a certain type of screen, shown in the URL bar to\nhelp the user understand the page that they are on and used during\nstartup to decide whether or not to load a specifici page on startup.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5756,62 +6059,62 @@
             "return": {
                 "description": "The display name for the screen"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 309,
             "description": "View Manager child class that manages loading \"screen\"s and saving screen history. This is the main view type\nin an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the\nsession, so  when the back button is pressed, the application will load the previous screen with any data that \nwas associated with it.",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 321,
             "description": "DOM Selector (ID) of the Screen Container that will display all of the screen views",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 325,
             "description": "Array to track the history of the current session",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 329,
             "description": "Screen to be used when another screen is loading information from the server before being able to display\nitself. Notice that the display function does not affect the DOM on the page in any way.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 340,
             "description": "Screen to be set by application on application startup, dictates what the screen should be if the startup\nScreen hasn't been set",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 345,
             "description": "Screen to be set by application if it notices that a certain screen should be loaded on startup that is \ndifferent from the default Screen",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 350,
             "description": "Callback to be invoked once the application has started and the first screen has been completely loaded\nand displayed",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 355,
             "description": "Callback invoked during a history load (used in Overlay Manager to open an overlay if it was last history view)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 359,
             "description": "Array of callbacks that will compare any markers saved in the browser to see if a specific startup screen\nshould be set. These callbacks should be defined in the screen Java implementation to check if the screen\nshould be loaded.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5823,7 +6126,7 @@
                     "description": "callback to add, all callbacks will be invoked on the application startup"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5832,7 +6135,7 @@
             "return": {
                 "description": "EcScreen instance that is currently being shown in the screen container element"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5844,7 +6147,7 @@
                     "description": "The default screen that will be displayed if no startup screen is defined during load"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5864,7 +6167,7 @@
                     "description": "Function to invoke after the page has been displayed and foundation has been set up on the new HTML"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5880,7 +6183,7 @@
                     "description": "Function to invoke after the page has been displayed and foundation has been set up on the new HTML"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5892,7 +6195,7 @@
                     "description": "Function to invoke after the page has been redisplayed and foundation has been set up on the new HTML"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5908,7 +6211,7 @@
                     "description": "DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5928,7 +6231,7 @@
                     "description": "Object containing key to value pairs that should be put in the url bar to remember state at this history point"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5940,7 +6243,7 @@
                     "description": "url parameters json object"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -5952,51 +6255,51 @@
                     "description": "Name of the screen to search for in the history array"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 611,
             "description": "Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used\nin the URL bar and in the history so the page can be loaded on back button or startup",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 621,
             "description": "View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to\nthe previous screen) with a few helper functions for managing overlays",
             "author": "devlin.junker@eduworks.com\n(NOT TESTED MUCH YET)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 632,
             "description": "DOM Selector of the overlay wrapper (Should contain the overlay container and overlay close button)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 636,
             "description": "DOM Selector of the overlay close button (clicking this should hide the current overlay)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 640,
             "description": "DOM Selector of the HTML Element that will display the Overlay's HTML",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 644,
             "description": "Used if one of the startupOverlayCallbacks decides that it should be displayed on startup (usually using\nthe URL to check what should be displayed on start)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 649,
             "description": "Callbacks that can be defined and run on startup, that should check to see if an overlay should be displayed\nimmediately when the application starts",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -6008,13 +6311,13 @@
                     "description": "callback to be added to the startupOverlayCallbacks list"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 664,
             "description": "Application flag to check if we're currently in an overlay or not",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -6023,13 +6326,13 @@
             "return": {
                 "description": "EcModal instance that is currently being shown in the Overlay container element"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 677,
             "description": "Variable to hold the last screen, this is useful if we follow a chain of overlays and then want to close them,\nwe'll make sure to go back to the last screen that was visible to the user",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
@@ -6045,20 +6348,20 @@
                     "description": "Flag for whether to store this overlay in the history array"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "ec.ui.framework.js",
             "line": 713,
             "description": "Hides the overlay container and sets the inOverlay flag to false, adds the last screen to the history array so\nthere is a chain from initial screen to overlay (could be multiple) to initial screen. This way we can press the\nback button and be shown the last overlay.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
             "line": 360,
             "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6070,7 +6373,7 @@
                     "description": "\n\t\t\ttrue if signed in, false if signed out"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6078,7 +6381,7 @@
             "return": {
                 "description": "boolean whether or not the the user is logged in"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6090,7 +6393,7 @@
                     "description": "\n\t\t\ttrue = admin, false = not admin"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6098,7 +6401,7 @@
             "return": {
                 "description": "- whether or not the current user is admin"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6107,7 +6410,7 @@
             "return": {
                 "description": "true if previously signed in, false if not signed in last time, or user is here for\nthe first time from this computer"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6131,13 +6434,13 @@
                     "description": "callback on error during login"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
             "line": 456,
             "description": "Sets the flags so the user is logged out, wipes all sign in data so the user is no longer\nauthenticated and is unidentified",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6161,7 +6464,7 @@
                     "description": "callback for error during creation"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6177,14 +6480,14 @@
                     "description": "callback for error during save"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
             "line": 548,
             "description": "Manages the current selected identity for the user, and interfaces the Identity Manager to \nprovide helper functions for ownership and user identification",
             "author": "devlin.junker@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6196,13 +6499,13 @@
                     "description": "PEM of the identity that will be set to the current identity"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
             "line": 570,
             "description": "Clears the selected identity, so the user will be identified as public for any actions\nthat they make going forward",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6217,7 +6520,7 @@
             "return": {
                 "description": "Contact that contains the displayName and public key, if the user\n\t\t\tdoes not have a display name stored for the PEM in either their contacts or identities,\n\t\t\twill return the Unknown Contact which contains the key and a display name of \"Unknown\""
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6237,7 +6540,7 @@
                     "description": "Callback function once the key has been added"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6253,7 +6556,7 @@
                     "description": "display name for the key that is being generated to identify it"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6268,7 +6571,7 @@
             "return": {
                 "description": "true if owned, false if not owned by the current user"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6283,14 +6586,14 @@
             "return": {
                 "description": "true if editable, false if not"
             },
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
             "line": 676,
             "description": "Manages the server that the search controller (through EcRepository) and\nthe identity controller (through EcIdentityManager) communicate with. \nAllows the user to change the server that the UI is talking with via the change server modal.",
             "author": "djunker",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6314,7 +6617,7 @@
                     "description": "Callback for any errors during adding to the list"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6334,7 +6637,7 @@
                     "description": "Callback if any errors occur during changing where the components are pointing"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6346,7 +6649,7 @@
                     "description": "The interface to the repository to be used by the search controller"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "es.cassManager.js",
@@ -6358,572 +6661,1543 @@
                     "description": "The interface to the server for managing identities and logging in with\n\t\t\tthe identity controller and login controller"
                 }
             ],
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.cass.js",
             "line": 47,
             "description": "Under construction.\n\nWorking model of a CASS competency.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.cass.js",
             "line": 160,
             "description": "A composition of references to assertions and acceptances that embody a\nperson's profile. It is reasonably safe to assume the maker of this framework\nimplicitly accepts all data referred to by this object.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.cass.js",
             "line": 224,
             "description": "A composition of references to competencies, alignments, and levels that\nembody a competency framework. It is reasonable safe to assume the maker of\nthis framework implicitly accepts all data referred to by this object.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 10,
             "description": "AES encrypted private key and display name. Contains Initialization Vectors,\nbut not secrets. Used to encrypt private identities for storage on remote\nsystems.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 24,
             "description": "AES Initialization Vector used to decode PPK.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 28,
             "description": "AES encrypted Private Key in PEM form.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 32,
             "description": "AES Initialization Vector used to decode displayName.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 36,
             "description": "AES encrypted display name for identity.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 60,
             "description": "Message used to retrieve credentials from a remote system.\n\nTODO: Vulnerable to replay attacks.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 74,
             "description": "Hashed username.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 78,
             "description": "Hashed password to authorize request.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 102,
             "description": "Credential list along with one time pad and session-based token for use in\ncommit actions.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 115,
             "description": "One time pad (aka perfect cipher)",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 119,
             "description": "Token provided by server to use in commit actions.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 123,
             "description": "Credential array.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 127,
             "description": "Contact array.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 151,
             "description": "AES encrypted public key and display name. Contains Initialization Vectors,\nbut not secrets. Used to encrypt public identities for storage on remote\nsystems.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 165,
             "description": "AES Initialization Vector used to decode PPK.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 169,
             "description": "AES encrypted Private Key in PEM form.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 173,
             "description": "AES Initialization Vector used to decode displayName.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 177,
             "description": "AES encrypted display name for identity.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 203,
             "description": "Component of EbacEncryptedValue that contains data needed to decrypt\nencrypted payload. Is, in itself, encrypted.\n\nAlso contains data used to verify that encrypted-data substitution attacks\nwere not performed on the data.\n\nMust be encryptable by RSA, therefore, serialized form is less than 256\nbytes.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 222,
             "description": "IV used to encrypt/decrypt payload.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 226,
             "description": "Hashed and Base64 encoded ID of the parent (if any) object.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 230,
             "description": "Secret used to encrypt/decrypt payload.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 234,
             "description": "Dot and Bracket notated index of the field in the parent-most object (if\nany).",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 280,
             "description": "Signature used to authorize movement of data on behalf of a private-key\nholding owner.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 293,
             "description": "The public key of the authorizing party.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 297,
             "description": "The time in number of milliseconds since midnight of January 1, 1970\n00:00:00 UTC that this signature is authorized to move data.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 302,
             "description": "The signature of this object, having signed the object, having been\nencoded in JSON with no space or tabs in ASCII sort order, having no\nvalue for the signature at the time of signing.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 308,
             "description": "The server authorized to move data. If this is empty, the signature may\nbe used by a server to ask for data from other servers.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 333,
             "description": "Encrypted JSON-LD object.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 346,
             "description": "Optional Hint used to aid search, showing the type of the inner encrypted\nobject.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 351,
             "description": "Base-64 encoded, AES encrypted form of the encrypted object (or data).",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
             "line": 355,
             "description": "Optional Hint used to aid view, showing a name of the inner encrypted\nobject.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 392,
+            "line": 360,
+            "description": "Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners or readers (or unknown parties) to allow them\naccess to the payload.",
+            "class": "General"
+        },
+        {
+            "file": "org.cassproject.schema.ebac.js",
+            "line": 398,
             "description": "AES encrypted public key and display name. Contains Initialization Vectors,\nbut not secrets. Used to encrypt public identities for storage on remote\nsystems.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 432,
+            "line": 438,
             "description": "Message used to commit credentials to a remote login server.\n\nTODO: Semi-vulnerable to replay attacks. Token field prevents some replay\nattacks.",
             "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 448,
+            "line": 454,
             "description": "Hashed username.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 452,
+            "line": 458,
             "description": "Hashed password to authorize commit.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 456,
+            "line": 462,
             "description": "Token provided to client when previously executed Request was done. May\nbe empty if this is used as part of Create action.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.ebac.js",
-            "line": 461,
+            "line": 467,
             "description": "List of credentials to commit to the login server storage.",
-            "class": ""
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 23,
-            "description": "Data wrapper to represent remotely hosted data. Includes necessary fields for\npermission controls, signing, and identification of the object.",
-            "author": "fritz.ray@eduworks.com",
-            "class": ""
+            "line": 19,
+            "description": "The latest version of the Eduworks Object namespace.",
+            "itemtype": "property",
+            "name": "context",
+            "static": 1,
+            "type": "{string}",
+            "class": "General"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 33,
+            "line": 37,
+            "description": "Current version of KBAC.",
+            "itemtype": "property",
+            "name": "context",
+            "static": 1,
+            "type": "string (URL)",
+            "class": "Ebac"
+        },
+        {
+            "file": "org.cassproject.schema.general.js",
+            "line": 63,
             "description": "PEM encoded public keys of the owner of the object. A repository, upon\nreceiving a write operation, will ensure either the data did not\npreviously exist, or that an owner has provided a signature authorizing\nthe replacement of the old data with the new data.",
-            "class": ""
+            "itemtype": "property",
+            "name": "owner",
+            "type": "string[] (PEM)",
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 40,
+            "line": 72,
             "description": "Signatures of the object. The signing method is as follows: Remove the\nsignature field. Encode the object and its fields in ascii-sort order\nJSON-LD using a space-free, tab-free encoding. Sign the aforementioned\nstring.",
-            "class": ""
+            "itemtype": "property",
+            "name": "signature",
+            "type": "string[] (Base64)",
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 47,
-            "description": "URL/URI used to retrieve and store the object, plus identify the object.",
-            "class": ""
+            "line": 81,
+            "description": "URL/URI used to retrieve, store and identify the object.",
+            "itemtype": "property",
+            "name": "id",
+            "type": "string (URL)",
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 52,
+            "line": 88,
             "description": "PEM encoded public keys of identities authorized to view the object. A\nrepository will ignore write operations from these identities, but will\nallow them to read the object.",
-            "class": ""
+            "itemtype": "property",
+            "name": "reader",
+            "type": "string[] (PEM)",
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 58,
-            "description": "Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners or readers (or unknown parties) to allow them\naccess to the payload.",
-            "class": ""
-        },
-        {
-            "file": "org.cassproject.schema.general.js",
-            "line": 64,
+            "line": 96,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository).",
+            "itemtype": "method",
+            "name": "generateId",
             "params": [
                 {
                     "name": "server",
-                    "description": "Base URL of the server's repository functionality."
+                    "description": "Base URL of the server's repository functionality.",
+                    "type": "String"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 82,
-            "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository).",
+            "line": 114,
+            "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
+            "itemtype": "method",
+            "name": "assignId",
             "params": [
                 {
                     "name": "server",
-                    "description": "Base URL of the server's repository functionality."
+                    "description": "Base URL of the server's repository functionality.",
+                    "type": "String"
+                },
+                {
+                    "name": "uniqueIdentifier",
+                    "description": "Canonical identifier. Must contain a letter or symbol.",
+                    "type": "String"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 100,
-            "description": "Determines if the object has pk as an owner. Homogenizes the PEM strings\nfor comparison.",
+            "line": 133,
+            "description": "Determines if the object has an owner identified by pk. \nHomogenizes the PEM strings for comparison. \nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
+            "itemtype": "method",
+            "name": "hasOwner",
             "params": [
                 {
                     "name": "pk",
-                    "description": "Public Key of the owner in object (forge) form."
+                    "description": "Public Key of the owner.",
+                    "type": "EcPk"
                 }
             ],
             "return": {
-                "description": "True if owner is represented by the PK, false otherwise."
+                "description": "True if owner is represented by the PK, false otherwise.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 117,
-            "description": "Determines if the object has pk as an owner. Homogenizes the PEM strings\nfor comparison.",
+            "line": 151,
+            "description": "Determines if the PK matches an owner or if the object is public. \nHomogenizes the PEM strings for comparison. \nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
+            "itemtype": "method",
+            "name": "canEdit",
             "params": [
                 {
                     "name": "pk",
-                    "description": "Public Key of the owner in object (forge) form."
+                    "description": "Public Key of the owner.",
+                    "type": "EcPk"
                 }
             ],
             "return": {
-                "description": "True if owner is represented by the PK, false otherwise."
+                "description": "True if owner is represented by the PK, false otherwise.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 130,
-            "description": "Encodes the object in a form where it is ready to be signed.",
+            "line": 165,
+            "description": "Encodes the object in a form where it is ready to be signed. \nThis method is under long term review, and may change from version to version.",
+            "itemtype": "method",
+            "name": "toSignableJson",
             "return": {
                 "description": "ASCII-sort order encoded space-free and tab-free JSON-LD."
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 152,
-            "description": "Sign this object with a private key.",
+            "line": 189,
+            "description": "Sign this object using a private key. \nDoes not check for ownership, objects signed with keys absent from @owner or @reader may be removed.",
+            "itemtype": "method",
+            "name": "signWith",
             "params": [
                 {
                     "name": "ppk",
-                    "description": "Private Key of the owner in object (forge) form."
+                    "description": "Public private keypair.",
+                    "type": "EcPpk"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 170,
-            "description": "Verify's the object's signatures",
+            "line": 208,
+            "description": "Verifies the object's signatures.",
+            "itemtype": "method",
+            "name": "verify",
             "return": {
-                "description": "true if all of the signatures could be verified, false if they\n        could not"
+                "description": "true if all of the signatures could be verified, false if they could not",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 206,
-            "description": "Adds an owner to the object, if the owner does not exist.",
+            "line": 244,
+            "description": "Adds an owner to the object, if the owner does not exist.\nNote that this method invalidates all signatures.",
+            "itemtype": "method",
+            "name": "addOwner",
             "params": [
                 {
                     "name": "newOwner",
-                    "description": "PK of the new owner."
+                    "description": "PK of the new owner.",
+                    "type": "EcPk"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 222,
-            "description": "Removes an owner from the object, if the owner does exist.",
+            "line": 261,
+            "description": "Removes an owner from the object, if the owner does exist.\nNote that this method invalidates all signatures.",
+            "itemtype": "method",
+            "name": "removeOwner",
             "params": [
                 {
                     "name": "oldOwner",
-                    "description": "PK of the new owner."
+                    "description": "PK to remove.",
+                    "type": "EcPk"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 237,
-            "description": "Adds a reader to the object, if the reader does not exist.",
+            "line": 277,
+            "description": "Adds a reader to the object, if the reader does not exist.\nNote that this method invalidates all signatures.",
+            "itemtype": "method",
+            "name": "addReader",
             "params": [
                 {
                     "name": "newReader",
-                    "description": "PK of the new reader."
+                    "description": "PK of the new reader.",
+                    "type": "EcPk"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 253,
-            "description": "Removes a reader from the object, if the reader does exist.",
+            "line": 294,
+            "description": "Removes a reader from the object, if the reader does exist.\nNote that this method invalidates all signatures.",
+            "itemtype": "method",
+            "name": "removeReader",
             "params": [
                 {
                     "name": "oldReader",
-                    "description": "PK of the old reader."
+                    "description": "PK of the old reader.",
+                    "type": "EcPk"
                 }
             ],
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.cassproject.schema.general.js",
-            "line": 268,
-            "description": "Determines if the object will survive and be retreivable from a server,\nshould it be written.",
+            "line": 310,
+            "description": "Determines if the object is not retrievable from a repository should it be written.",
+            "itemtype": "method",
+            "name": "invalid",
             "return": {
-                "description": "True if the object is NOT VALID for storage, false otherwise."
+                "description": "True if the object is NOT VALID for storage, false otherwise.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
-            "file": "org.json-ld.js",
-            "line": 14,
-            "description": "Represents the @type field in JSON-LD.",
-            "class": ""
+            "file": "org.cassproject.schema.general.js",
+            "line": 327,
+            "description": "Updates the ID timestamp of the object, for versioning purposes.",
+            "itemtype": "method",
+            "name": "updateTimestamp",
+            "class": "EcRemoteLinkedData"
         },
         {
-            "file": "org.json-ld.js",
-            "line": 18,
-            "description": "Represents the @context field in JSON-LD.",
-            "class": ""
-        },
-        {
-            "file": "org.json-ld.js",
-            "line": 32,
-            "description": "Determines which fields to serialize into @fields.",
+            "file": "org.cassproject.schema.general.js",
+            "line": 338,
+            "description": "Returns true if the provided ID represents this object. \nUse this, as version information can make direct comparison difficult.",
+            "itemtype": "method",
+            "name": "isId",
             "params": [
                 {
-                    "name": "s",
-                    "description": ""
+                    "name": "id",
+                    "description": "",
+                    "type": "String"
                 }
             ],
             "return": {
-                "description": "True if property is in the set of atProperties."
+                "description": "True if the provided ID represents this object.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
         },
         {
-            "file": "org.json-ld.js",
-            "line": 48,
-            "description": "Forces Javascript to encode the object in alphabetical order in order to\nmake signature based actions more viable. Also places @(at) symbols in\nfront of appropriate fields.",
+            "file": "org.cassproject.schema.general.js",
+            "line": 348,
+            "description": "Removes the version information from an identifier.\nWarning: Will remove identifier if the identifier is composed solely of digits!!!",
+            "itemtype": "method",
+            "name": "trimVersionFromUrl",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "Slash delimited URL or path.",
+                    "type": "String"
+                }
+            ],
             "return": {
-                "description": "Serializable JSON object."
+                "description": "ID without version."
             },
-            "class": ""
+            "class": "EcRemoteLinkedData"
+        },
+        {
+            "file": "org.cassproject.schema.general.js",
+            "line": 366,
+            "description": "Return the ID of this object without the version information. \nUsed to reference the latest version of an object.",
+            "itemtype": "method",
+            "name": "shortId",
+            "return": {
+                "description": "ID of the latest version of this object.",
+                "type": "String"
+            },
+            "class": "EcRemoteLinkedData"
+        },
+        {
+            "file": "org.cassproject.schema.general.js",
+            "line": 376,
+            "description": "Return a valid ElasticSearch search string that will retrieve all objects with this type.",
+            "itemtype": "method",
+            "name": "getSearchStringByType",
+            "return": {
+                "description": "ElasticSearch compatible search string.",
+                "type": "String"
+            },
+            "class": "EcRemoteLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 100,
+            "line": 27,
+            "description": "JSON-LD @type field.",
+            "itemtype": "property",
+            "name": "type",
+            "type": "string",
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 33,
+            "description": "JSON-LD @context field.",
+            "itemtype": "property",
+            "name": "context",
+            "type": "string",
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 39,
+            "description": "Set the JSON-LD @context and @type.",
+            "itemtype": "method",
+            "name": "setContextAndType",
+            "params": [
+                {
+                    "name": "context",
+                    "description": "JSON-LD Context.",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "JSON-LD Type.",
+                    "type": "String"
+                }
+            ],
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 55,
+            "description": "Determines which fields to serialize into @fields.",
+            "internal": "",
+            "static": 1,
+            "itemtype": "method",
+            "name": "isAtProperty",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "Property name to check if it should be an @property.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True if property is in the set of atProperties.",
+                "type": "Boolean"
+            },
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 70,
+            "description": "Serializes this object to JSON.",
+            "itemtype": "method",
+            "name": "toJson",
+            "return": {
+                "description": "JSON formatted object (with JSON-LD fields).",
+                "type": "String"
+            },
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 80,
+            "description": "Forces Javascript to encode the object in alphabetical order in order to\nmake signature based actions more viable. Also places @(at) symbols in\nfront of appropriate fields.",
+            "internal": "",
+            "itemtype": "method",
+            "name": "atIfy",
+            "return": {
+                "description": "Serializable JSON object.",
+                "type": "Object"
+            },
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.json-ld.js",
+            "line": 134,
             "description": "Helper function to determine if a piece of data is probably a JSON\nobject.",
+            "itemtype": "method",
+            "name": "isProbablyJson",
+            "static": 1,
             "params": [
                 {
                     "name": "probableJson",
-                    "description": ""
+                    "description": "JSON to test.",
+                    "type": "String"
                 }
             ],
             "return": {
-                "description": "True if is probably JSON. False if not."
+                "description": "True if it is probably JSON. False if not.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 110,
+            "line": 146,
             "description": "Uses the object's fully qualified type name and compares it to the\nprovided type.",
+            "itemtype": "method",
+            "name": "isA",
             "params": [
                 {
                     "name": "type",
-                    "description": "Fully qualified type name uri."
+                    "description": "Fully qualified type name uri.",
+                    "type": "String"
                 }
             ],
             "return": {
-                "description": "True if match, False if not."
+                "description": "True if match, False if not.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 122,
+            "line": 158,
             "description": "Uses the object's fully qualified type name and compares it to the\nprovided type.",
+            "itemtype": "method",
+            "name": "isAny",
             "params": [
                 {
                     "name": "type",
-                    "description": "Fully qualified type name uri."
+                    "description": "Fully qualified type name uris.",
+                    "type": "String[]"
                 }
             ],
             "return": {
-                "description": "True if match, False if not."
+                "description": "True if match, False if not.",
+                "type": "Boolean"
             },
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 139,
+            "line": 175,
             "description": "Gets the fully qualified type name, as JSON-LD allows the \"namespace\" of\nthe type to be defined in @context.",
+            "itemtype": "method",
+            "name": "getFullType",
             "return": {
-                "description": "Fully qualified type name."
+                "description": "Fully qualified type name.",
+                "type": "String"
             },
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 156,
+            "line": 193,
             "description": "Also could be called \"upcast\", for those in the know.\n\nGhetto method of copying properties from some other object. As freshly\ndeserialized javascript objects do not inherently attach the functions of\ntheir type, it is this or factory hell.",
+            "itemtype": "method",
+            "name": "copyFrom",
             "params": [
                 {
                     "name": "that",
-                    "description": "The freshly deserialized object, or the object to upcast into\n           this object."
+                    "description": "The freshly deserialized object, or the object to upcast into this object."
                 }
             ],
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 182,
-            "description": "Upgrades the object if necessary.",
-            "class": ""
+            "line": 218,
+            "description": "Upgrades the object to the latest version, performing transforms and the like.",
+            "itemtype": "method",
+            "name": "upgrade",
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 186,
+            "line": 224,
             "description": "Removes the @ symbol from properties in order to make them more\naccessible in Javascript.",
+            "itemtype": "method",
+            "name": "deAtify",
+            "internal": "",
             "return": {
-                "description": "This object, with @ properties converted to @-less properties."
+                "description": "This object, with @ properties converted to @-less properties.",
+                "type": "EcLinkedData"
             },
-            "class": ""
+            "class": "EcLinkedData"
         },
         {
             "file": "org.json-ld.js",
-            "line": 205,
+            "line": 245,
             "description": "Gets all versions of JSON-LD type strings for this type of object.",
+            "itemtype": "method",
+            "name": "getTypes",
             "return": {
-                "description": "Array of URIs."
+                "description": "Array of URIs.",
+                "type": "String[]"
             },
-            "class": ""
+            "class": "EcLinkedData"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 53,
+            "description": "Schema.org/about",
+            "itemtype": "property",
+            "name": "about",
+            "type": "Thing",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 59,
+            "description": "Schema.org/accessibilityAPI",
+            "itemtype": "property",
+            "name": "accessibilityAPI",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 65,
+            "description": "Schema.org/accessibilityControl",
+            "itemtype": "property",
+            "name": "accessibilityControl",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 71,
+            "description": "Schema.org/accessibilityFeature",
+            "itemtype": "property",
+            "name": "accessibilityFeature",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 77,
+            "description": "Schema.org/accessibilityHazard",
+            "itemtype": "property",
+            "name": "accessibilityHazard",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 83,
+            "description": "Schema.org/accountablePerson",
+            "itemtype": "property",
+            "name": "accountablePerson",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 89,
+            "description": "Schema.org/aggregateRating",
+            "itemtype": "property",
+            "name": "aggregateRating",
+            "type": "AggregateRating",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 95,
+            "description": "Schema.org/alternativeHeadline",
+            "itemtype": "property",
+            "name": "alternativeHeadline",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 101,
+            "description": "Schema.org/associatedMedia",
+            "itemtype": "property",
+            "name": "associatedMedia",
+            "type": "MediaObject",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 107,
+            "description": "Schema.org/audience",
+            "itemtype": "property",
+            "name": "audience",
+            "type": "Audience",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 113,
+            "description": "Schema.org/audio",
+            "itemtype": "property",
+            "name": "audio",
+            "type": "AudioObject",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 119,
+            "description": "Schema.org/author",
+            "itemtype": "property",
+            "name": "author",
+            "type": "Person | Organization",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 125,
+            "description": "Schema.org/award",
+            "itemtype": "property",
+            "name": "award",
+            "type": "string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 131,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 137,
+            "description": "Schema.org/citation",
+            "itemtype": "property",
+            "name": "citation",
+            "type": "CreativeWork | string",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 143,
+            "description": "Schema.org/comment",
+            "itemtype": "property",
+            "name": "comment",
+            "type": "Comment",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 149,
+            "description": "Schema.org/commentCount",
+            "itemtype": "property",
+            "name": "commentCount",
+            "type": "integer",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 155,
+            "description": "Schema.org/contentLocation",
+            "itemtype": "property",
+            "name": "contentLocation",
+            "type": "Place",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 161,
+            "description": "Schema.org/contentRating",
+            "itemtype": "property",
+            "name": "contentRating",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 167,
+            "description": "Schema.org/contributor",
+            "itemtype": "property",
+            "name": "contributor",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 173,
+            "description": "Schema.org/copyrightHolder",
+            "itemtype": "property",
+            "name": "copyrightHolder",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 179,
+            "description": "Schema.org/copyrightYear",
+            "itemtype": "property",
+            "name": "copyrightYear",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 185,
+            "description": "Schema.org/creator",
+            "itemtype": "property",
+            "name": "creator",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 191,
+            "description": "Schema.org/dateCreated",
+            "itemtype": "property",
+            "name": "dateCreated",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 197,
+            "description": "Schema.org/dateModified",
+            "itemtype": "property",
+            "name": "dateModified",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 203,
+            "description": "Schema.org/datePublished",
+            "itemtype": "property",
+            "name": "datePublished",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 209,
+            "description": "Schema.org/discussionUrl",
+            "itemtype": "property",
+            "name": "discussionUrl",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 215,
+            "description": "Schema.org/editor",
+            "itemtype": "property",
+            "name": "editor",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 221,
+            "description": "Schema.org/educationalAlignment",
+            "itemtype": "property",
+            "name": "educationalAlignment",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 227,
+            "description": "Schema.org/educationalUse",
+            "itemtype": "property",
+            "name": "educationalUse",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 233,
+            "description": "Schema.org/encoding",
+            "itemtype": "property",
+            "name": "encoding",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 239,
+            "description": "Schema.org/exampleOfWork",
+            "itemtype": "property",
+            "name": "exampleOfWork",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 245,
+            "description": "Schema.org/fileFormat",
+            "itemtype": "property",
+            "name": "fileFormat",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 251,
+            "description": "Schema.org/genre",
+            "itemtype": "property",
+            "name": "genre",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 257,
+            "description": "Schema.org/hasPart",
+            "itemtype": "property",
+            "name": "hasPart",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 263,
+            "description": "Schema.org/headline",
+            "itemtype": "property",
+            "name": "headline",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 269,
+            "description": "Schema.org/inLanguage",
+            "itemtype": "property",
+            "name": "inLanguage",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 275,
+            "description": "Schema.org/interactionStatistic",
+            "itemtype": "property",
+            "name": "interactionStatistic",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 281,
+            "description": "Schema.org/interactivityType",
+            "itemtype": "property",
+            "name": "interactivityType",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 287,
+            "description": "Schema.org/isBasedOnUrl",
+            "itemtype": "property",
+            "name": "isBasedOnUrl",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 293,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 299,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 305,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 311,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 317,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 323,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 329,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 335,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 341,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 347,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 353,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 359,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 365,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 371,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 377,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 383,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 389,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 395,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 401,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 407,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 413,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 419,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 425,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 431,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 437,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 443,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 449,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 455,
+            "description": "Schema.org/character",
+            "itemtype": "property",
+            "name": "character",
+            "type": "Person",
+            "class": "CreativeWork"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 478,
+            "description": "Schema.org/alignmentType",
+            "itemtype": "property",
+            "name": "alignmentType",
+            "type": "string",
+            "class": "AlignmentObject"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 484,
+            "description": "Schema.org/educationalFramework",
+            "itemtype": "property",
+            "name": "educationalFramework",
+            "type": "string",
+            "class": "AlignmentObject"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 490,
+            "description": "Schema.org/targetDescription",
+            "itemtype": "property",
+            "name": "targetDescription",
+            "type": "string",
+            "class": "AlignmentObject"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 496,
+            "description": "Schema.org/targetName",
+            "itemtype": "property",
+            "name": "targetName",
+            "type": "string",
+            "class": "AlignmentObject"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 502,
+            "description": "Schema.org/targetUrl",
+            "itemtype": "property",
+            "name": "targetUrl",
+            "type": "URL",
+            "class": "AlignmentObject"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 627,
+            "description": "Schema.org/agent",
+            "itemtype": "property",
+            "name": "agent",
+            "type": "Person | URL",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 633,
+            "description": "Schema.org/endTime",
+            "itemtype": "property",
+            "name": "endTime",
+            "type": "DateTime",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 639,
+            "description": "Schema.org/startTime",
+            "itemtype": "property",
+            "name": "startTime",
+            "type": "DateTime",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 645,
+            "description": "Schema.org/target",
+            "itemtype": "property",
+            "name": "target",
+            "type": "EntryPoint",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 651,
+            "description": "Schema.org/error",
+            "itemtype": "property",
+            "name": "error",
+            "type": "Thing",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 657,
+            "description": "Schema.org/instrument",
+            "itemtype": "property",
+            "name": "instrument",
+            "type": "Thing",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 663,
+            "description": "Schema.org/location",
+            "itemtype": "property",
+            "name": "location",
+            "type": "Place | PostalAddress | string",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 669,
+            "description": "Schema.org/object",
+            "itemtype": "property",
+            "name": "object",
+            "type": "Thing",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 675,
+            "description": "Schema.org/participant",
+            "itemtype": "property",
+            "name": "participant",
+            "type": "Participant",
+            "class": "Action"
+        },
+        {
+            "file": "org.schema.js",
+            "line": 681,
+            "description": "Schema.org/result",
+            "itemtype": "property",
+            "name": "result",
+            "type": "Thing",
+            "class": "Action"
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: internal",
+            "line": " org.json-ld.js:55"
+        },
+        {
+            "message": "unknown tag: internal",
+            "line": " org.json-ld.js:80"
+        },
+        {
+            "message": "unknown tag: internal",
+            "line": " org.json-ld.js:224"
+        },
         {
             "message": "Missing item type\nThe sequence that assertions should be built as such: 1. Generate the ID. 2.\nAdd the owner. 3. Set the subject. 4. Set the agent. Further functions may be\ncalled afterwards in any order. WARNING: The modifications of ownership and\nreadership do not \"just work\".",
             "line": " cass.competency.js:10"
@@ -7737,160 +9011,156 @@
             "line": " ec.crypto.js:3880"
         },
         {
-            "message": "Missing item type\nVerifies the integrity of the provided text using a signature and a public key.\nUses SHA1 hash with a UTF8 decoding of the text.",
-            "line": " ec.crypto.js:4107"
-        },
-        {
             "message": "Missing item type\nJavascript implementation of basic RSA algorithms.",
-            "line": " ec.crypto.js:4131"
+            "line": " ec.crypto.js:4133"
         },
         {
             "message": "Missing item type\nWrap digest in DigestInfo object.\n\nThis function implements EMSA-PKCS1-v1_5-ENCODE as per RFC 3447.\n\nDigestInfo ::= SEQUENCE {\n  digestAlgorithm DigestAlgorithmIdentifier,\n  digest Digest\n}\n\nDigestAlgorithmIdentifier ::= AlgorithmIdentifier\nDigest ::= OCTET STRING",
-            "line": " ec.crypto.js:4387"
+            "line": " ec.crypto.js:4389"
         },
         {
             "message": "Missing item type\nPerforms x^c mod n (RSA encryption or decryption operation).",
-            "line": " ec.crypto.js:4435"
+            "line": " ec.crypto.js:4437"
         },
         {
             "message": "Missing item type\nNOTE: THIS METHOD IS DEPRECATED, use 'sign' on a private key object or\n'encrypt' on a public key object instead.\n\nPerforms RSA encryption.\n\nThe parameter bt controls whether to put padding bytes before the\nmessage passed in. Set bt to either true or false to disable padding\ncompletely (in order to handle e.g. EMSA-PSS encoding seperately before),\nsignaling whether the encryption operation is a public key operation\n(i.e. encrypting data) or not, i.e. private key operation (data signing).\n\nFor PKCS#1 v1.5 padding pass in the block type to use, i.e. either 0x01\n(for signing) or 0x02 (for encryption). The key operation mode (private\nor public) is derived from this flag in that case).",
-            "line": " ec.crypto.js:4574"
+            "line": " ec.crypto.js:4576"
         },
         {
             "message": "Missing item type\nNOTE: THIS METHOD IS DEPRECATED, use 'decrypt' on a private key object or\n'verify' on a public key object instead.\n\nPerforms RSA decryption.\n\nThe parameter ml controls whether to apply PKCS#1 v1.5 padding\nor not.  Set ml = false to disable padding removal completely\n(in order to handle e.g. EMSA-PSS later on) and simply pass back\nthe RSA encryption block.",
-            "line": " ec.crypto.js:4635"
+            "line": " ec.crypto.js:4637"
         },
         {
             "message": "Missing item type\nCreates an RSA key-pair generation state object. It is used to allow\nkey-generation to be performed in steps. It also allows for a UI to\ndisplay progress updates.",
-            "line": " ec.crypto.js:4699"
+            "line": " ec.crypto.js:4701"
         },
         {
             "message": "Missing item type\nAttempts to runs the key-generation algorithm for at most n seconds\n(approximately) using the given state. When key-generation has completed,\nthe keys will be stored in state.keys.\n\nTo use this function to update a UI while generating a key or to prevent\ncausing browser lockups/warnings, set \"n\" to a value other than 0. A\nsimple pattern for generating a key and showing a progress indicator is:\n\nvar state = pki.rsa.createKeyPairGenerationState(2048);\nvar step = function() {\n  // step key-generation, run algorithm for 100 ms, repeat\n  if(!forge.pki.rsa.stepKeyPairGenerationState(state, 100)) {\n    setTimeout(step, 1);\n  } else {\n    // key-generation complete\n    // TODO: turn off progress indicator here\n    // TODO: use the generated key-pair in \"state.keys\"\n  }\n};\n// TODO: turn on progress indicator here\nsetTimeout(step, 0);",
-            "line": " ec.crypto.js:4763"
+            "line": " ec.crypto.js:4765"
         },
         {
             "message": "Missing item type\nGenerates an RSA public-private key pair in a single call.\n\nTo generate a key-pair in steps (to allow for progress updates and to\nprevent blocking or warnings in slow browsers) then use the key-pair\ngeneration state functions.\n\nTo generate a key-pair asynchronously (either through web-workers, if\navailable, or by breaking up the work on the main thread), pass a\ncallback function.",
-            "line": " ec.crypto.js:4932"
+            "line": " ec.crypto.js:4934"
         },
         {
             "message": "Missing item type\nSets an RSA public key from BigIntegers modulus and exponent.",
-            "line": " ec.crypto.js:5017"
+            "line": " ec.crypto.js:5019"
         },
         {
             "message": "Missing item type\nEncrypts the given data with this public key. Newer applications\nshould use the 'RSA-OAEP' decryption scheme, 'RSAES-PKCS1-V1_5' is for\nlegacy applications.",
-            "line": " ec.crypto.js:5031"
+            "line": " ec.crypto.js:5033"
         },
         {
             "message": "Missing item type\nVerifies the given signature against the given digest.\n\nPKCS#1 supports multiple (currently two) signature schemes:\nRSASSA-PKCS1-V1_5 and RSASSA-PSS.\n\nBy default this implementation uses the \"old scheme\", i.e.\nRSASSA-PKCS1-V1_5, in which case once RSA-decrypted, the\nsignature is an OCTET STRING that holds a DigestInfo.\n\nDigestInfo ::= SEQUENCE {\n  digestAlgorithm DigestAlgorithmIdentifier,\n  digest Digest\n}\nDigestAlgorithmIdentifier ::= AlgorithmIdentifier\nDigest ::= OCTET STRING\n\nTo perform PSS signature verification, provide an instance\nof Forge PSS object as the scheme parameter.",
-            "line": " ec.crypto.js:5078"
+            "line": " ec.crypto.js:5080"
         },
         {
             "message": "Missing item type\nSets an RSA private key from BigIntegers modulus, exponent, primes,\nprime exponents, and modular multiplicative inverse.",
-            "line": " ec.crypto.js:5145"
+            "line": " ec.crypto.js:5147"
         },
         {
             "message": "Missing item type\nDecrypts the given data with this private key. The decryption scheme\nmust match the one used to encrypt the data.",
-            "line": " ec.crypto.js:5173"
+            "line": " ec.crypto.js:5175"
         },
         {
             "message": "Missing item type\nSigns the given digest, producing a signature.\n\nPKCS#1 supports multiple (currently two) signature schemes:\nRSASSA-PKCS1-V1_5 and RSASSA-PSS.\n\nBy default this implementation uses the \"old scheme\", i.e.\nRSASSA-PKCS1-V1_5. In order to generate a PSS signature, provide\nan instance of Forge PSS object as the scheme parameter.",
-            "line": " ec.crypto.js:5214"
+            "line": " ec.crypto.js:5216"
         },
         {
             "message": "Missing item type\nWraps an RSAPrivateKey ASN.1 object in an ASN.1 PrivateKeyInfo object.",
-            "line": " ec.crypto.js:5262"
+            "line": " ec.crypto.js:5264"
         },
         {
             "message": "Missing item type\nConverts a private key from an ASN.1 object.",
-            "line": " ec.crypto.js:5288"
+            "line": " ec.crypto.js:5290"
         },
         {
             "message": "Missing item type\nConverts a private key to an ASN.1 RSAPrivateKey.",
-            "line": " ec.crypto.js:5339"
+            "line": " ec.crypto.js:5341"
         },
         {
             "message": "Missing item type\nConverts a public key from an ASN.1 SubjectPublicKeyInfo or RSAPublicKey.",
-            "line": " ec.crypto.js:5379"
+            "line": " ec.crypto.js:5381"
         },
         {
             "message": "Missing item type\nConverts a public key to an ASN.1 SubjectPublicKeyInfo.",
-            "line": " ec.crypto.js:5420"
+            "line": " ec.crypto.js:5422"
         },
         {
             "message": "Missing item type\nConverts a public key to an ASN.1 RSAPublicKey.",
-            "line": " ec.crypto.js:5445"
+            "line": " ec.crypto.js:5447"
         },
         {
             "message": "Missing item type\nEncodes a message using PKCS#1 v1.5 padding.",
-            "line": " ec.crypto.js:5464"
+            "line": " ec.crypto.js:5466"
         },
         {
             "message": "Missing item type\nDecodes a message using PKCS#1 v1.5 padding.",
-            "line": " ec.crypto.js:5542"
+            "line": " ec.crypto.js:5544"
         },
         {
             "message": "Missing item type\nRuns the key-generation algorithm asynchronously, either in the background\nvia Web Workers, or using the main thread and setImmediate.",
-            "line": " ec.crypto.js:5617"
+            "line": " ec.crypto.js:5619"
         },
         {
             "message": "Missing item type\nConverts a positive BigInteger into 2's-complement big-endian bytes.",
-            "line": " ec.crypto.js:5739"
+            "line": " ec.crypto.js:5741"
         },
         {
             "message": "Missing item type\nReturns the required number of Miller-Rabin tests to generate a\nprime with an error probability of (1/2)^80.\n\nSee Handbook of Applied Cryptography Chapter 4, Table 4.4.",
-            "line": " ec.crypto.js:5755"
+            "line": " ec.crypto.js:5757"
         },
         {
             "message": "Missing item type\nCipher base API.",
-            "line": " ec.crypto.js:5843"
+            "line": " ec.crypto.js:5845"
         },
         {
             "message": "Missing item type\nCreates a cipher object that can be used to encrypt data using the given\nalgorithm and key. The algorithm may be provided as a string value for a\npreviously registered algorithm or it may be given as a cipher algorithm\nAPI object.",
-            "line": " ec.crypto.js:5859"
+            "line": " ec.crypto.js:5861"
         },
         {
             "message": "Missing item type\nCreates a decipher object that can be used to decrypt data using the given\nalgorithm and key. The algorithm may be provided as a string value for a\npreviously registered algorithm or it may be given as a cipher algorithm\nAPI object.",
-            "line": " ec.crypto.js:5892"
+            "line": " ec.crypto.js:5894"
         },
         {
             "message": "Missing item type\nRegisters an algorithm by name. If the name was already registered, the\nalgorithm API object will be overwritten.",
-            "line": " ec.crypto.js:5925"
+            "line": " ec.crypto.js:5927"
         },
         {
             "message": "Missing item type\nGets a registered algorithm by name.",
-            "line": " ec.crypto.js:5937"
+            "line": " ec.crypto.js:5939"
         },
         {
             "message": "Missing item type\nStarts or restarts the encryption or decryption process, whichever\nwas previously configured.\n\nFor non-GCM mode, the IV may be a binary-encoded string of bytes, an array\nof bytes, a byte buffer, or an array of 32-bit integers. If the IV is in\nbytes, then it must be Nb (16) bytes in length. If the IV is given in as\n32-bit integers, then it must be 4 integers long.\n\nNote: an IV is not required or used in ECB mode.\n\nFor GCM-mode, the IV must be given as a binary-encoded string of bytes or\na byte buffer. The number of bytes should be 12 (96 bits) as recommended\nby NIST SP-800-38D but another length may be given.",
-            "line": " ec.crypto.js:5964"
+            "line": " ec.crypto.js:5966"
         },
         {
             "message": "Missing item type\nUpdates the next block according to the cipher mode.",
-            "line": " ec.crypto.js:6004"
+            "line": " ec.crypto.js:6006"
         },
         {
             "message": "Missing item type\nFinishes encrypting or decrypting.",
-            "line": " ec.crypto.js:6023"
+            "line": " ec.crypto.js:6025"
         },
         {
             "message": "Missing item type\nJavascript implementation of a basic Public Key Infrastructure, including\nsupport for RSA public and private keys.",
-            "line": " ec.crypto.js:6153"
+            "line": " ec.crypto.js:6155"
         },
         {
             "message": "Missing item type\nNOTE: THIS METHOD IS DEPRECATED. Use pem.decode() instead.\n\nConverts PEM-formatted data to DER.",
-            "line": " ec.crypto.js:6171"
+            "line": " ec.crypto.js:6173"
         },
         {
             "message": "Missing item type\nConverts an RSA private key from PEM format.",
-            "line": " ec.crypto.js:6188"
+            "line": " ec.crypto.js:6190"
         },
         {
             "message": "Missing item type\nConverts an RSA private key to PEM format.",
-            "line": " ec.crypto.js:6214"
+            "line": " ec.crypto.js:6216"
         },
         {
             "message": "Missing item type\nConverts a PrivateKeyInfo to PEM format.",
-            "line": " ec.crypto.js:6231"
+            "line": " ec.crypto.js:6233"
         },
         {
             "message": "Missing item type\nParent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache.",
@@ -8365,148 +9635,32 @@
             "line": " org.cassproject.schema.ebac.js:355"
         },
         {
+            "message": "Missing item type\nArray of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners or readers (or unknown parties) to allow them\naccess to the payload.",
+            "line": " org.cassproject.schema.ebac.js:360"
+        },
+        {
             "message": "Missing item type\nAES encrypted public key and display name. Contains Initialization Vectors,\nbut not secrets. Used to encrypt public identities for storage on remote\nsystems.",
-            "line": " org.cassproject.schema.ebac.js:392"
+            "line": " org.cassproject.schema.ebac.js:398"
         },
         {
             "message": "Missing item type\nMessage used to commit credentials to a remote login server.\n\nTODO: Semi-vulnerable to replay attacks. Token field prevents some replay\nattacks.",
-            "line": " org.cassproject.schema.ebac.js:432"
+            "line": " org.cassproject.schema.ebac.js:438"
         },
         {
             "message": "Missing item type\nHashed username.",
-            "line": " org.cassproject.schema.ebac.js:448"
+            "line": " org.cassproject.schema.ebac.js:454"
         },
         {
             "message": "Missing item type\nHashed password to authorize commit.",
-            "line": " org.cassproject.schema.ebac.js:452"
+            "line": " org.cassproject.schema.ebac.js:458"
         },
         {
             "message": "Missing item type\nToken provided to client when previously executed Request was done. May\nbe empty if this is used as part of Create action.",
-            "line": " org.cassproject.schema.ebac.js:456"
+            "line": " org.cassproject.schema.ebac.js:462"
         },
         {
             "message": "Missing item type\nList of credentials to commit to the login server storage.",
-            "line": " org.cassproject.schema.ebac.js:461"
-        },
-        {
-            "message": "Missing item type\nData wrapper to represent remotely hosted data. Includes necessary fields for\npermission controls, signing, and identification of the object.",
-            "line": " org.cassproject.schema.general.js:23"
-        },
-        {
-            "message": "Missing item type\nPEM encoded public keys of the owner of the object. A repository, upon\nreceiving a write operation, will ensure either the data did not\npreviously exist, or that an owner has provided a signature authorizing\nthe replacement of the old data with the new data.",
-            "line": " org.cassproject.schema.general.js:33"
-        },
-        {
-            "message": "Missing item type\nSignatures of the object. The signing method is as follows: Remove the\nsignature field. Encode the object and its fields in ascii-sort order\nJSON-LD using a space-free, tab-free encoding. Sign the aforementioned\nstring.",
-            "line": " org.cassproject.schema.general.js:40"
-        },
-        {
-            "message": "Missing item type\nURL/URI used to retrieve and store the object, plus identify the object.",
-            "line": " org.cassproject.schema.general.js:47"
-        },
-        {
-            "message": "Missing item type\nPEM encoded public keys of identities authorized to view the object. A\nrepository will ignore write operations from these identities, but will\nallow them to read the object.",
-            "line": " org.cassproject.schema.general.js:52"
-        },
-        {
-            "message": "Missing item type\nArray of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners or readers (or unknown parties) to allow them\naccess to the payload.",
-            "line": " org.cassproject.schema.general.js:58"
-        },
-        {
-            "message": "Missing item type\nWill generate an identifier using the server URL provided (usually from\nan EcRepository).",
-            "line": " org.cassproject.schema.general.js:64"
-        },
-        {
-            "message": "Missing item type\nWill generate an identifier using the server URL provided (usually from\nan EcRepository).",
-            "line": " org.cassproject.schema.general.js:82"
-        },
-        {
-            "message": "Missing item type\nDetermines if the object has pk as an owner. Homogenizes the PEM strings\nfor comparison.",
-            "line": " org.cassproject.schema.general.js:100"
-        },
-        {
-            "message": "Missing item type\nDetermines if the object has pk as an owner. Homogenizes the PEM strings\nfor comparison.",
-            "line": " org.cassproject.schema.general.js:117"
-        },
-        {
-            "message": "Missing item type\nEncodes the object in a form where it is ready to be signed.",
-            "line": " org.cassproject.schema.general.js:130"
-        },
-        {
-            "message": "Missing item type\nSign this object with a private key.",
-            "line": " org.cassproject.schema.general.js:152"
-        },
-        {
-            "message": "Missing item type\nVerify's the object's signatures",
-            "line": " org.cassproject.schema.general.js:170"
-        },
-        {
-            "message": "Missing item type\nAdds an owner to the object, if the owner does not exist.",
-            "line": " org.cassproject.schema.general.js:206"
-        },
-        {
-            "message": "Missing item type\nRemoves an owner from the object, if the owner does exist.",
-            "line": " org.cassproject.schema.general.js:222"
-        },
-        {
-            "message": "Missing item type\nAdds a reader to the object, if the reader does not exist.",
-            "line": " org.cassproject.schema.general.js:237"
-        },
-        {
-            "message": "Missing item type\nRemoves a reader from the object, if the reader does exist.",
-            "line": " org.cassproject.schema.general.js:253"
-        },
-        {
-            "message": "Missing item type\nDetermines if the object will survive and be retreivable from a server,\nshould it be written.",
-            "line": " org.cassproject.schema.general.js:268"
-        },
-        {
-            "message": "Missing item type\nRepresents the @type field in JSON-LD.",
-            "line": " org.json-ld.js:14"
-        },
-        {
-            "message": "Missing item type\nRepresents the @context field in JSON-LD.",
-            "line": " org.json-ld.js:18"
-        },
-        {
-            "message": "Missing item type\nDetermines which fields to serialize into @fields.",
-            "line": " org.json-ld.js:32"
-        },
-        {
-            "message": "Missing item type\nForces Javascript to encode the object in alphabetical order in order to\nmake signature based actions more viable. Also places @(at) symbols in\nfront of appropriate fields.",
-            "line": " org.json-ld.js:48"
-        },
-        {
-            "message": "Missing item type\nHelper function to determine if a piece of data is probably a JSON\nobject.",
-            "line": " org.json-ld.js:100"
-        },
-        {
-            "message": "Missing item type\nUses the object's fully qualified type name and compares it to the\nprovided type.",
-            "line": " org.json-ld.js:110"
-        },
-        {
-            "message": "Missing item type\nUses the object's fully qualified type name and compares it to the\nprovided type.",
-            "line": " org.json-ld.js:122"
-        },
-        {
-            "message": "Missing item type\nGets the fully qualified type name, as JSON-LD allows the \"namespace\" of\nthe type to be defined in @context.",
-            "line": " org.json-ld.js:139"
-        },
-        {
-            "message": "Missing item type\nAlso could be called \"upcast\", for those in the know.\n\nGhetto method of copying properties from some other object. As freshly\ndeserialized javascript objects do not inherently attach the functions of\ntheir type, it is this or factory hell.",
-            "line": " org.json-ld.js:156"
-        },
-        {
-            "message": "Missing item type\nUpgrades the object if necessary.",
-            "line": " org.json-ld.js:182"
-        },
-        {
-            "message": "Missing item type\nRemoves the @ symbol from properties in order to make them more\naccessible in Javascript.",
-            "line": " org.json-ld.js:186"
-        },
-        {
-            "message": "Missing item type\nGets all versions of JSON-LD type strings for this type of object.",
-            "line": " org.json-ld.js:205"
+            "line": " org.cassproject.schema.ebac.js:467"
         }
     ]
 }

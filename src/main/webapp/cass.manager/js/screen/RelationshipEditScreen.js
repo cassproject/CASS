@@ -144,7 +144,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 		ViewManager.getView( "#relationshipEditMessageContainer").displayAlert(err);
 	}
 	
-	var NEW_RELATION_NAME = "_New Relation";
+	var NEW_RELATION_NAME = "";
 	
 	RelationshipEditScreen.prototype.display = function(containerId)
 	{
@@ -214,11 +214,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			ev.preventDefault();
 			
 			var name = $("#relationEditName").val();
-			if(name == NEW_RELATION_NAME)
-			{
-				ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation with the Default Name");
-				return;
-			}
+			
 		    
 			data.source = $("#relationEditSource option:selected").val();
 		    if(data.source == "")

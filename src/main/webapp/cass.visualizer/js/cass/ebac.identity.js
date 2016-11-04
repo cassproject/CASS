@@ -485,7 +485,7 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
         }
         return found;
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs anonymization of the user.

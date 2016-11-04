@@ -154,6 +154,9 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             var tabularData = (results)["data"];
             for (var i = 1; i < tabularData.length; i++) {
                 var competency = new EcCompetency();
+                if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == ""))) {
+                    continue;
+                }
                 if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == "") {
                     failure("One or more names is blank or could not be found in the CSV.");
                     return;

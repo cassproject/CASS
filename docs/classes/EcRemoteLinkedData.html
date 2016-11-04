@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>EcRemoteLinkedData - CASS Javascript Library</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="http://www.cassproject.org/_/rsrc/1451948061999/config/customLogo.gif?revision=16" title="CASS Javascript Library"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.2</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Action.html">Action</a></li>
+                                <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
+                                <li><a href="../classes/CreativeWork.html">CreativeWork</a></li>
+                                <li><a href="../classes/Ebac.html">Ebac</a></li>
+                                <li><a href="../classes/EcAes.html">EcAes</a></li>
+                                <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
+                                <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                                <li><a href="../classes/EcArray.html">EcArray</a></li>
+                                <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
+                                <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                                <li><a href="../classes/EcLinkedData.html">EcLinkedData</a></li>
+                                <li><a href="../classes/EcObject.html">EcObject</a></li>
+                                <li><a href="../classes/EcPk.html">EcPk</a></li>
+                                <li><a href="../classes/EcPpk.html">EcPpk</a></li>
+                                <li><a href="../classes/EcRemote.html">EcRemote</a></li>
+                                <li><a href="../classes/EcRemoteLinkedData.html">EcRemoteLinkedData</a></li>
+                                <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
+                                <li><a href="../classes/EcRsaOaepAsync.html">EcRsaOaepAsync</a></li>
+                                <li><a href="../classes/General.html">General</a></li>
+                                <li><a href="../classes/Graph.html">Graph</a></li>
+                                <li><a href="../classes/Hypergraph.html">Hypergraph</a></li>
+                                <li><a href="../classes/Person.html">Person</a></li>
+                                <li><a href="../classes/Triple.html">Triple</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>EcRemoteLinkedData Class</h1>
+<div class="box meta">
+
+        <div class="extends">
+            Extends <a href="../classes/EcLinkedData.html" class="crosslink">EcLinkedData</a>
+        </div>
+
+        <div class="foundat">
+            Defined in: <a href="../files/org.cassproject.schema.general.js.html#l45"><code>org.cassproject.schema.general.js:45</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    <p>Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for
+permission controls, signing, identifying and locating the object.</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method">
+                                <a href="#method_addOwner">addOwner</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addReader">addReader</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_assignId">assignId</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_atIfy">atIfy</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_canEdit">canEdit</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_copyFrom">copyFrom</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_deAtify">deAtify</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateId">generateId</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getFullType">getFullType</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getSearchStringByType">getSearchStringByType</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getTypes">getTypes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hasOwner">hasOwner</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_invalid">invalid</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_isA">isA</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_isAny">isAny</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isId">isId</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeOwner">removeOwner</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeReader">removeReader</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_setContextAndType">setContextAndType</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_shortId">shortId</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_signWith">signWith</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_toJson">toJson</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toSignableJson">toSignableJson</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_trimVersionFromUrl">trimVersionFromUrl</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateTimestamp">updateTimestamp</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_upgrade">upgrade</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_verify">verify</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
+                                <a href="#property_context">context</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_id">id</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_owner">owner</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_reader">reader</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_signature">signature</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_type">type</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_addOwner" class="method item">
+    <h3 class="name"><code>addOwner</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>newOwner</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l244"><code>org.cassproject.schema.general.js:244</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds an owner to the object, if the owner does not exist.
+Note that this method invalidates all signatures.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">newOwner</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the new owner.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addReader" class="method item">
+    <h3 class="name"><code>addReader</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>newReader</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l277"><code>org.cassproject.schema.general.js:277</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a reader to the object, if the reader does not exist.
+Note that this method invalidates all signatures.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">newReader</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the new reader.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_assignId" class="method item">
+    <h3 class="name"><code>assignId</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+                <li class="arg">
+                        <code>uniqueIdentifier</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l114"><code>org.cassproject.schema.general.js:114</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Will generate an identifier using the server URL provided (usually from
+an EcRepository) and unique identifier.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Base URL of the server's repository functionality.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">uniqueIdentifier</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Canonical identifier. Must contain a letter or symbol.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_atIfy" class="method item inherited">
+    <h3 class="name"><code>atIfy</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_atIfy">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l80"><code>org.json-ld.js:80</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Forces Javascript to encode the object in alphabetical order in order to
+make signature based actions more viable. Also places @(at) symbols in
+front of appropriate fields.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    Serializable JSON object.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_canEdit" class="method item">
+    <h3 class="name"><code>canEdit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pk</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l151"><code>org.cassproject.schema.general.js:151</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Determines if the PK matches an owner or if the object is public.
+Homogenizes the PEM strings for comparison.
+Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pk</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public Key of the owner.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if owner is represented by the PK, false otherwise.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_copyFrom" class="method item inherited">
+    <h3 class="name"><code>copyFrom</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>that</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_copyFrom">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l193"><code>org.json-ld.js:193</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Also could be called "upcast", for those in the know.
+
+Ghetto method of copying properties from some other object. As freshly
+deserialized javascript objects do not inherently attach the functions of
+their type, it is this or factory hell.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">that</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        The freshly deserialized object, or the object to upcast into this object.
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_deAtify" class="method item inherited">
+    <h3 class="name"><code>deAtify</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcLinkedData.html" class="crosslink">EcLinkedData</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_deAtify">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l224"><code>org.json-ld.js:224</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Removes the @ symbol from properties in order to make them more
+accessible in Javascript.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcLinkedData.html" class="crosslink">EcLinkedData</a></span>:
+                    This object, with @ properties converted to @-less properties.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_generateId" class="method item">
+    <h3 class="name"><code>generateId</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l96"><code>org.cassproject.schema.general.js:96</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Will generate an identifier using the server URL provided (usually from
+an EcRepository).</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Base URL of the server's repository functionality.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getFullType" class="method item inherited">
+    <h3 class="name"><code>getFullType</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_getFullType">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l175"><code>org.json-ld.js:175</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Gets the fully qualified type name, as JSON-LD allows the "namespace" of
+the type to be defined in @context.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    Fully qualified type name.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getSearchStringByType" class="method item">
+    <h3 class="name"><code>getSearchStringByType</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l376"><code>org.cassproject.schema.general.js:376</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Return a valid ElasticSearch search string that will retrieve all objects with this type.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>ElasticSearch compatible search string.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTypes" class="method item inherited">
+    <h3 class="name"><code>getTypes</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_getTypes">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l245"><code>org.json-ld.js:245</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Gets all versions of JSON-LD type strings for this type of object.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    Array of URIs.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_hasOwner" class="method item">
+    <h3 class="name"><code>hasOwner</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pk</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l133"><code>org.cassproject.schema.general.js:133</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Determines if the object has an owner identified by pk.
+Homogenizes the PEM strings for comparison.
+Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pk</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public Key of the owner.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if owner is represented by the PK, false otherwise.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_invalid" class="method item">
+    <h3 class="name"><code>invalid</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l310"><code>org.cassproject.schema.general.js:310</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Determines if the object is not retrievable from a repository should it be written.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if the object is NOT VALID for storage, false otherwise.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isA" class="method item inherited">
+    <h3 class="name"><code>isA</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_isA">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l146"><code>org.json-ld.js:146</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Uses the object's fully qualified type name and compares it to the
+provided type.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        Fully qualified type name uri.
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    True if match, False if not.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isAny" class="method item inherited">
+    <h3 class="name"><code>isAny</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_isAny">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l158"><code>org.json-ld.js:158</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Uses the object's fully qualified type name and compares it to the
+provided type.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        Fully qualified type name uris.
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    True if match, False if not.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isId" class="method item">
+    <h3 class="name"><code>isId</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l338"><code>org.cassproject.schema.general.js:338</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if the provided ID represents this object.
+Use this, as version information can make direct comparison difficult.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if the provided ID represents this object.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_removeOwner" class="method item">
+    <h3 class="name"><code>removeOwner</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>oldOwner</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l261"><code>org.cassproject.schema.general.js:261</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes an owner from the object, if the owner does exist.
+Note that this method invalidates all signatures.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">oldOwner</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK to remove.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeReader" class="method item">
+    <h3 class="name"><code>removeReader</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>oldReader</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l294"><code>org.cassproject.schema.general.js:294</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a reader from the object, if the reader does exist.
+Note that this method invalidates all signatures.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">oldReader</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the old reader.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setContextAndType" class="method item inherited">
+    <h3 class="name"><code>setContextAndType</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>context</code>
+                </li>
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_setContextAndType">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l39"><code>org.json-ld.js:39</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Set the JSON-LD @context and @type.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">context</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        JSON-LD Context.
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        JSON-LD Type.
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_shortId" class="method item">
+    <h3 class="name"><code>shortId</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l366"><code>org.cassproject.schema.general.js:366</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Return the ID of this object without the version information.
+Used to reference the latest version of an object.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>ID of the latest version of this object.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_signWith" class="method item">
+    <h3 class="name"><code>signWith</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppk</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l189"><code>org.cassproject.schema.general.js:189</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sign this object using a private key.
+Does not check for ownership, objects signed with keys absent from @owner or @reader may be removed.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppk</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public private keypair.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_toJson" class="method item inherited">
+    <h3 class="name"><code>toJson</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_toJson">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l70"><code>org.json-ld.js:70</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Serializes this object to JSON.
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    JSON formatted object (with JSON-LD fields).
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toSignableJson" class="method item">
+    <h3 class="name"><code>toSignableJson</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l165"><code>org.cassproject.schema.general.js:165</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the object in a form where it is ready to be signed.
+This method is under long term review, and may change from version to version.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>ASCII-sort order encoded space-free and tab-free JSON-LD.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_trimVersionFromUrl" class="method item">
+    <h3 class="name"><code>trimVersionFromUrl</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l348"><code>org.cassproject.schema.general.js:348</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes the version information from an identifier.
+Warning: Will remove identifier if the identifier is composed solely of digits!!!</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Slash delimited URL or path.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>ID without version.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_updateTimestamp" class="method item">
+    <h3 class="name"><code>updateTimestamp</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l327"><code>org.cassproject.schema.general.js:327</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Updates the ID timestamp of the object, for versioning purposes.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_upgrade" class="method item inherited">
+    <h3 class="name"><code>upgrade</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#method_upgrade">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l218"><code>org.json-ld.js:218</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        Upgrades the object to the latest version, performing transforms and the like.
+    </div>
+
+
+
+
+</div>
+<div id="method_verify" class="method item">
+    <h3 class="name"><code>verify</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l208"><code>org.cassproject.schema.general.js:208</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Verifies the object's signatures.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if all of the signatures could be verified, false if they could not</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_context" class="property item inherited">
+    <h3 class="name"><code>context</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#property_context">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l33"><code>org.json-ld.js:33</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        JSON-LD @context field.
+    </div>
+
+
+
+</div>
+<div id="property_id" class="property item">
+    <h3 class="name"><code>id</code></h3>
+    <span class="type">String (URL)</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l81"><code>org.cassproject.schema.general.js:81</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>URL/URI used to retrieve, store and identify the object.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_owner" class="property item">
+    <h3 class="name"><code>owner</code></h3>
+    <span class="type">String (PEM)</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l63"><code>org.cassproject.schema.general.js:63</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>PEM encoded public keys of the owner of the object. A repository, upon
+receiving a write operation, will ensure either the data did not
+previously exist, or that an owner has provided a signature authorizing
+the replacement of the old data with the new data.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_reader" class="property item">
+    <h3 class="name"><code>reader</code></h3>
+    <span class="type">String (PEM)</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l88"><code>org.cassproject.schema.general.js:88</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>PEM encoded public keys of identities authorized to view the object. A
+repository will ignore write operations from these identities, but will
+allow them to read the object.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_signature" class="property item">
+    <h3 class="name"><code>signature</code></h3>
+    <span class="type">String (Base64)</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/org.cassproject.schema.general.js.html#l72"><code>org.cassproject.schema.general.js:72</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Signatures of the object. The signing method is as follows: Remove the
+signature field. Encode the object and its fields in ascii-sort order
+JSON-LD using a space-free, tab-free encoding. Sign the aforementioned
+string.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_type" class="property item inherited">
+    <h3 class="name"><code>type</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/EcLinkedData.html#property_type">EcLinkedData</a>:
+        <a href="../files/org.json-ld.js.html#l27"><code>org.json-ld.js:27</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        JSON-LD @type field.
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

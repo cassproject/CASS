@@ -230,7 +230,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "getRollupRules");
     }
 
-    var NEW_COMPETENCY_NAME = "_New Competency";
+    var NEW_COMPETENCY_NAME = "";
 
     CompetencyEditScreen.prototype.display = function (containerId) {
         data = this.data;
@@ -261,6 +261,8 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
             if (AppController.identityController.selectedIdentity != undefined) {
                 data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
             }
+            
+            $("#competencyEditName").focus();
         }
 
         ViewManager.showView(new MessageContainer("competencyEdit"), "#competencyEditMessageContainer", function () {
@@ -338,7 +340,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
                 ViewManager.getView("#competencyEditMessageContainer").clearAlert("defaultName");
                 data.save(saveSuccess, errorSaving);
             } else {
-                ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency With Default Name", "defaultName");
+                ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency Without a Name", "defaultName");
             }
         })
 

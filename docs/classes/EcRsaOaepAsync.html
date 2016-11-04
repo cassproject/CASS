@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>EcRsaOaep - CASS Javascript Library</title>
+    <title>EcRsaOaepAsync - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -98,12 +98,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>EcRsaOaep Class</h1>
+<h1>EcRsaOaepAsync Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/ec.crypto.js.html#l4043"><code>ec.crypto.js:4043</code></a>
+            Defined in: <a href="../files/ec.crypto.js.html#l6473"><code>ec.crypto.js:6473</code></a>
         </div>
 
 
@@ -111,9 +111,7 @@
 
 
 <div class="box intro">
-    <p>Helper methods for performing RSA Encryption methods.
-Uses Optimal Asymmetric Encryption Padding (OAEP) encryption and decryption.
-Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.</p>
+    <p>Asynchronous implementation of <a href="../classes/EcRsaOaep.html" class="crosslink">EcRsaOaep</a>. Uses web workers and assumes 8 workers.</p>
 
 </div>
 
@@ -179,12 +177,15 @@ Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 enc
                 <li class="arg">
                         <code>ciphertext</code>
                 </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
 
 
 
@@ -196,7 +197,7 @@ Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 enc
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.crypto.js.html#l4063"><code>ec.crypto.js:4063</code></a>
+        <a href="../files/ec.crypto.js.html#l6543"><code>ec.crypto.js:6543</code></a>
         </p>
 
 
@@ -204,8 +205,7 @@ Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 enc
     </div>
 
     <div class="description">
-        <p>Decrypts a block of ciphertext (no more than 256 bytes) with a private key using RSA OAEP encryption.
-Returns a unencoded plaintext.</p>
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_decrypt" class="crosslink">EcRsaOaep.decrypt</a></p>
 
     </div>
 
@@ -219,7 +219,7 @@ Returns a unencoded plaintext.</p>
 
 
                     <div class="param-description">
-                        <p>Public private keypair.</p>
+                        <p>Public private keypair to use to decrypt.</p>
 
                     </div>
 
@@ -230,7 +230,29 @@ Returns a unencoded plaintext.</p>
 
 
                     <div class="param-description">
-                        <p>Ciphertext.</p>
+                        <p>Ciphertext to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is unencoded plaintext.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error message.</p>
 
                     </div>
 
@@ -238,15 +260,6 @@ Returns a unencoded plaintext.</p>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-                    <p>Unencoded plaintext.</p>
-
-            </div>
-        </div>
 
 
 </div>
@@ -261,6 +274,12 @@ Returns a unencoded plaintext.</p>
                 <li class="arg">
                         <code>plaintext</code>
                 </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -275,7 +294,7 @@ Returns a unencoded plaintext.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.crypto.js.html#l4052"><code>ec.crypto.js:4052</code></a>
+        <a href="../files/ec.crypto.js.html#l6518"><code>ec.crypto.js:6518</code></a>
         </p>
 
 
@@ -283,8 +302,7 @@ Returns a unencoded plaintext.</p>
     </div>
 
     <div class="description">
-        <p>Encrypts a block of plaintext (no more than 256 bytes) with a public key using RSA OAEP encryption.
-Returns a base64 encoded ciphertext.</p>
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_encrypt" class="crosslink">EcRsaOaep.encrypt</a></p>
 
     </div>
 
@@ -298,7 +316,7 @@ Returns a base64 encoded ciphertext.</p>
 
 
                     <div class="param-description">
-                        <p>Public Key.</p>
+                        <p>Public Key to use to encrypt.</p>
 
                     </div>
 
@@ -309,7 +327,29 @@ Returns a base64 encoded ciphertext.</p>
 
 
                     <div class="param-description">
-                        <p>Plaintext. Does not perform encoding.</p>
+                        <p>Plaintext to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64 encoded Ciphertext.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error message.</p>
 
                     </div>
 
@@ -331,12 +371,15 @@ Returns a base64 encoded ciphertext.</p>
                 <li class="arg">
                         <code>text</code>
                 </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
 
 
 
@@ -348,7 +391,7 @@ Returns a base64 encoded ciphertext.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.crypto.js.html#l4075"><code>ec.crypto.js:4075</code></a>
+        <a href="../files/ec.crypto.js.html#l6568"><code>ec.crypto.js:6568</code></a>
         </p>
 
 
@@ -356,10 +399,7 @@ Returns a base64 encoded ciphertext.</p>
     </div>
 
     <div class="description">
-        <p>Creates a signature for the provided text using the public private keypair.
-May be verified with the public key.
-Uses SHA1 hash with a UTF8 decoding of the text.
-Returns base64 encoded signature.</p>
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_sign" class="crosslink">EcRsaOaep.sign</a></p>
 
     </div>
 
@@ -373,7 +413,7 @@ Returns base64 encoded signature.</p>
 
 
                     <div class="param-description">
-                        <p>Public private keypair.</p>
+                        <p>Public private keypair to use to sign message.</p>
 
                     </div>
 
@@ -389,17 +429,31 @@ Returns base64 encoded signature.</p>
                     </div>
 
                 </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64 encoded signature.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error message.</p>
+
+                    </div>
+
+                </li>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>Base64 encoded signature.</p>
-
-            </div>
-        </div>
 
 
 </div>
@@ -414,12 +468,15 @@ Returns base64 encoded signature.</p>
                 <li class="arg">
                         <code>text</code>
                 </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
 
 
 
@@ -431,7 +488,7 @@ Returns base64 encoded signature.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.crypto.js.html#l4091"><code>ec.crypto.js:4091</code></a>
+        <a href="../files/ec.crypto.js.html#l6593"><code>ec.crypto.js:6593</code></a>
         </p>
 
 
@@ -439,10 +496,7 @@ Returns base64 encoded signature.</p>
     </div>
 
     <div class="description">
-        <p>Creates a signature for the provided text using the public private keypair.
-May be verified with the public key.
-Uses SHA256 hash with a UTF8 decoding of the text.
-Returns base64 encoded signature.</p>
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_signSha256" class="crosslink">EcRsaOaep.signSha256</a></p>
 
     </div>
 
@@ -456,7 +510,7 @@ Returns base64 encoded signature.</p>
 
 
                     <div class="param-description">
-                        <p>Public private keypair.</p>
+                        <p>Public private keypair to use to sign message.</p>
 
                     </div>
 
@@ -472,17 +526,31 @@ Returns base64 encoded signature.</p>
                     </div>
 
                 </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64 encoded signature.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error message.</p>
+
+                    </div>
+
+                </li>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>Base64 encoded signature.</p>
-
-            </div>
-        </div>
 
 
 </div>
@@ -500,12 +568,15 @@ Returns base64 encoded signature.</p>
                 <li class="arg">
                         <code>signature</code>
                 </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
 
 
 
@@ -517,7 +588,7 @@ Returns base64 encoded signature.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/ec.crypto.js.html#l4107"><code>ec.crypto.js:4107</code></a>
+        <a href="../files/ec.crypto.js.html#l6618"><code>ec.crypto.js:6618</code></a>
         </p>
 
 
@@ -525,8 +596,7 @@ Returns base64 encoded signature.</p>
     </div>
 
     <div class="description">
-        <p>Verifies the integrity of the provided text using a signature and a public key.
-Uses SHA1 hash with a UTF8 decoding of the text.</p>
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_verify" class="crosslink">EcRsaOaep.verify</a></p>
 
     </div>
 
@@ -540,7 +610,7 @@ Uses SHA1 hash with a UTF8 decoding of the text.</p>
 
 
                     <div class="param-description">
-                        <p>Public key.</p>
+                        <p>Public key to use to verify message.</p>
 
                     </div>
 
@@ -551,7 +621,7 @@ Uses SHA1 hash with a UTF8 decoding of the text.</p>
 
 
                     <div class="param-description">
-                        <p>Text to verify.</p>
+                        <p>Text to use in verification.</p>
 
                     </div>
 
@@ -562,7 +632,29 @@ Uses SHA1 hash with a UTF8 decoding of the text.</p>
 
 
                     <div class="param-description">
-                        <p>Base64 encoded signature.</p>
+                        <p>Signature to use in verification.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(boolean)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is whether signature is valid.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error message.</p>
 
                     </div>
 
@@ -570,14 +662,6 @@ Uses SHA1 hash with a UTF8 decoding of the text.</p>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>True IFF the signature is valid.</p>
-
-            </div>
-        </div>
 
 
 </div>

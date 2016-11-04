@@ -348,6 +348,12 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
      *  object.
      */
     prototype.name = null;
+    /**
+     *  Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using
+     *  RSA public keys of owners or readers (or unknown parties) to allow them
+     *  access to the payload.
+     */
+    prototype.secret = null;
     prototype.copyFrom = function(that) {
         var me = (this);
         for (var key in me) 
@@ -379,7 +385,7 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
         a.push(EbacEncryptedValue.TYPE_0_1);
         return a;
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  AES encrypted public key and display name. Contains Initialization Vectors,
  *  but not secrets. Used to encrypt public identities for storage on remote
@@ -419,7 +425,7 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
         a.push(EbacContactGrant.TYPE_0_1);
         return a;
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Message used to commit credentials to a remote login server.
  *  

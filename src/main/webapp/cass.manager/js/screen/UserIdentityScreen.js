@@ -257,7 +257,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
             $("#generateContainer").addClass("hide");
         });
 
-        $("#generateIdentity").click(function (event) {
+        $("#startGenerateIdentity").click(function (event) {
             event.preventDefault();
 
             $("#generateContainer").removeClass("hide");
@@ -272,11 +272,16 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         });
 
         $("#generateIdentity").click(function () {
+        	$("#generateInProgress").removeClass("hide");
+        	$("#generateIdentity").addClass("hide");
+        	
             var name = $("#generateIdentityName").val();
             AppController.identityController.generateIdentity(function (identity) {
                 refreshIdentities(EcIdentityManager.ids);
                 download(identity.displayName + '.pem', identity.ppk.toPem());
                 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
+                $("#generateIdentity").removeClass("hide");
+            	$("#generateInProgress").addClass("hide");
             }, name);
         });
 
