@@ -1,6 +1,7 @@
 /**
  *  Object to hold a triple, used in graph.
  *  @class Triple
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var Triple = function() {};
@@ -43,6 +44,7 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
 /**
  *  Object Helper Functions
  *  @class EcObject
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcObject = function() {};
@@ -61,6 +63,7 @@ EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
 /**
  *  Array Helper Functions
  *  @class EcArray
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcArray = function() {};
@@ -97,6 +100,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
  *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
  *  When all callbacks have been called, 'after(array)' is called. 
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcAsyncHelper
  */
 var EcAsyncHelper = function() {};
@@ -171,6 +175,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
  *  </ul>
  *  
  *  @class Hypergraph
+ *  @module com.eduworks.ec
  *  @author Joshua O'Madadhain
  *   
  *  Ported to Javascript by:
@@ -622,6 +627,7 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
 /**
  *  Wrapper to handle all remote web service invocations.
  *  @class EcRemote
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  *  @author devlin.junker@eduworks.com
  */
@@ -828,6 +834,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
  *  </ul> 
  *  
  *  @class Graph
+ *  @module com.eduworks.ec
  *  @extends Hypergraph
  *  @author Joshua O'Madadhain
  *  
@@ -1004,6 +1011,7 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  *  @class EcDirectedGraph
+ *  @module com.eduworks.ec
  *  @extends Graph
  *  @author fray
  * 

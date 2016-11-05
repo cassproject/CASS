@@ -12,6 +12,7 @@
  *  Note: Serialization and deserialization remove parameters that begin with '@'.
  *  Note: This Linked Data Object is not assumed to have an @id field.
  *  @author fritz.ray@eduworks.com
+ *  @module org.json.ld
  *  @class EcLinkedData
  */
 var EcLinkedData = /**

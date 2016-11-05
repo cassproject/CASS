@@ -10,6 +10,7 @@
 /**
  *  Location of strings that store the current namespace for general Eduworks Objects.
  *  @class General
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var General = function() {};
@@ -27,6 +28,7 @@ General = stjs.extend(General, null, [], function(constructor, prototype) {
 /**
  *  Location of strings that store the current namespace for EBAC/KBAC.
  *  @class Ebac
+ *  @module org.cassproject
  *  @author fritz.ray@eduworks.com
  */
 var Ebac = function() {};
@@ -48,6 +50,7 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
  *  
  *  @class EcRemoteLinkedData
  *  @extends EcLinkedData
+ *  @module org.cassproject
  *  @author fritz.ray@eduworks.com
  */
 var EcRemoteLinkedData = /**

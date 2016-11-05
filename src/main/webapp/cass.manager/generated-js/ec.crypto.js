@@ -11,6 +11,7 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
 /**
  *  Helper classes for dealing with RSA Public Keys.
  *  @class EcPk
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcPk = function() {};
@@ -3662,6 +3663,7 @@ define(['require', 'module'], function() {
 /**
  *  AES encryption tasks common across all variants of AES.
  *  @class EcAes 
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcAes = function() {};
@@ -4036,6 +4038,7 @@ define(['require', 'module', './util'], function() {
  *  Uses Optimal Asymmetric Encryption Padding (OAEP) encryption and decryption.
  *  Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcRsaOaep
  */
 var EcRsaOaep = function() {};
@@ -6342,6 +6345,7 @@ EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constr
 /**
  *  Helper classes for dealing with RSA Private Keys.
  *  @class EcPpk
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcPpk = function() {};
@@ -6464,6 +6468,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
 /**
  *  Asynchronous implementation of {{#crossLink "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
  *  @class EcRsaOaepAsync
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcRsaOaepAsync = function() {};
@@ -6638,6 +6643,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcAesCtr
  */
 var EcAesCtr = function() {};
@@ -6684,6 +6690,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
 /**
  *  Asynchronous implementation of {{#crossLink "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
  *  @class EcAesCtrAsync
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcAesCtrAsync = function() {};
