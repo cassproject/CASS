@@ -32,6 +32,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ArtGallery",
         "Article",
         "AskAction",
+        "AssertionProcessor",
         "AssessAction",
         "AssignAction",
         "Attorney",

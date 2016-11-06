@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DepartAction - CASS Javascript Library</title>
+    <title>AssertionProcessor - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -682,22 +682,22 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>DepartAction Class</h1>
+<h1>AssertionProcessor Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/org.schema.js.html#l14369"><code>org.schema.js:14369</code></a>
+            Defined in: <a href="../files/cass.rollup.js.html#l537"><code>cass.rollup.js:537</code></a>
         </div>
 
-            Module: <a href="../modules/schema.org.html">schema.org</a>
+            Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
 
 </div>
 
 
 <div class="box intro">
-    <p><a href="http://Schema.org/DepartAction">Schema.org/DepartAction</a>
-The act of  departing from a place. An agent departs from an fromLocation for a destination, optionally with participants.</p>
+    <p>Processor used in Assertion Processing.
+Can estimate or determine competence of individuals.</p>
 
 </div>
 
@@ -706,17 +706,184 @@ The act of  departing from a place. An agent departs from an fromLocation for a 
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_has">has</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
 
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_has" class="method item">
+    <h3 class="name"><code>has</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>subject</code>
+                </li>
+                <li class="arg">
+                        <code>competency</code>
+                </li>
+                <li class="arg">
+                        <code>level</code>
+                </li>
+                <li class="arg">
+                        <code>context</code>
+                </li>
+                <li class="arg">
+                        <code>additionalSignatures</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>ask</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/cass.rollup.js.html#l560"><code>cass.rollup.js:560</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronously processes and provides an answer to the question: Does an individual hold a competency?</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">subject</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk[]</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public keys that identify the subject.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">competency</code>
+                        <span class="type">EcCompetency</span>
+
+
+                    <div class="param-description">
+                        <p>The Competency being inquired about.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">level</code>
+                        <span class="type">EcLevel</span>
+
+
+                    <div class="param-description">
+                        <p>The Level of the Competency at which the question is being asked.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">context</code>
+                        <span class="type">EcFramework</span>
+
+
+                    <div class="param-description">
+                        <p>The Framework in which to scope the inquiry.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">additionalSignatures</code>
+                        <span class="type">EbacSignature</span>
+
+
+                    <div class="param-description">
+                        <p>Additional signatures provided by an authority, used to request additional access on a one-time basis.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(InquiryPacket)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when a decision has been reached.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">ask</code>
+                        <span class="type">String function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when the assertion processor detects that it needs information. (Usernames, passwords, etc)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when the assertion processor has failed.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
 
 
 

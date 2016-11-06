@@ -17,7 +17,9 @@
         "cass.rollup.js": {
             "name": "cass.rollup.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "AssertionProcessor": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -715,6 +717,24 @@
         }
     },
     "modules": {
+        "org.cassproject": {
+            "name": "org.cassproject",
+            "submodules": {
+                "undefined": 1
+            },
+            "elements": {},
+            "classes": {
+                "Ebac": 1,
+                "AssertionProcessor": 1,
+                "EcRemoteLinkedData": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "org.cassproject.schema.general.js",
+            "line": 47,
+            "description": "Location of strings that store the current namespace for EBAC/KBAC."
+        },
         "com.eduworks.ec": {
             "name": "com.eduworks.ec",
             "submodules": {},
@@ -744,21 +764,6 @@
             "line": 10,
             "description": "Object to hold a triple, used in graph.",
             "author": "fritz.ray@eduworks.com"
-        },
-        "org.cassproject": {
-            "name": "org.cassproject",
-            "submodules": {},
-            "elements": {},
-            "classes": {
-                "Ebac": 1,
-                "EcRemoteLinkedData": 1
-            },
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "org.cassproject.schema.general.js",
-            "line": 47,
-            "description": "Location of strings that store the current namespace for EBAC/KBAC."
         },
         "org.json.ld": {
             "name": "org.json.ld",
@@ -1375,6 +1380,20 @@
         }
     },
     "classes": {
+        "AssertionProcessor": {
+            "name": "AssertionProcessor",
+            "shortname": "AssertionProcessor",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "file": "cass.rollup.js",
+            "line": 537,
+            "description": "Processor used in Assertion Processing.\nCan estimate or determine competence of individuals.",
+            "author": "tom.buskirk@eduworks.com"
+        },
         "Triple": {
             "name": "Triple",
             "shortname": "Triple",
@@ -1384,6 +1403,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "com.eduworks.ec",
+            "namespace": "",
             "file": "ec.base.js",
             "line": 10,
             "description": "Object to hold a triple, used in graph.",
@@ -10425,7 +10445,7 @@
             "line": 10,
             "description": "The sequence that assertions should be built as such: 1. Generate the ID. 2.\nAdd the owner. 3. Set the subject. 4. Set the agent. Further functions may be\ncalled afterwards in any order. WARNING: The modifications of ownership and\nreadership do not \"just work\".",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.competency.js",
@@ -10437,45 +10457,98 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.competency.js",
             "line": 325,
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.competency.js",
             "line": 383,
             "description": "TODO: Test case where an absent relation is in the framework.",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.competency.js",
             "line": 552,
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.competency.js",
             "line": 659,
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "AssertionProcessor"
         },
         {
             "file": "cass.rollup.js",
-            "line": 972,
+            "line": 560,
+            "description": "Asynchronously processes and provides an answer to the question: Does an individual hold a competency?",
+            "itemtype": "method",
+            "name": "has",
+            "params": [
+                {
+                    "name": "subject",
+                    "description": "Public keys that identify the subject.",
+                    "type": "EcPk[]"
+                },
+                {
+                    "name": "competency",
+                    "description": "The Competency being inquired about.",
+                    "type": "EcCompetency"
+                },
+                {
+                    "name": "level",
+                    "description": "The Level of the Competency at which the question is being asked.",
+                    "type": "EcLevel"
+                },
+                {
+                    "name": "context",
+                    "description": "The Framework in which to scope the inquiry.",
+                    "type": "EcFramework"
+                },
+                {
+                    "name": "additionalSignatures",
+                    "description": "Additional signatures provided by an authority, used to request additional access on a one-time basis.",
+                    "type": "EbacSignature[]"
+                },
+                {
+                    "name": "success",
+                    "description": "The method that is invoked when a decision has been reached.",
+                    "type": "Function(InquiryPacket)"
+                },
+                {
+                    "name": "ask",
+                    "description": "The method that is invoked when the assertion processor detects that it needs information. (Usernames, passwords, etc)",
+                    "type": "String function(string)"
+                },
+                {
+                    "name": "failure",
+                    "description": "The method that is invoked when the assertion processor has failed.",
+                    "type": "Function(string)"
+                }
+            ],
+            "class": "AssertionProcessor",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "cass.rollup.js",
+            "line": 992,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
-            "class": "Triple"
+            "class": "AssertionProcessor",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 10,
             "description": "A contact is an identity that we do not own. Using the public key we may: 1.\nSend them information (by encrypting data with their public key) 2. Verify a\nsigned message that was sent (by using the verify function of the public key)\n3. Distinguish between this identity and other identities through the\ndisplayName.",
             "author": "fray",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10490,7 +10563,8 @@
             "return": {
                 "description": "Encrypted contact object."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10513,14 +10587,16 @@
             "return": {
                 "description": "Decrypted identity object, ready for use."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 72,
             "description": "An identity is an alias that a person or system may own. It consists of a\nprivate key and a display name. Using the private key we may: 1. Perform all\noperations of a EcContact. 2. Decrypt messages using our private key. 3. Sign\nmessages, ensuring the recipient knows that we sent the message and it was\nnot altered.",
             "author": "fray",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10535,7 +10611,8 @@
             "return": {
                 "description": "Encrypted credential object."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10558,7 +10635,8 @@
             "return": {
                 "description": "Decrypted identity object, ready for use."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10567,38 +10645,44 @@
             "return": {
                 "description": "Contact object."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 143,
             "description": "Manages identities and contacts, provides hooks to respond to identity and\ncontact events, and builds signatures and signature sheets for authorizing\nmovement of data. Also provides helper functions for identity management.",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 168,
             "description": "Reads contact data from localstorage.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 193,
             "description": "Writes contact data to localstorage.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 209,
             "description": "Reads contact data from localstorage.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 234,
             "description": "Writes contact data to localstorage.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10610,7 +10694,8 @@
                     "description": "Identity to add."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10622,7 +10707,8 @@
                     "description": "Contact to add."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10645,7 +10731,8 @@
             "return": {
                 "description": "JSON Array containing signatures."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10664,7 +10751,8 @@
             "return": {
                 "description": "JSON Array containing signatures."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10679,7 +10767,8 @@
             "return": {
                 "description": "PPK or null."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10694,7 +10783,8 @@
             "return": {
                 "description": "PPK or null."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10709,7 +10799,8 @@
             "return": {
                 "description": "PPK or null."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10721,14 +10812,16 @@
                     "description": "Data to sign."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 489,
             "description": "Logs into and stores/retrieves credentials from a compatible remote server.\nPerforms anonymization of the user.\n\nRequires initialization with server specific salts. Server specific salts\nprevent co-occurrence attacks, should credentials on one server be\ncompromised (intercepted in transit).\n\nTransmits hashed username, hashed password, and encrypts credentials using\nthe hashed combination of the username and password. This prevents the system\nstoring the credentials from having any knowledge of the user.\n\nPassword recovery is done by, when the password changes, creating a\ncryptographic pad (or perfect cipher) where one half is stored on the server,\nand the other half is stored with the user. Should the user lose this pad and\nforget their password, they are not able to recover or reset their password,\nand their data should be considered lost.",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10768,13 +10861,15 @@
                     "description": "Number of times to hash secret."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
             "line": 611,
             "description": "Wipes login data.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10786,7 +10881,8 @@
                     "description": "URL to remote identity management server."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10802,7 +10898,8 @@
                     "description": "Password"
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10825,7 +10922,8 @@
             "return": {
                 "description": "Valid password change request."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10841,7 +10939,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10861,7 +10960,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10881,7 +10981,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.identity.js",
@@ -10896,14 +10997,16 @@
             "return": {
                 "description": "Spliced password."
             },
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 10,
             "description": "Represents an encrypted piece of data. Provides helper functions for\nencryption/decryption of JSON-LD objects, and provides some searchability of\nthe data within.",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -10915,7 +11018,8 @@
                     "description": "PK of the new reader."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -10927,38 +11031,44 @@
                     "description": "PK of the old reader."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 355,
             "description": "A representation of a file.",
             "author": "fritz.ray@eduworks.com",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 367,
             "description": "Optional checksum of the file, used to verify if the file has been\ntransmitted correctly.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 372,
             "description": "Mime type of the file.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 376,
             "description": "Base-64 encoded version of the bytestream of a file.\n\nPlease note: This field will be empty in search results, but be populated\nin a direct get.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
             "line": 384,
             "description": "Helper method to force the browser to download the file.",
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -10978,7 +11088,8 @@
                     "description": "Event to call upon spectacular failure."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11002,7 +11113,8 @@
                     "description": "Failure event."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11030,7 +11142,8 @@
                     "description": "Failure event."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11046,7 +11159,8 @@
                     "description": "Failure event."
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11066,7 +11180,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11086,7 +11201,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ebac.repository.js",
@@ -11106,7 +11222,8 @@
                     "description": ""
                 }
             ],
-            "class": "Triple"
+            "class": "Triple",
+            "module": "org.cassproject"
         },
         {
             "file": "ec.base.js",
@@ -30533,7 +30650,7 @@
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
-            "line": " cass.rollup.js:972"
+            "line": " cass.rollup.js:992"
         },
         {
             "message": "Missing item type\nA contact is an identity that we do not own. Using the public key we may: 1.\nSend them information (by encrypting data with their public key) 2. Verify a\nsigned message that was sent (by using the verify function of the public key)\n3. Distinguish between this identity and other identities through the\ndisplayName.",
