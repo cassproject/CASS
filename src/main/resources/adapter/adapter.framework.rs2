@@ -1,4 +1,4 @@
-frameworks=#add(a='(@type:"framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
+frameworks=#add(a='(@type:"framework") OR (@type:"Framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
 #getFrameworks=frameworks;
 
