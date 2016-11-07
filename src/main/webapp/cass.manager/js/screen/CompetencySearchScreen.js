@@ -1,9 +1,24 @@
+/**
+ * Screen for displaying search results from a competency search in 
+ * a DataViewer view. 
+ * 
+ * @class CompetencySearchScreen 
+ * @author devlin.junker@eduworks.com
+ */
 CompetencySearchScreen = (function(CompetencySearchScreen){
 	
 	var maxLength = 24;
 	
 	var searchHandle = null;
 	
+	/**
+     * Method to run the competency search on the server
+     * 
+     * @memberOf CompetencySearchScreen
+     * @method runCompetencySearch
+     * @private
+     * @param {int} start
+     */
 	function runCompetencySearch(start){
 		var query = $("#competencySearchText").val();
 
@@ -62,12 +77,33 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears the data in the DataViewer so that the table is empty
+	 * and then displays the results
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method clearDisplayResults
+	 * @private	
+	 * @param {Array<EcCompetency>} results
+	 * 			results to display after clearing the DataViewer
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#competencySearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Displays results of the search, by appending them to the table,
+	 * does some checks on the number of results to see what interfaces 
+	 * should be visible
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method displayResults
+	 * @private
+	 * @param {Array<EcAssertion>} results
+	 * 			results to add to to the DataViewer
+	 */
 	function displayResults(results)
 	{ 
 		ViewManager.getView("#competencySearchResults").populate(results);
@@ -96,20 +132,31 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		searchHandle = null;
 	}
 	
-//	function scrollSearchHandler(){
-//		var resultDiv = $("#competencyResults-data").first(); 
-//		
-//		if(resultDiv.children().size() == 0){
-//			$(window).off("scroll", scrollSearchHandler);
-//		}
-//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-//		{
-//			//$("#moreSearchResults").addClass("hide");
-//			//$("#loadingMoreResults").removeClass("hide");
-//			runCompetencySearch(resultDiv.children().size() );
-//		}
-//	}
+	/*
+	function scrollSearchHandler(){
+		var resultDiv = $("#competencyResults-data").first(); 
+		
+		if(resultDiv.children().size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runCompetencySearch(resultDiv.children().size() );
+		}
+	}
+	*/
 	
+	/**
+     * Called when error searching for competency
+     * 
+     * @memberOf CompetencySearchScreen
+     * @method errorSearching
+     * @private
+     * @param {String} err
+     * 			Error message to be displayed
+     */
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
@@ -119,11 +166,28 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		$("#competencySearchNone").removeClass("hide");
 		$("#competencySearchProgress").addClass("hide");
 	}
-	
+
+	/**
+     * Called when the competency name is clicked on in the DataViewer
+     * 
+     * @memberOf CompetencySearchScreen
+     * @method viewCompetency
+     * @private 
+     * @param {EcCompetency} competency	
+     * 			Competency to display on the CompetencyViewScreen changed to
+     */
 	function viewCompetency(competency){
 		ScreenManager.changeScreen(new CompetencyViewScreen(competency));
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	CompetencySearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;
@@ -149,41 +213,42 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 				
 				return el;
 			},
-			buildData:function(id, datum){
-				var el = $(	"<div>"+ 
-								"<div class='small-8 columns'>" +
-								"<a class='datum-name'></a>" +
-								"<span class='datum-description'></span>" +
-								"</div>" +
-								"<div class='small-4 columns datum-owner'></div>" +
-							"</div>");
+			buildDataRow:function(row, id, datum){
+				row.append("<div class='small-8 columns'>" +
+							"<a class='datum-name'></a>" +
+							"<span class='datum-description'></span>" +
+							"</div>" +
+							"<div class='small-4 columns datum-owner'></div>");
 				if(datum["name"] != undefined)
-					el.find(".datum-name").text(datum["name"]);
+					row.find(".datum-name").text(datum["name"]);
 				else
-					el.find(".datum-name").text(id);
+					row.find(".datum-name").text(id);
 				
 				if(datum["description"] != undefined)
-					el.find(".datum-description").text(" - "+datum["description"]);
+					row.find(".datum-description").text(" - "+datum["description"]);
 				else
-					el.find(".datum-description").text("");
+					row.find(".datum-description").text("");
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
-					var owner = "";
 					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", ";
+						var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+						var idEnd = trimId.split("/")[trimId.split("/").length-1];
+						var elId = idEnd+"-owner-"+i;
+						
+						var ownerEl = $("<span id='"+elId+"'></span>")
+						row.find(".datum-owner").append(ownerEl);
+						
+						ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 					}
-					owner = owner.substring(0, owner.length-2);
-					el.find(".datum-owner").html(owner);
 				}else{
-					el.find(".datum-owner").text("Public");
+					row.find(".datum-owner").text("Public");
 				}
 				
-				el.find("a.datum-name").click(function(ev){
+				row.find("a.datum-name").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new CompetencyViewScreen(datum));
-				})
+				});
 				
-				return el.children();
 			}
 		}), "#competencySearchResults");
 		

@@ -150,7 +150,7 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
                 return true;
         return false;
     };
-}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "EcCallbackReturn1", arguments: [null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
 var RrToken = function() {};
 RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
     prototype.number = null;
@@ -534,6 +534,14 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
             }
     };
 }, {failure: {name: "Callback1", arguments: [null]}, success: {name: "Callback1", arguments: [null]}, ip: "InquiryPacket"}, {});
+/**
+ *  Processor used in Assertion Processing.
+ *  Can estimate or determine competence of individuals.
+ *  @class AssertionProcessor
+ *  @module org.cassproject
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ */
 var AssertionProcessor = function() {
     this.repositories = new Array();
     this.step = AssertionProcessor.DEF_STEP;
@@ -549,6 +557,18 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
             this.logFunction(string);
         ip.log += "\n" + string;
     };
+    /**
+     *  Asynchronously processes and provides an answer to the question: Does an individual hold a competency?
+     *  @method has
+     *  @param {EcPk[]} subject Public keys that identify the subject.
+     *  @param {EcCompetency} competency The Competency being inquired about.
+     *  @param {EcLevel} level The Level of the Competency at which the question is being asked.
+     *  @param {EcFramework} context The Framework in which to scope the inquiry.
+     *  @param {EbacSignature[]} additionalSignatures Additional signatures provided by an authority, used to request additional access on a one-time basis.
+     *  @param {function(InquiryPacket)} success The method that is invoked when a decision has been reached.
+     *  @param {string function(string)} ask The method that is invoked when the assertion processor detects that it needs information. (Usernames, passwords, etc)
+     *  @param {function(string)} failure The method that is invoked when the assertion processor has failed.
+     */
     prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
         var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
         this.processedEquivalencies = {};

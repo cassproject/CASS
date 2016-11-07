@@ -1,4 +1,17 @@
-var AddFieldModal = function(field, repoEditContainer) {
+/**
+ *  Stub for the AddFieldModal
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @class AddFieldModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddFieldModal = /**
+ *  @constructor
+ *  @param {Object} field
+ *  @param {String} repoEditContainer
+ */
+function(field, repoEditContainer) {
     EcModal.call(this);
     this.field = field;
     this.repoEditContainer = repoEditContainer;

@@ -1,0 +1,12 @@
+{
+    "name": "CASS Javascript Library",
+    "description": "CASS Javascript Library API: ",
+    "version": "0.2",
+    "url": "http://cassproject.org/",
+    "logo": "http://docs.cassproject.org/img/customLogo-blue.png",
+    "options": {
+        "exclude": "base64toArrayBuffer.js,base64x-1.1.js,blobHelper.js,FileSaver.js,forgeAsync.js,openpgp.js,papaparse.js,random.js,stjs.js,xml2json.js",
+        "themedir": "/usr/lib/node_modules/yuidoc-ember-cli-theme",
+        "helpers": ["/usr/lib/node_modules/yuidoc-ember-cli-theme/helpers.js"]
+    }
+}

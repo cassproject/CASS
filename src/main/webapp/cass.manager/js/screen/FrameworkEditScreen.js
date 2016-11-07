@@ -495,7 +495,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         });
     }
 
-    var NEW_FRAMEWORK_NAME = "_New Framework";
+    var NEW_FRAMEWORK_NAME = "";
 
     FrameworkEditScreen.prototype.display = function (containerId, callback) {
         var data = this.data;
@@ -516,6 +516,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             if (AppController.identityController.selectedIdentity != undefined) {
                 data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
             }
+            
+            $("#frameworkEditName").focus();
         }
 
         ViewManager.showView(new MessageContainer("frameworkEdit"), "#frameworkEditMessageContainer", function () {

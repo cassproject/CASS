@@ -140,54 +140,55 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new RelationshipEditScreen(datum));
 			},
-			buildData:function(id, datum){				
-				var el = $("<div>" +
-								"<a>" +
-									"<div class='small-3 columns datum-source' style='font-weight:bold'></div> " +
-									"<div class='small-2 columns datum-type' style='font-style:italic'></div>" +
-									"<div class='small-3 columns end datum-target'></div>" +
-								"</a>" +
-								"<div class='small-4 columns datum-owner'></div>" +
-							"</div>");
+			buildDataRow:function(row, id, datum){				
+				row.append("<a>" +
+								"<div class='small-3 columns datum-source' style='font-weight:bold'></div> " +
+								"<div class='small-2 columns datum-type' style='font-style:italic'></div>" +
+								"<div class='small-3 columns end datum-target'></div>" +
+							"</a>" +
+							"<div class='small-4 columns datum-owner'></div>");
 				
-				var owner = "";
 				if(datum["owner"] == undefined || datum["owner"].length == 0){
-					owner = "Public"
+					row.find(".datum-owner").html("Public");
 				}else{
 					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", "
+						var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+						var idEnd = trimId.split("/")[trimId.split("/").length-1];
+						var elId = idEnd+"-owner-"+i;
+						
+						var ownerEl = $("<span id='"+elId+"'></span>")
+						row.find(".datum-owner").append(ownerEl);
+						
+						ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 					}
-					owner = owner.substring(0, owner.length-2);
 				}
-				el.find(".datum-owner").html(owner);
+				
 				
 				EcCompetency.get(datum.source, function(competency){
 					$("[data-id='"+datum.id+"']").find(".datum-source").text(competency.name)
 				}, function(){
-					el.find(".datum-source").text("Unknown Competency");
+					row.find(".datum-source").text("Unknown Competency");
 				})
-				el.find(".datum-source").text("Loading..");
+				row.find(".datum-source").text("Loading..");
 				
 				EcCompetency.get(datum.target, function(competency){
 					$("[data-id='"+datum.id+"']").find(".datum-target").text(competency.name)
 				}, function(){
-					el.find(".datum-target").text("Unknown Competency");
+					row.find(".datum-target").text("Unknown Competency");
 				})
-				el.find(".datum-target").text("Loading..");
+				row.find(".datum-target").text("Loading..");
 				
 				if(relationTypes[datum.relationType] != undefined){
-					el.find(".datum-type").text(relationTypes[datum.relationType])
-		
+					row.find(".datum-type").text(relationTypes[datum.relationType])
 				}else{
-					el.find(".datum-type").text("has a relationship with");
+					row.find(".datum-type").text("has a relationship with");
 				}
 				
-				el.find("a").click(function(ev){
+				row.find("a").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new RelationshipViewScreen(datum));
 				})
 				
-				return el;
 			}
 		}), "#relationshipSearchResults");
 		
