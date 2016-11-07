@@ -1,5 +1,21 @@
+/**
+ * Screen for Editing Assertions in the CASS Instance
+ * 
+ * @class AssertionEditScreen
+ * @author devlin.junker@eduworks.com
+ */	
 AssertionEditScreen = (function(AssertionEditScreen){
 	
+	/**
+	 * Helper function, converts the date passed in, to a string 
+	 * that represents the date in local time
+	 *
+	 * @memberOf AssertionEditScreen
+	 * @method dateToLocalString
+	 * @private
+	 * @param {Date} d 
+	 * 			Date to convert to string
+	 */
 	function dateToLocalString(d){
 		d = new Date(d.toUTCString());
 		
@@ -13,6 +29,13 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		return d.getFullYear()+"-"+zeroPadded(d.getMonth() + 1)+"-"+zeroPadded(d.getDate())+"T"+zeroPadded(d.getHours())+":"+zeroPadded(d.getMinutes())+":"+zeroPadded(d.getSeconds());
 	}
 	
+	/**
+	 * Displays the assertion passed in the editor on the screen
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @param {EcAssertion} assertion 
+	 * 			The assertion to be displayed
+	 */
 	function displayAssertion(assertion)
 	{
 		$('#competencyEditor').show();
@@ -137,9 +160,11 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    			$("#assertionEditOwner").append(", ");
 	    		
 	    		var pem = assertion.owner[i];
+
+	    		$("#assertionEditOwner").append("<span id='assertion-owner-"+i+"'></span>");  
 	    		
-	    		var contact = $(createContactSmall(pem));
-	    		$("#assertionEditOwner").append(contact);  
+	    		ViewManager.showView(new IdentityDisplay(pem), "#assertion-owner-"+i)
+	    		
 	    	}
 	    }else{
 	    	$("#assertionEditOwner").text("N/A")
@@ -156,14 +181,26 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    		
 	    		var pem = assertion.reader[i];
 	    		
-	    		var contact = $(createContactSmall(pem));
-	    		$("#assertionEditReaders").append(contact); 
+	    		$("#assertionEditReaders").append("<span id='assertion-reader-"+i+"'></span>")
+	    		
+	    		ViewManager.showView(new IdentityDisplay(pem), "#assertion-reader-"+i);
 	    	}
 	    }else{
 	    	$("#assertionEditNoReader").removeClass("hide");
 	    }
 	}
 	
+	/**
+	 * Builds the form before the assertion is displayed,
+	 * this builds all  of the select options on the screen for
+	 * identities and competencies/levels capable of selecting.
+	 *  
+	 * @memberOf AssertionEditScreen
+	 * @method buildForm
+	 * @private
+	 * @param {EcAssertion} assertion
+	 * 			The assertion that will be displayed later, used to pre-select options in the form
+	 */
 	function buildForm(assertion){
 		
 		for(var i in EcIdentityManager.ids){
@@ -178,8 +215,10 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		$("#assertionAgentInput").change(function(ev){
 			var pem = $("#assertionAgentInput").val();
     		
-    		var contact = $(createContactSmall(pem));
-    		$("#assertionEditOwner").html(contact);     
+			$("#assertionEditOwner").html("<span id='assertion-owner-0'></span>");
+			
+			ViewManager.showView(new IdentityDisplay(pem), "#assertion-owner-0");
+     
 		})
 	
 		for(var i in EcIdentityManager.contacts){
@@ -212,8 +251,9 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		
 		$("#assertionSubjectInput").change(function(){
 			var pem = $("#assertionSubjectInput").val();
-			var contact = $(createContactSmall(pem));
-    		$("#assertionEditSubject").html(contact);
+			//var contact = $(createContactSmall(pem));
+    		//$("#assertionEditSubject").html(contact);
+    		ViewManager.showView(new IdentityDisplay(pem), "#assertionEditSubject");
     		$("#assertionSubjectInput").css("font-style","normal");
 		})
 		
@@ -303,10 +343,26 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		$("#assertionExpirationInput").val(dateToLocalString(d));
 	}
 	
+	/**
+	 * Triggered when the assertion is saved so the user knows it was successful
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method saveSuccess
+	 * @private
+	 */
 	function saveSuccess(){
 		$("#datum").effect("highlight", {}, 1500);
 	}
 	
+	/**
+	 * Error function if the server is down when trying to get the assertion to display in Message Container
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method errorRetrieving
+	 * @private
+	 * @param {String} err
+	 * 			error message to display 
+	 */
 	function errorRetrieving(err)
 	{
 		if(err == undefined)
@@ -314,6 +370,15 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err);
 	}
 	
+	/**
+	 * Error function if there is a problem saving the assertion to the server
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method errorSaving
+	 * @private
+	 * @param {String} err
+	 * 			error message to display
+	 */
 	function errorSaving(err)
 	{
 		if(err == undefined)
@@ -322,6 +387,16 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err, "saveFail");
 	}
 	
+	/**
+	 * Error function if there is a problem retrieving the competency 
+	 * list from the server during form creation
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method errorRetrievingCompetencies
+	 * @private
+	 * @param {String} err
+	 * 			error message to display
+	 */
 	function errorRetrievingCompetencies(err)
 	{
 		if(err == undefined)
@@ -329,12 +404,30 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err);
 	}
 	
+	/**
+	 *  Error function if there is a problem retrieving the level 
+	 *  list from the server during form creation
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method errorRetrievingLevels
+	 * @private
+	 * @param {String} err
+	 * 			error message to display
+	 */
 	function errorRetrievingLevels(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve Levels";
 		ViewManager.getView("#assertionEditMessageContainer").displayAlert(err);
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf AssertionEditScreen
+	 * @method display
+	 * @param {String} containerId
+	 * 			Screen Container DOM ID
+	 */
 	AssertionEditScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;

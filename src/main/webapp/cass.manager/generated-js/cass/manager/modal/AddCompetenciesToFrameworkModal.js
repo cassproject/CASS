@@ -1,4 +1,17 @@
-var AddCompetenciesToFrameworkModal = function(data, callback) {
+/**
+ *  Stub for the AddCompetenciesToFrameworkModal
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @class AddCompetenciesToFrameworkModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddCompetenciesToFrameworkModal = /**
+ *  @constructor
+ *  @param {EcRemoteLinkedData || EcRemoteLinkedData[]} data
+ *  			The competency or array of competencies to add to the framework selected in the modal
+ */
+function(data) {
     EcModal.call(this);
     this.data = data;
 };

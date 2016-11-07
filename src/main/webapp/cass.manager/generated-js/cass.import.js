@@ -3,6 +3,15 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
     prototype.complete = null;
     prototype.error = null;
 }, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
+/**
+ *  Base class for all importers, can hold helper functions 
+ *  that are useful for all importers
+ *  
+ *  @module cass.import
+ *  @class Importer
+ *  @abstract
+ *  @author devlin.junker@eduworks.com
+ */
 var Importer = function() {};
 Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     constructor.isObject = function(obj) {
@@ -12,12 +21,29 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
         return toString.call(obj) == "[object Array]";
     };
 }, {}, {});
+/**
+ *  
+ *  @class MedbiqImport
+ *  @static
+ *  @extends Importer
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ */
 var MedbiqImport = function() {
     Importer.call(this);
 };
 MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, prototype) {
     constructor.medbiqXmlCompetencies = null;
     constructor.INCREMENTAL_STEP = 5;
+    /**
+     *  
+     *  @memberOf MedbiqImport
+     *  @method medbiqXmlLookForCompetencyObject
+     *  @private
+     *  @static
+     *  @param {Object} obj
+     */
     constructor.medbiqXmlLookForCompetencyObject = function(obj) {
         if (Importer.isObject(obj) || Importer.isArray(obj)) 
             for (var key in (obj)) {
@@ -27,6 +53,13 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
                     MedbiqImport.medbiqXmlLookForCompetencyObject((obj)[key]);
             }
     };
+    /**
+     *  @memberOf MedbiqImport
+     *  @method medbiqXmlParseCompetencyObject
+     *  @private
+     *  @static 
+     *  @param {Object} obj
+     */
     constructor.medbiqXmlParseCompetencyObject = function(obj) {
         if (Importer.isArray(obj)) {
             for (var key in (obj)) {
@@ -46,6 +79,15 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
             }
         }
     };
+    /**
+     *  
+     *  @memberOf MedbiqImport
+     *  @method analyzeFile
+     *  @static
+     *  @param {Object} file
+     *  @param {Callback1<Array<EcCompetency>>} success
+     *  @param {Callback1<String>} failure
+     */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
             failure("No file to analyze");
@@ -73,6 +115,17 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
     };
     constructor.progressObject = null;
     constructor.saved = 0;
+    /**
+     *  
+     *  @memberOf MedbiqImport
+     *  @method importCompetencies
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Callback1<Array<EcCompetency>>} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.importCompetencies = function(serverUrl, owner, success, failure, incremental) {
         MedbiqImport.progressObject = null;
         MedbiqImport.saved = 0;
@@ -102,9 +155,27 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         }
     };
 }, {medbiqXmlCompetencies: {name: "Array", arguments: ["EcCompetency"]}, progressObject: "Object"}, {});
+/**
+ *  
+ *  @class CSVImport
+ *  @static
+ *  @extends Importer
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ */
 var CSVImport = function() {};
 CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.INCREMENTAL_STEP = 5;
+    /**
+     *  
+     *  @memberOf CSVImport
+     *  @method analyzeFile
+     *  @static
+     *  @param {Object} file
+     *  @param {Callback1<Object>} success
+     *  @param {Callback1<Object>} failure
+     */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
             failure("No file to analyze");
@@ -123,6 +194,15 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.importCsvLookup = null;
     constructor.saved = 0;
     constructor.progressObject = null;
+    /**
+     *  @memberOf CSVImport
+     *  @method transformId
+     *  @private
+     *  @static
+     *  @param {String} oldId
+     *  @param {EcRemoteLinkedData} newObject
+     *  @param {String} selectedServer
+     */
     constructor.transformId = function(oldId, newObject, selectedServer) {
         if (oldId.indexOf("http") != -1) {
             var parts = (oldId).split("/");
@@ -142,6 +222,25 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         } else 
             newObject.assignId(selectedServer, oldId);
     };
+    /**
+     *  @memberOf CSVImport
+     *  @method importCompetencies
+     *  @static
+     *  @param {Object} file
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {int} nameIndex
+     *  @param {int} descriptionIndex
+     *  @param {int} scopeIndex
+     *  @param {int} idIndex
+     *  @param {Object} relations
+     *  @param {int} sourceIndex
+     *  @param {int} relationTypeIndex
+     *  @param {int} destIndex
+     *  @param {Callback2<Array<EcCompetency>, Array<EcAlignment>>} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure, incremental) {
         CSVImport.progressObject = null;
         CSVImport.importCsvLookup = new Object();
@@ -210,6 +309,22 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             }
         }, error: failure});
     };
+    /**
+     *  @memberOf CSVImport
+     *  @method importRelations
+     *  @private
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Object} file
+     *  @param {int} sourceIndex
+     *  @param {int} relationTypeIndex
+     *  @param {int} destIndex
+     *  @param {Array<EcCompetency>} competencies
+     *  @param {Callback2<Array<EcCompetency>, Array<EcAlignment>>} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.importRelations = function(serverUrl, owner, file, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental) {
         var relations = new Array();
         if (sourceIndex == null || sourceIndex < 0) {
@@ -270,6 +385,17 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         }, error: failure});
     };
 }, {importCsvLookup: "Object", progressObject: "Object"}, {});
+/**
+ *  Import methods to handle an ASN XML file of competencies and
+ *  store them in the CASS instance
+ *  
+ *  @class ASNImport
+ *  @static
+ *  @extends Importer
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ */
 var ASNImport = function() {
     Importer.call(this);
 };
@@ -280,6 +406,14 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.jsonCompetencies = null;
     constructor.competencyCount = 0;
     constructor.relationCount = 0;
+    /**
+     *  @memberOf ASNImport
+     *  @method asnJsonPrime
+     *  @private
+     *  @static
+     *  @param {Object} obj	
+     *  @param {String} key
+     */
     constructor.asnJsonPrime = function(obj, key) {
         var value = (obj)[key];
         if (Importer.isObject(value)) {
@@ -298,6 +432,14 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             }
         }
     };
+    /**
+     *  @memberOf ASNImport
+     *  @method lookThroughSource
+     *  @private
+     *  @static
+     *  @param {Object} obj
+     *  			
+     */
     constructor.lookThroughSource = function(obj) {
         ASNImport.competencyCount = 0;
         ASNImport.relationCount = 0;
@@ -319,6 +461,15 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             }
         }
     };
+    /**
+     *  
+     *  @memberOf ASNImport
+     *  @method analyzeFile
+     *  @static
+     *  @param {Object} file
+     *  @param {Callback1<Object>} success
+     *  @param {Callback1<Object>} failure
+     */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
             failure("No file to analyze");
@@ -350,6 +501,18 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.importedFramework = null;
     constructor.competencies = null;
     constructor.progressObject = null;
+    /**
+     *  
+     *  @memberOf ASNImport
+     *  @method importCompetencies
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {boolean} createFramework
+     *  @param {Callback2<Array<EcCompetency>, EcFramework>} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure, incremental) {
         ASNImport.competencies = {};
         if (createFramework) {
@@ -376,6 +539,18 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         }, failure, incremental);
     };
     constructor.savedCompetencies = 0;
+    /**
+     *  
+     *  @memberOf ASNImport
+     *  @method createCompetencies
+     *  @private
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Callback0} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.createCompetencies = function(serverUrl, owner, success, failure, incremental) {
         ASNImport.savedCompetencies = 0;
         for (var key in ASNImport.jsonCompetencies) {
@@ -415,6 +590,20 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         }
     };
     constructor.savedRelations = 0;
+    /**
+     *  
+     *  @memberOf ASNImport
+     *  @method createRelationships
+     *  @private
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Object} node
+     *  @param {String} nodeId
+     *  @param {Callback0} success
+     *  @param {Callback1<Object>} failure
+     *  @param {Callback1<Object>} incremental
+     */
     constructor.createRelationships = function(serverUrl, owner, node, nodeId, success, failure, incremental) {
         ASNImport.savedRelations = 0;
         if (ASNImport.relationCount == 0) {
@@ -453,6 +642,17 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonCompetencies[(children[j])["value"]], (children[j])["value"], success, failure, incremental);
             }
     };
+    /**
+     *  
+     *  @meberOf ASNImport
+     *  @method createFramework
+     *  @private
+     *  @static
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Callback2<Array<EcCompetency>, EcFramework>} success
+     *  @param {Callback1<Object>} failure
+     */
     constructor.createFramework = function(serverUrl, owner, success, failure) {
         ASNImport.importedFramework.name = (((ASNImport.jsonFramework)["http://purl.org/dc/elements/1.1/title"])["0"])["value"];
         ASNImport.importedFramework.description = (((ASNImport.jsonFramework)["http://purl.org/dc/terms/description"])["0"])["value"];
@@ -472,11 +672,32 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         });
     };
 }, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}, progressObject: "Object"}, {});
+/**
+ *  
+ *  @class FrameworkImport
+ *  @static
+ *  @extends Importer
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
 var FrameworkImport = function() {};
 FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
     constructor.saved = 0;
     constructor.targetUsable = null;
     constructor.competencies = null;
+    /**
+     *  
+     *  @memberOf FrameworkImport
+     *  @method importCompetencies
+     *  @static
+     *  @param {EcFramework} source
+     *  @param {EcFramework} target
+     *  @param {boolean} copy
+     *  @param {String} serverUrl
+     *  @param {EcIdentity} owner
+     *  @param {Callback1<Array<EcCompetency>>} success
+     *  @param {Callback1<Object>} failure
+     */
     constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
         if (source == null) {
             failure("Source Framework not set");

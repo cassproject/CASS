@@ -129,37 +129,38 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new FrameworkEditScreen(datum));
 			},
-			buildData:function(id, datum){
+			buildDataRow:function(row, id, datum){
 				var comps = (datum.competency == undefined ? 0 : datum.competency.length);
 				var rels = (datum.relation == undefined ? 0 : datum.relation.length)
 				
-				var el = $(	"<div>"+
-								"<div class='small-4 columns'><a class='datum-name'></a></div>" +
-								"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
-								"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
-								"<div class='small-4 columns datum-owner'></div>" +
-							"</div>");
+				row.append("<div class='small-4 columns'><a class='datum-name'></a></div>" +
+							"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
+							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
+							"<div class='small-4 columns datum-owner'></div>");
 				
-				el.find(".datum-name").text(datum.name);
+				row.find(".datum-name").text(datum.name);
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
-					var owner = "";
 					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", "
+						var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+						var idEnd = trimId.split("/")[trimId.split("/").length-1];
+						var elId = idEnd+"-owner-"+i;
+						
+						var ownerEl = $("<span id='"+elId+"'></span>")
+						row.find(".datum-owner").append(ownerEl);
+						
+						ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 					}
-					owner = owner.substring(0, owner.length-2);
-					el.find(".datum-owner").html(owner);
 				}else{
-					el.find(".datum-owner").text("Public");
+					row.find(".datum-owner").text("Public");
 				}
 				
 				
-				el.find(".datum-name").click(function(ev){
+				row.find(".datum-name").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new FrameworkViewScreen(datum));
 				});
 				
-				return el.children();
 			}
 		}), "#frameworkSearchResults");
 		

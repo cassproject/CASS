@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "APIReference",
+        "ASNImport",
         "AboutPage",
         "AcceptAction",
         "Accommodation",
@@ -11,6 +12,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "ActionStatusType",
         "ActivateAction",
         "AddAction",
+        "AddCompetenciesToFrameworkModal",
+        "AddFieldModal",
         "AdministrativeArea",
         "AdultEntertainment",
         "AggregateOffer",
@@ -25,6 +28,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Answer",
         "Apartment",
         "ApartmentComplex",
+        "AppController",
+        "AppSettings",
         "AppendAction",
         "ApplyAction",
         "Aquarium",
@@ -32,6 +37,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ArtGallery",
         "Article",
         "AskAction",
+        "Assertion",
         "AssertionProcessor",
         "AssessAction",
         "AssignAction",
@@ -86,6 +92,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "BusinessEvent",
         "BusinessFunction",
         "BuyAction",
+        "CSVImport",
         "CableOrSatelliteService",
         "CafeOrCoffeeShop",
         "Campground",
@@ -94,6 +101,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "CancelAction",
         "Car",
         "Casino",
+        "Cass",
         "CatholicChurch",
         "Cemetery",
         "CheckAction",
@@ -117,6 +125,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Comment",
         "CommentAction",
         "CommunicateAction",
+        "Competency",
         "CompoundPriceSpecification",
         "ComputerLanguage",
         "ComputerStore",
@@ -178,6 +187,15 @@ YUI.add("yuidoc-meta", function(Y) {
         "Duration",
         "EatAction",
         "Ebac",
+        "EbacContact",
+        "EbacContactGrant",
+        "EbacCredential",
+        "EbacCredentialCommit",
+        "EbacCredentialRequest",
+        "EbacCredentials",
+        "EbacEncryptedSecret",
+        "EbacEncryptedValue",
+        "EbacSignature",
         "EcAes",
         "EcAesCtr",
         "EcAesCtrAsync",
@@ -232,6 +250,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "FoodEstablishmentReservation",
         "FoodEvent",
         "FoodService",
+        "Framework",
+        "FrameworkImport",
         "FurnitureStore",
         "Game",
         "GamePlayMode",
@@ -273,9 +293,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "HousePainter",
         "Hypergraph",
         "IceCreamShop",
+        "IdentityController",
         "IgnoreAction",
         "ImageGallery",
         "ImageObject",
+        "Importer",
         "IndividualProduct",
         "InformAction",
         "InsertAction",
@@ -303,6 +325,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "LegalService",
         "LegislativeBuilding",
         "LendAction",
+        "Level",
         "Library",
         "LikeAction",
         "LiquorStore",
@@ -317,11 +340,13 @@ YUI.add("yuidoc-meta", function(Y) {
         "Locksmith",
         "LodgingBusiness",
         "LodgingReservation",
+        "LoginController",
         "LoseAction",
         "Map",
         "MapCategoryType",
         "MarryAction",
         "Mass",
+        "MedbiqImport",
         "MediaObject",
         "MedicalOrganization",
         "MeetingRoom",
@@ -454,6 +479,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "RecyclingCenter",
         "RegisterAction",
         "RejectAction",
+        "Relation",
         "RentAction",
         "RentalCarReservation",
         "ReplaceAction",
@@ -474,6 +500,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ReviewAction",
         "RiverBodyOfWater",
         "Role",
+        "RollupRule",
         "RoofingContractor",
         "Room",
         "RsvpAction",
@@ -493,6 +520,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "SellAction",
         "SendAction",
         "Series",
+        "ServerController",
         "Service",
         "ServiceChannel",
         "ShareAction",
@@ -606,16 +634,28 @@ YUI.add("yuidoc-meta", function(Y) {
         "Zoo"
     ],
     "modules": [
+        "cass.import",
         "com.eduworks.ec",
+        "es.cassManager",
         "org.cassproject",
         "org.json.ld",
-        "schema.org"
+        "org.schema"
     ],
     "allModules": [
         {
+            "displayName": "cass.import",
+            "name": "cass.import",
+            "description": "Base class for all importers, can hold helper functions \nthat are useful for all importers"
+        },
+        {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",
-            "description": "Object to hold a triple, used in graph."
+            "description": "Location of strings that store the current namespace for general Eduworks Objects."
+        },
+        {
+            "displayName": "es.cassManager",
+            "name": "es.cassManager",
+            "description": "Main entry point of the application. Figures out the settings and\nstarts the EC UI Framework at the appropriate screen."
         },
         {
             "displayName": "org.cassproject",
@@ -628,8 +668,8 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Represents a JSON-LD linked data object and performs serialization.\nNote: Serialization and deserialization remove parameters that begin with '@'.\nNote: This Linked Data Object is not assumed to have an @id field."
         },
         {
-            "displayName": "schema.org",
-            "name": "schema.org",
+            "displayName": "org.schema",
+            "name": "org.schema",
             "description": "Schema.org/Thing\nThe most generic type of item."
         }
     ],

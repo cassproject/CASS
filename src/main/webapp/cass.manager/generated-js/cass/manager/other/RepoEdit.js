@@ -1,4 +1,15 @@
-var RepoEdit = function(data, saveButtonId, messageContainerId) {
+/**
+ *  @author djunker
+ * 
+ * 	RepoEdit Stub for RepoEdit.js
+ */
+var RepoEdit = /**
+ *  
+ *  @param data
+ *  @param saveButtonId
+ *  @param messageContainerId
+ */
+function(data, saveButtonId, messageContainerId) {
     EcView.call(this);
     this.data = data;
     this.saveButtonId = saveButtonId;

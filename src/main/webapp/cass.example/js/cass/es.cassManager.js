@@ -42,7 +42,20 @@ AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, 
         return "partial/modal/addServer.html";
     };
 }, {onClose: "Callback0", onClose: "Callback0"}, {});
-var AddFieldModal = function(field, repoEditContainer) {
+/**
+ *  Stub for the AddFieldModal
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @class AddFieldModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddFieldModal = /**
+ *  @constructor
+ *  @param {Object} field
+ *  @param {String} repoEditContainer
+ */
+function(field, repoEditContainer) {
     EcModal.call(this);
     this.field = field;
     this.repoEditContainer = repoEditContainer;
@@ -72,7 +85,20 @@ EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constru
         return "partial/modal/viewEvidence.html";
     };
 }, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
-var AddCompetenciesToFrameworkModal = function(data, callback) {
+/**
+ *  Stub for the AddCompetenciesToFrameworkModal
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @class AddCompetenciesToFrameworkModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddCompetenciesToFrameworkModal = /**
+ *  @constructor
+ *  @param {EcRemoteLinkedData || EcRemoteLinkedData[]} data
+ *  			The competency or array of competencies to add to the framework selected in the modal
+ */
+function(data) {
     EcModal.call(this);
     this.data = data;
 };
@@ -270,7 +296,18 @@ EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, 
         return "partial/modal/editLevel.html";
     };
 }, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
-var RepoEdit = function(data, saveButtonId, messageContainerId) {
+/**
+ *  @author djunker
+ * 
+ * 	RepoEdit Stub for RepoEdit.js
+ */
+var RepoEdit = /**
+ *  
+ *  @param data
+ *  @param saveButtonId
+ *  @param messageContainerId
+ */
+function(data, saveButtonId, messageContainerId) {
     EcView.call(this);
     this.data = data;
     this.saveButtonId = saveButtonId;
@@ -282,6 +319,16 @@ RepoEdit = stjs.extend(RepoEdit, EcView, [], function(constructor, prototype) {
     prototype.messageContainerId = null;
     prototype.getHtmlLocation = function() {
         return "partial/other/repoEdit.html";
+    };
+}, {data: "Object"}, {});
+var IdentityDisplay = function(data) {
+    EcView.call(this);
+    this.data = data;
+};
+IdentityDisplay = stjs.extend(IdentityDisplay, EcView, [], function(constructor, prototype) {
+    prototype.data = null;
+    prototype.getHtmlLocation = function() {
+        return "partial/other/identityDisplay.html";
     };
 }, {data: "Object"}, {});
 var Switch = function(onSwitch, switchedOn, switchName) {
@@ -362,6 +409,8 @@ AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
  *  sign in/out and create users
  *  
  *  @author devlin.junker@eduworks.com
+ *  @class LoginController
+ *  @constructor
  */
 var LoginController = function() {};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
@@ -372,10 +421,12 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.admin = false;
     constructor.storageSystem = null;
     /**
-     *  Setter for the boolean flag of whether or not a user is signed in
+     *  Setter for the boolean flag of whether or not a user is loged in
      *  
-     *  @param val 
-     *  			true if signed in, false if signed out
+     *  @method setLoggedIn
+     *  @static
+     *  @param {boolean} val 
+     *  			true if signed in, false if logged out
      */
     constructor.setLoggedIn = function(val) {
         LoginController.loggedIn = val;
@@ -383,13 +434,20 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             LoginController.storageSystem["cass.login"] = val;
     };
     /**
-     *  @return boolean whether or not the the user is logged in
+     *  Getter for boolean flag of whether or not user is logged in
+     *  
+     *  @method getLoggedin
+     *  @static
+     *  @return {boolean} 
+     *  			true if signed in, false if logged out
      */
     constructor.getLoggedIn = function() {
         return LoginController.loggedIn;
     };
     /**
      *  Setter for boolean flag of whether or not the current user is admin
+     *  
+     *  @method setAdmin
      *  @param val 
      *  			true = admin, false = not admin
      */
@@ -397,7 +455,11 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.admin = val;
     };
     /**
-     *  @return - whether or not the current user is admin
+     *  Getter for boolean flag of whether or not current user is admin
+     *  
+     *  @method getAdmin
+     *  @return {boolean}
+     *  			true = admin, false = not admin
      */
     prototype.getAdmin = function() {
         return LoginController.admin;
@@ -406,8 +468,11 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  If the last time the user was using the application, they were signed in this
      *  returns true (used to remind them to sign in again once they return)
      *  
-     *  @return true if previously signed in, false if not signed in last time, or user is here for
-     *  the first time from this computer
+     *  @method getPreviouslyLoggedIn
+     *  @static
+     *  @return {boolean}
+     *  		true if previously signed in, false if not signed in last time, or user is here for
+     *  		the first time from this computer
      */
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
@@ -417,13 +482,14 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  checks if they have an admin key. Also tells the identity manager to check for contacts in
      *  local storage after signed in.
      *  
-     *  @param username 
+     *  @method login
+     *  @param {String} username 
      *  			username of the user signing in
-     *  @param password
+     *  @param {String} password
      *  			password of the user signing in
-     *  @param success 
+     *  @param {String} success 
      *  			callback on successful login
-     *  @param failure
+     *  @param {String} failure
      *  			callback on error during login
      */
     prototype.login = function(username, password, success, failure) {
@@ -456,6 +522,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     /**
      *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
      *  authenticated and is unidentified
+     *  
+     *  @method logout
      */
     prototype.logout = function() {
         this.loginServer.clear();
@@ -470,13 +538,14 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  Creates a new user and saves the account details on the login server, then signs in
      *  to the new account on successful creation
      *  
-     *  @param username
+     *  @method create
+     *  @param {String} username
      *  			username of the new account
-     *  @param password
+     *  @param {String} password
      *  			password of the new account
-     *  @param success
+     *  @param {Callback0} success
      *  			callback for successful creation and sign in 
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			callback for error during creation
      */
     prototype.create = function(username, password, success, failure) {
@@ -493,9 +562,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     /**
      *  Saves the users credentials and contacts to the server
      *  
-     *  @param success
+     *  @method save
+     *  @param {Callback0} success
      *  			callback for successful save
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			callback for error during save
      */
     prototype.save = function(success, failure) {
@@ -518,6 +588,15 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.storageSystem["cass.login"] = false;
     }
 })();
+/**
+ *  Handles loading the CASS Manager settings from the settings.js file,
+ *  this includes the default server to show and the message to show when the user
+ *  refreshes the page and is logged out
+ *  
+ *  @class AppSettings
+ *  @static
+ *  @author devlin.junker@eduworks.com
+ */
 var AppSettings = function() {};
 AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype) {
     constructor.FIELD_MSG_RETURN = "returnLoginMessage";
@@ -526,6 +605,12 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
     constructor.returnLoginMessage = "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.";
     constructor.defaultServerUrl = "https://sandbox.service.cassproject.org/";
     constructor.defaultServerName = "CASS Sandbox";
+    /**
+     *  Loads the settings from the settings file at settings/settings.js
+     *  
+     *  @static
+     *  @method loadSettings
+     */
     constructor.loadSettings = function() {
         var urlBase = window.location.host + window.location.pathname;
         if (urlBase.startsWith("localhost")) 
@@ -546,10 +631,13 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
     };
 }, {}, {});
 /**
- *  Manages the current selected identity for the user, and interfaces the Identity Manager to 
- *  provide helper functions for ownership and user identification
+ *  Manages the current selected identity for the user, and interfaces 
+ *  the EBAC Identity Manager library to provide helper functions for 
+ *  ownership and key identification
  *  
  *  @author devlin.junker@eduworks.com
+ *  @class IdentityController
+ *  @constructor
  */
 var IdentityController = function() {};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
@@ -558,7 +646,8 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
      *  Sets the currently selected identity to the ppk specified, only works if the ppk is in the 
      *  list of identities that the user owns
      *  
-     *  @param ppkPem
+     *  @method select
+     *  @param {String} ppkPem
      *  			PEM of the identity that will be set to the current identity
      */
     prototype.select = function(ppkPem) {
@@ -570,16 +659,20 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
     /**
      *  Clears the selected identity, so the user will be identified as public for any actions
      *  that they make going forward
+     *  
+     *  @method unselect
      */
     prototype.unselect = function() {
         this.selectedIdentity = null;
     };
+    constructor.unknownContact = new EcContact();
     /**
      *  Returns the contact that is associated with the PEM given, looks at both the user's
      *  identities and contacts to match the PEM. The Contact returned will contain the display
      *  name that the user set for the PEM
-     *  
-     *  @param pkPem 
+     * 
+     *  @method lookup
+     *  @param {String} pkPem 
      *  			PEM of the contact to lookup
      *  @return Contact that contains the displayName and public key, if the user
      *  			does not have a display name stored for the PEM in either their contacts or identities,
@@ -598,19 +691,19 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
             if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
                 return EcIdentityManager.contacts[i];
-        var newContact = new EcContact();
-        newContact.pk = candidatePk;
-        newContact.displayName = "Unknown";
-        return newContact;
+        IdentityController.unknownContact.pk = candidatePk;
+        IdentityController.unknownContact.displayName = "Unknown";
+        return IdentityController.unknownContact;
     };
     /**
      *  Adds a Key to the list of user identities managed by the EcIdentityManager
      *  
-     *  @param ppk
-     *  			Key to save to user identities
-     *  @param displayName 
+     *  @method addKey
+     *  @param {String} ppk
+     *  			PEM representation of PPK Key to save to user identities
+     *  @param {String} displayName 
      *  			Name to associate with the key to be saved, to identify it
-     *  @param success
+     *  @param {Callback0} success
      *  			Callback function once the key has been added
      */
     prototype.addKey = function(ppk, displayName, success) {
@@ -618,14 +711,35 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         ident.ppk = EcPpk.fromPem(ppk);
         ident.displayName = displayName;
         EcIdentityManager.addIdentity(ident);
-        success();
+        if (success != null) 
+            success();
+    };
+    /**
+     *  Adds a contact to the list of user's contacts managed by EcIdentityManager
+     *  
+     *  @method addContact
+     *  @param {String} pk
+     *  			PEM representation of PK Key to save user contact
+     *  @param {String} displayName
+     *  			Name to associate with the key to be saved, to identify it
+     *  @param {Callback0} success
+     *  			Callback function once the contact has been added
+     */
+    prototype.addContact = function(pk, displayName, success) {
+        var contact = new EcContact();
+        contact.pk = EcPk.fromPem(pk);
+        contact.displayName = displayName;
+        EcIdentityManager.addContact(contact);
+        if (success != null) 
+            success();
     };
     /**
      *  Generates a new Encryption Key to save to the identity manager list
      *  
-     *  @param success
+     *  @method generateIdentity
+     *  @param {Callback1<EcIdentity>} success
      *  			callback, once they key has been generated and added to the identity manager
-     *  @param displayName
+     *  @param {String} displayName
      *  			display name for the key that is being generated to identify it
      */
     prototype.generateIdentity = function(success, displayName) {
@@ -635,16 +749,18 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
             if (displayName != null && displayName != "") 
                 ident.displayName = displayName;
             EcIdentityManager.addIdentity(ident);
-            success(ident);
+            if (success != null) 
+                success(ident);
         });
     };
     /**
      *  Helper function to determine if the logged in user owns a piece of data from the repository,
      *  useful for showing certain actions
      *  
-     *  @param data 
+     *  @method owns
+     *  @param {EcRemoteLiinkedData} data 
      *  			The object to check for ownership of
-     *  @return true if owned, false if not owned by the current user
+     *  @return {boolean} true if owned, false if not owned by the current user
      */
     prototype.owns = function(data) {
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
@@ -658,9 +774,10 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
      *  Helper function to determine if the logged in user can modify a piece of data, this means 
      *  that they either own the data, or it is public
      *  
-     *  @param data
+     *  @method canEdit
+     *  @param {EcRemoteLinkedData} data
      *  			The object to check for ability to edit
-     *  @return true if editable, false if not
+     *  @return {boolean} true if editable, false if not
      */
     prototype.canEdit = function(data) {
         if (data.owner == null || data.owner.length == 0) 
@@ -672,22 +789,41 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         }
         return false;
     };
-}, {selectedIdentity: "EcIdentity"}, {});
+    /**
+     *  Helper function to determine if the current user is associated with the key passed in
+     *  
+     *  @method isCurrentUser
+     *  @param {String} pk
+     *  			PEM representation of pk to check
+     *  @return {boolean} true if the current logged in user is associated with the key
+     */
+    prototype.isCurrentUser = function(pk) {
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcIdentityManager.ids[i].ppk.toPk().toString() == pk) {
+                return true;
+            }
+        }
+        return false;
+    };
+}, {selectedIdentity: "EcIdentity", unknownContact: "EcContact"}, {});
 /**
  *  Manages the server that the search controller (through EcRepository) and
  *  the identity controller (through EcIdentityManager) communicate with. 
  *  Allows the user to change the server that the UI is talking with via the change server modal.
  *  
- *  @author djunker
+ *  @author devlin.junker@eduworks.com
+ *  @class ServerController
+ *  @constructor
  */
 var ServerController = /**
  *  On Startup, a default server is set when the server controller is created. Also the
  *  storage system is determined to load/save the list of servers that we are aware of
  *  and switch to a previously selected server if the UI has been used before on this browser
  *  
- *  @param defaultServer
+ *  @constructor
+ *  @param {String} defaultServer
  *  			Base URL of the service end points on the server
- *  @param defaultServerName
+ *  @param {String} defaultServerName
  *  			Name of the Default Server (displayed to the user when selecting servers)
  */
 function(defaultServer, defaultServerName) {
@@ -731,13 +867,14 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      *  
-     *  @param name
+     *  @method addServer
+     *  @param {String} name
      *  			Name of the server to be displayed in the list
-     *  @param url
+     *  @param {String} url
      *  			URL of the server that corresponds to the name
-     *  @param success
+     *  @param {Callback0} success
      *  			Callback when the server is successfully added to the list
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback for any errors during adding to the list
      */
     prototype.addServer = function(name, url, success, failure) {
@@ -760,12 +897,13 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
      *  Sets the server that the UI will communicate with, changes where the EcRepository and 
      *  EcRemoteIdentity Manager are pointing to and communicating with
      *  
-     *  @param identifier
+     *  @method selectServer
+     *  @param {String} identifier
      *  			Name of the server that was selected from the list, used to find URL to point at
-     *  @param success
+     *  @param {Callback0} success
      *  			Callback when successfully change where the components are pointing and set the
      *  			selected server values
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback if any errors occur during changing where the components are pointing
      */
     prototype.selectServer = function(identifier, success, failure) {
@@ -809,7 +947,8 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Used during setup to set which EcRepository the server controller manages
      *  
-     *  @param repoInterface
+     *  @method setRepoInterface
+     *  @param {EcRepository} repoInterface
      *  			The interface to the repository to be used by the search controller
      */
     prototype.setRepoInterface = function(repoInterface) {
@@ -819,7 +958,8 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Used during setup to set which EcRemoteIdentityManager the server controller manages
      *  
-     *  @param loginServer
+     *  @method setRemoteIdentityManager
+     *  @param {EcRemoteIdentityManager} loginServer
      *  			The interface to the server for managing identities and logging in with
      *  			the identity controller and login controller
      */
@@ -1484,14 +1624,52 @@ AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], fu
         }
     });
 })();
+/**
+ *  Main entry point of the application. Figures out the settings and
+ *  starts the EC UI Framework at the appropriate screen.
+ *  
+ *  @module es.cassManager
+ *  @class AppController
+ *  @static
+ *  @author devlin.junker@eduworks.com
+ */
 var AppController = function() {};
 AppController = stjs.extend(AppController, null, [], function(constructor, prototype) {
     constructor.topBarContainerId = "#menuContainer";
+    /**
+     *  Manages the server connection by storing and configuring 
+     *  the CASS instance endpoint for the rest of the application.  
+     *  
+     *  @property serverController
+     *  @static
+     *  @type ServerController
+     */
     constructor.serverController = null;
+    /**
+     *  Manages the current user's identities and contacts through the
+     *  KBAC libraries. 
+     *  
+     *  @property identityController
+     *  @static
+     *  @type IdentityController
+     */
     constructor.identityController = new IdentityController();
+    /**
+     *  Handles the login/logout and admin communications with the server.
+     *  
+     *  @property loginController
+     *  @static
+     *  @type LoginController
+     */
     constructor.loginController = new LoginController();
     constructor.repoInterface = new EcRepository();
     constructor.loginServer = new EcRemoteIdentityManager();
+    /**
+     *  Entry point of the application
+     *  
+     *  @param {String[]} args
+     *  			Not used at all...
+     */
     constructor.main = function(args) {
         AppSettings.loadSettings();
         AppController.repoInterface.autoDetectRepository();

@@ -13,6 +13,8 @@
  *  systems.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacCredential
+ *  @module org.cassproject
  */
 var EbacCredential = function() {
     EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_3);
@@ -22,19 +24,27 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credential";
     /**
-     *  AES Initialization Vector used to decode PPK.
+     *  AES Initialization Vector used to decode PPK. Base64 encoded.
+     *  @property iv
+     *  @type string
      */
     prototype.iv = null;
     /**
      *  AES encrypted Private Key in PEM form.
+     *  @property ppk
+     *  @type string
      */
     prototype.ppk = null;
     /**
-     *  AES Initialization Vector used to decode displayName.
+     *  AES Initialization Vector used to decode displayName. Base64 encoded.
+     *  @property displayNameIv
+     *  @type string
      */
     prototype.displayNameIv = null;
     /**
      *  AES encrypted display name for identity.
+     *  @property displayName
+     *  @type string
      */
     prototype.displayName = null;
     prototype.upgrade = function() {
@@ -63,6 +73,8 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
  *  TODO: Vulnerable to replay attacks.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacCredentialRequest
+ *  @module org.cassproject
  */
 var EbacCredentialRequest = function() {
     EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_3);
@@ -73,10 +85,14 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialRequest";
     /**
      *  Hashed username.
+     *  @property username
+     *  @type string
      */
     prototype.username = null;
     /**
      *  Hashed password to authorize request.
+     *  @property password
+     *  @type string
      */
     prototype.password = null;
     prototype.upgrade = function() {
@@ -104,6 +120,8 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
  *  commit actions.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacCredentials
+ *  @module org.cassproject
  */
 var EbacCredentials = function() {
     EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_3);
@@ -113,19 +131,27 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credentials";
     /**
-     *  One time pad (aka perfect cipher)
+     *  One time pad that may be used in password recovery. Base64 encoded.
+     *  @property pad
+     *  @type string
      */
     prototype.pad = null;
     /**
      *  Token provided by server to use in commit actions.
+     *  @property token
+     *  @type string
      */
     prototype.token = null;
     /**
      *  Credential array.
+     *  @property credentials
+     *  @type EbacCredential[]
      */
     prototype.credentials = null;
     /**
      *  Contact array.
+     *  @property contacts
+     *  @type EbacContact[]
      */
     prototype.contacts = null;
     prototype.upgrade = function() {
@@ -154,6 +180,8 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
  *  systems.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacContact
+ *  @module org.cassproject
  */
 var EbacContact = function() {
     EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_3);
@@ -163,22 +191,40 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Contact";
     /**
-     *  AES Initialization Vector used to decode PPK.
+     *  AES Initialization Vector used to decode PPK. Base64 encoded.
+     *  @property iv
+     *  @type string
      */
     prototype.iv = null;
     /**
-     *  AES encrypted Private Key in PEM form.
+     *  AES encrypted Private Key in PEM format.
+     *  @property pk
+     *  @type string
      */
     prototype.pk = null;
     /**
-     *  AES Initialization Vector used to decode displayName.
+     *  AES Initialization Vector used to decode displayName. Base64 encoded.
+     *  @property displayNameIv
+     *  @type string
      */
     prototype.displayNameIv = null;
     /**
      *  AES encrypted display name for identity.
+     *  @property displayName
+     *  @type string
      */
     prototype.displayName = null;
+    /**
+     *  AES Initialization Vector of the home server of the contact. Base64 encoded.
+     *  @property sourceIv
+     *  @type string
+     */
     prototype.sourceIv = null;
+    /**
+     *  URL to the home server of the contact.
+     *  @property source
+     *  @type string
+     */
     prototype.source = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
@@ -202,15 +248,17 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Component of EbacEncryptedValue that contains data needed to decrypt
- *  encrypted payload. Is, in itself, encrypted.
+ *  encrypted payload. Is, itself, encrypted.
  *  
  *  Also contains data used to verify that encrypted-data substitution attacks
  *  were not performed on the data.
  *  
- *  Must be encryptable by RSA, therefore, serialized form is less than 256
+ *  Must be encryptable by RSA-2048, therefore, serialized form must less than 256
  *  bytes.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacEncryptedSecret
+ *  @module org.cassproject
  */
 var EbacEncryptedSecret = function() {
     EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_3);
@@ -220,22 +268,36 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedSecret";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedSecret";
     /**
-     *  IV used to encrypt/decrypt payload.
+     *  IV used to encrypt/decrypt payload. Base64 encoded.
+     *  @property iv
+     *  @type string
      */
     prototype.iv = null;
     /**
      *  Hashed and Base64 encoded ID of the parent (if any) object.
+     *  Used to verify the data has not been copied from elsewhere.
+     *  @property id
+     *  @type string
      */
     prototype.id = null;
     /**
      *  Secret used to encrypt/decrypt payload.
+     *  @property secret
+     *  @type string
      */
     prototype.secret = null;
     /**
      *  Dot and Bracket notated index of the field in the parent-most object (if
-     *  any).
+     *  any). Used to verify the field has not been copied from elsewhere.
+     *  @property field
+     *  @type string
      */
     prototype.field = null;
+    /**
+     *  Serializes the field into a compact form for RSA encryption.
+     *  @method toEncryptableJson
+     *  @return {string} string
+     */
     prototype.toEncryptableJson = function() {
         var o = (new Object());
         o["v"] = this.iv;
@@ -246,6 +308,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
             o["f"] = this.field;
         return JSON.stringify(o);
     };
+    /**
+     *  Deserializes the field from a compact form used in RSA encryption.
+     *  @method fromEncryptableJson
+     *  @static
+     *  @param {JSONObject} obj Object to deserialize from.
+     *  @return {EbacEncryptedSecret} Secret in object form.
+     */
     constructor.fromEncryptableJson = function(obj) {
         var secret = new EbacEncryptedSecret();
         var o = (obj);
@@ -282,6 +351,8 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
  *  holding owner.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacSignature
+ *  @module org.cassproject
  */
 var EbacSignature = function() {
     EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_3);
@@ -291,23 +362,31 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/timeLimitedSignature";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature";
     /**
-     *  The public key of the authorizing party.
+     *  The public key of the authorizing party in PEM format.
+     *  @property owner
+     *  @type string
      */
     prototype.owner = null;
     /**
      *  The time in number of milliseconds since midnight of January 1, 1970
      *  00:00:00 UTC that this signature is authorized to move data.
+     *  @property expiry
+     *  @type long
      */
     prototype.expiry = 0.0;
     /**
      *  The signature of this object, having signed the object, having been
      *  encoded in JSON with no space or tabs in ASCII sort order, having no
      *  value for the signature at the time of signing.
+     *  @property signature
+     *  @type string
      */
     prototype.signature = null;
     /**
      *  The server authorized to move data. If this is empty, the signature may
      *  be used by a server to ask for data from other servers.
+     *  @property server
+     *  @type string
      */
     prototype.server = null;
     prototype.upgrade = function() {
@@ -331,9 +410,11 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Encrypted JSON-LD object.
+ *  Encrypted JSON-LD object or string.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacEncryptedValue
+ *  @module org.cassproject
  */
 var EbacEncryptedValue = function() {
     EcRemoteLinkedData.call(this, Ebac.context, EbacEncryptedValue.myType);
@@ -344,23 +425,31 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedValue";
     constructor.myType = EbacEncryptedValue.TYPE_0_3;
     /**
-     *  Optional Hint used to aid search, showing the type of the inner encrypted
-     *  object.
+     *  Optional Hint used to aid in search.
+     *  Displays the type of the encrypted object.
+     *  @property encryptedType
+     *  @type string
      */
     prototype.encryptedType = null;
     /**
-     *  Base-64 encoded, AES encrypted form of the encrypted object (or data).
+     *  Base-64 encoded, AES encrypted form of the encrypted object (or string).
+     *  @property payload
+     *  @type string
      */
     prototype.payload = null;
     /**
-     *  Optional Hint used to aid view, showing a name of the inner encrypted
-     *  object.
+     *  Optional Hint used to aid in search and display.
+     *  Name of the inner encrypted object.
+     *  @property name
+     *  @type string
      */
     prototype.name = null;
     /**
      *  Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using
-     *  RSA public keys of owners or readers (or unknown parties) to allow them
+     *  RSA public keys of owners, readers, or other parties to allow them
      *  access to the payload.
+     *  @property secret
+     *  @type string[]
      */
     prototype.secret = null;
     prototype.copyFrom = function(that) {
@@ -396,11 +485,14 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     };
 }, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  AES encrypted public key and display name. Contains Initialization Vectors,
- *  but not secrets. Used to encrypt public identities for storage on remote
- *  systems.
+ *  AES encrypted public key and display name message. 
+ *  Used to grant access to a contact. 
+ *  Contains Initialization Vectors, but not secrets. 
+ *  Used to encrypt public identities for storage on remote systems.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacContactGrant
+ *  @module org.cassproject
  */
 var EbacContactGrant = function() {
     EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_3);
@@ -409,11 +501,36 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/contactGrant";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contactGrant";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/ContactGrant";
-    prototype.iv = null;
+    /**
+     *  Public key being granted to the owner of this message.
+     *  @property pk
+     *  @type string(pem)
+     */
     prototype.pk = null;
+    /**
+     *  Display name of the contact.
+     *  @property displayName
+     *  @type string
+     */
     prototype.displayName = null;
+    /**
+     *  Source server of the contact.
+     *  @property source
+     *  @type string
+     */
     prototype.source = null;
+    /**
+     *  Response token used to validate that this grant is in response to a contact request you sent.
+     *  @property responseToken
+     *  @type string
+     */
     prototype.responseToken = null;
+    /**
+     *  Signature (Base64 encoded) of the response token to verify against your own public key 
+     *  to ensure that this grant is in response to a contact request you sent.
+     *  @property responseSignature
+     *  @type string
+     */
     prototype.responseSignature = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
@@ -438,10 +555,12 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
 /**
  *  Message used to commit credentials to a remote login server.
  *  
- *  TODO: Semi-vulnerable to replay attacks. Token field prevents some replay
+ *  TODO: Vulnerable to replay attacks. Token field prevents some replay
  *  attacks.
  *  
  *  @author fritz.ray@eduworks.com
+ *  @class EbacCredentialCommit
+ *  @module org.cassproject
  */
 var EbacCredentialCommit = function() {
     EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_3);
@@ -453,19 +572,27 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialCommit";
     /**
      *  Hashed username.
+     *  @property username
+     *  @type string
      */
     prototype.username = null;
     /**
      *  Hashed password to authorize commit.
+     *  @property password
+     *  @type string
      */
     prototype.password = null;
     /**
      *  Token provided to client when previously executed Request was done. May
      *  be empty if this is used as part of Create action.
+     *  @property token
+     *  @type string
      */
     prototype.token = null;
     /**
      *  List of credentials to commit to the login server storage.
+     *  @property credentials
+     *  @type EbacCredentials
      */
     prototype.credentials = null;
     prototype.upgrade = function() {

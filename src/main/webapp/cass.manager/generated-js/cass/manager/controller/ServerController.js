@@ -3,16 +3,19 @@
  *  the identity controller (through EcIdentityManager) communicate with. 
  *  Allows the user to change the server that the UI is talking with via the change server modal.
  *  
- *  @author djunker
+ *  @author devlin.junker@eduworks.com
+ *  @class ServerController
+ *  @constructor
  */
 var ServerController = /**
  *  On Startup, a default server is set when the server controller is created. Also the
  *  storage system is determined to load/save the list of servers that we are aware of
  *  and switch to a previously selected server if the UI has been used before on this browser
  *  
- *  @param defaultServer
+ *  @constructor
+ *  @param {String} defaultServer
  *  			Base URL of the service end points on the server
- *  @param defaultServerName
+ *  @param {String} defaultServerName
  *  			Name of the Default Server (displayed to the user when selecting servers)
  */
 function(defaultServer, defaultServerName) {
@@ -56,13 +59,14 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      *  
-     *  @param name
+     *  @method addServer
+     *  @param {String} name
      *  			Name of the server to be displayed in the list
-     *  @param url
+     *  @param {String} url
      *  			URL of the server that corresponds to the name
-     *  @param success
+     *  @param {Callback0} success
      *  			Callback when the server is successfully added to the list
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback for any errors during adding to the list
      */
     prototype.addServer = function(name, url, success, failure) {
@@ -85,12 +89,13 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
      *  Sets the server that the UI will communicate with, changes where the EcRepository and 
      *  EcRemoteIdentity Manager are pointing to and communicating with
      *  
-     *  @param identifier
+     *  @method selectServer
+     *  @param {String} identifier
      *  			Name of the server that was selected from the list, used to find URL to point at
-     *  @param success
+     *  @param {Callback0} success
      *  			Callback when successfully change where the components are pointing and set the
      *  			selected server values
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback if any errors occur during changing where the components are pointing
      */
     prototype.selectServer = function(identifier, success, failure) {
@@ -134,7 +139,8 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Used during setup to set which EcRepository the server controller manages
      *  
-     *  @param repoInterface
+     *  @method setRepoInterface
+     *  @param {EcRepository} repoInterface
      *  			The interface to the repository to be used by the search controller
      */
     prototype.setRepoInterface = function(repoInterface) {
@@ -144,7 +150,8 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     /**
      *  Used during setup to set which EcRemoteIdentityManager the server controller manages
      *  
-     *  @param loginServer
+     *  @method setRemoteIdentityManager
+     *  @param {EcRemoteIdentityManager} loginServer
      *  			The interface to the server for managing identities and logging in with
      *  			the identity controller and login controller
      */

@@ -1,0 +1,52 @@
+<span class="identityDisplay" tabindex='' data-pk style="position:relative;"">
+	<span class="popout hide" style="position: absolute; 
+	padding: 10px; 
+	background-color: white; 
+	border: 1px solid black; 
+	box-shadow: 6px 0px 4px rgba(0,0,0,.4);  
+	z-index:5;
+	display:block;
+	width:276px;">
+		<span class="unknownIdentityContainer">
+			<button class="identifyBtn button small" style="margin-bottom: 0px;">Identify</button>
+			<button class="connectBtn button small" style="margin-bottom: 0px;">Connect</button>
+			<button class="qrBtn button small" style="margin-bottom: 0px;">QR</button>
+			
+			<span class="identifyContainer hide" style="margin-top:1rem; text-align:left; display:block">
+				<small class="prefix" style="display:block;">Identify as</small>
+				<input class="identifyInput" type="text" placeholder="Display Name"/>
+				
+				<button class="saveIdentifyBtn float-right button" style="margin-bottom:0px">Save</button>
+			</span>
+			
+			
+			<span class="connectContainer hide" style="margin-top:1rem; text-align:left; display:block;">
+				<small class="prefix" style="display:block;">Connect as</small>
+				<input class="connectInput" type="text" placeholder="Shared Name" />
+				
+				<select>
+					<option selected disabled="disabled" class="hide">Select which Identity</option>
+				</select>
+				
+				<button class="sendConnectBtn float-right button" style="margin-bottom:0px">Send</button>
+			</span>
+		</span>
+		
+		<span class="knownIdentityContainer hide">
+			<button class="renameBtn button small" style="margin-bottom: 0px;">Rename</button>
+			<button class="qrBtn button small" style="margin-bottom: 0px;">QR</button>
+			
+			<span class="renameContainer hide" style="margin-top:1rem; display:block; text-align:left;">
+				<small class="prefix" style="display:block;">Rename as</small>
+				<input class="renameInput" type="text"/>
+				
+				<button class="saveRenameBtn float-right button" style="margin-bottom:0px">Save</button>
+			</span>
+		</span>
+		
+		
+		
+		<span class="qrcodeCanvas hide" style="display:block; margin-top:1rem;"></span>
+	</span>
+	<span class="identityText has-tip" ></span>
+</span>

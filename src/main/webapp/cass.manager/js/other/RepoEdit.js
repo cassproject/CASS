@@ -1,12 +1,23 @@
-/*
- * The third definition defines the UI methods and server-exposed methods
+/**
+ * Repo Edit View that can be used to display a piece of data from the 
+ * repository in an editable DIV container. Allows the developer to designate 
+ * where the save button is that (when clicked) will save the piece of data to 
+ * it's repository.
+ * 
+ * @class RepoEdit
+ * @author devlin.junker@eduworks.com
  */
 var RepoEdit = (function(RepoEdit){
 	/**
-	 * Local Methods are used to manipulate the UI elements on the page (They may also call Server Model or 
-	 * Server Manager methods to affect the server, but that shouldn't be built by the UI developer)
+	 * Builds the display initially by creating the different editable divs
+	 * and fills the containerId passed in with the editor.
+	 * 
+	 * @memberOf RepoEdit
+	 * @method buildDisplay
+	 * @private
+	 * @param {Object} data
+	 * @param {String} myContainerId
 	 */
-
 	function buildDisplay(data, myContainerId){
 		$('#datum').remove();
 	    if ($('#datum').length == 0)
@@ -94,7 +105,15 @@ var RepoEdit = (function(RepoEdit){
 	}
 
 
-	
+	/**
+	 * Encrypts the field selected
+	 * 
+	 * @memberOf RepoEdit
+	 * @method encryptField
+	 * @private
+	 * @param {jQueryObject} field
+	 * @param {String} text
+	 */
 	function encryptField(field,text)
 	{
 	    if (AppController.identityController.selectedIdentity == null)
@@ -118,6 +137,12 @@ var RepoEdit = (function(RepoEdit){
 	    }
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method decryptField
+	 * @private
+	 * @param field
+	 */
 	function decryptField(field)
 	{
 	    var id = field.find("[field='@id']").children("p").text();
@@ -136,6 +161,12 @@ var RepoEdit = (function(RepoEdit){
 	    	replaceField(field, result);
 	}
 
+	/**
+	 * @memberOf RepoEdit
+	 * @method verifyField
+	 * @private
+	 * @param field
+	 */
 	function verifyField(field)
 	{
 	    var obj = JSON.parse(serializeField(field));
@@ -146,6 +177,14 @@ var RepoEdit = (function(RepoEdit){
 	    return data.verify();
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method replaceField
+	 * @private
+	 * @param field
+	 * @param data
+	 * @param parentField
+	 */
 	function replaceField(field,data,parentField)
 	{
 		field.children("section").remove();
@@ -203,8 +242,14 @@ var RepoEdit = (function(RepoEdit){
 	    {
 	        if (field.children("label").text() == "@owner" || field.parent().parent().children("label").text() == "@owner")
 	        {
-	        	var contact = $(createContactSmall(data));
-	            field.append(contact);  
+	        	var id = "owner-" + field.siblings("li").size();
+	        	
+	        	field.attr("id", id);	    
+	        	
+	        	ViewManager.showView(new IdentityDisplay(data),"#"+id);
+	        	
+	        	//var contact = $(createContactSmall(data));
+	            //field.append(contact);  
 	        }
 	        else
 	            field.append("<p style='text-overflow: ellipsis;margin-bottom:0px;overflow:hidden;'>"+data+"</p>");
@@ -214,6 +259,14 @@ var RepoEdit = (function(RepoEdit){
 	    field.effect("highlight", {}, 1500);
 	}
 
+	/**
+	 * @memberOf RepoEdit
+	 * @method addField
+	 * @private
+	 * @param field
+	 * @param f
+	 * @param value
+	 */
 	function addField(field,f,value)
 	{
 		if(f === "privateEncrypted"){
@@ -241,6 +294,14 @@ var RepoEdit = (function(RepoEdit){
 		}
 	}
 
+	/**
+	 * @memberOf RepoEdit
+	 * @method decorate
+	 * @private
+	 * @param field
+	 * @param f
+	 * @param obj
+	 */
 	function decorate(field,f,obj)
 	{
 	    field.children("a").remove();
@@ -303,14 +364,37 @@ var RepoEdit = (function(RepoEdit){
 	        //field.prepend(decorationButtonDisabled("lookup","Looks up any available information on this Public Key."));
 	    }
 	}
+	
+	/**
+	 * @memberOf RepoEdit
+	 * @method decorationButton
+	 * @private
+	 * @param name
+	 * @param title
+	 */
 	function decorationButton(name,title)
 	{
 	    return '<a style="margin-right:2px;" class="float-right label fieldBtn" title="'+title+'">'+name+'</a>';   
 	}
+	/**
+	 * @memberOf RepoEdit
+	 * @method decorationButtonDisabled
+	 * @private
+	 * @param name
+	 * @param title
+	 */
 	function decorationButtonDisabled(name,title)
 	{
 	    return '<a style="margin-right:2px;color:gray;background-color:darkgray;" class="float-right label fieldBtn" title="'+title+'">'+name+'</a>';   
 	}
+	
+	/**
+	 * @memberOf RepoEdit
+	 * @method contextualEnable
+	 * @private
+	 * @param field
+	 * @param obj
+	 */
 	function contextualEnable(field,obj)
 	{
 	    field.children(".label:contains('decrypt')").text("encrypt");
@@ -334,10 +418,19 @@ var RepoEdit = (function(RepoEdit){
 
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method serializeField
+	 * @private
+	 * @param field
+	 * @param child
+	 */
 	function serializeField(field,child)
 	{
-		if (field.children(".ownershipDisplay").length == 1)
+		if (field.children(".ownershipDisplay").size() == 1)
 	    	return field.children(".ownershipDisplay").attr("pk");
+		if (field.children(".identityDisplay").size() == 1)
+			return field.children(".identityDisplay").attr("data-pk");
 		else if(field.children("span").length == 1)
 			return field.find("input[type='checkbox']").prop("checked");
 	    if (field.children("p").length == 1)
@@ -368,11 +461,24 @@ var RepoEdit = (function(RepoEdit){
 	    }
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method saveSuccess
+	 * @private
+	 */
 	function saveSuccess(){
 		$("#datum").effect("highlight", {}, 1500);
 	}
 	
+
 	var messageContainerId;
+	/**
+	 * @memberOf RepoEdit
+	 * @method saveFailure
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display on failed save
+	 */
 	function saveFailure(err)
 	{
 		if(err == undefined)
@@ -381,14 +487,14 @@ var RepoEdit = (function(RepoEdit){
 	}
 	
 	/**
-	 * The display function defines how this view should be displayed
-	 * @param containerId: defines the container that this view should be displayed in
-	 * 		for screens -> screenContainer
-	 * 		for overlays -> overlayContainer
-	 * 		for modals -> modalContainer
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RepoEdit
+	 * @method display
+	 * @param {String} containerId
+	 * 			DOM ID of the element that holds this message container
 	 */
-	RepoEdit.prototype.display = function(containerId)
-	{
+	RepoEdit.prototype.display = function(containerId){
 		var data = this.data;
 		this.containerId = containerId;
 		messageContainerId = this.messageContainerId;
@@ -419,14 +525,32 @@ var RepoEdit = (function(RepoEdit){
 		buildDisplay(data, containerId);
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method addField
+	 * @param field
+	 * @param f
+	 * @param value
+	 */
 	RepoEdit.prototype.addField = function(field, f, value){
 		addField(field,f,value);
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method changeObject
+	 * @param obj
+	 */
 	RepoEdit.prototype.changeObject = function(obj){
 		buildDisplay(obj, this.containerId);
 	}
 	
+	/**
+	 * @memberOf RepoEdit
+	 * @method changeType
+	 * @param context
+	 * @param newType
+	 */
 	RepoEdit.prototype.changeType = function(context, newType){
 		$("#datum").children("div").children("[field='@context']").each(
 			function(i, e){

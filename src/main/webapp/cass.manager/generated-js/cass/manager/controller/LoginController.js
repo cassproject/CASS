@@ -3,6 +3,8 @@
  *  sign in/out and create users
  *  
  *  @author devlin.junker@eduworks.com
+ *  @class LoginController
+ *  @constructor
  */
 var LoginController = function() {};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
@@ -13,10 +15,12 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.admin = false;
     constructor.storageSystem = null;
     /**
-     *  Setter for the boolean flag of whether or not a user is signed in
+     *  Setter for the boolean flag of whether or not a user is loged in
      *  
-     *  @param val 
-     *  			true if signed in, false if signed out
+     *  @method setLoggedIn
+     *  @static
+     *  @param {boolean} val 
+     *  			true if signed in, false if logged out
      */
     constructor.setLoggedIn = function(val) {
         LoginController.loggedIn = val;
@@ -24,13 +28,20 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             LoginController.storageSystem["cass.login"] = val;
     };
     /**
-     *  @return boolean whether or not the the user is logged in
+     *  Getter for boolean flag of whether or not user is logged in
+     *  
+     *  @method getLoggedin
+     *  @static
+     *  @return {boolean} 
+     *  			true if signed in, false if logged out
      */
     constructor.getLoggedIn = function() {
         return LoginController.loggedIn;
     };
     /**
      *  Setter for boolean flag of whether or not the current user is admin
+     *  
+     *  @method setAdmin
      *  @param val 
      *  			true = admin, false = not admin
      */
@@ -38,7 +49,11 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         LoginController.admin = val;
     };
     /**
-     *  @return - whether or not the current user is admin
+     *  Getter for boolean flag of whether or not current user is admin
+     *  
+     *  @method getAdmin
+     *  @return {boolean}
+     *  			true = admin, false = not admin
      */
     prototype.getAdmin = function() {
         return LoginController.admin;
@@ -47,8 +62,11 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  If the last time the user was using the application, they were signed in this
      *  returns true (used to remind them to sign in again once they return)
      *  
-     *  @return true if previously signed in, false if not signed in last time, or user is here for
-     *  the first time from this computer
+     *  @method getPreviouslyLoggedIn
+     *  @static
+     *  @return {boolean}
+     *  		true if previously signed in, false if not signed in last time, or user is here for
+     *  		the first time from this computer
      */
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
@@ -58,13 +76,14 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  checks if they have an admin key. Also tells the identity manager to check for contacts in
      *  local storage after signed in.
      *  
-     *  @param username 
+     *  @method login
+     *  @param {String} username 
      *  			username of the user signing in
-     *  @param password
+     *  @param {String} password
      *  			password of the user signing in
-     *  @param success 
+     *  @param {String} success 
      *  			callback on successful login
-     *  @param failure
+     *  @param {String} failure
      *  			callback on error during login
      */
     prototype.login = function(username, password, success, failure) {
@@ -97,6 +116,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     /**
      *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
      *  authenticated and is unidentified
+     *  
+     *  @method logout
      */
     prototype.logout = function() {
         this.loginServer.clear();
@@ -111,13 +132,14 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  Creates a new user and saves the account details on the login server, then signs in
      *  to the new account on successful creation
      *  
-     *  @param username
+     *  @method create
+     *  @param {String} username
      *  			username of the new account
-     *  @param password
+     *  @param {String} password
      *  			password of the new account
-     *  @param success
+     *  @param {Callback0} success
      *  			callback for successful creation and sign in 
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			callback for error during creation
      */
     prototype.create = function(username, password, success, failure) {
@@ -134,9 +156,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     /**
      *  Saves the users credentials and contacts to the server
      *  
-     *  @param success
+     *  @method save
+     *  @param {Callback0} success
      *  			callback for successful save
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			callback for error during save
      */
     prototype.save = function(success, failure) {
