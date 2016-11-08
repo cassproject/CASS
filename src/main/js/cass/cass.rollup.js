@@ -7,7 +7,27 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var InquiryPacket = function(subject, competency, level, context, success, failure, rule, type) {
+/**
+ *  Data structure used to hold data relevant to a request to determine the competence of an individual.
+ *  (hereafter, "Inquiry")
+ *  @class InquiryPacket
+ *  @module org.cassproject
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ */
+var InquiryPacket = /**
+ *  Create an InquiryPacket.
+ *  @constructor
+ *  @param {EcPk[]} subject Public keys of the individual to retreive assertions about.
+ *  @param {EcCompetency} competency Competency that the inquiry is made about.
+ *  @param {EcLevel} level Level of the competency.
+ *  @param {EcFramework} context Framework to provide boundaries for the inquiry within.
+ *  @param {function(InquiryPacket)} success Method to call when a result has been reached.
+ *  @param {function(string)} failure Method to call if the inquiry fails.
+ *  @param {string} rule For rollup rules, this is a search used to populate this inquiry packet.
+ *  @param {IPType} type The type of this inquiry packet. May be competency, rollup rule, or relation.
+ */
+function(subject, competency, level, context, success, failure, rule, type) {
     this.positive = new Array();
     this.negative = new Array();
     this.equivalentPackets = new Array();
@@ -17,7 +37,9 @@ var InquiryPacket = function(subject, competency, level, context, success, failu
     this.competency = new Array();
     if (competency != null) 
         this.competency.push(competency);
-    this.level = level;
+    this.level = new Array();
+    if (level != null) 
+        this.level.push(level);
     this.context = context;
     this.success = success;
     this.failure = failure;
@@ -29,31 +51,143 @@ var InquiryPacket = function(subject, competency, level, context, success, failu
 InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, prototype) {
     constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "RELATION_AND", "RELATION_OR", "RELATION_NARROWS", "RELATION_BROADENS", "RELATION_REQUIRES", "RELATION_ISREQUIREDBY");
     constructor.ResultType = stjs.enumeration("TRUE", "FALSE", "UNKNOWN", "INDETERMINANT");
+    /**
+     *  One or more identifiers that identify an individual.
+     *  @property subject
+     *  @type EcPk[]
+     */
     prototype.subject = null;
+    /**
+     *  Competency that this packet is inquiring about.
+     *  May be multiple competencies that are either collapsed due to an inference loop, or are equivalent to one another.
+     *  @property competency
+     *  @type EcCompetency[]
+     */
     prototype.competency = null;
+    /**
+     *  Framework that this inquiry is scoped to.
+     *  @property context
+     *  @type EcFramework
+     */
     prototype.context = null;
+    /**
+     *  Callback when this and all child inquiries have successfully reached a conclusion.
+     *  @property success
+     *  @type function(InquiryPacket)
+     */
     prototype.success = null;
+    /**
+     *  Callback if this inquiry requires additional information to proceed.
+     *  @property ask
+     *  @type string function(string) 
+     */
     prototype.ask = null;
+    /**
+     *  Callback if this inquiry fails.
+     *  @property failure
+     *  @type function(string)
+     */
     prototype.failure = null;
+    /**
+     *  Level that the competency is being measured at. 
+     *  May have multiple levels referring to multiple competencies due to cycles or equivalence.
+     *  @property level
+     *  @type EcLevel[]
+     */
     prototype.level = null;
+    /**
+     *  Packets that are equivalent to this packet. May be used when equivalence is best represented with additional packets.
+     *  @property equivalentPackets
+     *  @type InquiryPacket[]
+     */
     prototype.equivalentPackets = null;
+    /**
+     *  Packets that assist in determining the state of this packet.
+     *  @property subPackets
+     *  @type InquiryPacket[]
+     */
     prototype.subPackets = null;
+    /**
+     *  Datetime representing when this packet was created.
+     *  @property dateCreated
+     *  @internal
+     *  @type number
+     */
     prototype.dateCreated = 0.0;
+    /**
+     *  Mark true when assertions have been retrieved for this packet.
+     *  @property hasCheckedAssertionsForCompetency
+     *  @type boolean
+     */
     prototype.hasCheckedAssertionsForCompetency = false;
+    /**
+     *  Mark true when rollup rules have been processed for this packet.
+     *  @property hasCheckedRollupRulesForCompetency
+     *  @type boolean
+     */
     prototype.hasCheckedRollupRulesForCompetency = false;
+    /**
+     *  Mark true when relations have been processed for this packet.
+     *  @property hasCheckedRelationshipsForCompetency
+     *  @type boolean
+     */
     prototype.hasCheckedRelationshipsForCompetency = false;
+    /**
+     *  Async counter to keep track of number of unresolved processes.
+     *  @property numberOfQueriesRunning
+     *  @type integer
+     */
     prototype.numberOfQueriesRunning = 0;
+    /**
+     *  Local log for this inquiry packet.
+     *  @property log
+     *  @type string
+     */
     prototype.log = null;
+    /**
+     *  Assertions (direct or indirect) that contribute to a positive result.
+     *  @property positive
+     *  @type EcAssertion[]
+     */
     prototype.positive = null;
+    /**
+     *  Assertions (direct or indirect) that contribute to a negative result.
+     *  @property negative
+     *  @type EcAssertion[]
+     */
     prototype.negative = null;
-    prototype.status = null;
+    /**
+     *  Set to true if this packet has completed processing.
+     *  @property finished
+     *  @type boolean
+     */
     prototype.finished = false;
+    /**
+     *  Type of inquiry packet. Inquiry packets can represent relational logic, rollup logic or competencies.
+     *  @property type
+     *  @type IPType
+     */
     prototype.type = null;
+    /**
+     *  Rollup Rule search string. (if IPType == ROLLUPRULE)
+     *  @property rule
+     *  @type string 
+     */
     prototype.rule = null;
+    /**
+     *  Result as a ResultType.
+     *  @property result
+     *  @type ResultType
+     */
     prototype.result = null;
     prototype.getContext = function() {
         return this.context;
     };
+    /**
+     *  Returns true if any child packets have an indeterminate result.
+     *  @method anyIndeterminantChildPackets
+     *  @return {boolean}
+     */
     prototype.anyIndeterminantChildPackets = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.INDETERMINANT.equals(this.equivalentPackets[i].result)) 
@@ -65,6 +199,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return false;
     };
+    /**
+     *  Returns true if all child packets have unknown results.
+     *  @method allChildPacketsUnknown
+     *  @return {boolean}
+     */
     prototype.allChildPacketsUnknown = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (!InquiryPacket.ResultType.UNKNOWN.equals(this.equivalentPackets[i].result)) 
@@ -76,6 +215,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if any child packets have false results.
+     *  @method anyChildPacketsAreFalse
+     *  @return {boolean} 
+     */
     prototype.anyChildPacketsAreFalse = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.FALSE.equals(this.equivalentPackets[i].result)) 
@@ -87,6 +231,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return false;
     };
+    /**
+     *  Returns true if any child packets have unknown results.
+     *  @method anyChildPacketsAreUnknown
+     *  @return {boolean}
+     */
     prototype.anyChildPacketsAreUnknown = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.UNKNOWN.equals(this.equivalentPackets[i].result)) 
@@ -98,6 +247,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return false;
     };
+    /**
+     *  Returns true if any child packets have true results.
+     *  @method anyChildPacketsAreTrue
+     *  @return {boolean}
+     */
     prototype.anyChildPacketsAreTrue = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.TRUE.equals(this.equivalentPackets[i].result)) 
@@ -109,6 +263,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return false;
     };
+    /**
+     *  Returns true if all equivalent packets have unknown results.
+     *  @method allEquivalentPacketsUnknown
+     *  @return {boolean}
+     */
     prototype.allEquivalentPacketsUnknown = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (!InquiryPacket.ResultType.UNKNOWN.equals(this.equivalentPackets[i].result)) 
@@ -116,6 +275,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if all equivalent packets have the true or unknown result.
+     *  @method allEquivalentPacketsTrueOrUnknown
+     *  @return {boolean}
+     */
     prototype.allEquivalentPacketsTrueOrUnknown = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.FALSE.equals(this.equivalentPackets[i].result) || InquiryPacket.ResultType.INDETERMINANT.equals(this.equivalentPackets[i].result)) 
@@ -123,6 +287,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if all sub packets have the true or unknown result.
+     *  @method allSubPacketsTrueOrUnknown
+     *  @return {boolean}
+     */
     prototype.allSubPacketsTrueOrUnknown = function() {
         for (var i = 0; i < this.subPackets.length; i++) {
             if (InquiryPacket.ResultType.FALSE.equals(this.subPackets[i].result) || InquiryPacket.ResultType.INDETERMINANT.equals(this.subPackets[i].result)) 
@@ -130,6 +299,11 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if all equivalent packets have the false or unknown result.
+     *  @method allEquivalentPacketsFalseOrUnknown	
+     *  @return {boolean}
+     */
     prototype.allEquivalentPacketsFalseOrUnknown = function() {
         for (var i = 0; i < this.equivalentPackets.length; i++) {
             if (InquiryPacket.ResultType.TRUE.equals(this.equivalentPackets[i].result) || InquiryPacket.ResultType.INDETERMINANT.equals(this.equivalentPackets[i].result)) 
@@ -137,6 +311,10 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if all sub packets have the false or unknown result.
+     *  @return
+     */
     prototype.allSubPacketsFalseOrUnknown = function() {
         for (var i = 0; i < this.subPackets.length; i++) {
             if (InquiryPacket.ResultType.TRUE.equals(this.subPackets[i].result) || InquiryPacket.ResultType.INDETERMINANT.equals(this.subPackets[i].result)) 
@@ -144,13 +322,18 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         }
         return true;
     };
+    /**
+     *  Returns true if the provided ID represents a competency in this packet.
+     *  @param competencyId
+     *  @return
+     */
     prototype.hasId = function(competencyId) {
         for (var i = 0; i < this.competency.length; i++) 
             if (this.competency[i].isId(competencyId)) 
                 return true;
         return false;
     };
-}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: "EcLevel", equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+}, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
 var RrToken = function() {};
 RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
     prototype.number = null;
@@ -324,7 +507,21 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
 }, {queries: {name: "Array", arguments: [null]}, queryOperations: {name: "Array", arguments: [{name: "Enum", arguments: ["RollupRulePacketGenerator.OperationType"]}]}, ip: "InquiryPacket", ep: "AssertionProcessor"}, {});
 if (!stjs.mainCallDisabled) 
     RollupRulePacketGenerator.main();
-var RelationshipPacketGenerator = function(ip, ep, processedAlignments) {
+/**
+ *  Creates child packets for an InquiryPacket based on its context. 
+ *  @class RelationshipPacketGenerator
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @module org.cassproject
+ */
+var RelationshipPacketGenerator = /**
+ *  Constructor for the RelationshipPacketGenerator
+ *  @constructor
+ *  @param {InquiryPacket} ip Inquiry Packet to generate and fill with relationship packets.
+ *  @param {AssertionProcessor} ep Assertion processor to tell to resume when complete.
+ *  @param {object} processedAlignments An object to fill with keys to ensure that relations are not processed twice.
+ */
+function(ip, ep, processedAlignments) {
     this.ip = ip;
     this.ep = ep;
     this.processedAlignments = processedAlignments;
@@ -334,17 +531,77 @@ var RelationshipPacketGenerator = function(ip, ep, processedAlignments) {
     this.isRequiredByPackets = new Array();
 };
 RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [], function(constructor, prototype) {
+    /**
+     *  Method to call when any operation fails.
+     *  @property failure
+     *  @type function(string)
+     */
     prototype.failure = null;
+    /**
+     *  Method to call when the operation succeeds.
+     *  @property success
+     *  @type function()
+     */
     prototype.success = null;
+    /**
+     *  Method to call when the generator has log statements to emit.
+     *  @property logFunction
+     *  @type function(any)
+     */
     prototype.logFunction = null;
+    /**
+     *  Async counter to keep track of number of outstanding requests.
+     *  @property numberOfRelationsToProcess
+     *  @type integer
+     */
     prototype.numberOfRelationsToProcess = 0;
+    /**
+     *  Number of relations that have been processed.
+     *  @property numberOfRelationsProcessed
+     *  @type integer
+     */
     prototype.numberOfRelationsProcessed = 0;
+    /**
+     *  List of packets representing the narrows relation.
+     *  @property narrowsPackets
+     *  @type InquiryPacket[]
+     */
     prototype.narrowsPackets = null;
+    /**
+     *  List of packets representing the broadens relation.
+     *  @property broadensPackets
+     *  @type InquiryPacket[]
+     */
     prototype.broadensPackets = null;
+    /**
+     *  List of packets representing the required relation.
+     *  @property requiredPackets
+     *  @type InquiryPacket[]
+     */
     prototype.requiredPackets = null;
+    /**
+     *  List of packets representing the isRequiredBy relation.
+     *  @property isRequiredByPackets
+     *  @type InquiryPacket[]
+     */
     prototype.isRequiredByPackets = null;
+    /**
+     *  Alignments to ignore, as they have already been processed.
+     *  @property processedAlignments;
+     *  @type Object (Map<String,String>)
+     */
     prototype.processedAlignments = null;
+    /**
+     *  Assertion Processor that invoked this generator.
+     *  @property ep
+     *  @type AssertionProcessor
+     */
     prototype.ep = null;
+    /**
+     *  Inquiry Packet that this generator is creating relationships for.
+     *  @property ip
+     *  @type InquiryPacket
+     */
     prototype.ip = null;
     prototype.log = function(string) {
         if (this.logFunction != null) 
@@ -476,6 +733,10 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             rpg.processEventFailure(p1, ip);
         });
     };
+    /**
+     *  Method to invoke to begin relation processing.
+     *  @method go
+     */
     prototype.go = function() {
         var rpg = this;
         if (this.ip.getContext().relation == null) 
@@ -659,7 +920,6 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.processRollupRuleInterpretSuccess = function(status, ip) {
         this.log(ip, "Rollup rule successfully interpreted.");
         ip.numberOfQueriesRunning--;
-        ip.status = status;
         this.checkStep(ip);
     };
     prototype.processRollupRuleInterpretSkipped = function(ip) {

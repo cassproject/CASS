@@ -7,18 +7,32 @@
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
     "files": {
+        "src/main/js/cass/cass.adapter.js": {
+            "name": "src/main/js/cass/cass.adapter.js",
+            "modules": {},
+            "classes": {
+                "MoodleConfig": 1,
+                "XapiConfig": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/main/js/cass/cass.competency.js": {
             "name": "src/main/js/cass/cass.competency.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "EcRollupRule": 1,
+                "EcAlignment": 1,
+                "EcLevel": 1,
+                "EcCompetency": 1,
+                "EcFramework": 1
+            },
             "fors": {},
             "namespaces": {}
         },
         "src/main/js/cass/cass.import.js": {
             "name": "src/main/js/cass/cass.import.js",
-            "modules": {
-                "cass.import": 1
-            },
+            "modules": {},
             "classes": {
                 "Importer": 1,
                 "MedbiqImport": 1,
@@ -33,6 +47,8 @@
             "name": "src/main/js/cass/cass.rollup.js",
             "modules": {},
             "classes": {
+                "InquiryPacket": 1,
+                "RelationshipPacketGenerator": 1,
                 "AssertionProcessor": 1
             },
             "fors": {},
@@ -759,26 +775,6 @@
         }
     },
     "modules": {
-        "cass.import": {
-            "name": "cass.import",
-            "submodules": {},
-            "elements": {},
-            "classes": {
-                "Importer": 1,
-                "MedbiqImport": 1,
-                "CSVImport": 1,
-                "ASNImport": 1,
-                "FrameworkImport": 1
-            },
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "src/main/js/cass/cass.import.js",
-            "line": 684,
-            "description": "Base class for all importers, can hold helper functions \nthat are useful for all importers",
-            "abstract": "",
-            "author": "devlin.junker@eduworks.com"
-        },
         "org.cassproject": {
             "name": "org.cassproject",
             "submodules": {
@@ -788,6 +784,20 @@
             "classes": {
                 "Cass": 1,
                 "Ebac": 1,
+                "MoodleConfig": 1,
+                "XapiConfig": 1,
+                "EcRollupRule": 1,
+                "EcAlignment": 1,
+                "EcLevel": 1,
+                "EcCompetency": 1,
+                "EcFramework": 1,
+                "Importer": 1,
+                "MedbiqImport": 1,
+                "CSVImport": 1,
+                "ASNImport": 1,
+                "FrameworkImport": 1,
+                "InquiryPacket": 1,
+                "RelationshipPacketGenerator": 1,
                 "AssertionProcessor": 1,
                 "Competency": 1,
                 "Level": 1,
@@ -811,7 +821,12 @@
             "tag": "module",
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
             "line": 47,
-            "description": "Location of strings that store the current namespace for EBAC/KBAC."
+            "description": "Location of strings that store the current namespace for EBAC/KBAC.",
+            "is_constructor": 1,
+            "author": "devlin.junker@eduworks.com",
+            "extends": "RollupRule",
+            "abstract": "",
+            "static": 1
         },
         "com.eduworks.ec": {
             "name": "com.eduworks.ec",
@@ -1478,6 +1493,104 @@
         }
     },
     "classes": {
+        "MoodleConfig": {
+            "name": "MoodleConfig",
+            "shortname": "MoodleConfig",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 10,
+            "description": "Object that holds the Moodle Adapter configuration values returned \nfrom the server and provides methods for saving new config values"
+        },
+        "XapiConfig": {
+            "name": "XapiConfig",
+            "shortname": "XapiConfig",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 68,
+            "description": "Object that holds the xAPI Adapter configuration values returned \nfrom the server and provides methods for saving new config values"
+        },
+        "EcRollupRule": {
+            "name": "EcRollupRule",
+            "shortname": "EcRollupRule",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 325,
+            "description": "Implementation of a Rollup Rule object with methods for interacting with CASS\nservices on a server."
+        },
+        "EcAlignment": {
+            "name": "EcAlignment",
+            "shortname": "EcAlignment",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 441,
+            "description": "Implementation of an alignment object with methods for interacting with CASS\nservices on a server."
+        },
+        "EcLevel": {
+            "name": "EcLevel",
+            "shortname": "EcLevel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 727,
+            "description": "Implementation of a Level object with methods for interacting with CASS\nservices on a server."
+        },
+        "EcCompetency": {
+            "name": "EcCompetency",
+            "shortname": "EcCompetency",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 927,
+            "description": "Implementation of a Competency object with methods for interacting with CASS\nservices on a server."
+        },
+        "EcFramework": {
+            "name": "EcFramework",
+            "shortname": "EcFramework",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1451,
+            "description": "Implementation of a Framework object with methods for interacting with CASS\nservices on a server."
+        },
         "Importer": {
             "name": "Importer",
             "shortname": "Importer",
@@ -1486,7 +1599,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cass.import",
+            "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
             "line": 15,
@@ -1500,13 +1613,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cass.import",
+            "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
             "line": 33,
-            "static": 1,
-            "extends": "Importer",
-            "author": "fritz.ray@eduworks.com"
+            "description": "Importer methods to create competencies based on a\nMedbiquitous competency XML file"
         },
         "CSVImport": {
             "name": "CSVImport",
@@ -1516,13 +1627,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cass.import",
+            "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 167,
-            "static": 1,
-            "extends": "Importer",
-            "author": "fritz.ray@eduworks.com"
+            "line": 188,
+            "description": "Import methods to handle an CSV file of competencies and a \nCSV file of relationships and store them in a CASS instance"
         },
         "ASNImport": {
             "name": "ASNImport",
@@ -1532,14 +1641,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cass.import",
+            "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 397,
-            "description": "Import methods to handle an ASN XML file of competencies and\nstore them in the CASS instance",
-            "static": 1,
-            "extends": "Importer",
-            "author": "fritz.ray@eduworks.com"
+            "line": 463,
+            "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance"
         },
         "FrameworkImport": {
             "name": "FrameworkImport",
@@ -1549,13 +1655,41 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cass.import",
+            "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 684,
-            "static": 1,
-            "extends": "Importer",
-            "author": "devlin.junker@eduworks.com"
+            "line": 800,
+            "description": "Importer methods to copy or link to competencies that already\nexist in another framework in a CASS instance."
+        },
+        "InquiryPacket": {
+            "name": "InquiryPacket",
+            "shortname": "InquiryPacket",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 10,
+            "description": "Data structure used to hold data relevant to a request to determine the competence of an individual.\n(hereafter, \"Inquiry\")",
+            "author": "tom.buskirk@eduworks.com"
+        },
+        "RelationshipPacketGenerator": {
+            "name": "RelationshipPacketGenerator",
+            "shortname": "RelationshipPacketGenerator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.cassproject",
+            "namespace": "",
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 510,
+            "description": "Creates child packets for an InquiryPacket based on its context.",
+            "author": "tom.buskirk@eduworks.com"
         },
         "AssertionProcessor": {
             "name": "AssertionProcessor",
@@ -1568,7 +1702,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 537,
+            "line": 798,
             "description": "Processor used in Assertion Processing.\nCan estimate or determine competence of individuals.",
             "author": "tom.buskirk@eduworks.com"
         },
@@ -11559,11 +11693,110 @@
     "elements": {},
     "classitems": [
         {
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 27,
+            "description": "Saves this config Objects configuration values to the server specified",
+            "memberof": "MoodleConfig",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "serverUrl",
+                    "description": "URL of server to save configuration values to"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully saving config values to server"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while saving the config values"
+                }
+            ],
+            "class": "MoodleConfig",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 47,
+            "description": "Retrieves the Moodle adapter configuration values from the server",
+            "memberof": "MoodleConfig",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "serverUrl",
+                    "description": "URL of server to save configuration values to"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully retrieving config values to server"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while getting the config values"
+                }
+            ],
+            "class": "MoodleConfig",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 86,
+            "description": "Saves this config Objects configuration values to the server specified",
+            "memberof": "XapiConfig",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "serverUrl",
+                    "description": "URL of server to save configuration values to"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully saving config values to server"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while saving the config values"
+                }
+            ],
+            "class": "XapiConfig",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.adapter.js",
+            "line": 106,
+            "description": "Retrieves the adapter configuration values from the server",
+            "memberof": "XapiConfig",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "serverUrl",
+                    "description": "URL of server to save configuration values to"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully retrieving config values to server"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while getting the config values"
+                }
+            ],
+            "class": "XapiConfig",
+            "module": "org.cassproject"
+        },
+        {
             "file": "src/main/js/cass/cass.competency.js",
             "line": 10,
             "description": "The sequence that assertions should be built as such: 1. Generate the ID. 2.\nAdd the owner. 3. Set the subject. 4. Set the agent. Further functions may be\ncalled afterwards in any order. WARNING: The modifications of ownership and\nreadership do not \"just work\".",
             "author": "fritz.ray@eduworks.com",
-            "class": "Importer"
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
@@ -11575,36 +11808,1346 @@
                     "description": ""
                 }
             ],
-            "class": "Importer"
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 325,
-            "author": "fritz.ray@eduworks.com",
-            "class": "Importer"
+            "line": 341,
+            "description": "Method for setting a rollup rule name",
+            "memberof": "EcRollupRule",
+            "itemtype": "method",
+            "name": "setName",
+            "params": [
+                {
+                    "name": "name",
+                    "description": ""
+                }
+            ],
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 383,
-            "description": "TODO: Test case where an absent relation is in the framework.",
-            "author": "fritz.ray@eduworks.com",
-            "class": "Importer"
+            "line": 351,
+            "description": "Method for setting a rollup rule description",
+            "memberof": "EcRollupRule",
+            "itemtype": "method",
+            "name": "setDescription",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 552,
-            "author": "fritz.ray@eduworks.com",
-            "class": "Importer"
+            "line": 361,
+            "description": "Saves this rollup rules details on the server specified by its ID",
+            "memberof": "EcRollupRule",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful save of rollup rule",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error saving rollup rule",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 659,
-            "author": "fritz.ray@eduworks.com",
-            "class": "Importer"
+            "line": 395,
+            "description": "Deletes this rollup rule from the server specified by it's ID",
+            "memberof": "EcRollupRule",
+            "itemtype": "method",
+            "name": "_delete",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful deleting the rollup rle",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error deleting the rollup rule",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 408,
+            "description": "Retrieves a rollup rule from the server",
+            "memberof": "EcRollupRule",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the rollup rule to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful retrieving rollup rule, \n  \t\t\treturns the rollup rule",
+                    "type": "Callback1<EcRollupRule>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error retrieving rollup rule",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcRollupRule",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 459,
+            "description": "Setter for alignment name",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "setName",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "name to give this alignment",
+                    "type": "String"
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 470,
+            "description": "Setter for alignment description",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "setDescription",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "description to give this alignment",
+                    "type": "String"
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 481,
+            "description": "Saves this alignment details on the server corresponding to its ID",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully saving the alignment",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error while saving alignment",
+                    "type": "Callback1<String>",
+                    "optional": true
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 523,
+            "description": "Deletes the alignment from the server corresponding to its ID",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "_delete",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully deleting the alignment",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error while deleting alignment",
+                    "type": "Callback1<String>",
+                    "optional": true
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 536,
+            "description": "Retrieves the alignment specified with the ID from the server",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the alignment to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully retrieving the alignment,\n\t\t\treturns the alignment",
+                    "type": "Callback1<EcAlignment>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error while retrieving alignment",
+                    "type": "Callback1<String>",
+                    "optional": true
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 572,
+            "description": "Searches the repository using the query and optional parameters provided",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "search",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search using the query provided",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "query",
+                    "description": "The query to send to the search",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful search return",
+                    "type": "Callback1<Array<EcAlignment>>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error searching",
+                    "type": "Callback1<String>",
+                    "optional": true
+                },
+                {
+                    "name": "paramObj",
+                    "description": "\n\t\t\tParameters to include in the search",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 619,
+            "description": "Searches the repository for alignments with a specific ID in the source field",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "searchBySource",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for alignments with the source specified",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "sourceId",
+                    "description": "ID in the source field of the alignments to find",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful search return",
+                    "type": "Callback1<Array<EcAlignment>>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error searching",
+                    "type": "Callback1<String>",
+                    "optional": true
+                },
+                {
+                    "name": "paramObj",
+                    "description": "\n\t\t\tParameters to include in the search",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 672,
+            "description": "Searches the repository for alignments with a specific ID in the target field",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "searchByCompetency",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for alignments with the source specified",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "competencyId",
+                    "description": "ID in the target field of the alignments to find",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful search return",
+                    "type": "Callback1<Array<EcAlignment>>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error searching",
+                    "type": "Callback1<String>",
+                    "optional": true
+                },
+                {
+                    "name": "paramObj",
+                    "description": "\n\t\t\tParameters to include in the search",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                }
+            ],
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 743,
+            "description": "Adds a relationship between this level and a target level to define\nhow they correspond to one another",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "addRelationship",
+            "params": [
+                {
+                    "name": "targetLevel",
+                    "description": "Target level of the relationship",
+                    "type": "EcLevel"
+                },
+                {
+                    "name": "alignmentType",
+                    "description": "Type of relationship",
+                    "type": "String"
+                },
+                {
+                    "name": "identity",
+                    "description": "Private key that will own the new relationship",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "server",
+                    "description": "URL Prefix of the new relationship ID (Server it will be saved on)",
+                    "type": "String"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 767,
+            "description": "Method to set the name of this level",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "setName",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name to set on the level",
+                    "type": "String"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 778,
+            "description": "Method to set the description of the level",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "setDescription",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "Description to set on the level",
+                    "type": "String"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 789,
+            "description": "Saves this levels details to the server",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully saving the level to the server",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs while saving the level to the server",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 823,
+            "description": "Deletes the level from it's repository",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "_delete",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered when the level is successfully deleted from the server",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while deleting the level",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 836,
+            "description": "Retrieves a level from the server specified by its ID",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the level to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered when successfully retrieving the level, \n\t\t\treturns the level",
+                    "type": "Callback1<EcLevel>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs when retrieving the level",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 872,
+            "description": "Searches for levels using a competency that the results must be related to",
+            "memberof": "EcLevel",
+            "itemtype": "method",
+            "name": "searchByCompetency",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for levels",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "competencyId",
+                    "description": "competency ID that the levels are rleated to",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered when searches successfully",
+                    "type": "Callback1<Array<EcLevel>>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while searching",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "paramObj",
+                    "description": "Search parameters object to pass in",
+                    "type": "Object"
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                }
+            ],
+            "class": "EcLevel",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 943,
+            "description": "Adds a new alignment on the server specified with this competency as its \nsource and the specified target competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "addAlignment",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "Competency to be related with",
+                    "type": "EcCompetency"
+                },
+                {
+                    "name": "alignmentType",
+                    "description": "String defining the relationship type",
+                    "type": "String"
+                },
+                {
+                    "name": "owner",
+                    "description": "Private Key that will own the relationship created",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "server",
+                    "description": "URL Prefix of the new relationship (Server it will be saved on)",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully creating and saving the relationship",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "\n\t\t\tCallback triggered if error creating and saving relationship",
+                    "type": "Callback1<String>",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "EcAlignment\n\t\t\tCreated relationship"
+            },
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 974,
+            "description": "Searches the repository given for any relationships that contain this competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "relations",
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for relationships",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "eachSuccess",
+                    "description": "Callback triggered for each relationship found",
+                    "type": "Callback1<EcAlignment>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error finding relationships",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "successAll",
+                    "description": "Callback triggered once all of the relationships have been found",
+                    "type": "Callback1<Array<EcAlignment>>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 991,
+            "description": "Searches the repository given for any relationships that contain this competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "relations",
+            "deprecated": true,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for relationships",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "eachSuccess",
+                    "description": "Callback triggered for each relationship found",
+                    "type": "Callback1<EcAlignment>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error finding relationships",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "successAll",
+                    "description": "Callback triggered once all of the relationships have been found",
+                    "type": "Callback1<Array<EcAlignment>>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1025,
+            "description": "Adds a new level on the server specified for this competency.",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "addLevel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the new level to create",
+                    "type": "String"
+                },
+                {
+                    "name": "description",
+                    "description": "Description of the new level to create",
+                    "type": "String"
+                },
+                {
+                    "name": "owner",
+                    "description": "Private key of the owner of the new level",
+                    "type": "String"
+                },
+                {
+                    "name": "server",
+                    "description": "URL Prefix for the new level's ID (Server saved on)",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully creating and saving the level",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error creating and saving the level",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "return": {
+                "description": "EcLevel\n\t\t\tLevel created"
+            },
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1055,
+            "description": "Searches the repository given for any levels of this competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "levels",
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for levels",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered for each level found",
+                    "type": "Callback1<EcLevel>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error finding levels",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "successAll",
+                    "description": "Callback triggered once all of the levels have been found",
+                    "type": "Callback1<Array<EcLevel>>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1119,
+            "description": "Adds a new rollup rule on the server specified for this competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "addRollupRule",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the rollup rule to create",
+                    "type": "String"
+                },
+                {
+                    "name": "description",
+                    "description": "Description of the rollup rule to create",
+                    "type": "String"
+                },
+                {
+                    "name": "owner",
+                    "description": "Private key that will own the new rollup rule",
+                    "type": "EcPpk"
+                },
+                {
+                    "name": "server",
+                    "description": "URL Prefix for the new rollup rule's ID (Server that it will be saved on)",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered if successfully save the rollup rule",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered fi error during save of rollup rule",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "return": {
+                "description": "EcRollupRule\n\t\t\tCreated rollup rule"
+            },
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1149,
+            "description": "Searches the repository given for any rollup rules of this competency",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "rollupRules",
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for levels",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered for each rollup rule found",
+                    "type": "Callback1<EcRollupRule>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error finding rollup rule",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "successAll",
+                    "description": "Callback triggered once all of the rollup rules have been found",
+                    "type": "Callback1<Array<EcRollupRule>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1213,
+            "description": "Method to set competency name",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "setName",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name to set for this competency",
+                    "type": "String"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1224,
+            "description": "Method to set competency description",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "setDescription",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "Description to set for its competency",
+                    "type": "String"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1235,
+            "description": "Method to set competency scope",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "setScope",
+            "params": [
+                {
+                    "name": "scope",
+                    "description": "Scope to set for its competency",
+                    "type": "String"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1246,
+            "description": "Saves the competency details to the server",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successfully saving the competency",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error saving competency",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1280,
+            "description": "Deletes the competency from the server\n\nTODO: Delete rollup rules?",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "_delete",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered on successful deleting the competency",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error deleting the competency",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "repo",
+                    "description": "Repository to delete from and to check for levels or relationships to delete",
+                    "type": "EcRepository"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1336,
+            "description": "Retrieves a competency from it's server asynchronously",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency to retrieve from the server",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after retrieving the competency,\n\t\t\treturns the competency retrieved",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error retrieving competency",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1372,
+            "description": "Retrieves a competency from it's server synchronously, the call \nblocks until it is successful or an error occurs",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "getBlocking",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency to retrieve",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "EcCompetency\n\t\t\tThe competency retrieved"
+            },
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1402,
+            "description": "Searches a repository for competencies that match the search query",
+            "memberof": "EcCompetency",
+            "itemtype": "method",
+            "name": "search",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search using the query",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "query",
+                    "description": "Query string to pass to the search web service",
+                    "type": "String"
+                },
+                {
+                    "name": "{Callback1<Array<EcCompetency>>",
+                    "description": "success\n\t\t\tCallback triggered after completing the search, returns the results"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error searching",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "paramObj",
+                    "description": "Parameter object for search",
+                    "type": "Object"
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                }
+            ],
+            "class": "EcCompetency",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1469,
+            "description": "Adds the competency ID specified to the frameworks list of competency IDs",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "addCompetency",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency to add",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1486,
+            "description": "Removes a competency ID from the framework's list, also removes any\nlevels and relations associated with that competency\n\nTODO: remove rollup rules? should we add flag to remove these extras",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeCompetency",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after succesfully removing the competency and levels and relationships",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs when removing competency and levels and relationships",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1538,
+            "description": "Helper method to remove relationships associated with a competency from this framework",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeRelationshipsThatInclude",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency being removed, to find relationships on",
+                    "type": "String"
+                },
+                {
+                    "name": "i",
+                    "description": "recursive index parameter",
+                    "type": "Int"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after all relationships in the framework have been checked",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs looking through relationships",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1569,
+            "description": "Helper method to remove levels associated with a competency from this framework",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeLevelsThatInclude",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the competency being removed, to find levels on",
+                    "type": "String"
+                },
+                {
+                    "name": "i",
+                    "description": "recursive index parameter",
+                    "type": "Int"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after all levels in the framework have been checked",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs looking through levels",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1600,
+            "description": "Adds a relation ID to the framework's list of relations",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "addRelation",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID to add to the framework's relation list",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1617,
+            "description": "Removes a relation ID from the framework's list of relations",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeCompetency",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID to remove from the framework's relation list",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1633,
+            "description": "Adds a level ID to the framework's list of levels",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "addLevel",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the level to add to framework's list",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1650,
+            "description": "Removes a level ID from the framework's list of levels",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeLevel",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID to remove from framework's level list",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1666,
+            "description": "Adds a rollup rule ID to the framework's list of rollup rules",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "addRollupRule",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the rollup rule to add",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1683,
+            "description": "Removes a rollup rule ID from the framework's list of rollup rules",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "removeRollupRule",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID to remove from rollup rule list",
+                    "type": "String"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1699,
+            "description": "Saves this frameworks details on the server specified by it's ID",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "save",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully saving the framework",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs while saving the framework",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1725,
+            "description": "Deletes this framework from the server specified by it's ID",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "_delete",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Callback triggered if successfully deleted framework",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if error occurs when deleting the framework",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1738,
+            "description": "Retrieves a framework from the server, specified by the ID",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "get",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the framework to retrieve",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered after successfully retrieving the framework,\n\t\t\treturns the retrieved framework",
+                    "type": "Callback1<EcFramework>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while retrieving the framework",
+                    "type": "Callback1<String>"
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 1777,
+            "description": "Searches the repository given for frameworks using the query passed in",
+            "memberof": "EcFramework",
+            "itemtype": "method",
+            "name": "search",
+            "static": 1,
+            "params": [
+                {
+                    "name": "repo",
+                    "description": "Repository to search for frameworks",
+                    "type": "EcRepository"
+                },
+                {
+                    "name": "query",
+                    "description": "Query string used to search for a framework",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered when the search successfully returns,\n\t\t\treturns search results",
+                    "type": "Callback1<Array<EcFramework>"
+                },
+                {
+                    "name": "failure",
+                    "description": "Callback triggered if an error occurs while searching",
+                    "type": "Callback1<String>"
+                },
+                {
+                    "name": "paramObj",
+                    "description": "Parameter object for search",
+                    "type": "Object"
+                },
+                {
+                    "name": "size",
+                    "description": ""
+                },
+                {
+                    "name": "start",
+                    "description": ""
+                }
+            ],
+            "class": "EcFramework",
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 48,
+            "line": 51,
+            "description": "Does the legwork of looking for competencies in the XML",
             "memberof": "MedbiqImport",
             "itemtype": "method",
             "name": "medbiqXmlLookForCompetencyObject",
@@ -11614,16 +13157,17 @@
             "params": [
                 {
                     "name": "obj",
-                    "description": "",
+                    "description": "Parsed XML Object",
                     "type": "Object"
                 }
             ],
             "class": "MedbiqImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 65,
+            "line": 70,
+            "description": "Does the legwork of parsing the competencies out of the parsed XML",
             "memberof": "MedbiqImport",
             "itemtype": "method",
             "name": "medbiqXmlParseCompetencyObject",
@@ -11633,16 +13177,17 @@
             "params": [
                 {
                     "name": "obj",
-                    "description": "",
+                    "description": "Parsed XML Object",
                     "type": "Object"
                 }
             ],
             "class": "MedbiqImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 91,
+            "line": 99,
+            "description": "Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process",
             "memberof": "MedbiqImport",
             "itemtype": "method",
             "name": "analyzeFile",
@@ -11650,26 +13195,28 @@
             "params": [
                 {
                     "name": "file",
-                    "description": "",
+                    "description": "Medbiquitous XML file",
                     "type": "Object"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered on succesfully analyzing competencies, \n\t\t\treturns an array of all of the competencies found",
                     "type": "Callback1<Array<EcCompetency>>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<String>"
+                    "description": "\n\t\t\tCallback triggered on error analyzing file",
+                    "type": "Callback1<String>",
+                    "optional": true
                 }
             ],
             "class": "MedbiqImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 127,
+            "line": 140,
+            "description": "Method for actually creating the competencies in the CASS repository after a\nMedbiquitous XML file has been parsed. Must be called after analyzeFile",
             "memberof": "MedbiqImport",
             "itemtype": "method",
             "name": "importCompetencies",
@@ -11677,36 +13224,39 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the created competencies (and relationships?)",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the created competencies (and relationships?)",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after successfully creating the competencies from the XML file",
                     "type": "Callback1<Array<EcCompetency>>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered if there is an error while creating the competencies",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 },
                 {
                     "name": "incremental",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered incrementally while the competencies are being created to show progress,\n\t\t\treturns an object indicating the number of competencies created so far",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "MedbiqImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 179,
+            "line": 203,
+            "description": "Analyzes a CSV File to return the column names to the user for specifying\nwhich columns contain which data. This should be called before import.",
             "memberof": "CSVImport",
             "itemtype": "method",
             "name": "analyzeFile",
@@ -11714,26 +13264,28 @@
             "params": [
                 {
                     "name": "file",
-                    "description": "",
+                    "description": "CSV file to be analyzed",
                     "type": "Object"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after successfully analyzing the CSV file",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered if there is an error analyzing the CSV file",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "CSVImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 206,
+            "line": 235,
+            "description": "Helper function to transform a competencies oldID to match the new server url",
             "memberof": "CSVImport",
             "itemtype": "method",
             "name": "transformId",
@@ -11743,26 +13295,27 @@
             "params": [
                 {
                     "name": "oldId",
-                    "description": "",
+                    "description": "Old ID found in the CSV file",
                     "type": "String"
                 },
                 {
                     "name": "newObject",
-                    "description": "",
+                    "description": "New competency being created",
                     "type": "EcRemoteLinkedData"
                 },
                 {
                     "name": "selectedServer",
-                    "description": "",
+                    "description": "New URL Prefix that the new competency's ID should match",
                     "type": "String"
                 }
             ],
             "class": "CSVImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 234,
+            "line": 268,
+            "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "memberof": "CSVImport",
             "itemtype": "method",
             "name": "importCompetencies",
@@ -11770,81 +13323,88 @@
             "params": [
                 {
                     "name": "file",
-                    "description": "",
+                    "description": "CSV File to import competencies from",
                     "type": "Object"
                 },
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the created competencies (and relationships?)",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the created competencies (and relationships?)",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "nameIndex",
-                    "description": "",
+                    "description": "Index of the column that contains the competency names",
                     "type": "Int"
                 },
                 {
                     "name": "descriptionIndex",
-                    "description": "",
+                    "description": "Index of the column that contains the competency descriptions",
                     "type": "Int"
                 },
                 {
                     "name": "scopeIndex",
-                    "description": "",
+                    "description": "Index of the column that contains the competency scopes",
                     "type": "Int"
                 },
                 {
                     "name": "idIndex",
-                    "description": "",
+                    "description": "Index of the column that contains the old competency ID (Optional, if not exists pass null or negative)",
                     "type": "Int"
                 },
                 {
                     "name": "relations",
-                    "description": "",
-                    "type": "Object"
+                    "description": "\n\t\t\tCSV File to import relationships from (Optional, if not exists pass null)",
+                    "type": "Object",
+                    "optional": true
                 },
                 {
                     "name": "sourceIndex",
-                    "description": "",
-                    "type": "Int"
+                    "description": "\n\t\t\tIndex (in relation file) of the column containing the relationship source competency ID (Optional, if not exists pass null or negative)",
+                    "type": "Int",
+                    "optional": true
                 },
                 {
                     "name": "relationTypeIndex",
-                    "description": "",
-                    "type": "Int"
+                    "description": "\n\t\t\tIndex (in relation file) of the column containing the relationship type (Optional, if not exists pass null or negative)",
+                    "type": "Int",
+                    "optional": true
                 },
                 {
                     "name": "destIndex",
-                    "description": "",
-                    "type": "Int"
+                    "description": "\n\t\t\tIndex (in relation file) of the column containing the relationship destination competency ID (Optional, if not exists pass null or negative)",
+                    "type": "Int",
+                    "optional": true
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the competencies (and relationships?) have been created",
                     "type": "Callback2<Array<EcCompetency>, Array<EcAlignment>>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered if an error during creating the competencies",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 },
                 {
                     "name": "incremental",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered incrementally during creation of competencies to indicate progress,\n\t\t\treturns an object indicating the number of competencies (and relationships?) created so far",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "CSVImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 321,
+            "line": 375,
+            "description": "Handles actually importing the relationships from the relationship CSV file",
             "memberof": "CSVImport",
             "itemtype": "method",
             "name": "importRelations",
@@ -11854,61 +13414,62 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the created competencies (and relationships?)",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the created competencies (and relationships?)",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "file",
-                    "description": "",
+                    "description": "CSV File to import competencies from",
                     "type": "Object"
                 },
                 {
                     "name": "sourceIndex",
-                    "description": "",
+                    "description": "Index (in relation file) of the column containing the relationship source competency ID",
                     "type": "Int"
                 },
                 {
                     "name": "relationTypeIndex",
-                    "description": "",
+                    "description": "Index (in relation file) of the column containing the relationship type",
                     "type": "Int"
                 },
                 {
                     "name": "destIndex",
-                    "description": "",
+                    "description": "Index (in relation file) of the column containing the relationship destination competency ID",
                     "type": "Int"
                 },
                 {
                     "name": "competencies",
-                    "description": "",
+                    "description": "Array of newly created competencies",
                     "type": "Array<EcCompetency>"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the relationships have been created",
                     "type": "Callback2<Array<EcCompetency>, Array<EcAlignment>>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
+                    "description": "Callback triggered if an error during creating the relationships",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "incremental",
-                    "description": "",
+                    "description": "Callback triggered incrementally during creation to indicate progress",
                     "type": "Callback1<Object>"
                 }
             ],
             "class": "CSVImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 418,
+            "line": 485,
+            "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts \nthe number of competencies and relationships that it finds",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "asnJsonPrime",
@@ -11918,21 +13479,22 @@
             "params": [
                 {
                     "name": "obj",
-                    "description": "",
+                    "description": "\n\t\t\tThe current JSON object we're examining for comepetencies and reationships",
                     "type": "Object"
                 },
                 {
                     "name": "key",
-                    "description": "",
+                    "description": "The ASN identifier of the current object",
                     "type": "String"
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 444,
+            "line": 517,
+            "description": "Does the actual legwork of looking for competencies and relationships. \n\nThis function finds the framework information, and pulls out the competency \nobjects array to be scanned by asnJsonPrime",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "lookThroughSource",
@@ -11942,16 +13504,17 @@
             "params": [
                 {
                     "name": "obj",
-                    "description": "",
+                    "description": "ASN JSON Object from file that contains framework information and competencies/relationships",
                     "type": "Object"
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 473,
+            "line": 551,
+            "description": "Analyzes an ASN File for competencies and relationships. \n\nThis should be called before import, the sucess callback returns an object\nindicating the number of competencies and relationships found.",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "analyzeFile",
@@ -11959,26 +13522,28 @@
             "params": [
                 {
                     "name": "file",
-                    "description": "",
+                    "description": "ASN JSON file",
                     "type": "Object"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered on successful analysis of file",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered if there is an error during analysis of the file",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 513,
+            "line": 598,
+            "description": "Method to import the competencies from an ASN JSON file, \nshould be called after analyzing the file",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "importCompetencies",
@@ -11986,41 +13551,43 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the competencies to be imported",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the new competencies",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "createFramework",
-                    "description": "",
+                    "description": "Flag to create a framework and include the competencies and relationships created",
                     "type": "Boolean"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the competencies (and framework?) are created",
                     "type": "Callback2<Array<EcCompetency>, EcFramework>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
+                    "description": "Callback triggered if an error occurs while creating the competencies",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "incremental",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered incrementally during the creation of competencies to indicate progress,\n\t\t\treturns an object indicating the number of competencies (and relationships?) created so far",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 551,
+            "line": 645,
+            "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "createCompetencies",
@@ -12030,36 +13597,38 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the competencies to be imported",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the new competencies",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the competencies are created",
                     "type": "Callback0"
                 },
                 {
                     "name": "failure",
-                    "description": "",
+                    "description": "Callback triggered if an error occurs while creating the competencies",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "incremental",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered incrementally during the creation of competencies to indicate progress",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 602,
+            "line": 703,
+            "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "memberof": "ASNImport",
             "itemtype": "method",
             "name": "createRelationships",
@@ -12069,12 +13638,12 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the relationships to be imported",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the new relationships",
                     "type": "EcIdentity"
                 },
                 {
@@ -12089,26 +13658,27 @@
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the relationships are created",
                     "type": "Callback0"
                 },
                 {
                     "name": "failure",
-                    "description": "",
+                    "description": "Callback triggered if an error occurs while creating the relationships",
                     "type": "Callback1<Object>"
                 },
                 {
                     "name": "incremental",
-                    "description": "",
+                    "description": "Callback triggered incrementally during the creation of relationships to indicate progress",
                     "type": "Callback1<Object>"
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 654,
+            "line": 765,
+            "description": "Handles creating the framework if the createFramework flag was set",
             "meberof": "ASNImport",
             "itemtype": "method",
             "name": "createFramework",
@@ -12118,31 +13688,32 @@
             "params": [
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the framework to be imported",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the new framework",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after the framework is created",
                     "type": "Callback2<Array<EcCompetency>, EcFramework>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
+                    "description": "Callback triggered if there is an error during the creation of framework",
                     "type": "Callback1<Object>"
                 }
             ],
             "class": "ASNImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 697,
+            "line": 816,
+            "description": "Copies or links competencies that exist in one framework in a CASS instance, \nto another different framework in the same CASS instance.",
             "memberof": "FrameworkImport",
             "itemtype": "method",
             "name": "importCompetencies",
@@ -12150,46 +13721,530 @@
             "params": [
                 {
                     "name": "source",
-                    "description": "",
+                    "description": "Framework to copy or link the competencies from",
                     "type": "EcFramework"
                 },
                 {
                     "name": "target",
-                    "description": "",
+                    "description": "Framework to add the copied or linked competencies to",
                     "type": "EcFramework"
                 },
                 {
                     "name": "copy",
-                    "description": "",
+                    "description": "Flag indicating whether or not to copy or link the competencies in the source framework",
                     "type": "Boolean"
                 },
                 {
                     "name": "serverUrl",
-                    "description": "",
+                    "description": "URL Prefix for the created competencies if copied",
                     "type": "String"
                 },
                 {
                     "name": "owner",
-                    "description": "",
+                    "description": "EcIdentity that will own the created competencies if copied",
                     "type": "EcIdentity"
                 },
                 {
                     "name": "success",
-                    "description": "",
+                    "description": "Callback triggered after succesfully copying or linking all of the competencies,\n\t\t\treturns an array of the new or linked competencies",
                     "type": "Callback1<Array<EcCompetency>>"
                 },
                 {
                     "name": "failure",
-                    "description": "",
-                    "type": "Callback1<Object>"
+                    "description": "\n\t\t\tCallback triggered if an error occurred while creating the competencies",
+                    "type": "Callback1<Object>",
+                    "optional": true
                 }
             ],
             "class": "FrameworkImport",
-            "module": "cass.import"
+            "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 560,
+            "line": 54,
+            "description": "One or more identifiers that identify an individual.",
+            "itemtype": "property",
+            "name": "subject",
+            "type": "EcPk[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 60,
+            "description": "Competency that this packet is inquiring about.\nMay be multiple competencies that are either collapsed due to an inference loop, or are equivalent to one another.",
+            "itemtype": "property",
+            "name": "competency",
+            "type": "EcCompetency[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 67,
+            "description": "Framework that this inquiry is scoped to.",
+            "itemtype": "property",
+            "name": "context",
+            "type": "EcFramework",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 73,
+            "description": "Callback when this and all child inquiries have successfully reached a conclusion.",
+            "itemtype": "property",
+            "name": "success",
+            "type": "function(InquiryPacket)",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 79,
+            "description": "Callback if this inquiry requires additional information to proceed.",
+            "itemtype": "property",
+            "name": "ask",
+            "type": "string function(string)",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 85,
+            "description": "Callback if this inquiry fails.",
+            "itemtype": "property",
+            "name": "failure",
+            "type": "function(string)",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 91,
+            "description": "Level that the competency is being measured at. \nMay have multiple levels referring to multiple competencies due to cycles or equivalence.",
+            "itemtype": "property",
+            "name": "level",
+            "type": "EcLevel[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 98,
+            "description": "Packets that are equivalent to this packet. May be used when equivalence is best represented with additional packets.",
+            "itemtype": "property",
+            "name": "equivalentPackets",
+            "type": "InquiryPacket[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 104,
+            "description": "Packets that assist in determining the state of this packet.",
+            "itemtype": "property",
+            "name": "subPackets",
+            "type": "InquiryPacket[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 110,
+            "description": "Datetime representing when this packet was created.",
+            "itemtype": "property",
+            "name": "dateCreated",
+            "internal": "",
+            "type": "number",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 117,
+            "description": "Mark true when assertions have been retrieved for this packet.",
+            "itemtype": "property",
+            "name": "hasCheckedAssertionsForCompetency",
+            "type": "boolean",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 123,
+            "description": "Mark true when rollup rules have been processed for this packet.",
+            "itemtype": "property",
+            "name": "hasCheckedRollupRulesForCompetency",
+            "type": "boolean",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 129,
+            "description": "Mark true when relations have been processed for this packet.",
+            "itemtype": "property",
+            "name": "hasCheckedRelationshipsForCompetency",
+            "type": "boolean",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 135,
+            "description": "Async counter to keep track of number of unresolved processes.",
+            "itemtype": "property",
+            "name": "numberOfQueriesRunning",
+            "type": "integer",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 141,
+            "description": "Local log for this inquiry packet.",
+            "itemtype": "property",
+            "name": "log",
+            "type": "string",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 147,
+            "description": "Assertions (direct or indirect) that contribute to a positive result.",
+            "itemtype": "property",
+            "name": "positive",
+            "type": "EcAssertion[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 153,
+            "description": "Assertions (direct or indirect) that contribute to a negative result.",
+            "itemtype": "property",
+            "name": "negative",
+            "type": "EcAssertion[]",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 159,
+            "description": "Set to true if this packet has completed processing.",
+            "itemtype": "property",
+            "name": "finished",
+            "type": "boolean",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 165,
+            "description": "Type of inquiry packet. Inquiry packets can represent relational logic, rollup logic or competencies.",
+            "itemtype": "property",
+            "name": "type",
+            "type": "IPType",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 171,
+            "description": "Rollup Rule search string. (if IPType == ROLLUPRULE)",
+            "itemtype": "property",
+            "name": "rule",
+            "type": "string",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 177,
+            "description": "Result as a ResultType.",
+            "itemtype": "property",
+            "name": "result",
+            "type": "ResultType",
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 186,
+            "description": "Returns true if any child packets have an indeterminate result.",
+            "itemtype": "method",
+            "name": "anyIndeterminantChildPackets",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 202,
+            "description": "Returns true if all child packets have unknown results.",
+            "itemtype": "method",
+            "name": "allChildPacketsUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 218,
+            "description": "Returns true if any child packets have false results.",
+            "itemtype": "method",
+            "name": "anyChildPacketsAreFalse",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 234,
+            "description": "Returns true if any child packets have unknown results.",
+            "itemtype": "method",
+            "name": "anyChildPacketsAreUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 250,
+            "description": "Returns true if any child packets have true results.",
+            "itemtype": "method",
+            "name": "anyChildPacketsAreTrue",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 266,
+            "description": "Returns true if all equivalent packets have unknown results.",
+            "itemtype": "method",
+            "name": "allEquivalentPacketsUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 278,
+            "description": "Returns true if all equivalent packets have the true or unknown result.",
+            "itemtype": "method",
+            "name": "allEquivalentPacketsTrueOrUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 290,
+            "description": "Returns true if all sub packets have the true or unknown result.",
+            "itemtype": "method",
+            "name": "allSubPacketsTrueOrUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 302,
+            "description": "Returns true if all equivalent packets have the false or unknown result.",
+            "itemtype": "method",
+            "name": "allEquivalentPacketsFalseOrUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 314,
+            "description": "Returns true if all sub packets have the false or unknown result.",
+            "return": {
+                "description": ""
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 325,
+            "description": "Returns true if the provided ID represents a competency in this packet.",
+            "params": [
+                {
+                    "name": "competencyId",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": ""
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 534,
+            "description": "Method to call when any operation fails.",
+            "itemtype": "property",
+            "name": "failure",
+            "type": "function(string)",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 540,
+            "description": "Method to call when the operation succeeds.",
+            "itemtype": "property",
+            "name": "success",
+            "type": "function()",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 546,
+            "description": "Method to call when the generator has log statements to emit.",
+            "itemtype": "property",
+            "name": "logFunction",
+            "type": "function(any)",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 552,
+            "description": "Async counter to keep track of number of outstanding requests.",
+            "itemtype": "property",
+            "name": "numberOfRelationsToProcess",
+            "type": "integer",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 558,
+            "description": "Number of relations that have been processed.",
+            "itemtype": "property",
+            "name": "numberOfRelationsProcessed",
+            "type": "integer",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 564,
+            "description": "List of packets representing the narrows relation.",
+            "itemtype": "property",
+            "name": "narrowsPackets",
+            "type": "InquiryPacket[]",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 570,
+            "description": "List of packets representing the broadens relation.",
+            "itemtype": "property",
+            "name": "broadensPackets",
+            "type": "InquiryPacket[]",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 576,
+            "description": "List of packets representing the required relation.",
+            "itemtype": "property",
+            "name": "requiredPackets",
+            "type": "InquiryPacket[]",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 582,
+            "description": "List of packets representing the isRequiredBy relation.",
+            "itemtype": "property",
+            "name": "isRequiredByPackets",
+            "type": "InquiryPacket[]",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 588,
+            "description": "Alignments to ignore, as they have already been processed.",
+            "itemtype": "property",
+            "name": "processedAlignments;",
+            "type": "Object (Map<String,String>)",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 594,
+            "description": "Assertion Processor that invoked this generator.",
+            "itemtype": "property",
+            "name": "ep",
+            "type": "AssertionProcessor",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 600,
+            "description": "Inquiry Packet that this generator is creating relationships for.",
+            "itemtype": "property",
+            "name": "ip",
+            "type": "InquiryPacket",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 736,
+            "description": "Method to invoke to begin relation processing.",
+            "itemtype": "method",
+            "name": "go",
+            "class": "RelationshipPacketGenerator",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 821,
             "description": "Asynchronously processes and provides an answer to the question: Does an individual hold a competency?",
             "itemtype": "method",
             "name": "has",
@@ -12240,7 +14295,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 992,
+            "line": 1252,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
             "class": "AssertionProcessor",
             "module": "org.cassproject"
@@ -32905,56 +34960,260 @@
     ],
     "warnings": [
         {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.adapter.js:27"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.adapter.js:47"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.adapter.js:86"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.adapter.js:106"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:341"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:351"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:361"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:395"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:408"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:459"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:470"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:481"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:523"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:536"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:572"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:619"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:672"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:743"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:767"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:778"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:789"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:823"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:836"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:872"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:943"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:974"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:991"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1025"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1055"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1119"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1149"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1213"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1224"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1235"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1246"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1280"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1336"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1372"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1402"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1469"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1486"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1538"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1569"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1600"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1617"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1633"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1650"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1666"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1683"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1699"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1725"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1738"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1777"
+        },
+        {
             "message": "unknown tag: abstract",
             "line": " src/main/js/cass/cass.import.js:15"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:48"
+            "line": " src/main/js/cass/cass.import.js:51"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:65"
+            "line": " src/main/js/cass/cass.import.js:70"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:91"
+            "line": " src/main/js/cass/cass.import.js:99"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:127"
+            "line": " src/main/js/cass/cass.import.js:140"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:179"
+            "line": " src/main/js/cass/cass.import.js:203"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:206"
+            "line": " src/main/js/cass/cass.import.js:235"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:234"
+            "line": " src/main/js/cass/cass.import.js:268"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:321"
+            "line": " src/main/js/cass/cass.import.js:375"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:418"
+            "line": " src/main/js/cass/cass.import.js:485"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:444"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:473"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:513"
+            "line": " src/main/js/cass/cass.import.js:517"
         },
         {
             "message": "unknown tag: memberof",
@@ -32962,15 +35221,27 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:602"
-        },
-        {
-            "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:654"
+            "line": " src/main/js/cass/cass.import.js:598"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:697"
+            "line": " src/main/js/cass/cass.import.js:645"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.import.js:703"
+        },
+        {
+            "message": "unknown tag: meberof",
+            "line": " src/main/js/cass/cass.import.js:765"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.import.js:816"
+        },
+        {
+            "message": "unknown tag: internal",
+            "line": " src/main/js/cass/cass.rollup.js:110"
         },
         {
             "message": "unknown tag: internal",
@@ -32993,24 +35264,16 @@
             "line": " src/main/js/cass/cass.competency.js:119"
         },
         {
-            "message": "Missing item type",
-            "line": " src/main/js/cass/cass.competency.js:325"
+            "message": "Missing item type\nReturns true if all sub packets have the false or unknown result.",
+            "line": " src/main/js/cass/cass.rollup.js:314"
         },
         {
-            "message": "Missing item type\nTODO: Test case where an absent relation is in the framework.",
-            "line": " src/main/js/cass/cass.competency.js:383"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/main/js/cass/cass.competency.js:552"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src/main/js/cass/cass.competency.js:659"
+            "message": "Missing item type\nReturns true if the provided ID represents a competency in this packet.",
+            "line": " src/main/js/cass/cass.rollup.js:325"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:992"
+            "line": " src/main/js/cass/cass.rollup.js:1252"
         },
         {
             "message": "Missing item type\nA contact is an identity that we do not own. Using the public key we may: 1.\nSend them information (by encrypting data with their public key) 2. Verify a\nsigned message that was sent (by using the verify function of the public key)\n3. Distinguish between this identity and other identities through the\ndisplayName.",

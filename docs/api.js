@@ -199,15 +199,20 @@ YUI.add("yuidoc-meta", function(Y) {
         "EcAes",
         "EcAesCtr",
         "EcAesCtrAsync",
+        "EcAlignment",
         "EcArray",
         "EcAsyncHelper",
+        "EcCompetency",
         "EcDirectedGraph",
+        "EcFramework",
+        "EcLevel",
         "EcLinkedData",
         "EcObject",
         "EcPk",
         "EcPpk",
         "EcRemote",
         "EcRemoteLinkedData",
+        "EcRollupRule",
         "EcRsaOaep",
         "EcRsaOaepAsync",
         "EducationEvent",
@@ -300,6 +305,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Importer",
         "IndividualProduct",
         "InformAction",
+        "InquiryPacket",
         "InsertAction",
         "InstallAction",
         "InsuranceAgency",
@@ -356,6 +362,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MobileApplication",
         "MobilePhoneStore",
         "MonetaryAmount",
+        "MoodleConfig",
         "Mosque",
         "Motel",
         "MotorcycleDealer",
@@ -480,6 +487,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "RegisterAction",
         "RejectAction",
         "Relation",
+        "RelationshipPacketGenerator",
         "RentAction",
         "RentalCarReservation",
         "ReplaceAction",
@@ -631,10 +639,10 @@ YUI.add("yuidoc-meta", function(Y) {
         "WinAction",
         "Winery",
         "WriteAction",
+        "XapiConfig",
         "Zoo"
     ],
     "modules": [
-        "cass.import",
         "com.eduworks.ec",
         "es.cassManager",
         "org.cassproject",
@@ -642,11 +650,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "org.schema"
     ],
     "allModules": [
-        {
-            "displayName": "cass.import",
-            "name": "cass.import",
-            "description": "Base class for all importers, can hold helper functions \nthat are useful for all importers"
-        },
         {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",

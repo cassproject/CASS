@@ -314,18 +314,51 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
 }, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Implementation of a Rollup Rule object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcRollupRule
+ *  @constructor
+ *  @extends RollupRule
+ *  
  *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  */
 var EcRollupRule = function() {
     RollupRule.call(this);
 };
 EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
+    /**
+     *  Method for setting a rollup rule name
+     *  
+     *  @memberOf EcRollupRule
+     *  @method setName
+     *  @param name
+     */
     prototype.setName = function(name) {
         this.name = name;
     };
+    /**
+     *  Method for setting a rollup rule description
+     *  
+     *  @memberOf EcRollupRule
+     *  @method setDescription
+     *  @param {String} description
+     */
     prototype.setDescription = function(description) {
         this.description = description;
     };
+    /**
+     *  Saves this rollup rules details on the server specified by its ID
+     *  
+     *  @memberOf EcRollupRule
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successful save of rollup rule
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error saving rollup rule
+     */
     prototype.save = function(success, failure) {
         if (this.rule == null || this.rule == "") {
             var msg = "RollupRule Rule cannot be empty";
@@ -350,9 +383,34 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
             EcRepository._save(this, success, failure);
         }
     };
-    prototype._delete = function(success, failure, repo) {
+    /**
+     *  Deletes this rollup rule from the server specified by it's ID
+     *  
+     *  @memberOf EcRollupRule
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successful deleting the rollup rle
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error deleting the rollup rule
+     */
+    prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+    /**
+     * 
+     *  Retrieves a rollup rule from the server
+     *  
+     *  @memberOf EcRollupRule
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the rollup rule to retrieve
+     *  @param {Callback1<EcRollupRule>} success
+     *  			Callback triggered on successful retrieving rollup rule, 
+     *  			returns the rollup rule
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error retrieving rollup rule
+     */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             if (success == null) 
@@ -372,19 +430,55 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  TODO: Test case where an absent relation is in the framework.
+ *  Implementation of an alignment object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcAlignment
+ *  @constructor
+ *  @extends Relation
+ *  
  *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ *  
+ *  TODO: Test case where an absent relation is in the framework.
  */
 var EcAlignment = function() {
     Relation.call(this);
 };
 EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    /**
+     *  Setter for alignment name
+     *  
+     *  @memberOf EcAlignment
+     *  @method setName
+     *  @param {String} name
+     *  			name to give this alignment
+     */
     prototype.setName = function(name) {
         this.name = name;
     };
+    /**
+     *  Setter for alignment description
+     *  
+     *  @memberOf EcAlignment
+     *  @method setDescription
+     *  @param {String} description
+     *  			description to give this alignment
+     */
     prototype.setDescription = function(description) {
         this.description = description;
     };
+    /**
+     *  Saves this alignment details on the server corresponding to its ID 
+     *  
+     *  @memberOf EcAlignment
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successfully saving the alignment
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error while saving alignment
+     */
     prototype.save = function(success, failure) {
         if (this.source == null || this.source == "") {
             var msg = "Source Competency cannot be missing";
@@ -417,9 +511,33 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             EcRepository._save(this, success, failure);
         }
     };
+    /**
+     *  Deletes the alignment from the server corresponding to its ID
+     *  
+     *  @memberOf EcAlignment
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successfully deleting the alignment
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error while deleting alignment
+     */
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+    /**
+     *  Retrieves the alignment specified with the ID from the server
+     *  
+     *  @memberOf EcAlignment
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the alignment to retrieve
+     *  @param {Callback1<EcAlignment>} success
+     *  			Callback triggered on successfully retrieving the alignment,
+     *  			returns the alignment
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error while retrieving alignment
+     */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var relation = new EcAlignment();
@@ -442,6 +560,25 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
         }, failure);
     };
+    /**
+     *  Searches the repository using the query and optional parameters provided
+     *  
+     *  @memberOf EcAlignment
+     *  @method search
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search using the query provided
+     *  @param {String} query
+     *  			The query to send to the search
+     *  @param {Callback1<Array<EcAlignment>>} success
+     *  			Callback triggered on successful search return
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error searching
+     *  @param {Object} [paramObj]
+     *  			Parameters to include in the search
+     *  		@param start
+     *  		@param size
+     */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = new EcAlignment().getSearchStringByType();
         if (query == null || query == "") 
@@ -470,6 +607,25 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
         }, failure);
     };
+    /**
+     *  Searches the repository for alignments with a specific ID in the source field
+     *  
+     *  @memberOf EcAlignment
+     *  @method searchBySource
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for alignments with the source specified
+     *  @param {String} sourceId
+     *  			ID in the source field of the alignments to find
+     *  @param {Callback1<Array<EcAlignment>>} success
+     * 			Callback triggered on successful search return
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error searching
+     *  @param {Object} [paramObj]
+     *  			Parameters to include in the search
+     *  		@param start
+     *  		@param size
+     */
     constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
         var query = "";
         query = "(" + new EcAlignment().getSearchStringByType();
@@ -504,6 +660,25 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
         }, failure);
     };
+    /**
+     *  Searches the repository for alignments with a specific ID in the target field
+     *  
+     *  @memberOf EcAlignment
+     *  @method searchByCompetency
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for alignments with the source specified
+     *  @param {String} competencyId
+     *  			ID in the target field of the alignments to find
+     *  @param {Callback1<Array<EcAlignment>>} success
+     * 			Callback triggered on successful search return
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error searching
+     *  @param {Object} [paramObj]
+     *  			Parameters to include in the search
+     *  		@param start
+     *  		@param size
+     */
     constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
         var query = "";
         query = "(" + new EcAlignment().getSearchStringByType();
@@ -541,13 +716,37 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Implementation of a Level object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcLevel
+ *  @constructor
+ *  @extends Level
+ *  
  *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  */
 var EcLevel = function() {
     Level.call(this);
 };
 EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
-    prototype.addRelationship = function(level, targetLevel, alignmentType, identity, server) {
+    /**
+     *  Adds a relationship between this level and a target level to define
+     *  how they correspond to one another
+     *  
+     *  @memberOf EcLevel
+     *  @method addRelationship
+     *  @param {EcLevel} targetLevel
+     *  			Target level of the relationship
+     *  @param {String} alignmentType
+     *  			Type of relationship
+     *  @param {EcPpk} identity
+     *  			Private key that will own the new relationship
+     *  @param {String} server
+     *  			URL Prefix of the new relationship ID (Server it will be saved on)
+     */
+    prototype.addRelationship = function(targetLevel, alignmentType, identity, server) {
         var a = new EcAlignment();
         a.source = this.id;
         a.target = targetLevel.id;
@@ -556,12 +755,38 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
         a.generateId(server);
         a.signWith(identity);
     };
+    /**
+     *  Method to set the name of this level
+     *  
+     *  @memberOf EcLevel
+     *  @method setName
+     *  @param {String} name
+     *  			Name to set on the level
+     */
     prototype.setName = function(name) {
         this.name = name;
     };
+    /**
+     *  Method to set the description of the level
+     *  
+     *  @memberOf EcLevel
+     *  @method setDescription
+     *  @param {String} description
+     *  			Description to set on the level
+     */
     prototype.setDescription = function(description) {
         this.description = description;
     };
+    /**
+     *  Saves this levels details to the server
+     *  
+     *  @memberOf EcLevel
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successfully saving the level to the server
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs while saving the level to the server
+     */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
             var msg = "Level name cannot be empty";
@@ -586,9 +811,33 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
             EcRepository._save(this, success, failure);
         }
     };
-    prototype._delete = function(success, failure, repo) {
+    /**
+     *  Deletes the level from it's repository
+     *  
+     *  @memberOf EcLevel
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered when the level is successfully deleted from the server
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while deleting the level
+     */
+    prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+    /**
+     *  Retrieves a level from the server specified by its ID
+     *  
+     *  @memberOf EcLevel
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the level to retrieve
+     *  @param {Callback1<EcLevel>} success
+     *  			Callback triggered when successfully retrieving the level, 
+     *  			returns the level
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs when retrieving the level
+     */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var level = new EcLevel();
@@ -611,6 +860,25 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
             }
         }, failure);
     };
+    /**
+     *  Searches for levels using a competency that the results must be related to
+     *  
+     *  @memberOf EcLevel
+     *  @method searchByCompetency
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for levels
+     *  @param {String} competencyId
+     *  			competency ID that the levels are rleated to
+     *  @param {Callback1<Array<EcLevel>>} success
+     *  			Callback triggered when searches successfully
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while searching
+     *  @param {Object} paramObj
+     *  			Search parameters object to pass in
+     *  		@param size
+     *  		@param start
+     */
     constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
         if (competencyId == null || competencyId == "") {
             failure("No Competency Specified");
@@ -648,12 +916,42 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
+ *  Implementation of a Competency object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcCompetency
+ *  @constructor
+ *  @extends Competency
+ *  
  *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  */
 var EcCompetency = function() {
     Competency.call(this);
 };
 EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, prototype) {
+    /**
+     *  Adds a new alignment on the server specified with this competency as its 
+     *  source and the specified target competency 
+     *  
+     *  @memberOf EcCompetency
+     *  @method addAlignment
+     *  @param {EcCompetency} target
+     *  			Competency to be related with
+     *  @param {String} alignmentType
+     *  			String defining the relationship type
+     *  @param {EcPpk} owner
+     *  			Private Key that will own the relationship created
+     *  @param {String} server
+     *  			URL Prefix of the new relationship (Server it will be saved on)
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after successfully creating and saving the relationship
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered if error creating and saving relationship
+     *  @return EcAlignment
+     *  			Created relationship
+     */
     prototype.addAlignment = function(target, alignmentType, owner, server, success, failure) {
         var a = new EcAlignment();
         a.generateId(server);
@@ -664,9 +962,38 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         EcRepository.save(a, success, failure);
         return a;
     };
+    /**
+     *  Searches the repository given for any relationships that contain this competency
+     *  
+     *  @memberOf EcCompetency
+     *  @method relations
+     *  @param {EcRepository} repo
+     *  			Repository to search for relationships
+     *  @param {Callback1<EcAlignment>} eachSuccess
+     *  			Callback triggered for each relationship found
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error finding relationships
+     *  @param {Callback1<Array<EcAlignment>>} successAll
+     *  			Callback triggered once all of the relationships have been found
+     */
     prototype.relations = function(repo, eachSuccess, failure, successAll) {
         this.relationships(repo, eachSuccess, failure, successAll);
     };
+    /**
+     *  Searches the repository given for any relationships that contain this competency
+     *  
+     *  @memberOf EcCompetency
+     *  @method relations
+     *  @deprecated
+     *  @param {EcRepository} repo
+     *  			Repository to search for relationships
+     *  @param {Callback1<EcAlignment>} eachSuccess
+     *  			Callback triggered for each relationship found
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error finding relationships
+     *  @param {Callback1<Array<EcAlignment>>} successAll
+     *  			Callback triggered once all of the relationships have been found
+     */
     prototype.relationships = function(repo, eachSuccess, failure, successAll) {
         repo.search(new EcAlignment().getSearchStringByType() + " AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
             var a = new EcAlignment();
@@ -686,6 +1013,26 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    /**
+     *  Adds a new level on the server specified for this competency.
+     *  
+     *  @memberOf EcCompetency
+     *  @method addLevel
+     *  @param {String} name
+     *  			Name of the new level to create
+     *  @param {String} description
+     *  			Description of the new level to create
+     *  @param {String} owner
+     *  			Private key of the owner of the new level
+     *  @param {String} server
+     *  			URL Prefix for the new level's ID (Server saved on)
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after successfully creating and saving the level
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error creating and saving the level
+     *  @return EcLevel
+     *  			Level created
+     */
     prototype.addLevel = function(name, description, owner, server, success, failure) {
         var l = new EcLevel();
         l.generateId(server);
@@ -696,6 +1043,20 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         EcRepository.save(l, success, failure);
         return l;
     };
+    /**
+     *  Searches the repository given for any levels of this competency
+     *  
+     *  @memberOf EcCompetency
+     *  @method levels
+     *  @param {EcRepository} repo
+     *  			Repository to search for levels
+     *  @param {Callback1<EcLevel>} success
+     *  			Callback triggered for each level found
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error finding levels
+     *  @param {Callback1<Array<EcLevel>>} successAll
+     *  			Callback triggered once all of the levels have been found
+     */
     prototype.levels = function(repo, success, failure, successAll) {
         var query = "(" + new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
         query += " OR @encryptedType:\"" + EcLevel.myType + "\" OR @encryptedType:\"" + EcLevel.myType.replace(Cass.context + "/", "") + "\"";
@@ -746,6 +1107,26 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    /**
+     *  Adds a new rollup rule on the server specified for this competency
+     *  
+     *  @memberOf EcCompetency
+     *  @method addRollupRule
+     *  @param {String} name
+     *  			Name of the rollup rule to create
+     *  @param {String} description
+     *  			Description of the rollup rule to create
+     *  @param {EcPpk} owner
+     *  			Private key that will own the new rollup rule
+     *  @param {String} server
+     *  			URL Prefix for the new rollup rule's ID (Server that it will be saved on)
+     *  @param {Callback1<String>} success
+     *  			Callback triggered if successfully save the rollup rule
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered fi error during save of rollup rule
+     *  @return EcRollupRule
+     *  			Created rollup rule
+     */
     prototype.addRollupRule = function(name, description, owner, server, success, failure) {
         var r = new EcRollupRule();
         r.generateId(server);
@@ -756,6 +1137,20 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         EcRepository.save(r, success, failure);
         return r;
     };
+    /**
+     *  Searches the repository given for any rollup rules of this competency
+     *  
+     *  @memberOf EcCompetency
+     *  @method rollupRules
+     *  @param {EcRepository} repo
+     *  			Repository to search for levels
+     *  @param {Callback1<EcRollupRule>} success
+     *  			Callback triggered for each rollup rule found
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error finding rollup rule
+     *  @param {Callback1<Array<EcRollupRule>} successAll
+     *  			Callback triggered once all of the rollup rules have been found
+     */
     prototype.rollupRules = function(repo, success, failure, successAll) {
         var query = "(" + new EcRollupRule().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
         query += " OR @encryptedType:\"" + EcRollupRule.myType + "\" OR @encryptedType:\"" + EcRollupRule.myType.replace(Cass.context + "/", "") + "\"";
@@ -806,15 +1201,49 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    /**
+     *  Method to set competency name
+     *  
+     *  @memberOf EcCompetency
+     *  @method setName
+     *  @param {String} name
+     * 			Name to set for this competency
+     */
     prototype.setName = function(name) {
         this.name = name;
     };
+    /**
+     *  Method to set competency description
+     *  
+     *  @memberOf EcCompetency
+     *  @method setDescription
+     *  @param {String} description
+     *  			Description to set for its competency
+     */
     prototype.setDescription = function(description) {
         this.description = description;
     };
+    /**
+     *  Method to set competency scope
+     *  
+     *  @memberOf EcCompetency
+     *  @method setScope
+     *  @param {String} scope
+     *  			Scope to set for its competency
+     */
     prototype.setScope = function(scope) {
         this.scope = scope;
     };
+    /**
+     *  Saves the competency details to the server
+     *  
+     *  @memberOf EcCompetency
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successfully saving the competency
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error saving competency
+     */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
             var msg = "Competency Name can not be empty";
@@ -839,6 +1268,20 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             EcRepository._save(this, success, failure);
         }
     };
+    /**
+     *  Deletes the competency from the server
+     *  
+     *  TODO: Delete rollup rules?
+     *  
+     *  @memberOf EcCompetency
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successful deleting the competency
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error deleting the competency
+     *  @param {EcRepository} repo
+     *  			Repository to delete from and to check for levels or relationships to delete
+     */
     prototype._delete = function(success, failure, repo) {
         var me = this;
         EcRepository.DELETE(this, function(p1) {
@@ -867,7 +1310,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                                     failure("Unable to Delete Competency Relation");
                                  else 
                                     console.error("Unable to Delete Competency Relation");
-                            }, repo);
+                            });
                             return;
                         }
                     }
@@ -881,6 +1324,20 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    /**
+     *  Retrieves a competency from it's server asynchronously
+     *  
+     *  @memberOf EcCompetency
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the competency to retrieve from the server
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after retrieving the competency,
+     *  			returns the competency retrieved
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error retrieving competency
+     */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var competency = new EcCompetency();
@@ -903,6 +1360,18 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
+    /**
+     *  Retrieves a competency from it's server synchronously, the call 
+     *  blocks until it is successful or an error occurs
+     *  
+     *  @memberOf EcCompetency
+     *  @method getBlocking
+     *  @static
+     *  @param {String} id
+     *  			ID of the competency to retrieve
+     *  @return EcCompetency
+     *  			The competency retrieved
+     */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
         var competency = new EcCompetency();
@@ -921,6 +1390,25 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             return null;
         }
     };
+    /**
+     *  Searches a repository for competencies that match the search query 
+     *  
+     *  @memberOf EcCompetency
+     *  @method search
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search using the query
+     *  @param {String} query
+     *  			Query string to pass to the search web service
+     *  @param {Callback1<Array<EcCompetency>> success
+     *  			Callback triggered after completing the search, returns the results
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error searching
+     *  @param {Object} paramObj
+     *  			Parameter object for search
+     *  		@param start
+     *  		@param size
+     */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
         queryAdd = new EcCompetency().getSearchStringByType();
@@ -951,10 +1439,32 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         }, failure);
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Implementation of a Framework object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcFramework
+ *  @constructor
+ *  @extends Framework
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ */
 var EcFramework = function() {
     Framework.call(this);
 };
 EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prototype) {
+    constructor.relDone = {};
+    constructor.levelDone = {};
+    /**
+     *  Adds the competency ID specified to the frameworks list of competency IDs
+     *  
+     *  @memberOf EcFramework
+     *  @method addCompetency
+     *  @param {String} id
+     *  			ID of the competency to add
+     */
     prototype.addCompetency = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.competency == null) 
@@ -964,8 +1474,21 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 return;
         this.competency.push(id);
     };
-    constructor.relDone = {};
-    constructor.levelDone = {};
+    /**
+     *  Removes a competency ID from the framework's list, also removes any
+     *  levels and relations associated with that competency
+     *  
+     *  TODO: remove rollup rules? should we add flag to remove these extras
+     *  
+     *  @memberOf EcFramework
+     *  @method removeCompetency
+     *  @param {String} id
+     *  			ID of the competency to remove
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after succesfully removing the competency and levels and relationships
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs when removing competency and levels and relationships
+     */
     prototype.removeCompetency = function(id, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.competency == null) 
@@ -1003,6 +1526,21 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             EcFramework.levelDone[id] = true;
         }
     };
+    /**
+     *  Helper method to remove relationships associated with a competency from this framework
+     *  
+     *  @memberOf EcFramework
+     *  @method removeRelationshipsThatInclude
+     *  @private
+     *  @param {String} id
+     *  			ID of the competency being removed, to find relationships on
+     *  @param {int} i
+     *  			recursive index parameter
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after all relationships in the framework have been checked
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs looking through relationships
+     */
     prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         var me = this;
@@ -1019,6 +1557,21 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                     me.removeRelationshipsThatInclude(id, i + 1, success, failure);
             }, failure);
     };
+    /**
+     *  Helper method to remove levels associated with a competency from this framework
+     *  
+     *  @memberOf EcFramework
+     *  @method removeLevelsThatInclude
+     *  @private
+     *  @param {String} id
+     *  			ID of the competency being removed, to find levels on
+     *  @param {int} i
+     *  			recursive index parameter
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after all levels in the framework have been checked
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs looking through levels
+     */
     prototype.removeLevelsThatInclude = function(id, i, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
         var me = this;
@@ -1035,6 +1588,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                     me.removeLevelsThatInclude(id, i + 1, success, failure);
             }, failure);
     };
+    /**
+     *  Adds a relation ID to the framework's list of relations
+     *  
+     *  @memberOf EcFramework
+     *  @method addRelation
+     *  @param {String} id
+     *  			ID to add to the framework's relation list
+     */
     prototype.addRelation = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.relation == null) 
@@ -1044,6 +1605,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 return;
         this.relation.push(id);
     };
+    /**
+     *  Removes a relation ID from the framework's list of relations
+     *  
+     *  @memberOf EcFramework
+     *  @method removeCompetency
+     *  @param {String} id
+     *  			ID to remove from the framework's relation list
+     */
     prototype.removeRelation = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.relation == null) 
@@ -1052,6 +1621,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (this.relation[i].equals(id)) 
                 this.relation.splice(i, 1);
     };
+    /**
+     *  Adds a level ID to the framework's list of levels
+     *  
+     *  @memberOf EcFramework
+     *  @method addLevel
+     *  @param {String} id
+     *  			ID of the level to add to framework's list
+     */
     prototype.addLevel = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.level == null) 
@@ -1061,6 +1638,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 return;
         this.level.push(id);
     };
+    /**
+     *  Removes a level ID from the framework's list of levels
+     *  
+     *  @memberOf EcFramework
+     *  @method removeLevel
+     *  @param {String} id
+     *  			ID to remove from framework's level list
+     */
     prototype.removeLevel = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.level == null) 
@@ -1069,6 +1654,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (this.level[i].equals(id)) 
                 this.level.splice(i, 1);
     };
+    /**
+     *  Adds a rollup rule ID to the framework's list of rollup rules
+     *  
+     *  @memberOf EcFramework
+     *  @method addRollupRule
+     *  @param {String} id
+     *  			ID of the rollup rule to add
+     */
     prototype.addRollupRule = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.rollupRule == null) 
@@ -1078,6 +1671,14 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 return;
         this.rollupRule.push(id);
     };
+    /**
+     *  Removes a rollup rule ID from the framework's list of rollup rules
+     *  
+     *  @memberOf EcFramework
+     *  @method removeRollupRule
+     *  @param {String} id
+     *  			ID to remove from rollup rule list
+     */
     prototype.removeRollupRule = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
         if (this.rollupRule == null) 
@@ -1086,6 +1687,16 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             if (this.rollupRule[i].equals(id)) 
                 this.rollupRule.splice(i, 1);
     };
+    /**
+     *  Saves this frameworks details on the server specified by it's ID
+     *  
+     *  @memberOf EcFramework
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after successfully saving the framework
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs while saving the framework
+     */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
             var msg = "Framework Name Cannot be Empty";
@@ -1102,9 +1713,33 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             EcRepository._save(this, success, failure);
         }
     };
+    /**
+     *  Deletes this framework from the server specified by it's ID
+     *  
+     *  @memberOf EcFramework
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered if successfully deleted framework
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs when deleting the framework
+     */
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+    /**
+     *  Retrieves a framework from the server, specified by the ID
+     *  
+     *  @memberOf EcFramework
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the framework to retrieve
+     *  @param {Callback1<EcFramework>} success
+     *  			Callback triggered after successfully retrieving the framework,
+     *  			returns the retrieved framework
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while retrieving the framework
+     */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var framework = new EcFramework();
@@ -1130,6 +1765,26 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 failure(p1);
         });
     };
+    /**
+     *  Searches the repository given for frameworks using the query passed in
+     *  
+     *  @memberOf EcFramework
+     *  @method search
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for frameworks
+     *  @param {String} query
+     *  			Query string used to search for a framework
+     *  @param {Callback1<Array<EcFramework>} success
+     *  			Callback triggered when the search successfully returns,
+     *  			returns search results
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while searching
+     *  @param {Object} paramObj
+     *  			Parameter object for search
+     *  		@param size
+     *  		@param start
+     */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
         queryAdd = new EcFramework().getSearchStringByType();
