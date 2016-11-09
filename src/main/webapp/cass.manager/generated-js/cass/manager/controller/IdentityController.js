@@ -3,9 +3,11 @@
  *  the EBAC Identity Manager library to provide helper functions for 
  *  ownership and key identification
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class IdentityController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var IdentityController = function() {};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {

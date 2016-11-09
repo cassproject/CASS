@@ -2,7 +2,9 @@
  * Screen for searching for assertions, loads a {DataViewer} view to 
  * display the results of the search and prepares the 
  * 
+ * @module cass.manager
  * @class AssertionSearchScreen
+ * 
  * @author devlin.junker@eduworks.com
  */
 AssertionSearchScreen = (function(AssertionSearchScreen){

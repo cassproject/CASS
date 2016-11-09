@@ -203,18 +203,29 @@ YUI.add("yuidoc-meta", function(Y) {
         "EcArray",
         "EcAsyncHelper",
         "EcCompetency",
+        "EcContact",
         "EcDirectedGraph",
+        "EcEncryptedValue",
+        "EcFile",
         "EcFramework",
+        "EcIdentity",
+        "EcIdentityManager",
         "EcLevel",
         "EcLinkedData",
+        "EcModal",
         "EcObject",
+        "EcOverlay",
         "EcPk",
         "EcPpk",
         "EcRemote",
+        "EcRemoteIdentityManager",
         "EcRemoteLinkedData",
+        "EcRepository",
         "EcRollupRule",
         "EcRsaOaep",
         "EcRsaOaepAsync",
+        "EcScreen",
+        "EcView",
         "EducationEvent",
         "EducationalAudience",
         "EducationalOrganization",
@@ -268,6 +279,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "GenderType",
         "General",
         "GeneralContractor",
+        "GeneralFile",
         "GeoCircle",
         "GeoCoordinates",
         "GeoShape",
@@ -287,6 +299,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "HealthClub",
         "HighSchool",
         "HinduTemple",
+        "HistoryClosure",
         "HobbyShop",
         "HomeAndConstructionBusiness",
         "HomeGoodsStore",
@@ -361,6 +374,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MiddleSchool",
         "MobileApplication",
         "MobilePhoneStore",
+        "ModalManager",
         "MonetaryAmount",
         "MoodleConfig",
         "Mosque",
@@ -411,6 +425,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "OrganizationRole",
         "OrganizeAction",
         "OutletStore",
+        "OverlayManager",
         "OwnershipInfo",
         "PaintAction",
         "Painting",
@@ -518,6 +533,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ScholarlyArticle",
         "School",
         "ScreeningEvent",
+        "Screenmanager",
         "Sculpture",
         "SeaBodyOfWater",
         "SearchAction",
@@ -617,6 +633,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "VideoGameSeries",
         "VideoObject",
         "ViewAction",
+        "ViewManager",
         "VisualArtsEvent",
         "VisualArtwork",
         "Volcano",
@@ -643,22 +660,40 @@ YUI.add("yuidoc-meta", function(Y) {
         "Zoo"
     ],
     "modules": [
+        "cass.manager",
+        "com.eduuworks.ec.ui",
+        "com.eduworks.ebac",
         "com.eduworks.ec",
-        "es.cassManager",
+        "com.eduworks.ec.ui",
         "org.cassproject",
         "org.json.ld",
         "org.schema"
     ],
     "allModules": [
         {
+            "displayName": "cass.manager",
+            "name": "cass.manager",
+            "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users"
+        },
+        {
+            "displayName": "com.eduuworks.ec.ui",
+            "name": "com.eduuworks.ec.ui",
+            "description": "View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to\nthe previous screen) with a few helper functions for managing overlays"
+        },
+        {
+            "displayName": "com.eduworks.ebac",
+            "name": "com.eduworks.ebac",
+            "description": "Contact Grant that is used to share your public key with another user"
+        },
+        {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",
             "description": "Location of strings that store the current namespace for general Eduworks Objects."
         },
         {
-            "displayName": "es.cassManager",
-            "name": "es.cassManager",
-            "description": "Main entry point of the application. Figures out the settings and\nstarts the EC UI Framework at the appropriate screen."
+            "displayName": "com.eduworks.ec.ui",
+            "name": "com.eduworks.ec.ui",
+            "description": "Parent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache."
         },
         {
             "displayName": "org.cassproject",

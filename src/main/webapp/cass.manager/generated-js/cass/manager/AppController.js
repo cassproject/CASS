@@ -2,9 +2,10 @@
  *  Main entry point of the application. Figures out the settings and
  *  starts the EC UI Framework at the appropriate screen.
  *  
- *  @module es.cassManager
+ *  @module cass.manager
  *  @class AppController
  *  @static
+ *  
  *  @author devlin.junker@eduworks.com
  */
 var AppController = function() {};
