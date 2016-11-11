@@ -88,7 +88,7 @@ convert=#object(
 
 convert=convert.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
 convert=convert.put(_key=#type(),_value="Assertion");
-convert=convert.put(_key=#id(),_value=#repoEndpoint().add(y="xapi/get/",z=xapiObj.get(id="")));
+convert=convert.put(_key=#id(),_value=#repoEndpoint().add(y="data/schema.cassproject.org.0.2.Assertion/",z=xapiObj.get(id="")));
 convert=convert.put(_key=#owner(),_value=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"));
 
 convert=#toObject(obj="@cvt").put(_key=#signature(),_value=#rsaSign(obj=#string(str="@cvt"),ppk=#xapiMePpk()).toArray(_wrap="true")).call(cvt=convert);
@@ -98,7 +98,7 @@ convert=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
 	op=convert.skyrepoPut(
-		type="schema.cassproject.org.0.2.assertion",
+		type="schema.cassproject.org.0.2.Assertion",
 		id=xapiObj.get(id="")
 	)
 );
