@@ -53,7 +53,6 @@ process=#runProcess(
 			a="pk=",
 			b=#object(
 				mbox=#add(
-					a="mailto:",
 					b="@username"
 				)
 			).xapiAgentToPk()
@@ -110,7 +109,6 @@ process=#runProcess(
 			a="subject=",
 			b=#object(
 				mbox=#add(
-					a="mailto:",
 					b="@username"
 				)
 			).xapiAgentToPk().replace(replace="\r?\n", with="")
@@ -144,7 +142,6 @@ process=#runProcess(
 			a="subject=",
 			b=#object(
 				mbox=#add(
-					a="mailto:",
 					b="@username"
 				)
 			).xapiAgentToPk().replace(replace="\r?\n", with="")
@@ -178,7 +175,6 @@ process=#runProcess(
 			a="subject=",
 			b=#object(
 				mbox=#add(
-					a="mailto:",
 					b="@username"
 				)
 			).xapiAgentToPk().replace(replace="\r?\n", with="")
@@ -206,7 +202,6 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/listGoals.js",		
 		e=#add(
-			a="email=",
 			b="@username"
 		),
 		g=#add(
@@ -246,7 +241,6 @@ process=#runProcess(
 		b="tla/addGoal.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
-			a="email=",
 			b="@username"
 		),
 		g=#add(
@@ -269,7 +263,6 @@ process=#runProcess(
 		b="tla/deleteGoal.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
-			a="email=",
 			b="@username"
 		),
 		g=#add(
@@ -292,7 +285,6 @@ process=#runProcess(
 		b="tla/deleteGoals.js",	
 		c=#add(a="competencyId=",b="@competencyId"), 	
 		e=#add(
-			a="email=",
 			b="@username"
 		),
 		g=#add(
