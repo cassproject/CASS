@@ -140,10 +140,10 @@
                 "AddFieldModal": 1,
                 "AddCompetenciesToFrameworkModal": 1,
                 "LoginController": 1,
-                "AppSettings": 1,
-                "IdentityController": 1,
+                "AppController": 1,
                 "ServerController": 1,
-                "AppController": 1
+                "AppSettings": 1,
+                "IdentityController": 1
             },
             "fors": {},
             "namespaces": {}
@@ -945,7 +945,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 45,
+            "line": 70,
             "description": "View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to\nthe previous screen) with a few helper functions for managing overlays",
             "extends": "ScreenManager",
             "author": "devlin.junker@eduworks.com\n(NOT TESTED MUCH YET)"
@@ -957,16 +957,16 @@
             "classes": {
                 "AddCompetenciesToFrameworkModal": 1,
                 "LoginController": 1,
-                "AppSettings": 1,
-                "IdentityController": 1,
+                "AppController": 1,
                 "ServerController": 1,
-                "AppController": 1
+                "AppSettings": 1,
+                "IdentityController": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1635,
+            "line": 1519,
             "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users",
             "is_constructor": 1,
             "author": "devlin.junker@eduworks.com",
@@ -2284,7 +2284,7 @@
             "module": "com.eduuworks.ec.ui",
             "namespace": "",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 45,
+            "line": 70,
             "description": "Stub for the AddFieldModal",
             "author": "devlin.junker@eduworks.com",
             "extends": "EcModal",
@@ -2301,7 +2301,7 @@
             "module": "cass.manager",
             "namespace": "",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 88,
+            "line": 226,
             "description": "Stub for the AddCompetenciesToFrameworkModal",
             "author": "devlin.junker@eduworks.com",
             "extends": "EcModal",
@@ -2318,8 +2318,36 @@
             "module": "cass.manager",
             "namespace": "",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 407,
+            "line": 269,
             "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users"
+        },
+        "AppController": {
+            "name": "AppController",
+            "shortname": "AppController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cass.manager",
+            "namespace": "",
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 488,
+            "description": "Main entry point of the application. Figures out the settings and\nstarts the EC UI Framework at the appropriate screen."
+        },
+        "ServerController": {
+            "name": "ServerController",
+            "shortname": "ServerController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cass.manager",
+            "namespace": "",
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 629,
+            "description": "Manages the server that the search controller (through EcRepository) and\nthe identity controller (through EcIdentityManager) communicate with. \nAllows the user to change the server that the UI is talking with via the change server modal."
         },
         "AppSettings": {
             "name": "AppSettings",
@@ -2332,7 +2360,7 @@
             "module": "cass.manager",
             "namespace": "",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 593,
+            "line": 1437,
             "description": "Handles loading the CASS Manager settings from the settings.js file,\nthis includes the default server to show and the message to show when the user\nrefreshes the page and is logged out"
         },
         "IdentityController": {
@@ -2346,36 +2374,8 @@
             "module": "cass.manager",
             "namespace": "",
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 637,
+            "line": 1519,
             "description": "Manages the current selected identity for the user, and interfaces \nthe EBAC Identity Manager library to provide helper functions for \nownership and key identification"
-        },
-        "ServerController": {
-            "name": "ServerController",
-            "shortname": "ServerController",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "cass.manager",
-            "namespace": "",
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 815,
-            "description": "Manages the server that the search controller (through EcRepository) and\nthe identity controller (through EcIdentityManager) communicate with. \nAllows the user to change the server that the UI is talking with via the change server modal."
-        },
-        "AppController": {
-            "name": "AppController",
-            "shortname": "AppController",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "cass.manager",
-            "namespace": "",
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1635,
-            "description": "Main entry point of the application. Figures out the settings and\nstarts the EC UI Framework at the appropriate screen."
         },
         "Cass": {
             "name": "Cass",
@@ -22408,14 +22408,14 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 299,
+            "line": 45,
             "author": "djunker\n \n \tRepoEdit Stub for RepoEdit.js",
-            "class": "AddCompetenciesToFrameworkModal",
+            "class": "AddFieldModal",
             "module": "com.eduuworks.ec.ui"
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 425,
+            "line": 287,
             "description": "Setter for the boolean flag of whether or not a user is loged in",
             "itemtype": "method",
             "name": "setLoggedIn",
@@ -22432,7 +22432,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 438,
+            "line": 300,
             "description": "Getter for boolean flag of whether or not user is logged in",
             "itemtype": "method",
             "name": "getLoggedin",
@@ -22446,7 +22446,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 449,
+            "line": 311,
             "description": "Setter for boolean flag of whether or not the current user is admin",
             "itemtype": "method",
             "name": "setAdmin",
@@ -22461,7 +22461,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 459,
+            "line": 321,
             "description": "Getter for boolean flag of whether or not current user is admin",
             "itemtype": "method",
             "name": "getAdmin",
@@ -22474,7 +22474,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 469,
+            "line": 331,
             "description": "If the last time the user was using the application, they were signed in this\nreturns true (used to remind them to sign in again once they return)",
             "itemtype": "method",
             "name": "getPreviouslyLoggedIn",
@@ -22488,7 +22488,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 482,
+            "line": 344,
             "description": "Validates a username and password on the server and then parses the user's credentials and\nchecks if they have an admin key. Also tells the identity manager to check for contacts in\nlocal storage after signed in.",
             "itemtype": "method",
             "name": "login",
@@ -22519,7 +22519,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 524,
+            "line": 386,
             "description": "Sets the flags so the user is logged out, wipes all sign in data so the user is no longer\nauthenticated and is unidentified",
             "itemtype": "method",
             "name": "logout",
@@ -22528,7 +22528,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 539,
+            "line": 401,
             "description": "Creates a new user and saves the account details on the login server, then signs in\nto the new account on successful creation",
             "itemtype": "method",
             "name": "create",
@@ -22559,7 +22559,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 564,
+            "line": 426,
             "description": "Saves the users credentials and contacts to the server",
             "itemtype": "method",
             "name": "save",
@@ -22580,194 +22580,54 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 612,
-            "description": "Loads the settings from the settings file at settings/settings.js",
+            "line": 501,
+            "description": "Manages the server connection by storing and configuring \nthe CASS instance endpoint for the rest of the application.",
+            "itemtype": "property",
+            "name": "serverController",
             "static": 1,
-            "itemtype": "method",
-            "name": "loadSettings",
-            "class": "AppSettings",
+            "type": "ServerController",
+            "class": "AppController",
             "module": "cass.manager"
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 651,
-            "description": "Sets the currently selected identity to the ppk specified, only works if the ppk is in the \nlist of identities that the user owns",
-            "itemtype": "method",
-            "name": "select",
+            "line": 510,
+            "description": "Manages the current user's identities and contacts through the\nKBAC libraries.",
+            "itemtype": "property",
+            "name": "identityController",
+            "static": 1,
+            "type": "IdentityController",
+            "class": "AppController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 519,
+            "description": "Handles the login/logout and admin communications with the server.",
+            "itemtype": "property",
+            "name": "loginController",
+            "static": 1,
+            "type": "LoginController",
+            "class": "AppController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 529,
+            "description": "Entry point of the application",
             "params": [
                 {
-                    "name": "ppkPem",
-                    "description": "PEM of the identity that will be set to the current identity",
-                    "type": "String"
+                    "name": "args",
+                    "description": "Not used at all...",
+                    "type": "String[]"
                 }
             ],
-            "class": "IdentityController",
+            "class": "AppController",
             "module": "cass.manager"
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 665,
-            "description": "Clears the selected identity, so the user will be identified as public for any actions\nthat they make going forward",
-            "itemtype": "method",
-            "name": "unselect",
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 675,
-            "description": "Returns the contact that is associated with the PEM given, looks at both the user's\nidentities and contacts to match the PEM. The Contact returned will contain the display\nname that the user set for the PEM",
-            "itemtype": "method",
-            "name": "lookup",
-            "params": [
-                {
-                    "name": "pkPem",
-                    "description": "\n\t\t\tPEM of the contact to lookup",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "Contact that contains the displayName and public key, if the user\n\t\t\tdoes not have a display name stored for the PEM in either their contacts or identities,\n\t\t\twill return the Unknown Contact which contains the key and a display name of \"Unknown\""
-            },
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 704,
-            "description": "Adds a Key to the list of user identities managed by the EcIdentityManager",
-            "itemtype": "method",
-            "name": "addKey",
-            "params": [
-                {
-                    "name": "ppk",
-                    "description": "PEM representation of PPK Key to save to user identities",
-                    "type": "String"
-                },
-                {
-                    "name": "displayName",
-                    "description": "\n\t\t\tName to associate with the key to be saved, to identify it",
-                    "type": "String"
-                },
-                {
-                    "name": "success",
-                    "description": "Callback function once the key has been added",
-                    "type": "Callback0"
-                }
-            ],
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 723,
-            "description": "Adds a contact to the list of user's contacts managed by EcIdentityManager",
-            "itemtype": "method",
-            "name": "addContact",
-            "params": [
-                {
-                    "name": "pk",
-                    "description": "PEM representation of PK Key to save user contact",
-                    "type": "String"
-                },
-                {
-                    "name": "displayName",
-                    "description": "Name to associate with the key to be saved, to identify it",
-                    "type": "String"
-                },
-                {
-                    "name": "success",
-                    "description": "Callback function once the contact has been added",
-                    "type": "Callback0"
-                }
-            ],
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 742,
-            "description": "Generates a new Encryption Key to save to the identity manager list",
-            "itemtype": "method",
-            "name": "generateIdentity",
-            "params": [
-                {
-                    "name": "success",
-                    "description": "callback, once they key has been generated and added to the identity manager",
-                    "type": "Callback1<EcIdentity>"
-                },
-                {
-                    "name": "displayName",
-                    "description": "display name for the key that is being generated to identify it",
-                    "type": "String"
-                }
-            ],
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 762,
-            "description": "Helper function to determine if the logged in user owns a piece of data from the repository,\nuseful for showing certain actions",
-            "itemtype": "method",
-            "name": "owns",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "\n\t\t\tThe object to check for ownership of",
-                    "type": "EcRemoteLiinkedData"
-                }
-            ],
-            "return": {
-                "description": "true if owned, false if not owned by the current user",
-                "type": "Boolean"
-            },
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 779,
-            "description": "Helper function to determine if the logged in user can modify a piece of data, this means \nthat they either own the data, or it is public",
-            "itemtype": "method",
-            "name": "canEdit",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "The object to check for ability to edit",
-                    "type": "EcRemoteLinkedData"
-                }
-            ],
-            "return": {
-                "description": "true if editable, false if not",
-                "type": "Boolean"
-            },
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 798,
-            "description": "Helper function to determine if the current user is associated with the key passed in",
-            "itemtype": "method",
-            "name": "isCurrentUser",
-            "params": [
-                {
-                    "name": "pk",
-                    "description": "PEM representation of pk to check",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "true if the current logged in user is associated with the key",
-                "type": "Boolean"
-            },
-            "class": "IdentityController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 875,
+            "line": 689,
             "description": "Adds a server to this list of servers that can be selected from the change server modal",
             "itemtype": "method",
             "name": "addServer",
@@ -22798,7 +22658,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 904,
+            "line": 718,
             "description": "Sets the server that the UI will communicate with, changes where the EcRepository and \nEcRemoteIdentity Manager are pointing to and communicating with",
             "itemtype": "method",
             "name": "selectServer",
@@ -22824,7 +22684,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 955,
+            "line": 769,
             "description": "Used during setup to set which EcRepository the server controller manages",
             "itemtype": "method",
             "name": "setRepoInterface",
@@ -22840,7 +22700,7 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 966,
+            "line": 780,
             "description": "Used during setup to set which EcRemoteIdentityManager the server controller manages",
             "itemtype": "method",
             "name": "setRemoteIdentityManager",
@@ -22856,49 +22716,189 @@
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1648,
-            "description": "Manages the server connection by storing and configuring \nthe CASS instance endpoint for the rest of the application.",
-            "itemtype": "property",
-            "name": "serverController",
+            "line": 1456,
+            "description": "Loads the settings from the settings file at settings/settings.js",
             "static": 1,
-            "type": "ServerController",
-            "class": "AppController",
+            "itemtype": "method",
+            "name": "loadSettings",
+            "class": "AppSettings",
             "module": "cass.manager"
         },
         {
             "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1657,
-            "description": "Manages the current user's identities and contacts through the\nKBAC libraries.",
-            "itemtype": "property",
-            "name": "identityController",
-            "static": 1,
-            "type": "IdentityController",
-            "class": "AppController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1666,
-            "description": "Handles the login/logout and admin communications with the server.",
-            "itemtype": "property",
-            "name": "loginController",
-            "static": 1,
-            "type": "LoginController",
-            "class": "AppController",
-            "module": "cass.manager"
-        },
-        {
-            "file": "src/main/js/cass/es.cassManager.js",
-            "line": 1676,
-            "description": "Entry point of the application",
+            "line": 1533,
+            "description": "Sets the currently selected identity to the ppk specified, only works if the ppk is in the \nlist of identities that the user owns",
+            "itemtype": "method",
+            "name": "select",
             "params": [
                 {
-                    "name": "args",
-                    "description": "Not used at all...",
-                    "type": "String[]"
+                    "name": "ppkPem",
+                    "description": "PEM of the identity that will be set to the current identity",
+                    "type": "String"
                 }
             ],
-            "class": "AppController",
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1547,
+            "description": "Clears the selected identity, so the user will be identified as public for any actions\nthat they make going forward",
+            "itemtype": "method",
+            "name": "unselect",
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1557,
+            "description": "Returns the contact that is associated with the PEM given, looks at both the user's\nidentities and contacts to match the PEM. The Contact returned will contain the display\nname that the user set for the PEM",
+            "itemtype": "method",
+            "name": "lookup",
+            "params": [
+                {
+                    "name": "pkPem",
+                    "description": "\n\t\t\tPEM of the contact to lookup",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Contact that contains the displayName and public key, if the user\n\t\t\tdoes not have a display name stored for the PEM in either their contacts or identities,\n\t\t\twill return the Unknown Contact which contains the key and a display name of \"Unknown\""
+            },
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1586,
+            "description": "Adds a Key to the list of user identities managed by the EcIdentityManager",
+            "itemtype": "method",
+            "name": "addKey",
+            "params": [
+                {
+                    "name": "ppk",
+                    "description": "PEM representation of PPK Key to save to user identities",
+                    "type": "String"
+                },
+                {
+                    "name": "displayName",
+                    "description": "\n\t\t\tName to associate with the key to be saved, to identify it",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback function once the key has been added",
+                    "type": "Callback0"
+                }
+            ],
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1605,
+            "description": "Adds a contact to the list of user's contacts managed by EcIdentityManager",
+            "itemtype": "method",
+            "name": "addContact",
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "PEM representation of PK Key to save user contact",
+                    "type": "String"
+                },
+                {
+                    "name": "displayName",
+                    "description": "Name to associate with the key to be saved, to identify it",
+                    "type": "String"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback function once the contact has been added",
+                    "type": "Callback0"
+                }
+            ],
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1624,
+            "description": "Generates a new Encryption Key to save to the identity manager list",
+            "itemtype": "method",
+            "name": "generateIdentity",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "callback, once they key has been generated and added to the identity manager",
+                    "type": "Callback1<EcIdentity>"
+                },
+                {
+                    "name": "displayName",
+                    "description": "display name for the key that is being generated to identify it",
+                    "type": "String"
+                }
+            ],
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1644,
+            "description": "Helper function to determine if the logged in user owns a piece of data from the repository,\nuseful for showing certain actions",
+            "itemtype": "method",
+            "name": "owns",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "\n\t\t\tThe object to check for ownership of",
+                    "type": "EcRemoteLiinkedData"
+                }
+            ],
+            "return": {
+                "description": "true if owned, false if not owned by the current user",
+                "type": "Boolean"
+            },
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1661,
+            "description": "Helper function to determine if the logged in user can modify a piece of data, this means \nthat they either own the data, or it is public",
+            "itemtype": "method",
+            "name": "canEdit",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The object to check for ability to edit",
+                    "type": "EcRemoteLinkedData"
+                }
+            ],
+            "return": {
+                "description": "true if editable, false if not",
+                "type": "Boolean"
+            },
+            "class": "IdentityController",
+            "module": "cass.manager"
+        },
+        {
+            "file": "src/main/js/cass/es.cassManager.js",
+            "line": 1680,
+            "description": "Helper function to determine if the current user is associated with the key passed in",
+            "itemtype": "method",
+            "name": "isCurrentUser",
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "PEM representation of pk to check",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true if the current logged in user is associated with the key",
+                "type": "Boolean"
+            },
+            "class": "IdentityController",
             "module": "cass.manager"
         },
         {
@@ -38334,11 +38334,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/main/js/cass/es.cassManager.js:299"
+            "line": " src/main/js/cass/es.cassManager.js:45"
         },
         {
             "message": "Missing item type\nEntry point of the application",
-            "line": " src/main/js/cass/es.cassManager.js:1676"
+            "line": " src/main/js/cass/es.cassManager.js:529"
         }
     ]
 }
