@@ -2011,7 +2011,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 851,
+            "line": 825,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints \nmust be distinct depends on the implementation.\n<P>\nThis interface permits, but does not enforce, any of the following \ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite \n     or multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul> \nExtensions or implementations of this interface \nmay enforce or disallow any or all of these variations.\n\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed \nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code> \n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an \noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "extends": "Hypergraph",
             "author": "Tom Buskirk (Eduworks)"
@@ -2027,7 +2027,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1058,
+            "line": 1032,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "extends": "Graph",
             "author": "fray",
@@ -17406,28 +17406,28 @@
             "static": 1,
             "params": [
                 {
-                    "name": "UNKNOWN",
-                    "description": "server Protocol, hostname and path to the remote handler.",
+                    "name": "server",
+                    "description": "Protocol, hostname and path to the remote handler.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "service Path to service to invoke.",
+                    "name": "service",
+                    "description": "Path to service to invoke.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "fd Form data to send as multi-part mime.",
+                    "name": "fd",
+                    "description": "Form data to send as multi-part mime.",
                     "type": "FormData"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
+                    "name": "success",
+                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
+                    "name": "failure",
+                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17436,35 +17436,35 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 678,
+            "line": 671,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "itemtype": "method",
             "name": "postExpectingString",
             "static": 1,
             "params": [
                 {
-                    "name": "UNKNOWN",
-                    "description": "server Protocol, hostname and path to the remote handler.",
+                    "name": "server",
+                    "description": "Protocol, hostname and path to the remote handler.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "service Path to service to invoke.",
+                    "name": "service",
+                    "description": "Path to service to invoke.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "fd Form data to send as multi-part mime.",
+                    "name": "fd",
+                    "description": "Form data to send as multi-part mime.",
                     "type": "FormData"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
+                    "name": "success",
+                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
                     "type": "Function(string)"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
+                    "name": "failure",
+                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17473,30 +17473,30 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 736,
+            "line": 722,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "itemtype": "method",
             "name": "postExpectingString",
             "static": 1,
             "params": [
                 {
-                    "name": "UNKNOWN",
-                    "description": "server Protocol, hostname and path to the remote handler.",
+                    "name": "server",
+                    "description": "Protocol, hostname and path to the remote handler.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "service Path to service to invoke.",
+                    "name": "service",
+                    "description": "Path to service to invoke.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
+                    "name": "success",
+                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
+                    "name": "failure",
+                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17505,30 +17505,30 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 771,
+            "line": 751,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "itemtype": "method",
             "name": "_delete",
             "static": 1,
             "params": [
                 {
-                    "name": "UNKNOWN",
-                    "description": "server Protocol, hostname and path to the remote handler.",
+                    "name": "server",
+                    "description": "Protocol, hostname and path to the remote handler.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "service Path to service to invoke.",
+                    "name": "service",
+                    "description": "Path to service to invoke.",
                     "type": "String"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
+                    "name": "success",
+                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
-                    "name": "UNKNOWN",
-                    "description": "failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
+                    "name": "failure",
+                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17537,7 +17537,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 894,
+            "line": 868,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getInEdges",
@@ -17555,7 +17555,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 903,
+            "line": 877,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getOutEdges",
@@ -17573,7 +17573,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 912,
+            "line": 886,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code> \nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of \n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getPredecessors",
@@ -17591,7 +17591,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 924,
+            "line": 898,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code> \nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of \n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getSuccessors",
@@ -17609,7 +17609,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 936,
+            "line": 910,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "inDegree",
@@ -17627,7 +17627,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 944,
+            "line": 918,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "outDegree",
@@ -17645,7 +17645,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 952,
+            "line": 926,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isPredecessor",
@@ -17667,7 +17667,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 961,
+            "line": 935,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isSuccessor",
@@ -17689,7 +17689,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 970,
+            "line": 944,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "itemtype": "method",
             "name": "getPredecessorCount",
@@ -17707,7 +17707,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 978,
+            "line": 952,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "itemtype": "method",
             "name": "getSuccessorCount",
@@ -17725,7 +17725,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 986,
+            "line": 960,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source; \notherwise returns <code>null</code>. \nThe source of a directed edge <code>d</code> is defined to be the vertex for which  \n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getSource",
@@ -17743,7 +17743,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 998,
+            "line": 972,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination; \notherwise returns <code>null</code>. \nThe destination of a directed edge <code>d</code> is defined to be the vertex \nincident to <code>d</code> for which  \n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getDest",
@@ -17761,7 +17761,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1011,
+            "line": 985,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "itemtype": "method",
             "name": "isSource",
@@ -17783,7 +17783,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1020,
+            "line": 994,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -17803,7 +17803,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1028,
+            "line": 1002,
             "description": "Adds edge <code>e</code> to this graph such that it connects \nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>, \nor both, implementations may choose to either silently add \nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "itemtype": "method",
             "name": "addEdge",
@@ -17837,7 +17837,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1048,
+            "line": 1022,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "itemtype": "method",
             "name": "getOpposite",
@@ -37413,78 +37413,6 @@
             "line": " src/main/js/cass/ebac.repository.js:1293"
         },
         {
-            "message": "param name missing: {string}\n           server Protocol, hostname and path to the remote handler.",
-            "line": " src/main/js/cass/ec.base.js:655"
-        },
-        {
-            "message": "param name missing: {string}\n           service Path to service to invoke.",
-            "line": " src/main/js/cass/ec.base.js:655"
-        },
-        {
-            "message": "param name missing: {FormData}\n           fd Form data to send as multi-part mime.",
-            "line": " src/main/js/cass/ec.base.js:655"
-        },
-        {
-            "message": "param name missing: {function(object)}\n           success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
-            "line": " src/main/js/cass/ec.base.js:655"
-        },
-        {
-            "message": "param name missing: {function(string)}\n           failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
-            "line": " src/main/js/cass/ec.base.js:655"
-        },
-        {
-            "message": "param name missing: {string}\n           server Protocol, hostname and path to the remote handler.",
-            "line": " src/main/js/cass/ec.base.js:678"
-        },
-        {
-            "message": "param name missing: {string}\n           service Path to service to invoke.",
-            "line": " src/main/js/cass/ec.base.js:678"
-        },
-        {
-            "message": "param name missing: {FormData}\n           fd Form data to send as multi-part mime.",
-            "line": " src/main/js/cass/ec.base.js:678"
-        },
-        {
-            "message": "param name missing: {function(string)}\n           success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
-            "line": " src/main/js/cass/ec.base.js:678"
-        },
-        {
-            "message": "param name missing: {function(string)}\n           failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
-            "line": " src/main/js/cass/ec.base.js:678"
-        },
-        {
-            "message": "param name missing: {string}\n           server Protocol, hostname and path to the remote handler.",
-            "line": " src/main/js/cass/ec.base.js:736"
-        },
-        {
-            "message": "param name missing: {string}\n           service Path to service to invoke.",
-            "line": " src/main/js/cass/ec.base.js:736"
-        },
-        {
-            "message": "param name missing: {function(object)}\n           success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
-            "line": " src/main/js/cass/ec.base.js:736"
-        },
-        {
-            "message": "param name missing: {function(string)}\n           failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
-            "line": " src/main/js/cass/ec.base.js:736"
-        },
-        {
-            "message": "param name missing: {string}\n           server Protocol, hostname and path to the remote handler.",
-            "line": " src/main/js/cass/ec.base.js:771"
-        },
-        {
-            "message": "param name missing: {string}\n           service Path to service to invoke.",
-            "line": " src/main/js/cass/ec.base.js:771"
-        },
-        {
-            "message": "param name missing: {function(object)}\n           success Method that is invoked if the server responds with a\n           success (per jQuery ajax)",
-            "line": " src/main/js/cass/ec.base.js:771"
-        },
-        {
-            "message": "param name missing: {function(string)}\n           failure Method that is invoked if the server responds with an\n           error (per jQuery ajax) or a non-200/300.",
-            "line": " src/main/js/cass/ec.base.js:771"
-        },
-        {
             "message": "unknown tag: memberof",
             "line": " src/main/js/cass/ec.ui.framework.js:31"
         },
@@ -37642,7 +37570,7 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1020"
+            "line": " src/main/js/cass/ec.base.js:994"
         },
         {
             "message": "Missing item type\nSecure Hash Algorithm with 256-bit digest (SHA-256) implementation.\n\nSee FIPS 180-2 for details.",
