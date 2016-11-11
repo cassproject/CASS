@@ -1,3 +1,11 @@
+/**
+ * TODO: Need to fix and make better
+ * 
+ * @module cass.manager
+ * @class AddFieldModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var AddFieldModal = (function(AddFieldModal){	
 	
 	function displayError(err, errId)

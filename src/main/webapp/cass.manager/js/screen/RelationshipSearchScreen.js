@@ -1,3 +1,11 @@
+/**
+ * Screen that handles displaying search results of relationships
+ * 
+ * @module cass.manager
+ * @class RelationshipSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
 	var maxLength = 24;
@@ -12,6 +20,15 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
 	var searchHandle = null;
 	
+	/**
+	 * Handles getting search params from DOM and initiating search request
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method runRelationshipSearch 
+	 * @private
+	 * @param {int} start 
+	 * 			index to start search (number of results already displayed)
+	 */
 	function runRelationshipSearch(start){
 		var query = $("#relationshipSearchText").val();
 
@@ -69,12 +86,30 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears all results on screen before appending new results to Data Viewer
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method clearDisplayResults 
+	 * @private
+	 * @param {EcAlignment[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#relationshipSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Just appends new results to Data Viewer
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method runRelationshipSearch 
+	 * @private
+	 * @param {EcAlignment[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function displayResults(results)
 	{  
 		ViewManager.getView("#relationshipSearchResults").populate(results);
@@ -116,6 +151,15 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 //		}
 //	}
 	
+	/**
+	 * Handles displaying errors during search
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method errorSearching 
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
@@ -125,6 +169,14 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		ViewManager.getView("#relationshipSearchResults").showNoDataMessage();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RelationshipSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;

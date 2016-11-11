@@ -1,3 +1,11 @@
+/**
+ * 
+ * 
+ * @module cass.manager
+ * @class ChangeServerModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ChangeServerModal = (function(ChangeServerModal){	
 	var ERROR_CONTAINER_ID = "#changeServerError";
 	

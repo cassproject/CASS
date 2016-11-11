@@ -29,6 +29,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         return EcPk.fromPem(decryptedString);
     };
+    prototype.getSubjectAsync = function(success, failure) {
+        if (this.subject == null) {
+            failure("Subject not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.subject);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt subject.");
+             else 
+                success(EcPk.fromPem(decryptedString));
+        }, failure);
+    };
     prototype.getAgent = function() {
         if (this.agent == null) 
             return null;
@@ -38,6 +52,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return EcPk.fromPem(decryptedString);
+    };
+    prototype.getAgentAsync = function(success, failure) {
+        if (this.agent == null) {
+            failure("Agent not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.agent);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt agent.");
+             else 
+                success(EcPk.fromPem(decryptedString));
+        }, failure);
     };
     prototype.getSubjectName = function() {
         if (this.subject == null) 
@@ -51,6 +79,25 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return "Unknown Subject";
         return contact.displayName;
     };
+    prototype.getSubjectNameAsync = function(success, failure) {
+        if (this.subject == null) {
+            success("Nobody");
+            return;
+        }
+        this.getSubjectAsync(function(subjectPk) {
+            var identity = EcIdentityManager.getIdentity(subjectPk);
+            if (identity != null && identity.displayName != null) {
+                success(identity.displayName + " (You)");
+                return;
+            }
+            var contact = EcIdentityManager.getContact(subjectPk);
+            if (contact == null || contact.displayName == null) {
+                success("Unknown Subject");
+                return;
+            }
+            success(contact.displayName);
+        }, failure);
+    };
     prototype.getAgentName = function() {
         if (this.agent == null) 
             return "Nobody";
@@ -63,6 +110,25 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return "Unknown Agent";
         return contact.displayName;
     };
+    prototype.getAgentNameAsync = function(success, failure) {
+        if (this.subject == null) {
+            success("Nobody");
+            return;
+        }
+        this.getAgentAsync(function(subjectPk) {
+            var identity = EcIdentityManager.getIdentity(subjectPk);
+            if (identity != null && identity.displayName != null) {
+                success(identity.displayName + " (You)");
+                return;
+            }
+            var contact = EcIdentityManager.getContact(subjectPk);
+            if (contact == null || contact.displayName == null) {
+                success("Unknown Agent");
+                return;
+            }
+            success(contact.displayName);
+        }, failure);
+    };
     prototype.getAssertionDate = function() {
         if (this.assertionDate == null) 
             return null;
@@ -73,6 +139,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         return Long.parseLong(decryptedString);
     };
+    prototype.getAssertionDateAsync = function(success, failure) {
+        if (this.assertionDate == null) {
+            failure("Assertion date not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.assertionDate);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt assertion date.");
+             else 
+                success(Long.parseLong(decryptedString));
+        }, failure);
+    };
     prototype.getExpirationDate = function() {
         if (this.expirationDate == null) 
             return null;
@@ -82,6 +162,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return Long.parseLong(decryptedString);
+    };
+    prototype.getExpirationDateAsync = function(success, failure) {
+        if (this.expirationDate == null) {
+            failure("Expiration date not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.expirationDate);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt expiration date.");
+             else 
+                success(Long.parseLong(decryptedString));
+        }, failure);
     };
     prototype.getEvidenceCount = function() {
         if (this.evidence == null) 
@@ -96,6 +190,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         var decryptedString = v.decryptIntoString();
         return decryptedString;
     };
+    prototype.getEvidenceAsync = function(index, success, failure) {
+        if (this.evidence[index] == null) {
+            failure("Evidence not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.evidence[index]);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt evidence.");
+             else 
+                success(decryptedString);
+        }, failure);
+    };
     prototype.getDecayFunction = function() {
         if (this.decayFunction == null) 
             return null;
@@ -106,6 +214,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         return decryptedString;
     };
+    prototype.getDecayFunctionAsync = function(success, failure) {
+        if (this.decayFunction == null) {
+            failure("Decay function not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.decayFunction);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) 
+                failure("Could not decrypt decay function.");
+             else 
+                success(decryptedString);
+        }, failure);
+    };
     prototype.getNegative = function() {
         if (this.negative == null) 
             return false;
@@ -115,6 +237,23 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString != null) 
             decryptedString.toLowerCase();
         return "true".equals(decryptedString);
+    };
+    prototype.getNegativeAsync = function(success, failure) {
+        if (this.negative == null) {
+            failure("Negative not found.");
+            return;
+        }
+        var v = new EcEncryptedValue();
+        v.copyFrom(this.negative);
+        v.decryptIntoStringAsync(function(decryptedString) {
+            if (decryptedString == null) {
+                failure("Could not decrypt negative.");
+                return;
+            }
+            if (decryptedString != null) 
+                decryptedString.toLowerCase();
+            success("true".equals(decryptedString));
+        }, failure);
     };
     /**
      *  Sets the subject of an assertion. Makes a few assumptions: Owners of the

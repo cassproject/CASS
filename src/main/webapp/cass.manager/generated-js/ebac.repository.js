@@ -718,16 +718,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }, 0);
                 return;
             }
-        if ((EcRepository.fetching)[url] > new Date().getMilliseconds() - 1000) {
+        if ((EcRepository.fetching)[url] > new Date().getTime() - 1000) {
             setTimeout(function() {
                 EcRepository.get(url, success, failure);
             }, 100);
             return;
         }
-        (EcRepository.fetching)[url] = new Date().getMilliseconds();
+        (EcRepository.fetching)[url] = new Date().getTime();
         var fd = new FormData();
         EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
             if ((EcRepository.cache)[url] != null) {
+                delete (EcRepository.fetching)[url];
                 success((EcRepository.cache)[url]);
                 return;
             }

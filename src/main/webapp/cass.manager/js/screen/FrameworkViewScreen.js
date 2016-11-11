@@ -1,3 +1,12 @@
+/**
+ * Screen to display framework details and a visualization of the competencies and relationships
+ * in a framework
+ * 
+ * @module cass.manager
+ * @class FrameworkViewScreen
+ * 
+ * @author fritz.ray@eduworks.com
+ */
 var fonts = {
     node: "bold 12px Arial",
     edge: "bold 12px Arial"
@@ -109,10 +118,11 @@ FrameworkViewScreen.prototype.bindControls = function () {
             if (i > 0)
                 $("#frameworkViewOwner").append(", ");
 
-            var pem = framework.owner[i];
-
-            var contact = $(createContactSmall(pem));
-            $("#frameworkViewOwner").append(contact);
+            
+            $("#frameworkViewOwner").append("<span id='framework-owner-'"+i+"></span>");
+            
+            ViewManager.showView(new IdentityDisplay(pe,), "#framework-owner-"+i);
+   
         }
     } else {
         $("#frameworkViewOwner").text("Public")

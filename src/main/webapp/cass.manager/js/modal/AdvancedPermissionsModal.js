@@ -1,3 +1,11 @@
+/**
+ * 
+ * 
+ * @module cass.manager
+ * @class AdvancedPermissionsModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 	
 	function addOwner(contact){

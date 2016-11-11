@@ -1,3 +1,11 @@
+/**
+ * TODO: Need to fix and make work
+ * 
+ * @module cass.manager
+ * @class ChangeTypeModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ChangeTypeModal = (function(ChangeTypeModal){	
 	
 	function displayError(err)
