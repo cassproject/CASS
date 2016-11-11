@@ -1,4 +1,8 @@
-	
+/**
+ * @module cass.manager
+ * 
+ * @author fritz.ray@eduworks.com
+ */	
 CompetencyViewScreen.prototype.errorFindingRelations = function(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve Relationships";

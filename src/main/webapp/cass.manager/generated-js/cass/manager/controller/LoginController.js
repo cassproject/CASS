@@ -2,9 +2,11 @@
  *  Manages the current user's logged in state and interfaces with the server to 
  *  sign in/out and create users
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class LoginController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var LoginController = function() {};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {

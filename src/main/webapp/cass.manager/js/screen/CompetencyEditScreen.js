@@ -1,7 +1,9 @@
 /**
  * Screen with form for editing competency details
  * 
+ * @module cass.manager
  * @class CompetencyEditScreen
+ * 
  * @author devlin.junker@eduworks.com
  */
 CompetencyEditScreen = (function (CompetencyEditScreen) {

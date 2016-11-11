@@ -2,8 +2,10 @@
  * Modal for adding the competencies passed in to the constructor to a framework
  * that is selected from a dropdown list in the modal.
  * 
- * @author devlin.junker@eduworks.com
+ * @module cass.manager
  * @class AddCompetenciesToFrameworkModal
+ * 
+ * @author devlin.junker@eduworks.com
  */
 var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal){
 	

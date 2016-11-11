@@ -31,6 +31,7 @@ beforeGet=#if(
 	operand=#date(raw="true").add(a="-10000"),
 	lt=#object(,
 		a=#variableSet(key="beforeGet",obj=#date(raw="true")),
+		aa=#xapiTick(),
 		b=#moodleToCass(),
 		c=#variableSet(key="beforeGet",obj=#date(raw="true"))
 	)

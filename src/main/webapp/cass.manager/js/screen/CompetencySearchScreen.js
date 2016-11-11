@@ -2,7 +2,9 @@
  * Screen for displaying search results from a competency search in 
  * a DataViewer view. 
  * 
- * @class CompetencySearchScreen 
+ * @module cass.manager
+ * @class CompetencySearchScreen
+ *  
  * @author devlin.junker@eduworks.com
  */
 CompetencySearchScreen = (function(CompetencySearchScreen){

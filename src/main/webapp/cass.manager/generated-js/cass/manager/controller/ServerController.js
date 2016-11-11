@@ -3,9 +3,11 @@
  *  the identity controller (through EcIdentityManager) communicate with. 
  *  Allows the user to change the server that the UI is talking with via the change server modal.
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class ServerController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var ServerController = /**
  *  On Startup, a default server is set when the server controller is created. Also the

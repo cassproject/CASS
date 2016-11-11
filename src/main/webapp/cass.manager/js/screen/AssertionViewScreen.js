@@ -1,7 +1,9 @@
 /**
  * Screen with a panel for displaying assertion details
  * 
+ * @module cass.manager
  * @class AssertionViewScreen
+ * 
  * @author devlin.junker@eduworks.com
  */
 AssertionViewScreen = (function(AssertionViewScreen){

@@ -399,9 +399,11 @@ AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
  *  Manages the current user's logged in state and interfaces with the server to 
  *  sign in/out and create users
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class LoginController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var LoginController = function() {};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
@@ -584,8 +586,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
  *  this includes the default server to show and the message to show when the user
  *  refreshes the page and is logged out
  *  
+ *  @module cass.manager
  *  @class AppSettings
  *  @static
+ *  
  *  @author devlin.junker@eduworks.com
  */
 var AppSettings = function() {};
@@ -626,9 +630,11 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
  *  the EBAC Identity Manager library to provide helper functions for 
  *  ownership and key identification
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class IdentityController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var IdentityController = function() {};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
@@ -802,9 +808,11 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
  *  the identity controller (through EcIdentityManager) communicate with. 
  *  Allows the user to change the server that the UI is talking with via the change server modal.
  *  
- *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
  *  @class ServerController
  *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
  */
 var ServerController = /**
  *  On Startup, a default server is set when the server controller is created. Also the
@@ -1619,9 +1627,10 @@ AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], fu
  *  Main entry point of the application. Figures out the settings and
  *  starts the EC UI Framework at the appropriate screen.
  *  
- *  @module es.cassManager
+ *  @module cass.manager
  *  @class AppController
  *  @static
+ *  
  *  @author devlin.junker@eduworks.com
  */
 var AppController = function() {};

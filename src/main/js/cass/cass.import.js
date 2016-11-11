@@ -16,7 +16,7 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
  *  Base class for all importers, can hold helper functions 
  *  that are useful for all importers
  *  
- *  @module cass.import
+ *  @module org.cassproject
  *  @class Importer
  *  @abstract
  *  @author devlin.junker@eduworks.com
@@ -31,7 +31,10 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
+ *  Importer methods to create competencies based on a
+ *  Medbiquitous competency XML file
  *  
+ *  @module org.cassproject
  *  @class MedbiqImport
  *  @static
  *  @extends Importer
@@ -46,12 +49,14 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
     constructor.medbiqXmlCompetencies = null;
     constructor.INCREMENTAL_STEP = 5;
     /**
+     *  Does the legwork of looking for competencies in the XML
      *  
      *  @memberOf MedbiqImport
      *  @method medbiqXmlLookForCompetencyObject
      *  @private
      *  @static
      *  @param {Object} obj
+     *  			Parsed XML Object
      */
     constructor.medbiqXmlLookForCompetencyObject = function(obj) {
         if (Importer.isObject(obj) || Importer.isArray(obj)) 
@@ -63,11 +68,14 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
             }
     };
     /**
+     *  Does the legwork of parsing the competencies out of the parsed XML
+     *  
      *  @memberOf MedbiqImport
      *  @method medbiqXmlParseCompetencyObject
      *  @private
      *  @static 
      *  @param {Object} obj
+     *  			Parsed XML Object
      */
     constructor.medbiqXmlParseCompetencyObject = function(obj) {
         if (Importer.isArray(obj)) {
@@ -89,13 +97,18 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         }
     };
     /**
+     *  Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process
      *  
      *  @memberOf MedbiqImport
      *  @method analyzeFile
      *  @static
      *  @param {Object} file
+     *  			Medbiquitous XML file
      *  @param {Callback1<Array<EcCompetency>>} success
-     *  @param {Callback1<String>} failure
+     *  			Callback triggered on succesfully analyzing competencies, 
+     *  			returns an array of all of the competencies found
+     *  @param {Callback1<String>} [failure]
+     *  			Callback triggered on error analyzing file
      */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
@@ -125,15 +138,23 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
     constructor.progressObject = null;
     constructor.saved = 0;
     /**
+     *  Method for actually creating the competencies in the CASS repository after a
+     *  Medbiquitous XML file has been parsed. Must be called after analyzeFile
      *  
      *  @memberOf MedbiqImport
      *  @method importCompetencies
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the created competencies (and relationships?)
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the created competencies (and relationships?)
      *  @param {Callback1<Array<EcCompetency>>} success
-     *  @param {Callback1<Object>} failure
-     *  @param {Callback1<Object>} incremental
+     *  			Callback triggered after successfully creating the competencies from the XML file
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if there is an error while creating the competencies
+     *  @param {Callback1<Object>} [incremental]
+     *  			Callback triggered incrementally while the competencies are being created to show progress,
+     *  			returns an object indicating the number of competencies created so far
      */
     constructor.importCompetencies = function(serverUrl, owner, success, failure, incremental) {
         MedbiqImport.progressObject = null;
@@ -165,7 +186,10 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
     };
 }, {medbiqXmlCompetencies: {name: "Array", arguments: ["EcCompetency"]}, progressObject: "Object"}, {});
 /**
+ *  Import methods to handle an CSV file of competencies and a 
+ *  CSV file of relationships and store them in a CASS instance
  *  
+ *  @module org.cassproject
  *  @class CSVImport
  *  @static
  *  @extends Importer
@@ -177,13 +201,18 @@ var CSVImport = function() {};
 CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.INCREMENTAL_STEP = 5;
     /**
+     *  Analyzes a CSV File to return the column names to the user for specifying
+     *  which columns contain which data. This should be called before import.
      *  
      *  @memberOf CSVImport
      *  @method analyzeFile
      *  @static
      *  @param {Object} file
+     *  			CSV file to be analyzed
      *  @param {Callback1<Object>} success
-     *  @param {Callback1<Object>} failure
+     *  			Callback triggered after successfully analyzing the CSV file
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if there is an error analyzing the CSV file
      */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
@@ -204,13 +233,18 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.saved = 0;
     constructor.progressObject = null;
     /**
+     *  Helper function to transform a competencies oldID to match the new server url
+     *  
      *  @memberOf CSVImport
      *  @method transformId
      *  @private
      *  @static
      *  @param {String} oldId
+     *  			Old ID found in the CSV file
      *  @param {EcRemoteLinkedData} newObject
+     *  			New competency being created
      *  @param {String} selectedServer
+     *  			New URL Prefix that the new competency's ID should match
      */
     constructor.transformId = function(oldId, newObject, selectedServer) {
         if (oldId.indexOf("http") != -1) {
@@ -232,23 +266,43 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             newObject.assignId(selectedServer, oldId);
     };
     /**
+     *  Method to create competencies (and relationships if the parameters are passed in)
+     *  based on a CSV file and references to which columns correspond to which pieces
+     *  of data.
+     *  
      *  @memberOf CSVImport
      *  @method importCompetencies
      *  @static
      *  @param {Object} file
+     *  			CSV File to import competencies from
      *  @param {String} serverUrl
+     *  			URL Prefix for the created competencies (and relationships?)
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the created competencies (and relationships?)
      *  @param {int} nameIndex
+     *  			Index of the column that contains the competency names
      *  @param {int} descriptionIndex
+     *  			Index of the column that contains the competency descriptions
      *  @param {int} scopeIndex
+     *  			Index of the column that contains the competency scopes
      *  @param {int} idIndex
-     *  @param {Object} relations
-     *  @param {int} sourceIndex
-     *  @param {int} relationTypeIndex
-     *  @param {int} destIndex
+     *  			Index of the column that contains the old competency ID (Optional, if not exists pass null or negative)
+     *  @param {Object} [relations]
+     *  			CSV File to import relationships from (Optional, if not exists pass null)
+     *  @param {int} [sourceIndex]
+     *  			Index (in relation file) of the column containing the relationship source competency ID (Optional, if not exists pass null or negative)
+     *  @param {int} [relationTypeIndex]
+     *  			Index (in relation file) of the column containing the relationship type (Optional, if not exists pass null or negative)
+     *  @param {int} [destIndex]
+     *  			Index (in relation file) of the column containing the relationship destination competency ID (Optional, if not exists pass null or negative)
      *  @param {Callback2<Array<EcCompetency>, Array<EcAlignment>>} success
-     *  @param {Callback1<Object>} failure
-     *  @param {Callback1<Object>} incremental
+     *  			Callback triggered after the competencies (and relationships?) have been created
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if an error during creating the competencies
+     *  @param {Callback1<Object>} [incremental]
+     *  			Callback triggered incrementally during creation of competencies to indicate progress,
+     *  			returns an object indicating the number of competencies (and relationships?) created so far
+     *  			
      */
     constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure, incremental) {
         CSVImport.progressObject = null;
@@ -319,20 +373,32 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         }, error: failure});
     };
     /**
+     *  Handles actually importing the relationships from the relationship CSV file
+     *  
      *  @memberOf CSVImport
      *  @method importRelations
      *  @private
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the created competencies (and relationships?)
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the created competencies (and relationships?)
      *  @param {Object} file
+     *  			CSV File to import competencies from
      *  @param {int} sourceIndex
+     * 			Index (in relation file) of the column containing the relationship source competency ID
      *  @param {int} relationTypeIndex
+     *  			Index (in relation file) of the column containing the relationship type
      *  @param {int} destIndex
+     *  			Index (in relation file) of the column containing the relationship destination competency ID
      *  @param {Array<EcCompetency>} competencies
+     *  			Array of newly created competencies
      *  @param {Callback2<Array<EcCompetency>, Array<EcAlignment>>} success
+     *  			Callback triggered after the relationships have been created
      *  @param {Callback1<Object>} failure
+     *  			Callback triggered if an error during creating the relationships
      *  @param {Callback1<Object>} incremental
+     *  			Callback triggered incrementally during creation to indicate progress
      */
     constructor.importRelations = function(serverUrl, owner, file, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental) {
         var relations = new Array();
@@ -395,9 +461,10 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     };
 }, {importCsvLookup: "Object", progressObject: "Object"}, {});
 /**
- *  Import methods to handle an ASN XML file of competencies and
- *  store them in the CASS instance
+ *  Import methods to handle an ASN JSON file containing a framework,
+ *  competencies and relationships, and store them in a CASS instance
  *  
+ *  @module org.cassproject
  *  @class ASNImport
  *  @static
  *  @extends Importer
@@ -416,12 +483,18 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.competencyCount = 0;
     constructor.relationCount = 0;
     /**
+     *  Recursive function that looks through the file and saves each
+     *  competency object in a map for use during importing. It also counts 
+     *  the number of competencies and relationships that it finds
+     *  
      *  @memberOf ASNImport
      *  @method asnJsonPrime
      *  @private
      *  @static
      *  @param {Object} obj	
+     *  			The current JSON object we're examining for comepetencies and reationships
      *  @param {String} key
+     *  			The ASN identifier of the current object
      */
     constructor.asnJsonPrime = function(obj, key) {
         var value = (obj)[key];
@@ -442,12 +515,17 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         }
     };
     /**
+     *  Does the actual legwork of looking for competencies and relationships. 
+     *  
+     *  This function finds the framework information, and pulls out the competency 
+     *  objects array to be scanned by asnJsonPrime
+     *  
      *  @memberOf ASNImport
      *  @method lookThroughSource
      *  @private
      *  @static
      *  @param {Object} obj
-     *  			
+     *  			ASN JSON Object from file that contains framework information and competencies/relationships
      */
     constructor.lookThroughSource = function(obj) {
         ASNImport.competencyCount = 0;
@@ -471,13 +549,20 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         }
     };
     /**
+     *  Analyzes an ASN File for competencies and relationships. 
+     *  
+     *  This should be called before import, the sucess callback returns an object
+     *  indicating the number of competencies and relationships found.
      *  
      *  @memberOf ASNImport
      *  @method analyzeFile
      *  @static
      *  @param {Object} file
+     *  			ASN JSON file
      *  @param {Callback1<Object>} success
-     *  @param {Callback1<Object>} failure
+     *  			Callback triggered on successful analysis of file
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if there is an error during analysis of the file
      */
     constructor.analyzeFile = function(file, success, failure) {
         if (file == null) {
@@ -511,16 +596,25 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.competencies = null;
     constructor.progressObject = null;
     /**
+     *  Method to import the competencies from an ASN JSON file, 
+     *  should be called after analyzing the file
      *  
      *  @memberOf ASNImport
      *  @method importCompetencies
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the competencies to be imported
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the new competencies
      *  @param {boolean} createFramework
+     *  			Flag to create a framework and include the competencies and relationships created 
      *  @param {Callback2<Array<EcCompetency>, EcFramework>} success
+     *  			Callback triggered after the competencies (and framework?) are created
      *  @param {Callback1<Object>} failure
-     *  @param {Callback1<Object>} incremental
+     *  			Callback triggered if an error occurs while creating the competencies 
+     *  @param {Callback1<Object>} [incremental]
+     *  			Callback triggered incrementally during the creation of competencies to indicate progress,
+     *  			returns an object indicating the number of competencies (and relationships?) created so far
      */
     constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure, incremental) {
         ASNImport.competencies = {};
@@ -549,16 +643,23 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     };
     constructor.savedCompetencies = 0;
     /**
+     *  Handles creating the competencies found during analysis, iterates through the
+     *  competency ASN objects saved and creates them in the CASS repository at the URL given. 
      *  
      *  @memberOf ASNImport
      *  @method createCompetencies
      *  @private
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the competencies to be imported
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the new competencies
      *  @param {Callback0} success
+     *  			Callback triggered after the competencies are created
      *  @param {Callback1<Object>} failure
-     *  @param {Callback1<Object>} incremental
+     *  			Callback triggered if an error occurs while creating the competencies 
+     *  @param {Callback1<Object>} [incremental]
+     *  			Callback triggered incrementally during the creation of competencies to indicate progress
      */
     constructor.createCompetencies = function(serverUrl, owner, success, failure, incremental) {
         ASNImport.savedCompetencies = 0;
@@ -600,18 +701,28 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     };
     constructor.savedRelations = 0;
     /**
+     *  Handles creating the relationships from the file analyzed earlier.
+     *  Recursively travels through looking for the hasChild field and creates
+     *  relationships based off of that.
      *  
      *  @memberOf ASNImport
      *  @method createRelationships
      *  @private
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the relationships to be imported
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the new relationships
      *  @param {Object} node
+     *  
      *  @param {String} nodeId
+     *  
      *  @param {Callback0} success
+     *  			Callback triggered after the relationships are created
      *  @param {Callback1<Object>} failure
+     *  			Callback triggered if an error occurs while creating the relationships 
      *  @param {Callback1<Object>} incremental
+     *  			Callback triggered incrementally during the creation of relationships to indicate progress
      */
     constructor.createRelationships = function(serverUrl, owner, node, nodeId, success, failure, incremental) {
         ASNImport.savedRelations = 0;
@@ -652,15 +763,20 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             }
     };
     /**
+     *  Handles creating the framework if the createFramework flag was set
      *  
      *  @meberOf ASNImport
      *  @method createFramework
      *  @private
      *  @static
      *  @param {String} serverUrl
+     *  			URL Prefix for the framework to be imported
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the new framework
      *  @param {Callback2<Array<EcCompetency>, EcFramework>} success
+     *  			Callback triggered after the framework is created
      *  @param {Callback1<Object>} failure
+     *  			Callback triggered if there is an error during the creation of framework
      */
     constructor.createFramework = function(serverUrl, owner, success, failure) {
         ASNImport.importedFramework.name = (((ASNImport.jsonFramework)["http://purl.org/dc/elements/1.1/title"])["0"])["value"];
@@ -682,7 +798,10 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     };
 }, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}, progressObject: "Object"}, {});
 /**
+ *  Importer methods to copy or link to competencies that already
+ *  exist in another framework in a CASS instance.
  *  
+ *  @module org.cassproject
  *  @class FrameworkImport
  *  @static
  *  @extends Importer
@@ -695,17 +814,27 @@ FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, p
     constructor.targetUsable = null;
     constructor.competencies = null;
     /**
+     *  Copies or links competencies that exist in one framework in a CASS instance, 
+     *  to another different framework in the same CASS instance.
      *  
      *  @memberOf FrameworkImport
      *  @method importCompetencies
      *  @static
      *  @param {EcFramework} source
+     *  			Framework to copy or link the competencies from
      *  @param {EcFramework} target
+     *  			Framework to add the copied or linked competencies to
      *  @param {boolean} copy
+     *  			Flag indicating whether or not to copy or link the competencies in the source framework
      *  @param {String} serverUrl
+     *  			URL Prefix for the created competencies if copied
      *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the created competencies if copied
      *  @param {Callback1<Array<EcCompetency>>} success
-     *  @param {Callback1<Object>} failure
+     *  			Callback triggered after succesfully copying or linking all of the competencies,
+     *  			returns an array of the new or linked competencies
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if an error occurred while creating the competencies
      */
     constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
         if (source == null) {

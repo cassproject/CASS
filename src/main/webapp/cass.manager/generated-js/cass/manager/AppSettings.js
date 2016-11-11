@@ -3,8 +3,10 @@
  *  this includes the default server to show and the message to show when the user
  *  refreshes the page and is logged out
  *  
+ *  @module cass.manager
  *  @class AppSettings
  *  @static
+ *  
  *  @author devlin.junker@eduworks.com
  */
 var AppSettings = function() {};

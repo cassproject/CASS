@@ -1,8 +1,25 @@
+/**
+ * Screen that handles searching and displaying frameworks
+ * 
+ * @module cass.manager
+ * @class FrameworkSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
 	var maxLength = 24;
 	var searchHandle = null;
 	
+	/**
+	 * Handles running the framework search with the parameters set in the DOM
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method runFrameworkSearch
+	 * @private
+	 * @param {int} start
+	 * 			Where to start the search results at in the repository
+	 */
 	function runFrameworkSearch(start){
 		var query = $("#frameworkSearchText").val();
 
@@ -60,12 +77,29 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears the currently displayed results before showing the results
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method clearDisplayResults
+	 * @private
+	 * @param {EcFramework[]} results
+	 * 			Results of the framework search
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#frameworkSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Displays the results of the framework search, appends them to the DataViewer table
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method displayResults
+	 * @private
+	 * @param {EcFramework[]} results
+	 */
 	function displayResults(results)
 	{  
 		ViewManager.getView("#frameworkSearchResults").populate(results);
@@ -106,6 +140,15 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 //		}
 //	}
 	
+	/**
+	 * Handles displaying errors that occur during search
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method errorSearching
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
@@ -115,6 +158,14 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf FrameworkEditScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	FrameworkSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;

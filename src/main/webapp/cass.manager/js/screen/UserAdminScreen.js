@@ -1,5 +1,21 @@
+/**
+ * Screen that displays admin specific info and allows admin to access adapter configuration
+ * 
+ * @module cass.manager
+ * @class UserAdminScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 UserAdminScreen = (function(UserAdminScreen){
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf UserAdminScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	UserAdminScreen.prototype.display = function(containerId)
 	{			
 		ViewManager.showView(new MessageContainer("userAdmin"), "#userAdminMessageContainer");

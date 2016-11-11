@@ -1,5 +1,12 @@
-var AddServerModal = (function(AddServerModal){	
-	var ERROR_CONTAINER_ID = "#loginError";
+/**
+ * 
+ * 
+ * @module cass.manager
+ * @class AddServerModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
+var AddServerModal = (function(AddServerModal){
 	
 	function submitAddServer(onClose){
 		var name = $("#addServerName").val();

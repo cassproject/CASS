@@ -67,6 +67,8 @@ xapiImportAutoExecute=#if(
 );
 
 //Please bind a cron task to this service.
+#xapiTick=xapiImportAutoExecute;
+
 /xapi/tick=xapiImportAutoExecute;
 
 xapiImportAutoExecute=#add(a=#thisEndpoint(),b="xapi/tick").httpGet();

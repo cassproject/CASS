@@ -1,7 +1,9 @@
 /**
  * Screen for Editing Assertions in the CASS Instance
  * 
+ * @module cass.manager
  * @class AssertionEditScreen
+ * 
  * @author devlin.junker@eduworks.com
  */	
 AssertionEditScreen = (function(AssertionEditScreen){

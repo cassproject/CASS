@@ -1,6 +1,22 @@
+/**
+ * Screen that handles searching Viewing a raw repository object
+ * lists types of objects available in repository to be used as a paremter of search
+ * 
+ * @module cass.manager
+ * @class RepoViewScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RepoViewScreen = (function(RepoViewScreen){
 	
-	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RepoViewScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RepoViewScreen.prototype.display = function(containerId)
 	{
 		var data = this.data

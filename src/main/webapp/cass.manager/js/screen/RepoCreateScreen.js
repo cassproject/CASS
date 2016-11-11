@@ -1,5 +1,22 @@
+/**
+ * Screen that handles editing Raw objects from Repository,
+ * uses the RepoEdit View to handle editing
+ * 
+ * @module cass.manager
+ * @class RepoCreateScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RepoCreateScreen = (function(RepoCreateScreen){
 	
+	 /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RepoCreateScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RepoCreateScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
