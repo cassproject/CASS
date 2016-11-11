@@ -789,7 +789,7 @@
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method__delete">_delete</a>(server, service, success, failure)
+              <a href="#method__delete">_delete</a>(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
             </div>
             <div class="short-description">
               <p>DELETEs something at a remote endpoint. Composed of a server endpoint (root URL) and a service (service path).</p>
@@ -804,7 +804,7 @@
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method_postExpectingObject">postExpectingObject</a>(server, service, fd, success, failure)
+              <a href="#method_postExpectingObject">postExpectingObject</a>(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
             </div>
             <div class="short-description">
               <p>POSTs a request to a remote endpoint. Composed of a server endpoint (root URL) and a service (service path). Sends form data as a multi-part mime request.</p>
@@ -819,7 +819,7 @@
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method_postExpectingString">postExpectingString</a>(server, service, fd, success, failure)
+              <a href="#method_postExpectingString">postExpectingString</a>(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
             </div>
             <div class="short-description">
               <p>POSTs a request to a remote endpoint. Composed of a server endpoint (root URL) and a service (service path). Sends form data as a multi-part mime request.</p>
@@ -834,7 +834,7 @@
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method_postExpectingString">postExpectingString</a>(server, service, success, failure)
+              <a href="#method_postExpectingString">postExpectingString</a>(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
             </div>
             <div class="short-description">
               <p>GETs something from a remote endpoint. Composed of a server endpoint (root URL) and a service (service path).</p>
@@ -885,7 +885,7 @@
         <h2 id="static-public-properties">Static Public Properties</h2>
 <div class="property item">
   <div id="props_async" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l645"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:645</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l646"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:646</code></a></span>
     <h3 class="">
       public
       static
@@ -895,7 +895,8 @@
   </div>
 
 
-  <div class="property-description"><p>Turn this property off to cause all remote web service calls to be synchronous. Can be useful for test scripts, blocking calls, etc.</p>
+  <div class="property-description"><p>Turn this property off to cause all remote web service calls to be
+synchronous. Can be useful for test scripts, blocking calls, etc.</p>
 </div>
 
 </div>
@@ -907,19 +908,19 @@
         <h2 id="static-public-methods">Static Public Methods</h2>
 <div class="method item">
     <div id="method__delete" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l745"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:745</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l771"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:771</code></a></span>
         <h3 class="">
             public
             static
             
-            _delete(server, service, success, failure)
+            _delete(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
         </h3>
     </div>
 
 
 
-    <div class="method-description"><p>DELETEs something at a remote endpoint.
-Composed of a server endpoint (root URL) and a service (service path).</p>
+    <div class="method-description"><p>DELETEs something at a remote endpoint. Composed of a server endpoint
+(root URL) and a service (service path).</p>
 </div>
 
       <div class="params">
@@ -935,7 +936,7 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
           </thead>
           <tbody>
             <tr>
-              <td>server</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -944,12 +945,12 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Protocol, hostname and path to the remote handler.</p>
+              <td><p>server Protocol, hostname and path to the remote handler.</p>
 </td>
             </tr>
 
             <tr>
-              <td>service</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -958,12 +959,12 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Path to service to invoke.</p>
+              <td><p>service Path to service to invoke.</p>
 </td>
             </tr>
 
             <tr>
-              <td>success</td>
+              <td>UNKNOWN</td>
               <td>Function(object)</td>
               <td>
                 <ul>
@@ -972,12 +973,13 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with a success (per jQuery ajax)</p>
+              <td><p>success Method that is invoked if the server responds with a
+success (per jQuery ajax)</p>
 </td>
             </tr>
 
             <tr>
-              <td>failure</td>
+              <td>UNKNOWN</td>
               <td>Function(string)</td>
               <td>
                 <ul>
@@ -986,7 +988,8 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.</p>
+              <td><p>failure Method that is invoked if the server responds with an
+error (per jQuery ajax) or a non-200/300.</p>
 </td>
             </tr>
 
@@ -999,20 +1002,20 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
 </div>
 <div class="method item">
     <div id="method_postExpectingObject" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l652"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:652</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l655"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:655</code></a></span>
         <h3 class="">
             public
             static
             
-            postExpectingObject(server, service, fd, success, failure)
+            postExpectingObject(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
         </h3>
     </div>
 
 
 
-    <div class="method-description"><p>POSTs a request to a remote endpoint.
-Composed of a server endpoint (root URL) and a service (service path).
-Sends form data as a multi-part mime request.</p>
+    <div class="method-description"><p>POSTs a request to a remote endpoint. Composed of a server endpoint (root
+URL) and a service (service path). Sends form data as a multi-part mime
+request.</p>
 </div>
 
       <div class="params">
@@ -1028,7 +1031,7 @@ Sends form data as a multi-part mime request.</p>
           </thead>
           <tbody>
             <tr>
-              <td>server</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1037,12 +1040,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Protocol, hostname and path to the remote handler.</p>
+              <td><p>server Protocol, hostname and path to the remote handler.</p>
 </td>
             </tr>
 
             <tr>
-              <td>service</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1051,12 +1054,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Path to service to invoke.</p>
+              <td><p>service Path to service to invoke.</p>
 </td>
             </tr>
 
             <tr>
-              <td>fd</td>
+              <td>UNKNOWN</td>
               <td>FormData</td>
               <td>
                 <ul>
@@ -1065,12 +1068,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Form data to send as multi-part mime.</p>
+              <td><p>fd Form data to send as multi-part mime.</p>
 </td>
             </tr>
 
             <tr>
-              <td>success</td>
+              <td>UNKNOWN</td>
               <td>Function(object)</td>
               <td>
                 <ul>
@@ -1079,12 +1082,13 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with a success (per jQuery ajax)</p>
+              <td><p>success Method that is invoked if the server responds with a
+success (per jQuery ajax)</p>
 </td>
             </tr>
 
             <tr>
-              <td>failure</td>
+              <td>UNKNOWN</td>
               <td>Function(string)</td>
               <td>
                 <ul>
@@ -1093,7 +1097,8 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.</p>
+              <td><p>failure Method that is invoked if the server responds with an
+error (per jQuery ajax) or a non-200/300.</p>
 </td>
             </tr>
 
@@ -1106,20 +1111,20 @@ Sends form data as a multi-part mime request.</p>
 </div>
 <div class="method item">
     <div id="method_postExpectingString" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:667</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l678"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:678</code></a></span>
         <h3 class="">
             public
             static
             
-            postExpectingString(server, service, fd, success, failure)
+            postExpectingString(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
         </h3>
     </div>
 
 
 
-    <div class="method-description"><p>POSTs a request to a remote endpoint.
-Composed of a server endpoint (root URL) and a service (service path).
-Sends form data as a multi-part mime request.</p>
+    <div class="method-description"><p>POSTs a request to a remote endpoint. Composed of a server endpoint (root
+URL) and a service (service path). Sends form data as a multi-part mime
+request.</p>
 </div>
 
       <div class="params">
@@ -1135,7 +1140,7 @@ Sends form data as a multi-part mime request.</p>
           </thead>
           <tbody>
             <tr>
-              <td>server</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1144,12 +1149,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Protocol, hostname and path to the remote handler.</p>
+              <td><p>server Protocol, hostname and path to the remote handler.</p>
 </td>
             </tr>
 
             <tr>
-              <td>service</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1158,12 +1163,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Path to service to invoke.</p>
+              <td><p>service Path to service to invoke.</p>
 </td>
             </tr>
 
             <tr>
-              <td>fd</td>
+              <td>UNKNOWN</td>
               <td>FormData</td>
               <td>
                 <ul>
@@ -1172,12 +1177,12 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Form data to send as multi-part mime.</p>
+              <td><p>fd Form data to send as multi-part mime.</p>
 </td>
             </tr>
 
             <tr>
-              <td>success</td>
+              <td>UNKNOWN</td>
               <td>Function(string)</td>
               <td>
                 <ul>
@@ -1186,12 +1191,13 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with a success (per jQuery ajax)</p>
+              <td><p>success Method that is invoked if the server responds with a
+success (per jQuery ajax)</p>
 </td>
             </tr>
 
             <tr>
-              <td>failure</td>
+              <td>UNKNOWN</td>
               <td>Function(string)</td>
               <td>
                 <ul>
@@ -1200,7 +1206,8 @@ Sends form data as a multi-part mime request.</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.</p>
+              <td><p>failure Method that is invoked if the server responds with an
+error (per jQuery ajax) or a non-200/300.</p>
 </td>
             </tr>
 
@@ -1213,19 +1220,19 @@ Sends form data as a multi-part mime request.</p>
 </div>
 <div class="method item">
     <div id="method_postExpectingString" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l717"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:717</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.base.js.html#l736"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.base.js:736</code></a></span>
         <h3 class="">
             public
             static
             
-            postExpectingString(server, service, success, failure)
+            postExpectingString(UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN)
         </h3>
     </div>
 
 
 
-    <div class="method-description"><p>GETs something from a remote endpoint.
-Composed of a server endpoint (root URL) and a service (service path).</p>
+    <div class="method-description"><p>GETs something from a remote endpoint. Composed of a server endpoint
+(root URL) and a service (service path).</p>
 </div>
 
       <div class="params">
@@ -1241,7 +1248,7 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
           </thead>
           <tbody>
             <tr>
-              <td>server</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1250,12 +1257,12 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Protocol, hostname and path to the remote handler.</p>
+              <td><p>server Protocol, hostname and path to the remote handler.</p>
 </td>
             </tr>
 
             <tr>
-              <td>service</td>
+              <td>UNKNOWN</td>
               <td>String</td>
               <td>
                 <ul>
@@ -1264,12 +1271,12 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Path to service to invoke.</p>
+              <td><p>service Path to service to invoke.</p>
 </td>
             </tr>
 
             <tr>
-              <td>success</td>
+              <td>UNKNOWN</td>
               <td>Function(object)</td>
               <td>
                 <ul>
@@ -1278,12 +1285,13 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with a success (per jQuery ajax)</p>
+              <td><p>success Method that is invoked if the server responds with a
+success (per jQuery ajax)</p>
 </td>
             </tr>
 
             <tr>
-              <td>failure</td>
+              <td>UNKNOWN</td>
               <td>Function(string)</td>
               <td>
                 <ul>
@@ -1292,7 +1300,8 @@ Composed of a server endpoint (root URL) and a service (service path).</p>
                   
                 </ul>
               </td>
-              <td><p>Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.</p>
+              <td><p>failure Method that is invoked if the server responds with an
+error (per jQuery ajax) or a non-200/300.</p>
 </td>
             </tr>
 
