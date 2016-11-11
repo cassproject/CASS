@@ -56,7 +56,8 @@ endpoint=#add(
 #moodleEndpoint=endpoint;
 
 
-enabled=#configVal(key="enabled"); 
+enabled=#configVal(key="enabled");
+enabled=#if(operator=enabled,operand="true",eq="true",ne="false");
 #moodleAdapterEnabled=enabled;
 
 
