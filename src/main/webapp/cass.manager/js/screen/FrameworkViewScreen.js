@@ -121,7 +121,7 @@ FrameworkViewScreen.prototype.bindControls = function () {
             
             $("#frameworkViewOwner").append("<span id='framework-owner-'"+i+"></span>");
             
-            ViewManager.showView(new IdentityDisplay(pe,), "#framework-owner-"+i);
+            ViewManager.showView(new IdentityDisplay(framework.owner[i]), "#framework-owner-"+i);
    
         }
     } else {
