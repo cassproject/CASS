@@ -323,7 +323,7 @@ var DataViewer = (function(DataViewer){
 		
 		row.append(dataSelect);
 		
-		if(datum.isAny(EcEncryptedValue.getTypes())){
+		if(datum.isAny(new EcEncryptedValue().getTypes())){
 			var lockIcon = $("<i class='fa fa-lock fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
 			row.append(lockIcon);
 		}else if(datum.privateEncrypted == true){
