@@ -24,9 +24,7 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
      *  @method loadSettings
      */
     constructor.loadSettings = function() {
-        var urlBase = window.location.host + window.location.pathname;
-        if (urlBase.startsWith("localhost")) 
-            urlBase = "http://" + urlBase;
+        var urlBase = "http://" + window.location.host + window.location.pathname;
         EcRemote.getExpectingObject(urlBase, "settings/settings.js", function(settingsObj) {
             var msg = (settingsObj)[AppSettings.FIELD_MSG_RETURN];
             if (msg != null) 

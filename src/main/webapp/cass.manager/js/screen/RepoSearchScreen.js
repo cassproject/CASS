@@ -95,10 +95,16 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				else if(urlParams.ownership != undefined)
 					delete urlParams.ownership;
 				
-				if(Object.keys(urlParams).length > 0)
-					ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
-				else
-					ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
+
+				if(Object.keys(urlParams).length > 0){
+					ScreenManager.setScreenParameters(urlParams);
+					ScreenManager.getCurrentScreen().setParams(urlParams);
+				}else{
+					ScreenManager.setScreenParameters(null);
+					ScreenManager.getCurrentScreen().clearParams();
+				}
+				
+				
 				
 				searchHandle = true;
 				ViewManager.getView("#repoSearchMessageContainer").clearAlert("repoSearchFail");
@@ -405,6 +411,38 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		
 		runRepoSearch();
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	RepoSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+		this.types = params.types;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method clearParams
+	 */
+	RepoSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+		this.types = undefined;
+	}
 	
 	return RepoSearchScreen;
 })(RepoSearchScreen);

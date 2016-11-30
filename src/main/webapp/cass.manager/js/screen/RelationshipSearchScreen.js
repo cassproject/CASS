@@ -68,10 +68,13 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
-			if(Object.keys(urlParams).length > 0)
+			if(Object.keys(urlParams).length > 0){
 				ScreenManager.setScreenParameters(urlParams);
-			else
+				ScreenManager.getCurrentScreen().setParams(urlParams);
+			}else{
 				ScreenManager.setScreenParameters(null);
+				ScreenManager.getCurrentScreen().clearParams();
+			}
 			
 			ViewManager.getView("#relationshipSearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#relationshipSearchResults").showProgressMessage();
@@ -292,6 +295,36 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		
 		runRelationshipSearch();
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	RelationshipSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method clearParams
+	 */
+	RelationshipSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+	}
 	
 	return RelationshipSearchScreen;
 })(RelationshipSearchScreen);

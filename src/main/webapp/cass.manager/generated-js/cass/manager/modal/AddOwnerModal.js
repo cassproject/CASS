@@ -2,28 +2,28 @@
  *  Stub for the AddFieldModal
  *  
  *  @author devlin.junker@eduworks.com
- *  @class AddFieldModal
+ *  @class AddOwnerModal
  *  @extends EcModal
  *  @constructor
  */
-var AddFieldModal = /**
+var AddOwnerModal = /**
  *  @constructor
  *  @param {Object} field
- *  @param {String} repoEditContainerId
+ *  @param {String} objectContainerId
  */
-function(field, repoEditContainerId) {
+function(field, objectContainerId) {
     EcModal.call(this);
     this.field = field;
-    this.repoEditContainerId = repoEditContainerId;
+    this.objectContainerId = objectContainerId;
 };
-AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, prototype) {
+AddOwnerModal = stjs.extend(AddOwnerModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
     prototype.field = null;
-    prototype.repoEditContainerId = null;
+    prototype.objectContainerId = null;
     prototype.getModalSize = function() {
         return this.modalSize;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/modal/addField.html";
+        return "partial/modal/addOwner.html";
     };
 }, {field: "Object", onClose: "Callback0"}, {});

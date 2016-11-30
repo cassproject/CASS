@@ -1,5 +1,22 @@
+/**
+ * Form for editing level details
+ * 
+ * @module cass.manager
+ * @class EditLevelModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var EditLevelModal = (function(EditLevelModal){	
 	
+	/**
+	 * Displays errors if they occur when trying to save level
+	 * 
+	 * @memberOf EditLevelModal
+	 * @method saveLevelFail
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function saveLevelFail(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Save Level";
@@ -7,6 +24,15 @@ var EditLevelModal = (function(EditLevelModal){
 		ViewManager.getView("#editLevelError").displayAlert(err);
 	}
 	
+	/**
+	 * Displays errors if they occur during deleting the level
+	 * 
+	 * @memberOf EditLevelModal
+	 * @method errorDeleting
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorDeleting(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Delete Level";
@@ -14,6 +40,14 @@ var EditLevelModal = (function(EditLevelModal){
 		ViewManager.getView("#editLevelError").displayAlert(err);
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf EditLevelModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	EditLevelModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
@@ -40,8 +74,7 @@ var EditLevelModal = (function(EditLevelModal){
 				
 				var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem()
 				
-				var contact = $(createContactSmall(pem));
-				$("#editLevelOwnership").append(contact);    
+				ViewManager.showView(new IdentityDisplay(pem), "#editLevelOwnership");
 	    		
 	    		$("#editLevelAdvancedOwnership").removeClass("hide");
 				$("#editLevelAdvancedOwnership").click(function(ev){
@@ -60,7 +93,7 @@ var EditLevelModal = (function(EditLevelModal){
 					}
 					
 					if(!$("#editLevelVisibilityRow").hasClass("hide")){
-						level.privateEncrypted = true;
+						EcEncryptedValue.encryptOnSave(level.id, true);
 						var readers = $("#editLevelReaders").children().map(function(idx, el){
 							return $(el).find(".contactText").attr("title");
 						})
@@ -87,15 +120,17 @@ var EditLevelModal = (function(EditLevelModal){
 						    			$("#editLevelOwnership").append(", ");
 									
 									var pem = permissionedLevel.owner[i];
+
+									$("#editLevelOwnership").append("<span id='level-owner-"+i+"'></span>");
 									
-									var contact = $(createContactSmall(pem));
-									$("#editLevelOwnership").append(contact); 
+									ViewManager.showView(new IdentityDisplay(pem), "#level-owner-"+i);
+									
 								}
 							}else{
 								$("#editLevelOwnership").text("Public");
 							}
 							
-							if(permissionedLevel.privateEncrypted){
+							if(EcEncryptedValue.encryptOnSave(permissionedLevel.id)){
 								$("#editLevelVisibilityRow").removeClass("hide");
 								$("#editLevelReadersRow").removeClass("hide");
 								
@@ -111,8 +146,9 @@ var EditLevelModal = (function(EditLevelModal){
 										
 										var pem = permissionedLevel.reader[i];
 										
-										var contact = $(createContactSmall(pem));
-										$("#editLevelReaders").append(contact);    
+										$("#editLevelReaders").append("<span id='level-reader-"+i+"'></span>");
+										
+										ViewManager.showView(new IdentityDisplay(pem), "#level-reader-"+i);   
 									}
 								}else{
 									$("#editLevelReaders").text("None Added Yet");
@@ -153,7 +189,7 @@ var EditLevelModal = (function(EditLevelModal){
 				}
 				
 				if(!$("#editLevelVisibilityRow").hasClass("hide")){
-					level.privateEncrypted = true;
+					EcEncryptedValue.encryptOnSave(level.id, true);
 					var readers = $("#editLevelReaders").children().map(function(idx, el){
 						return $(el).find(".contactText").attr("title");
 					})
@@ -187,7 +223,7 @@ var EditLevelModal = (function(EditLevelModal){
 			$("#editLevelDescription").val(data.description);
 			$("#editLevelPerformance").val(data.performance);
 			
-			if(data.privateEncrypted == true){
+			if(EcEncryptedValue.encryptOnSave(data.id)){
 				$("#editLevelVisibilityRow").removeClass("hide");
 				$("#editLevelReadersRow").removeClass("hide");
 				
@@ -203,8 +239,9 @@ var EditLevelModal = (function(EditLevelModal){
 						
 						var pem = data.reader[i];
 						
-						var contact = $(createContactSmall(pem));
-						$("#editLevelReaders").append(contact);    
+						$("#editLevelReaders").append("<span id='level-reader-"+i+"'></span>");
+						
+						ViewManager.showView(new IdentityDisplay(pem), "#level-reader-"+i);    
 					}
 				}else{
 					$("#editLevelReaders").text("None Added Yet");
@@ -222,8 +259,9 @@ var EditLevelModal = (function(EditLevelModal){
 					
 					var pem = data.owner[i];
 					
-					var contact = $(createContactSmall(pem));
-					$("#editLevelOwnership").append(contact);   
+					$("#editLevelOwnership").append("<span id='level-owner-"+i+"'></span>");
+					
+					ViewManager.showView(new IdentityDisplay(pem), "#level-owner-"+i);
 				}
 			}
 			
@@ -255,7 +293,7 @@ var EditLevelModal = (function(EditLevelModal){
 						}
 						
 						if(!$("#editLevelVisibilityRow").hasClass("hide")){
-							data.privateEncrypted = true;
+							EcEncryptedValue.encryptOnSave(data.id, true);
 							var readers = $("#editLevelReaders").children().map(function(idx, el){
 								return $(el).find(".contactText").attr("title");
 							})
@@ -266,7 +304,7 @@ var EditLevelModal = (function(EditLevelModal){
 						}
 						
 						ModalManager.showModal(new AdvancedPermissionsModal(data, function(permissionedLevel){
-							if(permissionedLevel.privateEncrypted){
+							if(EcEncryptedValue.encryptOnSave(permissionedLevel.id)){
 								$("#editLevelVisibilityRow").removeClass("hide");
 								$("#editLevelReadersRow").removeClass("hide");
 								
@@ -277,10 +315,14 @@ var EditLevelModal = (function(EditLevelModal){
 									
 									for(var i = 0; i < permissionedLevel.reader.length; i++)
 									{	
-										var pem = permissionedLevel.reader[i];
+										if(i > 0)
+											$("#editLevelReaders").append(", ");
 										
-										var contact = $(createContactSmall(pem));
-										$("#editLevelReaders").append(contact);  
+										var pem = permissionedLevel.reader[i];
+
+										$("#editLevelReaders").append("<span id='level-reader-"+i+"'></span>");
+										
+										ViewManager.showView(new IdentityDisplay(pem), "#level-reader-"+i);  
 									}
 								}else{
 									$("#editLevelReaders").text("None Added Yet");
@@ -315,7 +357,7 @@ var EditLevelModal = (function(EditLevelModal){
 					}
 					
 					if(!$("#editLevelVisibilityRow").hasClass("hide")){
-						data.privateEncrypted = true;
+						EcEncryptedValue.encryptOnSave(data.id, true);
 						var readers = $("#editLevelReaders").children().map(function(idx, el){
 							return $(el).find(".contactText").attr("title");
 						})
@@ -380,9 +422,6 @@ var EditLevelModal = (function(EditLevelModal){
 				event.preventDefault();
 			});
 		}
-		
-		
-		
 	}
 	
 	return EditLevelModal;

@@ -59,10 +59,14 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
-			if(Object.keys(urlParams).length > 0)
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
-			else
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
+			if(Object.keys(urlParams).length > 0){
+				ScreenManager.setScreenParameters(urlParams);
+				ScreenManager.getCurrentScreen().setParams(urlParams);
+			}else{
+				ScreenManager.setScreenParameters(null);
+				ScreenManager.getCurrentScreen().clearParams();
+			}
+				
 			
 			ViewManager.getView("#frameworkSearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#frameworkSearchResults").showProgressMessage();
@@ -161,7 +165,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	/**
 	 * Overridden display function, called once html partial is loaded into DOM
 	 * 
-	 * @memberOf FrameworkEditScreen
+	 * @memberOf FrameworkSearchScreen
 	 * @method display
 	 * @param containerId
 	 * 			Screen Container DOM ID
@@ -262,6 +266,36 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		runFrameworkSearch();
 			
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	FrameworkSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method clearParams
+	 */
+	FrameworkSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+	}
 	
 	return FrameworkSearchScreen;
 })(FrameworkSearchScreen);

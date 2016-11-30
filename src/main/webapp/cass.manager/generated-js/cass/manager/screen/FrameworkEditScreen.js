@@ -11,7 +11,7 @@ FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], fu
     prototype.getHtmlLocation = function() {
         return "partial/screen/frameworkEdit.html";
     };
-}, {data: "Object", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {

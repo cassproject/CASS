@@ -1,5 +1,23 @@
+/**
+ * Modal containing the form for creating a new user with a username
+ * and password combination.
+ * 
+ * @module cass.manager
+ * @class CreateUserModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var CreateUserModal = (function(CreateUserModal){
-	function submitCreateForm(view){
+	
+	/**
+	 * Submits the username and password given to the server
+	 * to create a new user 
+	 * 
+	 * @memberOf CreateUserModal
+	 * @method submitCreateForm
+	 * @private 
+	 */
+	function submitCreateForm(){
 		ViewManager.getView("#createMessageContainer").clearAlert("createFail");
 		
 		var server = $("#createServer").val();
@@ -25,6 +43,14 @@ var CreateUserModal = (function(CreateUserModal){
 		    );
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf CreateUserModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	CreateUserModal.prototype.display = function(containerId)
 	{
 		var view = this;

@@ -413,13 +413,14 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var relationTypeKey = tabularData[i][relationTypeIndex];
                 var destKey = tabularData[i][destIndex];
                 if ((CSVImport.importCsvLookup)[sourceKey] == null) 
-                    return;
+                    continue;
                 if ((CSVImport.importCsvLookup)[destKey] == null) 
-                    return;
+                    continue;
                 alignment.source = (CSVImport.importCsvLookup)[sourceKey];
                 alignment.relationType = relationTypeKey;
                 alignment.target = (CSVImport.importCsvLookup)[destKey];
-                alignment.addOwner(owner.ppk.toPk());
+                if (owner != null) 
+                    alignment.addOwner(owner.ppk.toPk());
                 alignment.generateId(serverUrl);
                 relations.push(alignment);
             }

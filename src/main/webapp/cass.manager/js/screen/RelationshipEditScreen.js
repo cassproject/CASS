@@ -135,7 +135,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    			$("#relationEditOwner").append(", ");
 	    		
 	    		var pem = relation.owner[i];
-	    		$("#relationEditOwner").append("<span id='relation-owner-'"+i+"></span>");
+	    		$("#relationEditOwner").append("<span id='relation-owner-"+i+"'></span>");
                 
                 ViewManager.showView(new IdentityDisplay(pem), "#relation-owner-"+i);  
 	    	}
@@ -146,7 +146,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    	$("#relationEditOwnerAdvanced").hide();
 	    }
 	    
-	    if(relation.privateEncrypted){
+	    if(EcEncryptedValue.encryptOnSave(relation.id)){
 			if($("#privateRow").css("display") == "none")
 				$("#privateRow").slideDown();
 			
@@ -365,7 +365,6 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			
 			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
 				data.owner = dataAfter.owner;
-				data.privateEncrypted = dataAfter.privateEncrypted;
 				data.reader = dataAfter.reader;
 				
 				relationshipEditActual(data);

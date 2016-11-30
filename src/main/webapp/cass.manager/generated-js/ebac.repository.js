@@ -32,8 +32,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  			Encrypted value
      */
     constructor.toEncryptedValue = function(d, hideType) {
-        if (d.privateEncrypted != null) 
-            delete (d)["privateEncrypted"];
         d.updateTimestamp();
         var v = new EcEncryptedValue();
         if (!hideType) 
@@ -136,14 +134,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  			Text to encrypt
      *  @param {String} id
      *  			ID of the encrypted value
-     *  @param {String} fieldName
-     *  			Unused TODO: Remove
      *  @param {EcPk} owner
      *  			Key to Encrypt
      *  @return {EcEncryptedValue}
      *  			Encrypted value
      */
-    constructor.encryptValueOld = function(text, id, fieldName, owner) {
+    constructor.encryptValueOld = function(text, id, owner) {
         var v = new EcEncryptedValue();
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
@@ -170,8 +166,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  			Text to encrypt
      *  @param {String} id
      *  			ID of the value to encrypt
-     *  @param {String} fieldName
-     *  			Unused TODO: Remove
      *  @param {String[]} owners
      *  			Owner keys to encrypt value with
      *  @param {String[]} readers
@@ -179,7 +173,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  @return {EcEncryptedValue}
      *  			Encrypted value
      */
-    constructor.encryptValue = function(text, id, fieldName, owners, readers) {
+    constructor.encryptValue = function(text, id, owners, readers) {
         var v = new EcEncryptedValue();
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
@@ -216,15 +210,13 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  			Text to encrypt
      *  @param {String} id
      *  			ID of value to encrypt
-     *  @param {String} fieldName
-     *  			Unused TODO: Remove
      *  @param {String[]} owners
      *  			Owners keys to encrypt with
      *  @param {String[]} readers
      *  			Reader Keys to encrypt with
      *  @return {EcEncryptedValue}
      */
-    constructor.encryptValueUsingIvAndSecret = function(iv, secret, text, id, fieldName, owners, readers) {
+    constructor.encryptValueUsingIvAndSecret = function(iv, secret, text, id, owners, readers) {
         var v = new EcEncryptedValue();
         v.payload = EcAesCtr.encrypt(text, secret, iv);
         if (owners != null) 
@@ -261,7 +253,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             return null;
         var decrypted = new EcRemoteLinkedData("", "");
         decrypted.copyFrom(JSON.parse(decryptRaw));
-        decrypted.privateEncrypted = true;
+        EcEncryptedValue.encryptOnSave(decrypted.id, true);
         decrypted.id = this.id;
         return decrypted.deAtify();
     };
@@ -285,7 +277,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 failure("Could not decrypt data.");
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
-            decrypted.privateEncrypted = true;
+            EcEncryptedValue.encryptOnSave(decrypted.id, true);
             decrypted.id = id;
             success(decrypted.deAtify());
         }, failure);
@@ -312,7 +304,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 failure("Could not decrypt data.");
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
-            decrypted.privateEncrypted = true;
+            EcEncryptedValue.encryptOnSave(decrypted.id, true);
             success(decrypted.deAtify());
         }, failure);
     };
@@ -557,7 +549,38 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             if (this.reader[i].equals(pem)) 
                 this.reader.splice(i, 1);
     };
-}, {secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+    constructor.encryptOnSaveMap = null;
+    /**
+     *  Setter and getter function for encryptOnSave of an identifier,
+     *  encryptOnSave is used by the static save functions of a class to 
+     *  determine whether or not to encrypt something when it is saved.
+     *  This value is usually set when an object is decrypted using one
+     *  of the decrypt functions above.
+     *  
+     *  @memberOf EcEncryptedValue
+     *  @method encryptOnSave
+     *  @static
+     *  @param {String} id 
+     *  			ID of the data to get/set encryptOnSave for
+     *  @param {boolean} [val]
+     *  			If passed in, sets the value, if null this function gets the encryptOnSave value
+     *  @return {boolean}
+     *  			if val is null/ignored returns value in the map, if val is passed in returns val
+     */
+    constructor.encryptOnSave = function(id, val) {
+        if (EcEncryptedValue.encryptOnSaveMap == null) 
+            EcEncryptedValue.encryptOnSaveMap = {};
+        if (val == null) {
+            if (EcEncryptedValue.encryptOnSaveMap[id] != null) 
+                return EcEncryptedValue.encryptOnSaveMap[id];
+             else 
+                return false;
+        } else {
+            EcEncryptedValue.encryptOnSaveMap[id] = val;
+            return val;
+        }
+    };
+}, {encryptOnSaveMap: {name: "Map", arguments: [null, null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A representation of a file.
  *  
@@ -910,7 +933,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         for (var j = 0; j < hostnames.length; j++) 
             for (var k = 0; k < servicePrefixes.length; k++) 
                 for (var i = 0; i < protocols.length; i++) 
-                    if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k])) {
+                    if (this.autoDetectRepositoryActual(protocols[i] + "//" + hostnames[j] + servicePrefixes[k].replaceAll("//", "/"))) {
                         EcRemote.async = true;
                         return;
                     }
@@ -1038,7 +1061,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     };
     /**
      *  Attempts to save a piece of data. Does some checks before saving
-     *  to ensure the data is valid and cleans some values (These should be removed in future)
+     *  to ensure the data is valid. Warns the developer that they are using 
+     *  the repository save function rather than an object specific version, 
+     *  this can be avoided by calling _save
      *  
      *  Uses a signature sheet informed by the owner field of the data.
      * 
@@ -1053,25 +1078,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  			Callback triggered if error during save
      */
     constructor.save = function(data, success, failure) {
-        if (data.invalid()) {
-            var msg = "Cannot save data. It is missing a vital component.";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (data.privateEncrypted != null && data.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            if (data.privateEncrypted != null) 
-                delete (data)["privateEncrypted"];
-            EcRepository._save(data, success, failure);
-        }
+        console.warn("Using EcRepository 'save' method, if this is intentional consider calling '_save'");
+        EcRepository._save(data, success, failure);
     };
     /**
-     *  Attempts to save a piece of data. 
+     *  Attempts to save a piece of data. Does some checks before saving
+     *  to ensure the data is valid. This version does not send a console warning,
      *  
      *  Uses a signature sheet informed by the owner field of the data.
      *  
@@ -1086,8 +1098,26 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  			Callback triggered if error during save
      */
     constructor._save = function(data, success, failure) {
-        EcIdentityManager.sign(data);
-        EcRepository._saveWithoutSigning(data, success, failure);
+        if (data.invalid()) {
+            var msg = "Cannot save data. It is missing a vital component.";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (data.reader != null && data.reader.length == 0) 
+            delete (data)["reader"];
+        if (data.owner != null && data.owner.length == 0) 
+            delete (data)["owner"];
+        if (EcEncryptedValue.encryptOnSave(data.id, null)) {
+            var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
+            EcIdentityManager.sign(data);
+            EcRepository._saveWithoutSigning(data, success, failure);
+        } else {
+            EcIdentityManager.sign(data);
+            EcRepository._saveWithoutSigning(data, success, failure);
+        }
     };
     /**
      *  Attempts to save a piece of data without signing it.
@@ -1116,10 +1146,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
-        EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(arg0) {
-            fd.append("signatureSheet", arg0);
-            EcRemote.postExpectingString(data.id, "", fd, success, failure);
-        });
+        if (data.owner != null && data.owner.length > 0) {
+            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(arg0) {
+                fd.append("signatureSheet", arg0);
+                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+            });
+        } else {
+            EcIdentityManager.signatureSheetAsync(60000, data.id, function(arg0) {
+                fd.append("signatureSheet", arg0);
+                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+            });
+        }
     };
     /**
      *  Attempts to delete a piece of data.
@@ -1197,20 +1234,7 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
                 console.error(msg);
             return;
         }
-        if (this.invalid()) {
-            var msg = "Cannot save file. It is missing a vital component.";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes the file from the repository using repository web services
@@ -1268,7 +1292,7 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
+                EcEncryptedValue.encryptOnSave(p1.id, true);
             }
             if (p1 != null && p1.isA(GeneralFile.myType)) {
                 f.copyFrom(p1);
@@ -1321,7 +1345,7 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
                         if (val.isAnEncrypted(EcFile.myType)) {
                             var obj = val.decryptIntoObject();
                             file.copyFrom(obj);
-                            file.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(file.id, true);
                         }
                     }
                     ret[i] = file;

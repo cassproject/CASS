@@ -15,7 +15,7 @@ FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, []
     prototype.getHtmlLocation = function() {
         return "partial/screen/frameworkSearch.html";
     };
-}, {lastViewed: "Object", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {

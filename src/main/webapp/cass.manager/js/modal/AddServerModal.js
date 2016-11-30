@@ -1,5 +1,6 @@
 /**
- * 
+ * Handles adding a server URL and name to the list of servers
+ * kept by the application
  * 
  * @module cass.manager
  * @class AddServerModal
@@ -8,6 +9,14 @@
  */
 var AddServerModal = (function(AddServerModal){
 	
+	/**
+	 * 
+	 * @memberOf AddServerModal
+	 * @method submitAddServer
+	 * @private
+	 * @param {Callback0} onClose
+	 * 			Callback triggered once server is added to application list
+	 */
 	function submitAddServer(onClose){
 		var name = $("#addServerName").val();
 		var url = $("#addServerUrl").val();
@@ -21,15 +30,41 @@ var AddServerModal = (function(AddServerModal){
 			onClose();
 		}, displayError);
 	}
+	
+	/**
+	 * Adds an error message in the MessageContainer Alert Box
+	 * 
+	 * @memberOf AddServerModal
+	 * @method displayError
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function displayError(err)
 	{
 		ViewManager.getView("#addServerMessageContainer").displayAlert(err);
 	}
+	
+	/**
+	 * Clears the error message in the MessageContainer Alert Box
+	 * 
+	 * @memberOf AddServerModal
+	 * @method clearError
+	 * @private
+	 */
 	function clearError()
 	{
 		ViewManager.getView("#addServerMessageContainer").clearAlert();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf AddServerModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	AddServerModal.prototype.display = function(containerId)
 	{
 		var closeCallback = this.onClose;

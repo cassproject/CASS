@@ -61,10 +61,14 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
-			if(Object.keys(urlParams).length > 0)
-				ScreenManager.setScreenParameters(urlParams)
-			else
+			if(Object.keys(urlParams).length > 0){
+				ScreenManager.setScreenParameters(urlParams);
+				ScreenManager.getCurrentScreen().setParams(urlParams);
+			}else{
 				ScreenManager.setScreenParameters(null);
+				ScreenManager.getCurrentScreen().clearParams();
+			}
+				
 			
 			ViewManager.getView("#competencySearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#competencySearchResults").showProgressMessage();
@@ -297,6 +301,36 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		runCompetencySearch();
 		
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	CompetencySearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method clearParams
+	 */
+	CompetencySearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+	}
 	
 	return CompetencySearchScreen;
 })(CompetencySearchScreen);

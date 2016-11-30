@@ -39,6 +39,10 @@ CompetencyViewScreen.prototype.bindControls = function(containerId)
 			event.preventDefault();
 		});
 		
+		$(".relationViewLink").on("click", function(){
+			ScreenManager.changeScreen(new RelationshipViewScreen({id:$(this).closest(".relation").attr("id")}));
+		});
+		
 		if(AppController.identityController.canEdit(data)){
 			$("#editCompetencyBtn").click(function(event){
 				event.preventDefault();
@@ -70,5 +74,20 @@ CompetencyViewScreen.prototype.bindControls = function(containerId)
 			$("#competencyViewDeleteBtn").remove();
 		}
 		
+		 if (data.owner != undefined && data.owner.length > 0) {
+		        $("#competencyViewOwner").text("")
+		        for (var i = 0; i < data.owner.length; i++) {
+		            if (i > 0)
+		                $("#competencyViewOwner").append(", ");
+
+		            
+		            $("#competencyViewOwner").append("<span id='competency-owner-"+i+"'></span>");
+		            
+		            ViewManager.showView(new IdentityDisplay(data.owner[i]), "#competency-owner-"+i);
+		   
+		        }
+		    } else {
+		        $("#competencyViewOwner").text("Public")
+		    }
 	};
 	

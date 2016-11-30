@@ -702,6 +702,20 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                     d.signWith(attempt);
             }
         }
+        if (d.signature != null && d.signature.length == 0) {
+            delete (d)["signature"];
+        }
+    };
+    constructor.myIdentitiesSearchString = function() {
+        var searchString = "";
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (i > 0) 
+                searchString += " OR ";
+            searchString += "@reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += " OR ";
+            searchString += "@owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+        }
+        return searchString;
     };
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 

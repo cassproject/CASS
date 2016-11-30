@@ -103,7 +103,7 @@ FrameworkViewScreen.prototype.displayVisualization = function () {
 FrameworkViewScreen.prototype.bindControls = function () {
     var framework = this.getData();
 
-    if (framework.privateEncrypted)
+    if (EcEncryptedValue.encryptOnSave(framework.id))
         $("#frameworkViewerPrivateSymbol").removeClass("hide");
     else
         $("#frameworkViewerPrivateSymbol").addClass("hide");
@@ -119,7 +119,7 @@ FrameworkViewScreen.prototype.bindControls = function () {
                 $("#frameworkViewOwner").append(", ");
 
             
-            $("#frameworkViewOwner").append("<span id='framework-owner-'"+i+"></span>");
+            $("#frameworkViewOwner").append("<span id='framework-owner-"+i+"'></span>");
             
             ViewManager.showView(new IdentityDisplay(framework.owner[i]), "#framework-owner-"+i);
    
