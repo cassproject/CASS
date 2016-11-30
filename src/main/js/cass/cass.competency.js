@@ -273,10 +273,10 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         owners = owners.concat(this.owner);
         readers.push(pk.toPem());
-        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, "subject", owners, readers);
+        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
     };
     prototype.setAgent = function(pk) {
-        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, "agent", this.subject.owner, this.subject.reader);
+        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.setCompetency = function(competencyUrl) {
         this.competency = competencyUrl;
@@ -290,20 +290,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setEvidence = function(evidences) {
         var encryptedValues = new Array();
         for (var i = 0; i < evidences.length; i++) 
-            encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, "evidence", this.subject.owner, this.subject.reader));
+            encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, this.subject.owner, this.subject.reader));
         this.evidence = encryptedValues;
     };
     prototype.setAssertionDate = function(assertionDateMs) {
-        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, "assertionDate", this.subject.owner, this.subject.reader);
+        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.setExpirationDate = function(expirationDateMs) {
-        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, "expirationDate", this.subject.owner, this.subject.reader);
+        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.setDecayFunction = function(decayFunctionText) {
-        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, "decayFunction", this.subject.owner, this.subject.reader);
+        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.setNegative = function(negativeB) {
-        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, "negative", this.subject.owner, this.subject.reader);
+        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.save = function(success, failure) {
         if (this.competency == null || this.competency == "") {
@@ -354,12 +354,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     prototype.addReader = function(newReader) {
         if (this.agent != null) {
@@ -524,12 +519,7 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes this rollup rule from the server specified by it's ID
@@ -652,12 +642,7 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes the alignment from the server corresponding to its ID
@@ -693,7 +678,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
             }
             if (p1.isAny(relation.getTypes())) {
                 relation.copyFrom(p1);
@@ -746,7 +730,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                         if (val.isAnEncrypted(EcAlignment.myType)) {
                             var obj = val.decryptIntoObject();
                             alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
                         }
                     }
                     ret[i] = alignment;
@@ -799,7 +782,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                                 continue;
                             }
                             alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
                         }
                     }
                     ret[i] = alignment;
@@ -853,7 +835,6 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                                 continue;
                             }
                             alignment.copyFrom(obj);
-                            alignment.privateEncrypted = true;
                         }
                     }
                     ret[i] = alignment;
@@ -952,12 +933,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes the level from it's repository
@@ -993,7 +969,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
+                EcEncryptedValue.encryptOnSave(p1.id, true);
             }
             if (p1.isAny(level.getTypes())) {
                 level.copyFrom(p1);
@@ -1051,7 +1027,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
                                 continue;
                             }
                             level.copyFrom(obj);
-                            level.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(level.id, true);
                         }
                     }
                     level.copyFrom(p1[i]);
@@ -1107,7 +1083,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         a.target = target.shortId();
         a.relationType = alignmentType;
         a.addOwner(owner.toPk());
-        EcRepository.save(a, success, failure);
+        EcRepository._save(a, success, failure);
         return a;
     };
     /**
@@ -1188,7 +1164,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         l.description = description;
         l.name = name;
         l.addOwner(owner.toPk());
-        EcRepository.save(l, success, failure);
+        EcRepository._save(l, success, failure);
         return l;
     };
     /**
@@ -1224,7 +1200,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                             return;
                         }
                         a.copyFrom(obj);
-                        a.privateEncrypted = true;
+                        EcEncryptedValue.encryptOnSave(a.id, true);
                     }
                 }
                 success(a);
@@ -1245,7 +1221,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                                 continue;
                             }
                             a.copyFrom(obj);
-                            a.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(a.id, true);
                         }
                     }
                     levels[i] = a;
@@ -1282,7 +1258,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         r.description = description;
         r.name = name;
         r.addOwner(owner.toPk());
-        EcRepository.save(r, success, failure);
+        EcRepository._save(r, success, failure);
         return r;
     };
     /**
@@ -1318,7 +1294,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                             return;
                         }
                         a.copyFrom(obj);
-                        a.privateEncrypted = true;
+                        EcEncryptedValue.encryptOnSave(a.id, true);
                     }
                 }
                 success(a);
@@ -1339,7 +1315,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                                 continue;
                             }
                             a.copyFrom(obj);
-                            a.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(a.id, true);
                         }
                     }
                     rollupRules[i] = a;
@@ -1401,20 +1377,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                 console.error(msg);
             return;
         }
-        if (this.invalid()) {
-            var msg = "Cannot save competency. It is missing a vital component.";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes the competency from the server
@@ -1493,7 +1456,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
+                EcEncryptedValue.encryptOnSave(p1.id, true);
             }
             if (p1.isAny(competency.getTypes())) {
                 competency.copyFrom(p1);
@@ -1527,7 +1490,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             var encrypted = new EcEncryptedValue();
             encrypted.copyFrom(p1);
             p1 = encrypted.decryptIntoObject();
-            p1.privateEncrypted = true;
+            EcEncryptedValue.encryptOnSave(p1.id, true);
         }
         if (p1.isAny(competency.getTypes())) {
             competency.copyFrom(p1);
@@ -1577,7 +1540,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                         if (val.isAnEncrypted(EcCompetency.myType)) {
                             var obj = val.decryptIntoObject();
                             comp.copyFrom(obj);
-                            comp.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(comp.id, true);
                         }
                     }
                     ret[i] = comp;
@@ -1854,12 +1817,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 console.error(msg);
             return;
         }
-        if (this.privateEncrypted != null && this.privateEncrypted) {
-            var encrypted = EcEncryptedValue.toEncryptedValue(this, false);
-            EcRepository._save(encrypted, success, failure);
-        } else {
-            EcRepository._save(this, success, failure);
-        }
+        EcRepository._save(this, success, failure);
     };
     /**
      *  Deletes this framework from the server specified by it's ID
@@ -1895,7 +1853,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 var encrypted = new EcEncryptedValue();
                 encrypted.copyFrom(p1);
                 p1 = encrypted.decryptIntoObject();
-                p1.privateEncrypted = true;
+                EcEncryptedValue.encryptOnSave(p1.id, true);
             }
             if (p1.isAny(framework.getTypes())) {
                 framework.copyFrom(p1);
@@ -1953,7 +1911,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                         if (val.isAnEncrypted(EcFramework.myType)) {
                             var obj = val.decryptIntoObject();
                             framework.copyFrom(obj);
-                            framework.privateEncrypted = true;
+                            EcEncryptedValue.encryptOnSave(framework.id, true);
                         }
                     }
                     ret[i] = framework;
