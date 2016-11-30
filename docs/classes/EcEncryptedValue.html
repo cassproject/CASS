@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -729,6 +728,7 @@
             
                   <div><a href="#static-public-methods">Static Public Methods</a></div>
                   <ul>
+                      <li><a href="#method_encryptOnSave">encryptOnSave</a></li>
                       <li><a href="#method_encryptValue">encryptValue</a></li>
                       <li><a href="#method_encryptValueOld">encryptValueOld</a></li>
                       <li><a href="#method_encryptValueUsingIvAndSecret">encryptValueUsingIvAndSecret</a></li>
@@ -804,7 +804,22 @@ the data within.</p>
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method_encryptValue">encryptValue</a>(text, id, fieldName, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+              <a href="#method_encryptOnSave">encryptOnSave</a>(id, [val]): Boolean
+            </div>
+            <div class="short-description">
+              <p>Setter and getter function for encryptOnSave of an identifier, encryptOnSave is used by the static save functions of a class to determine whether or not to encrypt something when it is saved. This value is usually set when an object is decrypted using one of the decrypt functions above.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            static
+            
+          </td>
+          <td>
+            <div class="method-name ">
+              <a href="#method_encryptValue">encryptValue</a>(text, id, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
             </div>
             <div class="short-description">
               <p>Encrypts a text value with the owners and readers provided</p>
@@ -819,7 +834,7 @@ the data within.</p>
           </td>
           <td>
             <div class="method-name deprecated">
-              <a href="#method_encryptValueOld">encryptValueOld</a>(text, id, fieldName, owner): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+              <a href="#method_encryptValueOld">encryptValueOld</a>(text, id, owner): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
             </div>
             <div class="short-description">
               <p>Encrypts a text value with the key provided</p>
@@ -834,7 +849,7 @@ the data within.</p>
           </td>
           <td>
             <div class="method-name ">
-              <a href="#method_encryptValueUsingIvAndSecret">encryptValueUsingIvAndSecret</a>(iv, secret, text, id, fieldName, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+              <a href="#method_encryptValueUsingIvAndSecret">encryptValueUsingIvAndSecret</a>(iv, secret, text, id, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
             </div>
             <div class="short-description">
               <p>Encrypt a value with a specific IV and secret</p>
@@ -1097,13 +1112,88 @@ the data within.</p>
     <div id="methods public">
         <h2 id="static-public-methods">Static Public Methods</h2>
 <div class="method item">
-    <div id="method_encryptValue" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l172"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:172</code></a></span>
+    <div id="method_encryptOnSave" class="title">
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l562"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:562</code></a></span>
         <h3 class="">
             public
             static
             
-            encryptValue(text, id, fieldName, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+            encryptOnSave(id, [val]): Boolean
+        </h3>
+    </div>
+
+
+
+    <div class="method-description"><p>Setter and getter function for encryptOnSave of an identifier,
+encryptOnSave is used by the static save functions of a class to
+determine whether or not to encrypt something when it is saved.
+This value is usually set when an object is decrypted using one
+of the decrypt functions above.</p>
+</div>
+
+      <div class="params">
+        <h4>Parameters:</h4>
+        <table>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Attribute</th>
+            <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>id</td>
+              <td>String</td>
+              <td>
+                <ul>
+                  
+                  
+                  
+                </ul>
+              </td>
+              <td><pre><code>        ID of the data to get/set encryptOnSave for</code></pre>
+</td>
+            </tr>
+
+            <tr>
+              <td>val</td>
+              <td>Boolean</td>
+              <td>
+                <ul>
+                  <li>optional</li>
+                  
+                  
+                </ul>
+              </td>
+              <td><pre><code>        If passed in, sets the value, if null this function gets the encryptOnSave value</code></pre>
+</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="return">
+        <h4>Return:</h4>
+        <div>
+          <span class="return-type">Boolean</span>
+          <span class="return-description"><p>if val is null/ignored returns value in the map, if val is passed in returns val</p>
+</span>
+        </div>
+      </div>
+
+
+</div>
+<div class="method item">
+    <div id="method_encryptValue" class="title">
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l168"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:168</code></a></span>
+        <h3 class="">
+            public
+            static
+            
+            encryptValue(text, id, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
         </h3>
     </div>
 
@@ -1153,20 +1243,6 @@ the data within.</p>
             </tr>
 
             <tr>
-              <td>fieldName</td>
-              <td>String</td>
-              <td>
-                <ul>
-                  
-                  
-                  
-                </ul>
-              </td>
-              <td><p>Unused TODO: Remove</p>
-</td>
-            </tr>
-
-            <tr>
               <td>owners</td>
               <td>String</td>
               <td>
@@ -1211,12 +1287,12 @@ the data within.</p>
 </div>
 <div class="method item">
     <div id="method_encryptValueOld" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l137"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:137</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l135"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:135</code></a></span>
         <h3 class="deprecated">
             public
             static
             
-            encryptValueOld(text, id, fieldName, owner): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+            encryptValueOld(text, id, owner): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
         </h3>
     </div>
 
@@ -1269,20 +1345,6 @@ the data within.</p>
             </tr>
 
             <tr>
-              <td>fieldName</td>
-              <td>String</td>
-              <td>
-                <ul>
-                  
-                  
-                  
-                </ul>
-              </td>
-              <td><p>Unused TODO: Remove</p>
-</td>
-            </tr>
-
-            <tr>
               <td>owner</td>
               <td><a href="../classes/EcPk.html" class="crosslink">EcPk</a></td>
               <td>
@@ -1313,12 +1375,12 @@ the data within.</p>
 </div>
 <div class="method item">
     <div id="method_encryptValueUsingIvAndSecret" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l214"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:214</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l208"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:208</code></a></span>
         <h3 class="">
             public
             static
             
-            encryptValueUsingIvAndSecret(iv, secret, text, id, fieldName, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
+            encryptValueUsingIvAndSecret(iv, secret, text, id, owners, readers): <a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a>
         </h3>
     </div>
 
@@ -1392,20 +1454,6 @@ the data within.</p>
                 </ul>
               </td>
               <td><p>ID of value to encrypt</p>
-</td>
-            </tr>
-
-            <tr>
-              <td>fieldName</td>
-              <td>String</td>
-              <td>
-                <ul>
-                  
-                  
-                  
-                </ul>
-              </td>
-              <td><p>Unused TODO: Remove</p>
 </td>
             </tr>
 
@@ -1524,7 +1572,7 @@ the data within.</p>
 </div>
 <div class="method item">
     <div id="method_toEncryptedValueAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l78"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:78</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l76"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:76</code></a></span>
         <h3 class="">
             public
             static
@@ -1628,7 +1676,7 @@ returns the encrypted value</p>
     <h2 id="public-methods">Public Methods</h2>
 <div class="method item">
     <div id="method_addReader" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l530"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:530</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l522"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:522</code></a></span>
         <h3 class="">
             public
             
@@ -1677,7 +1725,7 @@ returns the encrypted value</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoObject" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l257"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:257</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l249"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:249</code></a></span>
         <h3 class="">
             public
             
@@ -1705,7 +1753,7 @@ returns the encrypted value</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoObjectAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:277</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l269"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:269</code></a></span>
         <h3 class="">
             public
             
@@ -1769,7 +1817,7 @@ returns the decrypted object</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoObjectUsingIvAndSecretAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l302"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:302</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l294"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:294</code></a></span>
         <h3 class="">
             public
             
@@ -1860,7 +1908,7 @@ returns the decrypted object</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoString" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l328"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:328</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l320"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:320</code></a></span>
         <h3 class="">
             public
             
@@ -1888,7 +1936,7 @@ returns the decrypted object</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoStringAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l342"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:342</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l334"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:334</code></a></span>
         <h3 class="">
             public
             
@@ -1952,7 +2000,7 @@ returns decrypted string</p>
 </div>
 <div class="method item">
     <div id="method_decryptIntoStringUsingIvAndSecretAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l360"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:360</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l352"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:352</code></a></span>
         <h3 class="">
             public
             
@@ -2043,7 +2091,7 @@ returns decrypted string</p>
 </div>
 <div class="method item">
     <div id="method_decryptSecret" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l377"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:377</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l369"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:369</code></a></span>
         <h3 class="">
             public
             
@@ -2071,7 +2119,7 @@ returns decrypted string</p>
 </div>
 <div class="method item">
     <div id="method_decryptSecretAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l412"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:412</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:404</code></a></span>
         <h3 class="">
             public
             
@@ -2135,7 +2183,7 @@ returns the decrypted secret</p>
 </div>
 <div class="method item">
     <div id="method_decryptSecretByKey" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l454"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:454</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l446"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:446</code></a></span>
         <h3 class="">
             public
             
@@ -2192,7 +2240,7 @@ returns the decrypted secret</p>
 </div>
 <div class="method item">
     <div id="method_decryptSecretByKeyAsync" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:478</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l470"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:470</code></a></span>
         <h3 class="">
             public
             
@@ -2270,7 +2318,7 @@ returns decrypted secret</p>
 </div>
 <div class="method item">
     <div id="method_isAnEncrypted" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l513"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:513</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l505"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:505</code></a></span>
         <h3 class="">
             public
             
@@ -2328,7 +2376,7 @@ only works if the type wasn't hidden during encryption</p>
 </div>
 <div class="method item">
     <div id="method_removeReader" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l553"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:553</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l545"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:545</code></a></span>
         <h3 class="">
             public
             

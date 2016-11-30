@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -816,7 +815,6 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @type string (URL)
      */
     prototype.id = null;
-    prototype.privateEncrypted = null;
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
@@ -908,11 +906,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             delete (d)[&quot;@owner&quot;];
             delete (d)[&quot;@reader&quot;];
             delete (d)[&quot;@id&quot;];
-            delete (d)[&quot;privateEncrypted&quot;];
         } else {
             delete (d)[&quot;@signature&quot;];
             delete (d)[&quot;@id&quot;];
-            delete (d)[&quot;privateEncrypted&quot;];
         }
         var e = new EcLinkedData(d.context, d.type);
         e.copyFrom(d);
@@ -1118,7 +1114,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                 result += &quot; OR &quot;;
             result += &quot;@type:\&quot;&quot; + types[i] + &quot;\&quot;&quot;;
             var lastSlash = types[i].lastIndexOf(&quot;/&quot;);
-            result += &quot; OR (@context:\&quot;&quot; + types[i].substring(0, lastSlash) + &quot;\&quot; AND @type:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
+            result += &quot; OR (@context:\&quot;&quot; + types[i].substring(0, lastSlash + 1) + &quot;\&quot; AND @type:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
         }
         for (var i = 0; i &lt; types.length; i++) {
             if (result.equals(&quot;&quot;) == false) 

@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -775,7 +774,7 @@
 
         <div id="main" class="yui3-u">
             <div class="content"><div class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l642"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:642</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l665"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:665</code></a></span>
     <h1 class="class-name">EcRepository</h1>
 </div>
 
@@ -821,7 +820,7 @@ web services. Should be used for all CRUD and search operations</p>
               <a href="#method__save">_save</a>(data, success, failure)
             </div>
             <div class="short-description">
-              <p>Attempts to save a piece of data.</p>
+              <p>Attempts to save a piece of data. Does some checks before saving to ensure the data is valid. This version does not send a console warning,</p>
             </div>
           </td>
         </tr>
@@ -911,7 +910,7 @@ web services. Should be used for all CRUD and search operations</p>
               <a href="#method_save">save</a>(data, success, failure)
             </div>
             <div class="short-description">
-              <p>Attempts to save a piece of data. Does some checks before saving to ensure the data is valid and cleans some values (These should be removed in future)</p>
+              <p>Attempts to save a piece of data. Does some checks before saving to ensure the data is valid. Warns the developer that they are using the repository save function rather than an object specific version, this can be avoided by calling _save</p>
             </div>
           </td>
         </tr>
@@ -1061,7 +1060,7 @@ web services. Should be used for all CRUD and search operations</p>
         <h2 id="static-public-methods">Static Public Methods</h2>
 <div class="method item">
     <div id="method__delete" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1133"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1133</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1170</code></a></span>
         <h3 class="">
             public
             static
@@ -1139,7 +1138,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method__save" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1082"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1082</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1093"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1093</code></a></span>
         <h3 class="">
             public
             static
@@ -1150,7 +1149,8 @@ web services. Should be used for all CRUD and search operations</p>
 
 
 
-    <div class="method-description"><p>Attempts to save a piece of data.</p>
+    <div class="method-description"><p>Attempts to save a piece of data. Does some checks before saving
+to ensure the data is valid. This version does not send a console warning,</p>
 <p>Uses a signature sheet informed by the owner field of the data.</p>
 </div>
 
@@ -1217,7 +1217,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method__saveWithoutSigning" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1101"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1101</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1131"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1131</code></a></span>
         <h3 class="">
             public
             static
@@ -1295,7 +1295,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method_DELETE" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1151"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1151</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1188</code></a></span>
         <h3 class="">
             public
             static
@@ -1373,7 +1373,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method_escapeSearch" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1011"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1011</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1034</code></a></span>
         <h3 class="">
             public
             static
@@ -1430,7 +1430,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method_get" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l707"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:707</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l730"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:730</code></a></span>
         <h3 class="">
             public
             static
@@ -1508,7 +1508,7 @@ web services. Should be used for all CRUD and search operations</p>
 </div>
 <div class="method item">
     <div id="method_getBlocking" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l764"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:764</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l787"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:787</code></a></span>
         <h3 class="">
             public
             static
@@ -1566,7 +1566,7 @@ until it is returned</p>
 </div>
 <div class="method item">
     <div id="method_save" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1048"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1048</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1071"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1071</code></a></span>
         <h3 class="">
             public
             static
@@ -1578,7 +1578,9 @@ until it is returned</p>
 
 
     <div class="method-description"><p>Attempts to save a piece of data. Does some checks before saving
-to ensure the data is valid and cleans some values (These should be removed in future)</p>
+to ensure the data is valid. Warns the developer that they are using
+the repository save function rather than an object specific version,
+this can be avoided by calling _save</p>
 <p>Uses a signature sheet informed by the owner field of the data.</p>
 </div>
 
@@ -1657,7 +1659,7 @@ to ensure the data is valid and cleans some values (These should be removed in f
     <h2 id="public-methods">Public Methods</h2>
 <div class="method item">
     <div id="method_autoDetectRepository" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l897"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:897</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l920"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:920</code></a></span>
         <h3 class="">
             public
             
@@ -1678,7 +1680,7 @@ repositories instance</p>
 </div>
 <div class="method item">
     <div id="method_listTypes" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l963"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:963</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l986"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:986</code></a></span>
         <h3 class="">
             public
             
@@ -1742,7 +1744,7 @@ repositories instance</p>
 </div>
 <div class="method item">
     <div id="method_precache" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l658"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:658</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l681"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:681</code></a></span>
         <h3 class="">
             public
             
@@ -1807,7 +1809,7 @@ possible, so loading displays can be faster.</p>
 </div>
 <div class="method item">
     <div id="method_search" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l799"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:799</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l822"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:822</code></a></span>
         <h3 class="">
             public
             
@@ -1900,7 +1902,7 @@ strings.</p>
 </div>
 <div class="method item">
     <div id="method_searchWithParams" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l819"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:819</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l842"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:842</code></a></span>
         <h3 class="">
             public
             
@@ -2038,7 +2040,7 @@ strings.</p>
         <h2 id="private-methods">Private Methods</h2>
 <div class="method item private">
     <div id="method_autoDetectRepository" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l929"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:929</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l952"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:952</code></a></span>
         <h3 class="">
             private
             
@@ -2095,7 +2097,7 @@ strings.</p>
 </div>
 <div class="method item private">
     <div id="method_handleSearchResults" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l984"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:984</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ebac.repository.js.html#l1007"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:1007</code></a></span>
         <h3 class="">
             private
             

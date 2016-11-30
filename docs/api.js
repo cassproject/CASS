@@ -14,6 +14,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "AddAction",
         "AddCompetenciesToFrameworkModal",
         "AddFieldModal",
+        "AddOwnerModal",
         "AdministrativeArea",
         "AdultEntertainment",
         "AggregateOffer",
@@ -661,7 +662,6 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "cass.manager",
-        "com.eduuworks.ec.ui",
         "com.eduworks.ebac",
         "com.eduworks.ec",
         "com.eduworks.ec.ui",
@@ -674,11 +674,6 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "cass.manager",
             "name": "cass.manager",
             "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users"
-        },
-        {
-            "displayName": "com.eduuworks.ec.ui",
-            "name": "com.eduuworks.ec.ui",
-            "description": "View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to\nthe previous screen) with a few helper functions for managing overlays"
         },
         {
             "displayName": "com.eduworks.ebac",
