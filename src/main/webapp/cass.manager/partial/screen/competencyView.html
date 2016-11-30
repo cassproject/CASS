@@ -28,7 +28,7 @@
                     </div>
                     <div class="row">
                         <div class="large-12 small-12 columns" id="competencyViewerLevels">
-                            <p id="competencyViewerLevelList">
+                            <div id="competencyViewerLevelList"> 
                                 <span class="prefix">Levels: </span>
                                 <ul style='list-style: none;' ec-container="level">
                                     <li ec-template="level" ec-attr-id class='level' style='font-weight: normal;'>
@@ -38,23 +38,27 @@
                                         <span style="display:block;" ec-field="performance"></span>
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
-                    </div>
+                    </div> 
                     <div class="row">
-                        <div class="large-6 small-12 columns">
+                        <div class="small-12 columns">
                             <span class="prefix">Relations:</span>
                             <ul ec-container="relation" ec-attr-shortId ec-condition-shortId-source ec-condition-shortId-target ec-attr-id ec-condition-id-source ec-condition-id-target class='competencyRelations' style='list-style: none;'>
-                                <li ec-template="relation" class='relation' ec-attr-id=""><small> <a ec-reference="source"
-										ec-field="name" ec-attr-id> </a> <i class='relationType' ec-field="relationType"></i> <a ec-reference="target"
-										ec-field="name" ec-attr-id> </a>
-								</small></li>
+                                <li ec-template="relation" class='relation' ec-attr-id="">
+                                	<small>  
+                                		<strong ec-reference="source" ec-field="name" ec-attr-id> </strong> 
+                                		<i class='relationType' ec-field="relationType"></i> 
+                                		<strong ec-reference="target" ec-field="name" ec-attr-id> </strong>
+                                		<span class="relationViewLink label" style="margin-left: 1rem; cursor:pointer;">View</span>
+									</small>
+								</li>
                             </ul>
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-12 small-12 columns" id="competencyViewerRollupRules">
-                            <p id="competencyViewerRollupRuleList">
+                            <div id="competencyViewerRollupRuleList">
                                 <span class="prefix">Rollup Rules: </span>
                                 <ul style='list-style: none;' ec-container="rollupRule" ec-condition-shortId-competency ec-condition-id-competency>
                                     <li ec-template="rollupRule" ec-attr-shortId ec-attr-id class='rollupRule' style='font-weight: normal;'>
@@ -68,7 +72,7 @@
                                         <p>
                                     </li>
                                 </ul>
-                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

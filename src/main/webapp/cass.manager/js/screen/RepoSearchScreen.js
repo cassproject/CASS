@@ -1,9 +1,28 @@
+/**
+ * Screen that handles searching the repository for all objects
+ * lists types of objects available in repository to be used as a paremter of search
+ * 
+ * @module cass.manager
+ * @class RepoSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RepoSearchScreen = (function(RepoSearchScreen){
 	
 	var maxLength = 24;
 	
 	var searchHandle = null;
 	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method runRepoSearch
+	 * @private
+	 * @param {int} start
+	 * 			Index to begin results at in repository
+	 */
 	function runRepoSearch(start){
 		
 		if(start == undefined || start <= 0){
@@ -76,10 +95,16 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				else if(urlParams.ownership != undefined)
 					delete urlParams.ownership;
 				
-				if(Object.keys(urlParams).length > 0)
-					ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
-				else
-					ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
+
+				if(Object.keys(urlParams).length > 0){
+					ScreenManager.setScreenParameters(urlParams);
+					ScreenManager.getCurrentScreen().setParams(urlParams);
+				}else{
+					ScreenManager.setScreenParameters(null);
+					ScreenManager.getCurrentScreen().clearParams();
+				}
+				
+				
 				
 				searchHandle = true;
 				ViewManager.getView("#repoSearchMessageContainer").clearAlert("repoSearchFail");
@@ -100,12 +125,30 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 *  Clears all results on screen before appending new results to Data Viewer
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method clearDisplayResults
+	 * @private
+	 * @param {EcRemoteLinkedData[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#repoSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Just appends new results to Data Viewer
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method displayResults
+	 * @private
+	 * @param {EcRemoteLinkedData[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function displayResults(results)
 	{ 
 		ViewManager.getView("#repoSearchResults").populate(results);
@@ -149,6 +192,15 @@ RepoSearchScreen = (function(RepoSearchScreen){
 //		}
 //	}
 	
+	/**
+	 * Handles displaying error message when retrieving type list
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method errorDisplayingTypes
+	 * @private
+	 * @param {String} err 
+	 * 			Error message to display	
+	 */
 	function errorDisplayingTypes(errorMsg){
 		if(errorMsg == undefined || errorMsg == "" )
 			errorMsg = "Unable to retrieve type list";
@@ -157,6 +209,15 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		$("#repoSearchTypeContainer").addClass("hide");
 	}
 	
+	/**
+	 * Handles displaying errors during search
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method errorSearching
+	 * @private
+	 * @param {String} err 
+	 * 			Error message to display	
+	 */
 	function errorSearching(errorMsg){
 		if(errorMsg == undefined || errorMsg == "" )
 			errorMsg = "Unable to connect to server to retrieve search results";
@@ -165,6 +226,16 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		searchHandle = null;
 	}
 	
+	/**
+	 * Handles what happens when the user wants to view a results by clicking on name
+	 * in search results
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method viewResult
+	 * @private
+	 * @param {EcRemoteLinkedData} data
+	 * 			Data the user is interested in viewing
+	 */
 	function viewResult(data)
 	{
 		ScreenManager.changeScreen(new RepoViewScreen(data));
@@ -172,6 +243,16 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 	
 	var urlTypes;
+	
+	/**
+	 * Displays the result of retrieving all types from repository in select box
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method displayTypes
+	 * @private
+	 * @param {Object[]} typeObjects
+	 * 			Array of objects returned from type search
+	 */
 	function displayTypes(typeObjects)
 	{
 		if($(typeObjects).size() == 0)
@@ -263,6 +344,14 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		})
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RepoSearchScreen.prototype.display = function(containerId, callback)
 	{
 		var lastViewed = this.lastViewed;
@@ -322,6 +411,38 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		
 		runRepoSearch();
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	RepoSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+		this.types = params.types;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method clearParams
+	 */
+	RepoSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+		this.types = undefined;
+	}
 	
 	return RepoSearchScreen;
 })(RepoSearchScreen);

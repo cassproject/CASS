@@ -1,5 +1,23 @@
+/**
+ * Handles the advanced permission setting (privacy, owners, readers)
+ * of a piece of EcRemoteLinkedData in the Repository
+ * 
+ * @module cass.manager
+ * @class AdvancedPermissionsModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 	
+	/**
+	 * Adds the contact given to the list of owners in the modal
+	 * 
+	 * @memberOf AdvancedPermissionsModal
+	 * @method addOwner
+	 * @private
+	 * @param {EcContact} contact
+	 * 			Contact info for key to add as owner
+	 */
 	function addOwner(contact){
 		$('#advancedPermissionsAddOwner').typeahead('val', "");
 		
@@ -21,6 +39,15 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 		$("#advancedPermissionsOwners").append(option);
 	}
 	
+	/**
+	 * Adds the contact given to the list of readers in the modal
+	 * 
+	 * @memberOf AdvancedPermissionsModal
+	 * @method addReader
+	 * @private
+	 * @param {EcContact} contact
+	 * 			Contact info for key to add as reader
+	 */
 	function addReader(contact){
 		$('#advancedPermissionsAddReader').typeahead('val', "");
 		
@@ -42,7 +69,17 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 		$("#advancedPermissionsReaders").append(option);
 	}
 	
-	function setupTypeaheads(data){
+	/**
+	 * Sets up owner and reader typeaheads to search through
+	 * the current users contacts as they type
+	 * 
+	 * @memberOf AdvancedPermissionsModal
+	 * @method setupTypeaheads
+	 * @private
+	 * @param {} data
+	 * 			
+	 */
+	function setupTypeaheads(){
 		$("#advancedPermissionsAddOwner").typeahead({
 	  		hint: false,
 	  		highlight: true,
@@ -196,6 +233,14 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 		});
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf AdvancedPermissionsModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	AdvancedPermissionsModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
@@ -272,7 +317,7 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 						}else{
 							ViewManager.getView("#advancedPermissionsMessageContainer").clearWarning("decrypt");
 						}
-					}else if(data.privateEncrypted && !$("#privateSwitch").prop("checked")){
+					}else if(EcEncryptedValue.encryptOnSave(data.id, true) && !$("#privateSwitch").prop("checked")){
 						ViewManager.getView("#advancedPermissionsMessageContainer").displayWarning("Decrypting object by setting it public", "decrypt");
 					}else{
 						ViewManager.getView("#advancedPermissionsMessageContainer").clearWarning("decrypt");
@@ -325,7 +370,7 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 				}
 			}
 			
-			if(data.privateEncrypted == true){
+			if(EcEncryptedValue.encryptOnSave(data.id)){
 				$("#privateSwitch").prop("checked", true);
 				$("#readerRow").css('display',"block");
 			}
@@ -391,7 +436,7 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 				}
 			});
 			
-			setupTypeaheads(data);
+			setupTypeaheads();
 			
 			$("#advancedPermissionsSave").click(function(ev){
 				ev.preventDefault();
@@ -420,7 +465,7 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 						}
 						
 						if(!onlyReaders)
-							data[i].privateEncrypted = $("#privateSwitch").prop("checked");
+							EcEncryptedValue.encryptOnSave(data[i].id, $("#privateSwitch").prop("checked"));
 					}
 				}else{
 					data.owner = [];
@@ -435,7 +480,7 @@ var AdvancedPermissionsModal = (function(AdvancedPermissionsModal){
 					}
 					
 					if(!onlyReaders)
-						data.privateEncrypted = $("#privateSwitch").prop("checked");
+						EcEncryptedValue.encryptOnSave(data.id, $("#privateSwitch").prop("checked"));
 				}
 				
 				saveCallback(data);

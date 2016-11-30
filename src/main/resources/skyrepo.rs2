@@ -74,7 +74,7 @@ searchParamData = #fileFromDatastream(name="searchParams");
 searchParamObj = searchParamData.fileToString().toObject();
 
 search=#skyrepoSearch(
-	q=postData.fileToString(), 
+	q=#if(operator="@q",operand="",eq=postData.fileToString(),ne="@q"), 
 	size=#if(operator="@size", operand="",
 		eq="50",
 		ne="@size"

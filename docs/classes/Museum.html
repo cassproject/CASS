@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Museum - CASS Javascript Library</title>
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div class="yui3-g">
+        <div id="sidebar" class="yui3-u">
+            <div class="logo">
+              <a href="../index.html">
+                  <img src="http://docs.cassproject.org/img/customLogo-blue.png">
+              </a>
+            </div>
+            
+            <div id="modules" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Modules</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../modules/cass.manager.html">cass.manager</a>
+                            </li>
+                            <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
+                            </li>
+                            <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
+                            </li>
+                            <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a>
+                            </li>
+                            <li><a href="../modules/org.cassproject.html">org.cassproject</a>
+                            </li>
+                            <li><a href="../modules/org.json.ld.html">org.json.ld</a>
+                            </li>
+                            <li><a href="../modules/org.schema.html">org.schema</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/AboutPage.html">AboutPage</a></li>
+                            <li><a href="../classes/AcceptAction.html">AcceptAction</a></li>
+                            <li><a href="../classes/Accommodation.html">Accommodation</a></li>
+                            <li><a href="../classes/AccountingService.html">AccountingService</a></li>
+                            <li><a href="../classes/AchieveAction.html">AchieveAction</a></li>
+                            <li><a href="../classes/Action.html">Action</a></li>
+                            <li><a href="../classes/ActionStatusType.html">ActionStatusType</a></li>
+                            <li><a href="../classes/ActivateAction.html">ActivateAction</a></li>
+                            <li><a href="../classes/AddAction.html">AddAction</a></li>
+                            <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
+                            <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
+                            <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
+                            <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
+                            <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
+                            <li><a href="../classes/AggregateRating.html">AggregateRating</a></li>
+                            <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
+                            <li><a href="../classes/Airline.html">Airline</a></li>
+                            <li><a href="../classes/Airport.html">Airport</a></li>
+                            <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
+                            <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
+                            <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
+                            <li><a href="../classes/AnimalShelter.html">AnimalShelter</a></li>
+                            <li><a href="../classes/Answer.html">Answer</a></li>
+                            <li><a href="../classes/Apartment.html">Apartment</a></li>
+                            <li><a href="../classes/ApartmentComplex.html">ApartmentComplex</a></li>
+                            <li><a href="../classes/APIReference.html">APIReference</a></li>
+                            <li><a href="../classes/AppController.html">AppController</a></li>
+                            <li><a href="../classes/AppendAction.html">AppendAction</a></li>
+                            <li><a href="../classes/ApplyAction.html">ApplyAction</a></li>
+                            <li><a href="../classes/AppSettings.html">AppSettings</a></li>
+                            <li><a href="../classes/Aquarium.html">Aquarium</a></li>
+                            <li><a href="../classes/ArriveAction.html">ArriveAction</a></li>
+                            <li><a href="../classes/ArtGallery.html">ArtGallery</a></li>
+                            <li><a href="../classes/Article.html">Article</a></li>
+                            <li><a href="../classes/AskAction.html">AskAction</a></li>
+                            <li><a href="../classes/ASNImport.html">ASNImport</a></li>
+                            <li><a href="../classes/Assertion.html">Assertion</a></li>
+                            <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
+                            <li><a href="../classes/AssessAction.html">AssessAction</a></li>
+                            <li><a href="../classes/AssignAction.html">AssignAction</a></li>
+                            <li><a href="../classes/Attorney.html">Attorney</a></li>
+                            <li><a href="../classes/Audience.html">Audience</a></li>
+                            <li><a href="../classes/AudioObject.html">AudioObject</a></li>
+                            <li><a href="../classes/AuthorizeAction.html">AuthorizeAction</a></li>
+                            <li><a href="../classes/AutoBodyShop.html">AutoBodyShop</a></li>
+                            <li><a href="../classes/AutoDealer.html">AutoDealer</a></li>
+                            <li><a href="../classes/AutomatedTeller.html">AutomatedTeller</a></li>
+                            <li><a href="../classes/AutomotiveBusiness.html">AutomotiveBusiness</a></li>
+                            <li><a href="../classes/AutoPartsStore.html">AutoPartsStore</a></li>
+                            <li><a href="../classes/AutoRental.html">AutoRental</a></li>
+                            <li><a href="../classes/AutoRepair.html">AutoRepair</a></li>
+                            <li><a href="../classes/AutoWash.html">AutoWash</a></li>
+                            <li><a href="../classes/Bakery.html">Bakery</a></li>
+                            <li><a href="../classes/BankAccount.html">BankAccount</a></li>
+                            <li><a href="../classes/BankOrCreditUnion.html">BankOrCreditUnion</a></li>
+                            <li><a href="../classes/Barcode.html">Barcode</a></li>
+                            <li><a href="../classes/BarOrPub.html">BarOrPub</a></li>
+                            <li><a href="../classes/Beach.html">Beach</a></li>
+                            <li><a href="../classes/BeautySalon.html">BeautySalon</a></li>
+                            <li><a href="../classes/BedAndBreakfast.html">BedAndBreakfast</a></li>
+                            <li><a href="../classes/BedDetails.html">BedDetails</a></li>
+                            <li><a href="../classes/BefriendAction.html">BefriendAction</a></li>
+                            <li><a href="../classes/BikeStore.html">BikeStore</a></li>
+                            <li><a href="../classes/Blog.html">Blog</a></li>
+                            <li><a href="../classes/BlogPosting.html">BlogPosting</a></li>
+                            <li><a href="../classes/BoardingPolicyType.html">BoardingPolicyType</a></li>
+                            <li><a href="../classes/BodyOfWater.html">BodyOfWater</a></li>
+                            <li><a href="../classes/Book.html">Book</a></li>
+                            <li><a href="../classes/BookFormatType.html">BookFormatType</a></li>
+                            <li><a href="../classes/BookmarkAction.html">BookmarkAction</a></li>
+                            <li><a href="../classes/BookSeries.html">BookSeries</a></li>
+                            <li><a href="../classes/BookStore.html">BookStore</a></li>
+                            <li><a href="../classes/BorrowAction.html">BorrowAction</a></li>
+                            <li><a href="../classes/BowlingAlley.html">BowlingAlley</a></li>
+                            <li><a href="../classes/Brand.html">Brand</a></li>
+                            <li><a href="../classes/BreadcrumbList.html">BreadcrumbList</a></li>
+                            <li><a href="../classes/Brewery.html">Brewery</a></li>
+                            <li><a href="../classes/Bridge.html">Bridge</a></li>
+                            <li><a href="../classes/BroadcastChannel.html">BroadcastChannel</a></li>
+                            <li><a href="../classes/BroadcastEvent.html">BroadcastEvent</a></li>
+                            <li><a href="../classes/BroadcastService.html">BroadcastService</a></li>
+                            <li><a href="../classes/BuddhistTemple.html">BuddhistTemple</a></li>
+                            <li><a href="../classes/BusinessAudience.html">BusinessAudience</a></li>
+                            <li><a href="../classes/BusinessEntityType.html">BusinessEntityType</a></li>
+                            <li><a href="../classes/BusinessEvent.html">BusinessEvent</a></li>
+                            <li><a href="../classes/BusinessFunction.html">BusinessFunction</a></li>
+                            <li><a href="../classes/BusReservation.html">BusReservation</a></li>
+                            <li><a href="../classes/BusStation.html">BusStation</a></li>
+                            <li><a href="../classes/BusStop.html">BusStop</a></li>
+                            <li><a href="../classes/BusTrip.html">BusTrip</a></li>
+                            <li><a href="../classes/BuyAction.html">BuyAction</a></li>
+                            <li><a href="../classes/CableOrSatelliteService.html">CableOrSatelliteService</a></li>
+                            <li><a href="../classes/CafeOrCoffeeShop.html">CafeOrCoffeeShop</a></li>
+                            <li><a href="../classes/Campground.html">Campground</a></li>
+                            <li><a href="../classes/CampingPitch.html">CampingPitch</a></li>
+                            <li><a href="../classes/Canal.html">Canal</a></li>
+                            <li><a href="../classes/CancelAction.html">CancelAction</a></li>
+                            <li><a href="../classes/Car.html">Car</a></li>
+                            <li><a href="../classes/Casino.html">Casino</a></li>
+                            <li><a href="../classes/Cass.html">Cass</a></li>
+                            <li><a href="../classes/CatholicChurch.html">CatholicChurch</a></li>
+                            <li><a href="../classes/Cemetery.html">Cemetery</a></li>
+                            <li><a href="../classes/CheckAction.html">CheckAction</a></li>
+                            <li><a href="../classes/CheckInAction.html">CheckInAction</a></li>
+                            <li><a href="../classes/CheckOutAction.html">CheckOutAction</a></li>
+                            <li><a href="../classes/CheckoutPage.html">CheckoutPage</a></li>
+                            <li><a href="../classes/ChildCare.html">ChildCare</a></li>
+                            <li><a href="../classes/ChildrensEvent.html">ChildrensEvent</a></li>
+                            <li><a href="../classes/ChooseAction.html">ChooseAction</a></li>
+                            <li><a href="../classes/Church.html">Church</a></li>
+                            <li><a href="../classes/City.html">City</a></li>
+                            <li><a href="../classes/CityHall.html">CityHall</a></li>
+                            <li><a href="../classes/CivicStructure.html">CivicStructure</a></li>
+                            <li><a href="../classes/Clip.html">Clip</a></li>
+                            <li><a href="../classes/ClothingStore.html">ClothingStore</a></li>
+                            <li><a href="../classes/Code.html">Code</a></li>
+                            <li><a href="../classes/CollectionPage.html">CollectionPage</a></li>
+                            <li><a href="../classes/CollegeOrUniversity.html">CollegeOrUniversity</a></li>
+                            <li><a href="../classes/ComedyClub.html">ComedyClub</a></li>
+                            <li><a href="../classes/ComedyEvent.html">ComedyEvent</a></li>
+                            <li><a href="../classes/Comment.html">Comment</a></li>
+                            <li><a href="../classes/CommentAction.html">CommentAction</a></li>
+                            <li><a href="../classes/CommunicateAction.html">CommunicateAction</a></li>
+                            <li><a href="../classes/Competency.html">Competency</a></li>
+                            <li><a href="../classes/CompoundPriceSpecification.html">CompoundPriceSpecification</a></li>
+                            <li><a href="../classes/ComputerLanguage.html">ComputerLanguage</a></li>
+                            <li><a href="../classes/ComputerStore.html">ComputerStore</a></li>
+                            <li><a href="../classes/ConfirmAction.html">ConfirmAction</a></li>
+                            <li><a href="../classes/ConsumeAction.html">ConsumeAction</a></li>
+                            <li><a href="../classes/ContactPage.html">ContactPage</a></li>
+                            <li><a href="../classes/ContactPoint.html">ContactPoint</a></li>
+                            <li><a href="../classes/ContactPointOption.html">ContactPointOption</a></li>
+                            <li><a href="../classes/Continent.html">Continent</a></li>
+                            <li><a href="../classes/ControlAction.html">ControlAction</a></li>
+                            <li><a href="../classes/ConvenienceStore.html">ConvenienceStore</a></li>
+                            <li><a href="../classes/Conversation.html">Conversation</a></li>
+                            <li><a href="../classes/CookAction.html">CookAction</a></li>
+                            <li><a href="../classes/Corporation.html">Corporation</a></li>
+                            <li><a href="../classes/Country.html">Country</a></li>
+                            <li><a href="../classes/Courthouse.html">Courthouse</a></li>
+                            <li><a href="../classes/CreateAction.html">CreateAction</a></li>
+                            <li><a href="../classes/CreativeWork.html">CreativeWork</a></li>
+                            <li><a href="../classes/CreativeWorkSeason.html">CreativeWorkSeason</a></li>
+                            <li><a href="../classes/CreativeWorkSeries.html">CreativeWorkSeries</a></li>
+                            <li><a href="../classes/CreditCard.html">CreditCard</a></li>
+                            <li><a href="../classes/Crematorium.html">Crematorium</a></li>
+                            <li><a href="../classes/CSVImport.html">CSVImport</a></li>
+                            <li><a href="../classes/CurrencyConversionService.html">CurrencyConversionService</a></li>
+                            <li><a href="../classes/DanceEvent.html">DanceEvent</a></li>
+                            <li><a href="../classes/DanceGroup.html">DanceGroup</a></li>
+                            <li><a href="../classes/DataCatalog.html">DataCatalog</a></li>
+                            <li><a href="../classes/DataDownload.html">DataDownload</a></li>
+                            <li><a href="../classes/DataFeed.html">DataFeed</a></li>
+                            <li><a href="../classes/DataFeedItem.html">DataFeedItem</a></li>
+                            <li><a href="../classes/Dataset.html">Dataset</a></li>
+                            <li><a href="../classes/DatedMoneySpecification.html">DatedMoneySpecification</a></li>
+                            <li><a href="../classes/DayOfWeek.html">DayOfWeek</a></li>
+                            <li><a href="../classes/DaySpa.html">DaySpa</a></li>
+                            <li><a href="../classes/DeactivateAction.html">DeactivateAction</a></li>
+                            <li><a href="../classes/DefenceEstablishment.html">DefenceEstablishment</a></li>
+                            <li><a href="../classes/DeleteAction.html">DeleteAction</a></li>
+                            <li><a href="../classes/DeliveryChargeSpecification.html">DeliveryChargeSpecification</a></li>
+                            <li><a href="../classes/DeliveryEvent.html">DeliveryEvent</a></li>
+                            <li><a href="../classes/DeliveryMethod.html">DeliveryMethod</a></li>
+                            <li><a href="../classes/Demand.html">Demand</a></li>
+                            <li><a href="../classes/Dentist.html">Dentist</a></li>
+                            <li><a href="../classes/DepartAction.html">DepartAction</a></li>
+                            <li><a href="../classes/DepartmentStore.html">DepartmentStore</a></li>
+                            <li><a href="../classes/DepositAccount.html">DepositAccount</a></li>
+                            <li><a href="../classes/DigitalDocument.html">DigitalDocument</a></li>
+                            <li><a href="../classes/DigitalDocumentPermission.html">DigitalDocumentPermission</a></li>
+                            <li><a href="../classes/DigitalDocumentPermissionType.html">DigitalDocumentPermissionType</a></li>
+                            <li><a href="../classes/DisagreeAction.html">DisagreeAction</a></li>
+                            <li><a href="../classes/DiscoverAction.html">DiscoverAction</a></li>
+                            <li><a href="../classes/DiscussionForumPosting.html">DiscussionForumPosting</a></li>
+                            <li><a href="../classes/DislikeAction.html">DislikeAction</a></li>
+                            <li><a href="../classes/Distance.html">Distance</a></li>
+                            <li><a href="../classes/DonateAction.html">DonateAction</a></li>
+                            <li><a href="../classes/DownloadAction.html">DownloadAction</a></li>
+                            <li><a href="../classes/DrawAction.html">DrawAction</a></li>
+                            <li><a href="../classes/DrinkAction.html">DrinkAction</a></li>
+                            <li><a href="../classes/DriveWheelConfigurationValue.html">DriveWheelConfigurationValue</a></li>
+                            <li><a href="../classes/DryCleaningOrLaundry.html">DryCleaningOrLaundry</a></li>
+                            <li><a href="../classes/Duration.html">Duration</a></li>
+                            <li><a href="../classes/EatAction.html">EatAction</a></li>
+                            <li><a href="../classes/Ebac.html">Ebac</a></li>
+                            <li><a href="../classes/EbacContact.html">EbacContact</a></li>
+                            <li><a href="../classes/EbacContactGrant.html">EbacContactGrant</a></li>
+                            <li><a href="../classes/EbacCredential.html">EbacCredential</a></li>
+                            <li><a href="../classes/EbacCredentialCommit.html">EbacCredentialCommit</a></li>
+                            <li><a href="../classes/EbacCredentialRequest.html">EbacCredentialRequest</a></li>
+                            <li><a href="../classes/EbacCredentials.html">EbacCredentials</a></li>
+                            <li><a href="../classes/EbacEncryptedSecret.html">EbacEncryptedSecret</a></li>
+                            <li><a href="../classes/EbacEncryptedValue.html">EbacEncryptedValue</a></li>
+                            <li><a href="../classes/EbacSignature.html">EbacSignature</a></li>
+                            <li><a href="../classes/EcAes.html">EcAes</a></li>
+                            <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
+                            <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                            <li><a href="../classes/EcAlignment.html">EcAlignment</a></li>
+                            <li><a href="../classes/EcArray.html">EcArray</a></li>
+                            <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
+                            <li><a href="../classes/EcCompetency.html">EcCompetency</a></li>
+                            <li><a href="../classes/EcContact.html">EcContact</a></li>
+                            <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
+                            <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
+                            <li><a href="../classes/EcFile.html">EcFile</a></li>
+                            <li><a href="../classes/EcFramework.html">EcFramework</a></li>
+                            <li><a href="../classes/EcIdentity.html">EcIdentity</a></li>
+                            <li><a href="../classes/EcIdentityManager.html">EcIdentityManager</a></li>
+                            <li><a href="../classes/EcLevel.html">EcLevel</a></li>
+                            <li><a href="../classes/EcLinkedData.html">EcLinkedData</a></li>
+                            <li><a href="../classes/EcModal.html">EcModal</a></li>
+                            <li><a href="../classes/EcObject.html">EcObject</a></li>
+                            <li><a href="../classes/EcOverlay.html">EcOverlay</a></li>
+                            <li><a href="../classes/EcPk.html">EcPk</a></li>
+                            <li><a href="../classes/EcPpk.html">EcPpk</a></li>
+                            <li><a href="../classes/EcRemote.html">EcRemote</a></li>
+                            <li><a href="../classes/EcRemoteIdentityManager.html">EcRemoteIdentityManager</a></li>
+                            <li><a href="../classes/EcRemoteLinkedData.html">EcRemoteLinkedData</a></li>
+                            <li><a href="../classes/EcRepository.html">EcRepository</a></li>
+                            <li><a href="../classes/EcRollupRule.html">EcRollupRule</a></li>
+                            <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
+                            <li><a href="../classes/EcRsaOaepAsync.html">EcRsaOaepAsync</a></li>
+                            <li><a href="../classes/EcScreen.html">EcScreen</a></li>
+                            <li><a href="../classes/EcView.html">EcView</a></li>
+                            <li><a href="../classes/EducationalAudience.html">EducationalAudience</a></li>
+                            <li><a href="../classes/EducationalOrganization.html">EducationalOrganization</a></li>
+                            <li><a href="../classes/EducationEvent.html">EducationEvent</a></li>
+                            <li><a href="../classes/Electrician.html">Electrician</a></li>
+                            <li><a href="../classes/ElectronicsStore.html">ElectronicsStore</a></li>
+                            <li><a href="../classes/ElementarySchool.html">ElementarySchool</a></li>
+                            <li><a href="../classes/EmailMessage.html">EmailMessage</a></li>
+                            <li><a href="../classes/Embassy.html">Embassy</a></li>
+                            <li><a href="../classes/EmergencyService.html">EmergencyService</a></li>
+                            <li><a href="../classes/EmployeeRole.html">EmployeeRole</a></li>
+                            <li><a href="../classes/EmploymentAgency.html">EmploymentAgency</a></li>
+                            <li><a href="../classes/EndorseAction.html">EndorseAction</a></li>
+                            <li><a href="../classes/Energy.html">Energy</a></li>
+                            <li><a href="../classes/EngineSpecification.html">EngineSpecification</a></li>
+                            <li><a href="../classes/EntertainmentBusiness.html">EntertainmentBusiness</a></li>
+                            <li><a href="../classes/EntryPoint.html">EntryPoint</a></li>
+                            <li><a href="../classes/Enumeration.html">Enumeration</a></li>
+                            <li><a href="../classes/Episode.html">Episode</a></li>
+                            <li><a href="../classes/Event.html">Event</a></li>
+                            <li><a href="../classes/EventReservation.html">EventReservation</a></li>
+                            <li><a href="../classes/EventStatusType.html">EventStatusType</a></li>
+                            <li><a href="../classes/EventVenue.html">EventVenue</a></li>
+                            <li><a href="../classes/ExerciseAction.html">ExerciseAction</a></li>
+                            <li><a href="../classes/ExerciseGym.html">ExerciseGym</a></li>
+                            <li><a href="../classes/ExhibitionEvent.html">ExhibitionEvent</a></li>
+                            <li><a href="../classes/FastFoodRestaurant.html">FastFoodRestaurant</a></li>
+                            <li><a href="../classes/Festival.html">Festival</a></li>
+                            <li><a href="../classes/FilmAction.html">FilmAction</a></li>
+                            <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
+                            <li><a href="../classes/FinancialService.html">FinancialService</a></li>
+                            <li><a href="../classes/FindAction.html">FindAction</a></li>
+                            <li><a href="../classes/FireStation.html">FireStation</a></li>
+                            <li><a href="../classes/Flight.html">Flight</a></li>
+                            <li><a href="../classes/FlightReservation.html">FlightReservation</a></li>
+                            <li><a href="../classes/Florist.html">Florist</a></li>
+                            <li><a href="../classes/FollowAction.html">FollowAction</a></li>
+                            <li><a href="../classes/FoodEstablishment.html">FoodEstablishment</a></li>
+                            <li><a href="../classes/FoodEstablishmentReservation.html">FoodEstablishmentReservation</a></li>
+                            <li><a href="../classes/FoodEvent.html">FoodEvent</a></li>
+                            <li><a href="../classes/FoodService.html">FoodService</a></li>
+                            <li><a href="../classes/Framework.html">Framework</a></li>
+                            <li><a href="../classes/FrameworkImport.html">FrameworkImport</a></li>
+                            <li><a href="../classes/FurnitureStore.html">FurnitureStore</a></li>
+                            <li><a href="../classes/Game.html">Game</a></li>
+                            <li><a href="../classes/GamePlayMode.html">GamePlayMode</a></li>
+                            <li><a href="../classes/GameServer.html">GameServer</a></li>
+                            <li><a href="../classes/GameServerStatus.html">GameServerStatus</a></li>
+                            <li><a href="../classes/GardenStore.html">GardenStore</a></li>
+                            <li><a href="../classes/GasStation.html">GasStation</a></li>
+                            <li><a href="../classes/GatedResidenceCommunity.html">GatedResidenceCommunity</a></li>
+                            <li><a href="../classes/GenderType.html">GenderType</a></li>
+                            <li><a href="../classes/General.html">General</a></li>
+                            <li><a href="../classes/GeneralContractor.html">GeneralContractor</a></li>
+                            <li><a href="../classes/GeneralFile.html">GeneralFile</a></li>
+                            <li><a href="../classes/GeoCircle.html">GeoCircle</a></li>
+                            <li><a href="../classes/GeoCoordinates.html">GeoCoordinates</a></li>
+                            <li><a href="../classes/GeoShape.html">GeoShape</a></li>
+                            <li><a href="../classes/GiveAction.html">GiveAction</a></li>
+                            <li><a href="../classes/GolfCourse.html">GolfCourse</a></li>
+                            <li><a href="../classes/GovernmentBuilding.html">GovernmentBuilding</a></li>
+                            <li><a href="../classes/GovernmentOffice.html">GovernmentOffice</a></li>
+                            <li><a href="../classes/GovernmentOrganization.html">GovernmentOrganization</a></li>
+                            <li><a href="../classes/GovernmentPermit.html">GovernmentPermit</a></li>
+                            <li><a href="../classes/GovernmentService.html">GovernmentService</a></li>
+                            <li><a href="../classes/Graph.html">Graph</a></li>
+                            <li><a href="../classes/GroceryStore.html">GroceryStore</a></li>
+                            <li><a href="../classes/HairSalon.html">HairSalon</a></li>
+                            <li><a href="../classes/HardwareStore.html">HardwareStore</a></li>
+                            <li><a href="../classes/HealthAndBeautyBusiness.html">HealthAndBeautyBusiness</a></li>
+                            <li><a href="../classes/HealthClub.html">HealthClub</a></li>
+                            <li><a href="../classes/HighSchool.html">HighSchool</a></li>
+                            <li><a href="../classes/HinduTemple.html">HinduTemple</a></li>
+                            <li><a href="../classes/HistoryClosure.html">HistoryClosure</a></li>
+                            <li><a href="../classes/HobbyShop.html">HobbyShop</a></li>
+                            <li><a href="../classes/HomeAndConstructionBusiness.html">HomeAndConstructionBusiness</a></li>
+                            <li><a href="../classes/HomeGoodsStore.html">HomeGoodsStore</a></li>
+                            <li><a href="../classes/Hospital.html">Hospital</a></li>
+                            <li><a href="../classes/Hostel.html">Hostel</a></li>
+                            <li><a href="../classes/Hotel.html">Hotel</a></li>
+                            <li><a href="../classes/HotelRoom.html">HotelRoom</a></li>
+                            <li><a href="../classes/House.html">House</a></li>
+                            <li><a href="../classes/HousePainter.html">HousePainter</a></li>
+                            <li><a href="../classes/HVACBusiness.html">HVACBusiness</a></li>
+                            <li><a href="../classes/Hypergraph.html">Hypergraph</a></li>
+                            <li><a href="../classes/IceCreamShop.html">IceCreamShop</a></li>
+                            <li><a href="../classes/IdentityController.html">IdentityController</a></li>
+                            <li><a href="../classes/IgnoreAction.html">IgnoreAction</a></li>
+                            <li><a href="../classes/ImageGallery.html">ImageGallery</a></li>
+                            <li><a href="../classes/ImageObject.html">ImageObject</a></li>
+                            <li><a href="../classes/Importer.html">Importer</a></li>
+                            <li><a href="../classes/IndividualProduct.html">IndividualProduct</a></li>
+                            <li><a href="../classes/InformAction.html">InformAction</a></li>
+                            <li><a href="../classes/InquiryPacket.html">InquiryPacket</a></li>
+                            <li><a href="../classes/InsertAction.html">InsertAction</a></li>
+                            <li><a href="../classes/InstallAction.html">InstallAction</a></li>
+                            <li><a href="../classes/InsuranceAgency.html">InsuranceAgency</a></li>
+                            <li><a href="../classes/Intangible.html">Intangible</a></li>
+                            <li><a href="../classes/InteractAction.html">InteractAction</a></li>
+                            <li><a href="../classes/InteractionCounter.html">InteractionCounter</a></li>
+                            <li><a href="../classes/InternetCafe.html">InternetCafe</a></li>
+                            <li><a href="../classes/InvestmentOrDeposit.html">InvestmentOrDeposit</a></li>
+                            <li><a href="../classes/InviteAction.html">InviteAction</a></li>
+                            <li><a href="../classes/Invoice.html">Invoice</a></li>
+                            <li><a href="../classes/ItemAvailability.html">ItemAvailability</a></li>
+                            <li><a href="../classes/ItemList.html">ItemList</a></li>
+                            <li><a href="../classes/ItemListOrderType.html">ItemListOrderType</a></li>
+                            <li><a href="../classes/ItemPage.html">ItemPage</a></li>
+                            <li><a href="../classes/JewelryStore.html">JewelryStore</a></li>
+                            <li><a href="../classes/JobPosting.html">JobPosting</a></li>
+                            <li><a href="../classes/JoinAction.html">JoinAction</a></li>
+                            <li><a href="../classes/LakeBodyOfWater.html">LakeBodyOfWater</a></li>
+                            <li><a href="../classes/Landform.html">Landform</a></li>
+                            <li><a href="../classes/LandmarksOrHistoricalBuildings.html">LandmarksOrHistoricalBuildings</a></li>
+                            <li><a href="../classes/Language.html">Language</a></li>
+                            <li><a href="../classes/LeaveAction.html">LeaveAction</a></li>
+                            <li><a href="../classes/LegalService.html">LegalService</a></li>
+                            <li><a href="../classes/LegislativeBuilding.html">LegislativeBuilding</a></li>
+                            <li><a href="../classes/LendAction.html">LendAction</a></li>
+                            <li><a href="../classes/Level.html">Level</a></li>
+                            <li><a href="../classes/Library.html">Library</a></li>
+                            <li><a href="../classes/LikeAction.html">LikeAction</a></li>
+                            <li><a href="../classes/LiquorStore.html">LiquorStore</a></li>
+                            <li><a href="../classes/ListenAction.html">ListenAction</a></li>
+                            <li><a href="../classes/ListItem.html">ListItem</a></li>
+                            <li><a href="../classes/LiteraryEvent.html">LiteraryEvent</a></li>
+                            <li><a href="../classes/LiveBlogPosting.html">LiveBlogPosting</a></li>
+                            <li><a href="../classes/LoanOrCredit.html">LoanOrCredit</a></li>
+                            <li><a href="../classes/LocalBusiness.html">LocalBusiness</a></li>
+                            <li><a href="../classes/LocationFeatureSpecification.html">LocationFeatureSpecification</a></li>
+                            <li><a href="../classes/LockerDelivery.html">LockerDelivery</a></li>
+                            <li><a href="../classes/Locksmith.html">Locksmith</a></li>
+                            <li><a href="../classes/LodgingBusiness.html">LodgingBusiness</a></li>
+                            <li><a href="../classes/LodgingReservation.html">LodgingReservation</a></li>
+                            <li><a href="../classes/LoginController.html">LoginController</a></li>
+                            <li><a href="../classes/LoseAction.html">LoseAction</a></li>
+                            <li><a href="../classes/Map.html">Map</a></li>
+                            <li><a href="../classes/MapCategoryType.html">MapCategoryType</a></li>
+                            <li><a href="../classes/MarryAction.html">MarryAction</a></li>
+                            <li><a href="../classes/Mass.html">Mass</a></li>
+                            <li><a href="../classes/MedbiqImport.html">MedbiqImport</a></li>
+                            <li><a href="../classes/MediaObject.html">MediaObject</a></li>
+                            <li><a href="../classes/MedicalOrganization.html">MedicalOrganization</a></li>
+                            <li><a href="../classes/MeetingRoom.html">MeetingRoom</a></li>
+                            <li><a href="../classes/MensClothingStore.html">MensClothingStore</a></li>
+                            <li><a href="../classes/Message.html">Message</a></li>
+                            <li><a href="../classes/MiddleSchool.html">MiddleSchool</a></li>
+                            <li><a href="../classes/MobileApplication.html">MobileApplication</a></li>
+                            <li><a href="../classes/MobilePhoneStore.html">MobilePhoneStore</a></li>
+                            <li><a href="../classes/ModalManager.html">ModalManager</a></li>
+                            <li><a href="../classes/MonetaryAmount.html">MonetaryAmount</a></li>
+                            <li><a href="../classes/MoodleConfig.html">MoodleConfig</a></li>
+                            <li><a href="../classes/Mosque.html">Mosque</a></li>
+                            <li><a href="../classes/Motel.html">Motel</a></li>
+                            <li><a href="../classes/MotorcycleDealer.html">MotorcycleDealer</a></li>
+                            <li><a href="../classes/MotorcycleRepair.html">MotorcycleRepair</a></li>
+                            <li><a href="../classes/Mountain.html">Mountain</a></li>
+                            <li><a href="../classes/MoveAction.html">MoveAction</a></li>
+                            <li><a href="../classes/Movie.html">Movie</a></li>
+                            <li><a href="../classes/MovieClip.html">MovieClip</a></li>
+                            <li><a href="../classes/MovieRentalStore.html">MovieRentalStore</a></li>
+                            <li><a href="../classes/MovieSeries.html">MovieSeries</a></li>
+                            <li><a href="../classes/MovieTheater.html">MovieTheater</a></li>
+                            <li><a href="../classes/MovingCompany.html">MovingCompany</a></li>
+                            <li><a href="../classes/Museum.html">Museum</a></li>
+                            <li><a href="../classes/MusicAlbum.html">MusicAlbum</a></li>
+                            <li><a href="../classes/MusicAlbumProductionType.html">MusicAlbumProductionType</a></li>
+                            <li><a href="../classes/MusicAlbumReleaseType.html">MusicAlbumReleaseType</a></li>
+                            <li><a href="../classes/MusicComposition.html">MusicComposition</a></li>
+                            <li><a href="../classes/MusicEvent.html">MusicEvent</a></li>
+                            <li><a href="../classes/MusicGroup.html">MusicGroup</a></li>
+                            <li><a href="../classes/MusicPlaylist.html">MusicPlaylist</a></li>
+                            <li><a href="../classes/MusicRecording.html">MusicRecording</a></li>
+                            <li><a href="../classes/MusicRelease.html">MusicRelease</a></li>
+                            <li><a href="../classes/MusicReleaseFormatType.html">MusicReleaseFormatType</a></li>
+                            <li><a href="../classes/MusicStore.html">MusicStore</a></li>
+                            <li><a href="../classes/MusicVenue.html">MusicVenue</a></li>
+                            <li><a href="../classes/MusicVideoObject.html">MusicVideoObject</a></li>
+                            <li><a href="../classes/NailSalon.html">NailSalon</a></li>
+                            <li><a href="../classes/NewsArticle.html">NewsArticle</a></li>
+                            <li><a href="../classes/NGO.html">NGO</a></li>
+                            <li><a href="../classes/NightClub.html">NightClub</a></li>
+                            <li><a href="../classes/Notary.html">Notary</a></li>
+                            <li><a href="../classes/NoteDigitalDocument.html">NoteDigitalDocument</a></li>
+                            <li><a href="../classes/NutritionInformation.html">NutritionInformation</a></li>
+                            <li><a href="../classes/OceanBodyOfWater.html">OceanBodyOfWater</a></li>
+                            <li><a href="../classes/Offer.html">Offer</a></li>
+                            <li><a href="../classes/OfferCatalog.html">OfferCatalog</a></li>
+                            <li><a href="../classes/OfferItemCondition.html">OfferItemCondition</a></li>
+                            <li><a href="../classes/OfficeEquipmentStore.html">OfficeEquipmentStore</a></li>
+                            <li><a href="../classes/OnDemandEvent.html">OnDemandEvent</a></li>
+                            <li><a href="../classes/OpeningHoursSpecification.html">OpeningHoursSpecification</a></li>
+                            <li><a href="../classes/Order.html">Order</a></li>
+                            <li><a href="../classes/OrderAction.html">OrderAction</a></li>
+                            <li><a href="../classes/OrderItem.html">OrderItem</a></li>
+                            <li><a href="../classes/OrderStatus.html">OrderStatus</a></li>
+                            <li><a href="../classes/Organization.html">Organization</a></li>
+                            <li><a href="../classes/OrganizationRole.html">OrganizationRole</a></li>
+                            <li><a href="../classes/OrganizeAction.html">OrganizeAction</a></li>
+                            <li><a href="../classes/OutletStore.html">OutletStore</a></li>
+                            <li><a href="../classes/OverlayManager.html">OverlayManager</a></li>
+                            <li><a href="../classes/OwnershipInfo.html">OwnershipInfo</a></li>
+                            <li><a href="../classes/PaintAction.html">PaintAction</a></li>
+                            <li><a href="../classes/Painting.html">Painting</a></li>
+                            <li><a href="../classes/ParcelDelivery.html">ParcelDelivery</a></li>
+                            <li><a href="../classes/ParcelService.html">ParcelService</a></li>
+                            <li><a href="../classes/ParentAudience.html">ParentAudience</a></li>
+                            <li><a href="../classes/Park.html">Park</a></li>
+                            <li><a href="../classes/ParkingFacility.html">ParkingFacility</a></li>
+                            <li><a href="../classes/PawnShop.html">PawnShop</a></li>
+                            <li><a href="../classes/PayAction.html">PayAction</a></li>
+                            <li><a href="../classes/PaymentCard.html">PaymentCard</a></li>
+                            <li><a href="../classes/PaymentChargeSpecification.html">PaymentChargeSpecification</a></li>
+                            <li><a href="../classes/PaymentMethod.html">PaymentMethod</a></li>
+                            <li><a href="../classes/PaymentService.html">PaymentService</a></li>
+                            <li><a href="../classes/PaymentStatusType.html">PaymentStatusType</a></li>
+                            <li><a href="../classes/PeopleAudience.html">PeopleAudience</a></li>
+                            <li><a href="../classes/PerformAction.html">PerformAction</a></li>
+                            <li><a href="../classes/PerformanceRole.html">PerformanceRole</a></li>
+                            <li><a href="../classes/PerformingArtsTheater.html">PerformingArtsTheater</a></li>
+                            <li><a href="../classes/PerformingGroup.html">PerformingGroup</a></li>
+                            <li><a href="../classes/Periodical.html">Periodical</a></li>
+                            <li><a href="../classes/Permit.html">Permit</a></li>
+                            <li><a href="../classes/Person.html">Person</a></li>
+                            <li><a href="../classes/PetStore.html">PetStore</a></li>
+                            <li><a href="../classes/Pharmacy.html">Pharmacy</a></li>
+                            <li><a href="../classes/Photograph.html">Photograph</a></li>
+                            <li><a href="../classes/PhotographAction.html">PhotographAction</a></li>
+                            <li><a href="../classes/Physician.html">Physician</a></li>
+                            <li><a href="../classes/Place.html">Place</a></li>
+                            <li><a href="../classes/PlaceOfWorship.html">PlaceOfWorship</a></li>
+                            <li><a href="../classes/PlanAction.html">PlanAction</a></li>
+                            <li><a href="../classes/PlayAction.html">PlayAction</a></li>
+                            <li><a href="../classes/Playground.html">Playground</a></li>
+                            <li><a href="../classes/Plumber.html">Plumber</a></li>
+                            <li><a href="../classes/PoliceStation.html">PoliceStation</a></li>
+                            <li><a href="../classes/Pond.html">Pond</a></li>
+                            <li><a href="../classes/PostalAddress.html">PostalAddress</a></li>
+                            <li><a href="../classes/PostOffice.html">PostOffice</a></li>
+                            <li><a href="../classes/PrependAction.html">PrependAction</a></li>
+                            <li><a href="../classes/Preschool.html">Preschool</a></li>
+                            <li><a href="../classes/PresentationDigitalDocument.html">PresentationDigitalDocument</a></li>
+                            <li><a href="../classes/PriceSpecification.html">PriceSpecification</a></li>
+                            <li><a href="../classes/Product.html">Product</a></li>
+                            <li><a href="../classes/ProductModel.html">ProductModel</a></li>
+                            <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                            <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                            <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
+                            <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
+                            <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
+                            <li><a href="../classes/PublicationEvent.html">PublicationEvent</a></li>
+                            <li><a href="../classes/PublicationIssue.html">PublicationIssue</a></li>
+                            <li><a href="../classes/PublicationVolume.html">PublicationVolume</a></li>
+                            <li><a href="../classes/PublicSwimmingPool.html">PublicSwimmingPool</a></li>
+                            <li><a href="../classes/QAPage.html">QAPage</a></li>
+                            <li><a href="../classes/QualitativeValue.html">QualitativeValue</a></li>
+                            <li><a href="../classes/QuantitativeValue.html">QuantitativeValue</a></li>
+                            <li><a href="../classes/Quantity.html">Quantity</a></li>
+                            <li><a href="../classes/Question.html">Question</a></li>
+                            <li><a href="../classes/QuoteAction.html">QuoteAction</a></li>
+                            <li><a href="../classes/RadioChannel.html">RadioChannel</a></li>
+                            <li><a href="../classes/RadioClip.html">RadioClip</a></li>
+                            <li><a href="../classes/RadioEpisode.html">RadioEpisode</a></li>
+                            <li><a href="../classes/RadioSeason.html">RadioSeason</a></li>
+                            <li><a href="../classes/RadioSeries.html">RadioSeries</a></li>
+                            <li><a href="../classes/RadioStation.html">RadioStation</a></li>
+                            <li><a href="../classes/Rating.html">Rating</a></li>
+                            <li><a href="../classes/ReactAction.html">ReactAction</a></li>
+                            <li><a href="../classes/ReadAction.html">ReadAction</a></li>
+                            <li><a href="../classes/RealEstateAgent.html">RealEstateAgent</a></li>
+                            <li><a href="../classes/ReceiveAction.html">ReceiveAction</a></li>
+                            <li><a href="../classes/Recipe.html">Recipe</a></li>
+                            <li><a href="../classes/RecyclingCenter.html">RecyclingCenter</a></li>
+                            <li><a href="../classes/RegisterAction.html">RegisterAction</a></li>
+                            <li><a href="../classes/RejectAction.html">RejectAction</a></li>
+                            <li><a href="../classes/Relation.html">Relation</a></li>
+                            <li><a href="../classes/RelationshipPacketGenerator.html">RelationshipPacketGenerator</a></li>
+                            <li><a href="../classes/RentAction.html">RentAction</a></li>
+                            <li><a href="../classes/RentalCarReservation.html">RentalCarReservation</a></li>
+                            <li><a href="../classes/ReplaceAction.html">ReplaceAction</a></li>
+                            <li><a href="../classes/ReplyAction.html">ReplyAction</a></li>
+                            <li><a href="../classes/Report.html">Report</a></li>
+                            <li><a href="../classes/Reservation.html">Reservation</a></li>
+                            <li><a href="../classes/ReservationPackage.html">ReservationPackage</a></li>
+                            <li><a href="../classes/ReservationStatusType.html">ReservationStatusType</a></li>
+                            <li><a href="../classes/ReserveAction.html">ReserveAction</a></li>
+                            <li><a href="../classes/Reservoir.html">Reservoir</a></li>
+                            <li><a href="../classes/Residence.html">Residence</a></li>
+                            <li><a href="../classes/Resort.html">Resort</a></li>
+                            <li><a href="../classes/Restaurant.html">Restaurant</a></li>
+                            <li><a href="../classes/RestrictedDiet.html">RestrictedDiet</a></li>
+                            <li><a href="../classes/ResumeAction.html">ResumeAction</a></li>
+                            <li><a href="../classes/ReturnAction.html">ReturnAction</a></li>
+                            <li><a href="../classes/Review.html">Review</a></li>
+                            <li><a href="../classes/ReviewAction.html">ReviewAction</a></li>
+                            <li><a href="../classes/RiverBodyOfWater.html">RiverBodyOfWater</a></li>
+                            <li><a href="../classes/Role.html">Role</a></li>
+                            <li><a href="../classes/RollupRule.html">RollupRule</a></li>
+                            <li><a href="../classes/RoofingContractor.html">RoofingContractor</a></li>
+                            <li><a href="../classes/Room.html">Room</a></li>
+                            <li><a href="../classes/RsvpAction.html">RsvpAction</a></li>
+                            <li><a href="../classes/RsvpResponseType.html">RsvpResponseType</a></li>
+                            <li><a href="../classes/RVPark.html">RVPark</a></li>
+                            <li><a href="../classes/SaleEvent.html">SaleEvent</a></li>
+                            <li><a href="../classes/ScheduleAction.html">ScheduleAction</a></li>
+                            <li><a href="../classes/ScholarlyArticle.html">ScholarlyArticle</a></li>
+                            <li><a href="../classes/School.html">School</a></li>
+                            <li><a href="../classes/ScreeningEvent.html">ScreeningEvent</a></li>
+                            <li><a href="../classes/Screenmanager.html">Screenmanager</a></li>
+                            <li><a href="../classes/Sculpture.html">Sculpture</a></li>
+                            <li><a href="../classes/SeaBodyOfWater.html">SeaBodyOfWater</a></li>
+                            <li><a href="../classes/SearchAction.html">SearchAction</a></li>
+                            <li><a href="../classes/SearchResultsPage.html">SearchResultsPage</a></li>
+                            <li><a href="../classes/Season.html">Season</a></li>
+                            <li><a href="../classes/Seat.html">Seat</a></li>
+                            <li><a href="../classes/SelfStorage.html">SelfStorage</a></li>
+                            <li><a href="../classes/SellAction.html">SellAction</a></li>
+                            <li><a href="../classes/SendAction.html">SendAction</a></li>
+                            <li><a href="../classes/Series.html">Series</a></li>
+                            <li><a href="../classes/ServerController.html">ServerController</a></li>
+                            <li><a href="../classes/Service.html">Service</a></li>
+                            <li><a href="../classes/ServiceChannel.html">ServiceChannel</a></li>
+                            <li><a href="../classes/ShareAction.html">ShareAction</a></li>
+                            <li><a href="../classes/ShoeStore.html">ShoeStore</a></li>
+                            <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
+                            <li><a href="../classes/SingleFamilyResidence.html">SingleFamilyResidence</a></li>
+                            <li><a href="../classes/SiteNavigationElement.html">SiteNavigationElement</a></li>
+                            <li><a href="../classes/SkiResort.html">SkiResort</a></li>
+                            <li><a href="../classes/SocialEvent.html">SocialEvent</a></li>
+                            <li><a href="../classes/SocialMediaPosting.html">SocialMediaPosting</a></li>
+                            <li><a href="../classes/SoftwareApplication.html">SoftwareApplication</a></li>
+                            <li><a href="../classes/SoftwareSourceCode.html">SoftwareSourceCode</a></li>
+                            <li><a href="../classes/SomeProducts.html">SomeProducts</a></li>
+                            <li><a href="../classes/Specialty.html">Specialty</a></li>
+                            <li><a href="../classes/SportingGoodsStore.html">SportingGoodsStore</a></li>
+                            <li><a href="../classes/SportsActivityLocation.html">SportsActivityLocation</a></li>
+                            <li><a href="../classes/SportsClub.html">SportsClub</a></li>
+                            <li><a href="../classes/SportsEvent.html">SportsEvent</a></li>
+                            <li><a href="../classes/SportsOrganization.html">SportsOrganization</a></li>
+                            <li><a href="../classes/SportsTeam.html">SportsTeam</a></li>
+                            <li><a href="../classes/SpreadsheetDigitalDocument.html">SpreadsheetDigitalDocument</a></li>
+                            <li><a href="../classes/StadiumOrArena.html">StadiumOrArena</a></li>
+                            <li><a href="../classes/State.html">State</a></li>
+                            <li><a href="../classes/SteeringPositionValue.html">SteeringPositionValue</a></li>
+                            <li><a href="../classes/Store.html">Store</a></li>
+                            <li><a href="../classes/StructuredValue.html">StructuredValue</a></li>
+                            <li><a href="../classes/SubscribeAction.html">SubscribeAction</a></li>
+                            <li><a href="../classes/SubwayStation.html">SubwayStation</a></li>
+                            <li><a href="../classes/Suite.html">Suite</a></li>
+                            <li><a href="../classes/SuspendAction.html">SuspendAction</a></li>
+                            <li><a href="../classes/Synagogue.html">Synagogue</a></li>
+                            <li><a href="../classes/Table.html">Table</a></li>
+                            <li><a href="../classes/TakeAction.html">TakeAction</a></li>
+                            <li><a href="../classes/TattooParlor.html">TattooParlor</a></li>
+                            <li><a href="../classes/Taxi.html">Taxi</a></li>
+                            <li><a href="../classes/TaxiReservation.html">TaxiReservation</a></li>
+                            <li><a href="../classes/TaxiService.html">TaxiService</a></li>
+                            <li><a href="../classes/TaxiStand.html">TaxiStand</a></li>
+                            <li><a href="../classes/TechArticle.html">TechArticle</a></li>
+                            <li><a href="../classes/TelevisionChannel.html">TelevisionChannel</a></li>
+                            <li><a href="../classes/TelevisionStation.html">TelevisionStation</a></li>
+                            <li><a href="../classes/TennisComplex.html">TennisComplex</a></li>
+                            <li><a href="../classes/TextDigitalDocument.html">TextDigitalDocument</a></li>
+                            <li><a href="../classes/TheaterEvent.html">TheaterEvent</a></li>
+                            <li><a href="../classes/TheaterGroup.html">TheaterGroup</a></li>
+                            <li><a href="../classes/Thing.html">Thing</a></li>
+                            <li><a href="../classes/Ticket.html">Ticket</a></li>
+                            <li><a href="../classes/TieAction.html">TieAction</a></li>
+                            <li><a href="../classes/TipAction.html">TipAction</a></li>
+                            <li><a href="../classes/TireShop.html">TireShop</a></li>
+                            <li><a href="../classes/TouristAttraction.html">TouristAttraction</a></li>
+                            <li><a href="../classes/TouristInformationCenter.html">TouristInformationCenter</a></li>
+                            <li><a href="../classes/ToyStore.html">ToyStore</a></li>
+                            <li><a href="../classes/TrackAction.html">TrackAction</a></li>
+                            <li><a href="../classes/TradeAction.html">TradeAction</a></li>
+                            <li><a href="../classes/TrainReservation.html">TrainReservation</a></li>
+                            <li><a href="../classes/TrainStation.html">TrainStation</a></li>
+                            <li><a href="../classes/TrainTrip.html">TrainTrip</a></li>
+                            <li><a href="../classes/TransferAction.html">TransferAction</a></li>
+                            <li><a href="../classes/TravelAction.html">TravelAction</a></li>
+                            <li><a href="../classes/TravelAgency.html">TravelAgency</a></li>
+                            <li><a href="../classes/Triple.html">Triple</a></li>
+                            <li><a href="../classes/TVClip.html">TVClip</a></li>
+                            <li><a href="../classes/TVEpisode.html">TVEpisode</a></li>
+                            <li><a href="../classes/TVSeason.html">TVSeason</a></li>
+                            <li><a href="../classes/TVSeries.html">TVSeries</a></li>
+                            <li><a href="../classes/TypeAndQuantityNode.html">TypeAndQuantityNode</a></li>
+                            <li><a href="../classes/UnitPriceSpecification.html">UnitPriceSpecification</a></li>
+                            <li><a href="../classes/UnRegisterAction.html">UnRegisterAction</a></li>
+                            <li><a href="../classes/UpdateAction.html">UpdateAction</a></li>
+                            <li><a href="../classes/UseAction.html">UseAction</a></li>
+                            <li><a href="../classes/UserBlocks.html">UserBlocks</a></li>
+                            <li><a href="../classes/UserCheckins.html">UserCheckins</a></li>
+                            <li><a href="../classes/UserComments.html">UserComments</a></li>
+                            <li><a href="../classes/UserDownloads.html">UserDownloads</a></li>
+                            <li><a href="../classes/UserInteraction.html">UserInteraction</a></li>
+                            <li><a href="../classes/UserLikes.html">UserLikes</a></li>
+                            <li><a href="../classes/UserPageVisits.html">UserPageVisits</a></li>
+                            <li><a href="../classes/UserPlays.html">UserPlays</a></li>
+                            <li><a href="../classes/UserPlusOnes.html">UserPlusOnes</a></li>
+                            <li><a href="../classes/UserTweets.html">UserTweets</a></li>
+                            <li><a href="../classes/Vehicle.html">Vehicle</a></li>
+                            <li><a href="../classes/VideoGallery.html">VideoGallery</a></li>
+                            <li><a href="../classes/VideoGame.html">VideoGame</a></li>
+                            <li><a href="../classes/VideoGameClip.html">VideoGameClip</a></li>
+                            <li><a href="../classes/VideoGameSeries.html">VideoGameSeries</a></li>
+                            <li><a href="../classes/VideoObject.html">VideoObject</a></li>
+                            <li><a href="../classes/ViewAction.html">ViewAction</a></li>
+                            <li><a href="../classes/ViewManager.html">ViewManager</a></li>
+                            <li><a href="../classes/VisualArtsEvent.html">VisualArtsEvent</a></li>
+                            <li><a href="../classes/VisualArtwork.html">VisualArtwork</a></li>
+                            <li><a href="../classes/Volcano.html">Volcano</a></li>
+                            <li><a href="../classes/VoteAction.html">VoteAction</a></li>
+                            <li><a href="../classes/WantAction.html">WantAction</a></li>
+                            <li><a href="../classes/WarrantyPromise.html">WarrantyPromise</a></li>
+                            <li><a href="../classes/WarrantyScope.html">WarrantyScope</a></li>
+                            <li><a href="../classes/WatchAction.html">WatchAction</a></li>
+                            <li><a href="../classes/Waterfall.html">Waterfall</a></li>
+                            <li><a href="../classes/WearAction.html">WearAction</a></li>
+                            <li><a href="../classes/WebApplication.html">WebApplication</a></li>
+                            <li><a href="../classes/WebPage.html">WebPage</a></li>
+                            <li><a href="../classes/WebPageElement.html">WebPageElement</a></li>
+                            <li><a href="../classes/WebSite.html">WebSite</a></li>
+                            <li><a href="../classes/WholesaleStore.html">WholesaleStore</a></li>
+                            <li><a href="../classes/WinAction.html">WinAction</a></li>
+                            <li><a href="../classes/Winery.html">Winery</a></li>
+                            <li><a href="../classes/WPAdBlock.html">WPAdBlock</a></li>
+                            <li><a href="../classes/WPFooter.html">WPFooter</a></li>
+                            <li><a href="../classes/WPHeader.html">WPHeader</a></li>
+                            <li><a href="../classes/WPSideBar.html">WPSideBar</a></li>
+                            <li><a href="../classes/WriteAction.html">WriteAction</a></li>
+                            <li><a href="../classes/XapiConfig.html">XapiConfig</a></li>
+                            <li><a href="../classes/Zoo.html">Zoo</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <div id="sections" class="sidebox">
+              <div class="hd">
+                <h2 class="no-toc">Museum</h2>
+              </div>
+              <div class="bd">
+            
+            
+            
+                  <div><a href="#property-summary">Property Summary</a></div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                  <div><a href="#public-properties">Public Properties</a></div>
+                  <ul>
+                      <li><a href="#props_additionalProperty">additionalProperty</a></li>
+                      <li><a href="#props_additionalType">additionalType</a></li>
+                      <li><a href="#props_address">address</a></li>
+                      <li><a href="#props_aggregateRating">aggregateRating</a></li>
+                      <li><a href="#props_alternateName">alternateName</a></li>
+                      <li><a href="#props_amenityFeature">amenityFeature</a></li>
+                      <li><a href="#props_branchCode">branchCode</a></li>
+                      <li><a href="#props_containedIn">containedIn</a></li>
+                      <li><a href="#props_containedInPlace">containedInPlace</a></li>
+                      <li><a href="#props_containsPlace">containsPlace</a></li>
+                      <li><a href="#props_description">description</a></li>
+                      <li><a href="#props_disambiguatingDescription">disambiguatingDescription</a></li>
+                      <li><a href="#props_event">event</a></li>
+                      <li><a href="#props_events">events</a></li>
+                      <li><a href="#props_faxNumber">faxNumber</a></li>
+                      <li><a href="#props_geo">geo</a></li>
+                      <li><a href="#props_globalLocationNumber">globalLocationNumber</a></li>
+                      <li><a href="#props_hasMap">hasMap</a></li>
+                      <li><a href="#props_image">image</a></li>
+                      <li><a href="#props_isicV4">isicV4</a></li>
+                      <li><a href="#props_logo">logo</a></li>
+                      <li><a href="#props_mainEntityOfPage">mainEntityOfPage</a></li>
+                      <li><a href="#props_map">map</a></li>
+                      <li><a href="#props_maps">maps</a></li>
+                      <li><a href="#props_name">name</a></li>
+                      <li><a href="#props_openingHours">openingHours</a></li>
+                      <li><a href="#props_openingHoursSpecification">openingHoursSpecification</a></li>
+                      <li><a href="#props_photo">photo</a></li>
+                      <li><a href="#props_photos">photos</a></li>
+                      <li><a href="#props_potentialAction">potentialAction</a></li>
+                      <li><a href="#props_review">review</a></li>
+                      <li><a href="#props_reviews">reviews</a></li>
+                      <li><a href="#props_sameAs">sameAs</a></li>
+                      <li><a href="#props_smokingAllowed">smokingAllowed</a></li>
+                      <li><a href="#props_specialOpeningHoursSpecification">specialOpeningHoursSpecification</a></li>
+                      <li><a href="#props_telephone">telephone</a></li>
+                      <li><a href="#props_url">url</a></li>
+                  </ul>
+            
+            
+            
+            
+            
+              </div>
+            </div>
+            
+            
+            
+            <div class="version-info">
+              Version: 0.2
+            </div>
+            
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><div class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l9098"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:9098</code></a></span>
+    <h1 class="class-name">Museum</h1>
+</div>
+
+
+
+    <div class="class-extends">
+        <h4>Extends:</h4>
+        <div><a href="../classes/CivicStructure.html" class="crosslink">CivicStructure</a> → Museum</div>
+    </div>
+
+<div class="class-description"><p><a href="http://Schema.org/Museum">Schema.org/Museum</a>
+A museum.</p>
+</div>
+
+
+
+
+
+
+
+  <h2 id="property-summary">Property Summary</h2>
+
+    <table class="summary">
+      <thead>
+      <tr>
+        <th colspan="2">Public Properties</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_additionalProperty">additionalProperty</a>: <a href="../classes/PropertyValue.html" class="crosslink">PropertyValue</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/additionalProperty">Schema.org/additionalProperty</a> A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in <a href="http://schema.org">schema.org</a>.\n\nNote: Publishers should be aware that applications designed to use specific <a href="http://schema.org">schema.org</a> properties (e.g. <a href="http://schema.org/width">http://schema.org/width</a>, <a href="http://schema.org/color">http://schema.org/color</a>, <a href="http://schema.org/gtin13">http://schema.org/gtin13</a>, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_additionalType">additionalType</a>: URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/additionalType">Schema.org/additionalType</a> An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. <a href="http://Schema.org">Schema.org</a> tools may have only weaker understanding of extra types, in particular those defined externally.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_address">address</a>: Schema,PostalAddress | schema,Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/address">Schema.org/address</a> Physical address of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_aggregateRating">aggregateRating</a>: <a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/aggregateRating">Schema.org/aggregateRating</a> The overall rating, based on a collection of reviews or ratings, of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_alternateName">alternateName</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/alternateName">Schema.org/alternateName</a> An alias for the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_amenityFeature">amenityFeature</a>: <a href="../classes/LocationFeatureSpecification.html" class="crosslink">LocationFeatureSpecification</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/amenityFeature">Schema.org/amenityFeature</a> An amenity feature (e.g. a characteristic or service) of the Accommodation. This generic property does not make a statement about whether the feature is included in an offer for the main accommodation or available at extra costs.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_branchCode">branchCode</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/branchCode">Schema.org/branchCode</a> A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs.\n\nFor example, in the URL <a href="http://www.starbucks.co.uk/store-locator/etc/detail/3047">http://www.starbucks.co.uk/store-locator/etc/detail/3047</a> the code "3047" is a branchCode for a particular branch.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_containedIn">containedIn</a>: <a href="../classes/Place.html" class="crosslink">Place</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/containedIn">Schema.org/containedIn</a> The basic containment relation between a place and one that contains it.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_containedInPlace">containedInPlace</a>: <a href="../classes/Place.html" class="crosslink">Place</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/containedInPlace">Schema.org/containedInPlace</a> The basic containment relation between a place and one that contains it.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_containsPlace">containsPlace</a>: <a href="../classes/Place.html" class="crosslink">Place</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/containsPlace">Schema.org/containsPlace</a> The basic containment relation between a place and another that it contains.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_description">description</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/description">Schema.org/description</a> A description of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_disambiguatingDescription">disambiguatingDescription</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/disambiguatingDescription">Schema.org/disambiguatingDescription</a> A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_event">event</a>: <a href="../classes/Event.html" class="crosslink">Event</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/event">Schema.org/event</a> Upcoming or past event associated with this place, organization, or action.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_events">events</a>: <a href="../classes/Event.html" class="crosslink">Event</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/events">Schema.org/events</a> Upcoming or past events associated with this place or organization.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_faxNumber">faxNumber</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/faxNumber">Schema.org/faxNumber</a> The fax number.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_geo">geo</a>: Schema,GeoShape | schema,GeoCoordinates
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/geo">Schema.org/geo</a> The geo coordinates of the place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_globalLocationNumber">globalLocationNumber</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/globalLocationNumber">Schema.org/globalLocationNumber</a> The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_hasMap">hasMap</a>: Schema,Map | schema,URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/hasMap">Schema.org/hasMap</a> A URL to a map of the place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_image">image</a>: Schema,ImageObject | schema,URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/image">Schema.org/image</a> An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_isicV4">isicV4</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/isicV4">Schema.org/isicV4</a> The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_logo">logo</a>: Schema,ImageObject | schema,URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/logo">Schema.org/logo</a> An associated logo.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_mainEntityOfPage">mainEntityOfPage</a>: Schema,URL | schema,CreativeWork
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/mainEntityOfPage">Schema.org/mainEntityOfPage</a> Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See <a href="/docs/datamodel.html#mainEntityBackground">background notes</a> for details.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_map">map</a>: URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/map">Schema.org/map</a> A URL to a map of the place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_maps">maps</a>: URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/maps">Schema.org/maps</a> A URL to a map of the place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_name">name</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/name">Schema.org/name</a> The name of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_openingHours">openingHours</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/openingHours">Schema.org/openingHours</a> The general opening hours for a business. Opening hours can be specified as a weekly time range, starting with days, then times per day. Multiple days can be listed with commas ',' separating each day. Day or time ranges are specified using a hyphen '-'.\n\n* Days are specified using the following two-letter combinations: <code>Mo</code>, <code>Tu</code>, <code>We</code>, <code>Th</code>, <code>Fr</code>, <code>Sa</code>, <code>Su</code>.\n* Times are specified using 24:00 time. For example, 3pm is specified as <code>15:00</code>. \n* Here is an example: <code>&lt;time itemprop="openingHours" datetime="Tu,Th 16:00-20:00"&gt;Tuesdays and Thursdays 4-8pm&lt;/time&gt;</code>.\n* If a business is open 7 days a week, then it can be specified as <code>&lt;time itemprop="openingHours" datetime="Mo-Su"&gt;Monday through Sunday, all day&lt;/time&gt;</code>.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_openingHoursSpecification">openingHoursSpecification</a>: <a href="../classes/OpeningHoursSpecification.html" class="crosslink">OpeningHoursSpecification</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/openingHoursSpecification">Schema.org/openingHoursSpecification</a> The opening hours of a certain place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_photo">photo</a>: Schema,ImageObject | schema,Photograph
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/photo">Schema.org/photo</a> A photograph of this place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_photos">photos</a>: Schema,ImageObject | schema,Photograph
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/photos">Schema.org/photos</a> Photographs of this place.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_potentialAction">potentialAction</a>: <a href="../classes/Action.html" class="crosslink">Action</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/potentialAction">Schema.org/potentialAction</a> Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_review">review</a>: <a href="../classes/Review.html" class="crosslink">Review</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/review">Schema.org/review</a> A review of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_reviews">reviews</a>: <a href="../classes/Review.html" class="crosslink">Review</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/reviews">Schema.org/reviews</a> Review of the item.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_sameAs">sameAs</a>: URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/sameAs">Schema.org/sameAs</a> URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_smokingAllowed">smokingAllowed</a>: Boolean
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/smokingAllowed">Schema.org/smokingAllowed</a> Indicates whether it is allowed to smoke in the place, e.g. in the restaurant, hotel or hotel room.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_specialOpeningHoursSpecification">specialOpeningHoursSpecification</a>: <a href="../classes/OpeningHoursSpecification.html" class="crosslink">OpeningHoursSpecification</a>
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/specialOpeningHoursSpecification">Schema.org/specialOpeningHoursSpecification</a> The special opening hours of a certain place.\n\nUse this to explicitly override general opening hours brought in scope by [[openingHoursSpecification]] or [[openingHours]].</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_telephone">telephone</a>: Text
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/telephone">Schema.org/telephone</a> The telephone number.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_url">url</a>: URL
+            </div>
+            <div class="short-description">
+              <p><a href="http://Schema.org/url">Schema.org/url</a> URL of the item.</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="properties public">
+        <h2 id="public-properties">Public Properties</h2>
+<div class="property item">
+  <div id="props_additionalProperty" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l128"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:128</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      additionalProperty: <a href="../classes/PropertyValue.html" class="crosslink">PropertyValue</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/additionalProperty">Schema.org/additionalProperty</a>
+A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in <a href="http://schema.org">schema.org</a>.\n\nNote: Publishers should be aware that applications designed to use specific <a href="http://schema.org">schema.org</a> properties (e.g. <a href="http://schema.org/width">http://schema.org/width</a>, <a href="http://schema.org/color">http://schema.org/color</a>, <a href="http://schema.org/gtin13">http://schema.org/gtin13</a>, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_additionalType" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l74"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:74</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      additionalType: URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/additionalType">Schema.org/additionalType</a>
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. <a href="http://Schema.org">Schema.org</a> tools may have only weaker understanding of extra types, in particular those defined externally.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_address" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l199"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:199</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      address: Schema,PostalAddress | schema,Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/address">Schema.org/address</a>
+Physical address of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_aggregateRating" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l262"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:262</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      aggregateRating: <a href="../classes/AggregateRating.html" class="crosslink">AggregateRating</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/aggregateRating">Schema.org/aggregateRating</a>
+The overall rating, based on a collection of reviews or ratings, of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_alternateName" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l60"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:60</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      alternateName: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/alternateName">Schema.org/alternateName</a>
+An alias for the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_amenityFeature" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l121"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:121</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      amenityFeature: <a href="../classes/LocationFeatureSpecification.html" class="crosslink">LocationFeatureSpecification</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/amenityFeature">Schema.org/amenityFeature</a>
+An amenity feature (e.g. a characteristic or service) of the Accommodation. This generic property does not make a statement about whether the feature is included in an offer for the main accommodation or available at extra costs.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_branchCode" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:277</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      branchCode: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/branchCode">Schema.org/branchCode</a>
+A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs.\n\nFor example, in the URL <a href="http://www.starbucks.co.uk/store-locator/etc/detail/3047">http://www.starbucks.co.uk/store-locator/etc/detail/3047</a> the code "3047" is a branchCode for a particular branch.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_containedIn" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l171"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:171</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      containedIn: <a href="../classes/Place.html" class="crosslink">Place</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/containedIn">Schema.org/containedIn</a>
+The basic containment relation between a place and one that contains it.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_containedInPlace" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l185"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:185</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      containedInPlace: <a href="../classes/Place.html" class="crosslink">Place</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/containedInPlace">Schema.org/containedInPlace</a>
+The basic containment relation between a place and one that contains it.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_containsPlace" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l150"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:150</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      containsPlace: <a href="../classes/Place.html" class="crosslink">Place</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/containsPlace">Schema.org/containsPlace</a>
+The basic containment relation between a place and another that it contains.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_description" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l46"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:46</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      description: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/description">Schema.org/description</a>
+A description of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_disambiguatingDescription" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l53"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:53</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      disambiguatingDescription: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/disambiguatingDescription">Schema.org/disambiguatingDescription</a>
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_event" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l157"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:157</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      event: <a href="../classes/Event.html" class="crosslink">Event</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/event">Schema.org/event</a>
+Upcoming or past event associated with this place, organization, or action.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_events" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l143"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:143</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      events: <a href="../classes/Event.html" class="crosslink">Event</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/events">Schema.org/events</a>
+Upcoming or past events associated with this place or organization.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_faxNumber" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l241"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:241</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      faxNumber: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/faxNumber">Schema.org/faxNumber</a>
+The fax number.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_geo" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:206</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      geo: Schema,GeoShape | schema,GeoCoordinates
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/geo">Schema.org/geo</a>
+The geo coordinates of the place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_globalLocationNumber" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:292</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      globalLocationNumber: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/globalLocationNumber">Schema.org/globalLocationNumber</a>
+The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_hasMap" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l234"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:234</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      hasMap: Schema,Map | schema,URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/hasMap">Schema.org/hasMap</a>
+A URL to a map of the place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_image" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l39"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:39</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      image: Schema,ImageObject | schema,URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/image">Schema.org/image</a>
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_isicV4" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l136"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:136</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      isicV4: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/isicV4">Schema.org/isicV4</a>
+The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_logo" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l285"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:285</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      logo: Schema,ImageObject | schema,URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/logo">Schema.org/logo</a>
+An associated logo.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_mainEntityOfPage" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l88"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:88</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      mainEntityOfPage: Schema,URL | schema,CreativeWork
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/mainEntityOfPage">Schema.org/mainEntityOfPage</a>
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See <a href="/docs/datamodel.html#mainEntityBackground">background notes</a> for details.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_map" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l227"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:227</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      map: URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/map">Schema.org/map</a>
+A URL to a map of the place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_maps" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l164"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:164</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      maps: URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/maps">Schema.org/maps</a>
+A URL to a map of the place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_name" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l25"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:25</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      name: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/name">Schema.org/name</a>
+The name of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_openingHours" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l2337"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2337</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      openingHours: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/openingHours">Schema.org/openingHours</a>
+The general opening hours for a business. Opening hours can be specified as a weekly time range, starting with days, then times per day. Multiple days can be listed with commas ',' separating each day. Day or time ranges are specified using a hyphen '-'.\n\n* Days are specified using the following two-letter combinations: <code>Mo</code>, <code>Tu</code>, <code>We</code>, <code>Th</code>, <code>Fr</code>, <code>Sa</code>, <code>Su</code>.\n* Times are specified using 24:00 time. For example, 3pm is specified as <code>15:00</code>. \n* Here is an example: <code>&lt;time itemprop="openingHours" datetime="Tu,Th 16:00-20:00"&gt;Tuesdays and Thursdays 4-8pm&lt;/time&gt;</code>.\n* If a business is open 7 days a week, then it can be specified as <code>&lt;time itemprop="openingHours" datetime="Mo-Su"&gt;Monday through Sunday, all day&lt;/time&gt;</code>.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_openingHoursSpecification" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l213"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:213</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      openingHoursSpecification: <a href="../classes/OpeningHoursSpecification.html" class="crosslink">OpeningHoursSpecification</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/openingHoursSpecification">Schema.org/openingHoursSpecification</a>
+The opening hours of a certain place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_photo" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l192"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:192</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      photo: Schema,ImageObject | schema,Photograph
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/photo">Schema.org/photo</a>
+A photograph of this place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_photos" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:220</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      photos: Schema,ImageObject | schema,Photograph
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/photos">Schema.org/photos</a>
+Photographs of this place.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_potentialAction" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l81"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:81</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      potentialAction: <a href="../classes/Action.html" class="crosslink">Action</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/potentialAction">Schema.org/potentialAction</a>
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_review" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l178"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:178</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      review: <a href="../classes/Review.html" class="crosslink">Review</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/review">Schema.org/review</a>
+A review of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_reviews" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l114"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:114</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      reviews: <a href="../classes/Review.html" class="crosslink">Review</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/reviews">Schema.org/reviews</a>
+Review of the item.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_sameAs" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l67"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:67</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      sameAs: URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/sameAs">Schema.org/sameAs</a>
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Freebase page, or official website.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_smokingAllowed" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l248"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:248</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      smokingAllowed: Boolean
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/smokingAllowed">Schema.org/smokingAllowed</a>
+Indicates whether it is allowed to smoke in the place, e.g. in the restaurant, hotel or hotel room.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_specialOpeningHoursSpecification" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l269"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:269</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      specialOpeningHoursSpecification: <a href="../classes/OpeningHoursSpecification.html" class="crosslink">OpeningHoursSpecification</a>
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/specialOpeningHoursSpecification">Schema.org/specialOpeningHoursSpecification</a>
+The special opening hours of a certain place.\n\nUse this to explicitly override general opening hours brought in scope by [[openingHoursSpecification]] or [[openingHours]].</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_telephone" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l255"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:255</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      telephone: Text
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/telephone">Schema.org/telephone</a>
+The telephone number.</p>
+</div>
+
+</div>
+<div class="property item">
+  <div id="props_url" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_org.schema.js.html#l32"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:32</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      url: URL
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p><a href="http://Schema.org/url">Schema.org/url</a>
+URL of the item.</p>
+</div>
+
+</div>
+    </div>
+
+
+
+
+
+
+
+</div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+</body>
+</html>

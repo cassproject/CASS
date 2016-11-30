@@ -126,6 +126,7 @@ logout = function () {
     EcRepository.cache = {};
     identity = null;
     EcIdentityManager.ids = new Array();
+    EcIdentityManager.contacts = new Array();
     $("#loginButton,.loggedOut").show();
     $("#logoutButton").hide();
     $(".requiresLogin,.loggedIn").hide();

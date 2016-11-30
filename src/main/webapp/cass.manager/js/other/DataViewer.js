@@ -1,26 +1,51 @@
-/*
- * Callbacks available:
- * 		buildMenu
- * 		buildData
- * 		buildRowToolbar
- * 		
- * 		moreMenuTools
- * 		moreRowTools
+/**
+ * Abstracted viewer for 'Rows' of data in a table on a page.
  * 
- * 		clickDataSelect
- * 		clickDataDelete
- * 		clickDataEdit
- * 		clickName
- * 		clickMenuDelete
- * 		clickMenuPermissions
- * 		permissionsChanged
+ * Defines callbacks that can alter the way that rows are displayed, 
+ * or the actions available on each element or multiple elements of 
+ * the row. Also has handler callbacks for specific events that 
+ * occur for interactions or building the View.
+ * 
+ * The 'sort' callback object defines a sort function name, and a method 
+ * that defines how to compare two different objects for sorting.
+ * 
+ * Callbacks available:
+ * 		buildMenu() returns Menu DOM Container
+ * 		buildDataRow(row, id, datum) *** Appends Row HTML to row parameter
+ * 		buildRowToolbar(id, datum) returns Toolbar DOM Container
+ * 		
+ * 		moreMenuTools(prefix)
+ * 		moreRowTools(datum) returns MoreActions DOM Container
+ * 
+ * 		clickDataSelect(ev, id, datum, prefix)
+ * 		clickDataDelete(datum)
+ * 		clickDataEdit(datum)
+ * 		clickName(id, datum)
+ * 		clickMenuDelete(selectedIdArr)
+ * 		clickMenuPermissions(selectedIdArr)
+ * 		permissionsChanged(data || arrData)
  * 
  * 		sort = {} of sort(a, b) functions
  * 		
- * 		afterPopulate
+ * 		afterPopulate()
+ * 
+ * @class DataViewer
+ * @author devlin.junker@eduworks.com
  */
 var DataViewer = (function(DataViewer){
 
+	/**
+	 * Sorts the data before displaying it in the DataViewer table
+	 * 
+	 * @memberOf DataViewer
+	 * @method sortData
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {Array || Map} data
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function sortData(prefix, data, callbacks){
 		if(data == undefined){
 			return;
@@ -82,10 +107,10 @@ var DataViewer = (function(DataViewer){
 		}else if(sortType == "timestamp" || (!LoginController.getLoggedIn() && defaultSort)){
 			arr.sort(function(a, b){
 				// By ID Timestamp (date newest -> oldest)
-				aId = a.id.split("/");
+				var aId = a.id.split("/");
 				aId = aId[aId.length -1]
 				
-				bId = b.id.split("/");
+				var bId = b.id.split("/");
 				bId = bId[bId.length -1]
 				
 				if(aId > bId){
@@ -101,8 +126,25 @@ var DataViewer = (function(DataViewer){
 		return arr;
 	}
 	
-	// Note: Sort Callbacks can be implemented so that if undefined is passed they return a string name of the sort type, otherwise
-	// 	the key of the sort object will be used
+	/**
+	 * Builds the sort input based on the sorts that are hard coded and 
+	 * what are passed in via the callbacks object 
+	 *
+	 * Note: Sort Callbacks can be implemented so that if undefined is 
+	 * 	passed they return a string name of the sort type, otherwise
+	 * 	the key of the sort object will be used
+	 * 
+	 * @memberOf DataViewer
+	 * @method buildSort
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {Array || Map} data
+	 * @param {DataViewer} self
+	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function buildSort(prefix, data, self, callbacks){
 		$("#"+prefix+"-sortSelect").html("");
 		
@@ -162,6 +204,21 @@ var DataViewer = (function(DataViewer){
 		});
 	}
 	
+	/**
+	 * Builds the dataviewer from a set of data (either a map from id to data, or an array)
+	 * 
+	 * @memberOf DataViewer
+	 * @method populateData
+	 * @private
+	 * @param {Array || Map} data	
+	 * 			Set of data to be displayed
+	 * @param {DataViewer} self
+	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function populateData(data, self, prefix, callbacks){
 		if(data == undefined){
 			showNoDataMessage(prefix);
@@ -238,6 +295,24 @@ var DataViewer = (function(DataViewer){
 		}
 	}
 	
+	/**
+	 * The beginning function call to build a row, handles all the extra stuff like the checkbox
+	 * and encryption status etc
+	 * 
+	 * @memberOf DataViewer
+	 * @method buildData
+	 * @private
+	 * @param {String} id
+	 * 			ID of data to be displayed in the row
+	 * @param {EcRemoteLinkedData} datum
+	 * 			The data to be displayed in the row
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 * @param {DataViewer} self
+	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
+	 */
 	function buildData(id, datum, prefix, callbacks, self){
 		
 		var row = $("<div class='row column' style='padding:7px 2px;padding-left:40px;'></div>");
@@ -248,15 +323,15 @@ var DataViewer = (function(DataViewer){
 		
 		row.append(dataSelect);
 		
-		if(datum.isA(EcEncryptedValue.type)){
-			var lockIcon = $("<i class='fa fa-lock fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
-			row.append(lockIcon);
-		}else if(datum.privateEncrypted == true){
-			var lockIcon = $("<i class='fa fa-unlock-alt fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
-			row.append(lockIcon);
+		if(datum.isAny != undefined){
+			if(datum.isAny(new EcEncryptedValue().getTypes())){
+				var lockIcon = $("<i class='fa fa-lock fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
+				row.append(lockIcon);
+			}else if(EcEncryptedValue.encryptOnSave(datum.id) == true){
+				var lockIcon = $("<i class='fa fa-unlock-alt fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
+				row.append(lockIcon);
+			}
 		}
-		
-		
 		
 		
 		row.on("click", ".datum-select", function(ev){
@@ -323,17 +398,21 @@ var DataViewer = (function(DataViewer){
 			
 		});
 		
+		$("#"+prefix+"-data").append(row);
+		
 		var dataDisplay;
 		
-		if(callbacks != undefined && callbacks["buildData"] != undefined){
-			dataDisplay = callbacks["buildData"](id, datum);
+		if(callbacks != undefined && callbacks["buildDataRow"] != undefined){
+			dataDisplay = callbacks["buildDataRow"](row, id, datum);
+			
+			var rowInner = $(dataDisplay);
+			
+			row.append(rowInner);
 		}else{
-			dataDisplay = defaultBuildRow(id, datum, callbacks);
+			dataDisplay = defaultBuildRow(row, id, datum, callbacks);
 		}
 		
-		var rowInner = $(dataDisplay);
 		
-		row.append(rowInner);
 		
 		var rowToolbar = $("<div class='rowToolbar'></div>");
 		if(callbacks != undefined && callbacks["buildRowToolbar"] != undefined){
@@ -344,9 +423,22 @@ var DataViewer = (function(DataViewer){
 		
 		row.append(rowToolbar)
 		
-		$("#"+prefix+"-data").append(row);
+		
 	}
 	
+	/**
+	 * Callback that is triggered when the delete button is pressed to confirm the user wanted to delete
+	 * 
+	 * @memberOf DataViewer
+	 * @method confirmDeleteDataRow
+	 * @private
+	 * @param {jQueryObject} element
+	 * 			DOM element clicked on to cause the delete event to occure
+	 * @param {EcRemoteLinkedData} datum
+	 * 			The data corresponding to the row
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function confirmDeleteDataRow(element, datum, callbacks){
 		if(callbacks != undefined && callbacks["clickDataDelete"] != undefined){
 			callbacks["clickDataDelete"](datum);
@@ -379,6 +471,19 @@ var DataViewer = (function(DataViewer){
 		}
 	}
 	
+	/**
+	 * Default Method to build a row toolbar for the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method defaultBuildRowToolbar
+	 * @private
+	 * @param {String} id
+	 * 			ID of the data displayed in the row
+	 * @param {EcRemoteLinkedData} datum
+	 * 			The data displayed in the row
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function defaultBuildRowToolbar(id, datum, callbacks){
 		var html = "<div style='padding-top:5px;'>" +
 					"<i class='fa fa-trash dataViewBtn' title='Delete' style='margin-right:1rem;'></i>" +
@@ -464,46 +569,64 @@ var DataViewer = (function(DataViewer){
 		return element;
 	}
 	
-	
-	function defaultBuildRow(id, datum, callbacks){
+	/**
+	 * Default method to build a data row for the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method defaultBuildRow
+	 * @private
+	 * @param {jQueryObject} row
+	 * 			row element on the screen to display the row in
+	 * @param {String} id
+	 * 			ID of the data  displayed in the row
+	 * @param {EcRemoteLinkedData} datum
+	 * 			The data to be displayed in the row
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
+	function defaultBuildRow(row, id, datum, callbacks){
 		
-		var el = $("<div>"+
-					"<div class='small-6 columns'>" +
+		row.append("<div class='small-6 columns'>" +
 						"<a class='datum-name'></a>" +
 						"<span class='datum-description'></span>" +
 						"</div>" +
 					"<div class='small-2 columns datum-type'></div>" +
-					"<div class='small-4 columns datum-owner'></div>"+
-					"</div>")
+					"<div class='small-4 columns datum-owner'></div>")
 		
 		if(datum["name"] != undefined){
-			el.find(".datum-name").text(datum["name"]);
+			row.find(".datum-name").text(datum["name"]);
 		}else{
-			el.find(".datum-name").text(id);
-			el.find(".datum-name").css("font-size", "0.8rem");
+			row.find(".datum-name").text(id);
+			row.find(".datum-name").css("font-size", "0.8rem");
 		}
 		
 		if(datum["description"] != undefined)
-			el.find(".datum-description").text(" - "+datum["description"]);
+			row.find(".datum-description").text(" - "+datum["description"]);
 		
 		if(datum["type"] != undefined){
 			var typeSplit = datum["type"].split("/");
-			el.find(".datum-type").text(typeSplit[typeSplit.length-1]);
+			row.find(".datum-type").text(typeSplit[typeSplit.length-1]);
 		}
 		
 		if(datum["owner"] != undefined && datum["owner"].length > 0){
-			var owner = "";
+			
 			for(var i in datum["owner"]){
-				owner+= createContactSmall(datum["owner"][i])+ ", "
+				var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+				var idEnd = trimId.split("/")[trimId.split("/").length-1];
+				var elId = idEnd+"-owner-"+i;
+				
+				var ownerEl = $("<span id='"+elId+"'></span>")
+				row.find(".datum-owner").append(ownerEl);
+				
+				ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 			}
-			owner = owner.substring(0, owner.length-2);
-			el.find(".datum-owner").html(owner);
+
 		}else{
-			el.find(".datum-owner").text("Public");
+			row.find(".datum-owner").text("Public");
 		}
 		
 		
-		el.find("a.datum-name").click(function(ev){
+		row.find("a.datum-name").click(function(ev){
 			ev.preventDefault();
 			if(callbacks != undefined && callbacks["clickName"] != undefined){
 				callbacks["clickName"](id, datum);
@@ -512,9 +635,21 @@ var DataViewer = (function(DataViewer){
 			}
 		})
 		
-		return el.children();
 	}
 
+	/**
+	 * Default method to build the menu for the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method defaultBuildMenu
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {DataViewer} self
+	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
+	 * @param {Object} callbacks
+	 * 			Callback object that can be passed in by other developer to handle events or modify display
+	 */
 	function defaultBuildMenu(prefix, self, callbacks){
 		var html = "<div class='row column' style='position:relative;padding:7px 2px; font-weight:500; background-color: lightgrey;'>" +
 					"<div class='small-3 columns'>" +
@@ -604,7 +739,7 @@ var DataViewer = (function(DataViewer){
 				callbacks["clickMenuPermissions"](selected);
 			}else{
 				ModalManager.showModal(new AdvancedPermissionsModal(selected, function(data){
-					if(!data instanceof Array){
+					if(! (data instanceof Array)){
 						data = [data]
 					}
 						
@@ -645,6 +780,15 @@ var DataViewer = (function(DataViewer){
 		return row;
 	}
 	
+	/**
+	 * Shows the 'No Data' message in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method showNoDataMessage
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 */
 	function showNoDataMessage(prefix){
 		$("#"+prefix+"-none").removeClass("hide");
 		$("#"+prefix+"-progress").addClass("hide");
@@ -654,13 +798,31 @@ var DataViewer = (function(DataViewer){
 		$(".selectData").addClass("hide");
 	}
 	
+	/**
+	 * Shows the 'Progress' message in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method showProgressMessage
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 */
 	function showProgressMessage(prefix){
 		$("#"+prefix+"-progress").removeClass("hide");
-//		$("#"+prefix+"-none").addClass("hide");
-//		$("#"+prefix+"-menu").addClass("hide");
-//		$("#"+prefix+"-data").addClass("hide");
+		//$("#"+prefix+"-none").addClass("hide");
+		//$("#"+prefix+"-menu").addClass("hide");
+		//$("#"+prefix+"-data").addClass("hide");
 	}
 	
+	/**
+	 * Triggers the deselection of all elements in the DataViewer right now
+	 * 
+	 * @memberOf DataViewer
+	 * @method deselectAll
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 */
 	function deselectAll(prefix){
 		$(".dataView").find(".row").removeClass("selected");
 		
@@ -673,6 +835,17 @@ var DataViewer = (function(DataViewer){
 		}
 	}
 	
+	/**
+	 * Returns the data objects corresponding to all of the selected elements in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method getSelectedData
+	 * @private
+	 * @param {String} prefix
+	 * 			DataViewer prefix that uniquifys the view 
+	 * @param {DataViewer} self
+	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
+	 */
 	function getSelectedData(prefix, self){
 		var selected = [];
 		$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
@@ -682,11 +855,17 @@ var DataViewer = (function(DataViewer){
 	}
 	
 	/**
-	 * The display function defines how this view should be displayed
-	 * @param containerId: defines the container that this view should be displayed in
-	 * 		for screens -> screenContainer
-	 * 		for overlays -> overlayContainer
-	 * 		for modals -> modalContainer
+	 * Setup the DataViewer after the html has been loaded
+	 * 		renames Id's to uniqify
+	 * 		builds Menu
+	 * 		sets up select all 
+	 * 
+	 * Need to call Populate to build the rows
+	 * 
+	 * @memberOf DataViewer
+	 * @method display
+	 * @param {String} containerId
+	 * 			DOM ID of the element to display the DataViewer
 	 */
 	DataViewer.prototype.display = function(containerId){	
 		var prefix = this.prefix;
@@ -724,7 +903,7 @@ var DataViewer = (function(DataViewer){
 				
 				$(".dataViewMenu .dataViewSelected").text($(".dataView").find(".datum-select:checked").size());
 				
-				if(!$("#"+prefix+"-menu").is(":visible")){
+				if(!$("#"+prefix+"-menu").is(":visible") && menu != undefined){
 					$("#"+prefix+"-menu").slideDown();
 				}
 				
@@ -748,16 +927,28 @@ var DataViewer = (function(DataViewer){
 					$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
 				}
 			}
-			
-			
 		});
 	}
-	
+
+	/**
+	 * Clears the rows of data from the DOM and empty's the datastore member field
+	 * 
+	 * @memberOf DataViewer
+	 * @method clear
+	 */
 	DataViewer.prototype.clear = function(){
 		$("#"+this.prefix+"-data").find(".row").remove();
 		this.dataStore = {};
 	}
 	
+	/**
+	 * Builds the rows of data in HTML
+	 * 
+	 * @memberOf DataViewer
+	 * @method populate
+	 * @param {Array || Map} data
+	 * 			Data to add to the DataViewer
+	 */
 	DataViewer.prototype.populate = function(data){
 		var dataSize;
 		if(data instanceof Object){
@@ -773,18 +964,42 @@ var DataViewer = (function(DataViewer){
 		}
 	}
 	
+	/**
+	 * Shows the 'No Data' message in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method showNoDataMessage
+	 */
 	DataViewer.prototype.showNoDataMessage = function(){
 		showNoDataMessage(this.prefix);
 	}
 	
+	/**
+	 * Shows the 'Progress' message in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method showProgressMessage
+	 */
 	DataViewer.prototype.showProgressMessage = function(){
 		showProgressMessage(this.prefix);
 	}
 	
+	/**
+	 * Triggers the deselection of all elements in the DataViewer right now
+	 * 
+	 * @memberOf DataViewer
+	 * @method deselectAll
+	 */
 	DataViewer.prototype.deselectAll = function(){
 		deselectAll(this.prefix);
 	}
 	
+	/**
+	 * Returns the data objects corresponding to all of the selected elements in the DataViewer
+	 * 
+	 * @memberOf DataViewer
+	 * @method getSelected
+	 */
 	DataViewer.prototype.getSelected = function(){
 		return getSelectedData(this.prefix, this);
 	}

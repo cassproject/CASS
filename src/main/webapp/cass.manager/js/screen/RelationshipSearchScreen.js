@@ -1,3 +1,11 @@
+/**
+ * Screen that handles displaying search results of relationships
+ * 
+ * @module cass.manager
+ * @class RelationshipSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
 	var maxLength = 24;
@@ -12,6 +20,15 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	
 	var searchHandle = null;
 	
+	/**
+	 * Handles getting search params from DOM and initiating search request
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method runRelationshipSearch 
+	 * @private
+	 * @param {int} start 
+	 * 			index to start search (number of results already displayed)
+	 */
 	function runRelationshipSearch(start){
 		var query = $("#relationshipSearchText").val();
 
@@ -51,10 +68,13 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
-			if(Object.keys(urlParams).length > 0)
+			if(Object.keys(urlParams).length > 0){
 				ScreenManager.setScreenParameters(urlParams);
-			else
+				ScreenManager.getCurrentScreen().setParams(urlParams);
+			}else{
 				ScreenManager.setScreenParameters(null);
+				ScreenManager.getCurrentScreen().clearParams();
+			}
 			
 			ViewManager.getView("#relationshipSearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#relationshipSearchResults").showProgressMessage();
@@ -69,12 +89,30 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears all results on screen before appending new results to Data Viewer
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method clearDisplayResults 
+	 * @private
+	 * @param {EcAlignment[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#relationshipSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Just appends new results to Data Viewer
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method runRelationshipSearch 
+	 * @private
+	 * @param {EcAlignment[]} results
+	 * 			Results to display in the Data Viewer
+	 */
 	function displayResults(results)
 	{  
 		ViewManager.getView("#relationshipSearchResults").populate(results);
@@ -116,6 +154,15 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 //		}
 //	}
 	
+	/**
+	 * Handles displaying errors during search
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method errorSearching 
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
@@ -125,6 +172,14 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		ViewManager.getView("#relationshipSearchResults").showNoDataMessage();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RelationshipSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;
@@ -140,54 +195,55 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new RelationshipEditScreen(datum));
 			},
-			buildData:function(id, datum){				
-				var el = $("<div>" +
-								"<a>" +
-									"<div class='small-3 columns datum-source' style='font-weight:bold'></div> " +
-									"<div class='small-2 columns datum-type' style='font-style:italic'></div>" +
-									"<div class='small-3 columns end datum-target'></div>" +
-								"</a>" +
-								"<div class='small-4 columns datum-owner'></div>" +
-							"</div>");
+			buildDataRow:function(row, id, datum){				
+				row.append("<a>" +
+								"<div class='small-3 columns datum-source' style='font-weight:bold'></div> " +
+								"<div class='small-2 columns datum-type' style='font-style:italic'></div>" +
+								"<div class='small-3 columns end datum-target'></div>" +
+							"</a>" +
+							"<div class='small-4 columns datum-owner'></div>");
 				
-				var owner = "";
 				if(datum["owner"] == undefined || datum["owner"].length == 0){
-					owner = "Public"
+					row.find(".datum-owner").html("Public");
 				}else{
 					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", "
+						var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+						var idEnd = trimId.split("/")[trimId.split("/").length-1];
+						var elId = idEnd+"-owner-"+i;
+						
+						var ownerEl = $("<span id='"+elId+"'></span>")
+						row.find(".datum-owner").append(ownerEl);
+						
+						ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 					}
-					owner = owner.substring(0, owner.length-2);
 				}
-				el.find(".datum-owner").html(owner);
+				
 				
 				EcCompetency.get(datum.source, function(competency){
 					$("[data-id='"+datum.id+"']").find(".datum-source").text(competency.name)
 				}, function(){
-					el.find(".datum-source").text("Unknown Competency");
+					row.find(".datum-source").text("Unknown Competency");
 				})
-				el.find(".datum-source").text("Loading..");
+				row.find(".datum-source").text("Loading..");
 				
 				EcCompetency.get(datum.target, function(competency){
 					$("[data-id='"+datum.id+"']").find(".datum-target").text(competency.name)
 				}, function(){
-					el.find(".datum-target").text("Unknown Competency");
+					row.find(".datum-target").text("Unknown Competency");
 				})
-				el.find(".datum-target").text("Loading..");
+				row.find(".datum-target").text("Loading..");
 				
 				if(relationTypes[datum.relationType] != undefined){
-					el.find(".datum-type").text(relationTypes[datum.relationType])
-		
+					row.find(".datum-type").text(relationTypes[datum.relationType])
 				}else{
-					el.find(".datum-type").text("has a relationship with");
+					row.find(".datum-type").text("has a relationship with");
 				}
 				
-				el.find("a").click(function(ev){
+				row.find("a").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new RelationshipViewScreen(datum));
 				})
 				
-				return el;
 			}
 		}), "#relationshipSearchResults");
 		
@@ -239,6 +295,36 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		
 		runRelationshipSearch();
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	RelationshipSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method clearParams
+	 */
+	RelationshipSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+	}
 	
 	return RelationshipSearchScreen;
 })(RelationshipSearchScreen);

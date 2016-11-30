@@ -1,8 +1,25 @@
+/**
+ * Screen with form for editing competency details
+ * 
+ * @module cass.manager
+ * @class CompetencyEditScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 CompetencyEditScreen = (function (CompetencyEditScreen) {
 
     var frameworkId = null;
     var data = null;
 
+    /**
+     * Handles displaying the details of the competency in the HTML
+     * 
+     * @memberOf CompetencyEditScreen
+     * @method displayCompetency
+     * @private
+     * @param {EcCompetency} competency
+     * 			The competency to be displayed in the HTML
+     */
     function displayCompetency(competency) {
         $('#competencyEditor').show();
         $("#competencyEditId").val(competency.id);
@@ -18,15 +35,17 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
                 var pem = competency.owner[i];
 
-                var contact = $(createContactSmall(pem));
-                $("#competencyEditOwner").append(contact);
+              
+                $("#competencyEditOwner").append("<span id='competency-owner-"+i+"'></span>");
+                
+                ViewManager.showView(new IdentityDisplay(pem), "#competency-owner-"+i);
             }
         } else {
             $("#competencyEditOwner").text("Public")
             $("#competencyEditOwnerAdvanced").hide();
         }
 
-        if (competency.privateEncrypted) {
+        if (EcEncryptedValue.encryptOnSave(competency.id)) {
             if ($("#privateRow").css("display") == "none")
                 $("#privateRow").slideDown();
 
@@ -36,8 +55,11 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
                 for (var i = 0; i < competency.reader.length; i++) {
                     var pk = competency.reader[i];
 
-                    var contact = $(createContactSmall(pk));
-                    $("#competencyEditReaders").append(contact);
+                    //var contact = $(createContactSmall(pk));
+                    //$("#competencyEditReaders").append(contact);
+                    
+                    $("#competencyEditReaders").append("<span id='competency-reader-"+i+"'></span>");
+                    ViewManager.showView(new IdentityDisplay(pk), "#competency-reader-"+i);
 
                     if (i < competency.reader.length - 1)
                         $("#competencyEditReaders").append(", ");
@@ -59,6 +81,16 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
     }
 
+    /**
+     * Handles adding the elements containing level details, with
+     * click handlers on them for editing the level displayed
+     * 
+     * @memberOf CompetencyEditScreen
+     * @method addLevel
+     * @private
+     * @param {EcLevel} level
+     * 			Level to display in the element that is created
+     */
     function addLevel(level) {
         $("#competencyNoLevels").addClass("hide");
 
@@ -112,11 +144,21 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
             "tipText": tip
         });
     }
-
+    
+    /**
+     * Handles adding an element containing rollup rule details,
+     * with click handlers for editing the rollup rule displayed
+     * 
+     * @memberOf CompetencyEditScreen
+     * @method addRollupRule
+     * @private
+     * @param {EcRollupRule} rollupRule
+     * 			Rollup rule to be displayed
+     */
     function addRollupRule(rollupRule) {
         $("#competencyNoRollupRules").addClass("hide");
 
-        var container = $("<span data-tooltip data-fade-out-duration='1500' class='level fake-a has-tip top'></span>");
+        var container = $("<span data-tooltip data-fade-out-duration='1500' class='rollup-rule fake-a has-tip top'></span>");
         container.append(rollupRule.name);
         container.attr("id", rollupRule.id);
 
@@ -166,9 +208,18 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         });
     }
 
-
+    
+    /**
+     * Callback when the competency is  saved to let 
+     * the user know it was successful. If the frameworkId
+     * variable is set, add the competency, lefels and rollup rule
+     * to the framework and return to the framework page 
+     * 
+     * @memberOf CompetencyEditScreen
+     */
     function saveSuccess() {
         $("#datum").effect("highlight", {}, 1500);
+        
         if (frameworkId != null) {
             EcFramework.get(frameworkId, function (framework) {
                 framework.addCompetency(data.id);
@@ -196,12 +247,30 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         }
     }
 
+    /**
+	 * Error function called if problem getting the competency from the server
+	 * 
+	 * @memberOf CompetencyEditScreen
+	 * @method errorRetrieving
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
     function errorRetrieving(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Competency for Editing";
         ViewManager.getView("#competencyEditMessageContainer").displayAlert(err);
     }
 
+    /**
+	 * Error function called if problem saving the competency to the server
+	 * 
+	 * @memberOf CompetencyEditScreen
+	 * @method errorSaving
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
     function errorSaving(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Save Competency";
@@ -209,13 +278,15 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "saveFail");
     }
 
-    function errorUpdatingFramework(err) {
-        if (err == undefined)
-            err = "Unable to update Framework.";
-
-        ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "saveFail");
-    }
-
+    /**
+	 * Error function called if problem retrieving competency levels from server
+	 * 
+	 * @memberOf CompetencyEditScreen
+	 * @method errorRetrievingLevels
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
     function errorRetrievingLevels(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Competency Levels";
@@ -223,6 +294,15 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "getLevels");
     }
 
+    /**
+	 * Error function called if problem retrieving competency rollup rules from the server
+	 * 
+	 * @memberOf CompetencyEditScreen
+	 * @method errorRetrievingRollupRules
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
     function errorRetrievingRollupRules(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Competency Rollup Rules";
@@ -230,8 +310,17 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         ViewManager.getView("#competencyEditMessageContainer").displayAlert(err, "getRollupRules");
     }
 
-    var NEW_COMPETENCY_NAME = "_New Competency";
-
+    
+    
+    
+    /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf CompetencyEditScreen
+	 * @method display
+	 * @param {String} containerId
+	 * 			Screen Container DOM ID
+	 */
     CompetencyEditScreen.prototype.display = function (containerId) {
         data = this.data;
         if (data == null)
@@ -256,15 +345,17 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         if (data.id == undefined) {
             data = new EcCompetency();
             data.generateId(AppController.repoInterface.selectedServer);
-            data.name = NEW_COMPETENCY_NAME;
+            data.name = "";
 
             if (AppController.identityController.selectedIdentity != undefined) {
                 data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
             }
+            
+            $("#competencyEditName").focus();
         }
 
         ViewManager.showView(new MessageContainer("competencyEdit"), "#competencyEditMessageContainer", function () {
-            if (data.name == NEW_COMPETENCY_NAME && AppController.identityController.selectedIdentity == undefined) {
+            if (data.name == "" && AppController.identityController.selectedIdentity == undefined) {
                 ViewManager.getView("#competencyEditMessageContainer").displayWarning("You are Creating a Public Competency, this competency can be modified by anyone")
             }
         });
@@ -272,7 +363,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         $("#competencyEditSearchBtn").attr("href", "#" + CompetencySearchScreen.prototype.displayName);
         $("#competencyEditSearchBtn").click(function (event) {
             event.preventDefault();
-            if (data.name == NEW_COMPETENCY_NAME) {
+            if (data.name == "") {
                 ScreenManager.changeScreen(new CompetencySearchScreen())
             } else {
                 ScreenManager.changeScreen(new CompetencySearchScreen(data));
@@ -280,7 +371,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
         });
 
-        if (data.name == NEW_COMPETENCY_NAME) {
+        if (data.name == "") {
             $("#competencyEditViewBtn").hide();
 
         } else {
@@ -307,7 +398,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
                 }));
         });
 
-        if (data.name == NEW_COMPETENCY_NAME) {
+        if (data.name == "") {
             $("#competencyEditDeleteBtn").remove();
         } else {
             $("#competencyEditDeleteBtn").click(function (event) {
@@ -333,12 +424,12 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
             data.description = $("#competencyEditDescription").val();
             data.scope = $("#competencyEditScope").val();
 
-            if (data.name != NEW_COMPETENCY_NAME) {
+            if (data.name != "") {
                 ViewManager.getView("#competencyEditMessageContainer").clearAlert("saveFail");
                 ViewManager.getView("#competencyEditMessageContainer").clearAlert("defaultName");
                 data.save(saveSuccess, errorSaving);
             } else {
-                ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency With Default Name", "defaultName");
+                ViewManager.getView("#competencyEditMessageContainer").displayAlert("Cannot Save Competency Without a Name", "defaultName");
             }
         })
 
@@ -373,7 +464,6 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {
                 data.owner = dataAfter.owner;
-                data.privateEncrypted = dataAfter.privateEncrypted;
                 data.reader = dataAfter.reader;
 
                 displayCompetency(data);
@@ -382,7 +472,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
             }))
         })
 
-        if (data.name == NEW_COMPETENCY_NAME) {
+        if (data.name == "") {
             displayCompetency(data);
         } else {
             EcCompetency.get(data.id, function (competency) {

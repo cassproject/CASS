@@ -1,14 +1,16 @@
-var ChangeTypeModal = function(repoEditContainer) {
+var ChangeTypeModal = function(changeObj, repoEditContainerId) {
     EcModal.call(this);
-    this.repoEditContainer = repoEditContainer;
+    this.changeObj = changeObj;
+    this.repoEditContainerId = repoEditContainerId;
 };
 ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
-    prototype.repoEditContainer = null;
+    prototype.changeObj = null;
+    prototype.repoEditContainerId = null;
     prototype.getModalSize = function() {
         return this.modalSize;
     };
     prototype.getHtmlLocation = function() {
         return "partial/modal/changeType.html";
     };
-}, {onClose: "Callback0"}, {});
+}, {changeObj: "Object", onClose: "Callback0"}, {});

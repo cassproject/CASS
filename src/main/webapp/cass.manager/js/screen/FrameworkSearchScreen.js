@@ -1,8 +1,25 @@
+/**
+ * Screen that handles searching and displaying frameworks
+ * 
+ * @module cass.manager
+ * @class FrameworkSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	
 	var maxLength = 24;
 	var searchHandle = null;
 	
+	/**
+	 * Handles running the framework search with the parameters set in the DOM
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method runFrameworkSearch
+	 * @private
+	 * @param {int} start
+	 * 			Where to start the search results at in the repository
+	 */
 	function runFrameworkSearch(start){
 		var query = $("#frameworkSearchText").val();
 
@@ -42,10 +59,14 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			if(ownership != "all")
 				urlParams.ownership = ownership;
 			
-			if(Object.keys(urlParams).length > 0)
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, urlParams);
-			else
-				ScreenManager.replaceHistory(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, null);
+			if(Object.keys(urlParams).length > 0){
+				ScreenManager.setScreenParameters(urlParams);
+				ScreenManager.getCurrentScreen().setParams(urlParams);
+			}else{
+				ScreenManager.setScreenParameters(null);
+				ScreenManager.getCurrentScreen().clearParams();
+			}
+				
 			
 			ViewManager.getView("#frameworkSearchMessageContainer").clearAlert("searchFail");
 			//ViewManager.getView("#frameworkSearchResults").showProgressMessage();
@@ -60,12 +81,29 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears the currently displayed results before showing the results
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method clearDisplayResults
+	 * @private
+	 * @param {EcFramework[]} results
+	 * 			Results of the framework search
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#frameworkSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Displays the results of the framework search, appends them to the DataViewer table
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method displayResults
+	 * @private
+	 * @param {EcFramework[]} results
+	 */
 	function displayResults(results)
 	{  
 		ViewManager.getView("#frameworkSearchResults").populate(results);
@@ -106,6 +144,15 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 //		}
 //	}
 	
+	/**
+	 * Handles displaying errors that occur during search
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method errorSearching
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSearching(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
@@ -115,6 +162,14 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	FrameworkSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;
@@ -129,37 +184,38 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new FrameworkEditScreen(datum));
 			},
-			buildData:function(id, datum){
+			buildDataRow:function(row, id, datum){
 				var comps = (datum.competency == undefined ? 0 : datum.competency.length);
 				var rels = (datum.relation == undefined ? 0 : datum.relation.length)
 				
-				var el = $(	"<div>"+
-								"<div class='small-4 columns'><a class='datum-name'></a></div>" +
-								"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
-								"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
-								"<div class='small-4 columns datum-owner'></div>" +
-							"</div>");
+				row.append("<div class='small-4 columns'><a class='datum-name'></a></div>" +
+							"<div class='small-2 columns'>"+ comps + (comps == 1 ? " Competency" : " Competencies") +"</div>" +
+							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
+							"<div class='small-4 columns datum-owner'></div>");
 				
-				el.find(".datum-name").text(datum.name);
+				row.find(".datum-name").text(datum.name);
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
-					var owner = "";
 					for(var i in datum["owner"]){
-						owner+= createContactSmall(datum["owner"][i])+ ", "
+						var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+						var idEnd = trimId.split("/")[trimId.split("/").length-1];
+						var elId = idEnd+"-owner-"+i;
+						
+						var ownerEl = $("<span id='"+elId+"'></span>")
+						row.find(".datum-owner").append(ownerEl);
+						
+						ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 					}
-					owner = owner.substring(0, owner.length-2);
-					el.find(".datum-owner").html(owner);
 				}else{
-					el.find(".datum-owner").text("Public");
+					row.find(".datum-owner").text("Public");
 				}
 				
 				
-				el.find(".datum-name").click(function(ev){
+				row.find(".datum-name").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new FrameworkViewScreen(datum));
 				});
 				
-				return el.children();
 			}
 		}), "#frameworkSearchResults");
 		
@@ -210,6 +266,36 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		runFrameworkSearch();
 			
 	};
+	
+	/**
+	 * Sets the search parameters on the view, so they can be reloaded if the page is
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method setParams
+	 * @param {Object} params
+	 */
+	FrameworkSearchScreen.prototype.setParams = function(params)
+	{
+		if(params == undefined){
+			this.clearParams();
+			return;
+		}
+		
+		this.query = params.query;
+		this.ownership = params.ownership;
+	}
+	
+	/**
+	 * Handles getting search parameters from DOM and running
+	 * basic Repository search
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method clearParams
+	 */
+	FrameworkSearchScreen.prototype.clearParams = function(){
+		this.query = undefined;
+		this.ownership = undefined;
+	}
 	
 	return FrameworkSearchScreen;
 })(FrameworkSearchScreen);

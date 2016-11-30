@@ -18,7 +18,8 @@
 				
 				<div class="large-5 small-12 columns">
 					<select id="relationEditSource">
-						<option selected disabled='disabled' class='hide'>Select Source Competency</option>
+						<option selected disabled='disabled' class='hide' id="sourcesLoading">Loading...</option>
+						<option disabled='disabled' class='hide'>Select Source Competency</option>
 					</select>
 	
 					<div class="row collapse">
@@ -70,7 +71,8 @@
 				
 				<div class="large-5 small-12 columns">
 					<select id="relationEditTarget" placeholder="Search...">
-						<option selected disabled='disabled' class='hide'>Select Target Competency</option>
+						<option selected disabled='disabled' class='hide' id="targetsLoading">Loading...</option>
+						<option disabled='disabled' class='hide'>Select Target Competency</option>
 					</select>
 					
 					<div class="row collapse">
@@ -126,7 +128,7 @@
 							<span class="prefix">Relation Name:</span>
 						</div>
 						<div class="small-8 large-9 columns">
-							<input type="text" id="relationEditName"></input>
+							<input type="text" id="relationEditName" placeholder="Name this Relationship (Not Required)"></input>
 						</div>
 					</div>
 					
@@ -135,7 +137,7 @@
 							<span class="prefix">Relation Description:</span>
 						</div>
 						<div class="small-8 large-9 columns">
-							<textarea id="relationEditDescription"></textarea>
+							<textarea id="relationEditDescription" placeholder="Provide a Description"></textarea>
 						</div>
 					</div>
 					

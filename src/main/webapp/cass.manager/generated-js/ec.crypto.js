@@ -11,6 +11,7 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
 /**
  *  Helper classes for dealing with RSA Public Keys.
  *  @class EcPk
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcPk = function() {};
@@ -70,6 +71,16 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      */
     prototype.toPkcs8Pem = function() {
         return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+    };
+    /**
+     *  Hashes the public key into an SSH compatible fingerprint.
+     *  @method toHash
+     *  @return {string} Public key fingerprint.
+     */
+    prototype.fingerprint = function() {
+        var o = new Object();
+        (o)["encoding"] = "hex";
+        return forge.ssh.getPublicKeyFingerprint(this.pk, o);
     };
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
@@ -3662,6 +3673,7 @@ define(['require', 'module'], function() {
 /**
  *  AES encryption tasks common across all variants of AES.
  *  @class EcAes 
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcAes = function() {};
@@ -3687,6 +3699,301 @@ EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
         return forge.util.encode64(forge.random.getBytesSync(i));
     };
 }, {}, {});
+/**
+ * Functions to output keys in SSH-friendly formats.
+ *
+ * This is part of the Forge project which may be used under the terms of
+ * either the BSD License or the GNU General Public License (GPL) Version 2.
+ *
+ * See: https://github.com/digitalbazaar/forge/blob/cbebca3780658703d925b61b2caffb1d263a6c1d/LICENSE
+ *
+ * @author https://github.com/shellac
+ */
+(function() {
+/* ########## Begin module implementation ########## */
+function initModule(forge) {
+
+var ssh = forge.ssh = forge.ssh || {};
+
+/**
+ * Encodes (and optionally encrypts) a private RSA key as a Putty PPK file.
+ *
+ * @param privateKey the key.
+ * @param passphrase a passphrase to protect the key (falsy for no encryption).
+ * @param comment a comment to include in the key file.
+ *
+ * @return the PPK file as a string.
+ */
+ssh.privateKeyToPutty = function(privateKey, passphrase, comment) {
+  comment = comment || '';
+  passphrase = passphrase || '';
+  var algorithm = 'ssh-rsa';
+  var encryptionAlgorithm = (passphrase === '') ? 'none' : 'aes256-cbc';
+
+  var ppk = 'PuTTY-User-Key-File-2: ' + algorithm + '\r\n';
+  ppk += 'Encryption: ' + encryptionAlgorithm + '\r\n';
+  ppk += 'Comment: ' + comment + '\r\n';
+
+  // public key into buffer for ppk
+  var pubbuffer = forge.util.createBuffer();
+  _addStringToBuffer(pubbuffer, algorithm);
+  _addBigIntegerToBuffer(pubbuffer, privateKey.e);
+  _addBigIntegerToBuffer(pubbuffer, privateKey.n);
+
+  // write public key
+  var pub = forge.util.encode64(pubbuffer.bytes(), 64);
+  var length = Math.floor(pub.length / 66) + 1; // 66 = 64 + \r\n
+  ppk += 'Public-Lines: ' + length + '\r\n';
+  ppk += pub;
+
+  // private key into a buffer
+  var privbuffer = forge.util.createBuffer();
+  _addBigIntegerToBuffer(privbuffer, privateKey.d);
+  _addBigIntegerToBuffer(privbuffer, privateKey.p);
+  _addBigIntegerToBuffer(privbuffer, privateKey.q);
+  _addBigIntegerToBuffer(privbuffer, privateKey.qInv);
+
+  // optionally encrypt the private key
+  var priv;
+  if(!passphrase) {
+    // use the unencrypted buffer
+    priv = forge.util.encode64(privbuffer.bytes(), 64);
+  } else {
+    // encrypt RSA key using passphrase
+    var encLen = privbuffer.length() + 16 - 1;
+    encLen -= encLen % 16;
+
+    // pad private key with sha1-d data -- needs to be a multiple of 16
+    var padding = _sha1(privbuffer.bytes());
+
+    padding.truncate(padding.length() - encLen + privbuffer.length());
+    privbuffer.putBuffer(padding);
+
+    var aeskey = forge.util.createBuffer();
+    aeskey.putBuffer(_sha1('\x00\x00\x00\x00', passphrase));
+    aeskey.putBuffer(_sha1('\x00\x00\x00\x01', passphrase));
+
+    // encrypt some bytes using CBC mode
+    // key is 40 bytes, so truncate *by* 8 bytes
+    var cipher = forge.aes.createEncryptionCipher(aeskey.truncate(8), 'CBC');
+    cipher.start(forge.util.createBuffer().fillWithByte(0, 16));
+    cipher.update(privbuffer.copy());
+    cipher.finish();
+    var encrypted = cipher.output;
+
+    // Note: this appears to differ from Putty -- is forge wrong, or putty?
+    // due to padding we finish as an exact multiple of 16
+    encrypted.truncate(16); // all padding
+
+    priv = forge.util.encode64(encrypted.bytes(), 64);
+  }
+
+  // output private key
+  length = Math.floor(priv.length / 66) + 1; // 64 + \r\n
+  ppk += '\r\nPrivate-Lines: ' + length + '\r\n';
+  ppk += priv;
+
+  // MAC
+  var mackey = _sha1('putty-private-key-file-mac-key', passphrase);
+
+  var macbuffer = forge.util.createBuffer();
+  _addStringToBuffer(macbuffer, algorithm);
+  _addStringToBuffer(macbuffer, encryptionAlgorithm);
+  _addStringToBuffer(macbuffer, comment);
+  macbuffer.putInt32(pubbuffer.length());
+  macbuffer.putBuffer(pubbuffer);
+  macbuffer.putInt32(privbuffer.length());
+  macbuffer.putBuffer(privbuffer);
+
+  var hmac = forge.hmac.create();
+  hmac.start('sha1', mackey);
+  hmac.update(macbuffer.bytes());
+
+  ppk += '\r\nPrivate-MAC: ' + hmac.digest().toHex() + '\r\n';
+
+  return ppk;
+};
+
+/**
+ * Encodes a public RSA key as an OpenSSH file.
+ *
+ * @param key the key.
+ * @param comment a comment.
+ *
+ * @return the public key in OpenSSH format.
+ */
+ssh.publicKeyToOpenSSH = function(key, comment) {
+  var type = 'ssh-rsa';
+  comment = comment || '';
+
+  var buffer = forge.util.createBuffer();
+  _addStringToBuffer(buffer, type);
+  _addBigIntegerToBuffer(buffer, key.e);
+  _addBigIntegerToBuffer(buffer, key.n);
+
+  return type + ' ' + forge.util.encode64(buffer.bytes()) + ' ' + comment;
+};
+
+/**
+ * Encodes a private RSA key as an OpenSSH file.
+ *
+ * @param key the key.
+ * @param passphrase a passphrase to protect the key (falsy for no encryption).
+ *
+ * @return the public key in OpenSSH format.
+ */
+ssh.privateKeyToOpenSSH = function(privateKey, passphrase) {
+  if(!passphrase) {
+    return forge.pki.privateKeyToPem(privateKey);
+  }
+  // OpenSSH private key is just a legacy format, it seems
+  return forge.pki.encryptRsaPrivateKey(privateKey, passphrase,
+    {legacy: true, algorithm: 'aes128'});
+};
+
+/**
+ * Gets the SSH fingerprint for the given public key.
+ *
+ * @param options the options to use.
+ *          [md] the message digest object to use (defaults to forge.md.md5).
+ *          [encoding] an alternative output encoding, such as 'hex'
+ *            (defaults to none, outputs a byte buffer).
+ *          [delimiter] the delimiter to use between bytes for 'hex' encoded
+ *            output, eg: ':' (defaults to none).
+ *
+ * @return the fingerprint as a byte buffer or other encoding based on options.
+ */
+ssh.getPublicKeyFingerprint = function(key, options) {
+  options = options || {};
+  var md = options.md || forge.md.md5.create();
+
+  var type = 'ssh-rsa';
+  var buffer = forge.util.createBuffer();
+  _addStringToBuffer(buffer, type);
+  _addBigIntegerToBuffer(buffer, key.e);
+  _addBigIntegerToBuffer(buffer, key.n);
+
+  // hash public key bytes
+  md.start();
+  md.update(buffer.getBytes());
+  var digest = md.digest();
+  if(options.encoding === 'hex') {
+    var hex = digest.toHex();
+    if(options.delimiter) {
+      return hex.match(/.{2}/g).join(options.delimiter);
+    }
+    return hex;
+  } else if(options.encoding === 'binary') {
+    return digest.getBytes();
+  } else if(options.encoding) {
+    throw new Error('Unknown encoding "' + options.encoding + '".');
+  }
+  return digest;
+};
+
+/**
+ * Adds len(val) then val to a buffer.
+ *
+ * @param buffer the buffer to add to.
+ * @param val a big integer.
+ */
+function _addBigIntegerToBuffer(buffer, val) {
+  var hexVal = val.toString(16);
+  // ensure 2s complement +ve
+  if(hexVal[0] >= '8') {
+    hexVal = '00' + hexVal;
+  }
+  var bytes = forge.util.hexToBytes(hexVal);
+  buffer.putInt32(bytes.length);
+  buffer.putBytes(bytes);
+}
+
+/**
+ * Adds len(val) then val to a buffer.
+ *
+ * @param buffer the buffer to add to.
+ * @param val a string.
+ */
+function _addStringToBuffer(buffer, val) {
+  buffer.putInt32(val.length);
+  buffer.putString(val);
+}
+
+/**
+ * Hashes the arguments into one value using SHA-1.
+ *
+ * @return the sha1 hash of the provided arguments.
+ */
+function _sha1() {
+  var sha = forge.md.sha1.create();
+  var num = arguments.length;
+  for (var i = 0; i < num; ++i) {
+    sha.update(arguments[i]);
+  }
+  return sha.digest();
+}
+
+} // end module implementation
+
+/* ########## Begin module wrapper ########## */
+var name = 'ssh';
+if(typeof define !== 'function') {
+  // NodeJS -> AMD
+  if(typeof module === 'object' && module.exports) {
+    var nodeJS = true;
+    define = function(ids, factory) {
+      factory(require, module);
+    };
+  } else {
+    // <script>
+    if(typeof forge === 'undefined') {
+      forge = {};
+    }
+    return initModule(forge);
+  }
+}
+// AMD
+var deps;
+var defineFunc = function(require, module) {
+  module.exports = function(forge) {
+    var mods = deps.map(function(dep) {
+      return require(dep);
+    }).concat(initModule);
+    // handle circular dependencies
+    forge = forge || {};
+    forge.defined = forge.defined || {};
+    if(forge.defined[name]) {
+      return forge[name];
+    }
+    forge.defined[name] = true;
+    for(var i = 0; i < mods.length; ++i) {
+      mods[i](forge);
+    }
+    return forge[name];
+  };
+};
+var tmpDefine = define;
+define = function(ids, factory) {
+  deps = (typeof ids === 'string') ? factory.slice(2) : ids.slice(2);
+  if(nodeJS) {
+    delete define;
+    return tmpDefine.apply(null, Array.prototype.slice.call(arguments, 0));
+  }
+  define = tmpDefine;
+  return define.apply(null, Array.prototype.slice.call(arguments, 0));
+};
+define([
+  'require',
+  'module',
+  './aes',
+  './hmac',
+  './md5',
+  './sha1',
+  './util'
+], function() {
+  defineFunc.apply(null, Array.prototype.slice.call(arguments, 0));
+});
+})();
 var CryptoKey = function() {};
 CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 /**
@@ -4036,6 +4343,7 @@ define(['require', 'module', './util'], function() {
  *  Uses Optimal Asymmetric Encryption Padding (OAEP) encryption and decryption.
  *  Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcRsaOaep
  */
 var EcRsaOaep = function() {};
@@ -4084,7 +4392,7 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  May be verified with the public key.
      *  Uses SHA256 hash with a UTF8 decoding of the text.
      *  Returns base64 encoded signature.
-     *  @method sign
+     *  @method signSha256
      *  @static
      *  @param {EcPpk} ppk Public private keypair.
      *  @param {string} text Text to sign.
@@ -4098,6 +4406,8 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
     /**
      *  Verifies the integrity of the provided text using a signature and a public key.
      *  Uses SHA1 hash with a UTF8 decoding of the text.
+     *  @static
+     *  @method verify
      *  @param {EcPk} pk Public key.
      *  @param {string} text Text to verify.
      *  @param {string} signature Base64 encoded signature.
@@ -6337,9 +6647,46 @@ EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constr
         });
     };
 }, {}, {});
+var EcRsaOaepAsyncNative = function() {};
+EcRsaOaepAsyncNative = stjs.extend(EcRsaOaepAsyncNative, null, [], function(constructor, prototype) {
+    constructor.encrypt = function(pk, text, success, failure) {
+        var base64pk = pk.toPkcs8Pem().replace("-----BEGIN RSA PUBLIC KEY-----", "").replace("-----END RSA PUBLIC KEY-----", "");
+        var keyUsages = new Array();
+        keyUsages.push("encrypt");
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = "RSA-OAEP";
+        algorithm.hash = "SHA-1";
+        var data;
+        data = str2ab(text);
+        window.crypto.subtle.importKey("spki", base64.decode(base64pk), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.encrypt(algorithm, key, data);
+            p.then(function(p1) {
+                success(base64.encode(p1));
+            });
+        });
+    };
+    constructor.decrypt = function(ppk, text, success, failure) {
+        var base64ppk = ppk.toPem().replace("-----BEGIN RSA PRIVATE KEY-----", "").replace("-----END RSA PRIVATE KEY-----", "");
+        var keyUsages = new Array();
+        keyUsages.push("decrypt");
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = "RSA-OAEP";
+        algorithm.hash = "SHA-1";
+        window.crypto.subtle.importKey("pkcs8", base64.decode(base64ppk), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.decrypt(algorithm, key, base64.decode(text));
+            p.then(function(p1) {
+                success(ab2str(p1));
+            });
+        });
+    };
+    constructor.sign = function(ppk, text, success, failure) {};
+    constructor.signSha256 = function(ppk, text, success, failure) {};
+    constructor.verify = function(pk, text, signature, success, failure) {};
+}, {}, {});
 /**
  *  Helper classes for dealing with RSA Private Keys.
  *  @class EcPpk
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcPpk = function() {};
@@ -6417,7 +6764,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     *  @method toPkcs1Pem
      *  @return {string} PEM encoded public key without whitespace.
      */
     prototype.toPkcs1Pem = function() {
@@ -6426,7 +6773,7 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     *  @method toPkcs8Pem
      *  @return {string} PEM encoded public key without whitespace.
      */
     prototype.toPkcs8Pem = function() {
@@ -6459,6 +6806,12 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         return false;
     };
 }, {ppk: "forge.ppk"}, {});
+/**
+ *  Asynchronous implementation of {{#crossLink "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
+ *  @class EcRsaOaepAsync
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
 var EcRsaOaepAsync = function() {};
 EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
     constructor.rotator = 0;
@@ -6499,38 +6852,65 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 failure(p1.toString());
         };
     };
-    constructor.encrypt = function(pk, text, success, failure) {
+    /**
+     *  Asynchronous form of {{#crossLink "EcRsaOaep/encrypt:method"}}EcRsaOaep.encrypt{{/crossLink}}
+     *  @method encrypt
+     *  @static
+     *  @param {EcPk} pk Public Key to use to encrypt.
+     *  @param {string} plaintext Plaintext to encrypt.
+     *  @param {function(string)} success Success method, result is Base64 encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error message.
+     */
+    constructor.encrypt = function(pk, plaintext, success, failure) {
         EcRsaOaepAsync.initWorker();
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.encrypt(pk, text));
+            success(EcRsaOaep.encrypt(pk, plaintext));
         } else {
             var worker = EcRsaOaepAsync.rotator++;
             EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["pk"] = pk.toPem();
-            (o)["text"] = text;
+            (o)["text"] = plaintext;
             (o)["cmd"] = "encryptRsaOaep";
             EcRsaOaepAsync.q1[worker].push(success);
             EcRsaOaepAsync.q2[worker].push(failure);
             EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
-    constructor.decrypt = function(ppk, text, success, failure) {
+    /**
+     *  Asynchronous form of {{#crossLink "EcRsaOaep/decrypt:method"}}EcRsaOaep.decrypt{{/crossLink}}
+     *  @method decrypt
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to decrypt.
+     *  @param {string} ciphertext Ciphertext to decrypt.
+     *  @param {function(string)} success Success method, result is unencoded plaintext.
+     *  @param {function(string)} failure Failure method, parameter is error message.
+     */
+    constructor.decrypt = function(ppk, ciphertext, success, failure) {
         EcRsaOaepAsync.initWorker();
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.decrypt(ppk, text));
+            success(EcRsaOaep.decrypt(ppk, ciphertext));
         } else {
             var worker = EcRsaOaepAsync.rotator++;
             EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
             var o = new Object();
             (o)["ppk"] = ppk.toPem();
-            (o)["text"] = text;
+            (o)["text"] = ciphertext;
             (o)["cmd"] = "decryptRsaOaep";
             EcRsaOaepAsync.q1[worker].push(success);
             EcRsaOaepAsync.q2[worker].push(failure);
             EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
+    /**
+     *  Asynchronous form of {{#crossLink "EcRsaOaep/sign:method"}}EcRsaOaep.sign{{/crossLink}}
+     *  @method sign
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to sign message.
+     *  @param {string} text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64 encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error message.
+     */
     constructor.sign = function(ppk, text, success, failure) {
         EcRsaOaepAsync.initWorker();
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
@@ -6547,6 +6927,15 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
+    /**
+     *  Asynchronous form of {{#crossLink "EcRsaOaep/signSha256:method"}}EcRsaOaep.signSha256{{/crossLink}}
+     *  @method signSha256
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to sign message.
+     *  @param {string} text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64 encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error message.
+     */
     constructor.signSha256 = function(ppk, text, success, failure) {
         EcRsaOaepAsync.initWorker();
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
@@ -6563,6 +6952,16 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             EcRsaOaepAsync.w[worker].postMessage(o);
         }
     };
+    /**
+     *  Asynchronous form of {{#crossLink "EcRsaOaep/verify:method"}}EcRsaOaep.verify{{/crossLink}}
+     *  @method verify
+     *  @static
+     *  @param {EcPk} pk Public key to use to verify message.
+     *  @param {string} text Text to use in verification.
+     *  @param {string} signature Signature to use in verification.
+     *  @param {function(boolean)} success Success method, result is whether signature is valid.
+     *  @param {function(string)} failure Failure method, parameter is error message.
+     */
     constructor.verify = function(pk, text, signature, success, failure) {
         EcRsaOaepAsync.initWorker();
         if (!EcRemote.async || EcRsaOaepAsync.w == null) {
@@ -6585,6 +6984,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcAesCtr
  */
 var EcAesCtr = function() {};
@@ -6631,6 +7031,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
 /**
  *  Asynchronous implementation of {{#crossLink "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
  *  @class EcAesCtrAsync
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcAesCtrAsync = function() {};

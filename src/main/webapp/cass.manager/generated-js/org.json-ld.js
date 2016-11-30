@@ -1,15 +1,39 @@
-var EcLinkedData = function(context, type) {
+/**
+ *  Represents a JSON-LD linked data object and performs serialization.
+ *  Note: Serialization and deserialization remove parameters that begin with '@'.
+ *  Note: This Linked Data Object is not assumed to have an @id field.
+ *  @author fritz.ray@eduworks.com
+ *  @module org.json.ld
+ *  @class EcLinkedData
+ */
+var EcLinkedData = /**
+ *  Create a linked data object.
+ *  @constructor
+ *  @param {string} context JSON-LD Context.
+ *  @param {string} type JSON-LD Type.
+ */
+function(context, type) {
     this.setContextAndType(context, type);
 };
 EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototype) {
     /**
-     *  Represents the @type field in JSON-LD.
+     *  JSON-LD @type field.
+     *  @property type
+     *  @type string
      */
     prototype.type = null;
     /**
-     *  Represents the @context field in JSON-LD.
+     *  JSON-LD @context field.
+     *  @property context
+     *  @type string
      */
     prototype.context = null;
+    /**
+     *  Set the JSON-LD @context and @type.
+     *  @method setContextAndType
+     *  @param {string} context JSON-LD Context.
+     *  @param {string} type JSON-LD Type.
+     */
     prototype.setContextAndType = function(context, type) {
         this.context = context;
         this.type = type;
@@ -23,15 +47,24 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
     /**
      *  Determines which fields to serialize into @fields.
      *  
-     *  @param s
-     *  @return True if property is in the set of atProperties.
+     *  @internal
+     *  @static
+     *  @method isAtProperty
+     *  @param {string} key Property name to check if it should be an @property.
+     *  @return {boolean} True if property is in the set of atProperties.
      */
-    constructor.isAtProperty = function(s) {
+    constructor.isAtProperty = function(key) {
         for (var i = 0; i < EcLinkedData.atProperties.length; i++) 
-            if (EcLinkedData.atProperties[i].equals(s)) 
+            if (EcLinkedData.atProperties[i].equals(key)) 
                 return true;
         return false;
     };
+    /**
+     *  Serializes this object to JSON.
+     *  
+     *  @method toJson
+     *  @return {string} JSON formatted object (with JSON-LD fields).
+     */
     prototype.toJson = function() {
         var o = this.atIfy();
         return JSON.stringify(o);
@@ -41,7 +74,9 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  make signature based actions more viable. Also places @(at) symbols in
      *  front of appropriate fields.
      *  
-     *  @return Serializable JSON object.
+     *  @internal
+     *  @method atIfy
+     *  @return {Object} Serializable JSON object.
      */
     prototype.atIfy = function() {
         return this.atIfyObject(this);
@@ -92,8 +127,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Helper function to determine if a piece of data is probably a JSON
      *  object.
      *  
-     *  @param probableJson
-     *  @return True if is probably JSON. False if not.
+     *  @method isProbablyJson
+     *  @static 
+     *  @param {string} probableJson JSON to test.
+     *  @return {boolean} True if it is probably JSON. False if not.
      */
     constructor.isProbablyJson = function(probableJson) {
         return probableJson.trim().startsWith("{") && probableJson.trim().endsWith("}");
@@ -102,9 +139,9 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Uses the object's fully qualified type name and compares it to the
      *  provided type.
      *  
-     *  @param type
-     *             Fully qualified type name uri.
-     *  @return True if match, False if not.
+     *  @method isA
+     *  @param {string} type Fully qualified type name uri.
+     *  @return {boolean} True if match, False if not.
      */
     prototype.isA = function(type) {
         var computedType = this.getFullType();
@@ -114,9 +151,9 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Uses the object's fully qualified type name and compares it to the
      *  provided type.
      *  
-     *  @param type
-     *             Fully qualified type name uri.
-     *  @return True if match, False if not.
+     *  @method isAny
+     *  @param {string[]} type Fully qualified type name uris.
+     *  @return {boolean} True if match, False if not.
      */
     prototype.isAny = function(type) {
         var computedType = this.getFullType();
@@ -131,7 +168,8 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  Gets the fully qualified type name, as JSON-LD allows the "namespace" of
      *  the type to be defined in @context.
      *  
-     *  @return Fully qualified type name.
+     *  @method getFullType
+     *  @return {string} Fully qualified type name.
      */
     prototype.getFullType = function() {
         if (this.context == null) 
@@ -151,9 +189,8 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      *  deserialized javascript objects do not inherently attach the functions of
      *  their type, it is this or factory hell.
      *  
-     *  @param that
-     *             The freshly deserialized object, or the object to upcast into
-     *             this object.
+     *  @method copyFrom
+     *  @param that The freshly deserialized object, or the object to upcast into this object.
      */
     prototype.copyFrom = function(that) {
         var me = (this);
@@ -171,14 +208,18 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
              throw new RuntimeException("Incompatible type: " + this.getFullType());
     };
     /**
-     *  Upgrades the object if necessary.
+     *  Upgrades the object to the latest version, performing transforms and the like.
+     *  
+     *  @method upgrade
      */
     prototype.upgrade = function() {};
     /**
      *  Removes the @ symbol from properties in order to make them more
      *  accessible in Javascript.
      *  
-     *  @return This object, with @ properties converted to @-less properties.
+     *  @method deAtify
+     *  @internal
+     *  @return {EcLinkedData} This object, with @ properties converted to @-less properties.
      */
     prototype.deAtify = function() {
         var me = (this);
@@ -196,12 +237,15 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
     /**
      *  Gets all versions of JSON-LD type strings for this type of object.
      *  
-     *  @return Array of URIs.
+     *  @method getTypes
+     *  @return {string[]} Array of URIs.
      */
     prototype.getTypes = function() {
         var a = new Array();
-        if (this.type != null) 
-            a.push(this.type);
+        if (this.context != null && this.type != null) {
+            var context = (!this.context.endsWith("/") ? this.context + "/" : this.context);
+            a.push(context + this.type);
+        }
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});

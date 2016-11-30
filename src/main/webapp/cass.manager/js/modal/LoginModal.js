@@ -1,6 +1,22 @@
+/**
+ * Modal for authenticating a user and getting keys stored on server
+ * 
+ * @module cass.manager
+ * @class LoginModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var LoginModal = (function(LoginModal){	
 	var ERROR_CONTAINER_ID = "#loginError";
 	
+	/**
+	 * Submits the information from the inputs to the server for authentication
+	 * and handles response
+	 * 
+	 * @memberOf LoginModal
+	 * @method submitLogin
+	 * @private
+	 */
 	function submitLogin(view){
 		var server = $("#loginServer").val();
 		var userId = $("#loginUserId").val(); 
@@ -39,6 +55,14 @@ var LoginModal = (function(LoginModal){
 		);
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf LoginModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	LoginModal.prototype.display = function(containerId)
 	{
 		var view = this;

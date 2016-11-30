@@ -1,13 +1,31 @@
+/**
+ * Screen with a panel for displaying assertion details
+ * 
+ * @module cass.manager
+ * @class AssertionViewScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 AssertionViewScreen = (function(AssertionViewScreen){
 	
+	/**
+	 * Displays the assertion details in the HTML panel
+	 * 
+	 * @memberOf AssertionViewScreen
+	 * @method displayAssertion
+	 * @private
+	 * @param {EcAssertion} assertion
+	 * 				Assertion to display
+	 */
 	function displayAssertion(assertion)
 	{	    
 	    $("#assertionViewId").text(assertion.id);
 	    
 	    var agent = assertion.getAgent();
 	    if(agent != undefined){
-	    	var contact = $(createContactSmall(agent.toPem()));
-	    	$("#assertionViewAgent").html(contact);
+	    	//var contact = $(createContactSmall(agent.toPem()));
+	    	//$("#assertionViewAgent").html(contact);
+	    	ViewManager.showView(new IdentityDisplay(agent.toPem()), "#assertionViewAgent");
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewAgentContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -21,8 +39,9 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    
 	    var sub = assertion.getSubject()
 	    if(sub != undefined){
-	    	var contact = $(createContactSmall(sub.toPem()));
-	    	$("#assertionViewSubject").html(contact);
+	    	//var contact = $(createContactSmall(sub.toPem()));
+	    	//$("#assertionViewSubject").html(contact);
+	    	ViewManager.showView(new IdentityDisplay(sub.toPem()), "#assertionViewSubject");
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewSubjectContainer").addClass("unknown");
 	    		$("#assertionToggleUnknownBtn").removeClass("hide");
@@ -190,13 +209,23 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    		
  	    		var pem = assertion.owner[i];
  	    		
- 	    		var contact = $(createContactSmall(pem));
- 	    		$("#assertionViewOwner").append(contact); 
+ 	    		$("#assertionViewOwner").append("<span id='assertion-owner-"+i+"'></span>");
+ 	    		
+ 	    		ViewManager.showView(new IdentityDisplay(pem), "#assertion-owner-"+i);
  	    	}
 	    }
 	    
 	}
 	
+	/**
+	 * Error function called if problem getting the assertion from the server
+	 * 
+	 * @memberOf AssertionViewScreen
+	 * @method errorRetrieving
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorRetrieving(err)
 	{
 		if(err == undefined)
@@ -205,6 +234,15 @@ AssertionViewScreen = (function(AssertionViewScreen){
 		ViewManager.getView("#assertionViewMessageContainer").displayAlert(err, "getAssertion");
 	}
 	
+	/**
+	 *  Error function called if problem searching for competencies to display on form
+	 * 
+	 * @memberOf AssertionViewScreen
+	 * @method errorFindingCompetency
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorFindingCompetency(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve Assertion Competency";
@@ -212,6 +250,15 @@ AssertionViewScreen = (function(AssertionViewScreen){
 		ViewManager.getView("#assertionViewMessageContainer").displayAlert(err, "getCompetency");
 	}
 	
+	/**
+	 *  Error function called if problem searching for levels to display on form
+	 * 
+	 * @memberOf AssertionViewScreen
+	 * @method errorFindingLevel
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorFindingLevel(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve Level";
@@ -219,6 +266,14 @@ AssertionViewScreen = (function(AssertionViewScreen){
 		ViewManager.getView("#assertionViewMessageContainer").displayAlert(err, "getLevel");
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf AssertionViewScreen
+	 * @method display
+	 * @param {String} containerId
+	 * 			Screen Container DOM ID
+	 */
 	AssertionViewScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;

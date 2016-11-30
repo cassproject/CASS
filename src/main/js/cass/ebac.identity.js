@@ -14,18 +14,58 @@
  *  3. Distinguish between this identity and other identities through the
  *  displayName.
  *  
- *  @author fray
+ *  @module com.eduworks.ec
+ *  @class EcContact
+ *  @constructor
+ * 
+ *  @author fritz.ray@eduworks.com
  */
 var EcContact = function() {};
 EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
+    /**
+     *  Public Key of the contact
+     *  
+     *  @property pk
+     *  @type EcPk
+     */
     prototype.pk = null;
+    /**
+     *  Display Name of the contact
+     *  
+     *  @property displayName
+     *  @type String
+     */
     prototype.displayName = null;
+    /**
+     *  URL to the home server of the contact
+     *  
+     *  @property source
+     *  @type String
+     */
     prototype.source = null;
+    /**
+     *  Comparison method that checks if the key is the same as another EcContact
+     *  
+     *  @memberOf EcContact
+     *  @method equals
+     *  @param {Object} obj
+     *  			Contact to compare if same key
+     *  @return {boolean}
+     *  			true if the key is the same, false if not
+     */
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcContact)) 
             return this.pk.equals((obj).pk);
         return Object.prototype.equals.call(this, obj);
     };
+    /**
+     *  Returns the URL to generic image that should be displayed for the contact
+     *  
+     *  @memberOf EcContact
+     *  @method getImageUrl
+     *  @return {String}
+     *  			URL of generic image file
+     */
     prototype.getImageUrl = function() {
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/48px-User_icon_2.svg.png";
     };
@@ -33,9 +73,12 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      *  Helper function to encrypt a contact into an encrypted contact (storable
      *  version of a contact)
      *  
-     *  @param secret
-     *             AES secret used to encrypt the contact.
-     *  @return Encrypted contact object.
+     *  @memberOf EcContact
+     *  @method toEncryptedContact
+     *  @param {String} secret
+     *            AES secret used to encrypt the contact.
+     *  @return {EbacContact}
+     *  			Encrypted contact object.
      */
     prototype.toEncryptedContact = function(secret) {
         var c = new EbacContact();
@@ -51,14 +94,18 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      *  Helper function to decrypt an encrypted contact (storable version of an contact)
      *  into an contact
      *  
-     *  @param contact
-     *             Contact to decrypt.
-     *  @param secret
-     *             AES secret used to decrypt the credential.
-     *  @param source
-     *             Source of the credential, used to track where a contact
-     *             came from.
-     *  @return Decrypted identity object, ready for use.
+     *  @memberOf EcContact
+     *  @method fromEncryptedContact
+     *  @static
+     *  @param {EbacContact} contact
+     *           Contact to decrypt.
+     *  @param {String} secret
+     *           AES secret used to decrypt the credential.
+     *  @param {String} source
+     *           Source of the credential, used to track where a contact
+     *           came from.
+     *  @return {EcContact}
+     *  			Decrypted identity object, ready for use.
      */
     constructor.fromEncryptedContact = function(contact, secret, source) {
         var i = new EcContact();
@@ -76,15 +123,37 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
  *  messages, ensuring the recipient knows that we sent the message and it was
  *  not altered.
  *  
- *  @author fray
+ *  @module com.eduworks.ec
+ *  @class EcIdentity
+ *  @constructor
+ *  
+ *  @author fritz.ray@eduworks.com
  */
 var EcIdentity = function() {
     this.displayName = "Alias " + EcIdentity.identityCounter++;
 };
 EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) {
     constructor.identityCounter = 1;
+    /**
+     *  Private Key of this identity
+     *  
+     *  @property ppk
+     *  @type EcPpk
+     */
     prototype.ppk = null;
+    /**
+     *  Display name of this identity
+     *  
+     *  @property displayName
+     *  @type String
+     */
     prototype.displayName = null;
+    /**
+     *  String identifying where this identity came from
+     *  
+     *  @property displayName
+     *  @type String
+     */
     prototype.source = null;
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
@@ -95,9 +164,12 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
      *  Helper function to encrypt an identity into a credential (storable
      *  version of an identity)
      *  
-     *  @param secret
-     *             AES secret used to encrypt the credential.
-     *  @return Encrypted credential object.
+     *  @memberOf EcIdentity
+     *  @method toCredential
+     *  @param {String} secret
+     *           AES secret used to encrypt the credential.
+     *  @return {EbacCredential} 
+     *  			Encrypted credential object.
      */
     prototype.toCredential = function(secret) {
         var c = new EbacCredential();
@@ -111,14 +183,18 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
      *  Helper function to decrypt a credential (storable version of an identity)
      *  into an identity)
      *  
-     *  @param credential
-     *             Credential to decrypt.
-     *  @param secret
-     *             AES secret used to decrypt the credential.
-     *  @param source
-     *             Source of the credential, used to track where a credential
-     *             came from.
-     *  @return Decrypted identity object, ready for use.
+     *  @memberOf EcIdentity
+     *  @method fromCredential
+     *  @static
+     *  @param {EbacCredential} credential
+     *           Credential to decrypt.
+     *  @param {String} secret
+     *           AES secret used to decrypt the credential.
+     *  @param {String} source
+     *           Source of the credential, used to track where a credential
+     *           came from.
+     *  @return {EcIdentity}
+     *  			Decrypted identity object, ready for use.
      */
     constructor.fromCredential = function(credential, secret, source) {
         var i = new EcIdentity();
@@ -130,7 +206,11 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
     };
     /**
      *  Converts an identity to a contact.
-     *  @return Contact object.
+     *  
+     *  @memberOf EcIdentity
+     *  @method toContact
+     *  @return {EcContact}
+     *  			Contact object.
      */
     prototype.toContact = function() {
         var c = new EcContact();
@@ -143,7 +223,13 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
 /**
  *  Manages identities and contacts, provides hooks to respond to identity and
  *  contact events, and builds signatures and signature sheets for authorizing
- *  movement of data. Also provides helper functions for identity management.
+ *  movement of data. Also provides helper functions for identity management and
+ *  reads the users contacts on application start with a static constructor that
+ *  pulls them out of any temporary storage
+ *  
+ *  @module com.eduworks.ec
+ *  @class EcIdentityManager
+ *  @static
  *  
  *  @author fritz.ray@eduworks.com
  */
@@ -152,14 +238,60 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     constructor.main = function(args) {
         EcIdentityManager.readContacts();
     };
+    /**
+     *  The current user's owned identities (keys+displayName)
+     *   
+     *  @property ids
+     *  @type EcIdentity[]
+     *  @static
+     */
     constructor.ids = new Array();
+    /**
+     *  Contacts (Keys that we do not own)
+     *  
+     *  @property contacts
+     *  @type EcContact[]
+     *  @static
+     */
     constructor.contacts = new Array();
+    /**
+     *  Identity change hook.
+     *  
+     *  @property onIdentityChange
+     *  @type Callback1<EcIdentity>
+     *  @static
+     */
     constructor.onIdentityChanged = null;
+    /**
+     *  Contacts change hook.
+     *  
+     *  @property onIdentityChange
+     *  @type Callback1<EcIdentity>
+     *  @static
+     */
     constructor.onContactChanged = null;
+    /**
+     *  Trigger for the onIdentityChanged hook
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method identityChanged
+     *  @static
+     *  @param {EcIdentity} identity
+     *  			Identity that has changed
+     */
     constructor.identityChanged = function(identity) {
         if (EcIdentityManager.onIdentityChanged != null) 
             EcIdentityManager.onIdentityChanged(identity);
     };
+    /**
+     *  Trigger for the onContactChanged hook
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method contactChanged
+     *  @static
+     *  @param {EcContact} contact
+     *  			Contact that has changed
+     */
     constructor.contactChanged = function(contact) {
         if (EcIdentityManager.onContactChanged != null) 
             EcIdentityManager.onContactChanged(contact);
@@ -167,6 +299,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     /**
      *  Reads contact data from localstorage.
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method readContacts
+     *  @static
      */
     constructor.readContacts = function() {
         var localStore = localStorage["contacts"];
@@ -192,6 +328,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     /**
      *  Writes contact data to localstorage.
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method saveContacts
+     *  @static
      */
     constructor.saveContacts = function() {
         var c = new Array();
@@ -208,6 +348,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     /**
      *  Reads contact data from localstorage.
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method readIdentities
+     *  @static
      */
     constructor.readIdentities = function() {
         var localStore = localStorage["identities"];
@@ -233,6 +377,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     };
     /**
      *  Writes contact data to localstorage.
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method saveIdentities
+     *  @static
      */
     constructor.saveIdentities = function() {
         var c = new Array();
@@ -247,6 +395,13 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         localStorage["identities"] = JSON.stringify(c);
     };
+    /**
+     *  Clears the contacts from the local storage
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method clearContacts
+     *  @static
+     */
     constructor.clearContacts = function() {
         delete localStorage["contacts"];
         EcIdentityManager.contacts = new Array();
@@ -255,8 +410,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  Adds an identity to the identity manager. Checks for duplicates. Triggers
      *  events.
      *  
-     *  @param identity
-     *             Identity to add.
+     *  @memberOf EcIdentityManager
+     *  @method addIdentity
+     *  @static
+     *  @param {EcIdentity} identity
+     *  			Identity to add.
      */
     constructor.addIdentity = function(identity) {
         for (var i = 0; i < EcIdentityManager.ids.length; i++) 
@@ -269,8 +427,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  Adds a contact to the identity manager. Checks for duplicates. Triggers
      *  events.
      *  
-     *  @param contact
-     *             Contact to add.
+     *  @memberOf EcIdentityManager
+     *  @method addContact
+     *  @static
+     *  @param {EcContact} contact
+     *           Contact to add.
      */
     constructor.addContact = function(contact) {
         for (var i = 0; i < EcIdentityManager.ids.length; i++) 
@@ -293,13 +454,17 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  Create a signature sheet, authorizing movement of data outside of our
      *  control.
      *  
-     *  @param identityPksinPem
-     *             Which identities to create signatures for.
-     *  @param duration
-     *             Length of time in milliseconds to authorize control.
-     *  @param server
-     *             Server that we are authorizing.
-     *  @return JSON Array containing signatures.
+     *  @memberOf EcIdentityManager
+     *  @method signatureSheetFor
+     *  @static
+     *  @param {String[]} identityPksinPem
+     *           Which identities to create signatures for.
+     *  @param {long} duration
+     *           Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *           Server that we are authorizing.
+     *  @return {String} 
+     *  		JSON Array containing signatures.
      */
     constructor.signatureSheetFor = function(identityPksinPem, duration, server) {
         var signatures = new Array();
@@ -315,6 +480,22 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         return JSON.stringify(signatures);
     };
+    /**
+     *  Asynchronous version of creating a signature sheet for a list of identities
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method signatureSheetForAsync
+     *  @static
+     *  @param {String[]} identityPksinPem
+     *  			Which identities to create signatures for.
+     *  @param {long} duration
+     *  			Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *  			 Server that we are authorizing.
+     *  @param {Callback1<String>} success
+     *  			Callback triggered once the signature sheet has been created,
+     *   		returns the signature sheet
+     */
     constructor.signatureSheetForAsync = function(identityPksinPem, duration, server, success) {
         var signatures = new Array();
         new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
@@ -342,11 +523,15 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  Create a signature sheet for all identities, authorizing movement of data
      *  outside of our control.
      *  
-     *  @param duration
-     *             Length of time in milliseconds to authorize control.
-     *  @param server
-     *             Server that we are authorizing.
-     *  @return JSON Array containing signatures.
+     *  @memberOf EcIdentityManager
+     *  @method signatureSheet
+     *  @static
+     *  @param {long} duration
+     *           Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *           Server that we are authorizing.
+     *  @return {String}
+     *  			JSON Array containing signatures.
      */
     constructor.signatureSheet = function(duration, server) {
         var signatures = new Array();
@@ -356,6 +541,20 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         return JSON.stringify(signatures);
     };
+    /**
+     *  Asynchronous version of creating a signature sheet for all identities
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method signatureSheetAsync
+     *  @static
+     *  @param {long} duration
+     *  			Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *  			 Server that we are authorizing.
+     *  @param {Callback<String>} success
+     *  			Callback triggered once the signature sheet has been created,
+     *   		returns the signature sheet
+     */
     constructor.signatureSheetAsync = function(duration, server, success) {
         var signatures = new Array();
         new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
@@ -368,6 +567,22 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             success(JSON.stringify(signatures));
         });
     };
+    /**
+     *  Create a signature for a specific identity, authorizing movement of data
+     *  outside of our control.
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method createSignature
+     *  @static
+     *  @param {long} duration
+     *  			Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *  			 Server that we are authorizing.
+     *  @param {EcPpk} ppk
+     *  			Key of the identity to create a signature for
+     *  @return {Ebac Signature}
+     *  			Signature created
+     */
     constructor.createSignature = function(duration, server, ppk) {
         var s = new EbacSignature();
         s.owner = ppk.toPk().toPem();
@@ -376,6 +591,22 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         s.signature = EcRsaOaep.sign(ppk, s.toJson());
         return s;
     };
+    /**
+     *  Asynchronously create a signature for a specific identity
+     *  
+     *  @memberOf EcIdentityManager
+     *  @method createSignatureAsync
+     *  @static
+     *  @param {long} duration
+     *  			Length of time in milliseconds to authorize control.
+     *  @param {String} server
+     *  			 Server that we are authorizing.
+     *  @param {EcPpk} ppk
+     *  			Key of the identity to create a signature for
+     *  @param success
+     *  			Callback triggered once the signature sheet has been created,
+     *   		returns the signature 
+     */
     constructor.createSignatureAsync = function(duration, server, ppk, success) {
         var s = new EbacSignature();
         s.owner = ppk.toPk().toPem();
@@ -389,9 +620,13 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Get PPK from PK (if we have it)
      *  
-     *  @param fromPem
-     *             PK to use to look up PPK
-     *  @return PPK or null.
+     *  @memberOf EcIdentityManager
+     *  @method getPpk
+     *  @static
+     *  @param {EcPk} fromPem
+     *           PK to use to look up PPK
+     *  @return {EcPpk}
+     *  			PPK or null.
      */
     constructor.getPpk = function(fromPem) {
         var pem = fromPem.toPem();
@@ -404,9 +639,13 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Get Contact from PK (if we have it)
      *  
-     *  @param pk
-     *             PK to use to look up PPK
-     *  @return PPK or null.
+     *  @memberOf EcIdentityManager
+     *  @method getContact
+     *  @static
+     *  @param {EcPk} pk
+     *           PK to use to look up PPK
+     *  @return {EcPpk}
+     *  			PPK or null.
      */
     constructor.getContact = function(pk) {
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
@@ -418,9 +657,13 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Get Identity from PK (if we have it)
      *  
-     *  @param pk
-     *             PK to use to look up PPK
-     *  @return PPK or null.
+     *  @memberOf EcIdentityManager
+     *  @method getIdentity
+     *  @static
+     *  @param {EcPk} pk
+     *           PK to use to look up PPK
+     *  @return {EcIdentity}
+     *  			identity or null.
      */
     constructor.getIdentity = function(pk) {
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
@@ -432,8 +675,11 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Sign a piece of data with all available keys that own that data.
      *  
-     *  @param d
-     *             Data to sign.
+     *  @memberOf EcIdentityManager
+     *  @method sign
+     *  @static
+     *  @param {EcRemoteLinkedData} d
+     *           Data to sign.
      */
     constructor.sign = function(d) {
         if (d.signature != null) {
@@ -465,14 +711,45 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                     d.signWith(attempt);
             }
         }
+        if (d.signature != null && d.signature.length == 0) {
+            delete (d)["signature"];
+        }
+    };
+    constructor.myIdentitiesSearchString = function() {
+        var searchString = "";
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (i > 0) 
+                searchString += " OR ";
+            searchString += "@reader:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+            searchString += " OR ";
+            searchString += "@owner:\"" + EcIdentityManager.ids[i].ppk.toPk().toPem() + "\"";
+        }
+        return searchString;
     };
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
+/**
+ *  Contact Grant that is used to share your public key with another user
+ *  
+ *  @module com.eduworks.ebac
+ *  @class EcContact
+ *  @extends EbacContactGrant
+ *  @constructor
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ */
 var EcContactGrant = function() {
     EbacContactGrant.call(this);
 };
 EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    /**
+     *  Verifies that the contact grant is valid
+     *  
+     *  @return {boolean}
+     *  		true if valid, false if not
+     */
     prototype.valid = function() {
         if (!this.verify()) 
             return false;
@@ -485,7 +762,7 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
         }
         return found;
     };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, secret: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs anonymization of the user.
@@ -503,6 +780,9 @@ EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(cons
  *  and the other half is stored with the user. Should the user lose this pad and
  *  forget their password, they are not able to recover or reset their password,
  *  and their data should be considered lost.
+ *  
+ *  @module com.eduworks.ec
+ *  @class EcRemoteIdentityManager
  *  
  *  @author fritz.ray@eduworks.com
  */
@@ -526,21 +806,23 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
     /**
      *  Configure parameters of the remote login storage.
      *  
-     *  @param usernameSalt
+     *  @memberOf EcRemote
+     *  @method configure
+     *  @param {String} usernameSalt
      *             Salt used in hashing the username.
-     *  @param usernameIterations
+     *  @param {int} usernameIterations
      *             Number of times to hash the username.
-     *  @param usernameWidth
+     *  @param {int} usernameWidth
      *             Resultant width of username in bytes.
-     *  @param passwordSalt
+     *  @param {String} passwordSalt
      *             Salt used to hash password.
-     *  @param passwordIterations
+     *  @param {int} passwordIterations
      *             Number of times to hash password.
-     *  @param passwordWidth
+     *  @param {int} passwordWidth
      *             Resultant width of password in bytes.
-     *  @param secretSalt
+     *  @param {String} secretSalt
      *             Salt used to hash secret (composed of username + password)
-     *  @param secretIterations
+     *  @param {int} secretIterations
      *             Number of times to hash secret.
      */
     prototype.configure = function(usernameSalt, usernameIterations, usernameWidth, passwordSalt, passwordIterations, passwordWidth, secretSalt, secretIterations) {
@@ -554,6 +836,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         this.secretIterations = secretIterations;
         this.configured = true;
     };
+    /**
+     *  Configures parameters of the remote server by accessing configuration details via webservice
+     *  
+     *  @memberOf EcRemoteIdentityManager
+     *  @method configureFromServer
+     *  @param {Callback1<Object>} success
+     *  			Callback triggered after successfully configured
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error during failure
+     */
     prototype.configureFromServer = function(success, failure) {
         var me = this;
         EcRemote.getExpectingObject(this.server, "sky/id/salts", function(p1) {
@@ -610,6 +902,9 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
     };
     /**
      *  Wipes login data.
+     *  
+     *  @memberOf EcRemoteIdentityManager
+     *  @method clear
      */
     prototype.clear = function() {
         this.usernameWithSalt = null;
@@ -621,7 +916,9 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
     /**
      *  Configure compatible remote identity management server.
      *  
-     *  @param server
+     *  @memberOf EcRemoteIdentityManager
+     *  @method setDefaultIdentityManagementServer
+     *  @param {String} server
      *             URL to remote identity management server.
      */
     prototype.setDefaultIdentityManagementServer = function(server) {
@@ -633,10 +930,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  
      *  Please clear username and password fields after this function is called.
      *  
-     *  @param username
-     *             Username
-     *  @param password
-     *             Password
+     *  @memberOf EcRemoteIdentityManager
+     *  @method startLogin
+     *  @param {String} username
+     *           Username to login with
+     *  @param {String} password
+     *           Password to authenticate username with
      */
     prototype.startLogin = function(username, password) {
         if (!this.configured) {
@@ -655,13 +954,16 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  
      *  Please clear username and password fields after this function is called.
      *  
-     *  @param username
-     *             Username
-     *  @param oldPassword
-     *             Current password
-     *  @param newPassword
-     *             Desired password
-     *  @return Valid password change request.
+     *  @memberOf EcRemoteIdentityManager
+     *  @method changePassword
+     *  @param {String} username
+     *           Username
+     *  @param {String} oldPassword
+     *           Current password
+     *  @param {String} newPassword
+     *           Desired password
+     *  @return {boolean}
+     *  			Valid password change request.
      */
     prototype.changePassword = function(username, oldPassword, newPassword) {
         var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
@@ -689,8 +991,10 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  
      *  Requires login().
      *  
-     *  @param success
-     *  @param failure
+     *  @memberOf EcRemoteIdentityManager
+     *  @method fetch
+     *  @param {Callback1<Object>} success
+     *  @param {Callback1<String>} failure
      */
     prototype.fetch = function(success, failure) {
         if (!this.configured) {
@@ -733,8 +1037,10 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  
      *  Will trigger pad generation and fail if the pad has not been specified.
      *  
-     *  @param success
-     *  @param failure
+     *  @memberOf EcRemoteIdentityManager
+     *  @method commit
+     *  @param {Callback1<String>} success
+     *  @param {Callback1<String>} failure
      *  @param padGenerationCallback
      */
     prototype.commit = function(success, failure, padGenerationCallback) {
@@ -751,14 +1057,33 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  
      *  Will trigger pad generation and fail if the pad has not been specified.
      *  
-     *  @param success
-     *  @param failure
+     *  @memberOf EcRemoteIdentityManager
+     *  @method create
+     *  @param {Callback1<String>} success
+     *  			Callback triggered after successfully creating an account
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error creating an account
      *  @param padGenerationCallback
+     *  			Callback triggered if pad not specified
      */
     prototype.create = function(success, failure, padGenerationCallback) {
         var service = "sky/id/create";
         this.sendCredentials(success, failure, padGenerationCallback, service);
     };
+    /**
+     *  Sends the identity managers credentials to the service specified
+     *  
+     *  @memberOf EcRemoteIdentityManager
+     *  @method sendCredentials
+     *  @param {Callback1<String>} success
+     *  			Callback triggered if credentials sent successfully
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error sending credentials
+     *  @param padGenerationCallback
+     *  			Callback triggered if pad needed
+     *  @param service
+     *  			Service to send credentials to on server
+     */
     prototype.sendCredentials = function(success, failure, padGenerationCallback, service) {
         if (!this.configured) 
             alert("Remote Identity not configured.");
@@ -807,9 +1132,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
      *  Splices together passwords (in a fashion more like shuffling a deck of
      *  cards, not appending).
      *  
-     *  @param passwords
-     *             Passwords to splice.
-     *  @return Spliced password.
+     *  @memberOf EcRemoteIdentityManager
+     *  @method splicePasswords
+     *  @param {String[]} passwords
+     *           Passwords to splice.
+     *  @return {String}  
+     *  			Spliced password.
      */
     prototype.splicePasswords = function(passwords) {
         var passwordSplice = "";
@@ -826,6 +1154,18 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         }
         return passwordSplice;
     };
+    /**
+     *  Fetches the admin keys from the server to compare for check if current
+     *  user is an admin user
+     *  
+     *  @memberOf EcRemoteIdentityManager
+     *  @method fetchServerAdminKeys
+     *  @param {Callback1<String[]>} success
+     *  			Callback triggered when the admin keys are successfully returned,
+     *  			returns an array of the admin public keys
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs fetching admin keys
+     */
     prototype.fetchServerAdminKeys = function(success, failure) {
         var service;
         if (this.server.endsWith("/")) {

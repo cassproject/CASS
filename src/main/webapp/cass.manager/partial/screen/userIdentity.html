@@ -1,11 +1,6 @@
 <div style="padding-top:50px">
     <div class="row">
-        <div class="small-6 columns small-centered">
-            <div id="identityError" class="messageContainer small callout hide" data-closable>
-                <button class="close-button" type="button" data-close>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+       <div id="userIdentityMessageContainer" class="small-6 columns small-centered">
         </div>
     </div>
 
@@ -46,7 +41,7 @@
 
                     <div style="text-align:center;">
                         <button class="button" id="importIdentity" style="margin-right:1rem;">Import</button>
-                        <button class="button" id="generateIdentity">Generate</button>
+                        <button class="button" id="startGenerateIdentity">Generate</button>
                     </div>
 
                     <div id="importContainer" class="hide">
@@ -69,6 +64,7 @@
 
                         <input id="generateIdentityName" type="text" placeholder="Identity Name" />
                         <button id="generateIdentity" class="button float-right">Generate</button>
+                        <span class="float-right hide" id="generateInProgress"><i class="fa fa-spin fa-spinner"></i> Generating...</span>
                     </div>
                 </div>
             </div>

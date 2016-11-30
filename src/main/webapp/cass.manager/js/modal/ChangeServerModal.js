@@ -1,8 +1,23 @@
+/**
+ * Handles changing which server the application is pointed at
+ * 
+ * @module cass.manager
+ * @class ChangeServerModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ChangeServerModal = (function(ChangeServerModal){	
 	var ERROR_CONTAINER_ID = "#changeServerError";
 	
 	var lastVal;
 	
+	/**
+	 * Occurs on click of submit button, indicating the user has changed the
+	 * server select and would like to change servers
+	 * 
+	 * @memberOf ChangeServerModal
+	 * @method submitChange
+	 */
 	function submitChange(){
 		var server = $("#newServer").val();
 		
@@ -22,15 +37,41 @@ var ChangeServerModal = (function(ChangeServerModal){
 			displayError("Unable to change servers, reverting to previous server: "+err);
 		});
 	}
+	
+	/**
+	 * Adds an error message in the MessageContainer Alert Box
+	 * 
+	 * @memberOf ChangeServerModal
+	 * @method displayError
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function displayError(err)
 	{
 		ViewManager.getView("#changeServerMessageContainer").displayAlert(err);
 	}
+	
+	/**
+	 * Clears the error message in the MessageContainer Alert Box
+	 * 
+	 * @memberOf ChangeServerModal
+	 * @method clearError
+	 * @private
+	 */
 	function clearError()
 	{
 		ViewManager.getView("#changeServerMessageContainer").clearAlert();
 	}
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf ChangeServerModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	ChangeServerModal.prototype.display = function(containerId)
 	{
 		var view = this;

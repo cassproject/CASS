@@ -1,5 +1,22 @@
+/**
+ * Modal to indicate that the user has followed a link to add a new contact
+ * and allows them to send their own contact grant to the user
+ * 
+ * @module cass.manager
+ * @class ContactAcceptModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ContactGrantModal = (function(ContactGrantModal){	
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf ContactGrantModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	ContactGrantModal.prototype.display = function(containerId)
 	{
 		var me = this;

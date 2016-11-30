@@ -1,5 +1,15 @@
+/**
+ * Screen with a form for editing Frameworks
+ * 
+ * @module cass.manager
+ * @class FrameworkEditScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 FrameworkEditScreen = (function (FrameworkEditScreen) {
 
+	var formDirty;
+	
     var relationTypes = {
         isEnabledBy: "Enabled By",
         requires: "Requires",
@@ -9,6 +19,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         isEquivalentTo: "Equivalent To"
     }
 
+    /**
+     * Displays all of the framework details in the form on the screen
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method displayFramework
+     * @private
+     * @param {EcFramework} framework
+     * 			Framework to display
+     */
     function displayFramework(framework) {
         $("#frameworkEditId").val(framework.id);
         $("#frameworkEditName").val(framework.name);
@@ -19,8 +38,9 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             for (var i = 0; i < framework.owner.length; i++) {
                 var pk = framework.owner[i];
 
-                var contact = $(createContactSmall(pk));
-                $("#frameworkEditOwner").append(contact);
+                $("#frameworkEditOwner").append("<span id='framework-owner-"+i+"'></span>");
+                
+                ViewManager.showView(new IdentityDisplay(pk), "#framework-owner-"+i);
 
                 if (i < framework.owner.length - 1)
                     $("#frameworkEditOwner").append(", ");
@@ -31,7 +51,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditOwnerAdvanced").addClass("hide");
         }
 
-        if (framework.privateEncrypted) {
+        if (EcEncryptedValue.encryptOnSave(framework.id)) {
             if ($("#privateRow").css("display") == "none")
                 $("#privateRow").slideDown();
 
@@ -41,8 +61,9 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 for (var i = 0; i < framework.reader.length; i++) {
                     var pk = framework.reader[i];
 
-                    var contact = $(createContactSmall(pk));
-                    $("#frameworkEditReaders").append(contact);
+                    $("#frameworkEditReaders").append("<span id='framework-reader-"+i+"'></span>");
+                    
+                    ViewManager.showView(new IdentityDisplay(pk), "#framework-reader-"+i);
 
                     if (i < framework.reader.length - 1)
                         $("#frameworkEditReaders").append(", ");
@@ -68,18 +89,27 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         $("#frameworkEditLevels option").not("#noLevels").remove();
         for (var idx in framework.level) {
             EcLevel.get(framework.level[idx], function (level) {
-                addLevel(framework, level);
+                addLevel(level);
             }, errorRetrievingLevel);
         }
 
         $("#frameworkEditLevels option").not("#noRollupRules").remove();
         for (var idx in framework.rollupRule) {
             EcRollupRule.get(framework.rollupRule[idx], function (rollupRule) {
-                addRollupRule(framework, rollupRule);
+                addRollupRule(rollupRule);
             }, errorRetrievingRollupRule);
         }
     }
 
+    /**
+     * Adds a competency to the competency list in the form
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method addCompetency
+     * @private
+     * @param {EcCompetency} competency 
+     * 			Competency to include in the framework edit form
+     */
     function addCompetency(competency) {
         $("#frameworkEditCompetencies #noCompetencies").hide();
 
@@ -95,6 +125,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         formDirty = true;
     }
 
+    /**
+     * Adds a relation to the relation list in the form
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method addRelation
+     * @private
+     * @param {EcAlignment} relation
+     * 			Relation to include in the framework edit form
+     */
     function addRelation(relation) {
         $("#frameworkEditRelations #noRelations").hide();
 
@@ -125,7 +164,16 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         formDirty = true;
     }
 
-    function addLevel(framework, level) {
+    /**
+     * Adds a level to the level list in the form
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method addLevel
+     * @private
+     * @param {EcLevel} level
+     * 			Level to include in level list
+     */
+    function addLevel(level) {
         $("#frameworkEditLevels #noLevels").hide();
 
         $("#frameworkEditLevels").removeAttr("disabled");
@@ -162,7 +210,16 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
     }
 
-    function addRollupRule(framework, rollupRule) {
+    /**
+     * Adds a rollup rule to the rollup rule list in the form
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method addRollupRule
+     * @private
+     * @param {EcRollupRule} rollupRule
+     * 			Rollup Rule to include in the list
+     */
+    function addRollupRule(rollupRule) {
         $("#frameworkEditRollupRules #noRollupRules").hide();
 
         $("#frameworkEditRollupRules").removeAttr("disabled");
@@ -199,17 +256,42 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
     }
 
+    /**
+     * Handles triggering changes in the DOM to indicate the the framework was saved successfully
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method saveSuccess
+     * @private
+     */
     function saveSuccess() {
         $("#datum").effect("highlight", {}, 1500);
         formDirty = false;
     }
 
+    /**
+     * Error Handling if problem retrieving framework to display on screen
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRetrieving
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRetrieving(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Competency for Editing";
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err);
     }
 
+    /**
+     * Error Handling if problem saving framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorSaving
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorSaving(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Save Competency";
@@ -217,6 +299,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "saveFail");
     }
 
+    /**
+     * Error Handling if problem retrieving competency in framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRetrievingCompetency
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRetrievingCompetency(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Competency";
@@ -224,6 +315,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "getCompetency");
     }
 
+    /**
+     * Error Handling if problem retrieving relation in framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRetrievingRelation
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRetrievingRelation(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Relation";
@@ -231,6 +331,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "getRelation");
     }
 
+    /**
+     * Error Handling if problem retrieving level in framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRetrievingLevel
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRetrievingLevel(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Level";
@@ -238,6 +347,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "getLevel");
     }
 
+    /**
+     * Error Handling if problem retrieving rollup rule in framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRetrievingRollupRule
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRetrievingRollupRule(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Rollup Rule";
@@ -245,6 +363,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "getRollupRule");
     }
 
+    /**
+     * Error Handling if problem searching for competencies to add to the framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorSearchingCompetencies
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorSearchingCompetencies(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Search Competency";
@@ -252,6 +379,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "searchCompetencies");
     }
 
+    /**
+     * Error Handling if problem searching for relations to add to the framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorSearchingRelations
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorSearchingRelations(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Search Relations";
@@ -259,6 +395,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "searchRelations");
     }
 
+    /**
+     * Error Handling if problem searching for levels to add to the framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorSearchingLevels
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorSearchingLevels(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Search Levels";
@@ -266,6 +411,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "searchLevels");
     }
 
+    /**
+     * Error Handling if problem searching for rollup rules to add to the framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorSearchingRollupRules
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorSearchingRollupRules(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Search Rollup Rules";
@@ -273,12 +427,30 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "searchRollupRules");
     }
 
+    /**
+     * Error Handling if problem removing competency from framework
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method errorRemovingCompetency
+     * @private
+     * @param {String} err
+	 * 			Error message to display
+     */
     function errorRemovingCompetency(err) {
         ViewManager.getView("#frameworkEditMessageContainer").displayAlert(err, "removeCompetency");
     }
 
     var _setupLevelTypeahead = setupLevelTypeahead;
 
+    /**
+     * Handles setting up the level typeahead on screen setup
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method setupLevelTypeahead
+     * @private
+     * @param {EcFramework} framework
+     * 			Framework used to help determine which competencies to use during level search
+     */
     function setupLevelTypeahead(framework) {
         $("#frameworkEditAddLevel").typeahead({
             hint: false,
@@ -326,16 +498,25 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         }).bind("typeahead:selected", function (ev, data) {
             $('#frameworkEditAddLevel').typeahead('val', "");
             framework.addLevel(data.id);
-            addLevel(framework, data);
+            addLevel(data);
         }).bind("typeahead:autocompleted", function (obj, data) {
             $('#frameworkEditAddLevel').typeahead('val', "");
             framework.addLevel(data.id);
-            addLevel(framework, data);
+            addLevel(data);
         });
     }
 
     var _setupRollupRuleTypeahead = setupRollupRuleTypeahead;
 
+    /**
+     * Handles setting up the rollup rule typeahead on screen setup
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method setupRollupRuleTypeahead
+     * @private
+     * @param {EcFramework} framework
+     * 			Framework used to help determine which competencies to use during rollup rules search
+     */
     function setupRollupRuleTypeahead(framework) {
         $("#frameworkEditAddRollupRule").typeahead({
             hint: false,
@@ -382,16 +563,25 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         }).bind("typeahead:selected", function (ev, data) {
             $('#frameworkEditAddRollupRule').typeahead('val', "");
             framework.addRollupRule(data.id);
-            addRollupRule(framework, data);
+            addRollupRule(data);
         }).bind("typeahead:autocompleted", function (obj, data) {
             $('#frameworkEditAddRollupRule').typeahead('val', "");
             framework.addRollupRule(data.id);
-            addRollupRule(framework, data);
+            addRollupRule(data);
         });
     }
 
     var _setupRelationTypehead = setupRelationTypeahead;
 
+    /**
+     * Handles setting up the relation typeahead on screen setup
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method setupRelationTypeahead
+     * @private
+     * @param {EcFramework} framework
+     * 			Framework used to help determine which competencies to use during relation search
+     */
     function setupRelationTypeahead(framework) {
         $("#frameworkEditAddRelation").typeahead({
             hint: false,
@@ -452,6 +642,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         });
     }
 
+    /**
+     * Handles setting up the competency typeahead on screen setup
+     * 
+     * @memberOf FrameworkEditScreen
+     * @method setupCompetencyTypeahead
+     * @private
+     * @param {EcFramework} framework
+     * 			Framework used to help determine which competencies already exist in the framework
+     */
     function setupCompetencyTypeahead(framework) {
         $("#frameworkEditAddCompetency").typeahead({
             hint: false,
@@ -495,8 +694,16 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         });
     }
 
-    var NEW_FRAMEWORK_NAME = "_New Framework";
+    var NEW_FRAMEWORK_NAME = "";
 
+    /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf FrameworkEditScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
     FrameworkEditScreen.prototype.display = function (containerId, callback) {
         var data = this.data;
 
@@ -516,6 +723,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             if (AppController.identityController.selectedIdentity != undefined) {
                 data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
             }
+            
+            $("#frameworkEditName").focus();
         }
 
         ViewManager.showView(new MessageContainer("frameworkEdit"), "#frameworkEditMessageContainer", function () {
@@ -777,7 +986,6 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {
                 data.owner = dataAfter.owner;
-                data.privateEncrypted = dataAfter.privateEncrypted;
                 data.reader = dataAfter.reader;
 
                 displayFramework(data);
@@ -807,10 +1015,26 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
     };
 
+    /**
+	 * Public function for adding a competency to the edit form while it is being displayed
+	 * 
+	 * @memberOf FrameworkEditScreen
+	 * @method addCompetency
+	 * @param {EcCompetency} competency
+	 * 			Competency to add to the framework
+	 */
     FrameworkEditScreen.prototype.addCompetency = function (competency) {
         addCompetency(competency);
     }
 
+    /**
+	 * Public function for adding a relation to the edit form while it is being displayed
+	 * 
+	 * @memberOf FrameworkEditScreen
+	 * @method addRelation
+	 * @param {EcAlignment} relation
+	 * 			relation to add to the framework
+	 */
     FrameworkEditScreen.prototype.addRelation = function (relation) {
         addRelation(relation);
     }

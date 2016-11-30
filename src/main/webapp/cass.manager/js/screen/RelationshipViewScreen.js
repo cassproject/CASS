@@ -1,3 +1,11 @@
+/**
+ * Screen that handles displaying Relationship Details
+ * 
+ * @module cass.manager
+ * @class RelationshipViewScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RelationshipViewScreen = (function (RelationshipViewScreen) {
 
     var relationTypes = {
@@ -9,9 +17,18 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         isEquivalentTo: "is Equivalent to"
     }
 
+    /**
+	 * Handles displaying relationship details in DOM
+	 * 
+	 * @memberOf RelationshipViewScreen
+	 * @method displayRelation 
+	 * @private
+	 * @param {EcAlignment} relation 
+	 * 			Relation to display
+	 */
     function displayRelation(relation) {
 
-        if (relation.privateEncrypted)
+        if (EcEncryptedValue.encryptOnSave(relation.id))
             $("#relationshipViewerPrivateSymbol").removeClass("hide");
         else
             $("#relationshipViewerPrivateSymbol").addClass("hide");
@@ -79,12 +96,13 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             $("#relationshipViewerOwner").text("")
             for (var i = 0; i < relation.owner.length; i++) {
                 if (i > 0)
-                    $("#relationshiperViewerOwner").append(", ");
+                    $("#relationshipViewerOwner").append(", ");
 
                 var pem = relation.owner[i];
 
-                var contact = $(createContactSmall(pem));
-                $("#relationshipViewerOwner").append(contact);
+                $("#relationshipViewerOwner").append("<span id='relation-owner-"+i+"'></span>");
+                
+                ViewManager.showView(new IdentityDisplay(pem), "#relation-owner-"+i);
             }
         } else {
             $("#relationshipViewerOwner").text("Public")
@@ -92,7 +110,15 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
 
     }
 
-
+    /**
+	 * Handles displaying error message when retrieving relationship for display
+	 * 
+	 * @memberOf RelationshipViewScreen
+	 * @method displayRelation 
+	 * @private
+	 * @param {String} err 
+	 * 			Error message to display
+	 */
     function errorRetrieving(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Relation";
@@ -100,6 +126,15 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getRelation");
     }
 
+    /**
+	 * Handles displaying error message when retrieving relationship source info
+	 * 
+	 * @memberOf RelationshipViewScreen
+	 * @method errorFindingSource 
+	 * @private
+	 * @param {String} err 
+	 * 			Error message to display		
+	 */
     function errorFindingSource(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Source Competency";
@@ -107,6 +142,15 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getSource");
     }
 
+    /**
+	 * Handles displaying error message when retrieving relationship target info display
+	 * 
+	 * @memberOf RelationshipViewScreen
+	 * @method errorFindingTarget 
+	 * @private
+	 * @param {String} err 
+	 * 			Error message to display
+	 */
     function errorFindingTarget(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Target Competency";
@@ -114,6 +158,14 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getTarget");
     }
 
+    /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RelationshipViewScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
     RelationshipViewScreen.prototype.display = function (containerId, callback) {
         var data = this.data;
 

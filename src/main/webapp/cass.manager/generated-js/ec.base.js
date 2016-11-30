@@ -1,6 +1,7 @@
 /**
  *  Object to hold a triple, used in graph.
  *  @class Triple
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var Triple = function() {};
@@ -43,6 +44,7 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
 /**
  *  Object Helper Functions
  *  @class EcObject
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcObject = function() {};
@@ -61,6 +63,7 @@ EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
 /**
  *  Array Helper Functions
  *  @class EcArray
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
 var EcArray = function() {};
@@ -97,6 +100,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
  *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
  *  When all callbacks have been called, 'after(array)' is called. 
  *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
  *  @class EcAsyncHelper
  */
 var EcAsyncHelper = function() {};
@@ -171,6 +175,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
  *  </ul>
  *  
  *  @class Hypergraph
+ *  @module com.eduworks.ec
  *  @author Joshua O'Madadhain
  *   
  *  Ported to Javascript by:
@@ -619,25 +624,36 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
+var EcDate = function() {};
+EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    constructor.toISOString = function(obj) {
+        return ((obj)["toISOString"])();
+    };
+}, {}, {});
 /**
  *  Wrapper to handle all remote web service invocations.
+ *  
  *  @class EcRemote
+ *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  *  @author devlin.junker@eduworks.com
  */
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     /**
-     *  Turn this property off to cause all remote web service calls to be synchronous. Can be useful for test scripts, blocking calls, etc.
+     *  Turn this property off to cause all remote web service calls to be
+     *  synchronous. Can be useful for test scripts, blocking calls, etc.
+     *  
      *  @property async
      *  @static
      *  @type boolean
      */
     constructor.async = true;
     /**
-     *  POSTs a request to a remote endpoint. 
-     *  Composed of a server endpoint (root URL) and a service (service path).
-     *  Sends form data as a multi-part mime request.
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     *  
      *  @method postExpectingObject
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
@@ -650,9 +666,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
     };
     /**
-     *  POSTs a request to a remote endpoint. 
-     *  Composed of a server endpoint (root URL) and a service (service path).
-     *  Sends form data as a multi-part mime request.
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     *  
      *  @method postExpectingString
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
@@ -700,8 +717,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         $.ajax(p);
     };
     /**
-     *  GETs something from a remote endpoint. 
-     *  Composed of a server endpoint (root URL) and a service (service path).
+     *  GETs something from a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     *  
      *  @method postExpectingString
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
@@ -728,8 +746,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         $.ajax(p);
     };
     /**
-     *  DELETEs something at a remote endpoint. 
-     *  Composed of a server endpoint (root URL) and a service (service path).
+     *  DELETEs something at a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     *  
      *  @method _delete
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
@@ -758,20 +777,21 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                             p.url = p.url.replace("http:", "https:");
     };
     constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
-        if (failure != null) 
-            if (paramP1 != null) 
+        if (failure != null) {
+            if (paramP1 != null) {
                 if (paramP1.responseText != null) 
                     failure(paramP1.responseText);
                  else if (paramP1.statusText != null) 
                     failure(paramP1.statusText.toString());
                  else 
                     failure("General error in AJAX request.");
-             else if (paramP2 != null) 
+            } else if (paramP2 != null) 
                 failure(paramP2);
              else if (paramP3 != null) 
-                failure(paramP2);
+                failure(paramP3);
              else 
                 failure("General error in AJAX request.");
+        }
     };
     constructor.getSuccessCallback = function(success, failure) {
         return function(arg0, arg1, arg2) {
@@ -786,7 +806,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             if (arg2.status > 300 || arg2.status < 200) 
                 failure("Error with code: " + arg2.status);
              else if (success != null) 
-                success(JSON.parse(arg2.responseText));
+                try {
+                    success(JSON.parse(arg2.responseText));
+                }catch (ex) {
+                    failure(ex.getMessage());
+                }
         };
     };
     constructor.getFailureCallback = function(failure) {
@@ -828,6 +852,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
  *  </ul> 
  *  
  *  @class Graph
+ *  @module com.eduworks.ec
  *  @extends Hypergraph
  *  @author Joshua O'Madadhain
  *  
@@ -1004,6 +1029,7 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  *  @class EcDirectedGraph
+ *  @module com.eduworks.ec
  *  @extends Graph
  *  @author fray
  * 

@@ -1,5 +1,22 @@
+/**
+ * Screen showing of the capabilities of the Repository for saving and encrypitng data
+ * 
+ * @module cass.manager
+ * @class FileManagerScreen
+ * 
+ * @uthor devlin.junker@eduworks.com
+ */
 FileManagerScreen = (function(FileManagerScreen){
 	
+	/**
+	 * Displays an error that occurs during upload
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method uploadFailed
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function uploadFailed(err)
 	{
 		if(err == undefined)
@@ -7,6 +24,15 @@ FileManagerScreen = (function(FileManagerScreen){
 		ViewManager.getView("#fileManagerMessageContainer").displayAlert(err, "uploadFail");
 	}
 	
+	/**
+	 * Displays an error that occurs during download
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method searchFailed
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function downloadFailed(err)
 	{
 		if(err == undefined)
@@ -14,6 +40,15 @@ FileManagerScreen = (function(FileManagerScreen){
 		ViewManager.getView("#fileManagerMessageContainer").displayAlert(err, "downloadFail");
 	}
 	
+	/**
+	 * Displays an error that occurs during search
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method searchFailed
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function searchFailed(err)
 	{
 		if(err == undefined)
@@ -23,6 +58,16 @@ FileManagerScreen = (function(FileManagerScreen){
 	
 	
 	var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app document"><div class="front"><p class="title"></p></div><div class="back"><p class="status"></p><div class="actions"></div></div></div><a class="hotspot finger" title=""></a></div>';
+	
+	/**
+	 * Displays the dom representing the results of the file search
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method displayResult
+	 * @private
+	 * @param {EcRemoteLinkedData[]} obj
+	 * 			Results from File Manager search
+	 */
 	function displayResult(obj)
 	{
 	    $("#fileManagerResults").html("");
@@ -44,6 +89,13 @@ FileManagerScreen = (function(FileManagerScreen){
 	    });
 	}
 	
+	/**
+	 * Handles getting search parameters from DOM and starting search
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method fileSearch
+	 * @private
+	 */
 	function fileSearch(){
 		var query = $("#fileManagerSearchText").val();
 
@@ -59,7 +111,13 @@ FileManagerScreen = (function(FileManagerScreen){
 		EcFile.search(AppController.repoInterface, query, displayResult, searchFailed, paramObj);
 	}
 
-
+	/**
+	 * Handles Starting the upload of files from the DOM
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method startFileUpload
+	 * @private
+	 */
 	function startFileUpload()
 	{
 	    var tile = '<div class="tile" tabindex="0" style="display:block"><div class="cube app document"><div class="front"><p class="title">Initializing...</p></div><div class="back"><p class="status"></p><div class="actions"></div></div></div><a class="hotspot finger" title=""></a></div>';
@@ -71,6 +129,15 @@ FileManagerScreen = (function(FileManagerScreen){
 	            setTimeout(function(){startFileUpload2(false);},100);
 	}
 
+	/**
+	 * Handles changing the DOM to indicate upload began
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method startFileUpload2
+	 * @private
+	 * @param {boolean} encrypt
+	 * 			Whether or not to encrypt the file uploaded
+	 */
 	function startFileUpload2(encrypt)
 	{
 	    var t = $("#fileManagerResults").children(".tile").last();
@@ -78,6 +145,16 @@ FileManagerScreen = (function(FileManagerScreen){
 	    setTimeout(function(){startFileUpload3(encrypt);},100);
 	}
 
+	/**
+	 * Handles actually creating the file based on DOM input and
+	 * saving to the server
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method startFileUpload3
+	 * @private
+	 * @param {boolean} encrypt
+	 * 			Whether or not to encrypt the file uploaded
+	 */
 	function startFileUpload3(encrypt)
 	{
 	    var reader = new FileReader();
@@ -88,7 +165,7 @@ FileManagerScreen = (function(FileManagerScreen){
 	        file.generateId(AppController.repoInterface.selectedServer)
 	    	
 	        if(encrypt){
-	        	file.privateEncrypted = true;
+	        	EcEncryptedValue.encryptOnSave(file.id, true);
 	        	file.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
 	        }
 	        	
@@ -99,6 +176,13 @@ FileManagerScreen = (function(FileManagerScreen){
 	    reader.readAsDataURL(files[0]);    
 	}
 	
+	/**
+	 * Handles displaying that the upload was successful
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method fileUploaded
+	 * @private
+	 */
 	function fileUploaded()
 	{
 		ViewManager.getView("#fileManagerMessageContainer").clearAlert("uploadFail");
@@ -121,8 +205,15 @@ FileManagerScreen = (function(FileManagerScreen){
 	var files;
 	var timeout;
 	
-	FileManagerScreen.prototype.display = function(containerId)
-{
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf FileManagerScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
+	FileManagerScreen.prototype.display = function(containerId){
 		ViewManager.showView(new MessageContainer("fileSearch"), "#fileManagerMessageContainer");
 		
 		fileSearch();

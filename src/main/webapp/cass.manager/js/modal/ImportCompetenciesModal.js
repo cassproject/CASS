@@ -1,7 +1,25 @@
+/**
+ * Modal for viewing evidence details
+ * 
+ * @module cass.manager
+ * @class ImportCompetenciesModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ImportCompetenciesModal = (function(ImportCompetenciesModal){	
 	
 	var cached_frameworks = {};
 
+	/**
+	 * Adds a framework to the select input of frameworks to add 
+	 * imported competencies to
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method addLocationFramework
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework details to add to the select input
+	 */
 	function addLocationFramework(framework){
 		var id = framework.shortId().split("/");
 		var id = id[id.length-1];
@@ -20,6 +38,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		
 	}
 	
+	/**
+	 * Adds list of frameworks to select input of frameworks to add
+	 * imported competencies too
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method addFrameworks
+	 * @private
+	 * @param {EcFramework[]} frameworks
+	 * 			List of frameworks to add
+	 */
 	function addFrameworks(frameworks){
 		for(var i = 0; i < frameworks.length; i++){
 			var framework = frameworks[i];
@@ -32,6 +60,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		}
 	}
 	
+	/**
+	 * Adds framework to source select input for transferring
+	 * competencies from (to another framework)
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method addSourceFramework
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework to add to source select
+	 */
 	function addSourceFramework(framework){
 		var id = framework.shortId().split("/");
 		var id = id[id.length-1];
@@ -48,6 +86,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		}
 	}
 	
+	/**
+	 * Adds a list of frameworks to the source input for 
+	 * transferring competencies from (to another framework)
+	 * 
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method addSourceFrameworks
+	 * @private
+	 */
 	function addSourceFrameworks(frameworks){
 		for(var i = 0; i < frameworks.length; i++){
 			var framework = frameworks[i];
@@ -61,6 +108,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		}
 	}
 	
+	/**
+	 * Displays error if problem finding a list of frameworks to display
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method errorFindingFrameworks
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorFindingFrameworks(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Find Frameworks";
@@ -68,6 +124,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "getFramework");
 	}
 	
+	/**
+	 * Displays error if problem parsing CSV
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method errorParsing
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorParsing(err){
 		if(err == undefined)
 			err = "CSV could not be parsed";
@@ -75,6 +140,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "parseCSV");
 	}
 	
+	/**
+	 * Displays error if problem saving competency during import
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method errorSavingCompetency
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorSavingCompetency(err){
 		if(err == undefined)
 			err = "Could not connect to server to save competency";
@@ -82,6 +156,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "saveCompetency");
 	}
 	
+	/**
+	 * Displays error if problem saving framework during import (ASN)
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method errorSavingFramework
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorSavingFramework(err){
 		if(err == undefined)
 			err = "Could not connect to server to save framework";
@@ -89,6 +172,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "saveFramework");
 	}
 	
+	/**
+	 * Displays error if problem finding competencies in source framework
+	 * during framework import
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method errorFindingCompetency
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
 	function errorFindingCompetency(err){
 		if(err == undefined)
 			err = "Could not connect to server to find source framework competencies";
@@ -96,6 +189,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		ViewManager.getView("#importCompetenciesMessageContainer").displayAlert(err, "findCompetencies");
 	}
 
+	/**
+	 * Handles getting CSV file from Competency CSV Input and 
+	 * displays columns and # found once finished analyzing CSV
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method analyzeCsv
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework to import CSV competencies too
+	 */
 	function analyzeCsv(framework) {
 	    var file = $("#importCsvFile")[0].files[0];
 	    
@@ -134,7 +237,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    }, errorParsing);
 	}
 
-	function analyzeRelationCsv(framework) {
+	/**
+	 * Handles getting CSV file from Relation CSV input and 
+	 * displays columns and # found once finished analyzing CSV
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method analyzeRelationCsv
+	 * @private
+	 */
+	function analyzeRelationCsv() {
 	    var file = $("#importCsvRelation")[0].files[0];
 	    
 	    CSVImport.analyzeFile(file, function(data){
@@ -159,6 +270,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    }, errorParsing)
 	}
 	
+	/**
+	 * Handles getting file and column input from DOM and pass
+	 * to import to import competencies from CSV
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method importCsv
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited
+	 */
 	function importCsv(framework) {  
 		var editingFramework = true;
 		if(framework == undefined){
@@ -260,6 +381,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
         
 	}
 	
+	/**
+	 * Handles getting framework to copy/link competencies
+	 * from and target framework from DOM
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method importFromFramework
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited 
+	 */
 	function importFromFramework(framework){
 		var editingFramework = true;
 		if(framework == undefined){
@@ -318,7 +449,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 
 	}
 
-	
+	/**
+	 * Analyzes a medbiquitious XML file for competencies to import
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method analyzeMedbiq
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited 
+	 */
 	function analyzeMedbiq(framework){
 		var importAllowed = function(){
 			$("#submitImportMedbiq").attr("disabled", "disabled");
@@ -354,6 +493,15 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    });
 	}
 	
+	/**
+	 * Calls medbiq importer to import frameworks
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method startImportMedbiqXml
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited 
+	 */
 	function startImportMedbiqXml(framework) {
 	    var editingFramework = true;
 		if(framework == undefined){
@@ -406,6 +554,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
         });
 	}
 	
+	/**
+	 * Analyzes an ASN file for competencies and sets up modal
+	 * to import them
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method analyzeASN
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited  
+	 */
 	function analyzeASN(framework){
 		var importAllowed = function(){
 			$("#submitImportASN").attr("disabled", "disabled");
@@ -441,6 +599,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	    });
 	}
 	
+	/**
+	 * Calls the ASN Import with an ASN file to import
+	 * competencies from.
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method startImportASN
+	 * @private
+	 * @param {EcFramework} framework
+	 * 			Framework that is being edited  
+	 */
 	function startImportASN(framework){
 		var editingFramework = true;
 		if(framework == undefined){
@@ -502,7 +670,14 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
         });
 	}
 	
-	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf ImportCompetenciesModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	ImportCompetenciesModal.prototype.display = function(containerId)
 	{
 		var data = this.data;
@@ -658,8 +833,8 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		
 		if(AppController.identityController.selectedIdentity != undefined){
 			var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
-			var contact = $(createContactSmall(pem));
-			$(".importCompetenciesOwner").html(contact);
+			
+			ViewManager.showView(new IdentityDisplay(pem), ".importCompetenciesOwner");
 		}
 
 	}

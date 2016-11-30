@@ -1,5 +1,23 @@
+/**
+ * Screen that displays user identity and contact information once the user has signed in
+ * 
+ * @module cass.manager
+ * @class UserIdentityScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 UserIdentityScreen = (function (UserIdentityScreen) {
-
+	
+	/**
+     * Called to clear and and display the identities
+     * passed in, on the identity list
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     * @param {EcIdentity[]} identities
+     * 			identities to display
+     */
     function refreshIdentities(identities) {
         $("#identityKeys").html("");
         $("#addKeyIv").val("");
@@ -79,6 +97,16 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         }
     }
 
+    /**
+     * Called to clear and display the contacts
+     * passed in, on the contact list
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     * @param {EcContact[]} contacts
+     * 			contacts to display
+     */
     function refreshContacts(contacts) {
         $("#contactList").html("");
         for (var index in contacts) {
@@ -94,6 +122,15 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         }
     }
 
+    /**
+     * Sets the key passed in as the current key in the identity controller
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     * @param {Object[]} ppk
+     * 			list of files from the import input
+     */
     function activateKey(ppk) {
         if (ppk.length == 0) {
             $("#addKeyPpk").addClass("is-invalid-label");
@@ -148,30 +185,43 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         }
     }
 
+    /**
+     * Displays an error message
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     * @param {String} error
+     * 			Error message to display
+     */
     function displayMessage(error, errorClass) {
-        if (errorClass == undefined || errorClass == "")
-            errorClass = "alert";
-
-        var errorContainer = $("#identityError")
-
-        errorContainer.find("[data-msg='" + error + "']").remove();
-
-        errorContainer.addClass(errorClass);
-        errorContainer.attr("style", "");
-        errorContainer.append("<div data-msg='" + error + "'>" + error + "</div>");
-        errorContainer.removeClass("hide");
+    	ViewManager.getView("#userIdentityMessageContainer").displayAlert(error, errorClass);
 
     }
 
+    /**
+     * Hides any error messages
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     */
     function hideMessage() {
-        var errorContainer = $("#identityError")
-
-        errorContainer.fadeOut();
-        errorContainer.addClass("hide");
-        errorContainer.attr("style", "");
-        errorContainer.html('<button class="close-button" type="button" data-close><span aria-hidden="true">&times;</span></button>');
+    	ViewManager.getView("#userIdentityMessageContainer").clearAlert();
     }
 
+    /**
+     * Checks if the URL has a contact invitation in it and shows the
+     * contact modal if so
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     * @param {EcScreen} screen
+     * 			Current screen, used to reload page
+     * @param {String} containerId
+     * 			Current screen container id, used to reload page
+     */
     function checkNewContact(screen, containerId) {
         var hashSplit = window.document.location.hash.split("?");
 
@@ -216,6 +266,13 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         }
     }
 
+    /**
+     * Look in repository for any contact grants given by other users
+     * 
+     * @memberOf UserIdentityScreen
+     * @method refreshIdentities
+     * @private
+     */
     function checkContactGrants() {
         AppController.repoInterface.search(new EcContactGrant().getSearchStringByType(), function (encryptedValue) {
             EcRepository.get(encryptedValue.shortId(), function (encryptedValue) {
@@ -235,9 +292,19 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         }, null, null);
     }
 
+    /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf UserIdentityScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
     UserIdentityScreen.prototype.display = function (containerId) {
         var screen = this;
 
+        ViewManager.showView(new MessageContainer("userIdentity"), "#userIdentityMessageContainer");
+        
         if (LoginController.getLoggedIn()) {
             checkNewContact(screen, containerId);
             refreshContacts(EcIdentityManager.contacts);
@@ -257,7 +324,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
             $("#generateContainer").addClass("hide");
         });
 
-        $("#generateIdentity").click(function (event) {
+        $("#startGenerateIdentity").click(function (event) {
             event.preventDefault();
 
             $("#generateContainer").removeClass("hide");
@@ -272,11 +339,16 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         });
 
         $("#generateIdentity").click(function () {
+        	$("#generateInProgress").removeClass("hide");
+        	$("#generateIdentity").addClass("hide");
+        	
             var name = $("#generateIdentityName").val();
             AppController.identityController.generateIdentity(function (identity) {
                 refreshIdentities(EcIdentityManager.ids);
                 download(identity.displayName + '.pem', identity.ppk.toPem());
                 ModalManager.showModal(new SaveIdModal("Your identities have changed"));
+                $("#generateIdentity").removeClass("hide");
+            	$("#generateInProgress").addClass("hide");
             }, name);
         });
 

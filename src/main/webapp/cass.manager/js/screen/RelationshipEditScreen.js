@@ -1,8 +1,24 @@
+/**
+ * Screen that handles editing a relationship in a form
+ * 
+ * @module cass.manager
+ * @class RelationshipEditScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 RelationshipEditScreen = (function(RelationshipEditScreen){
 
 	var currentRelation = null;
 	
-	
+	/**
+	 * Builds the competency selectors on the relationship edit form
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method buildCompetencyInput
+	 * @private 
+	 * @param {EcCompetency[]} results
+	 * 			list of competencies from competency search
+	 */
 	function buildCompetencyInput(results){
         $("#relationEditSource").html("<option selected disabled='disabled' class='hide'>Select Source Competency</option>");
         $("#relationEditTarget").html("<option selected disabled='disabled' class='hide'>Select Target Competency</option>");
@@ -29,18 +45,43 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
         }
 	}
 	
+	/**
+	 * Starts to populate the disabled source fields in the form, asks for the
+	 * source competency info from the server
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationEditSourceSelected
+	 * @private 
+	 */
 	function relationEditSourceSelected()
 	{ 
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("populateFail");
 		EcCompetency.get($("#relationEditSource option:selected").attr("value"), relationEditPopulateSource, errorPopulatingDetails);
 	}
 
+	/**
+	 * Starts to populate the disabled target fields in the form, asks for the
+	 * target competency info from the server
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationEditTargetSelected
+	 * @private 
+	 */
 	function relationEditTargetSelected()
 	{ 
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("populateFail");
 	    EcCompetency.get($("#relationEditTarget option:selected").attr("value"), relationEditPopulateTarget, errorPopulatingDetails);
 	}
 	
+	/**
+	 * Populates the disabled source fields
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationEditPopulateSource
+	 * @private 
+	 * @param {EcCompetency} competency
+	 * 			Competency to display details of
+	 */
 	function relationEditPopulateSource(competency)
 	{
 	    $("#relationEditSourceId").val(competency.shortId());
@@ -48,6 +89,16 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    $("#relationEditSourceDescription").val(competency.description);
 	    $("#relationEditSourceScope").val(competency.scope);
 	}
+	
+	/**
+	 * Populates the disabled target fields
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationEditPopulateTarget
+	 * @private
+	 * @param {EcCompetency} competency
+	 * 			Competency to display details of 
+	 */
 	function relationEditPopulateTarget(competency)
 	{
 	    $("#relationEditTargetId").val(competency.shortId());
@@ -56,6 +107,15 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    $("#relationEditTargetScope").val(competency.scope);
 	}
 	
+	/**
+	 * Populates the rest of the relationship fields
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationshipEditActual
+	 * @private 
+	 * @param {EcAlignment} relation
+	 * 			relationship details to display
+	 */
 	function relationshipEditActual(relation)
 	{
 	    $('.topLevel').hide();
@@ -75,9 +135,9 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    			$("#relationEditOwner").append(", ");
 	    		
 	    		var pem = relation.owner[i];
-	    		
-	    		var contact = $(createContactSmall(pem));
-	    		$("#relationEditOwner").append(contact);  
+	    		$("#relationEditOwner").append("<span id='relation-owner-"+i+"'></span>");
+                
+                ViewManager.showView(new IdentityDisplay(pem), "#relation-owner-"+i);  
 	    	}
 	    }
 	    else
@@ -86,7 +146,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	    	$("#relationEditOwnerAdvanced").hide();
 	    }
 	    
-	    if(relation.privateEncrypted){
+	    if(EcEncryptedValue.encryptOnSave(relation.id)){
 			if($("#privateRow").css("display") == "none")
 				$("#privateRow").slideDown();
 			
@@ -98,8 +158,9 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 		    	{
 		    		var pk = relation.reader[i];
 		    		
-		    		var contact = $(createContactSmall(pk));
-		    		$("#relationEditReaders").append(contact);            
+		    		$("#relationEditReaders").append("<span id='relation-reader-'"+i+"></span>");
+	                
+	                ViewManager.showView(new IdentityDisplay(pk), "#relation-reader-"+i);             
 		    		
 		    		if(i < relation.reader.length-1)
 		    			$("#relationEditReaders").append(", ");
@@ -113,39 +174,93 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 		}
 	}
 	
+	/**
+	 * Handles starting the competency search to build competency selects
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method relationshipCompetencySearch
+	 * @private 
+	 */
 	function relationshipCompetencySearch()
 	{
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("competencyFindFail");
 		EcCompetency.search(AppController.repoInterface, "*", buildCompetencyInput, errorRetrievingCompetencies);
 	}
 
-	
+	/**
+	 * Handles displaying errors while retrieving the details of competencies
+	 * selected in the source/target selects
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method errorPopulatingDetails
+	 * @private 
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorPopulatingDetails(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Populate Competency Details";
 		ViewManager.getView("#relationshipEditMessageContainer").displayAlert(err,"populateFail");
 	}
 	
+	/**
+	 * Handles displaying errors while searching for competencies to
+	 * put in source/target selects
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method errorRetrievingCompetencies
+	 * @private 
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorRetrievingCompetencies(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve List of Competencies";
 		ViewManager.getView("#relationshipEditMessageContainer").displayAlert(err, "competencyFindFail");
 	}
 	
+	/**
+	 * Handles displaying errors while saving relation
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method errorSaving
+	 * @private 
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSaving(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Save Relationship";
 		ViewManager.getView("#relationshipEditMessageContainer").displayAlert(err, "saveFail");
 	}
 	
+	/**
+	 * Handles displaying errors while retrieving competency
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method errorRetrieving
+	 * @private 
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorRetrieving(err){
 		if(err == undefined)
 			err = "Unable to Connect to Server to Retrieve Relationship";
 		ViewManager.getView( "#relationshipEditMessageContainer").displayAlert(err);
 	}
 	
-	var NEW_RELATION_NAME = "_New Relation";
 	
+	
+	var NEW_RELATION_NAME = "";
+	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method display
+	 * @param containerId
+	 * 			Screen Container DOM ID
+	 */
 	RelationshipEditScreen.prototype.display = function(containerId)
 	{
 		var data = this.data;
@@ -214,11 +329,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			ev.preventDefault();
 			
 			var name = $("#relationEditName").val();
-			if(name == NEW_RELATION_NAME)
-			{
-				ViewManager.getView("#relationshipEditMessageContainer").displayAlert("Cannot Create Relation with the Default Name");
-				return;
-			}
+			
 		    
 			data.source = $("#relationEditSource option:selected").val();
 		    if(data.source == "")
@@ -254,7 +365,6 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			
 			ModalManager.showModal(new AdvancedPermissionsModal(data, function(dataAfter){
 				data.owner = dataAfter.owner;
-				data.privateEncrypted = dataAfter.privateEncrypted;
 				data.reader = dataAfter.reader;
 				
 				relationshipEditActual(data);

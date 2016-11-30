@@ -1,9 +1,27 @@
+/**
+ * Screen for searching for assertions, loads a {DataViewer} view to 
+ * display the results of the search and prepares the 
+ * 
+ * @module cass.manager
+ * @class AssertionSearchScreen
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 AssertionSearchScreen = (function(AssertionSearchScreen){
 	
 	var maxLength = 24;
 	
 	var searchHandle = null;
 	
+	/**
+	 * Method to run the assertion search on the server
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method runAssertionSearch
+	 * @private
+	 * @param {int} start
+	 * 			where in the repository index to start the search
+	 */
 	function runAssertionSearch(start){
 		searchHandle = setTimeout(function() {
 			
@@ -33,12 +51,33 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 		}, 100);
 	}
 	
+	/**
+	 * Clears the data in the DataViewer so that the table is empty
+	 * and then displays the results
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method clearDisplayResults
+	 * @private	
+	 * @param {Array<EcAssertion>} results
+	 * 			results to display after clearing the DataViewer
+	 */
 	function clearDisplayResults(results)
 	{
 		ViewManager.getView("#assertionSearchResults").clear();
 		displayResults(results);
 	}
 	
+	/**
+	 * Displays results of the search, by appending them to the table,
+	 * does some checks on the number of results to see what interfaces 
+	 * should be visible
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method displayResults
+	 * @private
+	 * @param {Array<EcAssertion>} results
+	 * 			results to add to to the DataViewer
+	 */
 	function displayResults(results)
 	{ 
 		ViewManager.getView("#assertionSearchResults").populate(results);
@@ -65,24 +104,36 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 		searchHandle = null;
 		
 	}
+
+	/*
+	 * 
+	function scrollSearchHandler(){
+		var resultDiv = $("#assertionResults-data").first(); 
+		
+		if(resultDiv.size() == 0){
+			$(window).off("scroll", scrollSearchHandler);
+		}
+		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
+		{
+			//$("#moreSearchResults").addClass("hide");
+			//$("#loadingMoreResults").removeClass("hide");
+			runAssertionSearch(resultDiv.children().size());
+		}
+	}
+	*/
 	
-//	function scrollSearchHandler(){
-//		var resultDiv = $("#assertionResults-data").first(); 
-//		
-//		if(resultDiv.size() == 0){
-//			$(window).off("scroll", scrollSearchHandler);
-//		}
-//		else if(($(window).height() + document.body.scrollTop) > ($(document).height() - 30))
-//		{
-//			//$("#moreSearchResults").addClass("hide");
-//			//$("#loadingMoreResults").removeClass("hide");
-//			runAssertionSearch(resultDiv.children().size());
-//		}
-//	}
-	
+	/**
+	 * Error function called if the assertion search fails
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method errorSearching
+	 * @private
+	 * @param {String} err
+	 * 			Error message to display
+	 */
 	function errorSearching(err){
 		if(err == undefined)
-			err = "Unable to Connect to Server for Competency Search";
+			err = "Unable to Connect to Server for Assertion Search";
 		
 		ViewManager.getView("#competencySearchMessageContainer").displayAlert(err, "searchFail");
 		
@@ -90,10 +141,14 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 		
 	}
 	
-	function viewCompetency(competency){
-		ScreenManager.changeScreen(new CompetencyViewScreen(competency));
-	}
-	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method display
+	 * @param {String} containerId
+	 * 			Screen Container DOM ID
+	 */
 	AssertionSearchScreen.prototype.display = function(containerId)
 	{
 		var lastViewed = this.lastViewed;
@@ -106,50 +161,55 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new AssertionEditScreen(datum));
 			},
-			buildData:function(id, datum){
-				var el = $( "<div>"+
-								"<div class='small-5 columns'>" +
-								"<a>Assertion about <span class='datum-competency' style='font-style:italic'></span></a>" +
-								"</div>" + 
-								"<div class='small-2 columns datum-subject'></div>" +
-								"<div class='small-2 columns datum-agent'></div>" +
-								"<div class='small-3 columns datum-owner'></div>" +
-							"</div>");
+			buildDataRow:function(row, id, datum){
+				row.append("<div class='small-5 columns'>" +
+							"<a>Assertion about <span class='datum-competency' style='font-style:italic'></span></a>" +
+							"</div>" + 
+							"<div class='small-2 columns datum-subject'></div>" +
+							"<div class='small-2 columns datum-agent'></div>" +
+							"<div class='small-3 columns datum-owner'></div>");
 				
 				EcCompetency.get(datum.competency, function(competency){
-					$("[data-id='"+datum.id+"']").find(".datum-competency").text(competency.name)
+					$("[data-id='"+datum.id+"']").find(".datum-competency").text(competency.name);
 				}, function(){
-					el.find(".datum-competency").text("Unknown Competency");
+					row.find(".datum-competency").text("Unknown Competency");
 				})
-				el.find(".datum-competency").text("Loading..");
+				row.find(".datum-competency").text("Loading..");
 				
 				
-				var owner = "";
 				for(var i in datum["owner"]){
-					owner+= createContactSmall(datum["owner"][i])+ ", "
+					var trimId = EcRemoteLinkedData.trimVersionFromUrl(id)
+					var idEnd = trimId.split("/")[trimId.split("/").length-1];
+					var elId = idEnd+"-owner-"+i;
+					
+					var ownerEl = $("<span id='"+elId+"'></span>")
+					row.find(".datum-owner").append(ownerEl);
+					
+					ViewManager.showView(new IdentityDisplay(datum["owner"][i]), "#"+elId)
 				}
-				owner = owner.substring(0, owner.length-2);
-				el.find(".datum-owner").html(owner);
 				
 				var agent = datum.getAgent();
-				if(agent == undefined)
-					el.find(".datum-agent").html("by <span style='font-style:italic;'>Unknown</span>");
-				else
-					el.find(".datum-agent").html("by " + createContactSmall(agent.toPem()))
+				if(agent == undefined){
+					row.find(".datum-agent").html("by <span style='font-style:italic;'>Unknown</span>");
+				}else{
+					row.find(".datum-agent").append("<span id='assertion-agent'></span>");
+					ViewManager.showView(new IdentityDisplay(agent.toPem()), "#assertion-agent");
+				}
 				
 				var sub = datum.getSubject();
-				if(sub == undefined)
-					el.find(".datum-subject").html("by <span style='font-style:italic;'>Unknown</span>");
-				else
-					el.find(".datum-subject").html("on " + createContactSmall(sub.toPem()))
+				if(sub == undefined){
+					row.find(".datum-subject").html("by <span style='font-style:italic;'>Unknown</span>");
+				}else{
+					row.find(".datum-subject").html("on <span id='assertion-subject'></span>");
+					ViewManager.showView(new IdentityDisplay(sub.toPem()), "#assertion-subject");
+				}
 				
 				
-				el.find("a").click(function(ev){
+				row.find("a").click(function(ev){
 					ev.preventDefault();
 					ScreenManager.changeScreen(new AssertionViewScreen(datum));
-				})
+				});
 				
-				return el.children();
 			}
 		}), "#assertionSearchResults");
 		
