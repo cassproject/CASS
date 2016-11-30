@@ -133,11 +133,12 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
      *  @return {boolean} true if owned, false if not owned by the current user
      */
     prototype.owns = function(data) {
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
-                return true;
+        if ((data)["hasOwner"] != null) 
+            for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
+                    return true;
+                }
             }
-        }
         return false;
     };
     /**

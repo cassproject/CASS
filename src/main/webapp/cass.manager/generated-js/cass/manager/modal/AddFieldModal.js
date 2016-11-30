@@ -9,17 +9,17 @@
 var AddFieldModal = /**
  *  @constructor
  *  @param {Object} field
- *  @param {String} repoEditContainer
+ *  @param {String} repoEditContainerId
  */
-function(field, repoEditContainer) {
+function(field, repoEditContainerId) {
     EcModal.call(this);
     this.field = field;
-    this.repoEditContainer = repoEditContainer;
+    this.repoEditContainerId = repoEditContainerId;
 };
 AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
     prototype.field = null;
-    prototype.repoEditContainer = null;
+    prototype.repoEditContainerId = null;
     prototype.getModalSize = function() {
         return this.modalSize;
     };

@@ -11,7 +11,7 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
     prototype.getHtmlLocation = function() {
         return "partial/screen/relationshipEdit.html";
     };
-}, {data: "Object", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {

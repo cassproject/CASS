@@ -1,5 +1,22 @@
+/**
+ * Modal to indicate to the user that another user has shared 
+ * contact information with them via a ContactGrant 
+ * 
+ * @module cass.manager
+ * @class ContactAcceptModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var ContactAcceptModal = (function(ContactAcceptModal){	
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf ContactAcceptModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	ContactAcceptModal.prototype.display = function(containerId)
 	{
 		var me = this;

@@ -58,6 +58,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
                     $("[ec-container='rollupRule']").text("None.");
                 me.getData().relations(AppController.repoInterface, function(p1) {
                     me.autoFill(me.autoAppend($("[ec-container='relation']"), "relation"), p1);
+                    me.bindControls();
                 }, (me)["errorFindingRelations"], function(p1) {
                     if (p1.length == 0) 
                         $("[ec-container='relation']").text("None.");
@@ -71,7 +72,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         this.mc.displayAlert(err, "getFramework");
     };
     prototype.bindControls = function() {};
-}, {data: "Object", mc: "MessageContainer", data: "Object", nameToTemplate: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0"}, {});
+}, {data: "Object", mc: "MessageContainer", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {

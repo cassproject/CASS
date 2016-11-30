@@ -323,14 +323,15 @@ var DataViewer = (function(DataViewer){
 		
 		row.append(dataSelect);
 		
-		if(datum.isAny(EcEncryptedValue.getTypes())){
-			var lockIcon = $("<i class='fa fa-lock fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
-			row.append(lockIcon);
-		}else if(datum.privateEncrypted == true){
-			var lockIcon = $("<i class='fa fa-unlock-alt fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
-			row.append(lockIcon);
+		if(datum.isAny != undefined){
+			if(datum.isAny(new EcEncryptedValue().getTypes())){
+				var lockIcon = $("<i class='fa fa-lock fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
+				row.append(lockIcon);
+			}else if(EcEncryptedValue.encryptOnSave(datum.id) == true){
+				var lockIcon = $("<i class='fa fa-unlock-alt fake-a' style='position: absolute;top: 33%;left: 37px;color: #2A3A2B;'></i>");
+				row.append(lockIcon);
+			}
 		}
-		
 		
 		
 		row.on("click", ".datum-select", function(ev){
@@ -738,7 +739,7 @@ var DataViewer = (function(DataViewer){
 				callbacks["clickMenuPermissions"](selected);
 			}else{
 				ModalManager.showModal(new AdvancedPermissionsModal(selected, function(data){
-					if(!data instanceof Array){
+					if(! (data instanceof Array)){
 						data = [data]
 					}
 						
@@ -902,7 +903,7 @@ var DataViewer = (function(DataViewer){
 				
 				$(".dataViewMenu .dataViewSelected").text($(".dataView").find(".datum-select:checked").size());
 				
-				if(!$("#"+prefix+"-menu").is(":visible")){
+				if(!$("#"+prefix+"-menu").is(":visible") && menu != undefined){
 					$("#"+prefix+"-menu").slideDown();
 				}
 				

@@ -1,5 +1,21 @@
+/**
+ * Modal for viewing evidence details
+ * 
+ * @module cass.manager
+ * @class EvidenceViewModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var EvidenceViewModal = (function(EvidenceViewModal){	
 	
+	/**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf EvidenceViewModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
 	EvidenceViewModal.prototype.display = function(containerId)
 	{
 		var evidence = this.evidence;

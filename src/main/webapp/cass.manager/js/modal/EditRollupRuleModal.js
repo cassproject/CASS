@@ -1,5 +1,22 @@
+/**
+ * Form for editing rollup rule details
+ * 
+ * @module cass.manager
+ * @class EditRollupRuleModal
+ * 
+ * @author devlin.junker@eduworks.com
+ */
 var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
+	/**
+	 * Displays errors if they occur when trying to save rollup rule
+	 * 
+	 * @memberOf EditLevelModal
+	 * @method saveLevelFail
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
     function saveRollupRuleFail(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Save RollupRule";
@@ -7,6 +24,15 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
         ViewManager.getView("#editRollupRuleError").displayAlert(err);
     }
 
+    /**
+	 * Displays errors if they occur when trying to delete rollup rule
+	 * 
+	 * @memberOf EditLevelModal
+	 * @method saveLevelFail
+	 * @private
+	 * @param {String} err
+	 * 			Error to display 
+	 */
     function errorDeleting(err) {
         if (err == undefined)
             err = "Unable to Connect to Server to Delete RollupRule";
@@ -14,6 +40,14 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
         ViewManager.getView("#editRollupRuleError").displayAlert(err);
     }
 
+    /**
+	 * Overridden display function, called once html partial is loaded into DOM
+	 * 
+	 * @memberOf EditRollupRuleModal
+	 * @method display
+	 * @param {String} containerId
+	 * 			The DOM ID of the Modal Container this modal is displayed in
+	 */
     EditRollupRuleModal.prototype.display = function (containerId) {
         var data = this.data;
         var modalCloseCallback = this.closeCallback;
@@ -35,8 +69,11 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
                 var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem()
 
-                var contact = $(createContactSmall(pem));
-                $("#editRollupRuleOwnership").append(contact);
+                
+                $("#editRollupRuleOwnership").append("<span id='rule-owner-"+i+"'></span>");
+				
+				ViewManager.showView(new IdentityDisplay(pem), "#rule-owner-"+i);
+                
 
                 $("#editRollupRuleAdvancedOwnership").removeClass("hide");
                 $("#editRollupRuleAdvancedOwnership").click(function (ev) {
@@ -55,7 +92,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                     }
 
                     if (!$("#editRollupRuleVisibilityRow").hasClass("hide")) {
-                        rollupRule.privateEncrypted = true;
+                    	EcEncryptedValue.encryptOnSave(rollupRule.id, true);
                         var readers = $("#editRollupRuleReaders").children().map(function (idx, el) {
                             return $(el).find(".contactText").attr("title");
                         })
@@ -81,14 +118,15 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
                                     var pem = permissionedRollupRule.owner[i];
 
-                                    var contact = $(createContactSmall(pem));
-                                    $("#editRollupRuleOwnership").append(contact);
+                                    $("#editRollupRuleOwnership").append("<span id='rule-owner-"+i+"'></span>");
+                    				
+                    				ViewManager.showView(new IdentityDisplay(pem), "#rule-owner-"+i);
                                 }
                             } else {
                                 $("#editRollupRuleOwnership").text("Public");
                             }
 
-                            if (permissionedRollupRule.privateEncrypted) {
+                            if (EcEncryptedValue.encryptOnSave(permissionedRollupRule.id)) {
                                 $("#editRollupRuleVisibilityRow").removeClass("hide");
                                 $("#editRollupRuleReadersRow").removeClass("hide");
 
@@ -102,8 +140,9 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
                                         var pem = permissionedRollupRule.reader[i];
 
-                                        var contact = $(createContactSmall(pem));
-                                        $("#editRollupRuleReaders").append(contact);
+                                        $("#editRollupRuleReaders").append("<span id='rule-reader-"+i+"'></span>");
+                        				
+                        				ViewManager.showView(new IdentityDisplay(pem), "#rule-reader-"+i);
                                     }
                                 } else {
                                     $("#editRollupRuleReaders").text("None Added Yet");
@@ -144,7 +183,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                 }
 
                 if (!$("#editRollupRuleVisibilityRow").hasClass("hide")) {
-                    rollupRule.privateEncrypted = true;
+                	EcEncryptedValue.encryptOnSave(rollupRule.id, true);
                     var readers = $("#editRollupRuleReaders").children().map(function (idx, el) {
                         return $(el).find(".contactText").attr("title");
                     })
@@ -176,7 +215,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
             $("#editRollupRuleDescription").val(data.description);
             $("#editRollupRuleOutcome").val(data.outcome);
 
-            if (data.privateEncrypted == true) {
+            if (EcEncryptedValue.encryptOnSave(data.id) == true) {
                 $("#editRollupRuleVisibilityRow").removeClass("hide");
                 $("#editRollupRuleReadersRow").removeClass("hide");
 
@@ -190,8 +229,9 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
                         var pem = data.reader[i];
 
-                        var contact = $(createContactSmall(pem));
-                        $("#editRollupRuleReaders").append(contact);
+                        $("#editRollupRuleReaders").append("<span id='rule-reader-"+i+"'></span>");
+        				
+        				ViewManager.showView(new IdentityDisplay(pem), "#rule-reader-"+i);
                     }
                 } else {
                     $("#editRollupRuleReaders").text("None Added Yet");
@@ -206,9 +246,10 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                         $("#editRollupRuleOwnership").append(", ");
 
                     var pem = data.owner[i];
-
-                    var contact = $(createContactSmall(pem));
-                    $("#editRollupRuleOwnership").append(contact);
+                    
+                    $("#editRollupRuleReaders").append("<span id='rule-owner-"+i+"'></span>");
+    				
+    				ViewManager.showView(new IdentityDisplay(pem), "#rule-owner-"+i);
                 }
             }
 
@@ -239,7 +280,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                         }
 
                         if (!$("#editRollupRuleVisibilityRow").hasClass("hide")) {
-                            data.privateEncrypted = true;
+                        	EcEncryptedValue.encryptOnSave(data.id, true);
                             var readers = $("#editRollupRuleReaders").children().map(function (idx, el) {
                                 return $(el).find(".contactText").attr("title");
                             })
@@ -250,7 +291,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                         }
 
                         ModalManager.showModal(new AdvancedPermissionsModal(data, function (permissionedRollupRule) {
-                            if (permissionedRollupRule.privateEncrypted) {
+                            if (EcEncryptedValue.encryptOnSave(permissionedRollupRule.id)) {
                                 $("#editRollupRuleVisibilityRow").removeClass("hide");
                                 $("#editRollupRuleReadersRow").removeClass("hide");
 
@@ -259,10 +300,14 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                                     $("#editRollupRuleReaders").css("font-style", "normal");
 
                                     for (var i = 0; i < permissionedRollupRule.reader.length; i++) {
-                                        var pem = permissionedRollupRule.reader[i];
+                                        if(i > 0)
+                                        	$("#editRollupRuleReaders").append(", ");
+                                        
+                                    	var pem = permissionedRollupRule.reader[i];
 
-                                        var contact = $(createContactSmall(pem));
-                                        $("#editRollupRuleReaders").append(contact);
+                                        $("#editRollupRuleReaders").append("<span id='rule-reader-"+i+"'></span>");
+                        				
+                        				ViewManager.showView(new IdentityDisplay(pem), "#rule-reader-"+i);
                                     }
                                 } else {
                                     $("#editRollupRuleReaders").text("None Added Yet");
@@ -297,7 +342,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
                     }
 
                     if (!$("#editRollupRuleVisibilityRow").hasClass("hide")) {
-                        data.privateEncrypted = true;
+                    	EcEncryptedValue.encryptOnSave(data.id, true);
                         var readers = $("#editRollupRuleReaders").children().map(function (idx, el) {
                             return $(el).find(".contactText").attr("title");
                         })

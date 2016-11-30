@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -741,6 +740,7 @@
                       <li><a href="#props_OVERLAY_CLOSE_BTN_ID">OVERLAY_CLOSE_BTN_ID</a></li>
                       <li><a href="#props_OVERLAY_CONTAINER_ID">OVERLAY_CONTAINER_ID</a></li>
                       <li><a href="#props_OVERLAY_WRAPPER_ID">OVERLAY_WRAPPER_ID</a></li>
+                      <li><a href="#props_refreshOnOverlayClose">refreshOnOverlayClose</a></li>
                       <li><a href="#props_startupOverlay">startupOverlay</a></li>
                       <li><a href="#props_startupOverlayCallbacks">startupOverlayCallbacks</a></li>
                   </ul>
@@ -769,7 +769,7 @@
 
         <div id="main" class="yui3-u">
             <div class="content"><div class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l797"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:797</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l984"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:984</code></a></span>
     <h1 class="class-name">OverlayManager</h1>
 </div>
 
@@ -882,6 +882,21 @@ the previous screen) with a few helper functions for managing overlays</p>
             </div>
             <div class="short-description">
               <p>DOM Selector of the overlay wrapper (Should contain the overlay container and overlay close button)</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="property-name ">
+              <a href="#props_refreshOnOverlayClose">refreshOnOverlayClose</a>: Boolean
+            </div>
+            <div class="short-description">
+              <p>Application flag to change the screen to the same screen on overlay close.</p>
             </div>
           </td>
         </tr>
@@ -1007,7 +1022,7 @@ the previous screen) with a few helper functions for managing overlays</p>
         <h2 id="public-properties">Public Properties</h2>
 <div class="property item">
   <div id="props_inOverlay" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l861"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:861</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1048"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1048</code></a></span>
     <h3 class="">
       public
       
@@ -1023,7 +1038,7 @@ the previous screen) with a few helper functions for managing overlays</p>
 </div>
 <div class="property item">
   <div id="props_lastScreen" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l879"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:879</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1073"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1073</code></a></span>
     <h3 class="">
       public
       
@@ -1040,7 +1055,7 @@ we'll make sure to go back to the last screen that was visible to the user</p>
 </div>
 <div class="property item">
   <div id="props_lastScreenParams" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l887"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:887</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1081"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1081</code></a></span>
     <h3 class="">
       public
       
@@ -1056,7 +1071,7 @@ we'll make sure to go back to the last screen that was visible to the user</p>
 </div>
 <div class="property item">
   <div id="props_OVERLAY_CLOSE_BTN_ID" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l819"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:819</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1006"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1006</code></a></span>
     <h3 class="">
       public
       
@@ -1072,7 +1087,7 @@ we'll make sure to go back to the last screen that was visible to the user</p>
 </div>
 <div class="property item">
   <div id="props_OVERLAY_CONTAINER_ID" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l826"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:826</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1013"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1013</code></a></span>
     <h3 class="">
       public
       
@@ -1088,7 +1103,7 @@ we'll make sure to go back to the last screen that was visible to the user</p>
 </div>
 <div class="property item">
   <div id="props_OVERLAY_WRAPPER_ID" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l812"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:812</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l999"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:999</code></a></span>
     <h3 class="">
       public
       
@@ -1103,8 +1118,24 @@ we'll make sure to go back to the last screen that was visible to the user</p>
 
 </div>
 <div class="property item">
+  <div id="props_refreshOnOverlayClose" class="title">
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1055"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1055</code></a></span>
+    <h3 class="">
+      public
+      
+      
+      refreshOnOverlayClose: Boolean
+    </h3>
+  </div>
+
+
+  <div class="property-description"><p>Application flag to change the screen to the same screen on overlay close.</p>
+</div>
+
+</div>
+<div class="property item">
   <div id="props_startupOverlay" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l833"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:833</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1020"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1020</code></a></span>
     <h3 class="">
       public
       
@@ -1121,7 +1152,7 @@ the URL to check what should be displayed on start)</p>
 </div>
 <div class="property item">
   <div id="props_startupOverlayCallbacks" class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l841"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:841</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1028"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1028</code></a></span>
     <h3 class="">
       public
       
@@ -1144,7 +1175,7 @@ immediately when the application starts</p>
     <h2 id="public-methods">Public Methods</h2>
 <div class="method item">
     <div id="method_addStartupOverlayCallback" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l849"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:849</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1036"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1036</code></a></span>
         <h3 class="">
             public
             
@@ -1194,7 +1225,7 @@ be defined in the overlay)</p>
 </div>
 <div class="method item">
     <div id="method_getCurrentOverlay" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l868"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:868</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1062"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1062</code></a></span>
         <h3 class="">
             public
             
@@ -1222,7 +1253,7 @@ be defined in the overlay)</p>
 </div>
 <div class="method item">
     <div id="method_hideOverlay" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l926"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:926</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1120"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1120</code></a></span>
         <h3 class="">
             public
             
@@ -1244,7 +1275,7 @@ back button and be shown the last overlay.</p>
 </div>
 <div class="method item">
     <div id="method_showOverlay" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l894"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:894</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.ui.framework.js.html#l1088"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.ui.framework.js:1088</code></a></span>
         <h3 class="">
             public
             

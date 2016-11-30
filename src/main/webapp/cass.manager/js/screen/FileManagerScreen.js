@@ -165,7 +165,7 @@ FileManagerScreen = (function(FileManagerScreen){
 	        file.generateId(AppController.repoInterface.selectedServer)
 	    	
 	        if(encrypt){
-	        	file.privateEncrypted = true;
+	        	EcEncryptedValue.encryptOnSave(file.id, true);
 	        	file.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
 	        }
 	        	

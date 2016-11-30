@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -947,15 +946,41 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
         return EcView.urlParameters();
     };
     /**
-     *  Returns the URL parameters of the browser window
+     *  Returns the URL Query parameters of the browser window
      *  
      *  @memberOf EcView
      *  @method urlParameters
      *  @static
      *  @return {Map&lt;String, String&gt;}
-     *  			URL Parameters in a map
+     *  			URL Query Parameters in a map
      */
-    constructor.urlParameters = function() {
+    constructor.queryParams = function() {
+        if (window.document.location.search == null) 
+            return new Object();
+        var hashSplit = (window.document.location.search.split(&quot;?&quot;));
+        if (hashSplit.length &gt; 1) {
+            var o = null;
+            var params = (o = new Object());
+            var paramString = hashSplit[1];
+            var parts = (paramString).split(&quot;&amp;&quot;);
+            for (var i = 0; i &lt; parts.length; i++) 
+                params[parts[i].split(&quot;=&quot;)[0]] = parts[i].replace(parts[i].split(&quot;=&quot;)[0] + &quot;=&quot;, &quot;&quot;);
+            return o;
+        }
+        return new Object();
+    };
+    /**
+     *  Returns the URL Hash parameters of the browser window
+     *  
+     *  @memberOf EcView
+     *  @method urlParameters
+     *  @static
+     *  @return {Map&lt;String, String&gt;}
+     *  			URL Hash Parameters in a map
+     */
+    constructor.hashParams = function() {
+        if (window.document.location.hash == null) 
+            return new Object();
         var hashSplit = (window.document.location.hash.split(&quot;?&quot;));
         if (hashSplit.length &gt; 1) {
             var o = null;
@@ -967,6 +992,23 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
             return o;
         }
         return new Object();
+    };
+    /**
+     *  Returns the URL parameters of the browser window
+     *  
+     *  @memberOf EcView
+     *  @method urlParameters
+     *  @static
+     *  @return {Map&lt;String, String&gt;}
+     *  			URL Parameters in a map
+     */
+    constructor.urlParameters = function() {
+        var params = EcView.hashParams();
+        var queryParams = EcView.queryParams();
+        for (var key in (queryParams)) {
+            (params)[key] = (queryParams)[key];
+        }
+        return params;
     };
 }, {}, {});
 /**
@@ -1126,7 +1168,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
     /**
      *  Name that identifies a certain type of screen, shown in the URL bar to
      *  help the user understand the page that they are on and used during
-     *  startup to decide whether or not to load a specifici page on startup.
+     *  startup to decide whether or not to load a specific page on startup.
      *  
      *  @property displayName
      *  @type string
@@ -1142,8 +1184,152 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
     prototype.getDisplayName = function() {
         return this.displayName;
     };
+    prototype.failure = null;
     prototype.setData = function(data) {};
-}, {}, {});
+    prototype.autoFill = function(scope, obj) {
+        var props = (obj);
+        for (var key in props) {
+            this.fillInnerString(scope, obj, key);
+        }
+        for (var key in props) {
+            this.fillInnerStringReferences(scope, obj, key);
+        }
+        for (var key in props) {
+            this.fillInnerArray(scope, obj, key);
+        }
+    };
+    prototype.fillInnerString = function(scope, dataObj, key) {
+        var a = (dataObj);
+        var v = a[key];
+        var textTypes = &quot;[ec-field=&#x27;&quot; + key + &quot;&#x27;]&quot;;
+        if ((typeof v) == &quot;string&quot;) {
+            var s = v;
+            var textFieldTypes = scope.find(textTypes);
+            var attrFieldTypes = scope.find(&quot;[ec-attr-&quot; + key + &quot;]&quot;);
+            textFieldTypes.text(v).val(v);
+            attrFieldTypes.attr(key, v);
+            attrFieldTypes.attr(key.toLowerCase(), v);
+            if (scope.is(&quot;[ec-field=&#x27;&quot; + key + &quot;&#x27;]&quot;)) 
+                scope.text(v);
+            if (scope.is(&quot;[ec-attr-&quot; + key + &quot;]&quot;)) {
+                scope.attr(key, v);
+                scope.attr(key.toLowerCase(), v);
+            }
+        }
+        if ((typeof v) == &quot;function&quot;) {
+            if ((v)[&quot;length&quot;] == 0) {
+                var textFieldTypes = scope.find(textTypes);
+                var attrFieldTypes = scope.find(&quot;[ec-attr-&quot; + key + &quot;]&quot;);
+                if (textFieldTypes.length + attrFieldTypes.length &gt; 0) {
+                    v = (v).apply(dataObj, new Array(0));
+                    textFieldTypes.text(v).val(v);
+                    attrFieldTypes.attr(key, v);
+                    attrFieldTypes.attr(key.toLowerCase(), v);
+                }
+            }
+        }
+    };
+    prototype.fillInnerStringReferences = function(scope, dataObj, key) {
+        var a = (dataObj);
+        var v = a[key];
+        if ((typeof v) == &quot;string&quot;) {
+            var s = v;
+            var referenceTypes = scope.find(&quot;[ec-reference=&#x27;&quot; + key + &quot;&#x27;]&quot;);
+            if (referenceTypes.length &gt; 0) {
+                if (s.startsWith(&quot;http&quot;)) {
+                    var p1 = EcRepository.getBlocking(s);
+                    this.autoFill(referenceTypes, p1);
+                }
+            }
+        }
+        if ((typeof v) == &quot;function&quot;) {}
+    };
+    prototype.fillInnerArray = function(scope, dataObj, key) {
+        var props = (dataObj);
+        var v = props[key];
+        if (EcArray.isArray(v)) {
+            var containers = scope.find(&quot;[ec-container~=&#x27;&quot; + key + &quot;&#x27;]&quot;);
+            for (var idx = 0; idx &lt; containers.length; idx++) {
+                var container = containers.eq(idx);
+                var array = v;
+                for (var i = 0; i &lt; array.length; i++) {
+                    this.fillInnerArrayContainer(scope, dataObj, key, props, container, array, i);
+                }
+            }
+        }
+    };
+    prototype.fillInnerArrayContainer = function(scope, dataObj, key, props, container, array, i) {
+        var arrayValue = array[i];
+        if (arrayValue.toLowerCase().startsWith(&quot;http&quot;)) {
+            var p1 = EcRepository.getBlocking(arrayValue);
+            if (this.shouldFillInnerArray(props, container, p1)) {
+                var newContainer = null;
+                newContainer = container.find(&quot;[ec-template=&#x27;&quot; + key + &quot;&#x27;][id=&#x27;&quot; + (p1)[&quot;id&quot;] + &quot;&#x27;]&quot;);
+                if (newContainer.length == 0) 
+                    newContainer = this.autoAppend(container, key);
+                this.autoFill(newContainer, p1);
+                for (var k2 in props) {
+                    this.fillInnerArray(newContainer, dataObj, k2);
+                }
+            }
+        } else if (arrayValue.trim().startsWith(&quot;{&quot;)) {
+            var c = this.autoAppend(scope, key);
+            this.autoFill(c, JSON.parse(arrayValue));
+        } else {
+            var c = this.autoAppend(scope, key);
+            c.text(arrayValue);
+        }
+    };
+    prototype.shouldFillInnerArray = function(a, container, p1) {
+        var attributes = container[0].attributes;
+        var found = false;
+        var ok = false;
+        for (var j = 0; j &lt; attributes.length; j++) {
+            var attr = attributes[j];
+            if (attr.name.startsWith(&quot;ec-condition-&quot;)) {
+                found = true;
+                var parts = (attr.name.replace(&quot;ec-condition-&quot;, &quot;&quot;)).split(&quot;-&quot;);
+                var parentKey = parts[0];
+                var childKey = parts[1];
+                var parentValue = container.attr(parentKey);
+                var childValue = (p1)[childKey];
+                if ((typeof childValue) == &quot;function&quot;) 
+                    childValue = (childValue).apply(p1, new Array(0));
+                if (parentValue == childValue) 
+                    ok = true;
+            }
+        }
+        if (!found) 
+            return true;
+        if (found &amp;&amp; !ok) 
+            return false;
+        if (found &amp;&amp; ok) 
+            return true;
+        return false;
+    };
+    prototype.autoRemove = function(from, template) {
+        from.find(&quot;[ec-template=&#x27;&quot; + template + &quot;&#x27;]&quot;).remove();
+    };
+    prototype.autoAppend = function(from, template) {
+        if (from.is(&quot;[ec-container~=&#x27;&quot; + template + &quot;&#x27;]&quot;)) {
+            return from.append((this.nameToTemplate)[template]).children().last();
+        }
+        return from.find(&quot;[ec-container~=&#x27;&quot; + template + &quot;&#x27;]&quot;).append((this.nameToTemplate)[template]).children().last();
+    };
+    prototype.nameToTemplate = null;
+    prototype.autoConfigure = function(jQueryCore) {
+        if (this.nameToTemplate == null) 
+            this.nameToTemplate = new Object();
+        var me = this;
+        jQueryCore.find(&quot;[ec-template]&quot;).each(function(p1, p2) {
+            me.autoConfigure($(p2));
+            if ((me.nameToTemplate)[p2.getAttribute(&quot;ec-template&quot;)] == null) {
+                (me.nameToTemplate)[p2.getAttribute(&quot;ec-template&quot;)] = (p2)[&quot;outerHTML&quot;];
+                p2.parentNode.removeChild(p2);
+            }
+        });
+    };
+}, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, nameToTemplate: &quot;Object&quot;}, {});
 /**
  *  View Manager child class that manages loading &quot;screen&quot;s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
@@ -1184,7 +1370,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         prototype.getHtmlLocation = function() {
             return null;
         };
-    }, {}, {}))();
+    }, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, nameToTemplate: &quot;Object&quot;}, {}))();
     /**
      *  Screen to be set by application on application startup, dictates what the screen should be if the startup
      *  Screen hasn&#x27;t been set
@@ -1522,12 +1708,12 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
 var EcOverlay = function() {
     EcScreen.call(this);
 };
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {}, {});
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, nameToTemplate: &quot;Object&quot;}, {});
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays
  *  
- *  @module com.eduuworks.ec.ui
+ *  @module com.eduworks.ec.ui
  *  @class OverlayManager
  *  @extends ScreenManager
  *  
@@ -1594,6 +1780,13 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
      *  @type boolean
      */
     constructor.inOverlay = false;
+    /**
+     *  Application flag to change the screen to the same screen on overlay close.
+     *  
+     *  @property refreshOnOverlayClose
+     *  @type boolean
+     */
+    constructor.refreshOnOverlayClose = true;
     /**
      *  Retrieves the current view that corresponds to the Overlay Container Element (Should be a Overlay)
      *  
@@ -1663,8 +1856,9 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
     constructor.hideOverlay = function() {
         $(OverlayManager.OVERLAY_WRAPPER_ID).fadeOut();
         OverlayManager.inOverlay = false;
-        if (ScreenManager.myHistory.length &lt;= 2) 
+        if (ScreenManager.myHistory.length &lt;= 2 &amp;&amp; OverlayManager.refreshOnOverlayClose) 
             OverlayManager.changeScreen(OverlayManager.lastScreen, null, OverlayManager.lastScreenParams, null);
+        ViewManager.setView(OverlayManager.OVERLAY_CONTAINER_ID, null);
     };
 }, {startupOverlay: &quot;EcOverlay&quot;, startupOverlayCallbacks: {name: &quot;Array&quot;, arguments: [{name: &quot;Callback1&quot;, arguments: [null]}]}, lastScreen: &quot;EcScreen&quot;, lastScreenParams: &quot;Object&quot;, myHistory: {name: &quot;Array&quot;, arguments: [&quot;HistoryClosure&quot;]}, LOADING_STARTUP_PAGE: &quot;EcScreen&quot;, defaultScreen: &quot;EcScreen&quot;, startupScreen: &quot;EcScreen&quot;, startupCallback: {name: &quot;Callback1&quot;, arguments: [null]}, loadHistoryCallback: {name: &quot;Callback2&quot;, arguments: [&quot;EcScreen&quot;, &quot;Object&quot;]}, startupScreenCallbacks: {name: &quot;Array&quot;, arguments: [&quot;Callback0&quot;]}, viewMap: {name: &quot;Map&quot;, arguments: [null, &quot;EcView&quot;]}}, {});
 (function() {

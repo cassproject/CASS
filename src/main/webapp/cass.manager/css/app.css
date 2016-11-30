@@ -635,3 +635,11 @@ li.cass-competency-level:before {
 .identityKey .fa-pencil:hover{
 	color:grey;
 }
+
+.competencyRelations .relation .relationViewLink{
+	display:none;
+}
+
+.competencyRelations .relation:hover .relationViewLink{
+	display:inline;
+}

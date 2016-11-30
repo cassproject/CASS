@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -809,6 +808,16 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      */
     prototype.toPkcs8Pem = function() {
         return forge.pki.publicKeyToPem(this.pk).replaceAll(&quot;\r?\n&quot;, &quot;&quot;);
+    };
+    /**
+     *  Hashes the public key into an SSH compatible fingerprint.
+     *  @method toHash
+     *  @return {string} Public key fingerprint.
+     */
+    prototype.fingerprint = function() {
+        var o = new Object();
+        (o)[&quot;encoding&quot;] = &quot;hex&quot;;
+        return forge.ssh.getPublicKeyFingerprint(this.pk, o);
     };
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
@@ -4427,6 +4436,301 @@ EcAes = stjs.extend(EcAes, null, [], function(constructor, prototype) {
         return forge.util.encode64(forge.random.getBytesSync(i));
     };
 }, {}, {});
+/**
+ * Functions to output keys in SSH-friendly formats.
+ *
+ * This is part of the Forge project which may be used under the terms of
+ * either the BSD License or the GNU General Public License (GPL) Version 2.
+ *
+ * See: https://github.com/digitalbazaar/forge/blob/cbebca3780658703d925b61b2caffb1d263a6c1d/LICENSE
+ *
+ * @author https://github.com/shellac
+ */
+(function() {
+/* ########## Begin module implementation ########## */
+function initModule(forge) {
+
+var ssh = forge.ssh = forge.ssh || {};
+
+/**
+ * Encodes (and optionally encrypts) a private RSA key as a Putty PPK file.
+ *
+ * @param privateKey the key.
+ * @param passphrase a passphrase to protect the key (falsy for no encryption).
+ * @param comment a comment to include in the key file.
+ *
+ * @return the PPK file as a string.
+ */
+ssh.privateKeyToPutty = function(privateKey, passphrase, comment) {
+  comment = comment || &#x27;&#x27;;
+  passphrase = passphrase || &#x27;&#x27;;
+  var algorithm = &#x27;ssh-rsa&#x27;;
+  var encryptionAlgorithm = (passphrase === &#x27;&#x27;) ? &#x27;none&#x27; : &#x27;aes256-cbc&#x27;;
+
+  var ppk = &#x27;PuTTY-User-Key-File-2: &#x27; + algorithm + &#x27;\r\n&#x27;;
+  ppk += &#x27;Encryption: &#x27; + encryptionAlgorithm + &#x27;\r\n&#x27;;
+  ppk += &#x27;Comment: &#x27; + comment + &#x27;\r\n&#x27;;
+
+  // public key into buffer for ppk
+  var pubbuffer = forge.util.createBuffer();
+  _addStringToBuffer(pubbuffer, algorithm);
+  _addBigIntegerToBuffer(pubbuffer, privateKey.e);
+  _addBigIntegerToBuffer(pubbuffer, privateKey.n);
+
+  // write public key
+  var pub = forge.util.encode64(pubbuffer.bytes(), 64);
+  var length = Math.floor(pub.length / 66) + 1; // 66 = 64 + \r\n
+  ppk += &#x27;Public-Lines: &#x27; + length + &#x27;\r\n&#x27;;
+  ppk += pub;
+
+  // private key into a buffer
+  var privbuffer = forge.util.createBuffer();
+  _addBigIntegerToBuffer(privbuffer, privateKey.d);
+  _addBigIntegerToBuffer(privbuffer, privateKey.p);
+  _addBigIntegerToBuffer(privbuffer, privateKey.q);
+  _addBigIntegerToBuffer(privbuffer, privateKey.qInv);
+
+  // optionally encrypt the private key
+  var priv;
+  if(!passphrase) {
+    // use the unencrypted buffer
+    priv = forge.util.encode64(privbuffer.bytes(), 64);
+  } else {
+    // encrypt RSA key using passphrase
+    var encLen = privbuffer.length() + 16 - 1;
+    encLen -= encLen % 16;
+
+    // pad private key with sha1-d data -- needs to be a multiple of 16
+    var padding = _sha1(privbuffer.bytes());
+
+    padding.truncate(padding.length() - encLen + privbuffer.length());
+    privbuffer.putBuffer(padding);
+
+    var aeskey = forge.util.createBuffer();
+    aeskey.putBuffer(_sha1(&#x27;\x00\x00\x00\x00&#x27;, passphrase));
+    aeskey.putBuffer(_sha1(&#x27;\x00\x00\x00\x01&#x27;, passphrase));
+
+    // encrypt some bytes using CBC mode
+    // key is 40 bytes, so truncate *by* 8 bytes
+    var cipher = forge.aes.createEncryptionCipher(aeskey.truncate(8), &#x27;CBC&#x27;);
+    cipher.start(forge.util.createBuffer().fillWithByte(0, 16));
+    cipher.update(privbuffer.copy());
+    cipher.finish();
+    var encrypted = cipher.output;
+
+    // Note: this appears to differ from Putty -- is forge wrong, or putty?
+    // due to padding we finish as an exact multiple of 16
+    encrypted.truncate(16); // all padding
+
+    priv = forge.util.encode64(encrypted.bytes(), 64);
+  }
+
+  // output private key
+  length = Math.floor(priv.length / 66) + 1; // 64 + \r\n
+  ppk += &#x27;\r\nPrivate-Lines: &#x27; + length + &#x27;\r\n&#x27;;
+  ppk += priv;
+
+  // MAC
+  var mackey = _sha1(&#x27;putty-private-key-file-mac-key&#x27;, passphrase);
+
+  var macbuffer = forge.util.createBuffer();
+  _addStringToBuffer(macbuffer, algorithm);
+  _addStringToBuffer(macbuffer, encryptionAlgorithm);
+  _addStringToBuffer(macbuffer, comment);
+  macbuffer.putInt32(pubbuffer.length());
+  macbuffer.putBuffer(pubbuffer);
+  macbuffer.putInt32(privbuffer.length());
+  macbuffer.putBuffer(privbuffer);
+
+  var hmac = forge.hmac.create();
+  hmac.start(&#x27;sha1&#x27;, mackey);
+  hmac.update(macbuffer.bytes());
+
+  ppk += &#x27;\r\nPrivate-MAC: &#x27; + hmac.digest().toHex() + &#x27;\r\n&#x27;;
+
+  return ppk;
+};
+
+/**
+ * Encodes a public RSA key as an OpenSSH file.
+ *
+ * @param key the key.
+ * @param comment a comment.
+ *
+ * @return the public key in OpenSSH format.
+ */
+ssh.publicKeyToOpenSSH = function(key, comment) {
+  var type = &#x27;ssh-rsa&#x27;;
+  comment = comment || &#x27;&#x27;;
+
+  var buffer = forge.util.createBuffer();
+  _addStringToBuffer(buffer, type);
+  _addBigIntegerToBuffer(buffer, key.e);
+  _addBigIntegerToBuffer(buffer, key.n);
+
+  return type + &#x27; &#x27; + forge.util.encode64(buffer.bytes()) + &#x27; &#x27; + comment;
+};
+
+/**
+ * Encodes a private RSA key as an OpenSSH file.
+ *
+ * @param key the key.
+ * @param passphrase a passphrase to protect the key (falsy for no encryption).
+ *
+ * @return the public key in OpenSSH format.
+ */
+ssh.privateKeyToOpenSSH = function(privateKey, passphrase) {
+  if(!passphrase) {
+    return forge.pki.privateKeyToPem(privateKey);
+  }
+  // OpenSSH private key is just a legacy format, it seems
+  return forge.pki.encryptRsaPrivateKey(privateKey, passphrase,
+    {legacy: true, algorithm: &#x27;aes128&#x27;});
+};
+
+/**
+ * Gets the SSH fingerprint for the given public key.
+ *
+ * @param options the options to use.
+ *          [md] the message digest object to use (defaults to forge.md.md5).
+ *          [encoding] an alternative output encoding, such as &#x27;hex&#x27;
+ *            (defaults to none, outputs a byte buffer).
+ *          [delimiter] the delimiter to use between bytes for &#x27;hex&#x27; encoded
+ *            output, eg: &#x27;:&#x27; (defaults to none).
+ *
+ * @return the fingerprint as a byte buffer or other encoding based on options.
+ */
+ssh.getPublicKeyFingerprint = function(key, options) {
+  options = options || {};
+  var md = options.md || forge.md.md5.create();
+
+  var type = &#x27;ssh-rsa&#x27;;
+  var buffer = forge.util.createBuffer();
+  _addStringToBuffer(buffer, type);
+  _addBigIntegerToBuffer(buffer, key.e);
+  _addBigIntegerToBuffer(buffer, key.n);
+
+  // hash public key bytes
+  md.start();
+  md.update(buffer.getBytes());
+  var digest = md.digest();
+  if(options.encoding === &#x27;hex&#x27;) {
+    var hex = digest.toHex();
+    if(options.delimiter) {
+      return hex.match(/.{2}/g).join(options.delimiter);
+    }
+    return hex;
+  } else if(options.encoding === &#x27;binary&#x27;) {
+    return digest.getBytes();
+  } else if(options.encoding) {
+    throw new Error(&#x27;Unknown encoding &quot;&#x27; + options.encoding + &#x27;&quot;.&#x27;);
+  }
+  return digest;
+};
+
+/**
+ * Adds len(val) then val to a buffer.
+ *
+ * @param buffer the buffer to add to.
+ * @param val a big integer.
+ */
+function _addBigIntegerToBuffer(buffer, val) {
+  var hexVal = val.toString(16);
+  // ensure 2s complement +ve
+  if(hexVal[0] &gt;= &#x27;8&#x27;) {
+    hexVal = &#x27;00&#x27; + hexVal;
+  }
+  var bytes = forge.util.hexToBytes(hexVal);
+  buffer.putInt32(bytes.length);
+  buffer.putBytes(bytes);
+}
+
+/**
+ * Adds len(val) then val to a buffer.
+ *
+ * @param buffer the buffer to add to.
+ * @param val a string.
+ */
+function _addStringToBuffer(buffer, val) {
+  buffer.putInt32(val.length);
+  buffer.putString(val);
+}
+
+/**
+ * Hashes the arguments into one value using SHA-1.
+ *
+ * @return the sha1 hash of the provided arguments.
+ */
+function _sha1() {
+  var sha = forge.md.sha1.create();
+  var num = arguments.length;
+  for (var i = 0; i &lt; num; ++i) {
+    sha.update(arguments[i]);
+  }
+  return sha.digest();
+}
+
+} // end module implementation
+
+/* ########## Begin module wrapper ########## */
+var name = &#x27;ssh&#x27;;
+if(typeof define !== &#x27;function&#x27;) {
+  // NodeJS -&gt; AMD
+  if(typeof module === &#x27;object&#x27; &amp;&amp; module.exports) {
+    var nodeJS = true;
+    define = function(ids, factory) {
+      factory(require, module);
+    };
+  } else {
+    // &lt;script&gt;
+    if(typeof forge === &#x27;undefined&#x27;) {
+      forge = {};
+    }
+    return initModule(forge);
+  }
+}
+// AMD
+var deps;
+var defineFunc = function(require, module) {
+  module.exports = function(forge) {
+    var mods = deps.map(function(dep) {
+      return require(dep);
+    }).concat(initModule);
+    // handle circular dependencies
+    forge = forge || {};
+    forge.defined = forge.defined || {};
+    if(forge.defined[name]) {
+      return forge[name];
+    }
+    forge.defined[name] = true;
+    for(var i = 0; i &lt; mods.length; ++i) {
+      mods[i](forge);
+    }
+    return forge[name];
+  };
+};
+var tmpDefine = define;
+define = function(ids, factory) {
+  deps = (typeof ids === &#x27;string&#x27;) ? factory.slice(2) : ids.slice(2);
+  if(nodeJS) {
+    delete define;
+    return tmpDefine.apply(null, Array.prototype.slice.call(arguments, 0));
+  }
+  define = tmpDefine;
+  return define.apply(null, Array.prototype.slice.call(arguments, 0));
+};
+define([
+  &#x27;require&#x27;,
+  &#x27;module&#x27;,
+  &#x27;./aes&#x27;,
+  &#x27;./hmac&#x27;,
+  &#x27;./md5&#x27;,
+  &#x27;./sha1&#x27;,
+  &#x27;./util&#x27;
+], function() {
+  defineFunc.apply(null, Array.prototype.slice.call(arguments, 0));
+});
+})();
 var CryptoKey = function() {};
 CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 /**
@@ -7079,6 +7383,42 @@ EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constr
             });
         });
     };
+}, {}, {});
+var EcRsaOaepAsyncNative = function() {};
+EcRsaOaepAsyncNative = stjs.extend(EcRsaOaepAsyncNative, null, [], function(constructor, prototype) {
+    constructor.encrypt = function(pk, text, success, failure) {
+        var base64pk = pk.toPkcs8Pem().replace(&quot;-----BEGIN RSA PUBLIC KEY-----&quot;, &quot;&quot;).replace(&quot;-----END RSA PUBLIC KEY-----&quot;, &quot;&quot;);
+        var keyUsages = new Array();
+        keyUsages.push(&quot;encrypt&quot;);
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = &quot;RSA-OAEP&quot;;
+        algorithm.hash = &quot;SHA-1&quot;;
+        var data;
+        data = str2ab(text);
+        window.crypto.subtle.importKey(&quot;spki&quot;, base64.decode(base64pk), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.encrypt(algorithm, key, data);
+            p.then(function(p1) {
+                success(base64.encode(p1));
+            });
+        });
+    };
+    constructor.decrypt = function(ppk, text, success, failure) {
+        var base64ppk = ppk.toPem().replace(&quot;-----BEGIN RSA PRIVATE KEY-----&quot;, &quot;&quot;).replace(&quot;-----END RSA PRIVATE KEY-----&quot;, &quot;&quot;);
+        var keyUsages = new Array();
+        keyUsages.push(&quot;decrypt&quot;);
+        var algorithm = new AlgorithmIdentifier();
+        algorithm.name = &quot;RSA-OAEP&quot;;
+        algorithm.hash = &quot;SHA-1&quot;;
+        window.crypto.subtle.importKey(&quot;pkcs8&quot;, base64.decode(base64ppk), algorithm, false, keyUsages).then(function(key) {
+            var p = window.crypto.subtle.decrypt(algorithm, key, base64.decode(text));
+            p.then(function(p1) {
+                success(ab2str(p1));
+            });
+        });
+    };
+    constructor.sign = function(ppk, text, success, failure) {};
+    constructor.signSha256 = function(ppk, text, success, failure) {};
+    constructor.verify = function(pk, text, signature, success, failure) {};
 }, {}, {});
 /**
  *  Helper classes for dealing with RSA Private Keys.

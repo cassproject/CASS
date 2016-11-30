@@ -36,13 +36,16 @@ RepoViewScreen = (function(RepoViewScreen){
 			$("#repoViewDeleteBtn").remove();
 		}else{
 			$("#repoViewDeleteBtn").click(function(){
-				EcRepository._delete(data, function(){
-					ScreenManager.changeScreen(new RepoSearchScreen());
-				}, function(err){
-					if(err == undefined)
-						err = "Unable to connect to server to delete item";
-					ViewManager.getView("#repoViewMessageContainer").displayAlert(err)
-				});
+				ModalManager.showModal(new ConfirmModal(function(){
+					EcRepository._delete(data, function(){
+						ScreenManager.changeScreen(new RepoSearchScreen());
+						ModalManager.hideModal();
+					}, function(err){
+						if(err == undefined)
+							err = "Unable to connect to server to delete item";
+						ViewManager.getView("#repoViewMessageContainer").displayAlert(err)
+					});
+	        	}, "Are you sure you want to delete this object?"))
 			})
 		}
 		
@@ -50,7 +53,15 @@ RepoViewScreen = (function(RepoViewScreen){
 			event.preventDefault();
 		})
 		
-		ViewManager.showView(new RepoEdit(data, "#repoViewSaveBtn", "#repoViewMessageContainer"), "#repoViewResult");
+		EcRepository.get(data.id, function (result) {
+            data = result;
+            ViewManager.showView(new RepoEdit(data, "#repoViewSaveBtn", "#repoViewMessageContainer"), "#repoViewResult");
+        }, function(err){
+        	if(err == undefined)
+        		err = "Unable to get object from repository";
+        	
+        	ViewManager.getView("#repoViewMessageContainer").displayAlert(err)
+        });
 	};
 	
 	return RepoViewScreen;

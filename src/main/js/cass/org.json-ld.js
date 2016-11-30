@@ -251,8 +251,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.getTypes = function() {
         var a = new Array();
-        if (this.type != null) 
-            a.push(this.type);
+        if (this.context != null && this.type != null) {
+            var context = (!this.context.endsWith("/") ? this.context + "/" : this.context);
+            a.push(context + this.type);
+        }
         return a;
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});

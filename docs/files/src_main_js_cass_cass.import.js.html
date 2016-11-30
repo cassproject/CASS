@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -1151,13 +1150,14 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var relationTypeKey = tabularData[i][relationTypeIndex];
                 var destKey = tabularData[i][destIndex];
                 if ((CSVImport.importCsvLookup)[sourceKey] == null) 
-                    return;
+                    continue;
                 if ((CSVImport.importCsvLookup)[destKey] == null) 
-                    return;
+                    continue;
                 alignment.source = (CSVImport.importCsvLookup)[sourceKey];
                 alignment.relationType = relationTypeKey;
                 alignment.target = (CSVImport.importCsvLookup)[destKey];
-                alignment.addOwner(owner.ppk.toPk());
+                if (owner != null) 
+                    alignment.addOwner(owner.ppk.toPk());
                 alignment.generateId(serverUrl);
                 relations.push(alignment);
             }

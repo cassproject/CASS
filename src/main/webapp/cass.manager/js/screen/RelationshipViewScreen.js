@@ -28,7 +28,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
 	 */
     function displayRelation(relation) {
 
-        if (relation.privateEncrypted)
+        if (EcEncryptedValue.encryptOnSave(relation.id))
             $("#relationshipViewerPrivateSymbol").removeClass("hide");
         else
             $("#relationshipViewerPrivateSymbol").addClass("hide");
@@ -96,11 +96,11 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             $("#relationshipViewerOwner").text("")
             for (var i = 0; i < relation.owner.length; i++) {
                 if (i > 0)
-                    $("#relationshiperViewerOwner").append(", ");
+                    $("#relationshipViewerOwner").append(", ");
 
                 var pem = relation.owner[i];
 
-                $("#relationshiperViewerOwner").append("<span id='relation-owner-'"+i+"></span>");
+                $("#relationshipViewerOwner").append("<span id='relation-owner-"+i+"'></span>");
                 
                 ViewManager.showView(new IdentityDisplay(pem), "#relation-owner-"+i);
             }

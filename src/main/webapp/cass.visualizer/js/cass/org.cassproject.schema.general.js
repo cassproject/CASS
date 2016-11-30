@@ -87,7 +87,6 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @type string (URL)
      */
     prototype.id = null;
-    prototype.privateEncrypted = null;
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
@@ -179,11 +178,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             delete (d)["@owner"];
             delete (d)["@reader"];
             delete (d)["@id"];
-            delete (d)["privateEncrypted"];
         } else {
             delete (d)["@signature"];
             delete (d)["@id"];
-            delete (d)["privateEncrypted"];
         }
         var e = new EcLinkedData(d.context, d.type);
         e.copyFrom(d);
@@ -389,7 +386,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
                 result += " OR ";
             result += "@type:\"" + types[i] + "\"";
             var lastSlash = types[i].lastIndexOf("/");
-            result += " OR (@context:\"" + types[i].substring(0, lastSlash) + "\" AND @type:\"" + types[i].substring(lastSlash + 1) + "\")";
+            result += " OR (@context:\"" + types[i].substring(0, lastSlash + 1) + "\" AND @type:\"" + types[i].substring(lastSlash + 1) + "\")";
         }
         for (var i = 0; i < types.length; i++) {
             if (result.equals("") == false) 

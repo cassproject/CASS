@@ -1,4 +1,5 @@
 build.xml
+.settings
 *.salt
 *.secret
 *.pem

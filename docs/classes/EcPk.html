@@ -26,8 +26,6 @@
                     <ul>
                             <li><a href="../modules/cass.manager.html">cass.manager</a>
                             </li>
-                            <li><a href="../modules/com.eduuworks.ec.ui.html">com.eduuworks.ec.ui</a>
-                            </li>
                             <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a>
                             </li>
                             <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -61,6 +59,7 @@
                             <li><a href="../classes/AddAction.html">AddAction</a></li>
                             <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
                             <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
+                            <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                             <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                             <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                             <li><a href="../classes/AggregateOffer.html">AggregateOffer</a></li>
@@ -743,6 +742,7 @@
                   <div><a href="#public-methods">Public Methods</a></div>
                   <ul>
                       <li><a href="#method_equals">equals</a></li>
+                      <li><a href="#method_toHash">toHash</a></li>
                       <li><a href="#method_toPem">toPem</a></li>
                       <li><a href="#method_toPem">toPem</a></li>
                       <li><a href="#method_toPem">toPem</a></li>
@@ -828,6 +828,21 @@
             </div>
             <div class="short-description">
               <p>Compares two public keys, and returns true if their PEM forms match.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="method-name ">
+              <a href="#method_toHash">toHash</a>( ): String
+            </div>
+            <div class="short-description">
+              <p>Hashes the public key into an SSH compatible fingerprint.</p>
             </div>
           </td>
         </tr>
@@ -1007,6 +1022,34 @@
         <div>
           <span class="return-type">Boolean</span>
           <span class="return-description"><p>True if the keys match.</p>
+</span>
+        </div>
+      </div>
+
+
+</div>
+<div class="method item">
+    <div id="method_toHash" class="title">
+        <span class="source-link"><a href="../files/src_main_js_cass_ec.crypto.js.html#l84"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:84</code></a></span>
+        <h3 class="">
+            public
+            
+            
+            toHash( ): String
+        </h3>
+    </div>
+
+
+
+    <div class="method-description"><p>Hashes the public key into an SSH compatible fingerprint.</p>
+</div>
+
+
+      <div class="return">
+        <h4>Return:</h4>
+        <div>
+          <span class="return-type">String</span>
+          <span class="return-description"><p>Public key fingerprint.</p>
 </span>
         </div>
       </div>

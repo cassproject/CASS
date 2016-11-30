@@ -36,7 +36,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
                 var pem = competency.owner[i];
 
               
-                $("#competencyEditOwner").append("<span id='competency-owner-'"+i+"></span>");
+                $("#competencyEditOwner").append("<span id='competency-owner-"+i+"'></span>");
                 
                 ViewManager.showView(new IdentityDisplay(pem), "#competency-owner-"+i);
             }
@@ -45,7 +45,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
             $("#competencyEditOwnerAdvanced").hide();
         }
 
-        if (competency.privateEncrypted) {
+        if (EcEncryptedValue.encryptOnSave(competency.id)) {
             if ($("#privateRow").css("display") == "none")
                 $("#privateRow").slideDown();
 
@@ -464,7 +464,6 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {
                 data.owner = dataAfter.owner;
-                data.privateEncrypted = dataAfter.privateEncrypted;
                 data.reader = dataAfter.reader;
 
                 displayCompetency(data);

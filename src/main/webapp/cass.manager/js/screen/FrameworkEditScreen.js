@@ -38,7 +38,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             for (var i = 0; i < framework.owner.length; i++) {
                 var pk = framework.owner[i];
 
-                $("#frameworkEditOwner").append("<span id='framework-owner-'"+i+"></span>");
+                $("#frameworkEditOwner").append("<span id='framework-owner-"+i+"'></span>");
                 
                 ViewManager.showView(new IdentityDisplay(pk), "#framework-owner-"+i);
 
@@ -51,7 +51,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             $("#frameworkEditOwnerAdvanced").addClass("hide");
         }
 
-        if (framework.privateEncrypted) {
+        if (EcEncryptedValue.encryptOnSave(framework.id)) {
             if ($("#privateRow").css("display") == "none")
                 $("#privateRow").slideDown();
 
@@ -61,7 +61,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 for (var i = 0; i < framework.reader.length; i++) {
                     var pk = framework.reader[i];
 
-                    $("#frameworkEditReaders").append("<span id='framework-reader-'"+i+"></span>");
+                    $("#frameworkEditReaders").append("<span id='framework-reader-"+i+"'></span>");
                     
                     ViewManager.showView(new IdentityDisplay(pk), "#framework-reader-"+i);
 
@@ -986,7 +986,6 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {
                 data.owner = dataAfter.owner;
-                data.privateEncrypted = dataAfter.privateEncrypted;
                 data.reader = dataAfter.reader;
 
                 displayFramework(data);
