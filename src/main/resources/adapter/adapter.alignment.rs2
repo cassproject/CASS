@@ -16,8 +16,9 @@ alignments=#add(
 alignments=#httpGet(
 	contentType="application/json",
 	name="data",
+	maxResults="1000",
 	X-NXproperties="*",
-	url=alignments
+	obj=alignments
 ).toObject().get(entries="");
 
 alignments=alignments.forEach(
@@ -25,5 +26,35 @@ alignments=alignments.forEach(
 	array="true",
 	op=#toObject(obj="@result").get(properties="").getByParam(param="activity:competenciesTrained")
 ).union().removeDuplicates().debug();
+
+allAlignments=#add(
+	a="http://192.168.13.38:8021",
+	b="/nuxeo/api/v1/query",
+	c="?query=",
+	d="select%20*%20from%20document"
+);
+
+allAlignments=#httpGet(
+	contentType="application/json",
+	name="data",
+	maxResults="1000",
+	X-NXproperties="*",
+	Authorization="Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y",
+	obj=allAlignments
+).toObject().get(entries="");
+
+allAlignments=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo")).debug();
+allAlignments=allAlignments.union().forEach(
+	paramName="obj",array="true",
+	op=#object(
+		a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
+		b=#toObject(obj="@obj").get(competency="")
+	)
+).collapse(keyKey="a",valueKey="b");
+
+allAlignmentsTest=allAlignments.displayJson();
+/allAlignmentsTest=allAlignmentsTest;
+
+alignments=allAlignments.getByParam(param="@obj");
 
 #getAlignedCompetency=alignments;
