@@ -9,6 +9,7 @@ authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
 objectId=xapiObj.get(object="").get(id="");
 
 xapiActor=xapiObj.get(actor="").toArray(wrap="true").getIndex(index="0");
+xapiVerb=xapiObj.get(verb="").get(id="");
 xapiAuthority=xapiObj.get(authority="").toArray(wrap="true").getIndex(index="0");
 xapiScore=xapiObj.get(result="").get(score="").get(scaled="");
 xapiRaw=xapiObj.get(result="").get(score="").get(raw="");
@@ -107,6 +108,8 @@ convert=objectId.debug(prefix="Object ID:").getAlignedCompetency().debug(prefix=
 
 convert=#if(operator=actorMbox,operand="",eq=#object(msg=#add(a="Actor has no mailbox: ",b=xapiActor.toString())).get(a=""),ne=convert);
 convert=#if(operator=authorityMbox,operand="",eq=#object(msg=#add(a="Authority has no mailbox: ",b=xapiAuthority.toString())).get(a=""),ne=convert);
-convert=#if(operator=xapiScore,operand="",eq=#object(msg=#add(a="XAPI Object has no score.",b=xapiScore)).get(a=""),ne=convert);
+//convert=#if(operator=xapiScore,operand="",eq=#object(msg=#add(a="XAPI Object has no score.",b=xapiScore)).get(a=""),ne=convert);
+convertv2=#if(operator=xapiVerb.has(has="failed"),operand="true",ne=#object(msg=#add(a="XAPI object does not have verb passed or failed.",b=xapiScore)).get(a=""),eq=convert);
+convertv1=#if(operator=xapiVerb.has(has="passed"),operand="true",ne=convertv2,eq=convert);
 
-#xapiToAssertion=convert;
+#xapiToAssertion=convertv1;
