@@ -28,7 +28,7 @@ alignments=alignments.forEach(
 ).union().removeDuplicates().debug();
 
 allAlignments=#add(
-	a="http://192.168.13.38:8021",
+	a="http://localhost:8021",
 	b="/nuxeo/api/v1/query",
 	c="?query=",
 	d="select%20*%20from%20document"
@@ -43,14 +43,14 @@ allAlignments=#httpGet(
 	obj=allAlignments
 ).toObject().get(entries="");
 
-allAlignments=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo")).debug();
+allAlignments=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo"));
 allAlignments=allAlignments.union().forEach(
-	paramName="obj",array="true",
+	paramName="obj",
 	op=#object(
 		a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
 		b=#toObject(obj="@obj").get(competency="")
 	)
-).collapse(keyKey="a",valueKey="b");
+).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignments");
 
 allAlignmentsTest=allAlignments.displayJson();
 /allAlignmentsTest=allAlignmentsTest;
