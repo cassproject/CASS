@@ -120,7 +120,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				params.ownership = ownership;
 				params.types = types;
 				
-				AppController.repoInterface.searchWithParams(query, params, null, callback, errorSearching);
+				AppController.serverController.getRepoInterface().searchWithParams(query, params, null, callback, errorSearching);
 			}
 		}, 100);
 	}
@@ -407,7 +407,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			$("#repoSearchOwnership").val(ownership);
 		}
 			
-		AppController.repoInterface.listTypes(displayTypes, errorDisplayingTypes);
+		AppController.serverController.getRepoInterface().listTypes(displayTypes, errorDisplayingTypes);
 		
 		runRepoSearch();
 	};

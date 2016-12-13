@@ -737,6 +737,7 @@
                   <div><a href="#public-methods">Public Methods</a></div>
                   <ul>
                       <li><a href="#method_addServer">addServer</a></li>
+                      <li><a href="#method_getRepoInterface">getRepoInterface</a></li>
                       <li><a href="#method_selectServer">selectServer</a></li>
                       <li><a href="#method_setRemoteIdentityManager">setRemoteIdentityManager</a></li>
                       <li><a href="#method_setRepoInterface">setRepoInterface</a></li>
@@ -756,7 +757,7 @@
 
         <div id="main" class="yui3-u">
             <div class="content"><div class="title">
-    <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l878"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:878</code></a></span>
+    <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l901"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:901</code></a></span>
     <h1 class="class-name">ServerController</h1>
 </div>
 
@@ -796,6 +797,21 @@ Allows the user to change the server that the UI is talking with via the change 
             </div>
             <div class="short-description">
               <p>Adds a server to this list of servers that can be selected from the change server modal</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            public
+            
+            
+          </td>
+          <td>
+            <div class="method-name ">
+              <a href="#method_getRepoInterface">getRepoInterface</a>( ): <a href="../classes/EcRepository.html" class="crosslink">EcRepository</a>
+            </div>
+            <div class="short-description">
+              <p>Used to retrieve the interface to the repository we are currently pointed at</p>
             </div>
           </td>
         </tr>
@@ -865,7 +881,7 @@ Allows the user to change the server that the UI is talking with via the change 
     <h2 id="public-methods">Public Methods</h2>
 <div class="method item">
     <div id="method_addServer" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l938"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:938</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l980"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:980</code></a></span>
         <h3 class="">
             public
             
@@ -955,8 +971,36 @@ Allows the user to change the server that the UI is talking with via the change 
 
 </div>
 <div class="method item">
+    <div id="method_getRepoInterface" class="title">
+        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1058"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1058</code></a></span>
+        <h3 class="">
+            public
+            
+            
+            getRepoInterface( ): <a href="../classes/EcRepository.html" class="crosslink">EcRepository</a>
+        </h3>
+    </div>
+
+
+
+    <div class="method-description"><p>Used to retrieve the interface to the repository we are currently pointed at</p>
+</div>
+
+
+      <div class="return">
+        <h4>Return:</h4>
+        <div>
+          <span class="return-type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+          <span class="return-description"><p>Repository Interface to call search/get/delete methods on</p>
+</span>
+        </div>
+      </div>
+
+
+</div>
+<div class="method item">
     <div id="method_selectServer" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l967"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:967</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1009"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1009</code></a></span>
         <h3 class="">
             public
             
@@ -1035,7 +1079,7 @@ selected server values</p>
 </div>
 <div class="method item">
     <div id="method_setRemoteIdentityManager" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1029"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1029</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1082"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1082</code></a></span>
         <h3 class="">
             public
             
@@ -1085,7 +1129,7 @@ the identity controller and login controller</p>
 </div>
 <div class="method item">
     <div id="method_setRepoInterface" class="title">
-        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1018"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1018</code></a></span>
+        <span class="source-link"><a href="../files/src_main_js_cass_es.cassManager.js.html#l1068"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1068</code></a></span>
         <h3 class="">
             public
             

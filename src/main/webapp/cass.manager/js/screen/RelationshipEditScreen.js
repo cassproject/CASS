@@ -184,7 +184,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationshipCompetencySearch()
 	{
 		ViewManager.getView("#relationshipEditMessageContainer").clearAlert("competencyFindFail");
-		EcCompetency.search(AppController.repoInterface, "*", buildCompetencyInput, errorRetrievingCompetencies);
+		EcCompetency.search(AppController.serverController.getRepoInterface(), "*", buildCompetencyInput, errorRetrievingCompetencies);
 	}
 
 	/**
@@ -287,7 +287,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 		else
 		{
 			data = new EcAlignment();
-		    data.generateId(AppController.repoInterface.selectedServer);
+		    data.generateId(AppController.serverController.getRepoInterface().selectedServer);
 		    data.name = NEW_RELATION_NAME;
 		    if(AppController.identityController.selectedIdentity != undefined)
 		    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());

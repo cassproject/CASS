@@ -13,13 +13,14 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.topBarContainerId = "#menuContainer";
     /**
      *  Manages the server connection by storing and configuring 
-     *  the CASS instance endpoint for the rest of the application.  
+     *  the CASS instance endpoint for the rest of the application
+     *  and managing the interfaces to it.  
      *  
      *  @property serverController
      *  @static
      *  @type ServerController
      */
-    constructor.serverController = null;
+    constructor.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
     /**
      *  Manages the current user's identities and contacts through the
      *  KBAC libraries. 
@@ -37,8 +38,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  @type LoginController
      */
     constructor.loginController = new LoginController();
-    constructor.repoInterface = new EcRepository();
-    constructor.loginServer = new EcRemoteIdentityManager();
     /**
      *  Entry point of the application
      *  
@@ -47,23 +46,9 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      */
     constructor.main = function(args) {
         AppSettings.loadSettings();
-        AppController.repoInterface.autoDetectRepository();
-        EcRepository.caching = true;
-        if (AppController.repoInterface.selectedServer == null) {
-            AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
-        } else {
-            AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "This Server (" + window.location.host + ")");
-            AppController.serverController.addServer(AppSettings.defaultServerName, AppSettings.defaultServerUrl, null, null);
-        }
-        AppController.serverController.setRepoInterface(AppController.repoInterface);
-        AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
-        AppController.loginServer.configureFromServer(null, function(p1) {
-            alert(p1);
-        });
-        AppController.loginController.loginServer = AppController.loginServer;
+        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());
-        EcIdentityManager.clearContacts();
         $(window.document).ready(function(arg0, arg1) {
             ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
                 ($(window.document)).foundation();
@@ -71,6 +56,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
             return true;
         });
     };
-}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", repoInterface: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
+}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();

@@ -64,7 +64,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 
 		ViewManager.showView(new MessageContainer("addToFramework"), "#addToFrameworkMessageContainer");
 		
-		EcFramework.search(AppController.repoInterface, "*", function(frameworks){
+		EcFramework.search(AppController.serverController.getRepoInterface(), "*", function(frameworks){
 			for(var i in frameworks){
 				if(AppController.identityController.canEdit(frameworks[i])){
 					$("#addToFrameworkList").append(buildFrameworkOption(frameworks[i]));

@@ -736,24 +736,6 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 /**
- *  Location of strings that store the current namespace for general Eduworks Objects.
- *  @class General
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var General = function() {};
-General = stjs.extend(General, null, [], function(constructor, prototype) {
-    constructor.context_0_2 = &quot;http://schema.eduworks.com/general/0.2&quot;;
-    constructor.context_0_1 = &quot;http://schema.eduworks.com/general/0.1&quot;;
-    /**
-     *  The latest version of the Eduworks Object namespace.
-     *  @property context
-     *  @static
-     *  @type {string}
-     */
-    constructor.context = &quot;http://schema.eduworks.com/general/0.2&quot;;
-}, {}, {});
-/**
  *  Location of strings that store the current namespace for EBAC/KBAC.
  *  @class Ebac
  *  @module org.cassproject
@@ -771,6 +753,24 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
      *  @type string (URL)
      */
     constructor.context = &quot;http://schema.cassproject.org/kbac/0.2&quot;;
+}, {}, {});
+/**
+ *  Location of strings that store the current namespace for general Eduworks Objects.
+ *  @class General
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var General = function() {};
+General = stjs.extend(General, null, [], function(constructor, prototype) {
+    constructor.context_0_2 = &quot;http://schema.eduworks.com/general/0.2&quot;;
+    constructor.context_0_1 = &quot;http://schema.eduworks.com/general/0.1&quot;;
+    /**
+     *  The latest version of the Eduworks Object namespace.
+     *  @property context
+     *  @static
+     *  @type {string}
+     */
+    constructor.context = &quot;http://schema.eduworks.com/general/0.2&quot;;
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for

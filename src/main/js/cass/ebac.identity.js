@@ -730,40 +730,6 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
 /**
- *  Contact Grant that is used to share your public key with another user
- *  
- *  @module com.eduworks.ebac
- *  @class EcContact
- *  @extends EbacContactGrant
- *  @constructor
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- */
-var EcContactGrant = function() {
-    EbacContactGrant.call(this);
-};
-EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
-    /**
-     *  Verifies that the contact grant is valid
-     *  
-     *  @return {boolean}
-     *  		true if valid, false if not
-     */
-    prototype.valid = function() {
-        if (!this.verify()) 
-            return false;
-        if (this.invalid()) 
-            return false;
-        var found = false;
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
-                found = true;
-        }
-        return found;
-    };
-}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  Logs into and stores/retrieves credentials from a compatible remote server.
  *  Performs anonymization of the user.
  *  
@@ -1180,3 +1146,37 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
         });
     };
 }, {}, {});
+/**
+ *  Contact Grant that is used to share your public key with another user
+ *  
+ *  @module com.eduworks.ebac
+ *  @class EcContact
+ *  @extends EbacContactGrant
+ *  @constructor
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ */
+var EcContactGrant = function() {
+    EbacContactGrant.call(this);
+};
+EcContactGrant = stjs.extend(EcContactGrant, EbacContactGrant, [], function(constructor, prototype) {
+    /**
+     *  Verifies that the contact grant is valid
+     *  
+     *  @return {boolean}
+     *  		true if valid, false if not
+     */
+    prototype.valid = function() {
+        if (!this.verify()) 
+            return false;
+        if (this.invalid()) 
+            return false;
+        var found = false;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+            if (EcRsaOaep.verify(EcIdentityManager.ids[i].ppk.toPk(), this.responseToken, this.responseSignature)) 
+                found = true;
+        }
+        return found;
+    };
+}, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

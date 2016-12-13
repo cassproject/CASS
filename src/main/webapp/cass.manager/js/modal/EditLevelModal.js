@@ -378,7 +378,7 @@ var EditLevelModal = (function(EditLevelModal){
 						split[split.length-1] = new Date().getTime();
 					data.id = split.join("/");
 					
-					data.save(data, function(level){
+					data.save(function(level){
 						if(modalCloseCallback != undefined)
 							modalCloseCallback(data);
 						

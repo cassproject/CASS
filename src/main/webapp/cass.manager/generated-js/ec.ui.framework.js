@@ -1,91 +1,4 @@
 /**
- *  Parent class of all view manager classes, stores a cache of the views and
- *  their corresponding DOM selectors and provides functions for setting a view
- *  to correspond to a selector and displaying a view after it has been added to
- *  the cache.
- *  
- *  @module com.eduworks.ec.ui
- *  @class ViewManager
- *  
- *  @author devlin.junker@eduworks.com
- */
-var ViewManager = function() {};
-ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype) {
-    /**
-     *  Storage that maps view class instances to DOM Elements
-     *  
-     *  @private
-     *  @property viewMap
-     *  @type Map<String, EcView>
-     */
-    constructor.viewMap = {};
-    /**
-     *  Set's the view instance for a specific DOM selector
-     *  
-     *  @memberOf ViewManager
-     *  @method setView
-     *  @param {String} containerId
-     *             DOM Selector for the element that will correspond to the view
-     *  @param {EcView} view
-     *             View that will correspond to the DOM Selector
-     */
-    constructor.setView = function(containerId, view) {
-        ViewManager.viewMap[containerId] = view;
-    };
-    /**
-     *  Returns the view instance that currently corresponds to a specific DOM
-     *  selector
-     *  
-     *  @memberOf ViewManager
-     *  @method getView
-     *  @param {String} containerId
-     *           DOM Selector that corresponds to the view to be returned
-     *  @return {EcView} 
-     *  			The view that corresponds to the DOM Selector passed in, or null
-     *          	if no view corresponds with it
-     */
-    constructor.getView = function(containerId) {
-        return ViewManager.viewMap[containerId];
-    };
-    /**
-     *  Relates the view to a DOM Selector and calls the view's display function
-     *  to populate the inner html of the DOM Selector Element
-     *  
-     *  @memberOf ViewManager
-     *  @method showView
-     *  @param {EcView} view
-     *             View to be displayed in the DOM Selector Element
-     *  @param {String} containerId
-     *             DOM Selector for element that the view will be displayed in
-     *  @param {Callback0} callback
-     *             Callback function to be passed in to the view's display
-     *             function (to be called once the view has been displayed)
-     */
-    constructor.showView = function(view, containerId, callback) {
-        var htmlLocation = view.getHtmlLocation();
-        if (htmlLocation != null) {
-            ViewManager.setView(containerId, view);
-            $(containerId).load(htmlLocation, null, function(p1, p2, p3) {
-                view.display(containerId);
-                if (callback != null) 
-                    callback();
-            });
-        }
-        $(containerId).removeClass("hide");
-    };
-    /**
-     *  Hides the container specified by the containerId by adding 'hide' class
-     *  
-     *  @memberOf ViewManager
-     *  @method hideView
-     *  @param {String} containerId
-     *             DOM Selector for the element to add the 'hide' class to
-     */
-    constructor.hideView = function(containerId) {
-        $(containerId).addClass("hide");
-    };
-}, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
-/**
  *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and 
  *  which DOM element they were displayed in
  *  
@@ -143,6 +56,15 @@ HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, pro
      */
     prototype.screenParameters = null;
 }, {screen: "EcScreen", screenParameters: "Object"}, {});
+/**
+ *  STJS Wrapper for the Browser Native History Object
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var HistoryObject = function() {};
+HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
+    prototype.name = null;
+}, {}, {});
 /**
  *  Class that represents a "view" that can be displayed in an container element on the page. The View should define 
  *  a display function that loads HTML into the container element on the page and then finally calls the callback once
@@ -275,14 +197,130 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
- *  STJS Wrapper for the Browser Native History Object
+ *  Parent class of all view manager classes, stores a cache of the views and
+ *  their corresponding DOM selectors and provides functions for setting a view
+ *  to correspond to a selector and displaying a view after it has been added to
+ *  the cache.
+ *  
+ *  @module com.eduworks.ec.ui
+ *  @class ViewManager
  *  
  *  @author devlin.junker@eduworks.com
  */
-var HistoryObject = function() {};
-HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
-    prototype.name = null;
-}, {}, {});
+var ViewManager = function() {};
+ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype) {
+    /**
+     *  Storage that maps view class instances to DOM Elements
+     *  
+     *  @private
+     *  @property viewMap
+     *  @type Map<String, EcView>
+     */
+    constructor.viewMap = {};
+    /**
+     *  Set's the view instance for a specific DOM selector
+     *  
+     *  @memberOf ViewManager
+     *  @method setView
+     *  @param {String} containerId
+     *             DOM Selector for the element that will correspond to the view
+     *  @param {EcView} view
+     *             View that will correspond to the DOM Selector
+     */
+    constructor.setView = function(containerId, view) {
+        ViewManager.viewMap[containerId] = view;
+    };
+    /**
+     *  Returns the view instance that currently corresponds to a specific DOM
+     *  selector
+     *  
+     *  @memberOf ViewManager
+     *  @method getView
+     *  @param {String} containerId
+     *           DOM Selector that corresponds to the view to be returned
+     *  @return {EcView} 
+     *  			The view that corresponds to the DOM Selector passed in, or null
+     *          	if no view corresponds with it
+     */
+    constructor.getView = function(containerId) {
+        return ViewManager.viewMap[containerId];
+    };
+    /**
+     *  Relates the view to a DOM Selector and calls the view's display function
+     *  to populate the inner html of the DOM Selector Element
+     *  
+     *  @memberOf ViewManager
+     *  @method showView
+     *  @param {EcView} view
+     *             View to be displayed in the DOM Selector Element
+     *  @param {String} containerId
+     *             DOM Selector for element that the view will be displayed in
+     *  @param {Callback0} callback
+     *             Callback function to be passed in to the view's display
+     *             function (to be called once the view has been displayed)
+     */
+    constructor.showView = function(view, containerId, callback) {
+        var htmlLocation = view.getHtmlLocation();
+        if (htmlLocation != null) {
+            ViewManager.setView(containerId, view);
+            $(containerId).load(htmlLocation, null, function(p1, p2, p3) {
+                view.display(containerId);
+                if (callback != null) 
+                    callback();
+            });
+        }
+        $(containerId).removeClass("hide");
+    };
+    /**
+     *  Hides the container specified by the containerId by adding 'hide' class
+     *  
+     *  @memberOf ViewManager
+     *  @method hideView
+     *  @param {String} containerId
+     *             DOM Selector for the element to add the 'hide' class to
+     */
+    constructor.hideView = function(containerId) {
+        $(containerId).addClass("hide");
+    };
+}, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+/**
+ *  View Subclass representing modal views that are displayed in the modal container
+ *  
+ *  @module com.eduworks.ec.ui
+ *  @class EcModal
+ *  @extends EcView
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var EcModal = function() {
+    EcView.call(this);
+};
+EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
+    /**
+     *  To be overrided in subclasses, lets the developer define the size of the modal
+     *  (Possible: tiny, small, medium, large, xlarge) 
+     *  
+     *  @property modalSize
+     *  @type String
+     */
+    prototype.modalSize = "small";
+    /**
+     *  Function to be invoked when the modal is closed, can be overriden or left blank if nothing
+     *  needs to happen on the modal close 
+     *  
+     *  @property onClose
+     *  @type Callback0
+     */
+    prototype.onClose = null;
+    /**
+     *  
+     *  @memberOf EcModal
+     *  @method getModalSize
+     *  @abstract
+     *  @return tiny, small, medium, large, or full depending on how large the modal should be
+     */
+    prototype.getModalSize = function() {};
+}, {onClose: "Callback0"}, {});
 /**
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that 
  *  they work properly
@@ -375,44 +413,6 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         return true;
     });
 })();
-/**
- *  View Subclass representing modal views that are displayed in the modal container
- *  
- *  @module com.eduworks.ec.ui
- *  @class EcModal
- *  @extends EcView
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    /**
-     *  To be overrided in subclasses, lets the developer define the size of the modal
-     *  (Possible: tiny, small, medium, large, xlarge) 
-     *  
-     *  @property modalSize
-     *  @type String
-     */
-    prototype.modalSize = "small";
-    /**
-     *  Function to be invoked when the modal is closed, can be overriden or left blank if nothing
-     *  needs to happen on the modal close 
-     *  
-     *  @property onClose
-     *  @type Callback0
-     */
-    prototype.onClose = null;
-    /**
-     *  
-     *  @memberOf EcModal
-     *  @method getModalSize
-     *  @abstract
-     *  @return tiny, small, medium, large, or full depending on how large the modal should be
-     */
-    prototype.getModalSize = function() {};
-}, {onClose: "Callback0"}, {});
 /**
  *  Subclass of view that is specific for a screen, providing a display name that
  *  will be shown in the URL bar and that can be used on startup to check if the
@@ -593,6 +593,20 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         });
     };
 }, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+/**
+ *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
+ *  in the URL bar and in the history so the page can be loaded on back button or startup 
+ *  
+ *  @module com.eduworks.ec.ui
+ *  @class EcOverlay
+ *  @extends EcScreen
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 /**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
@@ -958,20 +972,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
-/**
- *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
- *  in the URL bar and in the history so the page can be loaded on back button or startup 
- *  
- *  @module com.eduworks.ec.ui
- *  @class EcOverlay
- *  @extends EcScreen
- *  
- *  @author devlin.junker@eduworks.com
- */
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays

@@ -24,7 +24,7 @@ RepoCreateScreen = (function(RepoCreateScreen){
 		if(data == undefined || Object.keys(data).length == 0)
 		{
 			var t = new Thing();
-			t.generateId(AppController.repoInterface.selectedServer);
+			t.generateId(AppController.serverController.getRepoInterface().selectedServer);
 			t.name = "New Object";
 	    
 			if(AppController.identityController.selectedIdentity != undefined)

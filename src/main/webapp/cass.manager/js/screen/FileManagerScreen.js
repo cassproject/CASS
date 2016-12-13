@@ -108,7 +108,7 @@ FileManagerScreen = (function(FileManagerScreen){
 			paramObj = {ownership:"owned"};
 		}
 		
-		EcFile.search(AppController.repoInterface, query, displayResult, searchFailed, paramObj);
+		EcFile.search(AppController.serverController.getRepoInterface(), query, displayResult, searchFailed, paramObj);
 	}
 
 	/**
@@ -162,7 +162,7 @@ FileManagerScreen = (function(FileManagerScreen){
 	        var file = EcFile.create(files[0].name,
 	            		event.target.result.split(",")[1],
 	            		event.target.result.split(";")[0].split(":")[1]);
-	        file.generateId(AppController.repoInterface.selectedServer)
+	        file.generateId(AppController.serverController.getRepoInterface().selectedServer)
 	    	
 	        if(encrypt){
 	        	EcEncryptedValue.encryptOnSave(file.id, true);

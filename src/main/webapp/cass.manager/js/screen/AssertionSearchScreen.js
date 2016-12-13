@@ -37,7 +37,7 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			EcAssertion.search(AppController.repoInterface, "*", function(results){
+			EcAssertion.search(AppController.serverController.getRepoInterface(), "*", function(results){
 				var waitFunc = function(){
 					if(ViewManager.getView("#assertionSearchResults") != undefined){
 						callback(results);

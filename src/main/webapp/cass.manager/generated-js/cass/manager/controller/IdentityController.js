@@ -9,7 +9,9 @@
  *  
  *  @author devlin.junker@eduworks.com
  */
-var IdentityController = function() {};
+var IdentityController = function() {
+    EcIdentityManager.clearContacts();
+};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
     prototype.selectedIdentity = null;
     /**

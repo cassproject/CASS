@@ -7,11 +7,6 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var PapaParseParams = function() {};
-PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
-    prototype.complete = null;
-    prototype.error = null;
-}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 /**
  *  Base class for all importers, can hold helper functions 
  *  that are useful for all importers
@@ -30,6 +25,11 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
         return toString.call(obj) == "[object Array]";
     };
 }, {}, {});
+var PapaParseParams = function() {};
+PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
+    prototype.complete = null;
+    prototype.error = null;
+}, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 /**
  *  Importer methods to create competencies based on a
  *  Medbiquitous competency XML file
@@ -462,6 +462,111 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     };
 }, {importCsvLookup: "Object", progressObject: "Object"}, {});
 /**
+ *  Importer methods to copy or link to competencies that already
+ *  exist in another framework in a CASS instance.
+ *  
+ *  @module org.cassproject
+ *  @class FrameworkImport
+ *  @static
+ *  @extends Importer
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var FrameworkImport = function() {};
+FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
+    constructor.saved = 0;
+    constructor.targetUsable = null;
+    constructor.competencies = null;
+    /**
+     *  Copies or links competencies that exist in one framework in a CASS instance, 
+     *  to another different framework in the same CASS instance.
+     *  
+     *  @memberOf FrameworkImport
+     *  @method importCompetencies
+     *  @static
+     *  @param {EcFramework} source
+     *  			Framework to copy or link the competencies from
+     *  @param {EcFramework} target
+     *  			Framework to add the copied or linked competencies to
+     *  @param {boolean} copy
+     *  			Flag indicating whether or not to copy or link the competencies in the source framework
+     *  @param {String} serverUrl
+     *  			URL Prefix for the created competencies if copied
+     *  @param {EcIdentity} owner
+     *  			EcIdentity that will own the created competencies if copied
+     *  @param {Callback1<Array<EcCompetency>>} success
+     *  			Callback triggered after succesfully copying or linking all of the competencies,
+     *  			returns an array of the new or linked competencies
+     *  @param {Callback1<Object>} [failure]
+     *  			Callback triggered if an error occurred while creating the competencies
+     */
+    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
+        if (source == null) {
+            failure("Source Framework not set");
+            return;
+        }
+        if (target == null) {
+            failure("Target Framework not Set");
+            return;
+        }
+        FrameworkImport.targetUsable = target;
+        if (source.competency == null || source.competency.length == 0) {
+            failure("Source Has No Competencies");
+            return;
+        }
+        FrameworkImport.competencies = [];
+        if (copy) {
+            FrameworkImport.saved = 0;
+            for (var i = 0; i < source.competency.length; i++) {
+                var id = source.competency[i];
+                EcCompetency.get(id, function(comp) {
+                    var competency = new EcCompetency();
+                    competency.copyFrom(comp);
+                    competency.generateId(serverUrl);
+                    if (owner != null) 
+                        competency.addOwner(owner.ppk.toPk());
+                    var id = competency.id;
+                    competency.save(function(str) {
+                        FrameworkImport.saved++;
+                        FrameworkImport.targetUsable.addCompetency(id);
+                        if (FrameworkImport.saved == FrameworkImport.competencies.length) {
+                            FrameworkImport.targetUsable.save(function(p1) {
+                                success(FrameworkImport.competencies);
+                            }, function(p1) {
+                                failure(p1);
+                            });
+                        }
+                    }, function(str) {
+                        failure("Trouble Saving Copied Competency");
+                    });
+                    FrameworkImport.competencies.push(competency);
+                }, function(str) {
+                    failure(str);
+                });
+            }
+        } else {
+            for (var i = 0; i < source.competency.length; i++) {
+                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 && target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
+                    EcCompetency.get(source.competency[i], function(comp) {
+                        FrameworkImport.competencies.push(comp);
+                        FrameworkImport.targetUsable.addCompetency(comp.id);
+                        if (FrameworkImport.competencies.length == source.competency.length) {
+                            delete (FrameworkImport.targetUsable)["competencyObjects"];
+                            FrameworkImport.targetUsable.save(function(p1) {
+                                success(FrameworkImport.competencies);
+                            }, function(p1) {
+                                failure(p1);
+                            });
+                        }
+                    }, function(p1) {
+                        failure(p1);
+                    });
+                }
+            }
+        }
+    };
+}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
+/**
  *  Import methods to handle an ASN JSON file containing a framework,
  *  competencies and relationships, and store them in a CASS instance
  *  
@@ -798,108 +903,3 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
         });
     };
 }, {jsonFramework: "Object", jsonCompetencies: {name: "Map", arguments: [null, "Object"]}, importedFramework: "EcFramework", competencies: {name: "Map", arguments: [null, "EcCompetency"]}, progressObject: "Object"}, {});
-/**
- *  Importer methods to copy or link to competencies that already
- *  exist in another framework in a CASS instance.
- *  
- *  @module org.cassproject
- *  @class FrameworkImport
- *  @static
- *  @extends Importer
- *  
- *  @author devlin.junker@eduworks.com
- */
-var FrameworkImport = function() {};
-FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
-    constructor.saved = 0;
-    constructor.targetUsable = null;
-    constructor.competencies = null;
-    /**
-     *  Copies or links competencies that exist in one framework in a CASS instance, 
-     *  to another different framework in the same CASS instance.
-     *  
-     *  @memberOf FrameworkImport
-     *  @method importCompetencies
-     *  @static
-     *  @param {EcFramework} source
-     *  			Framework to copy or link the competencies from
-     *  @param {EcFramework} target
-     *  			Framework to add the copied or linked competencies to
-     *  @param {boolean} copy
-     *  			Flag indicating whether or not to copy or link the competencies in the source framework
-     *  @param {String} serverUrl
-     *  			URL Prefix for the created competencies if copied
-     *  @param {EcIdentity} owner
-     *  			EcIdentity that will own the created competencies if copied
-     *  @param {Callback1<Array<EcCompetency>>} success
-     *  			Callback triggered after succesfully copying or linking all of the competencies,
-     *  			returns an array of the new or linked competencies
-     *  @param {Callback1<Object>} [failure]
-     *  			Callback triggered if an error occurred while creating the competencies
-     */
-    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure) {
-        if (source == null) {
-            failure("Source Framework not set");
-            return;
-        }
-        if (target == null) {
-            failure("Target Framework not Set");
-            return;
-        }
-        FrameworkImport.targetUsable = target;
-        if (source.competency == null || source.competency.length == 0) {
-            failure("Source Has No Competencies");
-            return;
-        }
-        FrameworkImport.competencies = [];
-        if (copy) {
-            FrameworkImport.saved = 0;
-            for (var i = 0; i < source.competency.length; i++) {
-                var id = source.competency[i];
-                EcCompetency.get(id, function(comp) {
-                    var competency = new EcCompetency();
-                    competency.copyFrom(comp);
-                    competency.generateId(serverUrl);
-                    if (owner != null) 
-                        competency.addOwner(owner.ppk.toPk());
-                    var id = competency.id;
-                    competency.save(function(str) {
-                        FrameworkImport.saved++;
-                        FrameworkImport.targetUsable.addCompetency(id);
-                        if (FrameworkImport.saved == FrameworkImport.competencies.length) {
-                            FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
-                            }, function(p1) {
-                                failure(p1);
-                            });
-                        }
-                    }, function(str) {
-                        failure("Trouble Saving Copied Competency");
-                    });
-                    FrameworkImport.competencies.push(competency);
-                }, function(str) {
-                    failure(str);
-                });
-            }
-        } else {
-            for (var i = 0; i < source.competency.length; i++) {
-                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 && target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
-                    EcCompetency.get(source.competency[i], function(comp) {
-                        FrameworkImport.competencies.push(comp);
-                        FrameworkImport.targetUsable.addCompetency(comp.id);
-                        if (FrameworkImport.competencies.length == source.competency.length) {
-                            delete (FrameworkImport.targetUsable)["competencyObjects"];
-                            FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
-                            }, function(p1) {
-                                failure(p1);
-                            });
-                        }
-                    }, function(p1) {
-                        failure(p1);
-                    });
-                }
-            }
-        }
-    };
-}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});

@@ -26,6 +26,9 @@ var ConfirmModal = (function(ConfirmModal){
 		
 		ViewManager.showView(new MessageContainer("confirm"), "#confirmMessageContainer");
 		
+		if(this.header != undefined)
+			$("#confirmHeader").text(this.header);
+		
 		$("#confirmMessage").html(msg);
 		
 		$("#confirmBtn").click(function(event){

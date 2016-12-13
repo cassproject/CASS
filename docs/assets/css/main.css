@@ -437,6 +437,7 @@ ul li p {
 }
 
 .logo img {
+  height: 30px;
 }
 
 .version-info {

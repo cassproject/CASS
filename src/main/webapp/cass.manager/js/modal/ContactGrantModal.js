@@ -62,7 +62,7 @@ var ContactGrantModal = (function(ContactGrantModal){
             grant.addOwner(contact.pk);
             grant.addOwner(EcPpk.fromPem(identity).toPk());
             grant.generateId(contact.source);
-            grant.source = AppController.loginServer.server;
+            grant.source = AppController.serverController.selectedServerUrl;
 
             grant.displayName = displayName;
             grant.pk = EcPpk.fromPem(identity).toPk().toPem();

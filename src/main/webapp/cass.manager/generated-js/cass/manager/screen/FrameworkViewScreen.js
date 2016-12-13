@@ -41,9 +41,9 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
     };
     prototype.predisplayFramework = function(callback) {
         var me = this;
-        AppController.repoInterface.precache(this.getData().competency, function() {
-            AppController.repoInterface.precache(me.getData().relation, function() {
-                AppController.repoInterface.precache(me.getData().level, function() {
+        AppController.serverController.getRepoInterface().precache(this.getData().competency, function() {
+            AppController.serverController.getRepoInterface().precache(me.getData().relation, function() {
+                AppController.serverController.getRepoInterface().precache(me.getData().level, function() {
                     me.autoRemove($("body"), "framework");
                     me.autoAppend($("body"), "framework");
                     me.autoFill($("body"), me.getData());
@@ -64,7 +64,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                 me.mc.displayAlert(err, null);
             });
             ModalManager.hideModal();
-        }, "Are you sure you want to delete this framework?"), null);
+        }, "Are you sure you want to delete this framework?", null), null);
     };
     prototype.errorRetrieving = function(err) {
         if (err == null) 

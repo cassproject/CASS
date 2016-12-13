@@ -79,7 +79,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			EcCompetency.search(AppController.repoInterface, query, callback, errorSearching, params);
+			EcCompetency.search(AppController.serverController.getRepoInterface(), query, callback, errorSearching, params);
 		}, 100);
 	}
 	

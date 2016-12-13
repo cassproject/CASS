@@ -46,17 +46,17 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         me.autoRemove($("body"), "level");
         me.autoAppend($("body"), "competency");
         me.autoFill($("body"), me.getData());
-        this.getData().levels(AppController.repoInterface, function(p1) {
+        this.getData().levels(AppController.serverController.getRepoInterface(), function(p1) {
             me.autoFill(me.autoAppend($("[ec-container='level']"), "level"), p1);
         }, (me)["errorFindingLevels"], function(p1) {
             if (p1.length == 0) 
                 $("[ec-container='level']").text("None.");
-            me.getData().rollupRules(AppController.repoInterface, function(p1) {
+            me.getData().rollupRules(AppController.serverController.getRepoInterface(), function(p1) {
                 me.autoFill(me.autoAppend($("[ec-container='rollupRule']"), "rollupRule"), p1);
             }, (me)["errorFindingRollupRules"], function(p1) {
                 if (p1.length == 0) 
                     $("[ec-container='rollupRule']").text("None.");
-                me.getData().relations(AppController.repoInterface, function(p1) {
+                me.getData().relations(AppController.serverController.getRepoInterface(), function(p1) {
                     me.autoFill(me.autoAppend($("[ec-container='relation']"), "relation"), p1);
                     me.bindControls();
                 }, (me)["errorFindingRelations"], function(p1) {

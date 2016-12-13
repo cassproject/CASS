@@ -77,7 +77,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			EcFramework.search(AppController.repoInterface, query, callback, errorSearching, params);
+			EcFramework.search(AppController.serverController.getRepoInterface(), query, callback, errorSearching, params);
 		}, 100);
 	}
 	
