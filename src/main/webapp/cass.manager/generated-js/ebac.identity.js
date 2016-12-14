@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
  *  Send them information (by encrypting data with their public key) 2. Verify a
@@ -1140,7 +1149,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [], functio
 /**
  *  Contact Grant that is used to share your public key with another user
  *  
- *  @module com.eduworks.ebac
+ *  @module com.eduworks.ec
  *  @class EcContact
  *  @extends EbacContactGrant
  *  @constructor
