@@ -90,12 +90,20 @@ function copyTextToClipboard(text) {
     var successful = document.execCommand('copy');
     var msg = successful ? 'successful' : 'unsuccessful';
     console.log('Copying text command was ' + msg);
+    
+    document.addEventListener("copy",copyEvent);
+    document.body.removeChild(textArea);
+    
+    return successful;
   } catch (err) {
     console.log('Oops, unable to copy');
+    
+    document.addEventListener("copy",copyEvent);
+    document.body.removeChild(textArea);
+    return false;
   }
 
-  document.addEventListener("copy",copyEvent);
-  document.body.removeChild(textArea);
+  
 }
 
 function download(filename, text) {

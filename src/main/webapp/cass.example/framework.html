@@ -281,6 +281,19 @@
         <a class="button float-right" onclick="bulkFromFramework();">Import</a>
     </div>
 
+	<div class="small reveal" id="contactInvitation" data-reveal>
+        <h3>Contact Invitation</h3>
+        <div id="invitationContainer" style="border: 1px solid grey; padding: 4px; margin-bottom: 1rem; cursor:copy;" >
+			<div id="invitationBox" style="margin-bottom:1rem; cursor:text; margin-left:0.5rem;" contenteditable="true">
+			</div>
+			<div id="linkBox" style="margin-bottom:0px;overflow-x:scroll; padding-left:0.5rem;"></div>
+		</div>
+		
+		<button id="copyInvitation" class="button float-right" style="margin-right: 1rem;">
+        	Select to Copy
+        </button>
+    </div>
+
     <div class="small reveal" id="insertExistingRelation" data-reveal>
         <h3>Insert Existing Relation</h3>
         <ul class="cass-competency-relations" id="insertExistingRelationResults">
