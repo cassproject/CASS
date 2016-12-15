@@ -16,7 +16,7 @@ configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
 );
 
 configVal=configObject.getByParam(param="@key");
-#configVal=configVal;
+#xapiConfigVal=configVal;
 
 
 
@@ -46,17 +46,17 @@ checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
 
 
 
-xapiEndpoint=#configVal(key="xapiEndpoint");
+xapiEndpoint=#xapiConfigVal(key="xapiEndpoint");
 #xapiEndpoint=xapiEndpoint;
 
-xapiHostname=#configVal(key="xapiHostName");
+xapiHostname=#xapiConfigVal(key="xapiHostName");
 #xapiHostname=xapiHostname;
 
 //This is the same auth key available in the LRS Statement Viewer demonstration.
-xapiAuth=#configVal(key="xapiAuth");
+xapiAuth=#xapiConfigVal(key="xapiAuth");
 #xapiAuth=xapiAuth;
 
-xapiAdapterEnabled=#configVal(key="enabled");
+xapiAdapterEnabled=#xapiConfigVal(key="enabled");
 
 //If the adapter is enabled, we convert and store all XAPI conversions upon system startup. This is done every startup, as alignments may change.
 //As such, eventual consistency, especially when a new alignment is introduced, is limited to after startup.
