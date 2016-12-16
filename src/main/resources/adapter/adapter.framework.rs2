@@ -104,7 +104,7 @@ addRelationToFramework=#cassSignatureSheet(
 	).skyrepoPut(
 		type="@type",
 		id="@frameworkId",
-		version=#date(raw="true")
+		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet);
+).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet, version=#date(raw="true"));
 #cassAddRelationToFramework=addRelationToFramework;
