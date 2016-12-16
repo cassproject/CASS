@@ -24,5 +24,26 @@ competencySave=#cassSignatureSheet(
 
 #cassCreateCompetency=competencySave;
 
-null=#object();
-#cassUpdateCompetency=null;
+findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(delimiter="/");
+
+baseId = findBase.ccall(
+	splitId=#toObject(obj="@competency").getByParam(param=#id()).split(split="/")
+);
+
+competencyUpdate = #cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@competency").put(
+		name="@name",
+		description="@description",
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@lastModified")
+	).skyrepoPut(
+		type="schema.cassproject.org.0.2.competency",
+		id="@id",
+		version="@lastModified"
+	)
+);
+
+#cassUpdateCompetency=competencyUpdate;

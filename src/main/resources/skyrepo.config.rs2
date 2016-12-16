@@ -3,9 +3,15 @@ urlBase=#add(
 );
 #urlBase=urlBase;
 
+// Interval between adapter runs between get requests (in seconds)
+beforeGetInterval=#string(str="1800");
+
+// Interval between adapter runs after saving (in seconds)
+afterSaveInterval=#string(str="900");
+
 afterSave=#if(
 	operator=#variableGet(key="afterSave"),
-	operand=#date(raw="true").add(a="-10000"),
+	operand=#date(raw="true").add(a=#add(a="-", b=#multiply(a="1000", b=beforeGetInterval))),
 	lt=#object(
 		a=#cassToMoodle(),
 		b=#variableSet(key="afterSave",obj=#date(raw="true"))
@@ -15,7 +21,7 @@ afterSave=#if(
 afterSave=#if(
 	operator=#object(a="127.0.0.1",b="localhost").valueSet().has(has="@ip"),
 	operand="false",
-	eq=afterSave
+	eq=afterSave.ccall(background="true")
 );
 
 afterSave=#if(
@@ -28,7 +34,7 @@ afterSave=#if(
 
 beforeGet=#if(
 	operator=#variableGet(key="beforeGet"),
-	operand=#date(raw="true").add(a="-10000"),
+	operand=#date(raw="true").add(a=#add(a="-", b=#multiply(a="1000", b=afterSaveInterval))),
 	lt=#object(,
 		a=#variableSet(key="beforeGet",obj=#date(raw="true")),
 		aa=#xapiTick(),
@@ -40,7 +46,7 @@ beforeGet=#if(
 beforeGet=#if(
 	operator=#object(a="127.0.0.1",b="localhost").valueSet().has(has="@ip"),
 	operand="false",
-	eq=beforeGet,
+	eq=beforeGet.ccall(background="true"),
 	ne=#debug(obj="Skipping.")
 );
 

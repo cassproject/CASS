@@ -1,4 +1,4 @@
-frameworks=#add(a='(@type:"framework") OR (@type:"Framework")').debug().httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
+frameworks=#add(a='(@type:"framework") OR (@type:"Framework")').httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
 #getFrameworks=frameworks;
 
@@ -27,8 +27,11 @@ frameworkSave=#cassSignatureSheet(
 
 #cassCreateCompetencyFramework=frameworkSave;
 
-null=#object();
-#cassUpdateCompetencyFramework=null;
+findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(delimiter="/");
+
+baseId = findBase.ccall(
+	splitId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
+);
 
 frameworkGet=#cassSignatureSheet(
 ).toDatastream(
@@ -38,6 +41,27 @@ frameworkGet=#cassSignatureSheet(
 		id="@frameworkId"
 	)
 ).call(type="schema.cassproject.org.0.2.framework");
+
+updateFramework=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@framework").put(
+		name="@name",
+		description="@description",
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@lastModified")
+	).skyrepoPut(
+		type="schema.cassproject.org.0.2.framework",
+		id="@id",
+		version="@lastModified"
+	)
+).call(
+	framework=frameworkGet.ccall(frameworkId="@id")
+);
+
+#cassUpdateCompetencyFramework=updateFramework;
+
 
 addCompetencyToFramework=#cassSignatureSheet(
 ).toDatastream(
@@ -51,12 +75,15 @@ addCompetencyToFramework=#cassSignatureSheet(
 				q="schema.cassproject.org.0.2.competency",r="/",s="@competencyId"
 			)
 		).removeDuplicates()
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@version"),
 	).skyrepoPut(
 		type="@type",
-		id="@id",
-		version=#date(raw="true")
+		id="@frameworkId",
+		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet);
+).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet, version=#date(raw="true"));
 #cassAddCompetencyToFramework=addCompetencyToFramework;
 
 addRelationToFramework=#cassSignatureSheet(

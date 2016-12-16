@@ -17,7 +17,7 @@ framework=#toArray(obj="@frameworks").forEach(
 ).getIndex(index="0");
 
 addFramework=#cassCreateCompetencyFramework(
-	id=moodleFrameworkId,
+	id=moodleFrameworkId.debug(prefix="MOODLE creating framework: "),
 	name=#toObject(obj="@moodleFramework").get(shortname=""),
 	description=#toObject(obj="@moodleFramework").get(description=""),
 	lastModified=moodleFrameworkLastModified,
@@ -25,7 +25,7 @@ addFramework=#cassCreateCompetencyFramework(
 );
 
 updateFramework=#cassUpdateCompetencyFramework(
-	id=moodleFrameworkId,
+	id=moodleFrameworkId.debug(prefix="MOODLE updating framework: "),
 	name=#toObject(obj="@moodleFramework").get(shortname=""),
 	description=#toObject(obj="@moodleFramework").get(description=""),
 	lastModified=moodleFrameworkLastModified,
@@ -62,14 +62,14 @@ competency=#toObject(obj="@competenciesByGuid").getByParam(param=#toObject(obj="
 
 addCompetency=#object(
 	a=#cassCreateCompetency(
-		id=moodleCompetencyId,
+		id=moodleCompetencyId.debug(prefix="MOODLE creating competency: "),
 		name=#toObject(obj="@moodleCompetency").get(shortname=""),
 		description=#toObject(obj="@moodleCompetency").get(description=""),
 		lastModified=#divide(numerator=moodleCompetencyLastModified,denominator="1000").toLong(),
 		ppk=#moodlePpk()
 	),
 	b=#cassAddCompetencyToFramework(
-		frameworkId=moodleFrameworkId,
+		frameworkId=moodleFrameworkId.debug(prefix="MOODLE adding competency to framework: "),
 		competencyId=moodleCompetencyId,
 		id=moodleFrameworkId,
 		ppk=#moodlePpk()
@@ -77,10 +77,11 @@ addCompetency=#object(
 ).cache(name="moodleToCassAddCompetencyLock",justLock="true");
 
 updateCompetency=#cassUpdateCompetency(
-	id=moodleCompetencyId,
+	id=moodleCompetencyId.debug(prefix="MOODLE updating competency: "),
 	name=#toObject(obj="@moodleCompetency").get(shortname=""),
 	description=#toObject(obj="@moodleCompetency").get(description=""),
-	lastModified=#divide(numerator=moodleCompetencyLastModified,denominator="1000").toLong()
+	lastModified=#divide(numerator=moodleCompetencyLastModified,denominator="1000").toLong(),
+	ppk=#moodlePpk()
 ).cache(name="moodleToCassAddCompetencyLock",justLock="true");
 
 checkDateCompetency=#if(
@@ -118,7 +119,7 @@ checkCompetencies=#moodleListCompetencies().forEach(
 		).call(
 			competency=#getCompetencyById(id="@competency")
 		)
-	).collapse(keyKey="guid",accumulate="false").debug(prefix="competenciesByGuid:")
+	).collapse(keyKey="guid",accumulate="false")
 ).call(
 	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
 );
@@ -224,9 +225,9 @@ moodleToCassRelations=#moodleListCompetencyFrameworks().forEach(
 //-----CONTROL FUNCTIONS-----
 
 moodleToCass=#object(
-	a=moodleToCassFrameworks,
-	b=moodleToCassCompetencies,
-	c=moodleToCassRelations
+	a_frameworks=moodleToCassFrameworks,
+	b_framework_competencies=moodleToCassCompetencies,
+	c_relations=moodleToCassRelations
 );
 moodleToCassDebug=moodleToCass.displayJson(_collapse="true");
 
