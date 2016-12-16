@@ -27,7 +27,7 @@ frameworkSave=#cassSignatureSheet(
 
 #cassCreateCompetencyFramework=frameworkSave;
 
-findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(delimiter="/");
+findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(_delimiter="/");
 
 baseId = findBase.ccall(
 	splitId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
@@ -90,10 +90,20 @@ addRelationToFramework=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
 	op=#toObject(obj="@framework").put(
-		relation=#toObject(obj="@framework").get(relation="").append(append=#repoEndpoint().add(p="data/",q="schema.cassproject.org.0.2.relation",r="/",s="@relationId"))
+		relation=#toObject(
+			obj="@framework"
+		).get(relation="").append(
+			append=#repoEndpoint().add(
+				p="data/",
+				q="schema.cassproject.org.0.2.relation",r="/",s="@relationId"
+			)
+		).removeDuplicates()
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@version"),
 	).skyrepoPut(
 		type="@type",
-		id="@id",
+		id="@frameworkId",
 		version=#date(raw="true")
 	)
 ).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet);

@@ -151,14 +151,14 @@ checkRelation=#if(
 
 createRelation=#object(
 	a=#cassCreateRelation(
-		id="@relationId",
+		id=#debug(obj="@relationId", prefix="MOODLE creating relation: "),
 		source=moodleCompetencyId,
 		target=moodleCompetencyId.call(moodleCompetency=#toObject(obj="@targetCompetency")),
 		relationType="narrows",
 		ppk=#moodlePpk()
 	),
 	b=#cassAddRelationToFramework(
-		frameworkId=moodleFrameworkId,
+		frameworkId=moodleFrameworkId.debug(prefix="MOODLE adding relation to framework: " ),
 		relationId="@relationId",
 		id=moodleFrameworkId,
 		ppk=#moodlePpk()

@@ -24,7 +24,7 @@ competencySave=#cassSignatureSheet(
 
 #cassCreateCompetency=competencySave;
 
-findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(delimiter="/");
+findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(_delimiter="/");
 
 baseId = findBase.ccall(
 	splitId=#toObject(obj="@competency").getByParam(param=#id()).split(split="/")
