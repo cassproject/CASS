@@ -20,7 +20,7 @@ competencySave=#cassSignatureSheet(
 		id="@id",
 		version="@lastModified"
 	)
-).call(type="schema.cassproject.org.0.2.competency");
+).call(type="schema.cassproject.org.0.2.Competency");
 
 #cassCreateCompetency=competencySave;
 
@@ -40,7 +40,7 @@ competencyUpdate = #cassSignatureSheet(
 		_key=#id(),
 		_value=#add(a=baseId, b="/", c="@lastModified")
 	).skyrepoPut(
-		type="schema.cassproject.org.0.2.competency",
+		type="schema.cassproject.org.0.2.Competency",
 		id="@id",
 		version="@lastModified"
 	)

@@ -1,5 +1,29 @@
 frameworks=#add(a='(@type:"framework") OR (@type:"Framework")').httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
+checkOwnership = #if(operator="@owner", operand="",
+	eq=#toObject(obj="@framework"),
+	ne=#if(operator=#toArray(obj="@owner").count(), operand="0",
+		eq=#toObject(obj="@framework"),
+		ne=#if(operator=#toArray(obj="@owner").has(has=#rsaPpkToPk(obj="@ppk").creplace(replace="\n", with="")), operand="true",
+			eq=#toObject(obj="@framework"),
+			ne="false"
+		),
+	),
+).ccall(
+	owner=#toObject(obj="@framework").getByParam(param=#owner())
+);
+
+checkOwnership = #if(operator="@ppk", operand="",
+	eq=#toObject(obj="@framework"),
+	ne=checkOwnership
+);
+
+frameworks = frameworks.cforEach(
+	op=checkOwnership,
+	array="true",
+	paramName="framework"
+).removeDuplicates().removeFromArray(item="false");
+
 #getFrameworks=frameworks;
 
 framework=#object(
@@ -13,7 +37,7 @@ framework=#object(
 framework=framework.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
 framework=framework.put(_key=#type(),_value="Framework");
 framework=framework.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u="@lastModified"));
-framework=framework.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
+framework=framework.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").creplace(replace="\n", with="").toArray(_wrap="true"));
 
 frameworkSave=#cassSignatureSheet(
 ).toDatastream(
@@ -23,7 +47,7 @@ frameworkSave=#cassSignatureSheet(
 		id="@id",
 		version="@lastModified"
 	)
-).call(type="schema.cassproject.org.0.2.framework");
+).call(type="schema.cassproject.org.0.2.Framework");
 
 #cassCreateCompetencyFramework=frameworkSave;
 
@@ -36,11 +60,11 @@ baseId = findBase.ccall(
 frameworkGet=#cassSignatureSheet(
 ).toDatastream(
 	paramName="signatureSheet",
-	op=framework.skyrepoGet(
+	op=#skyrepoGet(
 		type="@type",
 		id="@frameworkId"
 	)
-).call(type="schema.cassproject.org.0.2.framework");
+).call(type="schema.cassproject.org.0.2.Framework");
 
 updateFramework=#cassSignatureSheet(
 ).toDatastream(
@@ -52,7 +76,7 @@ updateFramework=#cassSignatureSheet(
 		_key=#id(),
 		_value=#add(a=baseId, b="/", c="@lastModified")
 	).skyrepoPut(
-		type="schema.cassproject.org.0.2.framework",
+		type="schema.cassproject.org.0.2.Framework",
 		id="@id",
 		version="@lastModified"
 	)
@@ -72,7 +96,7 @@ addCompetencyToFramework=#cassSignatureSheet(
 		).get(competency="").append(
 			append=#repoEndpoint().add(
 				p="data/",
-				q="schema.cassproject.org.0.2.competency",r="/",s="@competencyId"
+				q="schema.cassproject.org.0.2.Competency",r="/",s="@competencyId"
 			)
 		).removeDuplicates()
 	).put(
@@ -83,7 +107,7 @@ addCompetencyToFramework=#cassSignatureSheet(
 		id="@frameworkId",
 		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet, version=#date(raw="true"));
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(raw="true"));
 #cassAddCompetencyToFramework=addCompetencyToFramework;
 
 addRelationToFramework=#cassSignatureSheet(
@@ -95,7 +119,7 @@ addRelationToFramework=#cassSignatureSheet(
 		).get(relation="").append(
 			append=#repoEndpoint().add(
 				p="data/",
-				q="schema.cassproject.org.0.2.relation",r="/",s="@relationId"
+				q="schema.cassproject.org.0.2.Relation",r="/",s="@relationId"
 			)
 		).removeDuplicates()
 	).put(
@@ -106,5 +130,5 @@ addRelationToFramework=#cassSignatureSheet(
 		id="@frameworkId",
 		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.framework",framework=frameworkGet, version=#date(raw="true"));
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(raw="true"));
 #cassAddRelationToFramework=addRelationToFramework;
