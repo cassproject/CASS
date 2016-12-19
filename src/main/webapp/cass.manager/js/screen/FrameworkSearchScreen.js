@@ -166,7 +166,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
 		
-		ViewManager.getView("frameworkSearchMessageContainer").displayAlert(err, "searchFail");
+		ViewManager.getView("#frameworkSearchMessageContainer").displayAlert(err, "searchFail");
 		
 		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}

@@ -770,7 +770,9 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 				else
 				{
 					ModalManager.showModal(new ConfirmModal(function(){
-	                    ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
+	                    ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id), function(){
+	                    	ModalManager.hideModal();
+	                    });
 	                }, "Creating a new competency will navigate away from this screen.<br/><br/> Any unsaved changes will be lost"));
 				}
             });

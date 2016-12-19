@@ -231,14 +231,19 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         
         if (frameworkId != null) {
             EcFramework.get(frameworkId, function (framework) {
+            	var rulesDone = false;
+            	var levelsDone = false;
                 framework.addCompetency(data.id);
                 data.levels(AppController.serverController.getRepoInterface(), function (level) {
                     framework.addLevel(level.id);
                 }, errorRetrievingLevels, function (levels) {
                     framework.save(function (s) {
-                        ScreenManager.changeScreen(new FrameworkEditScreen({
-                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
-                        }));
+                    	if(rulesDone)
+	                        ScreenManager.changeScreen(new FrameworkEditScreen({
+	                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+	                        }));
+                    	else
+                    		levelsDone = true;
                     }, errorSaving);
                 });
 
@@ -246,9 +251,12 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
                     framework.addRollupRule(rollupRule.id);
                 }, errorRetrievingRollupRules, function (rollupRules) {
                     framework.save(function (s) {
-                        ScreenManager.changeScreen(new FrameworkEditScreen({
-                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
-                        }));
+                        if(levelsDone)
+	                    	ScreenManager.changeScreen(new FrameworkEditScreen({
+	                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+	                        }));
+                        else
+                        	rulesDone = true;
                     }, errorSaving);
                 });
 
