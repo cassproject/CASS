@@ -53,7 +53,7 @@ endpoint=#add(
 			eq=""
 		),
 	b="@endpointStart",
-	c="/moodle/webservice/rest/server.php"
+	c="/webservice/rest/server.php"
 ).call(
 	endpointStart = #moodleConfigVal(key="moodleEndpoint")
 );
