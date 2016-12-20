@@ -22,8 +22,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	var relationTypes = {
 	    isEnabledBy:"Enabled By",
 	    requires:"Requires",
-	    desires:"Desires",
-	    narrows: "Narrows",
+	    desires:"Desires",narrows: "Narrows",
 	    isRelatedTo:"Related To",
 	    isEquivalentTo:"Equivalent To"
 	}
