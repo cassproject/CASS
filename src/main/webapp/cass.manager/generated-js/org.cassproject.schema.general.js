@@ -1,21 +1,12 @@
-/**
- *  Location of strings that store the current namespace for general Eduworks Objects.
- *  @class General
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var General = function() {};
-General = stjs.extend(General, null, [], function(constructor, prototype) {
-    constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
-    constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
-    /**
-     *  The latest version of the Eduworks Object namespace.
-     *  @property context
-     *  @static
-     *  @type {string}
-     */
-    constructor.context = "http://schema.eduworks.com/general/0.2";
-}, {}, {});
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  *  Location of strings that store the current namespace for EBAC/KBAC.
  *  @class Ebac
@@ -34,6 +25,24 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
      *  @type string (URL)
      */
     constructor.context = "http://schema.cassproject.org/kbac/0.2";
+}, {}, {});
+/**
+ *  Location of strings that store the current namespace for general Eduworks Objects.
+ *  @class General
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var General = function() {};
+General = stjs.extend(General, null, [], function(constructor, prototype) {
+    constructor.context_0_2 = "http://schema.eduworks.com/general/0.2";
+    constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
+    /**
+     *  The latest version of the Eduworks Object namespace.
+     *  @property context
+     *  @static
+     *  @type {string}
+     */
+    constructor.context = "http://schema.eduworks.com/general/0.2";
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for

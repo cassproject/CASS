@@ -15,7 +15,7 @@ configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
 );
 
 configVal=configObject.getByParam(param="@key");
-#configVal=configVal;
+#moodleConfigVal=configVal;
 
 isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
 	operand="0",
@@ -41,22 +41,24 @@ checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
 
 
 
-token=#configVal(key="moodleToken");
+token=#moodleConfigVal(key="moodleToken");
 #moodleWsToken=token;
 
-endpointStart = #configVal(key="moodleEndpoint");
+
 endpoint=#add(
 	a=#if(operator=#indexOf(str="@endpointStart", substr="http"), operand="0",
 			ne="http://",
 			eq=""
 		),
 	b="@endpointStart",
-	c="/moodle/webservice/rest/server.php"
+	c="/webservice/rest/server.php"
+).call(
+	endpointStart = #moodleConfigVal(key="moodleEndpoint")
 );
 #moodleEndpoint=endpoint;
 
 
-enabled=#configVal(key="enabled");
+enabled=#moodleConfigVal(key="enabled");
 enabled=#if(operator=enabled,operand="true",eq="true",ne="false");
 #moodleAdapterEnabled=enabled;
 

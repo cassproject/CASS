@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen with form for editing competency details
  * 
@@ -73,11 +82,11 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
         $("#competencyNoLevels").removeClass("hide");
         $("#competencyLevelContainer").children(".level").remove();
-        competency.levels(AppController.repoInterface, addLevel, errorRetrievingLevels)
+        competency.levels(AppController.serverController.getRepoInterface(), addLevel, errorRetrievingLevels)
 
         $("#competencyNoRollupRules").removeClass("hide");
         $("#competencyRollupRuleContainer").children(".rollupRule").remove();
-        competency.rollupRules(AppController.repoInterface, addRollupRule, errorRetrievingRollupRules)
+        competency.rollupRules(AppController.serverController.getRepoInterface(), addRollupRule, errorRetrievingRollupRules)
 
     }
 
@@ -222,24 +231,32 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         
         if (frameworkId != null) {
             EcFramework.get(frameworkId, function (framework) {
+            	var rulesDone = false;
+            	var levelsDone = false;
                 framework.addCompetency(data.id);
-                data.levels(AppController.repoInterface, function (level) {
+                data.levels(AppController.serverController.getRepoInterface(), function (level) {
                     framework.addLevel(level.id);
                 }, errorRetrievingLevels, function (levels) {
                     framework.save(function (s) {
-                        ScreenManager.changeScreen(new FrameworkEditScreen({
-                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
-                        }));
+                    	if(rulesDone)
+	                        ScreenManager.changeScreen(new FrameworkEditScreen({
+	                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+	                        }));
+                    	else
+                    		levelsDone = true;
                     }, errorSaving);
                 });
 
-                data.rollupRules(AppController.repoInterface, function (rollupRule) {
+                data.rollupRules(AppController.serverController.getRepoInterface(), function (rollupRule) {
                     framework.addRollupRule(rollupRule.id);
                 }, errorRetrievingRollupRules, function (rollupRules) {
                     framework.save(function (s) {
-                        ScreenManager.changeScreen(new FrameworkEditScreen({
-                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
-                        }));
+                        if(levelsDone)
+	                    	ScreenManager.changeScreen(new FrameworkEditScreen({
+	                            id: EcRemoteLinkedData.trimVersionFromUrl(frameworkId)
+	                        }));
+                        else
+                        	rulesDone = true;
                     }, errorSaving);
                 });
 
@@ -344,7 +361,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
 
         if (data.id == undefined) {
             data = new EcCompetency();
-            data.generateId(AppController.repoInterface.selectedServer);
+            data.generateId(AppController.serverController.getRepoInterface().selectedServer);
             data.name = "";
 
             if (AppController.identityController.selectedIdentity != undefined) {

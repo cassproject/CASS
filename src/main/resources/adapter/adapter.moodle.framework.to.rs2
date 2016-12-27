@@ -37,7 +37,7 @@ checkFramework=#if(
 	ne=checkDateFramework
 );
 
-cassToMoodleFrameworks=#getFrameworks().forEach(
+cassToMoodleFrameworks=#getFrameworks(ppk=#moodlePpk()).forEach(
 	array="true",
 	paramName="framework",
 	op=checkFramework.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
@@ -94,7 +94,7 @@ checkCompetencies=#toObject(obj="@framework").get(competency="").forEach(
 	)
 ).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
 
-cassToMoodleCompetencies=#getFrameworks().forEach(
+cassToMoodleCompetencies=#getFrameworks(ppk=#moodlePpk()).forEach(
 	array="true",
 	paramName="framework",
 	op=checkCompetencies.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
@@ -137,7 +137,7 @@ checkRelations=#toObject(obj="@framework").get(relation="").forEach(
 	)
 ).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
 
-cassToMoodleRelations=#getFrameworks().forEach(
+cassToMoodleRelations=#getFrameworks(ppk=#moodlePpk()).forEach(
 	array="true",
 	paramName="framework",
 	op=checkRelations.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
@@ -146,9 +146,9 @@ cassToMoodleRelations=#getFrameworks().forEach(
 //-----CONTROL FUNCTIONS-----
 
 cassToMoodle=#object(
-	a=cassToMoodleFrameworks,
-	b=cassToMoodleCompetencies,
-	c=cassToMoodleRelations
+	a_frameworks=cassToMoodleFrameworks,
+	b_competencies=cassToMoodleCompetencies,
+	c_relations=cassToMoodleRelations
 );
 
 cassToMoodleDebug=cassToMoodle.displayJson(_collapse="true");

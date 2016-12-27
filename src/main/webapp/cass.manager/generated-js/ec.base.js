@@ -1,3 +1,31 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+/**
+ *  Object Helper Functions
+ *  @class EcObject
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+    /**
+     *  Returns true if the result is an object.
+     *  @static
+     *  @method isArray
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an object.
+     */
+    constructor.isObject = function(o) {
+        return (typeof o) == "object";
+    };
+}, {}, {});
 /**
  *  Object to hold a triple, used in graph.
  *  @class Triple
@@ -42,25 +70,6 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
- *  Object Helper Functions
- *  @class EcObject
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    /**
-     *  Returns true if the result is an object.
-     *  @static
-     *  @method isArray
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an object.
-     */
-    constructor.isObject = function(o) {
-        return (typeof o) == "object";
-    };
-}, {}, {});
-/**
  *  Array Helper Functions
  *  @class EcArray
  *  @module com.eduworks.ec
@@ -95,50 +104,209 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
- *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
- *  Will iterate over all items in an array and perform 'each(item,callback)'. 
- *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
- *  When all callbacks have been called, 'after(array)' is called. 
- *  @author fritz.ray@eduworks.com
+ *  Wrapper to handle all remote web service invocations.
+ *  
+ *  @class EcRemote
  *  @module com.eduworks.ec
- *  @class EcAsyncHelper
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  */
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
+var EcRemote = function() {};
+EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     /**
-     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
-     *  @property counter
-     *  @type integer
+     *  Turn this property off to cause all remote web service calls to be
+     *  synchronous. Can be useful for test scripts, blocking calls, etc.
+     *  
+     *  @property async
+     *  @static
+     *  @type boolean
      */
-    prototype.counter = null;
+    constructor.async = true;
     /**
-     *  "Each" method. See class description.
-     *  @method each
-     *  @param {Array} array Array to iterate over.
-     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
-     *  @param {function(array)} after Method invoked when all callbacks are called.
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     *  
+     *  @method postExpectingObject
+     *  @static
+     *  @param {string} server Protocol, hostname and path to the remote handler.
+     *  @param {string} service Path to service to invoke.
+     *  @param {FormData} fd Form data to send as multi-part mime.
+     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
      */
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                each(array[i], function() {
-                    me.counter--;
-                    if (me.counter == 0) 
-                        after(array);
-                });
-        }
+    constructor.postExpectingObject = function(server, service, fd, success, failure) {
+        EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
     };
     /**
-     *  Will prevent 'after' from being called.
-     *  @method stop
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request.
+     *  
+     *  @method postExpectingString
+     *  @static
+     *  @param {string} server Protocol, hostname and path to the remote handler.
+     *  @param {string} service Path to service to invoke.
+     *  @param {FormData} fd Form data to send as multi-part mime.
+     *  @param {function(string)} success Method that is invoked if the server responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
      */
-    prototype.stop = function() {
-        this.counter = -1;
+    constructor.postExpectingString = function(server, service, fd, success, failure) {
+        EcRemote.postInner(server, service, fd, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+    };
+    constructor.postInner = function(server, service, fd, successCallback, failureCallback) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && !"".equals(service)) 
+            url += "/";
+        if (service != null) 
+            url += service;
+        var p = {};
+        p.method = "POST";
+        p.url = url;
+        if ((fd)["_streams"] != null) {
+            var chunks = (fd)["_streams"];
+            var all = "";
+            for (var i = 0; i < chunks.length; i++) {
+                if ((typeof chunks[i]) == "function") 
+                    all = all + "\r\n";
+                 else 
+                    all = all + chunks[i];
+            }
+            all = all + "\r\n" + "\r\n" + "--" + (fd)["_boundary"] + "--";
+            p.headers = new Object();
+            p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
+            p.data = all;
+        } else {
+            p.mimeType = "multipart/form-data";
+            p.data = fd;
+        }
+        (p)["contentType"] = false;
+        p.cache = false;
+        p.async = EcRemote.async;
+        p.processData = false;
+        p.success = successCallback;
+        p.error = failureCallback;
+        EcRemote.upgradeHttpToHttps(p);
+        $.ajax(p);
+    };
+    /**
+     *  GETs something from a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     *  
+     *  @method postExpectingString
+     *  @static
+     *  @param {string} server Protocol, hostname and path to the remote handler.
+     *  @param {string} service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     */
+    constructor.getExpectingObject = function(server, service, success, failure) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && service.equals("")) 
+            url += "/";
+        if (service != null) 
+            url += service;
+        var p = {};
+        p.method = "GET";
+        p.url = url;
+        p.cache = false;
+        p.async = EcRemote.async;
+        p.processData = false;
+        p.dataType = "json";
+        p.success = EcRemote.getSuccessJSONCallback(success, failure);
+        p.error = EcRemote.getFailureCallback(failure);
+        EcRemote.upgradeHttpToHttps(p);
+        $.ajax(p);
+    };
+    /**
+     *  DELETEs something at a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     *  
+     *  @method _delete
+     *  @static
+     *  @param {string} server Protocol, hostname and path to the remote handler.
+     *  @param {string} service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     */
+    constructor._delete = function(url, signatureSheet, success, failure) {
+        var p = {};
+        p.method = "DELETE";
+        p.url = url;
+        p.async = EcRemote.async;
+        p.headers = new Object();
+        p.headers["signatureSheet"] = signatureSheet;
+        p.success = EcRemote.getSuccessCallback(success, failure);
+        p.error = EcRemote.getFailureCallback(failure);
+        EcRemote.upgradeHttpToHttps(p);
+        $.ajax(p);
+    };
+    constructor.upgradeHttpToHttps = function(p) {
+        if (window != null) 
+            if (window.location != null) 
+                if (p.url.indexOf(window.location.protocol) == -1) 
+                    if (window.location.protocol.startsWith("https")) 
+                        if (!p.url.startsWith("https:")) 
+                            p.url = p.url.replace("http:", "https:");
+    };
+    constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
+        if (failure != null) {
+            if (paramP1 != null) {
+                if (paramP1.responseText != null) 
+                    failure(paramP1.responseText);
+                 else if (paramP1.statusText != null) 
+                    failure(paramP1.statusText.toString());
+                 else 
+                    failure("General error in AJAX request.");
+            } else if (paramP2 != null) 
+                failure(paramP2);
+             else if (paramP3 != null) 
+                failure(paramP3);
+             else 
+                failure("General error in AJAX request.");
+        }
+    };
+    constructor.getSuccessCallback = function(success, failure) {
+        return function(arg0, arg1, arg2) {
+            if (arg2.status > 300 || arg2.status < 200) 
+                failure("Error with code: " + arg2.status);
+             else if (success != null) 
+                success(arg2.responseText);
+        };
+    };
+    constructor.getSuccessJSONCallback = function(success, failure) {
+        return function(arg0, arg1, arg2) {
+            if (arg2.status > 300 || arg2.status < 200) 
+                failure("Error with code: " + arg2.status);
+             else if (success != null) 
+                try {
+                    success(JSON.parse(arg2.responseText));
+                }catch (ex) {
+                    if (ex != null) {
+                        if ((ex)["getMessage"] != null) 
+                            failure(ex.getMessage());
+                         else 
+                            failure(ex);
+                    }
+                }
+        };
+    };
+    constructor.getFailureCallback = function(failure) {
+        return function(paramP1, paramP2, paramP3) {
+            EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
+        };
+    };
+}, {}, {});
+var EcLocalStorage = function() {};
+EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
+    constructor.removeItem = function(s, key) {
+        ((s)["removeItem"])(key);
+    };
+}, {}, {});
+var EcDate = function() {};
+EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    constructor.toISOString = function(obj) {
+        return ((obj)["toISOString"])();
     };
 }, {}, {});
 /**
@@ -624,200 +792,56 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
-var EcDate = function() {};
-EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
-    constructor.toISOString = function(obj) {
-        return ((obj)["toISOString"])();
+/**
+ *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
+ *  Will iterate over all items in an array and perform 'each(item,callback)'. 
+ *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
+ *  When all callbacks have been called, 'after(array)' is called. 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcAsyncHelper
+ */
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    /**
+     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     *  @property counter
+     *  @type integer
+     */
+    prototype.counter = null;
+    /**
+     *  "Each" method. See class description.
+     *  @method each
+     *  @param {Array} array Array to iterate over.
+     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
+     *  @param {function(array)} after Method invoked when all callbacks are called.
+     */
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                each(array[i], function() {
+                    me.counter--;
+                    if (me.counter == 0) 
+                        after(array);
+                });
+        }
+    };
+    /**
+     *  Will prevent 'after' from being called.
+     *  @method stop
+     */
+    prototype.stop = function() {
+        this.counter = -1;
     };
 }, {}, {});
-/**
- *  Wrapper to handle all remote web service invocations.
- *  
- *  @class EcRemote
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- */
-var EcRemote = function() {};
-EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
-    /**
-     *  Turn this property off to cause all remote web service calls to be
-     *  synchronous. Can be useful for test scripts, blocking calls, etc.
-     *  
-     *  @property async
-     *  @static
-     *  @type boolean
-     */
-    constructor.async = true;
-    /**
-     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
-     *  URL) and a service (service path). Sends form data as a multi-part mime
-     *  request.
-     *  
-     *  @method postExpectingObject
-     *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
-     */
-    constructor.postExpectingObject = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
-    };
-    /**
-     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
-     *  URL) and a service (service path). Sends form data as a multi-part mime
-     *  request.
-     *  
-     *  @method postExpectingString
-     *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(string)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
-     */
-    constructor.postExpectingString = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
-    };
-    constructor.postInner = function(server, service, fd, successCallback, failureCallback) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && !"".equals(service)) 
-            url += "/";
-        if (service != null) 
-            url += service;
-        var p = {};
-        p.method = "POST";
-        p.url = url;
-        if ((fd)["_streams"] != null) {
-            var chunks = (fd)["_streams"];
-            var all = "";
-            for (var i = 0; i < chunks.length; i++) {
-                if ((typeof chunks[i]) == "function") 
-                    all = all + "\r\n";
-                 else 
-                    all = all + chunks[i];
-            }
-            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
-            p.headers = new Object();
-            p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
-            p.data = all;
-        } else {
-            p.mimeType = "multipart/form-data";
-            p.data = fd;
-        }
-        (p)["contentType"] = false;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.processData = false;
-        p.success = successCallback;
-        p.error = failureCallback;
-        EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
-    };
-    /**
-     *  GETs something from a remote endpoint. Composed of a server endpoint
-     *  (root URL) and a service (service path).
-     *  
-     *  @method postExpectingString
-     *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
-     */
-    constructor.getExpectingObject = function(server, service, success, failure) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && service.equals("")) 
-            url += "/";
-        if (service != null) 
-            url += service;
-        var p = {};
-        p.method = "GET";
-        p.url = url;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.processData = false;
-        p.dataType = "json";
-        p.success = EcRemote.getSuccessJSONCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
-    };
-    /**
-     *  DELETEs something at a remote endpoint. Composed of a server endpoint
-     *  (root URL) and a service (service path).
-     *  
-     *  @method _delete
-     *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
-     */
-    constructor._delete = function(url, signatureSheet, success, failure) {
-        var p = {};
-        p.method = "DELETE";
-        p.url = url;
-        p.async = EcRemote.async;
-        p.headers = new Object();
-        p.headers["signatureSheet"] = signatureSheet;
-        p.success = EcRemote.getSuccessCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
-    };
-    constructor.upgradeHttpToHttps = function(p) {
-        if (window != null) 
-            if (window.location != null) 
-                if (p.url.indexOf(window.location.protocol) == -1) 
-                    if (window.location.protocol.startsWith("https")) 
-                        if (!p.url.startsWith("https:")) 
-                            p.url = p.url.replace("http:", "https:");
-    };
-    constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
-        if (failure != null) {
-            if (paramP1 != null) {
-                if (paramP1.responseText != null) 
-                    failure(paramP1.responseText);
-                 else if (paramP1.statusText != null) 
-                    failure(paramP1.statusText.toString());
-                 else 
-                    failure("General error in AJAX request.");
-            } else if (paramP2 != null) 
-                failure(paramP2);
-             else if (paramP3 != null) 
-                failure(paramP3);
-             else 
-                failure("General error in AJAX request.");
-        }
-    };
-    constructor.getSuccessCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) 
-                failure("Error with code: " + arg2.status);
-             else if (success != null) 
-                success(arg2.responseText);
-        };
-    };
-    constructor.getSuccessJSONCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) 
-                failure("Error with code: " + arg2.status);
-             else if (success != null) 
-                try {
-                    success(JSON.parse(arg2.responseText));
-                }catch (ex) {
-                    failure(ex.getMessage());
-                }
-        };
-    };
-    constructor.getFailureCallback = function(failure) {
-        return function(paramP1, paramP2, paramP3) {
-            EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
-        };
-    };
+var Callback5 = function() {};
+Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
+    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
 }, {}, {});
 /**
  *  A graph consisting of a set of vertices of type <code>V</code>

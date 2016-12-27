@@ -7,6 +7,29 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
+    };
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 /**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
  *  (hereafter, "Inquiry")
@@ -334,29 +357,6 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         return false;
     };
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);

@@ -167,13 +167,48 @@ function contactSearch() {
 function getShareString() {
     var input = window.prompt("What name would you like the recipient to know you by?", identity.displayName);
     if (input == null) return;
-    var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
 
+    var invitation = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"    
+  
     var iv = EcAes.newIv(32);
-    string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identity.ppk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(repo.selectedServer) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identity.ppk, iv));
+    url = window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identity.ppk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(repo.selectedServer) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identity.ppk, iv));
 
-    copyTextToClipboard(string);
-    alert("The invitation has been copied to your clipboard.");
+    var string = invitation + url;
+    
+    if(copyTextToClipboard(string)){
+    	alert("The invitation has been copied to your clipboard.");
+    }else{
+    	$("#contactInvitation").foundation('open'); 
+    	
+    	$("#invitationBox").html(invitation);
+        $("#linkBox").text(url);
+
+        var select = function(){
+    		if (document.selection) {
+	    		document.selection.empty();
+	            var range = document.body.createTextRange();
+	            range.moveToElementText(document.getElementById("invitationContainer"));
+	            range.select();
+	        } else if (window.getSelection) {
+	        	if (window.getSelection().empty) {  // Chrome
+	    		    window.getSelection().empty();
+	    		} else if (window.getSelection().removeAllRanges) {  // Firefox
+	    		    window.getSelection().removeAllRanges();
+	    		}
+	            var range = document.createRange();
+	            range.selectNode(document.getElementById("invitationContainer"));
+	            window.getSelection().addRange(range);
+	        }
+    	}
+        
+        $("#invitationContainer").click(function(ev){
+        	if($(ev.target).attr("id") != "invitationBox"){
+        		select();
+        	}
+        });
+    	$("#copyInvitation").mousedown(select);
+    }
+    
 }
 
 function actionAddContactCheck() {

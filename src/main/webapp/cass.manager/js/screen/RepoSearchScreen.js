@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen that handles searching the repository for all objects
  * lists types of objects available in repository to be used as a paremter of search
@@ -120,7 +129,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 				params.ownership = ownership;
 				params.types = types;
 				
-				AppController.repoInterface.searchWithParams(query, params, null, callback, errorSearching);
+				AppController.serverController.getRepoInterface().searchWithParams(query, params, null, callback, errorSearching);
 			}
 		}, 100);
 	}
@@ -407,7 +416,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 			$("#repoSearchOwnership").val(ownership);
 		}
 			
-		AppController.repoInterface.listTypes(displayTypes, errorDisplayingTypes);
+		AppController.serverController.getRepoInterface().listTypes(displayTypes, errorDisplayingTypes);
 		
 		runRepoSearch();
 	};

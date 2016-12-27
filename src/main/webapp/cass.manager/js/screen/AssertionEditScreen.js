@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen for Editing Assertions in the CASS Instance
  * 
@@ -262,7 +271,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	
 		
 		var competencyList = {};
-		EcCompetency.search(AppController.repoInterface, "*", function(competencies){
+		EcCompetency.search(AppController.serverController.getRepoInterface(), "*", function(competencies){
 			for(var i in competencies){
 				competencyList[competencies[i].id] = competencies[i];
 				
@@ -291,7 +300,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 				$("#assertionLevelInput").append($("<option selected>No level selected</option"));
 			}
 				
-			EcLevel.searchByCompetency(AppController.repoInterface, assertion.competency, function(levels){
+			EcLevel.searchByCompetency(AppController.serverController.getRepoInterface(), assertion.competency, function(levels){
 				for(var i in levels){
 					var option = $("<option></option>");
 					option.text(levels[i].name);
@@ -310,7 +319,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			var competencyId = $("#assertionCompetencyInput").val();
 			$("#assertionCompetencyInput").css("font-style","normal");
 			
-			EcLevel.searchByCompetency(AppController.repoInterface, competencyId, function(levels){
+			EcLevel.searchByCompetency(AppController.serverController.getRepoInterface(), competencyId, function(levels){
 				$("#assertionLevelInput option").remove();
 				for(var i in levels){
 					var option = $("<option></option>");
@@ -444,7 +453,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		if(data == undefined){
 			newAssertion = true;
 			data = new EcAssertion();
-		    data.generateId(AppController.repoInterface.selectedServer);
+		    data.generateId(AppController.serverController.getRepoInterface().selectedServer);
 		    
 		    if(AppController.identityController.selectedIdentity != undefined)
 		    {

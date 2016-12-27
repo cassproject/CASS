@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
  *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
@@ -448,117 +457,6 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
 }, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  Implementation of a Rollup Rule object with methods for interacting with CASS
- *  services on a server.
- *  
- *  @module org.cassproject
- *  @class EcRollupRule
- *  @constructor
- *  @extends RollupRule
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- */
-var EcRollupRule = function() {
-    RollupRule.call(this);
-};
-EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
-    /**
-     *  Method for setting a rollup rule name
-     *  
-     *  @memberOf EcRollupRule
-     *  @method setName
-     *  @param name
-     */
-    prototype.setName = function(name) {
-        this.name = name;
-    };
-    /**
-     *  Method for setting a rollup rule description
-     *  
-     *  @memberOf EcRollupRule
-     *  @method setDescription
-     *  @param {String} description
-     */
-    prototype.setDescription = function(description) {
-        this.description = description;
-    };
-    /**
-     *  Saves this rollup rules details on the server specified by its ID
-     *  
-     *  @memberOf EcRollupRule
-     *  @method save
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful save of rollup rule
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error saving rollup rule
-     */
-    prototype.save = function(success, failure) {
-        if (this.rule == null || this.rule == "") {
-            var msg = "RollupRule Rule cannot be empty";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.competency == null || this.competency == "") {
-            var msg = "RollupRule's Competency cannot be empty";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        EcRepository._save(this, success, failure);
-    };
-    /**
-     *  Deletes this rollup rule from the server specified by it's ID
-     *  
-     *  @memberOf EcRollupRule
-     *  @method _delete
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful deleting the rollup rle
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error deleting the rollup rule
-     */
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
-    };
-    /**
-     * 
-     *  Retrieves a rollup rule from the server
-     *  
-     *  @memberOf EcRollupRule
-     *  @method get
-     *  @static
-     *  @param {String} id
-     *  			ID of the rollup rule to retrieve
-     *  @param {Callback1<EcRollupRule>} success
-     *  			Callback triggered on successful retrieving rollup rule, 
-     *  			returns the rollup rule
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error retrieving rollup rule
-     */
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (success == null) 
-                return;
-            if (!p1.isA(EcRollupRule.myType)) {
-                if (failure != null) 
-                    failure("Resultant object is not a level.");
-                return;
-            }
-            var c = new EcRollupRule();
-            c.copyFrom(p1);
-            success(c);
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
-    };
-}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  Implementation of an alignment object with methods for interacting with CASS
  *  services on a server.
  *  
@@ -833,6 +731,117 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
                 success(ret);
             }
         }, failure);
+    };
+}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Implementation of a Rollup Rule object with methods for interacting with CASS
+ *  services on a server.
+ *  
+ *  @module org.cassproject
+ *  @class EcRollupRule
+ *  @constructor
+ *  @extends RollupRule
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ */
+var EcRollupRule = function() {
+    RollupRule.call(this);
+};
+EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
+    /**
+     *  Method for setting a rollup rule name
+     *  
+     *  @memberOf EcRollupRule
+     *  @method setName
+     *  @param name
+     */
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    /**
+     *  Method for setting a rollup rule description
+     *  
+     *  @memberOf EcRollupRule
+     *  @method setDescription
+     *  @param {String} description
+     */
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    /**
+     *  Saves this rollup rules details on the server specified by its ID
+     *  
+     *  @memberOf EcRollupRule
+     *  @method save
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successful save of rollup rule
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error saving rollup rule
+     */
+    prototype.save = function(success, failure) {
+        if (this.rule == null || this.rule == "") {
+            var msg = "RollupRule Rule cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == "") {
+            var msg = "RollupRule's Competency cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    /**
+     *  Deletes this rollup rule from the server specified by it's ID
+     *  
+     *  @memberOf EcRollupRule
+     *  @method _delete
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successful deleting the rollup rle
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error deleting the rollup rule
+     */
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
+    /**
+     * 
+     *  Retrieves a rollup rule from the server
+     *  
+     *  @memberOf EcRollupRule
+     *  @method get
+     *  @static
+     *  @param {String} id
+     *  			ID of the rollup rule to retrieve
+     *  @param {Callback1<EcRollupRule>} success
+     *  			Callback triggered on successful retrieving rollup rule, 
+     *  			returns the rollup rule
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error retrieving rollup rule
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (success == null) 
+                return;
+            if (!p1.isA(EcRollupRule.myType)) {
+                if (failure != null) 
+                    failure("Resultant object is not a level.");
+                return;
+            }
+            var c = new EcRollupRule();
+            c.copyFrom(p1);
+            success(c);
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**

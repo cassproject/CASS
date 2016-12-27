@@ -643,3 +643,18 @@ li.cass-competency-level:before {
 .competencyRelations .relation:hover .relationViewLink{
 	display:inline;
 }
+
+
+.typeaheadSuggestion .label{
+	display:none;
+	font-size: x-small;
+  	margin-left: 1rem;
+  	position: relative;
+  	bottom: 0.1rem;
+  	cursor: pointer;
+}
+
+.typeaheadSuggestion:hover .label{
+	display:inline;
+	
+}
