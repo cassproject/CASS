@@ -202,6 +202,7 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/listGoals.js",		
 		e=#add(
+			a="email=",
 			b="@username"
 		),
 		g=#add(
