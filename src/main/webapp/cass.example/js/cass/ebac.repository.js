@@ -750,7 +750,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }, 0);
                 return;
             }
-        if ((EcRepository.fetching)[url] > new Date().getTime() - 1000) {
+        if ((EcRepository.fetching)[url] > new Date().getTime() - 60000) {
             setTimeout(function() {
                 EcRepository.get(url, success, failure);
             }, 100);
