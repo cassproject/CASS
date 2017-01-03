@@ -34,13 +34,19 @@ var contactsContact = $(".contactsContact").outerHTML();
 
 function populateContacts() {
     populateContactsActual();
-    actionAddContactCheck();
+    loopPopulateContacts();
 }
 
+var lastLoop = null;
+
 function loopPopulateContacts() {
+    if (lastLoop != null)
+        return;
     actionAddContactCheck();
-    setTimeout(function () {
-        loopPopulateContacts()
+    clearTimeout(lastLoop);
+    lastLoop = setTimeout(function () {
+        lastLoop = null;
+        loopPopulateContacts();
     }, 60000);
 }
 
@@ -49,7 +55,7 @@ function populateContactsActual() {
     var contactFilter = $("#contactSearch").val();
     if (contactFilter != null)
         contactFilter = contactFilter.trim();
-    
+
     if (EcIdentityManager.ids !== undefined && EcIdentityManager.ids.length != 0)
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var identity = EcIdentityManager.ids[i];
@@ -64,7 +70,7 @@ function populateContactsActual() {
                         ui.hide();
             }
         }
-    
+
     if (EcIdentityManager.contacts !== undefined && EcIdentityManager.contacts.length != 0)
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var contact = EcIdentityManager.contacts[i];
@@ -168,47 +174,47 @@ function getShareString() {
     var input = window.prompt("What name would you like the recipient to know you by?", identity.displayName);
     if (input == null) return;
 
-    var invitation = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"    
-  
+    var invitation = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
+
     var iv = EcAes.newIv(32);
     url = window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identity.ppk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(repo.selectedServer) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identity.ppk, iv));
 
     var string = invitation + url;
-    
-    if(copyTextToClipboard(string)){
-    	alert("The invitation has been copied to your clipboard.");
-    }else{
-    	$("#contactInvitation").foundation('open'); 
-    	
-    	$("#invitationBox").html(invitation);
+
+    if (copyTextToClipboard(string)) {
+        alert("The invitation has been copied to your clipboard.");
+    } else {
+        $("#contactInvitation").foundation('open');
+
+        $("#invitationBox").html(invitation);
         $("#linkBox").text(url);
 
-        var select = function(){
-    		if (document.selection) {
-	    		document.selection.empty();
-	            var range = document.body.createTextRange();
-	            range.moveToElementText(document.getElementById("invitationContainer"));
-	            range.select();
-	        } else if (window.getSelection) {
-	        	if (window.getSelection().empty) {  // Chrome
-	    		    window.getSelection().empty();
-	    		} else if (window.getSelection().removeAllRanges) {  // Firefox
-	    		    window.getSelection().removeAllRanges();
-	    		}
-	            var range = document.createRange();
-	            range.selectNode(document.getElementById("invitationContainer"));
-	            window.getSelection().addRange(range);
-	        }
-    	}
-        
-        $("#invitationContainer").click(function(ev){
-        	if($(ev.target).attr("id") != "invitationBox"){
-        		select();
-        	}
+        var select = function () {
+            if (document.selection) {
+                document.selection.empty();
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById("invitationContainer"));
+                range.select();
+            } else if (window.getSelection) {
+                if (window.getSelection().empty) { // Chrome
+                    window.getSelection().empty();
+                } else if (window.getSelection().removeAllRanges) { // Firefox
+                    window.getSelection().removeAllRanges();
+                }
+                var range = document.createRange();
+                range.selectNode(document.getElementById("invitationContainer"));
+                window.getSelection().addRange(range);
+            }
+        }
+
+        $("#invitationContainer").click(function (ev) {
+            if ($(ev.target).attr("id") != "invitationBox") {
+                select();
+            }
         });
-    	$("#copyInvitation").mousedown(select);
+        $("#copyInvitation").mousedown(select);
     }
-    
+
 }
 
 function actionAddContactCheck() {
@@ -272,7 +278,3 @@ function actionAddContactCheck() {
     }, null, silent);
 
 }
-
-timeout(function () {
-    loopPopulateContacts();
-});
