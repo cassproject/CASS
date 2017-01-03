@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  * Screen that displays user identity and contact information once the user has signed in
  * 
@@ -276,64 +267,6 @@ UserIdentityScreen = (function (UserIdentityScreen) {
     }
 
     /**
-     * Copys an inviation to the clipboard if possible
-     * 
-     * @memberOf UserIdentityScreen
-     * @method copyInvitationText
-     * @private
-     */
-    function copyInvitationText(){
-    	if (document.selection) {
-    		document.selection.empty();
-            var range = document.body.createTextRange();
-            range.moveToElementText(document.getElementById("invitationContainer"));
-            range.select();
-        } else if (window.getSelection) {
-        	if (window.getSelection().empty) {  // Chrome
-    		    window.getSelection().empty();
-    		} else if (window.getSelection().removeAllRanges) {  // Firefox
-    		    window.getSelection().removeAllRanges();
-    		}
-            var range = document.createRange();
-            range.selectNode(document.getElementById("invitationContainer"));
-            window.getSelection().addRange(range);
-        }
-        
-
-        document.removeEventListener("copy",copyEvent,true);
-        document.removeEventListener("copy",copyEvent,false);
-         
-        try {
-        	var successful = document.execCommand('copy');
-        	var msg = successful ? 'successful' : 'unsuccessful';
-        	console.log('Copying text command was ' + msg);
-          
-	          if(successful){
-	        	  $("#copyInvitation").find("#copy").css("display", "none");
-	        	  $("#copyInvitation").find("#copied").css("display", "inline-block");
-	        	  
-	        	  $("#copyInvitation").find("#copied").fadeOut(1000, function(){
-	        		  $("#copyInvitation").find("#copy").css("display", "inline-block");
-	        	  })
-	        	  ViewManager.getView("#invitationMessageContainer").displaySuccess("Succesfully Copied to Clipboard");
-	        	  
-	        	  setTimeout(function(){
-	          		  ViewManager.getView("#invitationMessageContainer").clearSuccess();
-	          	  }, 3000);
-	          }else{
-	        	  ViewManager.getView("#invitationMessageContainer").displayWarning("Unable to Copy to Clipboard")
-	        	  ViewManager.getView("#invitationMessageContainer").clearSuccess();
-	          }
-        } catch (err) {
-	          console.log('Oops, unable to copy');
-	          ViewManager.getView("#invitationMessageContainer").displayWarning("Unable to Copy to Clipboard")
-	          ViewManager.getView("#invitationMessageContainer").clearSuccess();
-        }
-
-        document.addEventListener("copy", copyEvent);
-    }
-    
-    /**
      * Look in repository for any contact grants given by other users
      * 
      * @memberOf UserIdentityScreen
@@ -341,7 +274,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
      * @private
      */
     function checkContactGrants() {
-        AppController.serverController.getRepoInterface().search(new EcContactGrant().getSearchStringByType(), function (encryptedValue) {
+        AppController.repoInterface.search(new EcContactGrant().getSearchStringByType(), function (encryptedValue) {
             EcRepository.get(encryptedValue.shortId(), function (encryptedValue) {
                 var ev = new EcEncryptedValue();
                 ev.copyFrom(encryptedValue);
@@ -371,7 +304,6 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         var screen = this;
 
         ViewManager.showView(new MessageContainer("userIdentity"), "#userIdentityMessageContainer");
-        ViewManager.showView(new MessageContainer("copyInvitation"), "#invitationMessageContainer");
         
         if (LoginController.getLoggedIn()) {
             checkNewContact(screen, containerId);
@@ -403,6 +335,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
             event.preventDefault();
 
             activateKey($('#addKeyPpk')[0].files);
+
         });
 
         $("#generateIdentity").click(function () {
@@ -437,39 +370,14 @@ UserIdentityScreen = (function (UserIdentityScreen) {
                 return;
             }
 
-            var invitation = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
+            var string = "Hi, I would like to add you as a contact in CASS.\n\nIf we are using the same CASS system, you may click the following link. If not, change the URL of my CASS server (" + window.location.href.split('/')[2] + ") to yours.\n\n"
 
             var iv = EcAes.newIv(32);
-            var url = window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
+            string += window.location + "?action=newContact&contactDisplayName=" + encodeURIComponent(input) + "&contactKey=" + encodeURIComponent(identityPpk.toPk().toPem()) + "&contactServer=" + encodeURIComponent(AppController.serverController.selectedServerUrl) + "&responseToken=" + encodeURIComponent(iv) + "&responseSignature=" + encodeURIComponent(EcRsaOaep.sign(identityPpk, iv));
 
-            
-            var string = invitation + url;
-            
-            invitation = invitation.replaceAll("Hi,", "Hi, <br/><br/>")
-            
-            $("#invitationBox").html(invitation);
-            $("#linkBox").text(url);
-            
-            $("#invitationContainer").removeClass("hide")
-            $("#invitationContainerHeader").removeClass("hide")
-            $("#copyInvitation").removeClass("hide");
-            
-            $("#generateInvitation").text("Re-Generate")
-            
-            $("#invitationContainer").click(function(ev){
-            	if($(ev.target).attr("id") != "invitationBox"){
-            		copyInvitationText();
-            	}
-            })
-            
-            
-            $("#copyInvitation").mousedown(function(){
-            	copyInvitationText();
-            });
-            
-            setTimeout(function(){
-            	copyInvitationText();
-            }, 100)
+            copyTextToClipboard(string);
+
+            alert("Invitation has been copied to your clipboard for sharing. \n\n Be careful who you share this with, anyone who accesses the invitation will be able to identify you");
         });
     };
 

@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  * Screen with a form for editing Frameworks
  * 
@@ -102,7 +93,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             }, errorRetrievingLevel);
         }
 
-        $("#frameworkEditRollupRules option").not("#noRollupRules").remove();
+        $("#frameworkEditLevels option").not("#noRollupRules").remove();
         for (var idx in framework.rollupRule) {
             EcRollupRule.get(framework.rollupRule[idx], function (rollupRule) {
                 addRollupRule(rollupRule);
@@ -474,7 +465,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 for (var j = 0; j < framework.competency.length; j++) {
                     var id = framework.competency[i];
                     EcCompetency.get(id, function (competency) {
-                        competency.levels(AppController.serverController.getRepoInterface(), undefined, errorSearchingLevels, function (results) {
+                        competency.levels(AppController.repoInterface, undefined, errorSearchingLevels, function (results) {
                             i++;
 
                             for (var idx in results) {
@@ -501,7 +492,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + " (Title: " + data["title"] + ") <span class='label secondary'>"+data["id"]+"</span></i></div>";
+                    return "<div>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + " (Title: " + data["title"] + ")</i></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -540,7 +531,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 for (var j = 0; j < framework.competency.length; j++) {
                     var id = framework.competency[j];
                     var competency = EcCompetency.getBlocking(id);
-                    competency.rollupRules(AppController.serverController.getRepoInterface(), undefined, errorSearchingRollupRules, function (results) {
+                    competency.rollupRules(AppController.repoInterface, undefined, errorSearchingRollupRules, function (results) {
                         i++;
 
                         for (var idx in results) {
@@ -566,7 +557,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + "</i> <span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + "</i></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -605,7 +596,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 for (var id in framework.competency) {
                     var compId = framework.competency[id];
 
-                    EcAlignment.searchBySource(AppController.serverController.getRepoInterface(), compId, function (results) {
+                    EcAlignment.searchBySource(AppController.repoInterface, compId, function (results) {
                         i++;
 
                         for (var idx in results) {
@@ -637,7 +628,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.source).name + " <i>" + relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).name + " <span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div>" + data["name"] + " (" + EcCompetency.getBlocking(data.source).name + " <i>" + relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).name + ")</div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -669,7 +660,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             limit: 25,
             name: 'competencies',
             source: function (q, syncCallback, asyncCallback) {
-                EcCompetency.search(AppController.serverController.getRepoInterface(), q, function (results) {
+                EcCompetency.search(AppController.repoInterface, q, function (results) {
                     var filtered = [];
 
                     for (var idx in results) {
@@ -687,7 +678,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion' title='" + data["id"] + "'>" + data["name"] + "<span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div title='" + data["title"] + "'>" + data["name"] + "</div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -718,19 +709,15 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
         formDirty = false;
 
-        if (data != undefined){
-        	if(data.id != undefined) {
-	            ScreenManager.setScreenParameters({
-	                "id": EcRemoteLinkedData.trimVersionFromUrl(data.id)
-	            });
-        	}else{
-        		data = undefined
-        	}
+        if (data != undefined && data.id != undefined) {
+            ScreenManager.setScreenParameters({
+                "id": EcRemoteLinkedData.trimVersionFromUrl(data.id)
+            });
         }
 
-        if (data == undefined ) {
+        if (data == undefined) {
             data = new EcFramework();
-            data.generateId(AppController.serverController.getRepoInterface().selectedServer);
+            data.generateId(AppController.repoInterface.selectedServer);
             data.name = NEW_FRAMEWORK_NAME;
 
             if (AppController.identityController.selectedIdentity != undefined) {
@@ -770,10 +757,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 				else
 				{
 					ModalManager.showModal(new ConfirmModal(function(){
-	                    ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id), function(){
-	                    	ModalManager.hideModal();
-	                    });
-	                }, "Creating a new competency will navigate away from this screen.<br/><br/> Any unsaved changes will be lost"));
+	                    ScreenManager.changeScreen(new CompetencyEditScreen(null, data.id));
+	                }));
 				}
             });
         }
@@ -852,13 +837,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         });
 
         $("#importCompetenciesBtn").click(function () {
-        	data.name = $("#frameworkEditName").val();
-        	
-        	if(data.name == undefined || data.name.trim() == ""){
-        		alert("Framework name cannot be empty");
-        	}else{
-        		ModalManager.showModal(new ImportCompetenciesModal(data));
-        	}
+            ModalManager.showModal(new ImportCompetenciesModal(data));
         })
 
         $("#frameworkEditCompetencies").focus(function () {
@@ -1005,67 +984,13 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             data.name = $("#frameworkEditName").val();
             data.description = $("#frameworkEditDescription").val();
 
-            var oldOwner = data.owner.slice(0);
-            var oldReader = data.reader == undefined ? undefined :data.reader.slice(0);
-            
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {
-            	if(!AppController.identityController.owns(dataAfter)){
-            		if(!confirm("Are you sure you want to remove your ownership from this framework? \n\n You will no longer be able to edit it if you do")){
-            			data.owner = oldOwner
-            			data.reader = oldReader;
-            			ModalManager.hideModal();
-            			return;
-            		}
-            	}
-            	
-               	var changed = false;
-               	if(oldOwner != undefined && data.owner != undefined && oldOwner.length != data.owner.length){
-               		for (var idx in oldOwner){
-               			if(data.owner.indexOf(oldOwner[idx]) == -1)
-               				changed = true;
-               		}
-               		for (var idx in data.owner){
-               			if(oldOwner.indexOf(data.owner[idx]) == -1)
-               				changed = true;
-               		}
-               	}else if (oldOwner != undefined && data.owner == undefined){
-               		changed = true;
-               	}
-               	
-               	if(oldReader == undefined && data.reader != undefined && data.reader.length > 0){
-               		changed = true;
-               	}else if(oldReader != undefined){
-               		if(data.reader == undefined){
-               			changed = true;
-               		}else if(oldReader.length > 0 && (data.reader == undefined || data.reader.length == 0)){
-            			changed = true;
-            		}else if(oldReader.length == 0 && (data.reader != undefined && data.reader.length > 0)){
-            			changed = true;
-            		}else if(data.reader != undefined && oldReader.length != data.reader.length){
-            			for (var idx in oldReader){
-                   			if(data.reader.indexOf(oldReader[idx]) == -1)
-                   				changed = true;
-                   		}
-                   		for (var idx in data.reader){
-                   			if(oldReader.indexOf(data.reader[idx]) == -1)
-                   				changed = true;
-                   		}
-            		}
-               	}
-            	
-            	if(changed){
-                	data.owner = dataAfter.owner;
-                    data.reader = dataAfter.reader;
+                data.owner = dataAfter.owner;
+                data.reader = dataAfter.reader;
 
-                    displayFramework(data);
+                displayFramework(data);
 
-                    ModalManager.showModal(new PermissionPropagationModal(data, function(){
-                    	displayFramework(data);
-                    }));
-               	}else{
-               		ModalManager.hideModal();
-               	}
-               	
+                ModalManager.hideModal();
             }))
         })
 
@@ -1114,40 +1039,5 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         addRelation(relation);
     }
 
-    /**
-	 * Public function for showing that the framework has been saved by another view
-	 * 
-	 * @memberOf FrameworkEditScreen
-	 * @method showSave
-	 */
-    FrameworkEditScreen.prototype.showSave = function () {
-    	saveSuccess();
-    }
-    
-    /**
-	 * Public function for showing error saving framework by another view
-	 * 
-	 * @memberOf FrameworkEditScreen
-	 * @method errorSaving
-	 * @param {String} err
-	 * 			Error Message to display
-	 */
-    FrameworkEditScreen.prototype.errorSaving = function (err) {
-    	errorSaving(err)
-    }
-    
-    /**
-	 * Public function for showing successful action in another view (modal probably)
-	 * 
-	 * @memberOf FrameworkEditScreen
-	 * @method displaySuccess
-	 * @param {String} msg
-	 * 			Message to display
-	 */
-    FrameworkEditScreen.prototype.displaySuccess = function (msg) {
-    	 if (msg != undefined)
-    		 ViewManager.getView("#frameworkEditMessageContainer").displaySuccess(msg);
-    }
-    
     return FrameworkEditScreen;
 })(FrameworkEditScreen);

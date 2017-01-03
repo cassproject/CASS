@@ -11,11 +11,11 @@
  *  Represents an encrypted piece of data. Provides helper functions for
  *  encryption/decryption of JSON-LD objects, and provides some searchability of
  *  the data within.
- *  
+ * 
  *  @module com.eduworks.ec
  *  @class EcEncryptedValue
  *  @extends EbacEncryptedValue
- *  
+ * 
  *  @author fritz.ray@eduworks.com
  */
 var EcEncryptedValue = function() {
@@ -29,71 +29,75 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
     };
     /**
      *  Converts a piece of remote linked data to an encrypted value
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method toEncryptedValue
      *  @static
-     *  @param {EcRemoteLinkedData} d
-     *  			Data to encrypt
-     *  @param {boolean} hideType
-     *  			Flag to hide the type of the encrypted value when encrypting
-     *  @return {EcEncryptedValue}
-     *  			Encrypted value
+     *  @param {EcRemoteLinkedData} d Data to encrypt
+     *  @param {boolean} hideType Flag to hide the type of the encrypted value
+     *  when encrypting
+     *  @return {EcEncryptedValue} Encrypted value
      */
     constructor.toEncryptedValue = function(d, hideType) {
         d.updateTimestamp();
         var v = new EcEncryptedValue();
-        if (!hideType) 
+        if (!hideType) {
             v.encryptedType = d.type;
+        }
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
         v.reader = d.reader;
         v.id = d.id;
-        if ((d)["name"] != null) 
+        if ((d)["name"] != null) {
             v.name = (d)["name"];
-        if (d.owner != null) 
+        }
+        if (d.owner != null) {
             for (var i = 0; i < d.owner.length; i++) {
                 var eSecret = new EbacEncryptedSecret();
                 eSecret.iv = newIv;
                 eSecret.secret = newSecret;
-                if (v.secret == null) 
+                if (v.secret == null) {
                     v.secret = new Array();
+                }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.owner[i]), eSecret.toEncryptableJson()));
             }
-        if (d.reader != null) 
+        }
+        if (d.reader != null) {
             for (var i = 0; i < d.reader.length; i++) {
                 var eSecret = new EbacEncryptedSecret();
                 eSecret.iv = newIv;
                 eSecret.secret = newSecret;
-                if (v.secret == null) 
+                if (v.secret == null) {
                     v.secret = new Array();
+                }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
             }
+        }
         return v;
     };
     /**
-     *  Converts a piece of remote linked data to an encrypted value, asynchronously
-     *  
+     *  Converts a piece of remote linked data to an encrypted value,
+     *  asynchronously
+     * 
      *  @memberOf EcEncryptedValue
      *  @method toEncryptedValueAsync
      *  @static
-     *  @param {EcRemoteLinkedData} d
-     *  			Data to encrypt
-     *  @param {boolean} hideType
-     *  			Flag to hide the type of the encrypted value when encrypting
-     *  @param {Callback1<EcEncryptedValue>} success
-     *  			Callback triggered with successfully encrypted,
-     *  			returns the encrypted value
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered on error during encryption
+     *  @param {EcRemoteLinkedData} d Data to encrypt
+     *  @param {boolean} hideType Flag to hide the type of the encrypted value
+     *  when encrypting
+     *  @param {Callback1<EcEncryptedValue>} success Callback triggered with
+     *  successfully encrypted, returns the encrypted value
+     *  @param {Callback1<String>} failure Callback triggered on error during
+     *  encryption
      */
     constructor.toEncryptedValueAsync = function(d, hideType, success, failure) {
         d.updateTimestamp();
         var v = new EcEncryptedValue();
-        if (!hideType) 
+        if (!hideType) {
             v.encryptedType = d.type;
+        }
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
         EcAesCtrAsync.encrypt(d.toJson(), newSecret, newIv, function(encryptedText) {
@@ -101,27 +105,30 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             v.owner = d.owner;
             v.reader = d.reader;
             v.id = d.id;
-            if ((d)["name"] != null) 
+            if ((d)["name"] != null) {
                 v.name = (d)["name"];
-            if (d.owner != null) 
+            }
+            if (d.owner != null) {
                 new EcAsyncHelper().each(d.owner, function(pk, arg1) {
                     var eSecret = new EbacEncryptedSecret();
                     eSecret.iv = newIv;
                     eSecret.secret = newSecret;
-                    if (v.secret == null) 
+                    if (v.secret == null) {
                         v.secret = new Array();
+                    }
                     EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
                         v.secret.push(encryptedSecret);
                         arg1();
                     }, failure);
                 }, function(arg0) {
-                    if (d.reader != null) 
+                    if (d.reader != null) {
                         new EcAsyncHelper().each(d.reader, function(pk, arg1) {
                             var eSecret = new EbacEncryptedSecret();
                             eSecret.iv = newIv;
                             eSecret.secret = newSecret;
-                            if (v.secret == null) 
+                            if (v.secret == null) {
                                 v.secret = new Array();
+                            }
                             EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
                                 v.secret.push(encryptedSecret);
                                 arg1();
@@ -129,24 +136,22 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                         }, function(arg0) {
                             success(v);
                         });
+                    }
                 });
+            }
         }, failure);
     };
     /**
      *  Encrypts a text value with the key provided
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method encryptValueOld
      *  @static
      *  @deprecated
-     *  @param {String} text
-     *  			Text to encrypt
-     *  @param {String} id
-     *  			ID of the encrypted value
-     *  @param {EcPk} owner
-     *  			Key to Encrypt
-     *  @return {EcEncryptedValue}
-     *  			Encrypted value
+     *  @param {String} text Text to encrypt
+     *  @param {String} id ID of the encrypted value
+     *  @param {EcPk} owner Key to Encrypt
+     *  @return {EcEncryptedValue} Encrypted value
      */
     constructor.encryptValueOld = function(text, id, owner) {
         var v = new EcEncryptedValue();
@@ -159,8 +164,9 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
             eSecret.iv = newIv;
             eSecret.secret = newSecret;
-            if (v.secret == null) 
+            if (v.secret == null) {
                 v.secret = new Array();
+            }
             v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
         }
         return v;
@@ -171,95 +177,97 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  @memberOf EcEncryptedValue
      *  @method encryptValue
      *  @static
-     *  @param {String} text
-     *  			Text to encrypt
-     *  @param {String} id
-     *  			ID of the value to encrypt
-     *  @param {String[]} owners
-     *  			Owner keys to encrypt value with
-     *  @param {String[]} readers
-     *  			Reader keys to encrypt value with
-     *  @return {EcEncryptedValue}
-     *  			Encrypted value
+     *  @param {String} text Text to encrypt
+     *  @param {String} id ID of the value to encrypt
+     *  @param {String[]} owners Owner keys to encrypt value with
+     *  @param {String[]} readers Reader keys to encrypt value with
+     *  @return {EcEncryptedValue} Encrypted value
      */
     constructor.encryptValue = function(text, id, owners, readers) {
         var v = new EcEncryptedValue();
         var newIv = EcAes.newIv(32);
         var newSecret = EcAes.newIv(32);
         v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
-        if (owners != null) 
-            for (var i = 0; i < owners.length; i++) 
+        if (owners != null) {
+            for (var i = 0; i < owners.length; i++) {
                 v.addOwner(EcPk.fromPem(owners[i]));
-        if (owners != null) 
+            }
+        }
+        if (owners != null) {
             for (var i = 0; i < v.owner.length; i++) {
                 var eSecret = new EbacEncryptedSecret();
                 eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
                 eSecret.iv = newIv;
                 eSecret.secret = newSecret;
-                if (v.secret == null) 
+                if (v.secret == null) {
                     v.secret = new Array();
+                }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
             }
-        if (readers != null) 
-            for (var i = 0; i < readers.length; i++) 
+        }
+        if (readers != null) {
+            for (var i = 0; i < readers.length; i++) {
                 v.addReader(EcPk.fromPem(readers[i]));
+            }
+        }
         return v;
     };
     /**
      *  Encrypt a value with a specific IV and secret
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method encryptValueUsingIvAndSecret
-     *  @static 
-     *  @param {String} iv
-     *  			Initialization Vector for encryption
-     *  @param {String} secret
-     *  			Encryption secret
-     *  @param {String} text
-     *  			Text to encrypt
-     *  @param {String} id
-     *  			ID of value to encrypt
-     *  @param {String[]} owners
-     *  			Owners keys to encrypt with
-     *  @param {String[]} readers
-     *  			Reader Keys to encrypt with
+     *  @static
+     *  @param {String} iv Initialization Vector for encryption
+     *  @param {String} secret Encryption secret
+     *  @param {String} text Text to encrypt
+     *  @param {String} id ID of value to encrypt
+     *  @param {String[]} owners Owners keys to encrypt with
+     *  @param {String[]} readers Reader Keys to encrypt with
      *  @return {EcEncryptedValue}
      */
     constructor.encryptValueUsingIvAndSecret = function(iv, secret, text, id, owners, readers) {
         var v = new EcEncryptedValue();
         v.payload = EcAesCtr.encrypt(text, secret, iv);
-        if (owners != null) 
-            for (var i = 0; i < owners.length; i++) 
+        if (owners != null) {
+            for (var i = 0; i < owners.length; i++) {
                 v.addOwner(EcPk.fromPem(owners[i]));
-        if (owners != null) 
+            }
+        }
+        if (owners != null) {
             for (var i = 0; i < v.owner.length; i++) {
                 var eSecret = new EbacEncryptedSecret();
                 eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
                 eSecret.iv = iv;
                 eSecret.secret = secret;
-                if (v.secret == null) 
+                if (v.secret == null) {
                     v.secret = new Array();
+                }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
             }
-        if (readers != null) 
-            for (var i = 0; i < readers.length; i++) 
+        }
+        if (readers != null) {
+            for (var i = 0; i < readers.length; i++) {
                 v.addReader(EcPk.fromPem(readers[i]));
+            }
+        }
         return v;
     };
     /**
      *  Decrypts this encrypted value into an object
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoObject
-     *  @return
-     *  			The Decrypted Object
+     *  @return The Decrypted Object
      */
     prototype.decryptIntoObject = function() {
         var decryptRaw = this.decryptIntoString();
-        if (decryptRaw == null) 
+        if (decryptRaw == null) {
             return null;
-        if (!EcLinkedData.isProbablyJson(decryptRaw)) 
+        }
+        if (!EcLinkedData.isProbablyJson(decryptRaw)) {
             return null;
+        }
         var decrypted = new EcRemoteLinkedData("", "");
         decrypted.copyFrom(JSON.parse(decryptRaw));
         EcEncryptedValue.encryptOnSave(decrypted.id, true);
@@ -267,23 +275,24 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return decrypted.deAtify();
     };
     /**
-     *  Asynchronously decrypts this encrypted value into an object 
-     *  
+     *  Asynchronously decrypts this encrypted value into an object
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoObjectAsync
-     *  @param {Callback1<EcRemoteLinkedDat>} success
-     *  			Callback triggered on successful encryption,
-     *  			returns the decrypted object
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error during encryption
+     *  @param {Callback1<EcRemoteLinkedDat>} success Callback triggered on
+     *  successful encryption, returns the decrypted object
+     *  @param {Callback1<String>} failure Callback triggered if error during
+     *  encryption
      */
     prototype.decryptIntoObjectAsync = function(success, failure) {
         var id = this.id;
         this.decryptIntoStringAsync(function(decryptRaw) {
-            if (decryptRaw == null) 
+            if (decryptRaw == null) {
                 failure("Could not decrypt data.");
-            if (!EcLinkedData.isProbablyJson(decryptRaw)) 
+            }
+            if (!EcLinkedData.isProbablyJson(decryptRaw)) {
                 failure("Could not decrypt data.");
+            }
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
             EcEncryptedValue.encryptOnSave(decrypted.id, true);
@@ -292,25 +301,26 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }, failure);
     };
     /**
-     *  Asynchronously decrypts this encrypted value into an object with a IV and secret provided
-     *  
+     *  Asynchronously decrypts this encrypted value into an object with a IV and
+     *  secret provided
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoObjectUsingIvAndSecretAsync
-     *  @param {String} iv
-     *  			Initialization Vector for decryption
-     *  @param {String} secret
-     *  			Secret for decryption
-     *  @param {Callback1<EcRemoteLinkedData>} success
-     *  			Callback triggered after successful decryption
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error during decryption
+     *  @param {String} iv Initialization Vector for decryption
+     *  @param {String} secret Secret for decryption
+     *  @param {Callback1<EcRemoteLinkedData>} success Callback triggered after
+     *  successful decryption
+     *  @param {Callback1<String>} failure Callback triggered if error during
+     *  decryption
      */
     prototype.decryptIntoObjectUsingIvAndSecretAsync = function(iv, secret, success, failure) {
         this.decryptIntoStringUsingIvAndSecretAsync(iv, secret, function(decryptRaw) {
-            if (decryptRaw == null) 
+            if (decryptRaw == null) {
                 failure("Could not decrypt data.");
-            if (!EcLinkedData.isProbablyJson(decryptRaw)) 
+            }
+            if (!EcLinkedData.isProbablyJson(decryptRaw)) {
                 failure("Could not decrypt data.");
+            }
             var decrypted = new EcRemoteLinkedData("", "");
             decrypted.copyFrom(JSON.parse(decryptRaw));
             EcEncryptedValue.encryptOnSave(decrypted.id, true);
@@ -319,124 +329,145 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
     };
     /**
      *  Decrypts an encrypted value into a string
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoString
-     *  @return {String}
-     *  			Decrypted string value
+     *  @return {String} Decrypted string value
      */
     prototype.decryptIntoString = function() {
         var decryptSecret = this.decryptSecret();
-        if (decryptSecret != null) 
+        if (decryptSecret != null) {
             return EcAesCtr.decrypt(this.payload, decryptSecret.secret, decryptSecret.iv);
+        }
         return null;
     };
     /**
-     *  Asynchronously decrypts an encrypted value into a string 
-     *  
+     *  Asynchronously decrypts an encrypted value into a string
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoStringAsync
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after successfully decrypted,
-     *  			returns decrypted string
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error during decryption
+     *  @param {Callback1<String>} success Callback triggered after successfully
+     *  decrypted, returns decrypted string
+     *  @param {Callback1<String>} failure Callback triggered if error during
+     *  decryption
      */
     prototype.decryptIntoStringAsync = function(success, failure) {
         var me = this;
         this.decryptSecretAsync(function(decryptSecret) {
-            if (decryptSecret != null) 
+            if (decryptSecret != null) {
                 EcAesCtrAsync.decrypt(me.payload, decryptSecret.secret, decryptSecret.iv, success, failure);
+            }
         }, failure);
     };
     /**
-     *  Asynchronously decrypts an encrypted value into a string with an IV and secrete provided
-     *  
+     *  Asynchronously decrypts an encrypted value into a string with an IV and
+     *  secrete provided
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptIntoStringUsingIvAndSecretAsync
-     *  @param {String} iv
-     *  			Initialization Vector for decryption
-     *  @param {String} secret
-     *  			Secret for decryption
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful decryption
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error during decryption
+     *  @param {String} iv Initialization Vector for decryption
+     *  @param {String} secret Secret for decryption
+     *  @param {Callback1<String>} success Callback triggered on successful
+     *  decryption
+     *  @param {Callback1<String>} failure Callback triggered if error during
+     *  decryption
      */
     prototype.decryptIntoStringUsingIvAndSecretAsync = function(iv, secret, success, failure) {
         EcAesCtrAsync.decrypt(this.payload, secret, iv, success, failure);
     };
     /**
-     *  Attempts to decrypt the secret by using all Identities in the Identity Manager
-     *  
+     *  Attempts to decrypt the secret by using all Identities in the Identity
+     *  Manager
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptSecret
-     *  @return {EbacEncryptedSecret}
-     *  			Secret after decrypted
+     *  @return {EbacEncryptedSecret} Secret after decrypted
      */
     prototype.decryptSecret = function() {
-        if (this.owner != null) 
+        if (this.owner != null) {
             for (var i = 0; i < this.owner.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.owner[i]));
-                if (decryptionKey == null) 
+                if (decryptionKey == null) {
                     continue;
+                }
                 var decrypted = this.decryptSecretByKey(decryptionKey);
-                if (decrypted != null) 
+                if (decrypted != null) {
                     return decrypted;
+                }
             }
-        if (this.reader != null) 
+        }
+        if (this.reader != null) {
             for (var i = 0; i < this.reader.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
-                if (decryptionKey == null) 
+                if (decryptionKey == null) {
                     continue;
+                }
                 var decrypted = this.decryptSecretByKey(decryptionKey);
-                if (decrypted != null) 
+                if (decrypted != null) {
                     return decrypted;
+                }
             }
+        }
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var decryptionKey = EcIdentityManager.ids[i].ppk;
             var decrypted = this.decryptSecretByKey(decryptionKey);
-            if (decrypted != null) 
+            if (decrypted != null) {
                 return decrypted;
+            }
         }
         return null;
     };
     /**
-     *  Asynchronously attempts to decrypt secret using all identities in Identity Manager
-     *  
+     *  Asynchronously attempts to decrypt secret using all identities in
+     *  Identity Manager
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptSecretAsync
-     *  @param {Callback1<EbacEncryptedSecret>} success
-     *  			Callback triggered after successfully decrypting secret,
-     *  			returns the decrypted secret
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error decrypting secret
+     *  @param {Callback1<EbacEncryptedSecret>} success Callback triggered after
+     *  successfully decrypting secret, returns the decrypted secret
+     *  @param {Callback1<String>} failure Callback triggered if error decrypting
+     *  secret
      */
     prototype.decryptSecretAsync = function(success, failure) {
         var ppks = new Array();
-        if (this.owner != null) 
+        if (this.owner != null) {
             for (var i = 0; i < this.owner.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.owner[i]));
-                if (decryptionKey != null) 
-                    if (!decryptionKey.inArray(ppks)) 
+                if (decryptionKey != null) {
+                    if (!decryptionKey.inArray(ppks)) {
                         ppks.push(decryptionKey);
+                    }
+                }
             }
-        if (this.reader != null) 
+        }
+        if (this.reader != null) {
             for (var i = 0; i < this.reader.length; i++) {
                 var decryptionKey = EcIdentityManager.getPpk(EcPk.fromPem(this.reader[i]));
-                if (decryptionKey != null) 
-                    if (!decryptionKey.inArray(ppks)) 
+                if (decryptionKey != null) {
+                    if (!decryptionKey.inArray(ppks)) {
                         ppks.push(decryptionKey);
+                    }
+                }
             }
+        }
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var decryptionKey = EcIdentityManager.ids[i].ppk;
-            if (decryptionKey != null) 
-                if (!decryptionKey.inArray(ppks)) 
+            if (decryptionKey != null) {
+                if (!decryptionKey.inArray(ppks)) {
                     ppks.push(decryptionKey);
+                }
+            }
         }
         var me = this;
-        new EcAsyncHelper().each(ppks, function(decryptionKey, countdown) {
-            me.decryptSecretByKeyAsync(decryptionKey, success, function(arg0) {
+        var helper = new EcAsyncHelper();
+        helper.each(ppks, function(decryptionKey, countdown) {
+            me.decryptSecretByKeyAsync(decryptionKey, function(p1) {
+                if (helper.counter == -1) {
+                    return;
+                }
+                helper.stop();
+                success(p1);
+            }, function(arg0) {
                 countdown();
             });
         }, function(arg0) {
@@ -445,40 +476,38 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
     };
     /**
      *  Attempts to decrypt secret with a specific key
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptSecretByKey
-     *  @param {EcPpk} decryptionKey
-     *  			Key to attempt secret decryption
-     *  @return {EbacEncryptedSecret}
-     *  			Decrypted Secret
+     *  @param {EcPpk} decryptionKey Key to attempt secret decryption
+     *  @return {EbacEncryptedSecret} Decrypted Secret
      */
     prototype.decryptSecretByKey = function(decryptionKey) {
         var encryptedSecret = null;
-        if (this.secret != null) 
+        if (this.secret != null) {
             for (var j = 0; j < this.secret.length; j++) {
                 try {
                     var decryptedSecret = null;
                     decryptedSecret = EcRsaOaep.decrypt(decryptionKey, this.secret[j]);
-                    if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
+                    if (!EcLinkedData.isProbablyJson(decryptedSecret)) {
                         continue;
+                    }
                     encryptedSecret = EbacEncryptedSecret.fromEncryptableJson(JSON.parse(decryptedSecret));
                 }catch (ex) {}
             }
+        }
         return encryptedSecret;
     };
     /**
      *  Asynchronously attempts to decrypt secret with a specific key
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method decryptSecretByKeyAsync
-     *  @param {EcPpk} decryptionKey
-     *  			Key to attempt secret decryption
-     *  @param {Callback1<EbacEncryptedSecret>} success
-     *  			Callback triggered after successful decryption of secret,
-     *  			returns decrypted secret
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error during secret decryption
+     *  @param {EcPpk} decryptionKey Key to attempt secret decryption
+     *  @param {Callback1<EbacEncryptedSecret>} success Callback triggered after
+     *  successful decryption of secret, returns decrypted secret
+     *  @param {Callback1<String>} failure Callback triggered if error during
+     *  secret decryption
      */
     prototype.decryptSecretByKeyAsync = function(decryptionKey, success, failure) {
         var encryptedSecret = null;
@@ -486,11 +515,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             var helper = new EcAsyncHelper();
             helper.each(this.secret, function(decryptionSecret, decrement) {
                 EcRsaOaepAsync.decrypt(decryptionKey, decryptionSecret, function(decryptedSecret) {
-                    if (helper.counter == -1) 
+                    if (helper.counter == -1) {
                         return;
-                    if (!EcLinkedData.isProbablyJson(decryptedSecret)) 
+                    }
+                    if (!EcLinkedData.isProbablyJson(decryptedSecret)) {
                         decrement();
-                     else {
+                    } else {
                         helper.stop();
                         success(EbacEncryptedSecret.fromEncryptableJson(JSON.parse(decryptedSecret)));
                     }
@@ -503,29 +533,28 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
     };
     /**
-     *  Checks if this encrypted value is an encrypted version of a specific type, 
-     *  only works if the type wasn't hidden during encryption
-     *  
+     *  Checks if this encrypted value is an encrypted version of a specific
+     *  type, only works if the type wasn't hidden during encryption
+     * 
      *  @memberOf EcEncryptedValue
      *  @method isAnEncrypted
-     *  @param {String} type
-     *  			Type to compare if an encrypted type
-     *  @return {boolean}
-     *  			True if encrypted version of type, false if not or can't tell
+     *  @param {String} type Type to compare if an encrypted type
+     *  @return {boolean} True if encrypted version of type, false if not or
+     *  can't tell
      */
     prototype.isAnEncrypted = function(type) {
-        if (this.encryptedType == null) 
+        if (this.encryptedType == null) {
             return false;
+        }
         var typeSplit = (type.split("/"));
         return this.encryptedType.equals(type) || this.encryptedType.equals(typeSplit[typeSplit.length - 1]);
     };
     /**
      *  Adds a reader to the object, if the reader does not exist.
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method addReader
-     *  @param {EcPk} newReader
-     *             PK of the new reader.
+     *  @param {EcPk} newReader PK of the new reader.
      */
     prototype.addReader = function(newReader) {
         var payloadSecret = this.decryptSecret();
@@ -534,56 +563,62 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             return;
         }
         var pem = newReader.toPem();
-        if (this.reader == null) 
+        if (this.reader == null) {
             this.reader = new Array();
-        for (var i = 0; i < this.reader.length; i++) 
-            if (this.reader[i].equals(pem)) 
+        }
+        for (var i = 0; i < this.reader.length; i++) {
+            if (this.reader[i].equals(pem)) {
                 return;
+            }
+        }
         this.reader.push(pem);
         this.secret.push(EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
     };
     /**
      *  Removes a reader from the object, if the reader does exist.
-     *  
+     * 
      *  @memberOf EcEncryptedValue
      *  @method removeReader
-     *  @param {EcPk} oldReader
-     *             PK of the old reader.
+     *  @param {EcPk} oldReader PK of the old reader.
      */
     prototype.removeReader = function(oldReader) {
         var pem = oldReader.toPem();
-        if (this.reader == null) 
+        if (this.reader == null) {
             this.reader = new Array();
-        for (var i = 0; i < this.reader.length; i++) 
-            if (this.reader[i].equals(pem)) 
+        }
+        for (var i = 0; i < this.reader.length; i++) {
+            if (this.reader[i].equals(pem)) {
                 this.reader.splice(i, 1);
+            }
+        }
     };
     constructor.encryptOnSaveMap = null;
     /**
      *  Setter and getter function for encryptOnSave of an identifier,
-     *  encryptOnSave is used by the static save functions of a class to 
-     *  determine whether or not to encrypt something when it is saved.
-     *  This value is usually set when an object is decrypted using one
-     *  of the decrypt functions above.
-     *  
+     *  encryptOnSave is used by the static save functions of a class to
+     *  determine whether or not to encrypt something when it is saved. This
+     *  value is usually set when an object is decrypted using one of the decrypt
+     *  functions above.
+     * 
      *  @memberOf EcEncryptedValue
      *  @method encryptOnSave
      *  @static
-     *  @param {String} id 
-     *  			ID of the data to get/set encryptOnSave for
-     *  @param {boolean} [val]
-     *  			If passed in, sets the value, if null this function gets the encryptOnSave value
-     *  @return {boolean}
-     *  			if val is null/ignored returns value in the map, if val is passed in returns val
+     *  @param {String} id ID of the data to get/set encryptOnSave for
+     *  @param {boolean} [val] If passed in, sets the value, if null this
+     *  function gets the encryptOnSave value
+     *  @return {boolean} if val is null/ignored returns value in the map, if val
+     *  is passed in returns val
      */
     constructor.encryptOnSave = function(id, val) {
-        if (EcEncryptedValue.encryptOnSaveMap == null) 
+        if (EcEncryptedValue.encryptOnSaveMap == null) {
             EcEncryptedValue.encryptOnSaveMap = {};
+        }
         if (val == null) {
-            if (EcEncryptedValue.encryptOnSaveMap[id] != null) 
+            if (EcEncryptedValue.encryptOnSaveMap[id] != null) {
                 return EcEncryptedValue.encryptOnSaveMap[id];
-             else 
+            } else {
                 return false;
+            }
         } else {
             EcEncryptedValue.encryptOnSaveMap[id] = val;
             return val;
@@ -750,7 +785,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }, 0);
                 return;
             }
-        if ((EcRepository.fetching)[url] > new Date().getTime() - 1000) {
+        if ((EcRepository.fetching)[url] > new Date().getTime() - 60000) {
             setTimeout(function() {
                 EcRepository.get(url, success, failure);
             }, 100);
@@ -927,11 +962,18 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.autoDetectRepository = function() {
         EcRemote.async = false;
         var protocols = new Array();
-        protocols.push("https:");
+        if (window != null) 
+            if (window.location != null) 
+                if (window.location.protocol == "https:") 
+                    protocols.push("https:");
         if (window != null) 
             if (window.location != null) 
                 if (window.location.protocol == "http:") 
                     protocols.push("http:");
+        if (protocols.length == 0) {
+            protocols.push("https:");
+            protocols.push("http:");
+        }
         var hostnames = new Array();
         if (window.location.host != null) 
             hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");

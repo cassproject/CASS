@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  * Modal for adding the competencies passed in to the constructor to a framework
  * that is selected from a dropdown list in the modal.
@@ -73,7 +64,7 @@ var AddCompetenciesToFrameworkModal = (function(AddCompetenciesToFrameworkModal)
 
 		ViewManager.showView(new MessageContainer("addToFramework"), "#addToFrameworkMessageContainer");
 		
-		EcFramework.search(AppController.serverController.getRepoInterface(), "*", function(frameworks){
+		EcFramework.search(AppController.repoInterface, "*", function(frameworks){
 			for(var i in frameworks){
 				if(AppController.identityController.canEdit(frameworks[i])){
 					$("#addToFrameworkList").append(buildFrameworkOption(frameworks[i]));

@@ -12,8 +12,7 @@
 						Identity Server
 					</h3>
                     <span id="identityServerName"></span> (
-                    <span id="identityServerUrl" style="font-style:italic;"></span> 
-                    )
+                    <span id="identityServerUrl" style="font-style:italic;"></span>)
                 </div>
 
                 <div class="small-12 medium-5 columns">
@@ -86,39 +85,19 @@
 
             <div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
                 <div class="small-12 columns">
-                    
-                    <div>
-	                    <h3 style="margin-bottom:0px;">Generate Contact Invitation</h3>
-	
-	                    <p style="color:grey;">
-	                        Share with other users so they can view your information.
-	                    </p>
-	
-	                    <input id="shareContactName" type="text" placeholder="Shared Identity Name" />
-	
-	                    <select id="shareContactIdentity">
-	                        <option selected disabled class="hide">Select Identity to Share</option>
-	                    </select>
-	
-						<span id="invitationContainerHeader" class="prefix hide">Invitation:</span>
-						
-						<div id="invitationContainer" style="border: 1px solid grey; padding: 4px; margin-bottom: 1rem; cursor:copy;" class="hide">
-							<div id="invitationBox" style="margin-bottom:1rem; cursor:text; margin-left:0.5rem;" contenteditable="true">
-							</div>
-							<div id="linkBox" style="margin-bottom:0px;overflow-x:scroll; padding-left:0.5rem;"></div>
-						</div>
-					</div>
-					
-					<div id="invitationMessageContainer" class="float-left"></div>
-					
-					<button id="generateInvitation" class="button float-right">Generate</button>
-		                    
-                    <button id="copyInvitation" class="button float-right hide" style="margin-right: 1rem;">
-                    	<span id="copied" style="display:none;">Copied</span>
-                    	<span id="copy" style="padding: 0rem 0.4rem;">Copy</span>
-                    </button>
-					
-                    
+                    <h3 style="margin-bottom:0px;">Generate Contact Invitation</h3>
+
+                    <p style="color:grey;">
+                        Share with other users so they can view your information.
+                    </p>
+
+                    <input id="shareContactName" type="text" placeholder="Shared Identity Name" />
+
+                    <select id="shareContactIdentity">
+                        <option selected disabled class="hide">Select Identity to Share</option>
+                    </select>
+
+                    <button id="generateInvitation" class="button float-right">Copy to Clipboard</button>
                 </div>
             </div>
         </div>

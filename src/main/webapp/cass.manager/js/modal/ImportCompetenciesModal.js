@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  * Modal for viewing evidence details
  * 
@@ -32,8 +23,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 	function addLocationFramework(framework){
 		var id = framework.shortId().split("/");
 		var id = id[id.length-1];
-		
-		$("#noLocation").text("No Specific Framework");
 		
 		var op = $("<option></option>");
 		op.attr("value", id);
@@ -233,29 +222,9 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 $("#importCsvColumnDescription").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnScope").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnId").append("<option/>").children().last().text(data[0][i]).attr("index", i);
-                
-                if(data[0][i].toLowerCase().includes("name")){
-                	$("#importCsvColumnName [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("description")){
-                	$("#importCsvColumnDescription [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("scope")){
-                	 $("#importCsvColumnScope [index="+i+"]").attr("selected", "selected");
-                	 ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("id")){
-                	$("#importCsvColumnId [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                	$(".importCsvRelation").removeClass("hide");
-                }
             }
             
-            $("#importCsvColumnId").change(function(){
-            	if($("#importCsvColumnId").val() != undefined && $("#importCsvColumnId").val() != -1){
-            		$(".importCsvRelation").removeClass("hide");
-            	}
-            })
-            
+            $(".importCsvRelation").removeClass("hide");
             
             $("#submitImportCsv").on("click", function(ev){
 				ev.preventDefault();
@@ -296,17 +265,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 $("#importCsvColumnSource").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnRelationType").append("<option/>").children().last().text(data[0][i]).attr("index", i);
                 $("#importCsvColumnTarget").append("<option/>").children().last().text(data[0][i]).attr("index", i);
-                
-                if(data[0][i].toLowerCase().includes("source")){
-                	$("#importCsvColumnSource [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("type")){
-                	$("#importCsvColumnRelationType [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("target")){
-                	$("#importCsvColumnTarget [index="+i+"]").attr("selected", "selected");
-                	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }
             }
             
 	    }, errorParsing)
@@ -393,7 +351,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
     			if(!editingFramework){
 	                framework.save(function () { 
 	                	ScreenManager.changeScreen(new FrameworkViewScreen(framework))
-	                	ModalManager.hideModal();
 	                }, errorSavingFramework);
     			}else{
     				for(var i = 0; i < savedCompetencies.length; i++){
@@ -402,28 +359,12 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
     				for(var i = 0; i < savedRelations.length; i++){
     					ScreenManager.getCurrentScreen().addRelation(savedRelations[i]);
     				}
-    				
-    				ModalManager.showModal(new ConfirmModal(function(){
-        				var f = new EcFramework();
-        				f.copyFrom(framework);
-        				f.save(function(){
-        					ScreenManager.getCurrentScreen().showSave();
-        					ModalManager.hideModal();
-        				}, function(err){
-        					ScreenManager.getCurrentScreen().errorSaving(err);
-        					ModalManager.hideModal();
-        				});
-        			}, "Would you like to save the framework now?", "Competencies Added!"));
     			}
-    			
-    			
     		}else{
             	ScreenManager.changeScreen(new CompetencySearchScreen(null, query))
-            	
-            	ModalManager.hideModal();
             }
     		
-    		
+    		ModalManager.hideModal();
         }, function(error){
         	ViewManager.getView("#csvImportProgressMessageContainer").clearSuccess();
         	ViewManager.getView("#csvImportProgressMessageContainer").displayAlert(error);
@@ -755,8 +696,8 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		});
 		
 		if(data == undefined){
-			EcFramework.search(AppController.serverController.getRepoInterface(), "*", addFrameworks, errorFindingFrameworks, {ownership:"public"});
-			EcFramework.search(AppController.serverController.getRepoInterface(), "*", addFrameworks, errorFindingFrameworks, {ownership:"me"});
+			EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"public"});
+			EcFramework.search(AppController.repoInterface, "*", addFrameworks, errorFindingFrameworks, {ownership:"me"});
 		}else{
 			$("#selectFramework").removeClass("hide");
 			
@@ -814,7 +755,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			$("#frameworkSourceRow").removeClass("hide");
 			$("#modalContainer").foundation("open")
 			
-			EcFramework.search(AppController.serverController.getRepoInterface(), "*", addSourceFrameworks, errorFindingFrameworks);
+			EcFramework.search(AppController.repoInterface, "*", addSourceFrameworks, errorFindingFrameworks);
 			
 			ViewManager.getView("#importCompetenciesMessageContainer").clearWarning("noOwner");
 			
@@ -889,11 +830,6 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			ev.preventDefault();
 			ModalManager.hideModal();
 		})
-		
-		$("#newFramework").click(function(){
-			ScreenManager.changeScreen(new FrameworkEditScreen());
-			ModalManager.hideModal();
-		});
 		
 		if(AppController.identityController.selectedIdentity != undefined){
 			var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();

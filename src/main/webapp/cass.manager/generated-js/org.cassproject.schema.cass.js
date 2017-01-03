@@ -1,12 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Class used to hold namespace data.
  *  @author fray
@@ -20,6 +11,53 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_3 = "http://schema.cassproject.org/0.2";
     constructor.context = "http://schema.cassproject.org/0.2";
 }, {}, {});
+/**
+ *  Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.
+ *   
+ *  @author fritz.ray@eduworks.com
+ *  @class Competency
+ *  @module org.cassproject
+ *  @extends Intangible
+ */
+var Competency = function() {
+    Intangible.call(this);
+    this.setContextAndType(Cass.context, Competency.myType);
+};
+Competency = stjs.extend(Competency, Intangible, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/competency";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/competency";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Competency";
+    constructor.myType = Competency.TYPE_0_3;
+    /**
+     *  Scope in which the competency may be applied. e.g. Underwater.
+     *  @property scope
+     *  @type string
+     */
+    prototype.scope = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (Competency.TYPE_0_1.equals(this.type)) {
+            if (this.url != null && this.sameAs == null) {
+                this.sameAs = this.url;
+                this.url = null;
+            }
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Cass.context_0_2, Competency.TYPE_0_2);
+        }
+        if (Competency.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Competency.TYPE_0_3);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(Competency.TYPE_0_3);
+        a.push(Competency.TYPE_0_2);
+        a.push(Competency.TYPE_0_1);
+        return a;
+    };
+}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.
  *  @author fritz.ray@eduworks.com
@@ -75,6 +113,211 @@ Level = stjs.extend(Level, Intangible, [], function(constructor, prototype) {
         return a;
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
+ *  @author fritz.ray@eduworks.com
+ *  @class Assertion
+ *  @module org.cassproject
+ *  @extends Intangible
+ */
+var Assertion = function() {
+    Intangible.call(this);
+    this.setContextAndType(Cass.context, Assertion.myType);
+};
+Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/assertion";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
+    constructor.myType = Assertion.TYPE_0_3;
+    /**
+     *  URL of the competency.
+     *  @property competency
+     *  @type string(URL)
+     */
+    prototype.competency = null;
+    /**
+     *  URL of the framework within which the assertion is restricted.
+     *  @property framework
+     *  @type string(URL)
+     */
+    prototype.framework = null;
+    /**
+     *  URL of the level, or null if 'held with no performance expectations'.
+     *  @property level
+     *  @type string
+     */
+    prototype.level = null;
+    /**
+     *  Public Key in PEM format of the recipient of the assertion.
+     *  @property subject
+     *  @type EcEncryptedValue<Public Key PEM>
+     */
+    prototype.subject = null;
+    /**
+     *  Public Key in PEM format of the identity making the assertion.
+     *  @property agent
+     *  @type EcEncryptedValue<Public Key PEM>
+     */
+    prototype.agent = null;
+    /**
+     *  Encrypted evidence. May be a string, URL or schema.org/Thing.
+     *  @property evidence
+     *  @type EcEncryptedValue<string | URL | Thing>[]
+     */
+    prototype.evidence = null;
+    /**
+     *  Confidence with which the assertion was made. 
+     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
+     *  @property confidence
+     *  @type float [0,1]
+     */
+    prototype.confidence = null;
+    /**
+     *  Time that the assertion was made in milliseconds since the Unix Epoch.
+     *  @property assertionDate
+     *  @type EcEncryptedValue<long>
+     */
+    prototype.assertionDate = null;
+    /**
+     *  Time that the assertion expires, specified in milliseconds since the Unix Epoch.
+     *  @property expirationDate
+     *  @type EcEncryptedValue<long>
+     */
+    prototype.expirationDate = null;
+    /**
+     *  Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).
+     *  @property decayFunction
+     *  @type EcEncryptedValue<string>
+     */
+    prototype.decayFunction = null;
+    /**
+     *  True if the assertion is a claim that the subject cannot demonstrate the competency.
+     *  @property negative
+     *  @type EcEncryptedValue<boolean>
+     */
+    prototype.negative = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (Assertion.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Cass.context_0_2, Assertion.TYPE_0_2);
+        }
+        if (Assertion.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(Assertion.TYPE_0_3);
+        a.push(Assertion.TYPE_0_2);
+        a.push(Assertion.TYPE_0_1);
+        return a;
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  A segment of script that defines in a domain specific language how competence is transferred from one competency to another.
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @class RollupRule
+ *  @module org.cassproject
+ *  @extends Intangible
+ */
+var RollupRule = function() {
+    Intangible.call(this);
+    this.setContextAndType(Cass.context, RollupRule.myType);
+};
+RollupRule = stjs.extend(RollupRule, Intangible, [], function(constructor, prototype) {
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
+    constructor.myType = RollupRule.TYPE_0_3;
+    /**
+     *  The rollup rule encoded as source code that is understandable to the assertion processor.
+     *  @property rule
+     *  @type string
+     */
+    prototype.rule = null;
+    /**
+     *  Specifies the URL of the competency that the rollup rule pertains to.
+     *  @property competency
+     *  @type string
+     */
+    prototype.competency = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (RollupRule.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, RollupRule.TYPE_0_3);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(RollupRule.TYPE_0_3);
+        a.push(RollupRule.TYPE_0_2);
+        return a;
+    };
+}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.
+ *  
+ *  @author fritz.ray@eduworks.com
+ *  @class Framework
+ *  @module org.cassproject
+ *  @extends Intangible
+ */
+var Framework = function() {
+    Intangible.call(this);
+    this.setContextAndType(Cass.context, Framework.myType);
+};
+Framework = stjs.extend(Framework, Intangible, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/framework";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/framework";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Framework";
+    constructor.myType = Framework.TYPE_0_3;
+    /**
+     *  URLs of competencies included in this framework.
+     *  @property competency
+     *  @type string[]
+     */
+    prototype.competency = null;
+    /**
+     *  URLs of relations included in this framework.
+     *  @property relation
+     *  @type string[]
+     */
+    prototype.relation = null;
+    /**
+     *  URLs of levels included in this framework.
+     *  @property level
+     *  @type string[]
+     */
+    prototype.level = null;
+    /**
+     *  URLs of RollupRules included in this framework.
+     *  @property rollupRule
+     *  @type string[]
+     */
+    prototype.rollupRule = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (Framework.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Cass.context_0_2, Framework.TYPE_0_2);
+        }
+        if (Framework.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Framework.TYPE_0_3);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(Framework.TYPE_0_3);
+        a.push(Framework.TYPE_0_2);
+        a.push(Framework.TYPE_0_1);
+        return a;
+    };
+}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A relation between two objects.
  *  @author fritz.ray@eduworks.com
@@ -196,255 +439,3 @@ Relation = stjs.extend(Relation, Intangible, [], function(constructor, prototype
         return a;
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.
- *   
- *  @author fritz.ray@eduworks.com
- *  @class Competency
- *  @module org.cassproject
- *  @extends Intangible
- */
-var Competency = function() {
-    Intangible.call(this);
-    this.setContextAndType(Cass.context, Competency.myType);
-};
-Competency = stjs.extend(Competency, Intangible, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/competency";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/competency";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Competency";
-    constructor.myType = Competency.TYPE_0_3;
-    /**
-     *  Scope in which the competency may be applied. e.g. Underwater.
-     *  @property scope
-     *  @type string
-     */
-    prototype.scope = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (Competency.TYPE_0_1.equals(this.type)) {
-            if (this.url != null && this.sameAs == null) {
-                this.sameAs = this.url;
-                this.url = null;
-            }
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Cass.context_0_2, Competency.TYPE_0_2);
-        }
-        if (Competency.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Cass.context_0_3, Competency.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(Competency.TYPE_0_3);
-        a.push(Competency.TYPE_0_2);
-        a.push(Competency.TYPE_0_1);
-        return a;
-    };
-}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A segment of script that defines in a domain specific language how competence is transferred from one competency to another.
- *  
- *  @author fritz.ray@eduworks.com
- *  @class RollupRule
- *  @module org.cassproject
- *  @extends Intangible
- */
-var RollupRule = function() {
-    Intangible.call(this);
-    this.setContextAndType(Cass.context, RollupRule.myType);
-};
-RollupRule = stjs.extend(RollupRule, Intangible, [], function(constructor, prototype) {
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
-    constructor.myType = RollupRule.TYPE_0_3;
-    /**
-     *  The rollup rule encoded as source code that is understandable to the assertion processor.
-     *  @property rule
-     *  @type string
-     */
-    prototype.rule = null;
-    /**
-     *  Specifies the URL of the competency that the rollup rule pertains to.
-     *  @property competency
-     *  @type string
-     */
-    prototype.competency = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (RollupRule.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Cass.context_0_3, RollupRule.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(RollupRule.TYPE_0_3);
-        a.push(RollupRule.TYPE_0_2);
-        return a;
-    };
-}, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.
- *  
- *  @author fritz.ray@eduworks.com
- *  @class Framework
- *  @module org.cassproject
- *  @extends Intangible
- */
-var Framework = function() {
-    Intangible.call(this);
-    this.setContextAndType(Cass.context, Framework.myType);
-};
-Framework = stjs.extend(Framework, Intangible, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/framework";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/framework";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Framework";
-    constructor.myType = Framework.TYPE_0_3;
-    /**
-     *  URLs of competencies included in this framework.
-     *  @property competency
-     *  @type string[]
-     */
-    prototype.competency = null;
-    /**
-     *  URLs of relations included in this framework.
-     *  @property relation
-     *  @type string[]
-     */
-    prototype.relation = null;
-    /**
-     *  URLs of levels included in this framework.
-     *  @property level
-     *  @type string[]
-     */
-    prototype.level = null;
-    /**
-     *  URLs of RollupRules included in this framework.
-     *  @property rollupRule
-     *  @type string[]
-     */
-    prototype.rollupRule = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (Framework.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Cass.context_0_2, Framework.TYPE_0_2);
-        }
-        if (Framework.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Cass.context_0_3, Framework.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(Framework.TYPE_0_3);
-        a.push(Framework.TYPE_0_2);
-        a.push(Framework.TYPE_0_1);
-        return a;
-    };
-}, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
- *  @author fritz.ray@eduworks.com
- *  @class Assertion
- *  @module org.cassproject
- *  @extends Intangible
- */
-var Assertion = function() {
-    Intangible.call(this);
-    this.setContextAndType(Cass.context, Assertion.myType);
-};
-Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/assertion";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
-    constructor.myType = Assertion.TYPE_0_3;
-    /**
-     *  URL of the competency.
-     *  @property competency
-     *  @type string(URL)
-     */
-    prototype.competency = null;
-    /**
-     *  URL of the framework within which the assertion is restricted.
-     *  @property framework
-     *  @type string(URL)
-     */
-    prototype.framework = null;
-    /**
-     *  URL of the level, or null if 'held with no performance expectations'.
-     *  @property level
-     *  @type string
-     */
-    prototype.level = null;
-    /**
-     *  Public Key in PEM format of the recipient of the assertion.
-     *  @property subject
-     *  @type EcEncryptedValue<Public Key PEM>
-     */
-    prototype.subject = null;
-    /**
-     *  Public Key in PEM format of the identity making the assertion.
-     *  @property agent
-     *  @type EcEncryptedValue<Public Key PEM>
-     */
-    prototype.agent = null;
-    /**
-     *  Encrypted evidence. May be a string, URL or schema.org/Thing.
-     *  @property evidence
-     *  @type EcEncryptedValue<string | URL | Thing>[]
-     */
-    prototype.evidence = null;
-    /**
-     *  Confidence with which the assertion was made. 
-     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
-     *  @property confidence
-     *  @type float [0,1]
-     */
-    prototype.confidence = null;
-    /**
-     *  Time that the assertion was made in milliseconds since the Unix Epoch.
-     *  @property assertionDate
-     *  @type EcEncryptedValue<long>
-     */
-    prototype.assertionDate = null;
-    /**
-     *  Time that the assertion expires, specified in milliseconds since the Unix Epoch.
-     *  @property expirationDate
-     *  @type EcEncryptedValue<long>
-     */
-    prototype.expirationDate = null;
-    /**
-     *  Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).
-     *  @property decayFunction
-     *  @type EcEncryptedValue<string>
-     */
-    prototype.decayFunction = null;
-    /**
-     *  True if the assertion is a claim that the subject cannot demonstrate the competency.
-     *  @property negative
-     *  @type EcEncryptedValue<boolean>
-     */
-    prototype.negative = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (Assertion.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Cass.context_0_2, Assertion.TYPE_0_2);
-        }
-        if (Assertion.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(Assertion.TYPE_0_3);
-        a.push(Assertion.TYPE_0_2);
-        a.push(Assertion.TYPE_0_1);
-        return a;
-    };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
