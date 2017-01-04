@@ -90,53 +90,57 @@ var counter = 0;
 var target = EcPk.fromPem(pk);
 var profile = {};
 if (debug) console.log("Fetching framework.");
+
+
 EcFramework.get(
     frameworkId,
     function (framework) {
-        counter = framework.competency.length;
-        for (var i = 0; i < framework.competency.length; i++) {
-            var competencyId = framework.competency[i];
-            if (debug) console.log("Fetching: " + competencyId);
-            EcCompetency.get(
-                competencyId,
-                function (competency) {
-                    if (debug) console.log("Processing assertions.");
-                    var ep = new PessimisticQuadnaryAssertionProcessor();
-                    ep.logFunction = function (data) {
-                        if (debug) console.log(data);
-                    };
-                    ep.repositories.push(repo);
-                    var subject = new Array();
-                    subject.push(target);
-                    var additionalSignatures = null;
-                    ep.has(
-                        subject,
-                        competency,
-                        null,
-                        framework,
-                        additionalSignatures,
-                        function (data) {
-                            counter--;
+        repo.precache(framework.competency.concat(framework.relation),function(success){
+            counter = framework.competency.length;
+            for (var i = 0; i < framework.competency.length; i++) {
+                var competencyId = framework.competency[i];
+                if (debug) console.log("Fetching: " + competencyId);
+                EcCompetency.get(
+                    competencyId,
+                    function (competency) {
+                        if (debug) console.log("Processing assertions.");
+                        var ep = new PessimisticQuadnaryAssertionProcessor();
+                        ep.logFunction = function (data) {
                             if (debug) console.log(data);
-                            profile[data.competency[0].id] = data.result._name;
-                            if (counter == 0) {
-                                console.log(profile);
-                                process.exit();
+                        };
+                        ep.repositories.push(repo);
+                        var subject = new Array();
+                        subject.push(target);
+                        var additionalSignatures = null;
+                        ep.has(
+                            subject,
+                            competency,
+                            null,
+                            framework,
+                            additionalSignatures,
+                            function (data) {
+                                counter--;
+                                if (debug) console.log(data);
+                                profile[data.competency[0].id] = data.result._name;
+                                if (counter == 0) {
+                                    console.log(profile);
+                                    process.exit();
+                                }
+                            },
+                            function (data) {
+                                if (debug) console.log("Need answer to question: " + data);
+                                console.log("error");
+                                process.exit()
+                            },
+                            function (data) {
+                                if (debug) console.log(data);
+                                console.log("error");
+                                process.exit()
                             }
-                        },
-                        function (data) {
-                            if (debug) console.log("Need answer to question: " + data);
-                            console.log("error");
-                            process.exit()
-                        },
-                        function (data) {
-                            if (debug) console.log(data);
-                            console.log("error");
-                            process.exit()
-                        }
-                    );
-                }
-            );
-        }
+                        );
+                    }
+                );
+            }
+        });
     }
 );
