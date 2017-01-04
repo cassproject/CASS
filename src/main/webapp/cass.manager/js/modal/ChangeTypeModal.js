@@ -59,7 +59,7 @@ var ChangeTypeModal = (function(ChangeTypeModal){
 		
 		typeSelected[obj.type] = function(dataEdit){
 			if(obj.generateId != undefined)
-				obj.generateId(AppController.repoInterface.selectedServer)
+				obj.generateId(AppController.serverController.getRepoInterface().selectedServer)
 			dataEdit.changeObject(obj);
 		};
 	}

@@ -701,7 +701,6 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/cass.manager.html">cass.manager</a></li>
-                                <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -775,11 +774,11 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      *  
      *  @memberOf MoodleConfig
      *  @method save
-     *  @param serverUrl
+     *  @param {String} serverUrl
      *  			URL of server to save configuration values to
-     *  @param success
+     *  @param {Callback1&lt;Object&gt;} success
      *  			Callback triggered on successfully saving config values to server
-     *  @param failure
+     *  @param {Callback1&lt;String&gt;} failure
      *  			Callback triggered if an error occurs while saving the config values
      */
     prototype.save = function(serverUrl, success, failure) {
@@ -796,11 +795,11 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      *  @memberOf MoodleConfig
      *  @method get
      *  @static
-     *  @param serverUrl
+     *  @param {String} serverUrl
      *  			URL of server to save configuration values to
-     *  @param success
+     *  @param {Callback1&lt;Object&gt;} success
      *  			Callback triggered on successfully retrieving config values to server
-     *  @param failure
+     *  @param {Callback1&lt;String&gt;} failure
      *  			Callback triggered if an error occurs while getting the config values
      */
     constructor.get = function(serverUrl, success, failure) {
@@ -808,6 +807,26 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/moodle/config/get&quot;, fd, success, failure);
+        });
+    };
+    /**
+     *  Retrieves the Moodle adapter Encryption Key from the server to share frameworks with
+     *  
+     *  @memberOf MoodleConfig
+     *  @method get
+     *  @static
+     *  @param {String} serverUrl
+     *  			URL of server to save configuration values to
+     *  @param {Callback1&lt;String&gt;} success
+     *  			Callback triggered on successfully retrieving config values to server
+     *  @param {Callback1&lt;String&gt;} failure
+     *  			Callback triggered if an error occurs while getting the config values
+     */
+    constructor.getMoodleKey = function(serverUrl, success, failure) {
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+            EcRemote.postExpectingString(serverUrl, &quot;adapter/moodle/config/key&quot;, fd, success, failure);
         });
     };
 }, {atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});

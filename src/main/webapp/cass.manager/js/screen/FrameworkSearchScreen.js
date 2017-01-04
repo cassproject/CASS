@@ -77,7 +77,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			EcFramework.search(AppController.repoInterface, query, callback, errorSearching, params);
+			EcFramework.search(AppController.serverController.getRepoInterface(), query, callback, errorSearching, params);
 		}, 100);
 	}
 	
@@ -157,7 +157,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		if(err == undefined)
 			err = "Unable to Connect to Server for Competency Search";
 		
-		ViewManager.getView("frameworkSearchMessageContainer").displayAlert(err, "searchFail");
+		ViewManager.getView("#frameworkSearchMessageContainer").displayAlert(err, "searchFail");
 		
 		ViewManager.getView("#frameworkSearchResults").showNoDataMessage();
 	}

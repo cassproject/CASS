@@ -743,7 +743,7 @@ if (!stjs.mainCallDisabled)
 /**
  *  Contact Grant that is used to share your public key with another user
  *  
- *  @module com.eduworks.ebac
+ *  @module com.eduworks.ec
  *  @class EcContact
  *  @extends EbacContactGrant
  *  @constructor

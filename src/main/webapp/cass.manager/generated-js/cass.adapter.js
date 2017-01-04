@@ -20,11 +20,11 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      *  
      *  @memberOf MoodleConfig
      *  @method save
-     *  @param serverUrl
+     *  @param {String} serverUrl
      *  			URL of server to save configuration values to
-     *  @param success
+     *  @param {Callback1<Object>} success
      *  			Callback triggered on successfully saving config values to server
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback triggered if an error occurs while saving the config values
      */
     prototype.save = function(serverUrl, success, failure) {
@@ -41,11 +41,11 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      *  @memberOf MoodleConfig
      *  @method get
      *  @static
-     *  @param serverUrl
+     *  @param {String} serverUrl
      *  			URL of server to save configuration values to
-     *  @param success
+     *  @param {Callback1<Object>} success
      *  			Callback triggered on successfully retrieving config values to server
-     *  @param failure
+     *  @param {Callback1<String>} failure
      *  			Callback triggered if an error occurs while getting the config values
      */
     constructor.get = function(serverUrl, success, failure) {
@@ -53,6 +53,26 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/get", fd, success, failure);
+        });
+    };
+    /**
+     *  Retrieves the Moodle adapter Encryption Key from the server to share frameworks with
+     *  
+     *  @memberOf MoodleConfig
+     *  @method get
+     *  @static
+     *  @param {String} serverUrl
+     *  			URL of server to save configuration values to
+     *  @param {Callback1<String>} success
+     *  			Callback triggered on successfully retrieving config values to server
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while getting the config values
+     */
+    constructor.getMoodleKey = function(serverUrl, success, failure) {
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingString(serverUrl, "adapter/moodle/config/key", fd, success, failure);
         });
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});

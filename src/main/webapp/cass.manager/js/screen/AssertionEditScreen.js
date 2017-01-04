@@ -262,7 +262,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	
 		
 		var competencyList = {};
-		EcCompetency.search(AppController.repoInterface, "*", function(competencies){
+		EcCompetency.search(AppController.serverController.getRepoInterface(), "*", function(competencies){
 			for(var i in competencies){
 				competencyList[competencies[i].id] = competencies[i];
 				
@@ -291,7 +291,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 				$("#assertionLevelInput").append($("<option selected>No level selected</option"));
 			}
 				
-			EcLevel.searchByCompetency(AppController.repoInterface, assertion.competency, function(levels){
+			EcLevel.searchByCompetency(AppController.serverController.getRepoInterface(), assertion.competency, function(levels){
 				for(var i in levels){
 					var option = $("<option></option>");
 					option.text(levels[i].name);
@@ -310,7 +310,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			var competencyId = $("#assertionCompetencyInput").val();
 			$("#assertionCompetencyInput").css("font-style","normal");
 			
-			EcLevel.searchByCompetency(AppController.repoInterface, competencyId, function(levels){
+			EcLevel.searchByCompetency(AppController.serverController.getRepoInterface(), competencyId, function(levels){
 				$("#assertionLevelInput option").remove();
 				for(var i in levels){
 					var option = $("<option></option>");
@@ -444,7 +444,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		if(data == undefined){
 			newAssertion = true;
 			data = new EcAssertion();
-		    data.generateId(AppController.repoInterface.selectedServer);
+		    data.generateId(AppController.serverController.getRepoInterface().selectedServer);
 		    
 		    if(AppController.identityController.selectedIdentity != undefined)
 		    {

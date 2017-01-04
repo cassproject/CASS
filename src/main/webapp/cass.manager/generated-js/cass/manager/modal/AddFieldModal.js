@@ -1,6 +1,7 @@
 /**
  *  Stub for the AddFieldModal
  *  
+ *  @module cass.manager
  *  @author devlin.junker@eduworks.com
  *  @class AddFieldModal
  *  @extends EcModal

@@ -662,7 +662,6 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "cass.manager",
-        "com.eduworks.ebac",
         "com.eduworks.ec",
         "com.eduworks.ec.ui",
         "org.cassproject",
@@ -673,12 +672,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "cass.manager",
             "name": "cass.manager",
-            "description": "Manages the current user's logged in state and interfaces with the server to \nsign in/out and create users"
-        },
-        {
-            "displayName": "com.eduworks.ebac",
-            "name": "com.eduworks.ebac",
-            "description": "Contact Grant that is used to share your public key with another user"
+            "description": "Stub for the AddFieldModal"
         },
         {
             "displayName": "com.eduworks.ec",

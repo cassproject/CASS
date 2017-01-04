@@ -10,9 +10,11 @@
  *  @author devlin.junker@eduworks.com
  */
 var ServerController = /**
- *  On Startup, a default server is set when the server controller is created. Also the
- *  storage system is determined to load/save the list of servers that we are aware of
- *  and switch to a previously selected server if the UI has been used before on this browser
+ *  On Startup:
+ *  	1) See if repo on this server, if so add the server given and the found server to the list
+ *   2) Determine storage system to load/save list of other servers 
+ *   3) Switch to a previously selected server if the UI has been used before on this browser
+ *   4) Set interfaces to point at endpoint
  *  
  *  @constructor
  *  @param {String} defaultServer
@@ -22,10 +24,20 @@ var ServerController = /**
  */
 function(defaultServer, defaultServerName) {
     this.serverList = {};
+    this.repoInterface = new EcRepository();
+    this.remoteIdentityManager = new EcRemoteIdentityManager();
     if (localStorage != null) 
         this.storageSystem = localStorage;
      else if (sessionStorage != null) 
         this.storageSystem = sessionStorage;
+    this.repoInterface.autoDetectRepository();
+    EcRepository.caching = true;
+    if (this.repoInterface.selectedServer != null) {
+        this.addServer(defaultServerName, defaultServer, null, null);
+        defaultServer = this.repoInterface.selectedServer;
+        defaultServerName = "This Server (" + window.location.host + ")";
+        this.addServer(defaultServerName, defaultServer, null, null);
+    }
     var cachedList = this.storageSystem["cass.server.list"];
     if (cachedList != null) {
         cachedList = JSON.parse(cachedList);
@@ -52,12 +64,19 @@ function(defaultServer, defaultServerName) {
     this.storageSystem["cass.server.selected"] = this.selectedServerName;
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
+    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+    this.remoteIdentityManager.configureFromServer(null, function(p1) {
+        alert(p1);
+    });
+    this.repoInterface.selectedServer = this.selectedServerUrl;
 };
 ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
     prototype.serverList = null;
+    prototype.storageSystem = null;
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
-    prototype.storageSystem = null;
+    prototype.repoInterface = null;
+    prototype.remoteIdentityManager = null;
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      *  
@@ -136,8 +155,16 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         if (failure != null) 
             failure("Unable to select server requested: " + identifier);
     };
-    prototype.repoInterface = null;
-    prototype.remoteIdentityManager = null;
+    /**
+     *  Used to retrieve the interface to the repository we are currently pointed at
+     *  
+     *  @method getRepoInterface
+     *  @return {EcRepository}
+     *  			Repository Interface to call search/get/delete methods on
+     */
+    prototype.getRepoInterface = function() {
+        return this.repoInterface;
+    };
     /**
      *  Used during setup to set which EcRepository the server controller manages
      *  
@@ -148,6 +175,9 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.setRepoInterface = function(repoInterface) {
         this.repoInterface = repoInterface;
         repoInterface.selectedServer = this.selectedServerUrl;
+    };
+    prototype.getRemoteIdentityManager = function() {
+        return this.remoteIdentityManager;
     };
     /**
      *  Used during setup to set which EcRemoteIdentityManager the server controller manages
@@ -160,5 +190,8 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.setRemoteIdentityManager = function(loginServer) {
         this.remoteIdentityManager = loginServer;
         this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+        this.remoteIdentityManager.configureFromServer(null, function(p1) {
+            alert(p1);
+        });
     };
 }, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "Storage", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});

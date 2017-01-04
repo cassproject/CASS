@@ -1,6 +1,7 @@
 /**
  *  Stub for the AddCompetenciesToFrameworkModal
  *  
+ *  @module cass.manager
  *  @author devlin.junker@eduworks.com
  *  @class AddCompetenciesToFrameworkModal
  *  @extends EcModal

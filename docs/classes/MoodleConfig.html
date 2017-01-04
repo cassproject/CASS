@@ -701,7 +701,6 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/cass.manager.html">cass.manager</a></li>
-                                <li><a href="../modules/com.eduworks.ebac.html">com.eduworks.ebac</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -781,6 +780,11 @@ from the server and provides methods for saving new config values</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_save">save</a>
 
                             </li>
@@ -840,7 +844,7 @@ from the server and provides methods for saving new config values</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">serverUrl</code>
-                        <span class="type">Object</span>
+                        <span class="type">String</span>
 
 
                     <div class="param-description">
@@ -851,7 +855,7 @@ from the server and provides methods for saving new config values</p>
                 </li>
                 <li class="param">
                         <code class="param-name">success</code>
-                        <span class="type">Object</span>
+                        <span class="type">Callback1<Object></span>
 
 
                     <div class="param-description">
@@ -862,7 +866,90 @@ from the server and provides methods for saving new config values</p>
                 </li>
                 <li class="param">
                         <code class="param-name">failure</code>
-                        <span class="type">Object</span>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while getting the config values</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>serverUrl</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_cass.adapter.js.html#l67"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.adapter.js:67</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves the Moodle adapter Encryption Key from the server to share frameworks with</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">serverUrl</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>URL of server to save configuration values to</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully retrieving config values to server</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
 
 
                     <div class="param-description">
@@ -922,7 +1009,7 @@ from the server and provides methods for saving new config values</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">serverUrl</code>
-                        <span class="type">Object</span>
+                        <span class="type">String</span>
 
 
                     <div class="param-description">
@@ -933,7 +1020,7 @@ from the server and provides methods for saving new config values</p>
                 </li>
                 <li class="param">
                         <code class="param-name">success</code>
-                        <span class="type">Object</span>
+                        <span class="type">Callback1<Object></span>
 
 
                     <div class="param-description">
@@ -944,7 +1031,7 @@ from the server and provides methods for saving new config values</p>
                 </li>
                 <li class="param">
                         <code class="param-name">failure</code>
-                        <span class="type">Object</span>
+                        <span class="type">Callback1<String></span>
 
 
                     <div class="param-description">

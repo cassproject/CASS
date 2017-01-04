@@ -85,7 +85,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 			params.size = maxLength;
 			params.start = start;
 			
-			EcAlignment.search(AppController.repoInterface, query, callback, errorSearching, params);
+			EcAlignment.search(AppController.serverController.getRepoInterface(), query, callback, errorSearching, params);
 		}, 100);
 	}
 	

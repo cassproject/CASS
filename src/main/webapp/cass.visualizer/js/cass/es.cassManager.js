@@ -75,6 +75,7 @@ EncryptOptionsModal = stjs.extend(EncryptOptionsModal, EcModal, [], function(con
 /**
  *  Stub for the AddFieldModal
  *  
+ *  @module cass.manager
  *  @author devlin.junker@eduworks.com
  *  @class AddOwnerModal
  *  @extends EcModal
@@ -118,6 +119,7 @@ SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, protot
 /**
  *  Stub for the AddFieldModal
  *  
+ *  @module cass.manager
  *  @author devlin.junker@eduworks.com
  *  @class AddFieldModal
  *  @extends EcModal
@@ -161,6 +163,7 @@ EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constru
 /**
  *  Stub for the AddCompetenciesToFrameworkModal
  *  
+ *  @module cass.manager
  *  @author devlin.junker@eduworks.com
  *  @class AddCompetenciesToFrameworkModal
  *  @extends EcModal
@@ -300,13 +303,15 @@ ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], func
         return "partial/modal/importCompetencies.html";
     };
 }, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
-var ConfirmModal = function(confirmCallback, message) {
+var ConfirmModal = function(confirmCallback, message, header) {
     EcModal.call(this);
     this.confirmCallback = confirmCallback;
     this.message = message;
+    this.header = header;
 };
 ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "tiny";
+    prototype.header = null;
     prototype.message = null;
     prototype.confirmCallback = null;
     prototype.getModalSize = function() {
@@ -360,6 +365,22 @@ EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, 
         return "partial/modal/editLevel.html";
     };
 }, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
+var PermissionPropagationModal = function(data, cancelCallback) {
+    EcModal.call(this);
+    this.data = data;
+    this.onCancel = cancelCallback;
+};
+PermissionPropagationModal = stjs.extend(PermissionPropagationModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.onCancel = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/permissionPropagation.html";
+    };
+}, {data: "EcRemoteLinkedData", onCancel: "Callback0", onClose: "Callback0"}, {});
 /**
  *  @author djunker
  * 
@@ -543,6 +564,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
     };
+    prototype.setLoginServer = function(loginServer) {
+        this.loginServer = loginServer;
+    };
     /**
      *  Validates a username and password on the server and then parses the user's credentials and
      *  checks if they have an admin key. Also tells the identity manager to check for contacts in
@@ -707,7 +731,9 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
  *  
  *  @author devlin.junker@eduworks.com
  */
-var IdentityController = function() {};
+var IdentityController = function() {
+    EcIdentityManager.clearContacts();
+};
 IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
     prototype.selectedIdentity = null;
     /**
@@ -887,9 +913,11 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
  *  @author devlin.junker@eduworks.com
  */
 var ServerController = /**
- *  On Startup, a default server is set when the server controller is created. Also the
- *  storage system is determined to load/save the list of servers that we are aware of
- *  and switch to a previously selected server if the UI has been used before on this browser
+ *  On Startup:
+ *  	1) See if repo on this server, if so add the server given and the found server to the list
+ *   2) Determine storage system to load/save list of other servers 
+ *   3) Switch to a previously selected server if the UI has been used before on this browser
+ *   4) Set interfaces to point at endpoint
  *  
  *  @constructor
  *  @param {String} defaultServer
@@ -899,10 +927,20 @@ var ServerController = /**
  */
 function(defaultServer, defaultServerName) {
     this.serverList = {};
+    this.repoInterface = new EcRepository();
+    this.remoteIdentityManager = new EcRemoteIdentityManager();
     if (localStorage != null) 
         this.storageSystem = localStorage;
      else if (sessionStorage != null) 
         this.storageSystem = sessionStorage;
+    this.repoInterface.autoDetectRepository();
+    EcRepository.caching = true;
+    if (this.repoInterface.selectedServer != null) {
+        this.addServer(defaultServerName, defaultServer, null, null);
+        defaultServer = this.repoInterface.selectedServer;
+        defaultServerName = "This Server (" + window.location.host + ")";
+        this.addServer(defaultServerName, defaultServer, null, null);
+    }
     var cachedList = this.storageSystem["cass.server.list"];
     if (cachedList != null) {
         cachedList = JSON.parse(cachedList);
@@ -929,12 +967,19 @@ function(defaultServer, defaultServerName) {
     this.storageSystem["cass.server.selected"] = this.selectedServerName;
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
+    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+    this.remoteIdentityManager.configureFromServer(null, function(p1) {
+        alert(p1);
+    });
+    this.repoInterface.selectedServer = this.selectedServerUrl;
 };
 ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
     prototype.serverList = null;
+    prototype.storageSystem = null;
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
-    prototype.storageSystem = null;
+    prototype.repoInterface = null;
+    prototype.remoteIdentityManager = null;
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      *  
@@ -1013,8 +1058,16 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         if (failure != null) 
             failure("Unable to select server requested: " + identifier);
     };
-    prototype.repoInterface = null;
-    prototype.remoteIdentityManager = null;
+    /**
+     *  Used to retrieve the interface to the repository we are currently pointed at
+     *  
+     *  @method getRepoInterface
+     *  @return {EcRepository}
+     *  			Repository Interface to call search/get/delete methods on
+     */
+    prototype.getRepoInterface = function() {
+        return this.repoInterface;
+    };
     /**
      *  Used during setup to set which EcRepository the server controller manages
      *  
@@ -1025,6 +1078,9 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.setRepoInterface = function(repoInterface) {
         this.repoInterface = repoInterface;
         repoInterface.selectedServer = this.selectedServerUrl;
+    };
+    prototype.getRemoteIdentityManager = function() {
+        return this.remoteIdentityManager;
     };
     /**
      *  Used during setup to set which EcRemoteIdentityManager the server controller manages
@@ -1037,6 +1093,9 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.setRemoteIdentityManager = function(loginServer) {
         this.remoteIdentityManager = loginServer;
         this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+        this.remoteIdentityManager.configureFromServer(null, function(p1) {
+            alert(p1);
+        });
     };
 }, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "Storage", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
 var CassManagerScreen = function() {
@@ -1598,13 +1657,14 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
     constructor.topBarContainerId = "#menuContainer";
     /**
      *  Manages the server connection by storing and configuring 
-     *  the CASS instance endpoint for the rest of the application.  
+     *  the CASS instance endpoint for the rest of the application
+     *  and managing the interfaces to it.  
      *  
      *  @property serverController
      *  @static
      *  @type ServerController
      */
-    constructor.serverController = null;
+    constructor.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
     /**
      *  Manages the current user's identities and contacts through the
      *  KBAC libraries. 
@@ -1622,8 +1682,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  @type LoginController
      */
     constructor.loginController = new LoginController();
-    constructor.repoInterface = new EcRepository();
-    constructor.loginServer = new EcRemoteIdentityManager();
     /**
      *  Entry point of the application
      *  
@@ -1632,23 +1690,9 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      */
     constructor.main = function(args) {
         AppSettings.loadSettings();
-        AppController.repoInterface.autoDetectRepository();
-        EcRepository.caching = true;
-        if (AppController.repoInterface.selectedServer == null) {
-            AppController.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
-        } else {
-            AppController.serverController = new ServerController(AppController.repoInterface.selectedServer, "This Server (" + window.location.host + ")");
-            AppController.serverController.addServer(AppSettings.defaultServerName, AppSettings.defaultServerUrl, null, null);
-        }
-        AppController.serverController.setRepoInterface(AppController.repoInterface);
-        AppController.serverController.setRemoteIdentityManager(AppController.loginServer);
-        AppController.loginServer.configureFromServer(null, function(p1) {
-            alert(p1);
-        });
-        AppController.loginController.loginServer = AppController.loginServer;
+        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());
-        EcIdentityManager.clearContacts();
         $(window.document).ready(function(arg0, arg1) {
             ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
                 ($(window.document)).foundation();
@@ -1656,7 +1700,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
             return true;
         });
     };
-}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", repoInterface: "EcRepository", loginServer: "EcRemoteIdentityManager"}, {});
+}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();
 var UserAdminScreen = function() {
@@ -1745,17 +1789,17 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         me.autoRemove($("body"), "level");
         me.autoAppend($("body"), "competency");
         me.autoFill($("body"), me.getData());
-        this.getData().levels(AppController.repoInterface, function(p1) {
+        this.getData().levels(AppController.serverController.getRepoInterface(), function(p1) {
             me.autoFill(me.autoAppend($("[ec-container='level']"), "level"), p1);
         }, (me)["errorFindingLevels"], function(p1) {
             if (p1.length == 0) 
                 $("[ec-container='level']").text("None.");
-            me.getData().rollupRules(AppController.repoInterface, function(p1) {
+            me.getData().rollupRules(AppController.serverController.getRepoInterface(), function(p1) {
                 me.autoFill(me.autoAppend($("[ec-container='rollupRule']"), "rollupRule"), p1);
             }, (me)["errorFindingRollupRules"], function(p1) {
                 if (p1.length == 0) 
                     $("[ec-container='rollupRule']").text("None.");
-                me.getData().relations(AppController.repoInterface, function(p1) {
+                me.getData().relations(AppController.serverController.getRepoInterface(), function(p1) {
                     me.autoFill(me.autoAppend($("[ec-container='relation']"), "relation"), p1);
                     me.bindControls();
                 }, (me)["errorFindingRelations"], function(p1) {
@@ -1836,9 +1880,9 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
     };
     prototype.predisplayFramework = function(callback) {
         var me = this;
-        AppController.repoInterface.precache(this.getData().competency, function() {
-            AppController.repoInterface.precache(me.getData().relation, function() {
-                AppController.repoInterface.precache(me.getData().level, function() {
+        AppController.serverController.getRepoInterface().precache(this.getData().competency, function() {
+            AppController.serverController.getRepoInterface().precache(me.getData().relation, function() {
+                AppController.serverController.getRepoInterface().precache(me.getData().level, function() {
                     me.autoRemove($("body"), "framework");
                     me.autoAppend($("body"), "framework");
                     me.autoFill($("body"), me.getData());
@@ -1859,7 +1903,7 @@ FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], fu
                 me.mc.displayAlert(err, null);
             });
             ModalManager.hideModal();
-        }, "Are you sure you want to delete this framework?"), null);
+        }, "Are you sure you want to delete this framework?", null), null);
     };
     prototype.errorRetrieving = function(err) {
         if (err == null) 

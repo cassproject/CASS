@@ -73,6 +73,9 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     constructor.getPreviouslyLoggedIn = function() {
         return LoginController.refreshLoggedIn;
     };
+    prototype.setLoginServer = function(loginServer) {
+        this.loginServer = loginServer;
+    };
     /**
      *  Validates a username and password on the server and then parses the user's credentials and
      *  checks if they have an admin key. Also tells the identity manager to check for contacts in
