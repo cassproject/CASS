@@ -87,3 +87,6 @@ ppk=#if(
 	ne=ppk
 ).cache(name="adapter.moodle.private.pem");
 #moodlePpk=ppk;
+
+key = #moodlePpk().rsaPpkToPk().replace(replace="\r?\n", with="").displayJson(_collapse="true");
+/adapter/moodle/config/key = key;

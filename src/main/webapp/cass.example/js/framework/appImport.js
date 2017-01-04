@@ -136,7 +136,7 @@ function importCsv() {
                                 importCsvLookup[shortId] = f.shortId();
                             if (identity != null)
                                 f.addOwner(identity.ppk.toPk());
-                            framework.competency.push(f.shortId());
+                            framework.addCompetency(f.shortId());
                             EcRepository.save(f, function () {}, error);
                         });
                     })(i);
@@ -162,7 +162,7 @@ function importCsvRelations() {
     var file = $("#importCsvRelation")[0].files[0];
     if (file == null)
         return false;
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         if (framework.relation == null)
             framework.relation = [];
         Papa.parse(file, {
@@ -190,7 +190,7 @@ function importCsvRelations() {
                             if (identity != null)
                                 f.addOwner(identity.ppk.toPk());
                             f.generateId(repo.selectedServer);
-                            framework.relation.push(f.shortId());
+                            framework.addRelation(f.shortId());
                             EcRepository.save(f, function () {}, error);
                         });
                     })(i);

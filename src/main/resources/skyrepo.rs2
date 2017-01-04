@@ -108,3 +108,6 @@ types = #skyrepoTypes();
 
 admin = #skyrepoAdminList().displayJson(_collapse="true");
 /sky/admin = admin;
+
+indexBase=#add(a="data");
+#indexBase=indexBase;

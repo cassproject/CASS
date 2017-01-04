@@ -113,7 +113,7 @@ function addInquiryPacketNodes(ip, parentNode, isEquivalency, parentMass) {
     });
     //    }
     if (ip.competency != null)
-        for (var i = 0;i < ip.competency.length;i++)
+        for (var i = 0; i < ip.competency.length; i++)
             nodes[ip.competency[i].shortId()] = ipNode;
 
     if (parentNode) {
@@ -165,6 +165,7 @@ var processing = false;
 function detectCompetence() {
     $("#processing").foundation('open');
     $("#detectButton").addClass("disabled");
+    $("#competenceGraph").foundation('close');
     if (processing) return;
     processing = true;
     graph = new Springy.Graph();
@@ -212,3 +213,8 @@ function detectCompetence() {
         }
     );
 }
+
+$(window).resize(function () {
+    if ($("#competenceGraph:visible").length > 0)
+        detectCompetence();
+});

@@ -12,6 +12,9 @@ YUI.add("yuidoc-meta", function(Y) {
         "ActionStatusType",
         "ActivateAction",
         "AddAction",
+        "AddCompetenciesToFrameworkModal",
+        "AddFieldModal",
+        "AddOwnerModal",
         "AdministrativeArea",
         "AdultEntertainment",
         "AggregateOffer",
@@ -26,6 +29,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Answer",
         "Apartment",
         "ApartmentComplex",
+        "AppController",
+        "AppSettings",
         "AppendAction",
         "ApplyAction",
         "Aquarium",
@@ -208,7 +213,9 @@ YUI.add("yuidoc-meta", function(Y) {
         "EcIdentityManager",
         "EcLevel",
         "EcLinkedData",
+        "EcModal",
         "EcObject",
+        "EcOverlay",
         "EcPk",
         "EcPpk",
         "EcRemote",
@@ -218,6 +225,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "EcRollupRule",
         "EcRsaOaep",
         "EcRsaOaepAsync",
+        "EcScreen",
+        "EcView",
         "EducationEvent",
         "EducationalAudience",
         "EducationalOrganization",
@@ -291,6 +300,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "HealthClub",
         "HighSchool",
         "HinduTemple",
+        "HistoryClosure",
         "HobbyShop",
         "HomeAndConstructionBusiness",
         "HomeGoodsStore",
@@ -302,6 +312,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "HousePainter",
         "Hypergraph",
         "IceCreamShop",
+        "IdentityController",
         "IgnoreAction",
         "ImageGallery",
         "ImageObject",
@@ -349,6 +360,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Locksmith",
         "LodgingBusiness",
         "LodgingReservation",
+        "LoginController",
         "LoseAction",
         "Map",
         "MapCategoryType",
@@ -363,6 +375,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MiddleSchool",
         "MobileApplication",
         "MobilePhoneStore",
+        "ModalManager",
         "MonetaryAmount",
         "MoodleConfig",
         "Mosque",
@@ -413,6 +426,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "OrganizationRole",
         "OrganizeAction",
         "OutletStore",
+        "OverlayManager",
         "OwnershipInfo",
         "PaintAction",
         "Painting",
@@ -520,6 +534,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ScholarlyArticle",
         "School",
         "ScreeningEvent",
+        "Screenmanager",
         "Sculpture",
         "SeaBodyOfWater",
         "SearchAction",
@@ -530,6 +545,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "SellAction",
         "SendAction",
         "Series",
+        "ServerController",
         "Service",
         "ServiceChannel",
         "ShareAction",
@@ -618,6 +634,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "VideoGameSeries",
         "VideoObject",
         "ViewAction",
+        "ViewManager",
         "VisualArtsEvent",
         "VisualArtwork",
         "Volcano",
@@ -644,21 +661,33 @@ YUI.add("yuidoc-meta", function(Y) {
         "Zoo"
     ],
     "modules": [
+        "cass.manager",
         "com.eduworks.ec",
+        "com.eduworks.ec.ui",
         "org.cassproject",
         "org.json.ld",
         "org.schema"
     ],
     "allModules": [
         {
+            "displayName": "cass.manager",
+            "name": "cass.manager",
+            "description": "Stub for the AddFieldModal"
+        },
+        {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",
             "description": "Location of strings that store the current namespace for general Eduworks Objects."
         },
         {
+            "displayName": "com.eduworks.ec.ui",
+            "name": "com.eduworks.ec.ui",
+            "description": "Parent class of all view manager classes, stores a cache of the views and\ntheir corresponding DOM selectors and provides functions for setting a view\nto correspond to a selector and displaying a view after it has been added to\nthe cache."
+        },
+        {
             "displayName": "org.cassproject",
             "name": "org.cassproject",
-            "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object."
+            "description": "Location of strings that store the current namespace for EBAC/KBAC."
         },
         {
             "displayName": "org.json.ld",
