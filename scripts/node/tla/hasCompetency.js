@@ -93,6 +93,7 @@ EcIdentityManager.addIdentity(identity);
 
 if (EcIdentityManager.ids.length > 0)
     identity = EcIdentityManager.ids[0];
+EcIdentityManager.signatureSheetCaching = true;
 
 var target = EcPk.fromPem(pk);
 if (debug) console.log("Fetching competency.");
@@ -104,38 +105,39 @@ EcCompetency.get(
         EcFramework.get(
             frameworkId,
             function (framework) {
-
-                if (debug) console.log("Processing assertions.");
-                var ep = new PessimisticQuadnaryAssertionProcessor();
-                ep.logFunction = function (data) {
-                    if (debug) console.log(data);
-                };
-                ep.repositories.push(repo);
-                var subject = new Array();
-                subject.push(target);
-                var additionalSignatures = null;
-                ep.has(
-                    subject,
-                    competency,
-                    null,
-                    framework,
-                    additionalSignatures,
-                    function (data) {
+                repo.precache(framework.competency.concat(framework.relation),function(success){
+                    if (debug) console.log("Processing assertions.");
+                    var ep = new PessimisticQuadnaryAssertionProcessor();
+                    ep.logFunction = function (data) {
                         if (debug) console.log(data);
-                        console.log(data.result._name);
-                        process.exit()
-                    },
-                    function (data) {
-                        if (debug) console.log("Need answer to question: " + data);
-                        console.log("error");
-                        process.exit()
-                    },
-                    function (data) {
-                        if (debug) console.log(data);
-                        console.log("error");
-                        process.exit()
-                    }
-                );
+                    };
+                    ep.repositories.push(repo);
+                    var subject = new Array();
+                    subject.push(target);
+                    var additionalSignatures = null;
+                    ep.has(
+                        subject,
+                        competency,
+                        null,
+                        framework,
+                        additionalSignatures,
+                        function (data) {
+                            if (debug) console.log(data);
+                            console.log(data.result._name);
+                            process.exit()
+                        },
+                        function (data) {
+                            if (debug) console.log("Need answer to question: " + data);
+                            console.log("error");
+                            process.exit()
+                        },
+                        function (data) {
+                            if (debug) console.log(data);
+                            console.log("error");
+                            process.exit()
+                        }
+                    );
+                });
             }
         );
     }

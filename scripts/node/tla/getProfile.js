@@ -90,7 +90,7 @@ var counter = 0;
 var target = EcPk.fromPem(pk);
 var profile = {};
 if (debug) console.log("Fetching framework.");
-
+EcIdentityManager.signatureSheetCaching = true;
 
 EcFramework.get(
     frameworkId,
