@@ -71,6 +71,7 @@ competency=#object(
 /learner/competency=competency;
 
 goal=#object(
+        a=#beforeGet(),
 	b=#if(
 		operator="@userId",
 		operand="",
