@@ -65,7 +65,7 @@ addCompetency=#object(
 		id=moodleCompetencyId.debug(prefix="MOODLE creating competency: "),
 		name=#toObject(obj="@moodleCompetency").get(shortname=""),
 		description=#toObject(obj="@moodleCompetency").get(description=""),
-		lastModified=#divide(numerator=moodleCompetencyLastModified,denominator="1000").toLong(),
+		lastModified=moodleCompetencyLastModified,
 		ppk=#moodlePpk()
 	),
 	b=#cassAddCompetencyToFramework(

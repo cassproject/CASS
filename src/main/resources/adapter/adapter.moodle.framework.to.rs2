@@ -3,11 +3,15 @@
 frameworkGuid=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-2"));
 frameworkLastModified=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-1")).toLong();
 
-moodleFramework=#toArray(obj="@moodleFrameworks").forEach(array="true",paramName="moodleFramework",op=#if(
+moodleFramework=#toArray(obj="@moodleFrameworks").forEach(
+    array="true",
+    paramName="moodleFramework",
+    op=#if(
 	operator=#toObject(obj="@moodleFramework").get(idnumber=""),
 	operand=frameworkGuid,
 	eq=#toObject(obj="@moodleFramework")
-)).getIndex(index="0");
+    )
+).getIndex(index="0");
 
 addFramework=#moodleCreateCompetencyFramework(
 	id=frameworkGuid,
