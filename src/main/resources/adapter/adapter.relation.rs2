@@ -10,7 +10,7 @@ relation=#object(
 
 relation=relation.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
 relation=relation.put(_key=#type(),_value="Relation");
-relation=relation.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u=#date(raw="true")));
+relation=relation.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u="@version"));
 relation=relation.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
 
 relationSave=#cassSignatureSheet(
@@ -19,8 +19,11 @@ relationSave=#cassSignatureSheet(
 	op=relation.skyrepoPut(
 		type="@type",
 		id="@id",
-		version="@lastModified"
+		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.Relation");
+).call(
+	type="schema.cassproject.org.0.2.Relation",
+	version=#date(raw="true")
+);
 
 #cassCreateRelation=relationSave;
