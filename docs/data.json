@@ -1621,7 +1621,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 847,
+            "line": 877,
             "description": "Implementation of a Level object with methods for interacting with CASS\nservices on a server."
         },
         "EcCompetency": {
@@ -1635,7 +1635,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1042,
+            "line": 1072,
             "description": "Implementation of a Competency object with methods for interacting with CASS\nservices on a server."
         },
         "EcFramework": {
@@ -1649,7 +1649,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1553,
+            "line": 1583,
             "description": "Implementation of a Framework object with methods for interacting with CASS\nservices on a server."
         },
         "Importer": {
@@ -1778,7 +1778,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 743,
+            "line": 782,
             "description": "Contact Grant that is used to share your public key with another user"
         },
         "EcIdentity": {
@@ -1820,7 +1820,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 777,
+            "line": 816,
             "description": "Logs into and stores/retrieves credentials from a compatible remote server.\nPerforms anonymization of the user.\n\nRequires initialization with server specific salts. Server specific salts\nprevent co-occurrence attacks, should credentials on one server be\ncompromised (intercepted in transit).\n\nTransmits hashed username, hashed password, and encrypts credentials using\nthe hashed combination of the username and password. This prevents the system\nstoring the credentials from having any knowledge of the user.\n\nPassword recovery is done by, when the password changes, creating a\ncryptographic pad (or perfect cipher) where one half is stored on the server,\nand the other half is stored with the user. Should the user lose this pad and\nforget their password, they are not able to recover or reset their password,\nand their data should be considered lost."
         },
         "EcEncryptedValue": {
@@ -12364,6 +12364,27 @@
         {
             "file": "src/main/js/cass/cass.competency.js",
             "line": 695,
+            "description": "Retrieves an alignment from it's server synchronously, the call \nblocks until it is successful or an error occurs",
+            "memberof": "EcAlignment",
+            "itemtype": "method",
+            "name": "getBlocking",
+            "static": 1,
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the alignment to retrieve",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "EcAlignment\n\t\t\tThe alignment retrieved"
+            },
+            "class": "EcAlignment",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.competency.js",
+            "line": 725,
             "description": "Searches the repository using the query and optional parameters provided",
             "memberof": "EcAlignment",
             "itemtype": "method",
@@ -12411,7 +12432,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 741,
+            "line": 771,
             "description": "Searches the repository for alignments with a specific ID in the source field",
             "memberof": "EcAlignment",
             "itemtype": "method",
@@ -12459,7 +12480,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 793,
+            "line": 823,
             "description": "Searches the repository for alignments with a specific ID in the target field",
             "memberof": "EcAlignment",
             "itemtype": "method",
@@ -12507,7 +12528,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 863,
+            "line": 893,
             "description": "Adds a relationship between this level and a target level to define\nhow they correspond to one another",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12539,7 +12560,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 887,
+            "line": 917,
             "description": "Method to set the name of this level",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12556,7 +12577,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 898,
+            "line": 928,
             "description": "Method to set the description of the level",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12573,7 +12594,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 909,
+            "line": 939,
             "description": "Saves this levels details to the server",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12595,7 +12616,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 938,
+            "line": 968,
             "description": "Deletes the level from it's repository",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12617,7 +12638,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 951,
+            "line": 981,
             "description": "Retrieves a level from the server specified by its ID",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12645,7 +12666,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 987,
+            "line": 1017,
             "description": "Searches for levels using a competency that the results must be related to",
             "memberof": "EcLevel",
             "itemtype": "method",
@@ -12691,7 +12712,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1058,
+            "line": 1088,
             "description": "Adds a new alignment on the server specified with this competency as its \nsource and the specified target competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12737,7 +12758,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1089,
+            "line": 1119,
             "description": "Searches the repository given for any relationships that contain this competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12769,7 +12790,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1106,
+            "line": 1136,
             "description": "Searches the repository given for any relationships that contain this competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12802,7 +12823,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1140,
+            "line": 1170,
             "description": "Adds a new level on the server specified for this competency.",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12847,7 +12868,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1170,
+            "line": 1200,
             "description": "Searches the repository given for any levels of this competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12879,7 +12900,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1234,
+            "line": 1264,
             "description": "Adds a new rollup rule on the server specified for this competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12924,7 +12945,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1264,
+            "line": 1294,
             "description": "Searches the repository given for any rollup rules of this competency",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12956,7 +12977,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1328,
+            "line": 1358,
             "description": "Method to set competency name",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12973,7 +12994,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1339,
+            "line": 1369,
             "description": "Method to set competency description",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -12990,7 +13011,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1350,
+            "line": 1380,
             "description": "Method to set competency scope",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13007,7 +13028,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1361,
+            "line": 1391,
             "description": "Saves the competency details to the server",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13029,7 +13050,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1382,
+            "line": 1412,
             "description": "Deletes the competency from the server\n\nTODO: Delete rollup rules?",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13056,7 +13077,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1438,
+            "line": 1468,
             "description": "Retrieves a competency from it's server asynchronously",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13084,7 +13105,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1474,
+            "line": 1504,
             "description": "Retrieves a competency from it's server synchronously, the call \nblocks until it is successful or an error occurs",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13105,7 +13126,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1504,
+            "line": 1534,
             "description": "Searches a repository for competencies that match the search query",
             "memberof": "EcCompetency",
             "itemtype": "method",
@@ -13150,7 +13171,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1571,
+            "line": 1601,
             "description": "Adds the competency ID specified to the frameworks list of competency IDs",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13167,7 +13188,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1588,
+            "line": 1618,
             "description": "Removes a competency ID from the framework's list, also removes any\nlevels and relations associated with that competency\n\nTODO: remove rollup rules? should we add flag to remove these extras",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13194,7 +13215,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1640,
+            "line": 1670,
             "description": "Helper method to remove relationships associated with a competency from this framework",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13228,7 +13249,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1671,
+            "line": 1701,
             "description": "Helper method to remove levels associated with a competency from this framework",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13262,7 +13283,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1702,
+            "line": 1732,
             "description": "Adds a relation ID to the framework's list of relations",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13279,7 +13300,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1719,
+            "line": 1749,
             "description": "Removes a relation ID from the framework's list of relations",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13296,7 +13317,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1735,
+            "line": 1765,
             "description": "Adds a level ID to the framework's list of levels",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13313,7 +13334,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1752,
+            "line": 1782,
             "description": "Removes a level ID from the framework's list of levels",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13330,7 +13351,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1768,
+            "line": 1798,
             "description": "Adds a rollup rule ID to the framework's list of rollup rules",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13347,7 +13368,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1785,
+            "line": 1815,
             "description": "Removes a rollup rule ID from the framework's list of rollup rules",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13364,7 +13385,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1801,
+            "line": 1831,
             "description": "Saves this frameworks details on the server specified by it's ID",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13386,7 +13407,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1822,
+            "line": 1852,
             "description": "Deletes this framework from the server specified by it's ID",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13408,7 +13429,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1835,
+            "line": 1865,
             "description": "Retrieves a framework from the server, specified by the ID",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -13436,7 +13457,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1874,
+            "line": 1904,
             "description": "Searches the repository given for frameworks using the query passed in",
             "memberof": "EcFramework",
             "itemtype": "method",
@@ -15100,7 +15121,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 544,
+            "line": 546,
             "description": "Create a signature sheet for all identities, authorizing movement of data\noutside of our control.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15127,7 +15148,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 564,
+            "line": 583,
             "description": "Asynchronous version of creating a signature sheet for all identities",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15155,7 +15176,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 588,
+            "line": 627,
             "description": "Create a signature for a specific identity, authorizing movement of data\noutside of our control.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15187,7 +15208,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 609,
+            "line": 648,
             "description": "Asynchronously create a signature for a specific identity",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15219,7 +15240,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 632,
+            "line": 671,
             "description": "Get PPK from PK (if we have it)",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15241,7 +15262,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 650,
+            "line": 689,
             "description": "Get Contact from PK (if we have it)",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15263,7 +15284,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 667,
+            "line": 706,
             "description": "Get Identity from PK (if we have it)",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15285,7 +15306,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 684,
+            "line": 723,
             "description": "Sign a piece of data with all available keys that own that data.",
             "memberof": "EcIdentityManager",
             "itemtype": "method",
@@ -15303,7 +15324,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 758,
+            "line": 797,
             "description": "Verifies that the contact grant is valid",
             "return": {
                 "description": "true if valid, false if not",
@@ -15314,7 +15335,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 817,
+            "line": 856,
             "description": "Configure parameters of the remote login storage.",
             "memberof": "EcRemote",
             "itemtype": "method",
@@ -15366,7 +15387,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 850,
+            "line": 889,
             "description": "Configures parameters of the remote server by accessing configuration details via webservice",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15388,7 +15409,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 914,
+            "line": 953,
             "description": "Wipes login data.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15398,7 +15419,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 927,
+            "line": 966,
             "description": "Configure compatible remote identity management server.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15415,7 +15436,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 938,
+            "line": 977,
             "description": "\"Log Into\" system, generating credentials. Does not actually remotely\naccess any machine.\n\nPlease clear username and password fields after this function is called.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15437,7 +15458,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 963,
+            "line": 1002,
             "description": "Change password of user in memory. Does not automatically commit new credentials.\n\nPlease clear username and password fields after this function is called.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15468,7 +15489,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 997,
+            "line": 1036,
             "description": "Fetch credentials from server, invoking events based on login success or\nfailure.\n\nAutomatically populates EcIdentityManager.\n\nRequires login().",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15490,7 +15511,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1046,
+            "line": 1085,
             "description": "Commits credentials in EcIdentityManager to remote server.\n\nWill trigger pad generation and fail if the pad has not been specified.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15516,7 +15537,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1061,
+            "line": 1100,
             "description": "Creates an account.\n\nPlease note that the remote login server does not throw error messages if\nan account creation is blocked due to being a duplicate. This prevents\nlogin probing. This will always succeed (if the request is properly\nformed and makes it to the server).\n\nWill trigger pad generation and fail if the pad has not been specified.",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15542,7 +15563,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1084,
+            "line": 1123,
             "description": "Sends the identity managers credentials to the service specified",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15572,7 +15593,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1142,
+            "line": 1181,
             "description": "Splices together passwords (in a fashion more like shuffling a deck of\ncards, not appending).",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -15593,7 +15614,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.identity.js",
-            "line": 1168,
+            "line": 1207,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "memberof": "EcRemoteIdentityManager",
             "itemtype": "method",
@@ -37122,55 +37143,55 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:741"
+            "line": " src/main/js/cass/cass.competency.js:725"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:793"
+            "line": " src/main/js/cass/cass.competency.js:771"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:863"
+            "line": " src/main/js/cass/cass.competency.js:823"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:887"
+            "line": " src/main/js/cass/cass.competency.js:893"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:898"
+            "line": " src/main/js/cass/cass.competency.js:917"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:909"
+            "line": " src/main/js/cass/cass.competency.js:928"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:938"
+            "line": " src/main/js/cass/cass.competency.js:939"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:951"
+            "line": " src/main/js/cass/cass.competency.js:968"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:987"
+            "line": " src/main/js/cass/cass.competency.js:981"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1058"
+            "line": " src/main/js/cass/cass.competency.js:1017"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1089"
+            "line": " src/main/js/cass/cass.competency.js:1088"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1106"
+            "line": " src/main/js/cass/cass.competency.js:1119"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1140"
+            "line": " src/main/js/cass/cass.competency.js:1136"
         },
         {
             "message": "unknown tag: memberof",
@@ -37178,7 +37199,7 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1234"
+            "line": " src/main/js/cass/cass.competency.js:1200"
         },
         {
             "message": "unknown tag: memberof",
@@ -37186,31 +37207,31 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1328"
+            "line": " src/main/js/cass/cass.competency.js:1294"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1339"
+            "line": " src/main/js/cass/cass.competency.js:1358"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1350"
+            "line": " src/main/js/cass/cass.competency.js:1369"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1361"
+            "line": " src/main/js/cass/cass.competency.js:1380"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1382"
+            "line": " src/main/js/cass/cass.competency.js:1391"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1438"
+            "line": " src/main/js/cass/cass.competency.js:1412"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1474"
+            "line": " src/main/js/cass/cass.competency.js:1468"
         },
         {
             "message": "unknown tag: memberof",
@@ -37218,59 +37239,63 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1571"
+            "line": " src/main/js/cass/cass.competency.js:1534"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1588"
+            "line": " src/main/js/cass/cass.competency.js:1601"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1640"
+            "line": " src/main/js/cass/cass.competency.js:1618"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1671"
+            "line": " src/main/js/cass/cass.competency.js:1670"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1702"
+            "line": " src/main/js/cass/cass.competency.js:1701"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1719"
+            "line": " src/main/js/cass/cass.competency.js:1732"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1735"
+            "line": " src/main/js/cass/cass.competency.js:1749"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1752"
+            "line": " src/main/js/cass/cass.competency.js:1765"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1768"
+            "line": " src/main/js/cass/cass.competency.js:1782"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1785"
+            "line": " src/main/js/cass/cass.competency.js:1798"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1801"
+            "line": " src/main/js/cass/cass.competency.js:1815"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1822"
+            "line": " src/main/js/cass/cass.competency.js:1831"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1835"
+            "line": " src/main/js/cass/cass.competency.js:1852"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1874"
+            "line": " src/main/js/cass/cass.competency.js:1865"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/cass.competency.js:1904"
         },
         {
             "message": "unknown tag: abstract",
@@ -37422,83 +37447,83 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:544"
+            "line": " src/main/js/cass/ebac.identity.js:546"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:564"
+            "line": " src/main/js/cass/ebac.identity.js:583"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:588"
+            "line": " src/main/js/cass/ebac.identity.js:627"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:609"
+            "line": " src/main/js/cass/ebac.identity.js:648"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:632"
+            "line": " src/main/js/cass/ebac.identity.js:671"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:650"
+            "line": " src/main/js/cass/ebac.identity.js:689"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:667"
+            "line": " src/main/js/cass/ebac.identity.js:706"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:684"
+            "line": " src/main/js/cass/ebac.identity.js:723"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:817"
+            "line": " src/main/js/cass/ebac.identity.js:856"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:850"
+            "line": " src/main/js/cass/ebac.identity.js:889"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:914"
+            "line": " src/main/js/cass/ebac.identity.js:953"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:927"
+            "line": " src/main/js/cass/ebac.identity.js:966"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:938"
+            "line": " src/main/js/cass/ebac.identity.js:977"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:963"
+            "line": " src/main/js/cass/ebac.identity.js:1002"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:997"
+            "line": " src/main/js/cass/ebac.identity.js:1036"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1046"
+            "line": " src/main/js/cass/ebac.identity.js:1085"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1061"
+            "line": " src/main/js/cass/ebac.identity.js:1100"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1084"
+            "line": " src/main/js/cass/ebac.identity.js:1123"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1142"
+            "line": " src/main/js/cass/ebac.identity.js:1181"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.identity.js:1168"
+            "line": " src/main/js/cass/ebac.identity.js:1207"
         },
         {
             "message": "unknown tag: memberof",
@@ -37822,7 +37847,7 @@
         },
         {
             "message": "Missing item type\nVerifies that the contact grant is valid",
-            "line": " src/main/js/cass/ebac.identity.js:758"
+            "line": " src/main/js/cass/ebac.identity.js:797"
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",

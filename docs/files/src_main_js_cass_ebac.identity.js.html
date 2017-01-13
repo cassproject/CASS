@@ -1286,6 +1286,8 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             success(JSON.stringify(signatures));
         });
     };
+    constructor.signatureSheetCaching = false;
+    constructor.signatureSheetCache = new Object();
     /**
      *  Create a signature sheet for all identities, authorizing movement of data
      *  outside of our control.
@@ -1299,12 +1301,29 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  @return {String} JSON Array containing signatures.
      */
     constructor.signatureSheet = function(duration, server) {
+        var cache = null;
+        if (EcIdentityManager.signatureSheetCaching) {
+            cache = (EcIdentityManager.signatureSheetCache)[server];
+            if (cache != null) {
+                if (cache[0] &gt; new Date().getTime() + duration) {
+                    return cache[1];
+                }
+            }
+            duration += 20000;
+        }
         var signatures = new Array();
         for (var j = 0; j &lt; EcIdentityManager.ids.length; j++) {
             var ppk = EcIdentityManager.ids[j].ppk;
             signatures.push(EcIdentityManager.createSignature(duration, server, ppk).atIfy());
         }
-        return JSON.stringify(signatures);
+        var stringified = JSON.stringify(signatures);
+        if (EcIdentityManager.signatureSheetCaching) {
+            cache = new Array();
+            cache[0] = new Date().getTime() + duration;
+            cache[1] = stringified;
+            (EcIdentityManager.signatureSheetCache)[server] = cache;
+        }
+        return stringified;
     };
     /**
      *  Asynchronous version of creating a signature sheet for all identities
@@ -1320,14 +1339,34 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      */
     constructor.signatureSheetAsync = function(duration, server, success) {
         var signatures = new Array();
+        var cache = null;
+        if (EcIdentityManager.signatureSheetCaching) {
+            cache = (EcIdentityManager.signatureSheetCache)[server];
+            if (cache != null) {
+                if (cache[0] &gt; new Date().getTime() + duration) {
+                    success(cache[1]);
+                    return;
+                }
+            }
+            duration += 20000;
+        }
+        var finalDuration = duration;
         new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
             var ppk = p1.ppk;
-            EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
+            EcIdentityManager.createSignatureAsync(finalDuration, server, ppk, function(p1) {
                 signatures.push(p1.atIfy());
                 incrementalSuccess();
             });
         }, function(pks) {
-            success(JSON.stringify(signatures));
+            var cache = null;
+            var stringified = JSON.stringify(signatures);
+            if (EcIdentityManager.signatureSheetCaching) {
+                cache = new Array();
+                cache[0] = new Date().getTime() + finalDuration;
+                cache[1] = stringified;
+                (EcIdentityManager.signatureSheetCache)[server] = cache;
+            }
+            success(stringified);
         });
     };
     /**
@@ -1482,7 +1521,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         return searchString;
     };
-}, {ids: {name: &quot;Array&quot;, arguments: [&quot;EcIdentity&quot;]}, contacts: {name: &quot;Array&quot;, arguments: [&quot;EcContact&quot;]}, onIdentityChanged: {name: &quot;Callback1&quot;, arguments: [&quot;EcIdentity&quot;]}, onContactChanged: {name: &quot;Callback1&quot;, arguments: [&quot;EcContact&quot;]}}, {});
+}, {ids: {name: &quot;Array&quot;, arguments: [&quot;EcIdentity&quot;]}, contacts: {name: &quot;Array&quot;, arguments: [&quot;EcContact&quot;]}, onIdentityChanged: {name: &quot;Callback1&quot;, arguments: [&quot;EcIdentity&quot;]}, onContactChanged: {name: &quot;Callback1&quot;, arguments: [&quot;EcContact&quot;]}, signatureSheetCache: &quot;Object&quot;}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
 /**
