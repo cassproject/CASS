@@ -109,6 +109,27 @@ updateCompetencyFramework=#object(
 updateCompetencyFrameworkDebug=updateCompetencyFramework.displayJson(_collapse="true");
 /moodle/test/competencyFrameworkUpdate=updateCompetencyFrameworkDebug;
 
+
+deleteCompetencyFramework=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_delete_competency_framework",
+	moodlewsrestformat="json",
+	id="@competencyframeworkid",
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleDeleteCompetencyFramework=deleteCompetencyFramework;
+
+
+deleteCompetency=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_delete_competency",
+	moodlewsrestformat="json",
+	id="@competencyid",
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleDeleteCompetency=deleteCompetency;
+
+
 queryGrades=#object(
 	wstoken=#moodleWsToken(),
 	wsfunction="tool_lp_data_for_user_competency_summary",
