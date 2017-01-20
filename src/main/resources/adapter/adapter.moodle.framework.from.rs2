@@ -319,6 +319,10 @@ checkCassCompetencies=#toObject(obj="@framework").get(competency="").forEach(
 	)
 );
 
+checkCassCompetencies=#if(operator="@moodleFramework", operand="",
+	ne=checkCassCompetencies
+);
+
 moodleToCassRemoveCompetencies=#getFrameworks().forEach(
 	array="true",
 	paramName="framework",
@@ -424,6 +428,10 @@ checkCassRelations=#toObject(obj="@framework").get(relation="").forEach(
 		valueName="compArr",
 		op=#toArray(obj="@compArr").getIndex(index="0").toObject().get(idnumber="")
 	)
+);
+
+checkCassRelations=#if(operator="@moodleFramework", operand="",
+	ne=checkCassRelations
 );
 
 moodleToCassRemoveRelations=#getFrameworks().forEach(
