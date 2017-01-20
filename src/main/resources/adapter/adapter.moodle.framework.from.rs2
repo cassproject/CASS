@@ -382,14 +382,14 @@ checkRelation=#if(operator="@childList", operand="",
 			),
 		eq=removeRelation
 ).call(
-	childList=#toObject(obj="@parentMap").getByParam(param="@targetGuid").debug()
+	childList=#toObject(obj="@parentMap").getByParam(param="@targetGuid")
 ).call(
 	sourceGuid=competencyGuidFromShortId.call(
 		competencyId=#toObject(obj="@relation").get(source="").split(split="/")
-	).debug(),
+	),
 	targetGuid=competencyGuidFromShortId.call(
 		competencyId=#toObject(obj="@relation").get(target="").split(split="/")
-	).debug()
+	)
 );
 
 
@@ -397,7 +397,7 @@ checkCassRelations=#toObject(obj="@framework").get(relation="").forEach(
 	threaded="false",
 	paramName="relationId",
 	op=checkRelation.call(
-		relation=#getRelationById(id="@relationId").debug()
+		relation=#getRelationById(id="@relationId")
 	)
 ).call(
 	parentMap=#moodleListCompetencies(competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")).forEach(
@@ -415,8 +415,7 @@ checkCassRelations=#toObject(obj="@framework").get(relation="").forEach(
 			paramName="child",
 			op=#toObject(obj="@child").get(idnumber="")
 		)
-	).debug(),
-	
+	),
 ).call(
 	guidMap=#moodleListCompetencies(competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")).forEach(
 		paramName="moodleComp",

@@ -81,7 +81,7 @@ createCompetencyFramework=#object(
 ).put(_key="competencyframework[scaleconfiguration]",_value=#moodleFrameworkDefaultScaleConfiguration()
 ).put(_key="competencyframework[contextid]",_value=#moodleBaseContext()
 ).put(_key="competencyframework[timemodified]",_value="@lastmodified"
-).debug().httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
 
 #moodleCreateCompetencyFramework=createCompetencyFramework;
 

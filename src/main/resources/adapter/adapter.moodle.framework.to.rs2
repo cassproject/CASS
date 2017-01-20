@@ -34,7 +34,8 @@ addFramework=#object(
 		index=#moodleWsToken(),
 		key=frameworkGuid,
 		obj=frameworkLastModified
-	)
+	),
+	d=#variableSet(key=#add(a="cassNewer-",b=frameworkGuid), obj="true")
 );
 
 addFramework=#if(operator=#idxGet(
@@ -116,7 +117,7 @@ updateCompetency=#moodleUpdateCompetency(
 checkDateCompetency=#if(
 	operator=competencyLastModified,
 	operand=#toObject(obj="@moodleCompetency").get(timemodified="").multiply(a="1000").toLong(),
-	gt=updateCompetency
+	gt=updateCompetency,
 );
 
 checkCompetency=#if(
@@ -182,7 +183,7 @@ checkRelations=#toObject(obj="@framework").get(relation="").forEach(
 	).call(
 		relation=#getRelationById(id="@relationShortId")
 	)
-).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").debug().get(id=""));
+).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
 
 cassToMoodleRelations=#getFrameworks(ppk=#moodlePpk()).forEach(
 	array="true",
