@@ -5,7 +5,7 @@ alignments=alignments.forEach(paramName="result",array="true",op=#toObject(obj="
 #getAlignedCompetency=alignments;
 
 alignments=#add(
-	a="http://tla-core.soartech.com:8021",
+	a="http://tla-core.adlnet.gov:8021",
 	b="/nuxeo/api/v1/query",
 	c="?query=",
 	d="select%20*%20from%20document%20where%20activity:activityId=%22",
@@ -28,7 +28,7 @@ alignments=alignments.forEach(
 ).union().removeDuplicates().debug();
 
 allAlignments=#add(
-	a="http://tla-core.soartech.com:8021",
+	a="http://tla-core.adlnet.gov:8021",
 	b="/nuxeo/api/v1/query",
 	c="?query=",
 	d="select%20*%20from%20document"

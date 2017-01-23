@@ -1,6 +1,6 @@
 {
      "enabled": true,
      "xapiAuth": "Basic bHJzX2RqYW5nb191c2VyOnNvYXI=",
-     "xapiEndpoint": "http://tla-core.soartech.com:8000/xapi/",
-     "xapiHostName": "http://tla-core.soartech.com:8000"
+     "xapiEndpoint": "http://tla-core.adlnet.gov:8000/xapi/",
+     "xapiHostName": "http://tla-core.adlnet.gov:8000"
 }
