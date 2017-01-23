@@ -62,9 +62,12 @@ frameworkGet=#cassSignatureSheet(
 	paramName="signatureSheet",
 	op=#skyrepoGet(
 		type="@type",
-		id="@frameworkId"
+		id="@frameworkId",
+		version="@frameworkVersion"
 	)
 ).call(type="schema.cassproject.org.0.2.Framework");
+
+#cassGetFramework=frameworkGet;
 
 updateFramework=#cassSignatureSheet(
 ).toDatastream(
@@ -107,8 +110,34 @@ addCompetencyToFramework=#cassSignatureSheet(
 		id="@frameworkId",
 		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(raw="true"));
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(_raw="true"));
 #cassAddCompetencyToFramework=addCompetencyToFramework;
+
+removeCompetencyFromFramework=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@framework").put(
+		competency=#toObject(
+			obj="@framework"
+		).get(competency="").removeFromArray(
+			item=#if(operator=#startsWith(string1="@competencyId", string2=#repoEndpoint()), operand="true",
+				eq="@competencyId",
+				ne=#repoEndpoint().add(
+					p="data/",
+					q="schema.cassproject.org.0.2.Competency",r="/",s="@competencyId"
+				)
+			)
+		)
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@version"),
+	).skyrepoPut(
+		type="@type",
+		id="@frameworkId",
+		version="@version"
+	)
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(_raw="true"));
+#cassRemoveCompetencyFromFramework=removeCompetencyFromFramework;
 
 addRelationToFramework=#cassSignatureSheet(
 ).toDatastream(
@@ -130,5 +159,31 @@ addRelationToFramework=#cassSignatureSheet(
 		id="@frameworkId",
 		version="@version"
 	)
-).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(raw="true"));
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(_raw="true"));
 #cassAddRelationToFramework=addRelationToFramework;
+
+removeRelationFromFramework=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@framework").put(
+		relation=#toObject(
+			obj="@framework"
+		).get(relation="").removeFromArray(
+			item=#if(operator=#startsWith(string1="@relationId", string2=#repoEndpoint()), operand="true",
+				eq="@relationId",
+				ne=#repoEndpoint().add(
+					p="data/",
+					q="schema.cassproject.org.0.2.Relation",r="/",s="@relationId"
+				)
+			)
+		)
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@version"),
+	).skyrepoPut(
+		type="@type",
+		id="@frameworkId",
+		version="@version"
+	)
+).call(type="schema.cassproject.org.0.2.Framework",framework=frameworkGet, version=#date(_raw="true"));
+#cassRemoveRelationFromFramework=removeRelationFromFramework;
