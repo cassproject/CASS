@@ -238,6 +238,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  			New URL Prefix that the new competency's ID should match
      */
     constructor.transformId = function(oldId, newObject, selectedServer) {
+        if (oldId == null || oldId == "") 
+            oldId = generateUUID();
         if (oldId.indexOf("http") != -1) {
             var parts = (oldId).split("/");
             var guid = null;
@@ -311,8 +313,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     continue;
                 }
                 if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == "") {
-                    failure("One or more names is blank or could not be found in the CSV.");
-                    return;
+                    continue;
                 }
                 competency.name = tabularData[i][nameIndex];
                 if (descriptionIndex >= 0) 
@@ -328,8 +329,12 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
                  else 
                     competency.generateId(serverUrl);
-                if (idIndex != null && idIndex >= 0) 
+                if (idIndex != null && idIndex >= 0 && tabularData[i][idIndex] != null && tabularData[i][idIndex] != "") {
+                    if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] != null) 
+                        continue;
                     (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
+                } else if ((CSVImport.importCsvLookup)[competency.name] != null) 
+                    continue;
                 (CSVImport.importCsvLookup)[competency.name] = competency.shortId();
                 if (shortId != null && idIndex >= 0) 
                     (CSVImport.importCsvLookup)[shortId] = competency.shortId();

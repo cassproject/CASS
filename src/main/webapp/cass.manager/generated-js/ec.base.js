@@ -642,7 +642,7 @@ EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Wrapper to handle all remote web service invocations.
- *  
+ * 
  *  @class EcRemote
  *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
@@ -653,7 +653,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     /**
      *  Turn this property off to cause all remote web service calls to be
      *  synchronous. Can be useful for test scripts, blocking calls, etc.
-     *  
+     * 
      *  @property async
      *  @static
      *  @type boolean
@@ -663,14 +663,16 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
      *  URL) and a service (service path). Sends form data as a multi-part mime
      *  request.
-     *  
+     * 
      *  @method postExpectingObject
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
      *  @param {string} service Path to service to invoke.
      *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     *  @param {function(object)} success Method that is invoked if the server
+     *  responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
@@ -679,24 +681,28 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
      *  URL) and a service (service path). Sends form data as a multi-part mime
      *  request.
-     *  
+     * 
      *  @method postExpectingString
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
      *  @param {string} service Path to service to invoke.
      *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(string)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     *  @param {function(string)} success Method that is invoked if the server
+     *  responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.postExpectingString = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
     };
     constructor.postInner = function(server, service, fd, successCallback, failureCallback) {
         var url = server;
-        if (!url.endsWith("/") && service != null && !"".equals(service)) 
+        if (!url.endsWith("/") && service != null && !"".equals(service)) {
             url += "/";
-        if (service != null) 
+        }
+        if (service != null) {
             url += service;
+        }
         var p = {};
         p.method = "POST";
         p.url = url;
@@ -704,10 +710,11 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             var chunks = (fd)["_streams"];
             var all = "";
             for (var i = 0; i < chunks.length; i++) {
-                if ((typeof chunks[i]) == "function") 
+                if ((typeof chunks[i]) == "function") {
                     all = all + "\r\n";
-                 else 
+                } else {
                     all = all + chunks[i];
+                }
             }
             all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
             p.headers = new Object();
@@ -724,25 +731,36 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = successCallback;
         p.error = failureCallback;
         EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
+        if ($ == null) {
+            var o = new Object();
+            (o)["status"] = 200;
+            (o)["responseText"] = httpPost(p.data, p.url, "false", "multipart/form-data");
+            successCallback(null, null, o);
+        } else {
+            $.ajax(p);
+        }
     };
     /**
      *  GETs something from a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
-     *  
+     * 
      *  @method postExpectingString
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
      *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     *  @param {function(object)} success Method that is invoked if the server
+     *  responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
         var url = server;
-        if (!url.endsWith("/") && service != null && service.equals("")) 
+        if (!url.endsWith("/") && service != null && service.equals("")) {
             url += "/";
-        if (service != null) 
+        }
+        if (service != null) {
             url += service;
+        }
         var p = {};
         p.method = "GET";
         p.url = url;
@@ -753,18 +771,24 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = EcRemote.getSuccessJSONCallback(success, failure);
         p.error = EcRemote.getFailureCallback(failure);
         EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
+        if ($ == null) {
+            success(httpGet(p.url));
+        } else {
+            $.ajax(p);
+        }
     };
     /**
      *  DELETEs something at a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
-     *  
+     * 
      *  @method _delete
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
      *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.
+     *  @param {function(object)} success Method that is invoked if the server
+     *  responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor._delete = function(url, signatureSheet, success, failure) {
         var p = {};
@@ -776,56 +800,70 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.success = EcRemote.getSuccessCallback(success, failure);
         p.error = EcRemote.getFailureCallback(failure);
         EcRemote.upgradeHttpToHttps(p);
-        $.ajax(p);
+        if ($ == null) {
+            success(httpDelete(p.url));
+        } else {
+            $.ajax(p);
+        }
     };
     constructor.upgradeHttpToHttps = function(p) {
-        if (window != null) 
-            if (window.location != null) 
-                if (p.url.indexOf(window.location.protocol) == -1) 
-                    if (window.location.protocol.startsWith("https")) 
-                        if (!p.url.startsWith("https:")) 
+        if (window != null) {
+            if (window.location != null) {
+                if (p.url.indexOf(window.location.protocol) == -1) {
+                    if (window.location.protocol.startsWith("https")) {
+                        if (!p.url.startsWith("https:")) {
                             p.url = p.url.replace("http:", "https:");
+                        }
+                    }
+                }
+            }
+        }
     };
     constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
         if (failure != null) {
             if (paramP1 != null) {
-                if (paramP1.responseText != null) 
+                if (paramP1.responseText != null) {
                     failure(paramP1.responseText);
-                 else if (paramP1.statusText != null) 
+                } else if (paramP1.statusText != null) {
                     failure(paramP1.statusText.toString());
-                 else 
+                } else {
                     failure("General error in AJAX request.");
-            } else if (paramP2 != null) 
+                }
+            } else if (paramP2 != null) {
                 failure(paramP2);
-             else if (paramP3 != null) 
+            } else if (paramP3 != null) {
                 failure(paramP3);
-             else 
+            } else {
                 failure("General error in AJAX request.");
+            }
         }
     };
     constructor.getSuccessCallback = function(success, failure) {
         return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) 
+            if (arg2.status > 300 || arg2.status < 200) {
                 failure("Error with code: " + arg2.status);
-             else if (success != null) 
+            } else if (success != null) {
                 success(arg2.responseText);
+            }
         };
     };
     constructor.getSuccessJSONCallback = function(success, failure) {
         return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) 
+            if (arg2.status > 300 || arg2.status < 200) {
                 failure("Error with code: " + arg2.status);
-             else if (success != null) 
+            } else if (success != null) {
                 try {
                     success(JSON.parse(arg2.responseText));
                 }catch (ex) {
                     if (ex != null) {
-                        if ((ex)["getMessage"] != null) 
+                        if ((ex)["getMessage"] != null) {
                             failure(ex.getMessage());
-                         else 
+                        } else {
                             failure(ex);
+                        }
                     }
                 }
+            }
         };
     };
     constructor.getFailureCallback = function(failure) {
