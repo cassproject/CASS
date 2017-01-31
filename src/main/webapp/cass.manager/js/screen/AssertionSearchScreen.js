@@ -192,16 +192,16 @@ AssertionSearchScreen = (function(AssertionSearchScreen){
 				if(agent == undefined){
 					row.find(".datum-agent").html("by <span style='font-style:italic;'>Unknown</span>");
 				}else{
-					row.find(".datum-agent").append("<span id='assertion-agent'></span>");
-					ViewManager.showView(new IdentityDisplay(agent.toPem()), "#assertion-agent");
+					row.find(".datum-agent").append("<span id='assertion-agent"+datum.getGuid()+"'></span>");
+					ViewManager.showView(new IdentityDisplay(agent.toPem()), "#assertion-agent"+datum.getGuid()+"");
 				}
 				
 				var sub = datum.getSubject();
 				if(sub == undefined){
 					row.find(".datum-subject").html("by <span style='font-style:italic;'>Unknown</span>");
 				}else{
-					row.find(".datum-subject").html("on <span id='assertion-subject'></span>");
-					ViewManager.showView(new IdentityDisplay(sub.toPem()), "#assertion-subject");
+					row.find(".datum-subject").html("on <span id='assertion-subject"+datum.getGuid()+"'></span>");
+					ViewManager.showView(new IdentityDisplay(sub.toPem()), "#assertion-subject"+datum.getGuid()+"");
 				}
 				
 				
