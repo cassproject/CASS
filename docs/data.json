@@ -1705,7 +1705,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 464,
+            "line": 469,
             "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance"
         },
         "FrameworkImport": {
@@ -1719,7 +1719,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 801,
+            "line": 806,
             "description": "Importer methods to copy or link to competencies that already\nexist in another framework in a CASS instance."
         },
         "InquiryPacket": {
@@ -1748,7 +1748,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 510,
+            "line": 526,
             "description": "Creates child packets for an InquiryPacket based on its context.",
             "author": "tom.buskirk@eduworks.com"
         },
@@ -1763,7 +1763,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 798,
+            "line": 814,
             "description": "Processor used in Assertion Processing.\nCan estimate or determine competence of individuals.",
             "author": "tom.buskirk@eduworks.com"
         },
@@ -1980,7 +1980,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 846,
+            "line": 884,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints \nmust be distinct depends on the implementation.\n<P>\nThis interface permits, but does not enforce, any of the following \ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite \n     or multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul> \nExtensions or implementations of this interface \nmay enforce or disallow any or all of these variations.\n\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed \nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code> \n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an \noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "extends": "Hypergraph",
             "author": "Tom Buskirk (Eduworks)"
@@ -1996,7 +1996,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1053,
+            "line": 1091,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "extends": "Graph",
             "author": "fray",
@@ -13671,7 +13671,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 268,
+            "line": 270,
             "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "memberof": "CSVImport",
             "itemtype": "method",
@@ -13760,7 +13760,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 375,
+            "line": 380,
             "description": "Handles actually importing the relationships from the relationship CSV file",
             "memberof": "CSVImport",
             "itemtype": "method",
@@ -13825,7 +13825,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 486,
+            "line": 491,
             "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts \nthe number of competencies and relationships that it finds",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -13850,7 +13850,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 518,
+            "line": 523,
             "description": "Does the actual legwork of looking for competencies and relationships. \n\nThis function finds the framework information, and pulls out the competency \nobjects array to be scanned by asnJsonPrime",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -13870,7 +13870,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 552,
+            "line": 557,
             "description": "Analyzes an ASN File for competencies and relationships. \n\nThis should be called before import, the sucess callback returns an object\nindicating the number of competencies and relationships found.",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -13899,7 +13899,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 599,
+            "line": 604,
             "description": "Method to import the competencies from an ASN JSON file, \nshould be called after analyzing the file",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -13943,7 +13943,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 646,
+            "line": 651,
             "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -13984,7 +13984,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 704,
+            "line": 709,
             "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "memberof": "ASNImport",
             "itemtype": "method",
@@ -14034,7 +14034,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 766,
+            "line": 771,
             "description": "Handles creating the framework if the createFramework flag was set",
             "meberof": "ASNImport",
             "itemtype": "method",
@@ -14069,7 +14069,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 817,
+            "line": 822,
             "description": "Copies or links competencies that exist in one framework in a CASS instance, \nto another different framework in the same CASS instance.",
             "memberof": "FrameworkImport",
             "itemtype": "method",
@@ -14356,6 +14356,19 @@
         {
             "file": "src/main/js/cass/cass.rollup.js",
             "line": 218,
+            "description": "Returns true if all child packets have unknown results.",
+            "itemtype": "method",
+            "name": "allChildPacketsUnknown",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "InquiryPacket",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 234,
             "description": "Returns true if any child packets have false results.",
             "itemtype": "method",
             "name": "anyChildPacketsAreFalse",
@@ -14368,7 +14381,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 234,
+            "line": 250,
             "description": "Returns true if any child packets have unknown results.",
             "itemtype": "method",
             "name": "anyChildPacketsAreUnknown",
@@ -14381,7 +14394,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 250,
+            "line": 266,
             "description": "Returns true if any child packets have true results.",
             "itemtype": "method",
             "name": "anyChildPacketsAreTrue",
@@ -14394,7 +14407,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 266,
+            "line": 282,
             "description": "Returns true if all equivalent packets have unknown results.",
             "itemtype": "method",
             "name": "allEquivalentPacketsUnknown",
@@ -14407,7 +14420,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 278,
+            "line": 294,
             "description": "Returns true if all equivalent packets have the true or unknown result.",
             "itemtype": "method",
             "name": "allEquivalentPacketsTrueOrUnknown",
@@ -14420,7 +14433,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 290,
+            "line": 306,
             "description": "Returns true if all sub packets have the true or unknown result.",
             "itemtype": "method",
             "name": "allSubPacketsTrueOrUnknown",
@@ -14433,7 +14446,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 302,
+            "line": 318,
             "description": "Returns true if all equivalent packets have the false or unknown result.",
             "itemtype": "method",
             "name": "allEquivalentPacketsFalseOrUnknown",
@@ -14446,7 +14459,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 314,
+            "line": 330,
             "description": "Returns true if all sub packets have the false or unknown result.",
             "return": {
                 "description": ""
@@ -14456,7 +14469,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 325,
+            "line": 341,
             "description": "Returns true if the provided ID represents a competency in this packet.",
             "params": [
                 {
@@ -14472,7 +14485,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 534,
+            "line": 550,
             "description": "Method to call when any operation fails.",
             "itemtype": "property",
             "name": "failure",
@@ -14482,7 +14495,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 540,
+            "line": 556,
             "description": "Method to call when the operation succeeds.",
             "itemtype": "property",
             "name": "success",
@@ -14492,7 +14505,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 546,
+            "line": 562,
             "description": "Method to call when the generator has log statements to emit.",
             "itemtype": "property",
             "name": "logFunction",
@@ -14502,7 +14515,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 552,
+            "line": 568,
             "description": "Async counter to keep track of number of outstanding requests.",
             "itemtype": "property",
             "name": "numberOfRelationsToProcess",
@@ -14512,7 +14525,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 558,
+            "line": 574,
             "description": "Number of relations that have been processed.",
             "itemtype": "property",
             "name": "numberOfRelationsProcessed",
@@ -14522,7 +14535,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 564,
+            "line": 580,
             "description": "List of packets representing the narrows relation.",
             "itemtype": "property",
             "name": "narrowsPackets",
@@ -14532,7 +14545,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 570,
+            "line": 586,
             "description": "List of packets representing the broadens relation.",
             "itemtype": "property",
             "name": "broadensPackets",
@@ -14542,7 +14555,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 576,
+            "line": 592,
             "description": "List of packets representing the required relation.",
             "itemtype": "property",
             "name": "requiredPackets",
@@ -14552,7 +14565,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 582,
+            "line": 598,
             "description": "List of packets representing the isRequiredBy relation.",
             "itemtype": "property",
             "name": "isRequiredByPackets",
@@ -14562,7 +14575,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 588,
+            "line": 604,
             "description": "Alignments to ignore, as they have already been processed.",
             "itemtype": "property",
             "name": "processedAlignments;",
@@ -14572,7 +14585,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 594,
+            "line": 610,
             "description": "Assertion Processor that invoked this generator.",
             "itemtype": "property",
             "name": "ep",
@@ -14582,7 +14595,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 600,
+            "line": 616,
             "description": "Inquiry Packet that this generator is creating relationships for.",
             "itemtype": "property",
             "name": "ip",
@@ -14592,7 +14605,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 736,
+            "line": 752,
             "description": "Method to invoke to begin relation processing.",
             "itemtype": "method",
             "name": "go",
@@ -14601,7 +14614,7 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 821,
+            "line": 837,
             "description": "Asynchronously processes and provides an answer to the question: Does an individual hold a competency?",
             "itemtype": "method",
             "name": "has",
@@ -14652,7 +14665,14 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 1252,
+            "line": 1285,
+            "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n \nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n \nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n \nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n \nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n \nELSE INDETERMINANT\n \n \nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n \nELSE INDETERMINANT\n \nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n \nELSE INDETERMINANT",
+            "class": "AssertionProcessor",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/cass.rollup.js",
+            "line": 1465,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
             "class": "AssertionProcessor",
             "module": "org.cassproject"
@@ -17481,12 +17501,12 @@
                 },
                 {
                     "name": "success",
-                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
+                    "description": "Method that is invoked if the server\nresponds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
                     "name": "failure",
-                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
+                    "description": "Method that is invoked if the server\nresponds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17495,7 +17515,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 687,
+            "line": 689,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "itemtype": "method",
             "name": "postExpectingString",
@@ -17518,12 +17538,12 @@
                 },
                 {
                     "name": "success",
-                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
+                    "description": "Method that is invoked if the server\nresponds with a success (per jQuery ajax)",
                     "type": "Function(string)"
                 },
                 {
                     "name": "failure",
-                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
+                    "description": "Method that is invoked if the server\nresponds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17532,7 +17552,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 738,
+            "line": 752,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "itemtype": "method",
             "name": "postExpectingString",
@@ -17550,12 +17570,12 @@
                 },
                 {
                     "name": "success",
-                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
+                    "description": "Method that is invoked if the server\nresponds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
                     "name": "failure",
-                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
+                    "description": "Method that is invoked if the server\nresponds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17564,7 +17584,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 767,
+            "line": 789,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "itemtype": "method",
             "name": "_delete",
@@ -17582,12 +17602,12 @@
                 },
                 {
                     "name": "success",
-                    "description": "Method that is invoked if the server responds with a success (per jQuery ajax)",
+                    "description": "Method that is invoked if the server\nresponds with a success (per jQuery ajax)",
                     "type": "Function(object)"
                 },
                 {
                     "name": "failure",
-                    "description": "Method that is invoked if the server responds with an error (per jQuery ajax) or a non-200/300.",
+                    "description": "Method that is invoked if the server\nresponds with an error (per jQuery ajax) or a non-200/300.",
                     "type": "Function(string)"
                 }
             ],
@@ -17596,7 +17616,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 889,
+            "line": 927,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getInEdges",
@@ -17614,7 +17634,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 898,
+            "line": 936,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getOutEdges",
@@ -17632,7 +17652,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 907,
+            "line": 945,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code> \nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of \n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getPredecessors",
@@ -17650,7 +17670,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 919,
+            "line": 957,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code> \nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of \n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getSuccessors",
@@ -17668,7 +17688,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 931,
+            "line": 969,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "inDegree",
@@ -17686,7 +17706,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 939,
+            "line": 977,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "outDegree",
@@ -17704,7 +17724,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 947,
+            "line": 985,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isPredecessor",
@@ -17726,7 +17746,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 956,
+            "line": 994,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isSuccessor",
@@ -17748,7 +17768,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 965,
+            "line": 1003,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "itemtype": "method",
             "name": "getPredecessorCount",
@@ -17766,7 +17786,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 973,
+            "line": 1011,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "itemtype": "method",
             "name": "getSuccessorCount",
@@ -17784,7 +17804,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 981,
+            "line": 1019,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source; \notherwise returns <code>null</code>. \nThe source of a directed edge <code>d</code> is defined to be the vertex for which  \n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getSource",
@@ -17802,7 +17822,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 993,
+            "line": 1031,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination; \notherwise returns <code>null</code>. \nThe destination of a directed edge <code>d</code> is defined to be the vertex \nincident to <code>d</code> for which  \n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getDest",
@@ -17820,7 +17840,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1006,
+            "line": 1044,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "itemtype": "method",
             "name": "isSource",
@@ -17842,7 +17862,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1015,
+            "line": 1053,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -17862,7 +17882,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1023,
+            "line": 1061,
             "description": "Adds edge <code>e</code> to this graph such that it connects \nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>, \nor both, implementations may choose to either silently add \nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "itemtype": "method",
             "name": "addEdge",
@@ -17896,7 +17916,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1043,
+            "line": 1081,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "itemtype": "method",
             "name": "getOpposite",
@@ -24210,6 +24230,19 @@
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
             "line": 376,
+            "description": "Return the GUID portion of the short ID.",
+            "itemtype": "method",
+            "name": "getGuid",
+            "return": {
+                "description": "Guid of the linked data object.",
+                "type": "String"
+            },
+            "class": "EcRemoteLinkedData",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/org.cassproject.schema.general.js",
+            "line": 386,
             "description": "Return a valid ElasticSearch search string that will retrieve all objects with this type.",
             "itemtype": "method",
             "name": "getSearchStringByType",
@@ -37327,43 +37360,43 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:268"
+            "line": " src/main/js/cass/cass.import.js:270"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:375"
+            "line": " src/main/js/cass/cass.import.js:380"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:486"
+            "line": " src/main/js/cass/cass.import.js:491"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:518"
+            "line": " src/main/js/cass/cass.import.js:523"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:552"
+            "line": " src/main/js/cass/cass.import.js:557"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:599"
+            "line": " src/main/js/cass/cass.import.js:604"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:646"
+            "line": " src/main/js/cass/cass.import.js:651"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:704"
+            "line": " src/main/js/cass/cass.import.js:709"
         },
         {
             "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:766"
+            "line": " src/main/js/cass/cass.import.js:771"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:817"
+            "line": " src/main/js/cass/cass.import.js:822"
         },
         {
             "message": "unknown tag: internal",
@@ -37835,15 +37868,19 @@
         },
         {
             "message": "Missing item type\nReturns true if all sub packets have the false or unknown result.",
-            "line": " src/main/js/cass/cass.rollup.js:314"
+            "line": " src/main/js/cass/cass.rollup.js:330"
         },
         {
             "message": "Missing item type\nReturns true if the provided ID represents a competency in this packet.",
-            "line": " src/main/js/cass/cass.rollup.js:325"
+            "line": " src/main/js/cass/cass.rollup.js:341"
+        },
+        {
+            "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n \nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n \nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n \nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n \nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n \nELSE INDETERMINANT\n \n \nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n \nELSE INDETERMINANT\n \nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n \nELSE INDETERMINANT",
+            "line": " src/main/js/cass/cass.rollup.js:1285"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\n\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n\nELSE INDETERMINANT\n\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:1252"
+            "line": " src/main/js/cass/cass.rollup.js:1465"
         },
         {
             "message": "Missing item type\nVerifies that the contact grant is valid",
@@ -37851,7 +37888,7 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1015"
+            "line": " src/main/js/cass/ec.base.js:1053"
         },
         {
             "message": "Missing item type\nSecure Hash Algorithm with 256-bit digest (SHA-256) implementation.\n\nSee FIPS 180-2 for details.",

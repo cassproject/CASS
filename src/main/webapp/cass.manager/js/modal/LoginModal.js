@@ -17,7 +17,7 @@ var LoginModal = (function(LoginModal){
 	 * @method submitLogin
 	 * @private
 	 */
-	function submitLogin(view){
+	function submitLogin(loginSuccess){
 		var server = $("#loginServer").val();
 		var userId = $("#loginUserId").val(); 
 		var password = $("#loginPassword").val();
@@ -32,9 +32,9 @@ var LoginModal = (function(LoginModal){
 			userId,
 			password,
 			function(){
-				if(view.loginSuccess != undefined)
+				if(loginSuccess != undefined)
 				{
-					view.loginSuccess(EcView.urlParameters());
+					loginSuccess(EcView.urlParameters());
 				}
 				else
 				{
@@ -65,7 +65,7 @@ var LoginModal = (function(LoginModal){
 	 */
 	LoginModal.prototype.display = function(containerId)
 	{
-		var view = this;
+		var loginSuccess = this.loginSuccess;
 		
 		var warning = this.warning;
 		
@@ -102,7 +102,7 @@ var LoginModal = (function(LoginModal){
 		
 		$("#loginForm").submit(function(event){
 			event.preventDefault();
-			submitLogin(view);
+			submitLogin(loginSuccess);
 		});
 		
 		$("#loginCancel").click(function(event){

@@ -992,6 +992,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  			New URL Prefix that the new competency&#x27;s ID should match
      */
     constructor.transformId = function(oldId, newObject, selectedServer) {
+        if (oldId == null || oldId == &quot;&quot;) 
+            oldId = generateUUID();
         if (oldId.indexOf(&quot;http&quot;) != -1) {
             var parts = (oldId).split(&quot;/&quot;);
             var guid = null;
@@ -1065,8 +1067,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     continue;
                 }
                 if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == &quot;&quot;) {
-                    failure(&quot;One or more names is blank or could not be found in the CSV.&quot;);
-                    return;
+                    continue;
                 }
                 competency.name = tabularData[i][nameIndex];
                 if (descriptionIndex &gt;= 0) 
@@ -1082,8 +1083,12 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
                  else 
                     competency.generateId(serverUrl);
-                if (idIndex != null &amp;&amp; idIndex &gt;= 0) 
+                if (idIndex != null &amp;&amp; idIndex &gt;= 0 &amp;&amp; tabularData[i][idIndex] != null &amp;&amp; tabularData[i][idIndex] != &quot;&quot;) {
+                    if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] != null) 
+                        continue;
                     (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
+                } else if ((CSVImport.importCsvLookup)[competency.name] != null) 
+                    continue;
                 (CSVImport.importCsvLookup)[competency.name] = competency.shortId();
                 if (shortId != null &amp;&amp; idIndex &gt;= 0) 
                     (CSVImport.importCsvLookup)[shortId] = competency.shortId();

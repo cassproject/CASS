@@ -23,8 +23,8 @@ AssertionViewScreen = (function(AssertionViewScreen){
 	    
 	    var agent = assertion.getAgent();
 	    if(agent != undefined){
-	    	//var contact = $(createContactSmall(agent.toPem()));
-	    	//$("#assertionViewAgent").html(contact);
+	    	var contact = $(createContactSmall(agent.toPem()));
+	    	$("#assertionViewAgent").html(contact);
 	    	ViewManager.showView(new IdentityDisplay(agent.toPem()), "#assertionViewAgent");
 	    	if(contact.find(".contactText").text() == "Unknown"){
 	    		$("#assertionViewAgentContainer").addClass("unknown");

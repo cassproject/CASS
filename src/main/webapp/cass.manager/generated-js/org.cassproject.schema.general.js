@@ -365,6 +365,16 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return EcRemoteLinkedData.trimVersionFromUrl(this.id);
     };
     /**
+     *  Return the GUID portion of the short ID.
+     *  @method getGuid
+     *  @return {string} Guid of the linked data object.
+     */
+    prototype.getGuid = function() {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
+        var parts = shortId.split("/");
+        return parts[parts.length - 1];
+    };
+    /**
      *  Return a valid ElasticSearch search string that will retrieve all objects with this type.
      *  @method getSearchStringByType
      *  @return {string} ElasticSearch compatible search string.
