@@ -56,10 +56,14 @@ competency=#object(
 ).get(z=""
 ).call(
     competency=#if(
-        operator=#startsWith(obj="@competency",with="http"),
-        operand="false",
-        eq=#error(code="500",msg="The competency parameter does not begin with http. Please use the endpoint parameter or provide a fully qualified URL."),
-        ne="@competency"
+        operator="@competency",
+        operand="",
+        ne=#if(
+            operator=#startsWith(obj="@competency",with="http"),
+            operand="false",
+            eq=#error(code="500",msg="The competency parameter does not begin with http. Please use the endpoint parameter or provide a fully qualified URL."),
+            ne="@competency"
+        )
     ),
     framework=#if(
         operator=#startsWith(obj="@framework",with="http"),
