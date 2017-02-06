@@ -39,18 +39,34 @@ allAlignments=#httpGet(
 	name="data",
 	maxResults="1000",
 	X-NXproperties="*",
-	Authorization="Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y",
+	Authorization="Basic QWRtaW5pc3RyYXRvcjpQcmJSUFd3NHVmeTY0RVF3",
 	obj=allAlignments
 ).toObject().get(entries="");
+allAlignmentsInternal=allAlignments.forEach(paramName="obj",array="true",
+        op=#object(
+                a=#toObject(obj="@obj").get(properties="").getByParam(param="activity:activityId"),
+                b=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo")
+        )
+);
+allAlignmentsInternal=allAlignmentsInternal.forEach(
+        paramName="obj",
+        array="true",
+        op=#object(
+                a=#toObject(obj="@obj").get(a=""),
+                b=#toObject(obj="@obj").get(b="").forEach(paramName="obj2",array="true",op=#toObject(obj="@obj2").get(competency="").add(a=#repoEndpoint(),b="data/"))
+        )
+).collapse(keyKey="a",valueKey="b").forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union()).cache(name="nuxeoAlignmentsInternal");
 
-allAlignments=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo"));
-allAlignments=allAlignments.union().forEach(
-	paramName="obj",
-	op=#object(
-		a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
-		b=#toObject(obj="@obj").get(competency="")
-	)
-).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignments");
+allAlignmentsExternal=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo"));
+allAlignmentsExternal=allAlignmentsExternal.union().forEach(
+        paramName="obj",
+        op=#object(
+                a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
+                b=#toObject(obj="@obj").get(competency="")
+        )
+).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignmentsExternal");
+
+allAlignments=#object(a=allAlignmentsInternal,b=allAlignmentsExternal).valueSet().debug().union().forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union());
 
 allAlignmentsTest=allAlignments.displayJson();
 /allAlignmentsTest=allAlignmentsTest;
