@@ -1042,33 +1042,34 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         }
     };
     prototype.checkSubject = function(a, currentSubject, ip, success, failure) {
+        var me = this;
         a.getSubjectAsync(function(sub) {
             if (sub.equals(currentSubject)) {
-                this.log(ip, "Matching Assertion found.");
+                me.log(ip, "Matching Assertion found.");
                 a.getAssertionDateAsync(function(assertionDate) {
                     if (assertionDate > stjs.trunc(new Date().getTime())) {
-                        this.log(ip, "Assertion is made for a future date.");
+                        me.log(ip, "Assertion is made for a future date.");
                         success();
                         return;
                     }
                     a.getExpirationDateAsync(function(expirationDate) {
                         if (expirationDate <= stjs.trunc(new Date().getTime())) {
-                            this.log(ip, "Assertion is expired. Skipping.");
+                            me.log(ip, "Assertion is expired. Skipping.");
                             success();
                             return;
                         }
-                        this.logFoundAssertion(a, ip);
+                        me.logFoundAssertion(a, ip);
                         a.getNegativeAsync(function(p1) {
                             if (p1) {
-                                this.log(ip, "Found valid negative assertion");
+                                me.log(ip, "Found valid negative assertion");
                                 ip.negative.push(a);
                             } else {
-                                this.log(ip, "Found valid positive assertion");
+                                me.log(ip, "Found valid positive assertion");
                                 ip.positive.push(a);
                             }
                             success();
                         }, function(p1) {
-                            this.log(ip, "Found valid positive assertion");
+                            me.log(ip, "Found valid positive assertion");
                             ip.positive.push(a);
                             success();
                         });
