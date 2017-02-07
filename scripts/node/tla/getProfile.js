@@ -4,8 +4,10 @@ require("node-jquery-xhr");
 var forge = require("node-forge");
 var FormData = require('form-data');
 var antlr4 = require('antlr4/index');
+var Worker = require('webworker-threads').Worker;
 
-var window = null;
+var window = {};
+window.scriptPath = "";
 var document = {};
 var view = {};
 var localStorage = {};

@@ -5,3 +5,4 @@ npm install node-forge
 npm install form-data
 npm install antlr4
 npm install papaparse
+npm install webworker-threads

@@ -6819,7 +6819,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if ((typeof self).equals("undefined")) 
+        if (window == null && (typeof self).equals("undefined")) 
             return;
         if (!EcRemote.async) 
             return;
@@ -7041,7 +7041,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if ((typeof self).equals("undefined")) 
+        if (window == null && (typeof self).equals("undefined")) 
             return;
         if (!EcRemote.async) 
             return;
