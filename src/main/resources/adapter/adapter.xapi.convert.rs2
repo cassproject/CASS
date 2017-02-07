@@ -7,6 +7,7 @@ authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk().replace(regex=
 authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
 
 objectId=xapiObj.get(object="").get(id="");
+objectId=xapiObj.get(context="").get(contextActivities="").get(parent="").get(id="");
 
 xapiActor=xapiObj.get(actor="").toArray(wrap="true").getIndex(index="0");
 xapiVerb=xapiObj.get(verb="").get(id="");
@@ -89,6 +90,7 @@ convert=#object(
 
 convert=convert.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
 convert=convert.put(_key=#type(),_value="Assertion");
+//Need to filter on the activity id.
 convert=convert.put(_key=#id(),_value=#repoEndpoint().add(y="data/schema.cassproject.org.0.2.Assertion/",z=xapiObj.get(id="")));
 convert=convert.put(_key=#owner(),_value=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"));
 
