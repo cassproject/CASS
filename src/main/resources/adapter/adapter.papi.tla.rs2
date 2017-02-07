@@ -10,7 +10,6 @@ process=#runProcess(
 			a="pk=",
 			b=#object(
 				mbox=#add(
-					a="mailto:",
 					b="@username"
 				)
 			).xapiAgentToPk().debug(prefix="pk:")
