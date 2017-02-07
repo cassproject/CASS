@@ -42,7 +42,7 @@ coverage=#toDouble(obj="1.0");
 
 convert=#object(
 	subject=actorAsCassIdentity.cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
+		owner=#xapiMePpk().debug(prefix="Individual:").rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
