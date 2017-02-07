@@ -913,10 +913,16 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         this.log(ip, "Recording in inquiry.");
     };
     prototype.buildAssertionSearchQuery = function(ip, competency) {
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) 
-            return "(" + new EcAssertion().getSearchStringByType() + ") AND (" + ip.rule + ")";
-         else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
-            return new EcAssertion().getSearchStringByTypeAndCompetency(competency);
+        var result = null;
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            result = "(" + new EcAssertion().getSearchStringByType() + ") AND (" + ip.rule + ")";
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
+            result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
+        }
+        for (var i = 0; i < ip.subject.length; i++) 
+            result += " AND (\\*@reader:\"" + ip.subject[i].toPem() + "\")";
+        if (result != null) 
+            return result;
          throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);
     };
     prototype.processRelationshipPacketsGenerated = function(ip, competency) {
@@ -1035,7 +1041,6 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 p2();
             });
         }, function(p1) {
-            me.log(ip, eah.counter);
             success();
         });
     };
