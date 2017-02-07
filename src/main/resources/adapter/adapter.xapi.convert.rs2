@@ -7,7 +7,7 @@ authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk().replace(regex=
 authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
 
 objectId=xapiObj.get(object="").get(id="");
-objectId=xapiObj.get(context="").get(contextActivities="").get(parent="").get(id="");
+objectId=xapiObj.get(context="").get(contextActivities="").get(parent="").getIndex(index="0").get(id="");
 
 xapiActor=xapiObj.get(actor="").toArray(wrap="true").getIndex(index="0");
 xapiVerb=xapiObj.get(verb="").get(id="");
@@ -42,7 +42,7 @@ coverage=#toDouble(obj="1.0");
 
 convert=#object(
 	subject=actorAsCassIdentity.cassEncrypt(
-		owner=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
+		owner=#xapiMePpk().debug(prefix="Individual:").rsaPpkToPk().replace(regex="true",replace="\r?\n",with="").toArray(_wrap="true"),
 		reader=#object(
 			a=actorAsCassIdentity,
 			b=authorityAsCassIdentity,
