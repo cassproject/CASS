@@ -53,7 +53,7 @@ allAlignmentsInternal=allAlignmentsInternal.forEach(
         array="true",
         op=#object(
                 a=#toObject(obj="@obj").get(a=""),
-                b=#toObject(obj="@obj").get(b="").forEach(paramName="obj2",array="true",op=#toObject(obj="@obj2").get(competency="").add(a=#repoEndpoint(),b="data/"))
+                b=#toObject(obj="@obj").get(b="").forEach(paramName="obj2",array="true",op=#toObject(obj="@obj2").get(competency="").add(a=#repoEndpoint(),b="data/").urlDecode())
         )
 ).collapse(keyKey="a",valueKey="b").forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union()).cache(name="nuxeoAlignmentsInternal");
 
@@ -62,7 +62,7 @@ allAlignmentsExternal=allAlignmentsExternal.union().forEach(
         paramName="obj",
         op=#object(
                 a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
-                b=#toObject(obj="@obj").get(competency="")
+                b=#toObject(obj="@obj").get(competency="").add(a=#repoEndpoint(),b="data/").urlDecode()
         )
 ).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignmentsExternal");
 
