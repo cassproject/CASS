@@ -69,7 +69,7 @@ allAlignmentsExternal=allAlignmentsExternal.union().forEach(
 allAlignments=#object(a=allAlignmentsInternal,b=allAlignmentsExternal).valueSet().union().forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union());
 
 allAlignmentsTest=allAlignments.displayJson();
-/allAlignmentsTest=allAlignmentsTest;
+/alignments/test
 
 alignments=allAlignments.getByParam(param="@obj");
 
