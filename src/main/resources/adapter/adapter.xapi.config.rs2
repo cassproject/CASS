@@ -71,7 +71,7 @@ xapiImportAutoExecute=#if(
 
 /xapi/tick=xapiImportAutoExecute;
 
-xapiImportAutoExecute=#add(a=#thisEndpoint(),b="xapi/tick").httpGet();
+xapiImportAutoExecute=#add(a=#thisEndpoint(),b="xapi/tick").httpGet().call(background="true");
 
 #xapiImportAutoExecute=xapiImportAutoExecute;
 
