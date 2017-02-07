@@ -1,7 +1,7 @@
 
 xapiObj=#toObject(obj="@obj");
 
-actorAsCassIdentity=xapiObj.get(actor="").debug(prefix="Individual:").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
+actorAsCassIdentity=xapiObj.get(actor="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 actorMbox=xapiObj.get(actor="").toArray(wrap="true").getMbox();
 authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
