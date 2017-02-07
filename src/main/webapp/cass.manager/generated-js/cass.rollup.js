@@ -1031,12 +1031,8 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         var eah = new EcAsyncHelper();
         var me = this;
         eah.each(ip.subject, function(p1, p2) {
-            var p = function() {
-                me.log(ip, eah.counter);
+            me.checkSubject(a, p1, ip, p2, function(p1) {
                 p2();
-            };
-            me.checkSubject(a, p1, ip, p, function(p1) {
-                p();
             });
         }, function(p1) {
             me.log(ip, eah.counter);
@@ -1110,15 +1106,10 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {}, function(p1) {
                     var eah = new EcAsyncHelper();
                     eah.each(p1, function(p1, p2) {
-                        var p = function() {
-                            me.log(ip, eah.counter);
+                        me.processFoundAssertion(p1, ip, p2, function(p1) {
                             p2();
-                        };
-                        me.processFoundAssertion(p1, ip, p, function(p1) {
-                            p();
                         });
                     }, function(p1) {
-                        me.log(ip, eah.counter);
                         me.processFindAssertionsSuccess(p1, ip);
                     });
                 }, function(p1) {
