@@ -1,13 +1,13 @@
 
 xapiObj=#toObject(obj="@obj");
 
-actorAsCassIdentity=xapiObj.get(actor="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
+actorAsCassIdentity=xapiObj.get(actor="").debug(prefix="Individual:").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 actorMbox=xapiObj.get(actor="").toArray(wrap="true").getMbox();
 authorityAsCassIdentity=xapiObj.get(authority="").xapiAgentToPk().replace(regex="true",replace="\r?\n",with="");
 authorityMbox=xapiObj.get(authority="").toArray(wrap="true").getMbox();
 
 objectId=xapiObj.get(object="").get(id="");
-objectId=xapiObj.get(context="").get(contextActivities="").get(parent="").get(id="");
+objectId=xapiObj.get(context="").get(contextActivities="").get(parent="").getIndex(index="0").get(id="");
 
 xapiActor=xapiObj.get(actor="").toArray(wrap="true").getIndex(index="0");
 xapiVerb=xapiObj.get(verb="").get(id="");
