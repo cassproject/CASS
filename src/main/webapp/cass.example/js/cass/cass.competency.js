@@ -1637,7 +1637,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
         for (var i = 0; i < this.competency.length; i++) 
             if (this.competency[i].equals(shortId) || this.competency[i].equals(id)) 
                 this.competency.splice(i, 1);
-        if (this.relation == null && this.level == null) 
+        if ((this.relation == null || this.relation.length == 0) && (this.level == null || this.level.length == 0)) 
             if (success != null) 
                 success("");
         EcFramework.relDone[id] = false;
@@ -1689,9 +1689,12 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             success("");
          else 
             EcRepository.get(this.relation[i], function(p1) {
-                var a = new EcAlignment();
-                a.copyFrom(p1);
-                if (a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
+                var a = null;
+                try {
+                    a = new EcAlignment();
+                    a.copyFrom(p1);
+                }catch (e) {}
+                if (a != null && a.source == shortId || a.target == shortId || a.source == id || a.target == id) {
                     me.relation.splice(i, 1);
                     me.removeRelationshipsThatInclude(id, i, success, failure);
                 } else 

@@ -1025,45 +1025,55 @@ var CombinatorAssertionProcessor = function() {
     AssertionProcessor.call(this);
 };
 CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, AssertionProcessor, [], function(constructor, prototype) {
-    prototype.processFoundAssertion = function(searchData, ip) {
+    prototype.processFoundAssertion = function(searchData, ip, success, failure) {
         var a = new EcAssertion();
         a.copyFrom(searchData);
-        var currentSubject;
         for (var i = 0; i < ip.subject.length; i++) {
-            currentSubject = ip.subject[i];
-            if (a.getSubject() == null) 
-                continue;
-            if (a.getSubject().equals(currentSubject)) {
-                this.log(ip, "Matching Assertion found.");
-                var assertionDate = a.getAssertionDate();
-                if (assertionDate != null) 
-                    if (assertionDate > stjs.trunc(new Date().getTime())) {
-                        this.log(ip, "Assertion is made for a future date.");
-                        return;
-                    } else {
-                        var expirationDate = a.getExpirationDate();
-                        if (expirationDate != null) 
-                            if (expirationDate <= stjs.trunc(new Date().getTime())) {
-                                this.log(ip, "Assertion is expired. Skipping.");
-                                return;
-                            }
-                    }
-                this.logFoundAssertion(a, ip);
-                if (a.getNegative()) {
-                    this.log(ip, "Found valid negative assertion");
-                    ip.negative.push(a);
-                } else {
-                    this.log(ip, "Found valid positive assertion");
-                    ip.positive.push(a);
-                }
-            }
+            this.checkSubject(a, ip.subject[i], ip, success, failure);
         }
     };
+    prototype.checkSubject = function(a, currentSubject, ip, success, failure) {
+        a.getSubjectAsync(function(sub) {
+            if (sub.equals(currentSubject)) {
+                this.log(ip, "Matching Assertion found.");
+                a.getAssertionDateAsync(function(assertionDate) {
+                    if (assertionDate > stjs.trunc(new Date().getTime())) {
+                        this.log(ip, "Assertion is made for a future date.");
+                        success();
+                        return;
+                    }
+                    a.getExpirationDateAsync(function(expirationDate) {
+                        if (expirationDate <= stjs.trunc(new Date().getTime())) {
+                            this.log(ip, "Assertion is expired. Skipping.");
+                            success();
+                            return;
+                        }
+                        this.logFoundAssertion(a, ip);
+                        a.getNegativeAsync(function(p1) {
+                            if (p1) {
+                                this.log(ip, "Found valid negative assertion");
+                                ip.negative.push(a);
+                            } else {
+                                this.log(ip, "Found valid positive assertion");
+                                ip.positive.push(a);
+                            }
+                            success();
+                        }, function(p1) {
+                            this.log(ip, "Found valid positive assertion");
+                            ip.positive.push(a);
+                            success();
+                        });
+                    }, failure);
+                }, failure);
+            }
+        }, failure);
+    };
     prototype.processFindAssertionsSuccess = function(data, ip) {
-        if (data.length == 0) 
+        if (data.length == 0) {
             this.log(ip, "No results found.");
-         else 
+        } else {
             this.log(ip, "Total number of assertions found: " + data.length);
+        }
         ip.numberOfQueriesRunning--;
         this.checkStep(ip);
     };
@@ -1077,16 +1087,20 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         var ep = this;
         for (var i = 0; i < this.repositories.length; i++) {
             var currentRepository = this.repositories[i];
-            if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+            if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
                 this.log(ip, "Searching: " + currentRepository.selectedServer);
+            }
             for (var h = 0; h < ip.competency.length; h++) {
                 ip.numberOfQueriesRunning++;
                 var competency = ip.competency[h];
                 this.log(ip, "Querying repositories for subject assertions on competency: " + competency.id);
-                currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {
-                    ep.processFoundAssertion(p1, ip);
-                }, function(p1) {
-                    ep.processFindAssertionsSuccess(p1, ip);
+                currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {}, function(p1) {
+                    var eah = new EcAsyncHelper();
+                    eah.each(p1, function(p1, p2) {
+                        ep.processFoundAssertion(p1, ip, p2, null);
+                    }, function(p1) {
+                        ep.processFindAssertionsSuccess(p1, ip);
+                    });
                 }, function(p1) {
                     ep.processEventFailure(p1, ip);
                 });
@@ -1094,10 +1108,13 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
                 ip.numberOfQueriesRunning++;
                 this.log(ip, "Searching: " + currentRepository.selectedServer);
-                currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {
-                    ep.processFoundAssertion(p1, ip);
-                }, function(p1) {
-                    ep.processFindAssertionsSuccess(p1, ip);
+                currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
+                    var eah = new EcAsyncHelper();
+                    eah.each(p1, function(p1, p2) {
+                        ep.processFoundAssertion(p1, ip, p2, null);
+                    }, function(p1) {
+                        ep.processFindAssertionsSuccess(p1, ip);
+                    });
                 }, function(p1) {
                     ep.processEventFailure(p1, ip);
                 });

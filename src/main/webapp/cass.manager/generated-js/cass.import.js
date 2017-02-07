@@ -22,6 +22,125 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
+ *  Base class for all exporters, can hold helper functions 
+ *  that are useful for all exporters
+ *  
+ *  @module org.cassproject
+ *  @class Exporter
+ *  @abstract
+ *  @author devlin.junker@eduworks.com
+ */
+var Exporter = function() {};
+Exporter = stjs.extend(Exporter, null, [], null, {}, {});
+/**
+ *  Export methods to handle exporting two CSV file , one of competencies
+ *  and one of relationships representing a framework
+ *  
+ *  @module org.cassproject
+ *  @class CSVExport
+ *  @static
+ *  @extends Exporter
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ */
+var CSVExport = function() {
+    Exporter.call(this);
+};
+CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
+    constructor.csvOutput = null;
+    constructor.csvRelationOutput = null;
+    /**
+     *  Method to export the CSV files of competencies and relationships for a framework
+     *  
+     *  @memberOf CSVExport
+     *  @method export
+     *  @static
+     *  @param {String} frameworkId
+     *  			Id of the framework to export
+     *   @param {Callback0} success
+     *  			Callback triggered after both files have been successfully exported
+     *   @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs during export
+     */
+    constructor.exportFramework = function(frameworkId, success, failure) {
+        if (frameworkId == null) {
+            failure("Framework not selected.");
+            return;
+        }
+        CSVExport.csvOutput = [];
+        CSVExport.csvRelationOutput = [];
+        EcRepository.get(frameworkId, function(data) {
+            if (data.isAny(new EcFramework().getTypes())) {
+                var fw = new EcFramework();
+                fw.copyFrom(data);
+                if (fw.competency == null || fw.competency.length == 0) 
+                    failure("No Competencies in Framework");
+                for (var i = 0; i < fw.competency.length; i++) {
+                    var competencyUrl = fw.competency[i];
+                    EcRepository.get(competencyUrl, function(competency) {
+                        CSVExport.csvOutput.push(JSON.parse(competency.toJson()));
+                        var props = (JSON.parse(competency.toJson()));
+                        for (var prop in props) {
+                            if (props[prop] != null && props[prop] != "") {
+                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
+                                    var row = CSVExport.csvOutput[i];
+                                    if (!(row).hasOwnProperty(prop)) {
+                                        (row)[prop] = "";
+                                    }
+                                }
+                            }
+                        }
+                        if (CSVExport.csvOutput.length == fw.competency.length) {
+                            var csv = Papa.unparse(CSVExport.csvOutput);
+                            var pom = window.document.createElement("a");
+                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                            pom.setAttribute("download", fw.name + " - Competencies.csv");
+                            if ((window.document)["createEvent"] != null) {
+                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
+                                ((event)["initEvent"]).call(event, "click", true, true);
+                                pom.dispatchEvent(event);
+                            } else {
+                                ((pom)["click"]).call(pom);
+                            }
+                        } else {}
+                    }, failure);
+                }
+                for (var i = 0; i < fw.relation.length; i++) {
+                    var relationUrl = fw.relation[i];
+                    EcRepository.get(relationUrl, function(relation) {
+                        CSVExport.csvRelationOutput.push(JSON.parse(relation.toJson()));
+                        var props = (JSON.parse(relation.toJson()));
+                        for (var prop in props) {
+                            if (props[prop] != null && props[prop] != "") {
+                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
+                                    var row = CSVExport.csvOutput[i];
+                                    if (!(row).hasOwnProperty(prop)) {
+                                        (row)[prop] = "";
+                                    }
+                                }
+                            }
+                        }
+                        if (CSVExport.csvRelationOutput.length == fw.relation.length) {
+                            var csv = Papa.unparse(CSVExport.csvRelationOutput);
+                            var pom = window.document.createElement("a");
+                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                            pom.setAttribute("download", fw.name + " - Relations.csv");
+                            if ((window.document)["createEvent"] != null) {
+                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
+                                ((event)["initEvent"]).call(event, "click", true, true);
+                                pom.dispatchEvent(event);
+                            } else {
+                                ((pom)["click"]).call(pom);
+                            }
+                        } else {}
+                    }, failure);
+                }
+            }
+        }, failure);
+    };
+}, {csvOutput: {name: "Array", arguments: ["Object"]}, csvRelationOutput: {name: "Array", arguments: ["Object"]}}, {});
+/**
  *  Importer methods to create competencies based on a
  *  Medbiquitous competency XML file
  *  
