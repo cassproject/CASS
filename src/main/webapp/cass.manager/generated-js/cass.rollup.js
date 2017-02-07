@@ -1028,9 +1028,20 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
     prototype.processFoundAssertion = function(searchData, ip, success, failure) {
         var a = new EcAssertion();
         a.copyFrom(searchData);
-        for (var i = 0; i < ip.subject.length; i++) {
-            this.checkSubject(a, ip.subject[i], ip, success, failure);
-        }
+        var eah = new EcAsyncHelper();
+        var me = this;
+        eah.each(ip.subject, function(p1, p2) {
+            var p = function() {
+                me.log(ip, eah.counter);
+                p2();
+            };
+            me.checkSubject(a, p1, ip, p, function(p1) {
+                p();
+            });
+        }, function(p1) {
+            me.log(ip, eah.counter);
+            success();
+        });
     };
     prototype.checkSubject = function(a, currentSubject, ip, success, failure) {
         var me = this;
@@ -1066,7 +1077,8 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                         });
                     }, failure);
                 }, failure);
-            }
+            } else 
+                failure("Incorrect subject.");
         }, failure);
     };
     prototype.processFindAssertionsSuccess = function(data, ip) {
@@ -1085,7 +1097,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             this.checkStep(ip);
             return;
         }
-        var ep = this;
+        var me = this;
         for (var i = 0; i < this.repositories.length; i++) {
             var currentRepository = this.repositories[i];
             if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
@@ -1098,12 +1110,19 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {}, function(p1) {
                     var eah = new EcAsyncHelper();
                     eah.each(p1, function(p1, p2) {
-                        ep.processFoundAssertion(p1, ip, p2, null);
+                        var p = function() {
+                            me.log(ip, eah.counter);
+                            p2();
+                        };
+                        me.processFoundAssertion(p1, ip, p, function(p1) {
+                            p();
+                        });
                     }, function(p1) {
-                        ep.processFindAssertionsSuccess(p1, ip);
+                        me.log(ip, eah.counter);
+                        me.processFindAssertionsSuccess(p1, ip);
                     });
                 }, function(p1) {
-                    ep.processEventFailure(p1, ip);
+                    me.processEventFailure(p1, ip);
                 });
             }
             if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
@@ -1112,12 +1131,14 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
                     var eah = new EcAsyncHelper();
                     eah.each(p1, function(p1, p2) {
-                        ep.processFoundAssertion(p1, ip, p2, null);
+                        me.processFoundAssertion(p1, ip, p2, function(p1) {
+                            p2();
+                        });
                     }, function(p1) {
-                        ep.processFindAssertionsSuccess(p1, ip);
+                        me.processFindAssertionsSuccess(p1, ip);
                     });
                 }, function(p1) {
-                    ep.processEventFailure(p1, ip);
+                    me.processEventFailure(p1, ip);
                 });
             }
         }
