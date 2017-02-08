@@ -907,9 +907,6 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         this.log(ip, "Record Id: " + a.shortId());
         this.log(ip, "Confidence: " + a.confidence);
         this.log(ip, "Number of pieces of evidence: " + a.getEvidenceCount());
-        this.log(ip, "Evidence:");
-        for (var j = 0; j < a.getEvidenceCount(); j++) 
-            this.log(ip, "  " + a.getEvidence(j));
         this.log(ip, "Recording in inquiry.");
     };
     prototype.buildAssertionSearchQuery = function(ip, competency) {
