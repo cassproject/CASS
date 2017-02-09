@@ -75,8 +75,10 @@ if (pk == null) {
     process.exit(1);
 }
 
-var error = function (e) {
-    console.log(e);
+var error = function (data) {
+    if (debug) console.log(data);
+    console.log("error");
+    process.exit();
 };
 
 var repo = new EcRepository();
@@ -128,19 +130,11 @@ EcCompetency.get(
                             console.log(data.result._name);
                             process.exit()
                         },
-                        function (data) {
-                            if (debug) console.log("Need answer to question: " + data);
-                            console.log("error");
-                            process.exit()
-                        },
-                        function (data) {
-                            if (debug) console.log(data);
-                            console.log("error");
-                            process.exit()
-                        }
+                        error,
+                        error
                     );
                 });
-            }
+            },error
         );
-    }
+    },error
 );
