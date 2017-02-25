@@ -5,15 +5,285 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>CASS Framework Visualization</title>
+    <title>CASS Profile Visualization</title>
 </head>
 
 <body>
-    <canvas id="viewport" width="1280" height="700"></canvas>
+    <select onchange="button();">
+        <option value="e8668398-788f-4a0f-bdda-8a9226fe6e25">user1</option>
+        <option value="690fedf4-52ca-438a-9da8-40cdc43c1895">user2</option>
+        <option value="e140a94a-9a96-41de-bd0b-db056a690fb1">user3</option>
+        <option value="e59a789e-c01b-48db-a4e0-3be9f9895af1">user4</option>
+        <option value="7f318196-c290-4bd2-820d-f524644468fb">user5</option>
+        <option value="b05956eb-f33a-4a92-80d2-7014838d8ee2">user6</option>
+        <option value="e8712aae-42f7-4732-8bbc-3f2c353a76cd">user7</option>
+        <option value="f7abe75c-d77d-487c-bd1b-e82efab92d06">user8</option>
+        <option value="3ae35053-2625-49aa-b8a6-e01f7d614696">user9</option>
+        <option value="6eb47d27-3400-448e-9d6b-dbe6bb2595e1">user10</option>
+        <option value="7bce0f1d-3b4a-401c-b4fd-e590aa47b0d6">user11</option>
+        <option value="17b0bd62-2d99-4985-abe8-fb9a6739ae30">user12</option>
+        <option value="ca4954db-2aa9-49ea-a41b-d3ef914ba5fc">user13</option>
+        <option value="24b84613-7eab-4c1a-878c-e8bdf5cda708">user14</option>
+        <option value="82dc567c-37af-40f7-8b81-f9ba0eb6e960">user15</option>
+        <option value="c04f573f-884e-4d88-84fb-43d1b6d21a0c">user16</option>
+        <option value="17073c5b-8050-4c50-bb16-56805fbe6729">user17</option>
+        <option value="8e842f19-3277-4564-ac26-1fdbe2c4fdf9">user18</option>
+        <option value="f7f1b547-3f0c-4640-90c4-9acecfeb0426">user19</option>
+        <option value="7e197e98-eb71-465f-9bc1-825f47ee3055">user20</option>
+        <option value="78ddf115-645a-42e4-b7ce-ad86a812d85e">user21</option>
+        <option value="e585293a-5c59-4659-8bdb-e05ceeb0ce8c">user22</option>
+        <option value="ea9ce09f-1253-400a-b544-e266630b8c94">user23</option>
+        <option value="03f17857-ed16-48aa-870f-ace58ac42307">user24</option>
+        <option value="39694a5f-366c-4f40-9dbd-ec57e8a918f3">user25</option>
+        <option value="3d9cd50c-3e78-4a89-890b-977d53417f5c">user26</option>
+        <option value="c9efc49c-ced7-44b0-b77d-ed534c8c1212">user27</option>
+        <option value="433fc1d7-ba94-44ab-ae24-fa9f5b7d481f">user28</option>
+        <option value="676c2280-ef5c-4d9c-aae2-3bf19a28c4bb">user29</option>
+        <option value="94ee40a7-f376-48dd-badb-6d33dc369855">user30</option>
+        <option value="425bd4ad-84fd-4558-9387-04a223a7437e">user31</option>
+        <option value="cdbbdd14-85ce-4eb7-8298-af2bd4d90fd7">user32</option>
+        <option value="e2491888-d2bc-4918-a46a-0f56a30c9706">user33</option>
+        <option value="a881ddb7-507d-485b-a2dd-e0fc8ff88083">user34</option>
+        <option value="9e9509d2-e714-40de-bea8-8d0f0ffa9ee3">user35</option>
+        <option value="a58fb562-6097-435d-be94-c13b36eeda52">user36</option>
+        <option value="c0229373-0c9c-4901-86f1-87e81e19dcae">user37</option>
+        <option value="4b84de7b-0eca-42c3-93dd-467969b05a8c">user38</option>
+        <option value="0142cf95-8540-4212-a0ac-b60e2d7c5585">user39</option>
+        <option value="764893db-a263-480a-b56b-aca3a9f3b13b">user40</option>
+        <option value="86b2fbf2-011a-4dba-9888-80a111346c62">user41</option>
+        <option value="1d047ee5-0b4f-4d27-9597-ec8d9e4bbc2c">user42</option>
+        <option value="31f763be-096a-47eb-b1f5-6fc7a76c35cf">user43</option>
+        <option value="e32e6e13-3f45-4620-8103-2a7dbf2f0e70">user44</option>
+        <option value="a0ee1678-a340-47a7-b9c2-124ba4a4a63a">user45</option>
+        <option value="53ba6251-2850-4bd0-85cb-25c78513365a">user46</option>
+        <option value="47f4d8fb-ae30-47ea-ab1a-5465e60455a7">user47</option>
+        <option value="30940fee-ae6c-4bec-9b6d-c499fd50daef">user48</option>
+        <option value="f83bba09-fa07-46db-9109-6152b6d96133">user49</option>
+        <option value="8ccde728-2015-4232-8cfe-f6d49cfcec14">user50</option>
+        <option value="3134bcc5-570a-4a37-a392-284c67a0e5b0">user51</option>
+        <option value="c10e1216-f928-4aba-ae83-81cc5e625c49">user52</option>
+        <option value="0cd34dc3-7e6e-4c15-8dac-e3bcac381f55">user53</option>
+        <option value="772414d6-0a00-4eaa-9293-fd5a9958fdd8">user54</option>
+        <option value="37d67bdb-f3b4-4c0a-a399-8e648744c7fd">user55</option>
+        <option value="b9818e15-23c8-4283-82af-e716998d465d">user56</option>
+        <option value="8f950d25-2fb1-4bbe-9b03-878d6049b647">user57</option>
+        <option value="d4b82026-d59f-4773-bca1-4e439615ba64">user58</option>
+        <option value="4a28b01e-cfb7-4156-8cee-4c84796bf86b">user59</option>
+        <option value="98192fa2-25e4-4c0f-9e42-0dd4c6897a4d">user60</option>
+
+    </select>
+    <button style="display:none;" onclick="button();">Refresh</button>
+    <br>
+    <progress style="display:none;" id="total"></progress><span style="display:none;" id="totalText"></span>
+    <center id="loading">
+        <style type='text/css'>
+            @-webkit-keyframes uil-default-anim {
+                0% {
+                    opacity: 1
+                }
+                100% {
+                    opacity: 0
+                }
+            }
+            
+            @keyframes uil-default-anim {
+                0% {
+                    opacity: 1
+                }
+                100% {
+                    opacity: 0
+                }
+            }
+            
+            .uil-default-css > div:nth-of-type(1) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.5s;
+                animation-delay: -0.5s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(2) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.4166666666666667s;
+                animation-delay: -0.4166666666666667s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(3) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.33333333333333337s;
+                animation-delay: -0.33333333333333337s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(4) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.25s;
+                animation-delay: -0.25s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(5) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.16666666666666669s;
+                animation-delay: -0.16666666666666669s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(6) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: -0.08333333333333331s;
+                animation-delay: -0.08333333333333331s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(7) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0s;
+                animation-delay: 0s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(8) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0.08333333333333337s;
+                animation-delay: 0.08333333333333337s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(9) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0.16666666666666663s;
+                animation-delay: 0.16666666666666663s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(10) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0.25s;
+                animation-delay: 0.25s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(11) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0.33333333333333337s;
+                animation-delay: 0.33333333333333337s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+            
+            .uil-default-css > div:nth-of-type(12) {
+                -webkit-animation: uil-default-anim 1s linear infinite;
+                animation: uil-default-anim 1s linear infinite;
+                -webkit-animation-delay: 0.41666666666666663s;
+                animation-delay: 0.41666666666666663s;
+            }
+            
+            .uil-default-css {
+                position: relative;
+                background: none;
+                width: 200px;
+                height: 200px;
+            }
+        </style>
+        <div class='uil-default-css' style='transform:scale(0.71);'>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(0deg) translate(0,-60px);transform:rotate(0deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(30deg) translate(0,-60px);transform:rotate(30deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(60deg) translate(0,-60px);transform:rotate(60deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(90deg) translate(0,-60px);transform:rotate(90deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(120deg) translate(0,-60px);transform:rotate(120deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(150deg) translate(0,-60px);transform:rotate(150deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(180deg) translate(0,-60px);transform:rotate(180deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(210deg) translate(0,-60px);transform:rotate(210deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(240deg) translate(0,-60px);transform:rotate(240deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(270deg) translate(0,-60px);transform:rotate(270deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(300deg) translate(0,-60px);transform:rotate(300deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+            <div style='top:80px;left:93px;width:14px;height:40px;background:#00b2ff;-webkit-transform:rotate(330deg) translate(0,-60px);transform:rotate(330deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
+        </div>
+    </center>
+    <ul style="display:none;" id="tree"></ul>
 
     <script src="js/vendor/jquery.min.js"></script>
     <script src="js/vendor/springy.js"></script>
     <script src="js/vendor/springyui.js"></script>
+    <script src="js/vendor/papaparse.js"></script>
     <script src="forge/forge.min.js"></script>
     <script src="js/cass/stjs.js"></script>
     <script src="js/cass/ec.base.js"></script>

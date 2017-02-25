@@ -12,63 +12,192 @@ var fonts = {
     node: "bold 12px Arial"
 };
 
-var canvas = $("canvas").get(0)
-var ctx = canvas.getContext("2d")
-
-var graph = new Springy.Graph();
-var nodes = {};
-jQuery(function () {
-    var springy = window.springy = jQuery('canvas').springy({
-        graph: graph,
-        nodeSelected: function (node) {
-            console.log('Node selected: ' + JSON.stringify(node.data));
-        }
-    });
-});
-
-var canvas = jQuery('canvas')[0];
-
-// resize the canvas to fill browser window dynamically
-window.addEventListener('resize', resizeCanvas, false);
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth-60;
-    canvas.height = window.innerHeight-60;
-
+var error = function (error) {
+    console.log(error);
 }
 
-resizeCanvas();
-
+var frameworkId = "https://cass.tla.cassproject.org/api/custom/data/schema.cassproject.org.0.2.Framework/012e77e0-3a47-4b24-bb12-370a76ac2adc";
 $(document).ready(function () {
-    var springy = new Springy.Layout.ForceDirected(graph, 600.0, new Springy.Vector(400.0, 50.0), 0.5);
-    var frameworkId = "http://sandbox.service.cassproject.org/data/schema.eduworks.com.cass.0.1.framework/056c2192-340b-48d4-a7f3-d3de1df06744";
-
+    return;
+    var me = this;
+    me.fetches = 0;
     EcRepository.get(frameworkId, function (framework) {
-
-        if (framework.competency !== undefined)
+        if (framework.competency != undefined)
             for (var i = 0; i < framework.competency.length; i++) {
-                EcRepository.get(framework.competency[i], function (competency) {
-                    competency.font = fonts.node;
-                    nodes[competency.shortId()] = graph.newNode(competency);
-                    nodes[competency.shortId()].gravity = false;
-                    nodes[competency.shortId()].fixed = true;
-                    if (competency.shortId() == framework.competency[framework.competency.length - 1]) {
-                        if (framework.relation !== undefined)
+                me.fetches++;
+                EcCompetency.get(framework.competency[i], function (competency) {
+                    me.fetches--;
+                    var treeNode = $("#tree").append("<li><ul><progress style='display:none;'></progress><span class=\"progressText\"></span></ul></li>").children().last();
+                    treeNode.attr("id", competency.shortId());
+                    treeNode.prepend(competency.name);
+
+                    if (me.fetches == 0) {
+                        if (framework.relation != undefined)
                             for (var i = 0; i < framework.relation.length; i++) {
-                                EcRepository.get(framework.relation[i], function (relation) {
+                                me.fetches++;
+                                EcAlignment.get(framework.relation[i], function (relation) {
+                                    me.fetches--;
                                     if (relation.source !== undefined) {
-                                        nodes[relation.source].gravity = true;
-                                        nodes[relation.source].fixed = false;
-                                        if (nodes[relation.source].alwaysShowText === undefined)
-                                            nodes[relation.source].alwaysShowText = false;
-                                        nodes[relation.target].alwaysShowText = true;
-                                        graph.newEdge(nodes[relation.source], nodes[relation.target]);
+                                        if (relation.relationType == "narrows") {
+                                            $("[id=\"" + relation.target + "\"]").children().append($("[id=\"" + relation.source + "\"]"));
+                                        }
+                                        if (me.fetches == 0) {
+                                            for (var i = 0; i < framework.relation.length; i++) {
+                                                me.fetches++;
+                                                EcAlignment.get(framework.relation[i], function (relation) {
+                                                    me.fetches--;
+                                                    if (relation.source !== undefined) {
+                                                        if (relation.relationType == "requires") {
+                                                            if ($("[id=\"" + relation.target + "\"]").prevAll("[id=\"" + relation.source + "\"]").length > 0)
+                                                                $("[id=\"" + relation.target + "\"]").insertBefore($("[id=\"" + relation.source + "\"]"));
+                                                        }
+                                                    }
+                                                    if (me.fetches == 0) {
+                                                        alignActivities();
+                                                    }
+                                                }, error);
+                                            }
+                                        }
                                     }
-                                });
+                                }, error);
                             }
                     }
-                });
+                }, error);
             }
+    }, error);
+});
 
+function dumpEveryone() {
+    $("option").each(function (i, element) {
+        console.log($(element).attr("value"));
+        var id = $(element).attr("value");
+        EcRemote.async = false;
+        var str = "https://cass.tla.cassproject.org/api/custom/learner/competency?userId=USERID&framework=FRAMEWORKID";
+        str = str.replace("USERID", id);
+        str = str.replace("FRAMEWORKID", frameworkId);
+        userid = id;
+        EcRemote.getExpectingObject(str, null, bluelight, error);
     });
-})
+
+    var temp = [];
+    for (var id in csv) {
+        temp[0] = [];
+        var col = 1;
+        for (var competency in csv[id]) {
+            temp[0][col] = competency;
+            var row = 1;
+            for (var id2 in csv) {
+                if (temp[row] == null || temp[row] === undefined)
+                    temp[row] = [];
+                temp[row][0] = id;
+                temp[row][col] = csv[id2][competency];
+                row++;
+            }
+            col++;
+        }
+        break;
+    }
+    resu = Papa.unparse(temp);
+    download("results.csv", resu);
+}
+var resu;
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function alignActivities() {
+    EcRemote.getExpectingObject("https://cass.tla.cassproject.org/api/custom", "/nuxeo", activities, error);
+}
+
+function activities(a) {
+    for (var i = 0; i < a.length; i++) {
+        var activity = a[i];
+        if (activity.properties === undefined) continue;
+        if (activity.properties["activity:activityId"] === undefined) continue;
+        if (activity.properties["activity:statementFilterAndInfo"] === undefined) continue;
+        for (var j = 0; j < activity.properties["activity:statementFilterAndInfo"].length; j++) {
+            var statementFilter = activity.properties["activity:statementFilterAndInfo"][j];
+            var competency = statementFilter.competency;
+            if (competency.startsWith("http") == false)
+                competency = "https://cass.tla.cassproject.org/api/custom/data/" + competency;
+            var href;
+            if (statementFilter.meaning == "TEACHES")
+                href = $("[id=\"" + competency + "\"]").children().last().prepend("<li><a></li>").children().first().children().first();
+            else
+                href = $("[id=\"" + competency + "\"]").children().last().append("<li><a></li>").children().last().children().last();
+            href.attr("href", activity.properties["activity:location"]);
+            href.text(activity.properties["dc:title"]);
+            if (activity.properties["dc:description"] !== undefined)
+                href.append("<br><small></small>").children().last().text(activity.properties["dc:description"]);
+        }
+    }
+    button();
+}
+
+function button() {
+    $("button").hide();
+    $("#loading").show();
+    $("#tree").hide();
+    $("#total").hide();
+    $("#totalText").hide();
+    var str = "https://cass.tla.cassproject.org/api/custom/learner/competency?userId=USERID&framework=FRAMEWORKID";
+    str = str.replace("USERID", $("option:selected").val());
+    str = str.replace("FRAMEWORKID", frameworkId);
+    EcRemote.getExpectingObject(str, null, greenlight, error);
+}
+
+function greenlight(packets) {
+    $("progress").attr("max", 0).attr("value", 0).hide();
+    $("total").attr("max", 0).attr("value", 0).hide();
+    $("li").show();
+    for (var i = 0; i < packets.length; i++) {
+        var packet = packets[i];
+        var competency = packet[0].url;
+        competency = EcRemoteLinkedData.trimVersionFromUrl(competency);
+        var competent = packet[1].level == 2;
+        var total = $("#total");
+        var totalText = $("#totalText");
+        var progress = $("[id=\"" + competency + "\"]").parent().children("progress");
+        var progressText = $("[id=\"" + competency + "\"]").parent().children(".progressText");
+        progress.attr("max", parseInt(progress.attr("max")) + 1);
+        total.attr("max", parseInt(total.attr("max")) + 1);
+        if (competent) {
+            $("[id=\"" + competency + "\"]").hide();
+            progress.attr("value", parseInt(progress.attr("value")) + 1).show();
+            total.attr("value", parseInt(total.attr("value")) + 1).show();
+        }
+        progressText.text(" " + progress.attr("value") + " of " + progress.attr("max") + " subsections complete.");
+        totalText.text(" " + total.attr("value") + " of " + total.attr("max") + " sections complete.");
+    }
+    $("button").show();
+    $("#loading").hide();
+    $("#tree").show();
+    $("#total").show();
+    $("#totalText").show();
+}
+var userid = null;
+var csv = {};
+
+function bluelight(packets) {
+    csv[userid] = {};
+    for (var i = 0; i < packets.length; i++) {
+        var packet = packets[i];
+        var competency = packet[0].url;
+        competency = EcRemoteLinkedData.trimVersionFromUrl(competency);
+        var competent = packet[1].level == 2;
+        if (competent)
+            csv[userid][competency] = "1";
+        else
+            csv[userid][competency] = "0";
+    }
+}
