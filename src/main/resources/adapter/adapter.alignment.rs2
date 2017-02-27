@@ -52,8 +52,17 @@ allAlignmentsInternal=allAlignmentsInternal.forEach(
         paramName="obj",
         array="true",
         op=#object(
-                a=#toObject(obj="@obj").get(a=""),
-                b=#toObject(obj="@obj").get(b="").forEach(paramName="obj2",array="true",op=#toObject(obj="@obj2").get(competency="").add(a=#repoEndpoint(),b="data/").urlDecode())
+                a=#toObject(obj="@obj").get(a="").string(op="trim"),
+                b=#toObject(obj="@obj").get(b="").forEach(
+                    paramName="obj2",
+                    array="true",
+                    op=#if(
+                        operator=#toObject(obj="@obj2").get(competency="").has(has="http"),
+                        operand="true",
+                        eq=#toObject(obj="@obj2").get(competency=""),
+                        ne=#toObject(obj="@obj2").get(competency="").add(a=#repoEndpoint(),b="data/")
+                    )
+                )
         )
 ).collapse(keyKey="a",valueKey="b").forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union()).cache(name="nuxeoAlignmentsInternal");
 
@@ -61,8 +70,13 @@ allAlignmentsExternal=allAlignments.forEach(paramName="obj",array="true",op=#toO
 allAlignmentsExternal=allAlignmentsExternal.union().forEach(
         paramName="obj",
         op=#object(
-                a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id=""),
-                b=#toObject(obj="@obj").get(competency="").add(a=#repoEndpoint(),b="data/").urlDecode()
+                a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id="").string(op="trim"),
+                b=#if(
+                    operator=#toObject(obj="@obj").get(competency="").has(has="http"),
+                    operand="true",
+                    eq=#toObject(obj="@obj").get(competency=""),
+                    ne=#toObject(obj="@obj").get(competency="").add(a=#repoEndpoint(),b="data/")
+                )
         )
 ).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignmentsExternal");
 
