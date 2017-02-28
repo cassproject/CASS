@@ -35,8 +35,6 @@ eval(fs.readFileSync("../../src/main/js/cass/cass.rollup.js") + "");
 
 if (fs.existsSync("decryptionCache.json"))
     EcCrypto.decryptionCache = JSON.parse(fs.readFileSync("decryptionCache.json"));
-if (fs.existsSync("decryptionCacheFailure.json"))
-    EcCrypto.decryptionCacheFailure = JSON.parse(fs.readFileSync("decryptionCacheFailure.json"));
 if (fs.existsSync("repo.json"))
     EcRepository.cache = JSON.parse(fs.readFileSync("repo.json"));
 for (var v in EcRepository.cache)
@@ -180,7 +178,6 @@ EcCompetency.get(
                                         console.log(data);
                                     console.log(data.result._name);
                                     fs.writeFileSync("decryptionCache.json", JSON.stringify(EcCrypto.decryptionCache));
-                                    fs.writeFileSync("decryptionCacheFailure.json", JSON.stringify(EcCrypto.decryptionCacheFailure));
                                     for (var v in EcRepository.cache)
                                     {
                                         if (EcArray.isArray(EcRepository.cache[v]))
