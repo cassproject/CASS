@@ -37,9 +37,23 @@ if (profileX)
     console.log("libs:" + new Date().getTime() % 100000);
 
 if (fs.existsSync("decryptionCache.json"))
-    EcCrypto.decryptionCache = JSON.parse(fs.readFileSync("decryptionCache.json"));
+    try
+    {
+        EcCrypto.decryptionCache = JSON.parse(fs.readFileSync("decryptionCache.json"));
+    }
+    catch (ex)
+    {
+
+    }
 if (fs.existsSync("repo.json"))
-    EcRepository.cache = JSON.parse(fs.readFileSync("repo.json"));
+    try
+    {
+        EcRepository.cache = JSON.parse(fs.readFileSync("repo.json"));
+    }
+    catch (ex)
+    {
+
+    }
 for (var v in EcRepository.cache)
 {
     var c = new EcRemoteLinkedData();
@@ -190,7 +204,8 @@ EcFramework.get(
                                         if (counter == 0)
                                         {
                                             console.log(profile);
-                                            fs.writeFileSync("decryptionCache.json", JSON.stringify(EcCrypto.decryptionCache));
+                                            if (fs.statSync("decryptionCache.json").size != JSON.stringify(EcCrypto.decryptionCache).length)
+                                                fs.writeFileSync("decryptionCache.json", JSON.stringify(EcCrypto.decryptionCache));
                                             for (var v in EcRepository.cache)
                                             {
                                                 if (EcArray.isArray(EcRepository.cache[v]))
@@ -198,7 +213,8 @@ EcFramework.get(
                                                 else
                                                     EcRepository.cache[v] = JSON.parse(EcRepository.cache[v].toJson());
                                             }
-                                            fs.writeFileSync("repo.json", JSON.stringify(EcRepository.cache));
+                                            if (fs.statSync("repo.json").size != JSON.stringify(EcRepository.cache).length)
+                                                fs.writeFileSync("repo.json", JSON.stringify(EcRepository.cache));
                                             if (profileX)
                                                 console.log("done:" + new Date().getTime() % 100000);
 
