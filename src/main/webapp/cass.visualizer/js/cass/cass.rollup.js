@@ -626,6 +626,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
      *  @type InquiryPacket
      */
     prototype.ip = null;
+    prototype.relationLookup = null;
     prototype.log = function(string) {
         if (this.logFunction != null) 
             this.logFunction("" + new Date().getTime() % 100000 + ": " + string);
@@ -738,7 +739,11 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     prototype.processFindCompetencyRelationshipSuccess = function(alignment, ip) {
         ip.numberOfQueriesRunning--;
         var relatedCompetencyId = null;
-        if (ip.hasId(alignment.source)) 
+        if (ip.hasId(alignment.source) && ip.hasId(alignment.target)) {
+            this.numberOfRelationsProcessed++;
+            this.checkForFinish();
+            return;
+        } else if (ip.hasId(alignment.source)) 
             relatedCompetencyId = alignment.target;
          else if (ip.hasId(alignment.target)) 
             relatedCompetencyId = alignment.source;
@@ -765,19 +770,19 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
         if (this.ip.getContext().relation == null) 
             this.success();
          else {
-            this.numberOfRelationsToProcess = this.ip.getContext().relation.length;
-            this.numberOfRelationsProcessed = 0;
-            for (var i = 0; i < this.ip.getContext().relation.length; i++) {
-                this.ip.numberOfQueriesRunning++;
-                EcAlignment.get(this.ip.getContext().relation[i], function(p1) {
-                    rpg.processFindCompetencyRelationshipSuccess(p1, rpg.ip);
-                }, function(p1) {
-                    rpg.processEventFailure(p1, rpg.ip);
-                });
+            this.numberOfRelationsToProcess = 0;
+            for (var i = 0; i < this.ip.competency.length; i++) {
+                var relationsRelatedToThisCompetency = (this.relationLookup)[this.ip.competency[i].shortId()];
+                this.numberOfRelationsToProcess += relationsRelatedToThisCompetency.length;
+                this.numberOfRelationsProcessed = 0;
+                for (var j = 0; j < relationsRelatedToThisCompetency.length; j++) {
+                    this.ip.numberOfQueriesRunning++;
+                    rpg.processFindCompetencyRelationshipSuccess(relationsRelatedToThisCompetency[i], rpg.ip);
+                }
             }
         }
     };
-}, {failure: {name: "Callback1", arguments: [null]}, success: "Callback0", logFunction: {name: "Callback1", arguments: ["Object"]}, narrowsPackets: {name: "Array", arguments: ["InquiryPacket"]}, broadensPackets: {name: "Array", arguments: ["InquiryPacket"]}, requiredPackets: {name: "Array", arguments: ["InquiryPacket"]}, isRequiredByPackets: {name: "Array", arguments: ["InquiryPacket"]}, processedAlignments: {name: "Map", arguments: [null, null]}, ep: "AssertionProcessor", ip: "InquiryPacket"}, {});
+}, {failure: {name: "Callback1", arguments: [null]}, success: "Callback0", logFunction: {name: "Callback1", arguments: ["Object"]}, narrowsPackets: {name: "Array", arguments: ["InquiryPacket"]}, broadensPackets: {name: "Array", arguments: ["InquiryPacket"]}, requiredPackets: {name: "Array", arguments: ["InquiryPacket"]}, isRequiredByPackets: {name: "Array", arguments: ["InquiryPacket"]}, processedAlignments: {name: "Map", arguments: [null, null]}, ep: "AssertionProcessor", ip: "InquiryPacket", relationLookup: "Object"}, {});
 var RollupRuleGenerator = function(ip) {
     this.ip = ip;
     this.rule = "";
@@ -1208,6 +1213,7 @@ var CombinatorAssertionProcessor = function() {
     AssertionProcessor.call(this);
 };
 CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, AssertionProcessor, [], function(constructor, prototype) {
+    constructor.relationLookup = null;
     prototype.processFoundAssertion = function(searchData, ip, success, failure) {
         var a = new EcAssertion();
         a.copyFrom(searchData);
@@ -1329,15 +1335,34 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             return;
         }
         var ep = this;
+        var relationLookup = this.constructor.relationLookup;
+        if (relationLookup == null) {
+            relationLookup = new Object();
+            for (var i = 0; i < ep.context.relation.length; i++) {
+                var a = EcAlignment.getBlocking(ep.context.relation[i]);
+                if ((relationLookup)[a.source] == null) {
+                    (relationLookup)[a.source] = new Array();
+                }
+                ((relationLookup)[a.source]).push(a);
+                if ((relationLookup)[a.target] == null) {
+                    (relationLookup)[a.target] = new Array();
+                }
+                ((relationLookup)[a.target]).push(a);
+            }
+            if (this.profileMode) {
+                this.constructor.relationLookup = relationLookup;
+            }
+        }
         for (var i = 0; i < ip.competency.length; i++) {
             this.log(ip, "Finding relationships for competency: " + ip.competency[i]);
-            this.findCompetencyRelationship(ip, ep, ip.competency[i]);
+            this.findCompetencyRelationship(ip, ep, ip.competency[i], relationLookup);
         }
     };
-    prototype.findCompetencyRelationship = function(ip, ep, c) {
+    prototype.findCompetencyRelationship = function(ip, ep, c, relationLookup) {
         var rpg = new RelationshipPacketGenerator(ip, ep, this.processedEquivalencies);
         rpg.failure = ip.failure;
         rpg.logFunction = this.logFunction;
+        rpg.relationLookup = relationLookup;
         rpg.success = function() {
             ep.processRelationshipPacketsGenerated(ip, c);
         };
@@ -1364,7 +1389,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         this.log(ip, "Executing rollup rule interpreter");
         rri.go();
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };

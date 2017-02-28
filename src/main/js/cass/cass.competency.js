@@ -721,6 +721,11 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
+            if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
+                if (success != null) {
+                    success(p1);
+                    return;
+                }
             var relation = new EcAlignment();
             if (p1.isA(EcEncryptedValue.myType)) {
                 var encrypted = new EcEncryptedValue();
@@ -729,6 +734,10 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
             if (p1.isAny(relation.getTypes())) {
                 relation.copyFrom(p1);
+                if (EcRepository.caching) {
+                    (EcRepository.cache)[relation.shortId()] = relation;
+                    (EcRepository.cache)[relation.id] = relation;
+                }
                 if (success != null) 
                     success(relation);
             } else {
@@ -754,6 +763,8 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
+        if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
+            return p1;
         var alignment = new EcAlignment();
         if (p1.isA(EcEncryptedValue.myType)) {
             var encrypted = new EcEncryptedValue();
@@ -763,6 +774,10 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         }
         if (p1.isAny(alignment.getTypes())) {
             alignment.copyFrom(p1);
+            if (EcRepository.caching) {
+                (EcRepository.cache)[alignment.shortId()] = alignment;
+                (EcRepository.cache)[alignment.id] = alignment;
+            }
             return alignment;
         } else {
             var msg = "Retrieved object was not a relation";
@@ -1577,6 +1592,11 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
+            if (stjs.isInstanceOf(p1.constructor, EcCompetency)) 
+                if (success != null) {
+                    success(p1);
+                    return;
+                }
             var competency = new EcCompetency();
             if (p1.isA(EcEncryptedValue.myType)) {
                 var encrypted = new EcEncryptedValue();
@@ -1586,6 +1606,10 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
             if (p1.isAny(competency.getTypes())) {
                 competency.copyFrom(p1);
+                if (EcRepository.caching) {
+                    (EcRepository.cache)[competency.shortId()] = competency;
+                    (EcRepository.cache)[competency.id] = competency;
+                }
                 if (success != null) 
                     success(competency);
             } else {
