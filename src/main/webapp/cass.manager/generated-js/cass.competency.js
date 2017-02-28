@@ -22,7 +22,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getSubjectAsync = function(success, failure) {
         if (this.subject == null) {
-            failure("Subject not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -46,7 +46,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getAgentAsync = function(success, failure) {
         if (this.agent == null) {
-            failure("Agent not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -132,7 +132,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getAssertionDateAsync = function(success, failure) {
         if (this.assertionDate == null) {
-            failure("Assertion date not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -156,7 +156,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getExpirationDateAsync = function(success, failure) {
         if (this.expirationDate == null) {
-            failure("Expiration date not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -183,7 +183,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getEvidenceAsync = function(index, success, failure) {
         if (this.evidence[index] == null) {
-            failure("Evidence not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -207,7 +207,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getDecayFunctionAsync = function(success, failure) {
         if (this.decayFunction == null) {
-            failure("Decay function not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -231,7 +231,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getNegativeAsync = function(success, failure) {
         if (this.negative == null) {
-            failure("Negative not found.");
+            success(null);
             return;
         }
         var v = new EcEncryptedValue();
@@ -556,6 +556,54 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
             if (failure != null) 
                 failure(p1);
         });
+    };
+    /**
+     *  Searches for levels with a string query
+     *  
+     *  @memberOf EcRollupRule
+     *  @method search
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for levels
+     *  @param {String} query
+     *  			query string to use in search
+     *  @param {Callback1<Array<EcRollupRule>>} success
+     *  			Callback triggered when searches successfully
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while searching
+     *  @param {Object} paramObj
+     *  			Search parameters object to pass in
+     *  		@param size
+     *  		@param start
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new EcRollupRule().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var rule = new EcRollupRule();
+                    if (p1[i].isAny(rule.getTypes())) {
+                        rule.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcRollupRule.myType)) {
+                            var obj = val.decryptIntoObject();
+                            rule.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(rule.id, true);
+                        }
+                    }
+                    ret[i] = rule;
+                }
+                success(ret);
+            }
+        }, failure);
     };
 }, {image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
@@ -1002,6 +1050,54 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
                     failure(msg);
                  else 
                     console.error(msg);
+            }
+        }, failure);
+    };
+    /**
+     *  Searches for levels with a string query
+     *  
+     *  @memberOf EcLevel
+     *  @method search
+     *  @static
+     *  @param {EcRepository} repo
+     *  			Repository to search for levels
+     *  @param {String} query
+     *  			query string to use in search
+     *  @param {Callback1<Array<EcLevel>>} success
+     *  			Callback triggered when searches successfully
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs while searching
+     *  @param {Object} paramObj
+     *  			Search parameters object to pass in
+     *  		@param size
+     *  		@param start
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new EcLevel().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var level = new EcLevel();
+                    if (p1[i].isAny(level.getTypes())) {
+                        level.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcLevel.myType)) {
+                            var obj = val.decryptIntoObject();
+                            level.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(level.id, true);
+                        }
+                    }
+                    ret[i] = level;
+                }
+                success(ret);
             }
         }, failure);
     };

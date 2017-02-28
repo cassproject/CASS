@@ -235,6 +235,7 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
  */
 var EcIdentityManager = function() {};
 EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructor, prototype) {
+    constructor.async = true;
     constructor.main = function(args) {
         EcIdentityManager.readContacts();
     };
@@ -593,6 +594,12 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  sheet has been created, returns the signature sheet
      */
     constructor.signatureSheetAsync = function(duration, server, success) {
+        if (!EcIdentityManager.async) {
+            var sheet = EcIdentityManager.signatureSheet(duration, server);
+            if (success != null) 
+                success(sheet);
+            return;
+        }
         var signatures = new Array();
         var cache = null;
         if (EcIdentityManager.signatureSheetCaching) {

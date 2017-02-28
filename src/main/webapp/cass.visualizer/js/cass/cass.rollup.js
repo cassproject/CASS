@@ -49,6 +49,7 @@ function(subject, competency, level, context, success, failure, rule, type) {
     this.log = "";
 };
 InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, prototype) {
+    prototype.root = false;
     constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "RELATION_AND", "RELATION_OR", "RELATION_NARROWS", "RELATION_BROADENS", "RELATION_REQUIRES", "RELATION_ISREQUIREDBY");
     constructor.ResultType = stjs.enumeration("TRUE", "FALSE", "UNKNOWN", "INDETERMINANT");
     /**
@@ -162,6 +163,12 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
      *  @type boolean
      */
     prototype.finished = false;
+    /**
+     *  Set to true if this packet has finished stage one.
+     *  @property stageOneFinished
+     *  @type boolean
+     */
+    prototype.stageOneComplete = false;
     /**
      *  Type of inquiry packet. Inquiry packets can represent relational logic, rollup logic or competencies.
      *  @property type
@@ -455,7 +462,7 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
         var meIp = this.ip;
         return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
             if (meEp != null) 
-                meEp.continueProcessing(meIp);
+                meEp.continueProcessingFirstPass(meIp);
         }, this.ip.failure, null, InquiryPacket.IPType.RELATION_AND);
     };
     prototype.generateRollupRulePacket = function(rule) {
@@ -463,7 +470,7 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
         var meIp = this.ip;
         return new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
             if (meEp != null) 
-                meEp.continueProcessing(meIp);
+                meEp.continueProcessingFirstPass(meIp);
         }, this.ip.failure, rule, InquiryPacket.IPType.ROLLUPRULE);
     };
     prototype.addAllQueries = function(rollupIp) {
@@ -511,7 +518,7 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
         var meIp = this.ip;
         var rollupIp = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
             if (meEp != null) 
-                meEp.continueProcessing(meIp);
+                meEp.continueProcessingFirstPass(meIp);
         }, this.ip.failure, null, ipt);
         if (InquiryPacket.IPType.RELATION_AND.equals(ipt)) 
             this.addAllQueries(rollupIp);
@@ -621,7 +628,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     prototype.ip = null;
     prototype.log = function(string) {
         if (this.logFunction != null) 
-            this.logFunction(string);
+            this.logFunction("" + new Date().getTime() % 100000 + ": " + string);
     };
     prototype.processEventFailure = function(message, ip) {
         ip.numberOfQueriesRunning--;
@@ -633,7 +640,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var meIp = this.ip;
             var rootRequiredPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
-                    meEp.continueProcessing(meIp);
+                    meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.RELATION_REQUIRES);
             rootRequiredPacket.subPackets = this.requiredPackets;
             this.ip.subPackets.push(rootRequiredPacket);
@@ -645,7 +652,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var meIp = this.ip;
             var rootRequiredPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
-                    meEp.continueProcessing(meIp);
+                    meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.RELATION_ISREQUIREDBY);
             rootRequiredPacket.subPackets = this.requiredPackets;
             this.ip.subPackets.push(rootRequiredPacket);
@@ -657,7 +664,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var meIp = this.ip;
             var rootNarrowsPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
-                    meEp.continueProcessing(meIp);
+                    meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.RELATION_NARROWS);
             rootNarrowsPacket.subPackets = this.narrowsPackets;
             this.ip.subPackets.push(rootNarrowsPacket);
@@ -669,7 +676,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var meIp = this.ip;
             var rootBroadensPacket = new InquiryPacket(this.ip.subject, null, null, this.ip.context, function(p1) {
                 if (meEp != null) 
-                    meEp.continueProcessing(meIp);
+                    meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.RELATION_BROADENS);
             rootBroadensPacket.subPackets = this.broadensPackets;
             this.ip.subPackets.push(rootBroadensPacket);
@@ -696,29 +703,29 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             var ip2 = null;
             this.ip.equivalentPackets.push(ip2 = new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                 if (meEp != null) 
-                    meEp.continueProcessing(meIp);
+                    meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
         } else if (EcAlignment.REQUIRES.equals(alignment.relationType)) {
             if (this.ip.hasId(alignment.source)) 
                 this.requiredPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                     if (meEp != null) 
-                        meEp.continueProcessing(meIp);
+                        meEp.continueProcessingFirstPass(meIp);
                 }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
              else 
                 this.isRequiredByPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                     if (meEp != null) 
-                        meEp.continueProcessing(meIp);
+                        meEp.continueProcessingFirstPass(meIp);
                 }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
         } else if (EcAlignment.NARROWS.equals(alignment.relationType)) {
             if (this.ip.hasId(alignment.source)) 
                 this.narrowsPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                     if (meEp != null) 
-                        meEp.continueProcessing(meIp);
+                        meEp.continueProcessingFirstPass(meIp);
                 }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
              else 
                 this.broadensPackets.push(new InquiryPacket(this.ip.subject, relatedCompetency, null, this.ip.context, function(p1) {
                     if (meEp != null) 
-                        meEp.continueProcessing(meIp);
+                        meEp.continueProcessingFirstPass(meIp);
                 }, this.ip.failure, null, InquiryPacket.IPType.COMPETENCY));
         }
         this.ip.numberOfQueriesRunning--;
@@ -812,8 +819,9 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
     };
 }, {failure: {name: "Callback1", arguments: [null]}, success: {name: "Callback1", arguments: [null]}, ip: "InquiryPacket"}, {});
 /**
- *  Processor used in Assertion Processing.
- *  Can estimate or determine competence of individuals.
+ *  Processor used in Assertion Processing. Can estimate or determine competence
+ *  of individuals.
+ * 
  *  @class AssertionProcessor
  *  @module org.cassproject
  *  @author fritz.ray@eduworks.com
@@ -822,48 +830,132 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
 var AssertionProcessor = function() {
     this.repositories = new Array();
     this.step = AssertionProcessor.DEF_STEP;
+    this.profileMode = false;
 };
 AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(constructor, prototype) {
     prototype.repositories = null;
     prototype.step = false;
+    prototype.profileMode = false;
     prototype.logFunction = null;
+    prototype.assertions = null;
     constructor.DEF_STEP = false;
     prototype.processedEquivalencies = null;
+    prototype.context = null;
+    prototype.assertionsCollected = false;
     prototype.log = function(ip, string) {
-        if (this.logFunction != null) 
-            this.logFunction(string);
+        if (this.logFunction != null) {
+            var id = "";
+            if (ip.competency != null && ip.competency.length > 0) {
+                id = ip.competency[0].shortId() + ":";
+            }
+            this.logFunction(new Date().getTime() % 100000 + ": " + string);
+        }
         ip.log += "\n" + string;
     };
     /**
-     *  Asynchronously processes and provides an answer to the question: Does an individual hold a competency?
+     *  Asynchronously processes and provides an answer to the question: Does an
+     *  individual hold a competency?
+     * 
      *  @method has
      *  @param {EcPk[]} subject Public keys that identify the subject.
      *  @param {EcCompetency} competency The Competency being inquired about.
-     *  @param {EcLevel} level The Level of the Competency at which the question is being asked.
+     *  @param {EcLevel} level The Level of the Competency at which the question
+     *  is being asked.
      *  @param {EcFramework} context The Framework in which to scope the inquiry.
-     *  @param {EbacSignature[]} additionalSignatures Additional signatures provided by an authority, used to request additional access on a one-time basis.
-     *  @param {function(InquiryPacket)} success The method that is invoked when a decision has been reached.
-     *  @param {string function(string)} ask The method that is invoked when the assertion processor detects that it needs information. (Usernames, passwords, etc)
-     *  @param {function(string)} failure The method that is invoked when the assertion processor has failed.
+     *  @param {EbacSignature[]} additionalSignatures Additional signatures
+     *  provided by an authority, used to request additional access on a one-time
+     *  basis.
+     *  @param {function(InquiryPacket)} success The method that is invoked when
+     *  a decision has been reached.
+     *  @param {string function(string)} ask The method that is invoked when the
+     *  assertion processor detects that it needs information. (Usernames,
+     *  passwords, etc)
+     *  @param {function(string)} failure The method that is invoked when the
+     *  assertion processor has failed.
      */
     prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
         var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
+        ip.root = true;
         this.processedEquivalencies = {};
+        this.assertions = new Object();
+        this.context = context;
         this.log(ip, "Created new inquiry.");
-        this.continueProcessing(ip);
+        var me = this;
+        this.continueProcessingFirstPass(ip);
+    };
+    prototype.collectAssertionsForSecondPass = function(ip, success) {
+        this.assertionsCollected = true;
+        var listOfActivatedCompetencies = new Array();
+        this.collectCompetencies(ip, listOfActivatedCompetencies, new Array());
+        var me = this;
+        listOfActivatedCompetencies.sort(function(a, b) {
+            return b.compareTo(a);
+        });
+        for (var i = 0; i < this.repositories.length; i++) {
+            var currentRepository = this.repositories[i];
+            var searchQuery = this.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
+            this.log(ip, "Querying repositories for subject assertions on " + listOfActivatedCompetencies.length + " competencies: " + searchQuery);
+            ip.numberOfQueriesRunning++;
+            var params = new Object();
+            (params)["size"] = 5000;
+            EcAssertion.search(currentRepository, searchQuery, function(p1) {
+                ip.numberOfQueriesRunning--;
+                me.log(ip, p1.length + " assertions found.");
+                for (var i = 0; i < p1.length; i++) {
+                    var a = p1[i];
+                    var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
+                    if ((me.assertions)[competency] == null) {
+                        (me.assertions)[competency] = new Array();
+                    }
+                    var as = (me.assertions)[competency];
+                    as.push(a);
+                }
+                if (ip.numberOfQueriesRunning == 0) {
+                    success(ip);
+                }
+            }, function(p1) {
+                ip.numberOfQueriesRunning--;
+                if (ip.numberOfQueriesRunning == 0) {
+                    success(ip);
+                }
+            }, params);
+        }
     };
     prototype.isIn = function(ip, alreadyDone) {
-        for (var i = 0; i < alreadyDone.length; i++) 
-            if (ip == alreadyDone[i]) 
+        for (var i = 0; i < alreadyDone.length; i++) {
+            if (ip == alreadyDone[i]) {
                 return true;
+            }
+        }
         return false;
     };
-    prototype.continueProcessing = function(ip) {
-        if (!ip.finished) {
-            if (!ip.hasCheckedAssertionsForCompetency) {
-                this.findSubjectAssertionsForCompetency(ip);
+    prototype.continueProcessingSecondPass = function(ip) {
+        if (!ip.hasCheckedAssertionsForCompetency) {
+            if (this.findSubjectAssertionsForCompetency(ip)) {
                 return true;
-            } else if (!ip.hasCheckedRelationshipsForCompetency) {
+            }
+        }
+        if (this.processChildPacketsSecondPass(ip.equivalentPackets)) {
+            return true;
+        }
+        if (this.processChildPacketsSecondPass(ip.subPackets)) {
+            return true;
+        }
+        if (ip.result == null) {
+            this.determineResult(ip);
+            this.log(ip, "Determined Result:" + ip.result);
+            this.log(ip, "Success:" + ip.success);
+            if (ip.result != null && ip.success != null) {
+                this.log(ip, "Running success:" + ip.result);
+                ip.success(ip);
+            }
+            return true;
+        }
+        return false;
+    };
+    prototype.continueProcessingFirstPass = function(ip) {
+        if (!ip.finished) {
+            if (!ip.hasCheckedRelationshipsForCompetency) {
                 this.findCompetencyRelationships(ip);
                 return true;
             } else if (!ip.hasCheckedRollupRulesForCompetency) {
@@ -874,16 +966,21 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
             }
         }
         if (ip.finished) {
-            if (this.processChildPackets(ip.equivalentPackets)) 
+            if (this.processChildPackets(ip.equivalentPackets)) {
                 return true;
-            if (this.processChildPackets(ip.subPackets)) 
+            }
+            if (this.processChildPackets(ip.subPackets)) {
                 return true;
-        }
-        if (ip.result == null) {
-            this.determineResult(ip);
-            if (ip.result != null && ip.success != null) 
-                ip.success(ip);
-            return true;
+            }
+            var me = this;
+            if (!this.assertionsCollected && ip.root) {
+                this.collectAssertionsForSecondPass(ip, function(p1) {
+                    me.continueProcessingSecondPass(ip);
+                });
+                return true;
+            } else {
+                return this.continueProcessingSecondPass(ip);
+            }
         }
         return false;
     };
@@ -893,17 +990,37 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.processChildPackets = function(childPackets) {
         if (childPackets != null) {
             for (var i = 0; i < childPackets.length; i++) {
-                if (this.continueProcessing(childPackets[i])) 
+                if (this.continueProcessingFirstPass(childPackets[i])) {
                     return true;
+                }
             }
         }
         return false;
     };
     prototype.checkStep = function(ip) {
-        this.log(ip, "Checkstep: " + ip.numberOfQueriesRunning);
+        this.log(ip, "Checkstep First Pass: " + ip.numberOfQueriesRunning);
         if (ip.numberOfQueriesRunning == 0) {
-            if (!this.step) 
-                this.continueProcessing(ip);
+            if (!this.step) {
+                this.continueProcessingFirstPass(ip);
+            }
+        }
+    };
+    prototype.processChildPacketsSecondPass = function(childPackets) {
+        if (childPackets != null) {
+            for (var i = 0; i < childPackets.length; i++) {
+                if (this.continueProcessingSecondPass(childPackets[i])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    prototype.checkStepSecondPass = function(ip) {
+        this.log(ip, "Checkstep Second Pass: " + ip.numberOfQueriesRunning);
+        if (ip.numberOfQueriesRunning == 0) {
+            if (!this.step) {
+                this.continueProcessingSecondPass(ip);
+            }
         }
     };
     prototype.processEventFailure = function(message, ip) {
@@ -925,10 +1042,35 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
             result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
         }
-        for (var i = 0; i < ip.subject.length; i++) 
+        for (var i = 0; i < ip.subject.length; i++) {
             result += " AND (\\*@reader:\"" + ip.subject[i].toPem() + "\")";
-        if (result != null) 
+        }
+        if (result != null) {
             return result;
+        }
+         throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);
+    };
+    prototype.buildAssertionsSearchQuery = function(ip, competencies) {
+        var result = null;
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            ip.failure("NOT SUPPOSED TO BE HERE.");
+             throw new RuntimeException("Collecting assertions when root node is a rollup rule. Not supported.");
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
+            result = "(";
+            for (var i = 0; i < competencies.length; i++) {
+                if (i != 0) {
+                    result += " OR ";
+                }
+                result += "competency:\"" + competencies[i] + "\"";
+            }
+            result += ")";
+        }
+        for (var i = 0; i < ip.subject.length; i++) {
+            result += " AND (\\*@reader:\"" + ip.subject[i].toPem() + "\")";
+        }
+        if (result != null) {
+            return result;
+        }
          throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);
     };
     prototype.processRelationshipPacketsGenerated = function(ip, competency) {
@@ -954,9 +1096,9 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
             return;
         }
         var ep = this;
-        if (ip.getContext().rollupRule == null) 
-            this.continueProcessing(ip);
-         else 
+        if (ip.getContext().rollupRule == null) {
+            this.continueProcessingFirstPass(ip);
+        } else {
             for (var i = 0; i < ip.getContext().rollupRule.length; i++) {
                 ip.numberOfQueriesRunning++;
                 EcRollupRule.get(ip.getContext().rollupRule[i], function(rr) {
@@ -965,9 +1107,38 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                     ep.processEventFailure(p1, ip);
                 });
             }
+        }
     };
     prototype.processFindRollupRuleSuccess = function(rr, ip) {};
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
+    prototype.collectCompetencies = function(ip, listOfActivatedCompetencies, listOfVisitedPackets) {
+        if (this.profileMode) {
+            for (var i = 0; i < this.context.competency.length; i++) {
+                listOfActivatedCompetencies.push(this.context.competency[i]);
+            }
+            return;
+        }
+        for (var i = 0; i < listOfVisitedPackets.length; i++) {
+            if (ip == listOfVisitedPackets[i]) {
+                return;
+            }
+        }
+        listOfVisitedPackets.push(ip);
+        for (var i = 0; i < ip.competency.length; i++) {
+            for (var j = 0; j < listOfActivatedCompetencies.length; j++) {
+                if (ip.competency[i].shortId() == listOfActivatedCompetencies[j]) {
+                    continue;
+                }
+            }
+            listOfActivatedCompetencies.push(ip.competency[i].shortId());
+        }
+        for (var i = 0; i < ip.equivalentPackets.length; i++) {
+            this.collectCompetencies(ip.equivalentPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
+        }
+        for (var i = 0; i < ip.subPackets.length; i++) {
+            this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
+        }
+    };
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var RollupRuleProcessor = function(ip, ep) {
     this.ip = ip;
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
@@ -1044,7 +1215,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         var me = this;
         eah.each(ip.subject, function(p1, p2) {
             me.checkSubject(a, p1, ip, p2, function(p1) {
-                p2();
+                failure(p1);
             });
         }, function(p1) {
             success();
@@ -1056,20 +1227,24 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             if (sub.equals(currentSubject)) {
                 me.log(ip, "Matching Assertion found.");
                 a.getAssertionDateAsync(function(assertionDate) {
-                    if (assertionDate > stjs.trunc(new Date().getTime())) {
-                        me.log(ip, "Assertion is made for a future date.");
-                        success();
-                        return;
-                    }
-                    a.getExpirationDateAsync(function(expirationDate) {
-                        if (expirationDate <= stjs.trunc(new Date().getTime())) {
-                            me.log(ip, "Assertion is expired. Skipping.");
+                    if (assertionDate != null) {
+                        if (assertionDate > stjs.trunc(new Date().getTime())) {
+                            me.log(ip, "Assertion is made for a future date.");
                             success();
                             return;
                         }
+                    }
+                    a.getExpirationDateAsync(function(expirationDate) {
+                        if (expirationDate != null) {
+                            if (expirationDate <= stjs.trunc(new Date().getTime())) {
+                                me.log(ip, "Assertion is expired. Skipping.");
+                                success();
+                                return;
+                            }
+                        }
                         me.logFoundAssertion(a, ip);
                         a.getNegativeAsync(function(p1) {
-                            if (p1) {
+                            if (p1 != null && p1) {
                                 me.log(ip, "Found valid negative assertion");
                                 ip.negative.push(a);
                             } else {
@@ -1084,8 +1259,9 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                         });
                     }, failure);
                 }, failure);
-            } else 
+            } else {
                 failure("Incorrect subject.");
+            }
         }, failure);
     };
     prototype.processFindAssertionsSuccess = function(data, ip) {
@@ -1095,55 +1271,55 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             this.log(ip, "Total number of assertions found: " + data.length);
         }
         ip.numberOfQueriesRunning--;
-        this.checkStep(ip);
+        this.checkStepSecondPass(ip);
     };
     prototype.findSubjectAssertionsForCompetency = function(ip) {
         ip.hasCheckedAssertionsForCompetency = true;
         if (!InquiryPacket.IPType.COMPETENCY.equals(ip.type) && !InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
             this.log(ip, "No assertions for combinator types");
-            this.checkStep(ip);
-            return;
+            return false;
         }
         var me = this;
-        for (var i = 0; i < this.repositories.length; i++) {
-            var currentRepository = this.repositories[i];
-            if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
-                this.log(ip, "Searching: " + currentRepository.selectedServer);
-            }
+        if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) {
             for (var h = 0; h < ip.competency.length; h++) {
                 ip.numberOfQueriesRunning++;
                 var competency = ip.competency[h];
-                this.log(ip, "Querying repositories for subject assertions on competency: " + competency.id);
-                currentRepository.search(this.buildAssertionSearchQuery(ip, competency), function(p1) {}, function(p1) {
-                    var eah = new EcAsyncHelper();
-                    eah.each(p1, function(p1, p2) {
-                        me.processFoundAssertion(p1, ip, p2, function(p1) {
-                            p2();
-                        });
-                    }, function(p1) {
-                        me.processFindAssertionsSuccess(p1, ip);
+                var assertionsForThisCompetency = (this.assertions)[competency.shortId()];
+                if (assertionsForThisCompetency == null) {
+                    assertionsForThisCompetency = new Array();
+                }
+                var eah = new EcAsyncHelper();
+                eah.each(assertionsForThisCompetency, function(p1, p2) {
+                    me.processFoundAssertion(p1, ip, p2, function(p1) {
+                        p2();
                     });
                 }, function(p1) {
-                    me.processEventFailure(p1, ip);
+                    me.processFindAssertionsSuccess(p1, ip);
                 });
             }
-            if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
-                ip.numberOfQueriesRunning++;
-                this.log(ip, "Searching: " + currentRepository.selectedServer);
-                currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
-                    var eah = new EcAsyncHelper();
-                    eah.each(p1, function(p1, p2) {
-                        me.processFoundAssertion(p1, ip, p2, function(p1) {
-                            p2();
+            return true;
+        } else {
+            for (var i = 0; i < this.repositories.length; i++) {
+                var currentRepository = this.repositories[i];
+                if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+                    ip.numberOfQueriesRunning++;
+                    this.log(ip, "Searching: " + currentRepository.selectedServer);
+                    currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
+                        var eah = new EcAsyncHelper();
+                        eah.each(p1, function(p1, p2) {
+                            me.processFoundAssertion(p1, ip, p2, function(p1) {
+                                p2();
+                            });
+                        }, function(p1) {
+                            me.processFindAssertionsSuccess(p1, ip);
                         });
                     }, function(p1) {
-                        me.processFindAssertionsSuccess(p1, ip);
+                        me.processEventFailure(p1, ip);
                     });
-                }, function(p1) {
-                    me.processEventFailure(p1, ip);
-                });
+                }
             }
         }
+        return true;
     };
     prototype.findCompetencyRelationships = function(ip) {
         ip.hasCheckedRelationshipsForCompetency = true;
@@ -1188,7 +1364,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         this.log(ip, "Executing rollup rule interpreter");
         rri.go();
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1385,7 +1561,7 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var PessimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1564,4 +1740,4 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}}, {});
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
