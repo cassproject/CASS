@@ -106,6 +106,12 @@ a.setSubject(EcPk.fromPem(subject));
 a.setAgent(EcPk.fromPem(agent));
 a.setCompetency(competencyId);
 a.setConfidence(confidence);
+var date = new Date();
+a.setAssertionDate(date.getTime());
+date.setFullYear(date.getFullYear()+1);
+a.setExpirationDate(date.getTime());
+a.setDecayFunction("t");
+
 
 if (debug) console.log(JSON.stringify(a));
 

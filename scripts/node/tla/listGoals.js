@@ -57,7 +57,7 @@ var repo = new EcRepository();
 repo.selectedServer = endpoint;
 if (debug) console.log("Remote server: " + repo.selectedServer);
 
-repo.search("@type:Person AND email:" + email,
+repo.search("@type:Person AND email:\"" + email+"\"",
     function (eachSuccess) {
         if (eachSuccess.seeks != null)
             if (eachSuccess.seeks.itemOffered != null)

@@ -77,6 +77,7 @@ var error = function (data) {
 var repo = new EcRepository();
 repo.selectedServer = endpoint;
 EcRepository.caching = true;
+EcCrypto.caching = true;
 EcRepository.cachingSearch = true;
 if (debug) console.log("Remote server: " + repo.selectedServer);
 
@@ -109,6 +110,7 @@ EcFramework.get(
                     function (competency) {
                         if (debug) console.log("Processing assertions.");
                         var ep = new PessimisticQuadnaryAssertionProcessor();
+			ep.profileMode = true;
                         ep.logFunction = function (data) {
                             if (debug) console.log(data);
                         };
