@@ -1292,7 +1292,8 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                 var competency = ip.competency[h];
                 var assertionsForThisCompetency = (this.assertions)[competency.shortId()];
                 if (assertionsForThisCompetency == null) {
-                    assertionsForThisCompetency = new Array();
+                    me.processFindAssertionsSuccess(new Array(), ip);
+                    return true;
                 }
                 var eah = new EcAsyncHelper();
                 eah.each(assertionsForThisCompetency, function(p1, p2) {

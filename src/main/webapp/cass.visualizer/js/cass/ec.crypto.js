@@ -15,7 +15,8 @@ var EcCrypto = function() {};
 EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
     constructor.caching = false;
     constructor.decryptionCache = new Object();
-}, {decryptionCache: "Object"}, {});
+    constructor.decryptionCacheFailure = new Object();
+}, {decryptionCache: "Object", decryptionCacheFailure: "Object"}, {});
 var AlgorithmIdentifier = function() {};
 AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
     prototype.name = null;
@@ -6580,7 +6581,8 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      */
     constructor.decrypt = function(ppk, ciphertext) {
         if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
             if (cacheGet != null) {
                 return cacheGet;
             }
@@ -6989,7 +6991,13 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
      */
     constructor.decrypt = function(ppk, ciphertext, success, failure) {
         if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCacheFailure)[ppk.toPem() + ciphertext];
+            if (cacheGet != null) {
+                failure(cacheGet);
+                return;
+            }
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
             if (cacheGet != null) {
                 success(cacheGet);
                 return;
@@ -7012,6 +7020,14 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 });
             } else {
                 EcRsaOaepAsync.q1[worker].push(success);
+            }
+            if (EcCrypto.caching) {
+                EcRsaOaepAsync.q2[worker].push(function(p1) {
+                    (EcCrypto.decryptionCacheFailure)[ppk.toPem() + ciphertext] = p1;
+                    failure(p1);
+                });
+            } else {
+                EcRsaOaepAsync.q2[worker].push(failure);
             }
             EcRsaOaepAsync.q2[worker].push(failure);
             EcRsaOaepAsync.w[worker].postMessage(o);
@@ -7207,7 +7223,13 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
      */
     constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
         if (EcCrypto.caching) {
-            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCacheFailure)[secret + iv + ciphertext];
+            if (cacheGet != null) {
+                failure(cacheGet);
+                return;
+            }
+            cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
             if (cacheGet != null) {
                 success(cacheGet);
                 return;
@@ -7232,7 +7254,14 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             } else {
                 EcAesCtrAsync.q1[worker].push(success);
             }
-            EcAesCtrAsync.q2[worker].push(failure);
+            if (EcCrypto.caching) {
+                EcAesCtrAsync.q2[worker].push(function(p1) {
+                    (EcCrypto.decryptionCacheFailure)[secret + iv + ciphertext] = p1;
+                    failure(p1);
+                });
+            } else {
+                EcAesCtrAsync.q2[worker].push(failure);
+            }
             EcAesCtrAsync.w[worker].postMessage(o);
         }
     };
