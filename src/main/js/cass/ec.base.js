@@ -743,7 +743,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         if ($ == null) {
             var o = new Object();
             (o)["status"] = 200;
-            (o)["responseText"] = JSON.stringify(httpPost(p.data, p.url, "multipart/form-data", "true", (fd)["_boundary"]));
+            (o)["responseText"] = JSON.stringify(httpPost(p.data, p.url, "multipart/form-data; boundary=" + (fd)["_boundary"], "false", (fd)["_boundary"]));
             successCallback(null, null, o);
         } else {
             $.ajax(p);
@@ -863,6 +863,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             } else if (success != null) {
                 try {
                     if (EcObject.isObject(arg2.responseText)) 
+                        success(arg2.responseText);
+                     else if (EcArray.isArray(arg2.responseText)) 
                         success(arg2.responseText);
                      else 
                         success(JSON.parse(arg2.responseText));
