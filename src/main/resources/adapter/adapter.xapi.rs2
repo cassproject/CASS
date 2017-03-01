@@ -49,7 +49,7 @@ cycle=#object(
 		eq="false",
 		ne="true"
 	)
-).union().abortable().displayJson(_collapse="true");
+).union().displayJson(_collapse="true");
 
 cycle=#object(
 	a=cycle,
