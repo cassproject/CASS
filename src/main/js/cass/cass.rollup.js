@@ -777,7 +777,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
                 this.numberOfRelationsProcessed = 0;
                 for (var j = 0; j < relationsRelatedToThisCompetency.length; j++) {
                     this.ip.numberOfQueriesRunning++;
-                    rpg.processFindCompetencyRelationshipSuccess(relationsRelatedToThisCompetency[i], rpg.ip);
+                    rpg.processFindCompetencyRelationshipSuccess(relationsRelatedToThisCompetency[j], rpg.ip);
                 }
             }
         }
@@ -937,14 +937,20 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.continueProcessingSecondPass = function(ip) {
         if (!ip.hasCheckedAssertionsForCompetency) {
             if (this.findSubjectAssertionsForCompetency(ip)) {
-                return true;
+                if (EcRemote.async) {
+                    return true;
+                }
             }
         }
         if (this.processChildPacketsSecondPass(ip.equivalentPackets)) {
-            return true;
+            if (EcRemote.async) {
+                return true;
+            }
         }
         if (this.processChildPacketsSecondPass(ip.subPackets)) {
-            return true;
+            if (EcRemote.async) {
+                return true;
+            }
         }
         if (ip.result == null) {
             this.determineResult(ip);
@@ -954,7 +960,9 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                 this.log(ip, "Running success:" + ip.result);
                 ip.success(ip);
             }
-            return true;
+            if (EcRemote.async) {
+                return true;
+            }
         }
         return false;
     };
@@ -962,14 +970,19 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         if (!ip.finished) {
             if (!ip.hasCheckedRelationshipsForCompetency) {
                 this.findCompetencyRelationships(ip);
-                return true;
-            } else if (!ip.hasCheckedRollupRulesForCompetency) {
-                this.findRollupRulesForCompetency(ip);
-                return true;
-            } else {
-                ip.finished = true;
+                if (EcRemote.async) {
+                    return true;
+                }
             }
-        }
+            if (!ip.hasCheckedRollupRulesForCompetency) {
+                this.findRollupRulesForCompetency(ip);
+                if (EcRemote.async) {
+                    return true;
+                }
+            }
+            {
+                ip.finished = true;
+            }}
         if (ip.finished) {
             if (this.processChildPackets(ip.equivalentPackets)) {
                 return true;
@@ -982,7 +995,9 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                 this.collectAssertionsForSecondPass(ip, function(p1) {
                     me.continueProcessingSecondPass(ip);
                 });
-                return true;
+                if (EcRemote.async) {
+                    return true;
+                }
             } else {
                 return this.continueProcessingSecondPass(ip);
             }
@@ -1005,7 +1020,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.checkStep = function(ip) {
         this.log(ip, "Checkstep First Pass: " + ip.numberOfQueriesRunning);
         if (ip.numberOfQueriesRunning == 0) {
-            if (!this.step) {
+            if (!this.step && EcRemote.async) {
                 this.continueProcessingFirstPass(ip);
             }
         }
@@ -1023,7 +1038,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.checkStepSecondPass = function(ip) {
         this.log(ip, "Checkstep Second Pass: " + ip.numberOfQueriesRunning);
         if (ip.numberOfQueriesRunning == 0) {
-            if (!this.step) {
+            if (!this.step && EcRemote.async) {
                 this.continueProcessingSecondPass(ip);
             }
         }
@@ -1102,7 +1117,8 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         }
         var ep = this;
         if (ip.getContext().rollupRule == null) {
-            this.continueProcessingFirstPass(ip);
+            if (EcRemote.async) 
+                this.continueProcessingFirstPass(ip);
         } else {
             for (var i = 0; i < ip.getContext().rollupRule.length; i++) {
                 ip.numberOfQueriesRunning++;
@@ -1587,7 +1603,7 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var PessimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1766,4 +1782,4 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});

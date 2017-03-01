@@ -35,8 +35,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         if (!hideType) {
             v.encryptedType = d.type;
         }
-        var newIv = EcAes.newIv(32);
-        var newSecret = EcAes.newIv(32);
+        var newIv = EcAes.newIv(16);
+        var newSecret = EcAes.newIv(16);
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
         v.reader = d.reader;
@@ -89,8 +89,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         if (!hideType) {
             v.encryptedType = d.type;
         }
-        var newIv = EcAes.newIv(32);
-        var newSecret = EcAes.newIv(32);
+        var newIv = EcAes.newIv(16);
+        var newSecret = EcAes.newIv(16);
         EcAesCtrAsync.encrypt(d.toJson(), newSecret, newIv, function(encryptedText) {
             v.payload = encryptedText;
             v.owner = d.owner;
@@ -146,8 +146,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      */
     constructor.encryptValueOld = function(text, id, owner) {
         var v = new EcEncryptedValue();
-        var newIv = EcAes.newIv(32);
-        var newSecret = EcAes.newIv(32);
+        var newIv = EcAes.newIv(16);
+        var newSecret = EcAes.newIv(16);
         v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
         v.addOwner(owner);
         for (var i = 0; i < v.owner.length; i++) {
@@ -176,8 +176,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      */
     constructor.encryptValue = function(text, id, owners, readers) {
         var v = new EcEncryptedValue();
-        var newIv = EcAes.newIv(32);
-        var newSecret = EcAes.newIv(32);
+        var newIv = EcAes.newIv(16);
+        var newSecret = EcAes.newIv(16);
         v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
         if (owners != null) {
             for (var i = 0; i < owners.length; i++) {
@@ -774,20 +774,26 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.get = function(url, success, failure) {
         if (EcRepository.caching) {
             if ((EcRepository.cache)[url] != null) {
-                setTimeout(function() {
+                if (EcRemote.async) {
+                    setTimeout(function() {
+                        success((EcRepository.cache)[url]);
+                    }, 0);
+                } else {
                     success((EcRepository.cache)[url]);
-                }, 0);
+                }
                 return;
             }
-            if ((EcRepository.fetching)[url] != null) {
-                if ((EcRepository.fetching)[url] > new Date().getTime()) {
-                    setTimeout(function() {
-                        EcRepository.get(url, success, failure);
-                    }, 100);
-                    return;
+            if (EcRemote.async) {
+                if ((EcRepository.fetching)[url] != null) {
+                    if ((EcRepository.fetching)[url] > new Date().getTime()) {
+                        setTimeout(function() {
+                            EcRepository.get(url, success, failure);
+                        }, 100);
+                        return;
+                    }
                 }
+                (EcRepository.fetching)[url] = new Date().getTime() + 60000;
             }
-            (EcRepository.fetching)[url] = new Date().getTime() + 60000;
         }
         var fd = new FormData();
         EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
@@ -808,7 +814,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     return;
                 }
                 if (EcRepository.caching) {
-                    (EcRepository.cache)[url] = d;
+                    (EcRepository.cache)[d.id] = d;
+                    (EcRepository.cache)[d.shortId()] = d;
                 }
                 success(d);
             }, function(p1) {
@@ -941,15 +948,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 return;
             }
             var me = this;
-            if ((EcRepository.fetching)[cacheKey] != null) {
-                if ((EcRepository.fetching)[cacheKey] > new Date().getTime()) {
-                    setTimeout(function() {
-                        me.searchWithParams(originalQuery, originalParamObj, eachSuccess, success, failure);
-                    }, 100);
-                    return;
+            if (EcRemote.async) {
+                if ((EcRepository.fetching)[cacheKey] != null) {
+                    if ((EcRepository.fetching)[cacheKey] > new Date().getTime()) {
+                        setTimeout(function() {
+                            me.searchWithParams(originalQuery, originalParamObj, eachSuccess, success, failure);
+                        }, 100);
+                        return;
+                    }
                 }
+                (EcRepository.fetching)[cacheKey] = new Date().getTime() + 60000;
             }
-            (EcRepository.fetching)[cacheKey] = new Date().getTime() + 60000;
         } else {
             cacheKey = null;
         }
