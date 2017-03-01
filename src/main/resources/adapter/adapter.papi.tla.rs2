@@ -42,29 +42,14 @@ process=#object(
 processTest=process.displayJson();
 /learners/rest/determineCompetence = processTest;
 
-process=#runProcess(
-	workingDirectory="scripts/node",
-	timeout="500000",
-	args=#object(
-		a="/usr/bin/node",
-		b="tla/getProfile.js", 
-		d=#add(a="ppk=",b=#xapiMePpk()),
-		e=#add(
-			a="pk=",
-			b=#object(
-				mbox="@username"
-			).debug().xapiAgentToPk().replace(regex="true",replace="\r?\n",with="").debug()
-		),
-		f=#add(
-			a="frameworkId=",
-			b="@frameworkId"
-		),
-		g=#add(
-			a="endpoint=",
-			b=#repoEndpoint()
-		)
-	).valueSet()
-).debug().flatten().toObject();
+process=#getProfile(
+    ppk=#xapiMePpk(),
+    pk=#object(
+        mbox="@username"
+    ).debug().xapiAgentToPk().replace(regex="true",replace="\r?\n",with="").debug(),
+	frameworkId="@frameworkId",
+    endpoint=#repoEndpoint()
+).debug();
 
 processTest=process.displayJson();
 /learners/test/profile = processTest;
