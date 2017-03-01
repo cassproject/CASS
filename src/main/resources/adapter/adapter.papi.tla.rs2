@@ -5,12 +5,12 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/hasCompetency.js", 
 		c=#add(a="competencyId=",b="@competencyId"), 
-		d=#add(a="ppk=",b=#xapiMePpk().debug(prefix="ppk:")),
+		d=#add(a="ppk=",b=#xapiMePpk()),
 		e=#add(
 			a="pk=",
 			b=#object(
 				mbox="@username"
-			).xapiAgentToPk().debug(prefix="pk:")
+			).debug().xapiAgentToPk()
 		),
 		f=#add(
 			a="frameworkId=",
@@ -25,6 +25,9 @@ process=#runProcess(
 
 processTest=process.displayJson();
 /learners/test/determineCompetence = processTest;
+
+pkTest=#object(mbox="@username").debug().xapiAgentToPk().replace(regex="true",replace="\r?\n",with="").displayJson();
+/learners/test/pk=pkTest;
 
 process=#object(
 	level=#if(operator=process.flatten(),operand="TRUE",eq=#toDouble(obj="2.0"),ne=#toDouble(obj="0.0")),
@@ -50,7 +53,7 @@ process=#runProcess(
 			a="pk=",
 			b=#object(
 				mbox="@username"
-			).xapiAgentToPk()
+			).debug().xapiAgentToPk().replace(regex="true",replace="\r?\n",with="").debug()
 		),
 		f=#add(
 			a="frameworkId=",
@@ -61,7 +64,7 @@ process=#runProcess(
 			b=#repoEndpoint()
 		)
 	).valueSet()
-).flatten().toObject().debug();
+).debug().flatten().toObject();
 
 processTest=process.displayJson();
 /learners/test/profile = processTest;
@@ -98,15 +101,13 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/addAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
-		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
-		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		cc=#add(a="owner=",b=#xapiMePpk().replace(regex="true",replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n", with="")),
 		e=#add(
 			a="subject=",
 			b=#object(
-				mbox=#add(
-					b="@username"
-				)
-			).xapiAgentToPk().replace(replace="\r?\n", with="")
+				mbox="@username"
+			).xapiAgentToPk().replace(regex="true",replace="\r?\n", with="")
 		),
 		g=#add(
 			a="endpoint=",
@@ -117,7 +118,7 @@ process=#runProcess(
 			b="@confidence"
 		)
 	).valueSet()
-);
+).debug();
 
 #createAssertionForCompetency=process;
 
@@ -131,15 +132,13 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/deleteAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
-		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
-		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		cc=#add(a="owner=",b=#xapiMePpk().replace(regex="true",replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n", with="")),
 		e=#add(
 			a="subject=",
 			b=#object(
-				mbox=#add(
-					b="@username"
-				)
-			).xapiAgentToPk().replace(replace="\r?\n", with="")
+				mbox="@username"
+			).xapiAgentToPk().replace(regex="true",replace="\r?\n", with="")
 		),
 		g=#add(
 			a="endpoint=",
@@ -164,15 +163,13 @@ process=#runProcess(
 		a="/usr/bin/node",
 		b="tla/deleteAllAssertion.js",		
 		c=#add(a="competencyId=",b="@competencyId"), 
-		cc=#add(a="owner=",b=#xapiMePpk().replace(replace="\r?\n", with="")),
-		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(replace="\r?\n", with="")),
+		cc=#add(a="owner=",b=#xapiMePpk().replace(regex="true",replace="\r?\n", with="")),
+		d=#add(a="agent=",b=#xapiMePpk().rsaPpkToPk().replace(regex="true",replace="\r?\n", with="")),
 		e=#add(
 			a="subject=",
 			b=#object(
-				mbox=#add(
-					b="@username"
-				)
-			).xapiAgentToPk().replace(replace="\r?\n", with="")
+				mbox="@username"
+			).xapiAgentToPk().replace(regex="true",replace="\r?\n", with="")
 		),
 		g=#add(
 			a="endpoint=",

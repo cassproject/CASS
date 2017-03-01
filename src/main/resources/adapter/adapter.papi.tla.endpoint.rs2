@@ -72,7 +72,7 @@ competency=#object(
         ne="@framework"
     ),
 ).call(
-    a=#xapiTick(),
+	a=#xapiTick(),
 	competency=#if(operator="@competency",operand="",ne=#if(
 		operator="@endpoint",
 		operand="",

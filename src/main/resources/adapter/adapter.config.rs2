@@ -1,5 +1,5 @@
-thisEndpoint=#string(str="http://localhost:8080/cass/api/custom/");
+thisEndpoint=#string(str="https://cass.tla.cassproject.org/api/custom/");
 #thisEndpoint=thisEndpoint;
 
-repoEndpoint=#string(str="http://localhost:8080/cass/api/custom/");
+repoEndpoint=#string(str="https://cass.tla.cassproject.org/api/custom/");
 #repoEndpoint=repoEndpoint;

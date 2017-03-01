@@ -140,10 +140,10 @@ payloadStore=signatureSheet.toDatastream(
 );
 
 lookup=#if(
-	operator="@lookup",
-	operand="",
-	eq=payloadStore,
-	ne="@lookup"
+	operator=#has(obj="@lookup",has="BEGIN PUBLIC KEY"),
+	operand="true",
+	ne=payloadStore,
+	eq="@lookup"
 ).call(
 	lookup=getBySaltedMbox
 ).cache(

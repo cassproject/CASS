@@ -42,6 +42,10 @@ allAlignments=#httpGet(
 	Authorization="Basic QWRtaW5pc3RyYXRvcjpQcmJSUFd3NHVmeTY0RVF3",
 	obj=allAlignments
 ).toObject().get(entries="");
+
+allAlignmentsDisplay=allAlignments.displayJson(_collapse="true");
+/nuxeo=allAlignmentsDisplay;
+
 allAlignmentsInternal=allAlignments.forEach(paramName="obj",array="true",
         op=#object(
                 a=#toObject(obj="@obj").get(properties="").getByParam(param="activity:activityId"),
@@ -53,7 +57,7 @@ allAlignmentsInternal=allAlignmentsInternal.forEach(
         array="true",
         op=#object(
                 a=#toObject(obj="@obj").get(a="").string(op="trim"),
-                b=#toObject(obj="@obj").get(b="").forEach(
+		b=#toObject(obj="@obj").get(b="").forEach(
                     paramName="obj2",
                     array="true",
                     op=#if(
@@ -71,7 +75,7 @@ allAlignmentsExternal=allAlignmentsExternal.union().forEach(
         paramName="obj",
         op=#object(
                 a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id="").string(op="trim"),
-                b=#if(
+		b=#if(
                     operator=#toObject(obj="@obj").get(competency="").has(has="http"),
                     operand="true",
                     eq=#toObject(obj="@obj").get(competency=""),
