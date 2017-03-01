@@ -32,7 +32,7 @@ endpointDebug=endpoint.displayJson();
 
 xapiConvert=#toObject(obj="@endpoint").get(statements="").forEach(
 	array="true",
-	threaded="false",
+	threaded="true",
 	paramName="obj",
 	op=#xapiToAssertion()
 );
@@ -54,7 +54,7 @@ cycle=#object(
 cycle=#object(
 	a=cycle,
 	z=#variableSet(key="since",obj=#date(dateFormat="yyyy-MM-dd'T'HH:mm:ssXXX"))
-).get(a="").cache(global="true",name="xapiConversion",justLock="true");
+).get(a="");
 
 #xapiConvert=cycle;
 //xapi/convert=cycle;
