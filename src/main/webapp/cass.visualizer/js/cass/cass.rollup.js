@@ -655,7 +655,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
                 if (meEp != null) 
                     meEp.continueProcessingFirstPass(meIp);
             }, this.ip.failure, null, InquiryPacket.IPType.RELATION_ISREQUIREDBY);
-            rootRequiredPacket.subPackets = this.requiredPackets;
+            rootRequiredPacket.subPackets = this.isRequiredByPackets;
             this.ip.subPackets.push(rootRequiredPacket);
         }
     };
