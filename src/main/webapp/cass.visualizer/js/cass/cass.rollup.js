@@ -685,6 +685,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     };
     prototype.finishRelationProcessing = function() {
         this.pushRequiredPacketsToIp();
+        this.pushIsRequiredByPacketsToIp();
         this.pushNarrowsPacketsToIp();
         this.pushBroadensPacketsToIp();
         this.success();
