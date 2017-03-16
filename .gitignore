@@ -8,3 +8,7 @@ build.xml
 *.pem
 target
 scripts/node/node_modules
+
+nb-configuration\.xml
+
+cass\.iml
