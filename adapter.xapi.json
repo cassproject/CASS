@@ -1,6 +1,6 @@
 {
      "enabled": true,
-     "xapiAuth": "Basic bHJzX2RqYW5nb191c2VyOnNvYXI=",
-     "xapiEndpoint": "http://tla-core.adlnet.gov:8000/xapi/",
-     "xapiHostName": "http://tla-core.adlnet.gov:8000"
+     "xapiAuth": "Basic Y2MwMzU5M2ExYmJlNjBmMTNlNzYxMTI4YTM2ZTJhNzczOWVhOTFkMzozNTYzOGI4YTNmNjA3M2Q4YTQxNjNkNmRhZTYyYmU1NDM3ZjEwMTI4",
+     "xapiEndpoint": "http://tla-core.adlnet.gov:8001/data/xAPI/",
+     "xapiHostName": "http://tla-core.adlnet.gov:8001"
 }
