@@ -1,6 +1,6 @@
 alignments=#add(a='(@type:"http://schema.org/CreativeWork") AND (url:"',q="@obj",r='")').httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
-alignments=alignments.forEach(paramName="result",array="true",op=#toObject(obj="@result").get(educationalAlignment="").toArray(_wrap="true").getIndex(index="0").get(targetUrl="")).removeDuplicates();
+alignments=alignments.forEach(paramName="result",array="true",threaded="false",op=#toObject(obj="@result").get(educationalAlignment="").toArray(_wrap="true").getIndex(index="0").get(targetUrl="")).removeDuplicates();
 
 #getAlignedCompetency=alignments;
 
@@ -24,6 +24,7 @@ alignments=#httpGet(
 alignments=alignments.forEach(
 	paramName="result",
 	array="true",
+	threaded="false",
 	op=#toObject(obj="@result").get(properties="").getByParam(param="activity:competenciesTrained")
 ).union().removeDuplicates().debug();
 
@@ -46,7 +47,7 @@ allAlignments=#httpGet(
 allAlignmentsDisplay=allAlignments.displayJson(_collapse="true");
 /nuxeo=allAlignmentsDisplay;
 
-allAlignmentsInternal=allAlignments.forEach(paramName="obj",array="true",
+allAlignmentsInternal=allAlignments.forEach(paramName="obj",array="true",threaded="false",
         op=#object(
                 a=#toObject(obj="@obj").get(properties="").getByParam(param="activity:activityId"),
                 b=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo")
@@ -55,10 +56,12 @@ allAlignmentsInternal=allAlignments.forEach(paramName="obj",array="true",
 allAlignmentsInternal=allAlignmentsInternal.forEach(
         paramName="obj",
         array="true",
+        threaded="false",
         op=#object(
                 a=#toObject(obj="@obj").get(a="").string(op="trim"),
 		b=#toObject(obj="@obj").get(b="").forEach(
                     paramName="obj2",
+                    threaded="false",
                     array="true",
                     op=#if(
                         operator=#toObject(obj="@obj2").get(competency="").has(has="http"),
@@ -68,11 +71,12 @@ allAlignmentsInternal=allAlignmentsInternal.forEach(
                     )
                 )
         )
-).collapse(keyKey="a",valueKey="b").forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union()).cache(name="nuxeoAlignmentsInternal");
+).collapse(keyKey="a",valueKey="b").forEach(paramName="a",valueName="b",threaded="false",op=#toArray(obj="@b").union()).cache(name="nuxeoAlignmentsInternal");
 
-allAlignmentsExternal=allAlignments.forEach(paramName="obj",array="true",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo"));
+allAlignmentsExternal=allAlignments.forEach(paramName="obj",array="true",threaded="false",op=#toObject(obj="@obj").get(properties="").getByParam(param="activity:statementFilterAndInfo"));
 allAlignmentsExternal=allAlignmentsExternal.union().forEach(
         paramName="obj",
+        threaded="false",
         op=#object(
                 a=#toObject(obj="@obj").get(filter="").toObject().get(object="").get(id="").string(op="trim"),
 		b=#if(
@@ -84,7 +88,7 @@ allAlignmentsExternal=allAlignmentsExternal.union().forEach(
         )
 ).collapse(keyKey="a",valueKey="b").cache(name="nuxeoAlignmentsExternal");
 
-allAlignments=#object(a=allAlignmentsInternal,b=allAlignmentsExternal).valueSet().union().forEach(paramName="a",valueName="b",op=#toArray(obj="@b").union());
+allAlignments=#object(a=allAlignmentsInternal,b=allAlignmentsExternal).valueSet().union().forEach(paramName="a",valueName="b",threaded="false",op=#toArray(obj="@b").union());
 
 allAlignmentsTest=allAlignments.displayJson();
 /alignments/test=allAlignmentsTest;

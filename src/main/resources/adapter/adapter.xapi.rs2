@@ -49,7 +49,7 @@ cycle=#object(
 		eq="false",
 		ne="true"
 	)
-).union().displayJson(_collapse="true");
+).union().displayJson(_collapse="true").cache(global="true",justLock="true",name="xapiCycle");
 
 cycle=#object(
 	a=cycle,
