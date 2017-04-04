@@ -22,7 +22,12 @@ var AddServerModal = (function(AddServerModal){
 		var url = $("#addServerUrl").val();
 		
 		AppController.serverController.addServer(name, url, function(){
-			AppController.serverController.selectServer(name);			
+			AppController.serverController.selectServer(name);
+			if(AppController.loginController.getLoggedIn()){
+				AppController.loginController.setLoggedIn(false);
+				ViewManager.getView("#menuContainer").setLoggedOut();
+			}
+			
 			AppMenu.prototype.setCurrentServer();
 			
 			ModalManager.hideModal();

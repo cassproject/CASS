@@ -75,27 +75,30 @@ Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Array Helper Functions
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcArray
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcArray = function() {};
 EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
     /**
      *  Returns true if the result is an array.
-     *  @static
-     *  @method isArray
+     * 
      *  @param {any} o Object to test.
      *  @return true iff the object is an array.
+     *  @static
+     *  @method isArray
      */
     constructor.isArray = function(o) {
         return toString.call(o) == "[object Array]";
     };
     /**
      *  Removes values IFF the values == one another.
+     * 
+     *  @param a {Array} Array to remove duplicates from.
      *  @static
      *  @method removeDuplicates
-     *  @param a {Array} Array to remove duplicates from.
      */
     constructor.removeDuplicates = function(a) {
         for (var i = 0; i < a.length; i++) 
@@ -105,6 +108,40 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
                 if (a[i] == a[j]) 
                     a.splice(j, 1);
             }
+    };
+    /**
+     *  Adds a value if the array does not have the value already.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     */
+    constructor.setAdd = function(a, o) {
+        var inThere = false;
+        for (var i = 0; i < a.length; i++) 
+            if (a[i] == o) {
+                inThere = true;
+                break;
+            }
+        if (!inThere) 
+            a.push(o);
+    };
+    /**
+     *  Returns true if the array has the value already.
+     * 
+     *  @param a {Array} Array.
+     *  @param o {Object} Object to sample for.
+     *  @static
+     *  @method has
+     */
+    constructor.has = function(a, o) {
+        var inThere = false;
+        for (var i = 0; i < a.length; i++) 
+            if (a[i] == o) {
+                return true;
+            }
+        return false;
     };
 }, {}, {});
 var EcLocalStorage = function() {};
@@ -743,7 +780,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         if ($ == null) {
             var o = new Object();
             (o)["status"] = 200;
-            (o)["responseText"] = httpPost(p.data, p.url, "false", "multipart/form-data");
+            (o)["responseText"] = JSON.stringify(httpPost(p.data, p.url, "multipart/form-data; boundary=" + (fd)["_boundary"], "false", (fd)["_boundary"]));
             successCallback(null, null, o);
         } else {
             $.ajax(p);
@@ -862,7 +899,12 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 failure("Error with code: " + arg2.status);
             } else if (success != null) {
                 try {
-                    success(JSON.parse(arg2.responseText));
+                    if (EcObject.isObject(arg2.responseText)) 
+                        success(arg2.responseText);
+                     else if (EcArray.isArray(arg2.responseText)) 
+                        success(arg2.responseText);
+                     else 
+                        success(JSON.parse(arg2.responseText));
                 }catch (ex) {
                     if (ex != null) {
                         if ((ex)["getMessage"] != null) {

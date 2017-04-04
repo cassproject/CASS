@@ -25,7 +25,7 @@ var ChangeServerModal = (function(ChangeServerModal){
 			AppMenu.prototype.setCurrentServer();
 			ModalManager.hideModal();
 			
-			if(LoginController.getLoggedIn()){
+			if(AppController.loginController.getLoggedIn()){
 				AppController.loginController.logout();
 				ViewManager.getView("#menuContainer").setLoggedOut();
 			}
@@ -77,7 +77,7 @@ var ChangeServerModal = (function(ChangeServerModal){
 		var view = this;
 		
 		ViewManager.showView(new MessageContainer("changeServer"), "#changeServerMessageContainer", function(){
-			if(LoginController.getLoggedIn()){
+			if(AppController.loginController.getLoggedIn()){
 				ViewManager.getView("#changeServerMessageContainer").displayWarning("You are currently logged in, you will be logged out if you change servers");
 			}
 		});

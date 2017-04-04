@@ -24,8 +24,10 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         ViewManager.showView(this.mc = new MessageContainer("competencyView"), "#competencyViewMessageContainer", null);
         this.autoConfigure($(containerId));
         var me = this;
-        EcCompetency.get(this.getData().id, function(framework) {
-            me.data = framework;
+        EcCompetency.get(this.getData().id, function(competency) {
+            AppController.storageController.addRecent(EcCompetency.myType, me.getData().id);
+            (ViewManager.getView(AppController.topBarContainerId)).buildRecentCompetencyList(AppController.storageController.getRecent(EcCompetency.myType));
+            me.data = competency;
             me.bindControls();
             me.predisplayCompetency();
         }, function(msg) {
@@ -72,11 +74,11 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         this.mc.displayAlert(err, "getFramework");
     };
     prototype.bindControls = function() {};
-}, {data: "Object", mc: "MessageContainer", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", mc: "MessageContainer", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
                 EcCompetency.get(id, function(data) {

@@ -288,7 +288,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		if(assertion.competency != undefined && assertion.competency != ""){
 			if(assertion.level == undefined || assertion.level == ""){
 				$("#assertionLevelInput option").removeAttr("selected");
-				$("#assertionLevelInput").append($("<option selected>No level selected</option"));
+				$("#assertionLevelInput").append($("<option selected>No level selected</option>"));
 			}
 				
 			EcLevel.searchByCompetency(AppController.serverController.getRepoInterface(), assertion.competency, function(levels){
@@ -453,7 +453,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 		}
 	
 		ViewManager.showView(new MessageContainer("assertionEdit"), "#assertionEditMessageContainer", function(){
-			if(newAssertion && !LoginController.getLoggedIn())
+			if(newAssertion && !AppController.loginController.getLoggedIn())
 			{
 				ViewManager.getView("#assertionEditMessageContainer").displayAlert("Unable to Create an Assertion Unless you Identify yourself by logging in");
 			}
@@ -507,7 +507,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 			})
 		}
 		
-		if(newAssertion && (!LoginController.getLoggedIn() || !AppController.identityController.canEdit(data))){
+		if(newAssertion && (!AppController.loginController.getLoggedIn() || !AppController.identityController.canEdit(data))){
 			$("#assertionEditSaveBtn").removeClass("fake-a-label");
 			$("#assertionEditSaveBtn").css('cursor', "default");
 			

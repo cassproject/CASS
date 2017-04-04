@@ -7,16 +7,6 @@
  * @author devlin.junker@eduworks.com
  */
 RelationshipViewScreen = (function (RelationshipViewScreen) {
-
-    var relationTypes = {
-        isEnabledBy: "is Enabled by",
-        requires: "Requires",
-        desires: "Desires",
-        narrows: "Narrows",
-        isRelatedTo: "is Related to",
-        isEquivalentTo: "is Equivalent to"
-    }
-
     /**
 	 * Handles displaying relationship details in DOM
 	 * 
@@ -38,7 +28,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
                 var a = $("<a></a>");
                 a.attr("href", "#" + CompetencyViewScreen.displayName);
                 a.text(competency.name)
-                $("#relationshipViewerSource").append(a);
+                $("#relationshipViewerSource").html(a);
                 $("#relationshipViewerSource").click(function (event) {
                     event.preventDefault();
                     ScreenManager.changeScreen(new CompetencyViewScreen(competency));
@@ -61,7 +51,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
                 var a = $("<a></a>");
                 a.attr("href", "#" + CompetencyViewScreen.displayName);
                 a.text(competency.name)
-                $("#relationshipViewerTarget").append(a);
+                $("#relationshipViewerTarget").html(a);
                 $("#relationshipViewerTarget").click(function (event) {
                     event.preventDefault();
                     ScreenManager.changeScreen(new CompetencyViewScreen(competency));
@@ -79,8 +69,8 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             });
         }
 
-        if (relation.relationType != undefined && relationTypes[relation.relationType] != undefined) {
-            $("#relationshipViewerType").text(relationTypes[relation.relationType]);
+        if (relation.relationType != undefined && AppSettings.relationTypes[relation.relationType] != undefined) {
+            $("#relationshipViewerType").text(AppSettings.relationTypes[relation.relationType]);
         } else {
             $("#relationshipViewerType").text("has a relationship with");
         }
@@ -123,7 +113,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Relation";
 
-        ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getRelation");
+        ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err, "getRelation");
     }
 
     /**
@@ -139,7 +129,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Source Competency";
 
-        ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getSource");
+        ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err, "getSource");
     }
 
     /**
@@ -155,7 +145,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
         if (err == undefined)
             err = "Unable to Connect to Server to Retrieve Target Competency";
 
-        ViewManager.getView("#competencyViewMessageContainer").displayAlert(err, "getTarget");
+        ViewManager.getView("#relationshipViewMessageContainer").displayAlert(err, "getTarget");
     }
 
     /**

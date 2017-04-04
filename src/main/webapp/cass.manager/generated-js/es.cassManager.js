@@ -1,3 +1,68 @@
+/**
+ *  Manages the storage object of the browser whether it be the session or 
+ *  local storage, and provides methods for retrieving values.
+ *  
+ *  Also holds a list of recently viewed object ids for different classes
+ *  for a specific computer in the browsers storage, this can be used
+ *  to precache objects for use or to display the recently viewed objects 
+ *  
+ *  @module cass.manager
+ *  @class SessionController
+ *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var StorageController = function() {
+    if (localStorage != null) 
+        this.storageSystem = localStorage;
+     else if (sessionStorage != null) 
+        this.storageSystem = sessionStorage;
+    var recent = this.storageSystem["cass.recent"];
+    if (recent != null && recent != "") {
+        try {
+            this.recent = JSON.parse(recent);
+        }catch (e) {
+            this.recent = {};
+        }
+    } else {
+        this.recent = {};
+    }
+};
+StorageController = stjs.extend(StorageController, null, [], function(constructor, prototype) {
+    prototype.storageSystem = null;
+    prototype.MAX_RECENT = 3;
+    prototype.recent = null;
+    prototype.getStoredValue = function(key) {
+        return this.storageSystem[key];
+    };
+    prototype.setStoredValue = function(key, val) {
+        this.storageSystem[key] = val;
+    };
+    prototype.getRecent = function(type) {
+        var list = this.recent[type];
+        if (list == null) {
+            list = [];
+            this.recent[type] = list;
+            this.storageSystem["cass.recent"] = JSON.stringify(this.recent);
+        }
+        return list;
+    };
+    prototype.addRecent = function(type, id) {
+        var list = this.recent[type];
+        if (list == null) {
+            list = [id];
+        } else if (list.indexOf(id) == -1) {
+            if (list.length < this.MAX_RECENT) {
+                list.push(id);
+            } else {
+                list.shift();
+                list.push(id);
+            }
+        }
+        this.recent[type] = list;
+        this.storageSystem["cass.recent"] = JSON.stringify(this.recent);
+    };
+}, {storageSystem: "Storage", recent: {name: "Map", arguments: [null, {name: "Array", arguments: [null]}]}}, {});
 var AdvancedPermissionsModal = function(data, callback, onlyReaders) {
     EcModal.call(this);
     this.data = data;
@@ -108,6 +173,34 @@ SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, protot
     };
 }, {onClose: "Callback0"}, {});
 /**
+ *  Stub for the AddCompetenciesToFrameworkModal
+ *  
+ *  @module cass.manager
+ *  @author devlin.junker@eduworks.com
+ *  @class AddCompetenciesToFrameworkModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddToFrameworkModal = /**
+ *  @constructor
+ *  @param {EcRemoteLinkedData || EcRemoteLinkedData[]} data
+ *  			The competency or array of competencies to add to the framework selected in the modal
+ */
+function(data) {
+    EcModal.call(this);
+    this.data = data;
+};
+AddToFrameworkModal = stjs.extend(AddToFrameworkModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addToFramework.html";
+    };
+}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+/**
  *  Stub for the AddFieldModal
  *  
  *  @module cass.manager
@@ -151,45 +244,18 @@ EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constru
         return "partial/modal/viewEvidence.html";
     };
 }, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
-/**
- *  Stub for the AddCompetenciesToFrameworkModal
- *  
- *  @module cass.manager
- *  @author devlin.junker@eduworks.com
- *  @class AddCompetenciesToFrameworkModal
- *  @extends EcModal
- *  @constructor
- */
-var AddCompetenciesToFrameworkModal = /**
- *  @constructor
- *  @param {EcRemoteLinkedData || EcRemoteLinkedData[]} data
- *  			The competency or array of competencies to add to the framework selected in the modal
- */
-function(data) {
-    EcModal.call(this);
-    this.data = data;
-};
-AddCompetenciesToFrameworkModal = stjs.extend(AddCompetenciesToFrameworkModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "medium";
-    prototype.data = null;
-    prototype.getModalSize = function() {
-        return this.modalSize;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/modal/addToFramework.html";
-    };
-}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
 var MessageModal = function(header, text, size, okCallback) {
     EcModal.call(this);
     this.header = header;
     this.message = text;
-    this.modalSize = size;
+    if (size != null) 
+        this.modalSize = size;
     this.okCallback = okCallback;
 };
 MessageModal = stjs.extend(MessageModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
-    prototype.header = null;
-    prototype.message = null;
+    prototype.header = "";
+    prototype.message = "";
     prototype.okCallback = null;
     prototype.getModalSize = function() {
         return this.modalSize;
@@ -428,6 +494,10 @@ AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
     prototype.getHtmlLocation = function() {
         return "partial/other/appMenu.html";
     };
+    prototype.showRepoMenu = function(show) {};
+    prototype.showExamplesMenu = function(show) {};
+    prototype.buildRecentCompetencyList = function(list) {};
+    prototype.buildRecentFrameworkList = function(list) {};
 }, {}, {});
 var Switch = function(onSwitch, switchedOn, switchName) {
     EcView.call(this);
@@ -469,6 +539,18 @@ Switch = stjs.extend(Switch, EcView, [], function(constructor, prototype) {
         $(this.switchId).prop("checked", checked);
     };
 }, {onSwitch: "EventHandler"}, {});
+var FrameworkList = function(data, callbacks) {
+    EcView.call(this);
+    this.data = data;
+    this.callbacks = callbacks;
+};
+FrameworkList = stjs.extend(FrameworkList, EcView, [], function(constructor, prototype) {
+    prototype.data = null;
+    prototype.callbacks = null;
+    prototype.getHtmlLocation = function() {
+        return "partial/other/frameworkList.html";
+    };
+}, {data: "Object", callbacks: "Object"}, {});
 var MessageContainer = function(idPrefix) {
     EcView.call(this);
     this.prefix = idPrefix;
@@ -481,6 +563,199 @@ MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructo
     prototype.displayAlert = function(msg, msgId) {};
 }, {}, {});
 /**
+ *  Manages the server that the search controller (through EcRepository) and
+ *  the identity controller (through EcIdentityManager) communicate with. 
+ *  Allows the user to change the server that the UI is talking with via the change server modal.
+ *  
+ *  @module cass.manager
+ *  @class ServerController
+ *  @constructor
+ *  
+ *  @author devlin.junker@eduworks.com
+ */
+var ServerController = /**
+ *  On Startup:
+ *  	1) See if repo on this server, if so add the server given and the found server to the list
+ *   2) Determine storage system to load/save list of other servers 
+ *   3) Switch to a previously selected server if the UI has been used before on this browser
+ *   4) Set interfaces to point at endpoint
+ *  
+ *  @constructor
+ *  @param {String} defaultServer
+ *  			Base URL of the service end points on the server
+ *  @param {String} defaultServerName
+ *  			Name of the Default Server (displayed to the user when selecting servers)
+ */
+function(storageSystem, defaultServer, defaultServerName) {
+    this.storageSystem = storageSystem;
+    if (storageSystem == null) 
+        this.storageSystem = new StorageController();
+    this.serverList = {};
+    this.repoInterface = new EcRepository();
+    this.remoteIdentityManager = new EcRemoteIdentityManager();
+    this.repoInterface.autoDetectRepository();
+    EcRepository.caching = true;
+    if (this.repoInterface.selectedServer != null) {
+        this.addServer(defaultServerName, defaultServer, null, null);
+        defaultServer = this.repoInterface.selectedServer;
+        defaultServerName = "This Server (" + window.location.host + ")";
+        this.addServer(defaultServerName, defaultServer, null, null);
+    }
+    var cachedList = storageSystem.getStoredValue("cass.server.list");
+    if (cachedList != null) {
+        cachedList = JSON.parse(cachedList);
+        for (var serverName in (cachedList)) {
+            this.addServer(serverName, (cachedList)[serverName], null, null);
+        }
+    }
+    var cachedSelected = storageSystem.getStoredValue("cass.server.selected");
+    if (cachedSelected != null && this.serverList[cachedSelected] != null) {
+        this.selectedServerName = cachedSelected;
+        this.selectedServerUrl = this.serverList[this.selectedServerName];
+    } else if (defaultServer != null) {
+        this.selectedServerUrl = defaultServer;
+        if (defaultServerName != null) {
+            this.selectedServerName = defaultServerName;
+        } else {
+            this.selectedServerName = "Default";
+        }
+    } else {
+        this.selectedServerUrl = "http://localhost:9200/api/custom/";
+        this.selectedServerName = "Default (Localhost)";
+        console.warn("Default Server Not Given, Set to LocalHost");
+    }
+    storageSystem.setStoredValue("cass.server.selected", this.selectedServerName);
+    if (this.serverList[this.selectedServerName] == null) 
+        this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
+    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+    this.remoteIdentityManager.configureFromServer(null, function(p1) {
+        alert(p1);
+    });
+    this.repoInterface.selectedServer = this.selectedServerUrl;
+};
+ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
+    prototype.serverList = null;
+    prototype.storageSystem = null;
+    prototype.selectedServerUrl = null;
+    prototype.selectedServerName = null;
+    prototype.repoInterface = null;
+    prototype.remoteIdentityManager = null;
+    /**
+     *  Adds a server to this list of servers that can be selected from the change server modal
+     *  
+     *  @method addServer
+     *  @param {String} name
+     *  			Name of the server to be displayed in the list
+     *  @param {String} url
+     *  			URL of the server that corresponds to the name
+     *  @param {Callback0} success
+     *  			Callback when the server is successfully added to the list
+     *  @param {Callback1<String>} failure
+     *  			Callback for any errors during adding to the list
+     */
+    prototype.addServer = function(name, url, success, failure) {
+        if (name == null) {
+            if (failure != null) 
+                failure("Cannot Add Server without a name");
+            return;
+        }
+        if (url == null) {
+            if (failure != null) 
+                failure("Cannot Add Server with blank url");
+            return;
+        }
+        this.serverList[name] = url;
+        this.storageSystem.setStoredValue("cass.server.list", JSON.stringify(this.serverList));
+        if (success != null) 
+            success();
+    };
+    /**
+     *  Sets the server that the UI will communicate with, changes where the EcRepository and 
+     *  EcRemoteIdentity Manager are pointing to and communicating with
+     *  
+     *  @method selectServer
+     *  @param {String} identifier
+     *  			Name of the server that was selected from the list, used to find URL to point at
+     *  @param {Callback0} success
+     *  			Callback when successfully change where the components are pointing and set the
+     *  			selected server values
+     *  @param {Callback1<String>} failure
+     *  			Callback if any errors occur during changing where the components are pointing
+     */
+    prototype.selectServer = function(identifier, success, failure) {
+        var that = this;
+        var oldServer = this.selectedServerUrl;
+        var oldServerName = this.selectedServerName;
+        for (var serverName in this.serverList) {
+            if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
+                this.selectedServerName = serverName;
+                this.selectedServerUrl = this.serverList[serverName];
+                if (this.repoInterface != null) 
+                    this.repoInterface.selectedServer = this.selectedServerUrl;
+                if (this.remoteIdentityManager != null) 
+                    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+                this.remoteIdentityManager.configureFromServer(function(p1) {
+                    that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
+                    if (success != null) 
+                        success();
+                }, function(p1) {
+                    if (that.repoInterface != null) 
+                        that.repoInterface.selectedServer = oldServer;
+                    if (that.remoteIdentityManager != null) 
+                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
+                    that.selectedServerUrl = oldServer;
+                    that.selectedServerName = oldServerName;
+                    that.remoteIdentityManager.configureFromServer(null, null);
+                    if (failure != null) 
+                        failure(p1);
+                });
+                return;
+            }
+        }
+        if (failure != null) 
+            failure("Unable to select server requested: " + identifier);
+    };
+    /**
+     *  Used to retrieve the interface to the repository we are currently pointed at
+     *  
+     *  @method getRepoInterface
+     *  @return {EcRepository}
+     *  			Repository Interface to call search/get/delete methods on
+     */
+    prototype.getRepoInterface = function() {
+        return this.repoInterface;
+    };
+    /**
+     *  Used during setup to set which EcRepository the server controller manages
+     *  
+     *  @method setRepoInterface
+     *  @param {EcRepository} repoInterface
+     *  			The interface to the repository to be used by the search controller
+     */
+    prototype.setRepoInterface = function(repoInterface) {
+        this.repoInterface = repoInterface;
+        repoInterface.selectedServer = this.selectedServerUrl;
+    };
+    prototype.getRemoteIdentityManager = function() {
+        return this.remoteIdentityManager;
+    };
+    /**
+     *  Used during setup to set which EcRemoteIdentityManager the server controller manages
+     *  
+     *  @method setRemoteIdentityManager
+     *  @param {EcRemoteIdentityManager} loginServer
+     *  			The interface to the server for managing identities and logging in with
+     *  			the identity controller and login controller
+     */
+    prototype.setRemoteIdentityManager = function(loginServer) {
+        this.remoteIdentityManager = loginServer;
+        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
+        this.remoteIdentityManager.configureFromServer(null, function(p1) {
+            alert(p1);
+        });
+    };
+}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
+/**
  *  Manages the current user's logged in state and interfaces with the server to 
  *  sign in/out and create users
  *  
@@ -490,14 +765,20 @@ MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructo
  *  
  *  @author devlin.junker@eduworks.com
  */
-var LoginController = function() {};
+var LoginController = /**
+ *  On startup, check if the last time the user was on the page, whether or not they were signed in
+ */
+function(storage) {
+    this.storageSystem = storage;
+    this.refreshLoggedIn = this.storageSystem.getStoredValue("cass.login") == "true" ? true : false;
+};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
     prototype.loginServer = null;
     prototype.identity = null;
-    constructor.refreshLoggedIn = false;
-    constructor.loggedIn = false;
-    constructor.admin = false;
-    constructor.storageSystem = null;
+    prototype.refreshLoggedIn = false;
+    prototype.loggedIn = false;
+    prototype.admin = false;
+    prototype.storageSystem = null;
     /**
      *  Setter for the boolean flag of whether or not a user is loged in
      *  
@@ -506,10 +787,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  @param {boolean} val 
      *  			true if signed in, false if logged out
      */
-    constructor.setLoggedIn = function(val) {
-        LoginController.loggedIn = val;
-        if (LoginController.storageSystem != null) 
-            LoginController.storageSystem["cass.login"] = val;
+    prototype.setLoggedIn = function(val) {
+        this.loggedIn = val;
+        if (this.storageSystem != null) 
+            this.storageSystem.setStoredValue("cass.login", val);
     };
     /**
      *  Getter for boolean flag of whether or not user is logged in
@@ -519,8 +800,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  @return {boolean} 
      *  			true if signed in, false if logged out
      */
-    constructor.getLoggedIn = function() {
-        return LoginController.loggedIn;
+    prototype.getLoggedIn = function() {
+        return this.loggedIn;
     };
     /**
      *  Setter for boolean flag of whether or not the current user is admin
@@ -530,7 +811,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  			true = admin, false = not admin
      */
     prototype.setAdmin = function(val) {
-        LoginController.admin = val;
+        this.admin = val;
     };
     /**
      *  Getter for boolean flag of whether or not current user is admin
@@ -540,7 +821,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  			true = admin, false = not admin
      */
     prototype.getAdmin = function() {
-        return LoginController.admin;
+        return this.admin;
     };
     /**
      *  If the last time the user was using the application, they were signed in this
@@ -552,8 +833,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  		true if previously signed in, false if not signed in last time, or user is here for
      *  		the first time from this computer
      */
-    constructor.getPreviouslyLoggedIn = function() {
-        return LoginController.refreshLoggedIn;
+    prototype.getPreviouslyLoggedIn = function() {
+        return this.refreshLoggedIn;
     };
     prototype.setLoginServer = function(loginServer) {
         this.loginServer = loginServer;
@@ -580,7 +861,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         this.loginServer.fetch(function(p1) {
             EcIdentityManager.readContacts();
             EcRepository.cache = new Object();
-            LoginController.setLoggedIn(true);
+            that.setLoggedIn(true);
             if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
                 that.loginServer.fetchServerAdminKeys(function(keys) {
@@ -610,7 +891,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         this.loginServer.clear();
         this.identity.selectedIdentity = null;
         EcRepository.cache = new Object();
-        LoginController.setLoggedIn(false);
+        this.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
         this.setAdmin(false);
@@ -658,17 +939,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             return null;
         });
     };
-}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
-(function() {
-    if (localStorage != null) 
-        LoginController.storageSystem = localStorage;
-     else if (sessionStorage != null) 
-        LoginController.storageSystem = sessionStorage;
-    if (LoginController.storageSystem["cass.login"] != null) {
-        LoginController.refreshLoggedIn = LoginController.storageSystem["cass.login"] == "true" ? true : false;
-        LoginController.storageSystem["cass.login"] = false;
-    }
-})();
+}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "StorageController"}, {});
 /**
  *  Handles loading the CASS Manager settings from the settings.js file,
  *  this includes the default server to show and the message to show when the user
@@ -685,9 +956,14 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
     constructor.FIELD_MSG_RETURN = "returnLoginMessage";
     constructor.FIELD_SERVER_URL = "defaultServerUrl";
     constructor.FIELD_SERVER_NAME = "defaultServerName";
+    constructor.FIELD_SHOW_REPO_MENU = "showRepoMenu";
+    constructor.FIELD_SHOW_EXAMPLES_MENU = "showExamplesMenu";
     constructor.returnLoginMessage = "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.";
     constructor.defaultServerUrl = "https://sandbox.service.cassproject.org/";
     constructor.defaultServerName = "CASS Sandbox";
+    constructor.showRepoMenu = false;
+    constructor.showExamplesMenu = false;
+    constructor.relationTypes = null;
     /**
      *  Loads the settings from the settings file at settings/settings.js
      *  
@@ -706,11 +982,20 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
             var serverName = (settingsObj)[AppSettings.FIELD_SERVER_NAME];
             if (serverName != null) 
                 AppSettings.defaultServerUrl = serverName;
+            var showRepo = Boolean((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU]);
+            if (showRepo != null) 
+                AppSettings.showRepoMenu = showRepo;
+            var showExamples = Boolean((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU]);
+            if (showExamples != null) 
+                AppSettings.showExamplesMenu = showExamples;
         }, function(p1) {
             console.error("Unable to load settings file");
         });
     };
-}, {}, {});
+}, {relationTypes: {name: "Map", arguments: [null, null]}}, {});
+(function() {
+    AppSettings.relationTypes = {"isEnabledBy": "is Enabled by", "requires": "Requires", "desires": "Desires", "narrows": "Narrows", "isRelatedTo": "is Related to", "isEquivalentTo": "is Equivalent to"};
+})();
 /**
  *  Manages the current selected identity for the user, and interfaces 
  *  the EBAC Identity Manager library to provide helper functions for 
@@ -892,203 +1177,414 @@ IdentityController = stjs.extend(IdentityController, null, [], function(construc
         return false;
     };
 }, {selectedIdentity: "EcIdentity", unknownContact: "EcContact"}, {});
+var WelcomeScreen = function() {
+    EcScreen.call(this);
+};
+WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "welcome";
+    prototype.getDisplayName = function() {
+        return WelcomeScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/welcome.html";
+    };
+}, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 /**
- *  Manages the server that the search controller (through EcRepository) and
- *  the identity controller (through EcIdentityManager) communicate with. 
- *  Allows the user to change the server that the UI is talking with via the change server modal.
+ *  Created by fray on 3/10/17.
+ */
+var AlignmentEditorColumn = function() {
+    EcView.call(this);
+    this.collection = new Array();
+    this.selected = new Array();
+    this.highlighted = new Array();
+};
+AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(constructor, prototype) {
+    constructor.COMPETENCY = Competency.myType;
+    constructor.CREDENTIAL = new Credential().type;
+    constructor.COURSE = new Course().type;
+    constructor.RESOURCE = new CreativeWork().type;
+    constructor.BADGE = new Badge().type;
+    prototype.columnIndex = -1;
+    prototype.containerId = null;
+    prototype.getHtmlLocation = function() {
+        return "partial/other/alignmentEditor.html";
+    };
+    prototype.selectedCategory = null;
+    prototype.selectedSource = null;
+    prototype.selectedCollection = null;
+    prototype.sourceRepo = null;
+    prototype.filter = null;
+    prototype.type = null;
+    prototype.urlCollectionIdentifier = null;
+    prototype.collectionSearchString = null;
+    prototype.collection = null;
+    prototype.selected = null;
+    prototype.highlighted = null;
+    prototype.weight = null;
+    prototype.lift = null;
+    prototype.relations = null;
+    prototype.left = null;
+    prototype.right = null;
+    prototype.screenHook = null;
+    prototype.display = function(containerId) {
+        this.containerId = containerId;
+        this.bindControls(containerId);
+    };
+    prototype.bindControls = function(containerId) {};
+    prototype.toggleNavigation = function() {};
+    prototype.getType = function() {
+        if (this.selectedCategory == "course") 
+            return AlignmentEditorColumn.COURSE;
+        if (this.selectedCategory == "competency") 
+            return AlignmentEditorColumn.COMPETENCY;
+        if (this.selectedCategory == "credential") 
+            return AlignmentEditorColumn.CREDENTIAL;
+        if (this.selectedCategory == "resource") 
+            return AlignmentEditorColumn.RESOURCE;
+        if (this.selectedCategory == "badge") 
+            return AlignmentEditorColumn.BADGE;
+        return null;
+    };
+    prototype.populate = function() {};
+    prototype.redraw = function() {};
+    prototype.redrawJs = function() {};
+    prototype.redrawJsInit = function() {};
+    prototype.redrawJsFinal = function() {};
+    prototype.selectElement = function(id) {
+        for (var i = 0; i < this.selected.length; i++) 
+            if (this.selected[i].shortId() == id) {
+                this.selected.splice(i, 1);
+                if (this.right != null) 
+                    this.right.deselectedEvent(id, true);
+                if (this.left != null) 
+                    this.left.deselectedEvent(id, false);
+                return;
+            }
+        for (var i = 0; i < this.collection.length; i++) 
+            if (this.collection[i].shortId() == id) {
+                this.selected.push(this.collection[i]);
+                if (this.right != null) 
+                    this.right.selectedEvent(id, true);
+                if (this.left != null) 
+                    this.left.selectedEvent(id, false);
+                return;
+            }
+    };
+    prototype.selectedEvent = function(id, propegatesRight) {};
+    prototype.deselectedEvent = function(id, propegatesRight) {};
+    prototype.populateListCourses = function() {
+        var me = this;
+        var params = new Object();
+        (params)["size"] = 5000;
+        this.sourceRepo.searchWithParams(new Course().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(strings) {
+            me.collection = strings;
+            me.selected = new Array();
+            me.highlighted = new Array();
+            me.populate();
+        }, function(s) {});
+    };
+    prototype.populateListCredentials = function() {
+        var me = this;
+        var params = new Object();
+        (params)["size"] = 5000;
+        this.sourceRepo.searchWithParams(new Credential().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(credentials) {
+            me.collection = credentials;
+            me.selected = new Array();
+            me.highlighted = new Array();
+            me.populate();
+        }, function(s) {});
+    };
+    prototype.populateListBadges = function() {
+        var me = this;
+        var params = new Object();
+        (params)["size"] = 5000;
+        this.sourceRepo.searchWithParams(new Badge().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(badges) {
+            me.collection = badges;
+            me.selected = new Array();
+            me.highlighted = new Array();
+            me.populate();
+        }, function(s) {});
+    };
+    prototype.populateListCompetencies = function() {
+        var me = this;
+        EcFramework.get(this.selectedCollection, function(framework) {
+            var eah = new EcAsyncHelper();
+            me.collection = new Array();
+            me.selected = new Array();
+            me.highlighted = new Array();
+            eah.each(framework.competency, function(s, callback0) {
+                EcCompetency.get(s, function(ecCompetency) {
+                    me.collection.push(ecCompetency);
+                    callback0();
+                }, function(s) {
+                    callback0();
+                });
+            }, function(strings) {
+                me.populate();
+            });
+        }, function(s) {});
+    };
+    prototype.getRelations = function() {
+        var query = "";
+        var me = this;
+        if (me.selectedCategory == "competency") {
+            for (var i = 0; i < me.collection.length; i++) {
+                if (i > 0) 
+                    query += " OR ";
+                query += "source:\"" + me.collection[i].shortId() + "\"";
+            }
+            var params = new Object();
+            (params)["size"] = 5000;
+            EcAlignment.search(this.sourceRepo, query, function(strings) {
+                me.relations = strings;
+                if (me.screenHook != null) 
+                    me.screenHook();
+                 else 
+                    me.redraw();
+            }, function(s) {}, params);
+        } else {
+            for (var i = 0; i < me.collection.length; i++) {
+                if (i > 0) 
+                    query += " OR ";
+                query += "url:\"" + me.collection[i].shortId() + "\"";
+            }
+            query = "(" + query + ") AND " + new CreativeWork().getSearchStringByType();
+            var params = new Object();
+            (params)["size"] = 5000;
+            me.relations = new Array();
+            me.sourceRepo.searchWithParams(query, params, function(ecRemoteLinkedData) {
+                var cw = new CreativeWork();
+                cw.copyFrom(ecRemoteLinkedData);
+                me.relations.push(cw);
+            }, function(strings) {
+                if (me.screenHook != null) 
+                    me.screenHook();
+                 else 
+                    me.redraw();
+            }, function(s) {});
+        }
+    };
+    prototype.populateListResources = function() {
+        var me = this;
+        var params = new Object();
+        (params)["size"] = 5000;
+        this.sourceRepo.searchWithParams(new CreativeWork().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(strings) {
+            me.collection = strings;
+            me.selected = new Array();
+            me.highlighted = new Array();
+            me.populate();
+        }, function(s) {});
+    };
+}, {sourceRepo: "EcRepository", collection: {name: "Array", arguments: ["Thing"]}, selected: {name: "Array", arguments: ["Thing"]}, highlighted: {name: "Array", arguments: ["Thing"]}, weight: {name: "Map", arguments: [null, null]}, lift: {name: "Map", arguments: [null, null]}, relations: {name: "Array", arguments: ["Thing"]}, left: "AlignmentEditorColumn", right: "AlignmentEditorColumn", screenHook: "Callback0"}, {});
+/**
+ *  Main entry point of the application. Figures out the settings and
+ *  starts the EC UI Framework at the appropriate screen.
  *  
  *  @module cass.manager
- *  @class ServerController
- *  @constructor
+ *  @class AppController
+ *  @static
  *  
  *  @author devlin.junker@eduworks.com
  */
-var ServerController = /**
- *  On Startup:
- *  	1) See if repo on this server, if so add the server given and the found server to the list
- *   2) Determine storage system to load/save list of other servers 
- *   3) Switch to a previously selected server if the UI has been used before on this browser
- *   4) Set interfaces to point at endpoint
- *  
- *  @constructor
- *  @param {String} defaultServer
- *  			Base URL of the service end points on the server
- *  @param {String} defaultServerName
- *  			Name of the Default Server (displayed to the user when selecting servers)
- */
-function(defaultServer, defaultServerName) {
-    this.serverList = {};
-    this.repoInterface = new EcRepository();
-    this.remoteIdentityManager = new EcRemoteIdentityManager();
-    if (localStorage != null) 
-        this.storageSystem = localStorage;
-     else if (sessionStorage != null) 
-        this.storageSystem = sessionStorage;
-    this.repoInterface.autoDetectRepository();
-    EcRepository.caching = true;
-    if (this.repoInterface.selectedServer != null) {
-        this.addServer(defaultServerName, defaultServer, null, null);
-        defaultServer = this.repoInterface.selectedServer;
-        defaultServerName = "This Server (" + window.location.host + ")";
-        this.addServer(defaultServerName, defaultServer, null, null);
-    }
-    var cachedList = this.storageSystem["cass.server.list"];
-    if (cachedList != null) {
-        cachedList = JSON.parse(cachedList);
-        for (var serverName in (cachedList)) {
-            this.addServer(serverName, (cachedList)[serverName], null, null);
-        }
-    }
-    var cachedSelected = this.storageSystem["cass.server.selected"];
-    if (cachedSelected != null && this.serverList[cachedSelected] != null) {
-        this.selectedServerName = cachedSelected;
-        this.selectedServerUrl = this.serverList[this.selectedServerName];
-    } else if (defaultServer != null) {
-        this.selectedServerUrl = defaultServer;
-        if (defaultServerName != null) {
-            this.selectedServerName = defaultServerName;
-        } else {
-            this.selectedServerName = "Default";
-        }
-    } else {
-        this.selectedServerUrl = "http://localhost:9200/api/custom/";
-        this.selectedServerName = "Default (Localhost)";
-        console.warn("Default Server Not Given, Set to LocalHost");
-    }
-    this.storageSystem["cass.server.selected"] = this.selectedServerName;
-    if (this.serverList[this.selectedServerName] == null) 
-        this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
-    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-    this.remoteIdentityManager.configureFromServer(null, function(p1) {
-        alert(p1);
-    });
-    this.repoInterface.selectedServer = this.selectedServerUrl;
-};
-ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
-    prototype.serverList = null;
-    prototype.storageSystem = null;
-    prototype.selectedServerUrl = null;
-    prototype.selectedServerName = null;
-    prototype.repoInterface = null;
-    prototype.remoteIdentityManager = null;
+var AppController = function() {};
+AppController = stjs.extend(AppController, null, [], function(constructor, prototype) {
+    constructor.topBarContainerId = "#menuContainer";
     /**
-     *  Adds a server to this list of servers that can be selected from the change server modal
+     *  Manages the server connection by storing and configuring 
+     *  the CASS instance endpoint for the rest of the application
+     *  and managing the interfaces to it.  
      *  
-     *  @method addServer
-     *  @param {String} name
-     *  			Name of the server to be displayed in the list
-     *  @param {String} url
-     *  			URL of the server that corresponds to the name
-     *  @param {Callback0} success
-     *  			Callback when the server is successfully added to the list
-     *  @param {Callback1<String>} failure
-     *  			Callback for any errors during adding to the list
+     *  @property serverController
+     *  @static
+     *  @type ServerController
      */
-    prototype.addServer = function(name, url, success, failure) {
-        if (name == null) {
-            if (failure != null) 
-                failure("Cannot Add Server without a name");
-            return;
-        }
-        if (url == null) {
-            if (failure != null) 
-                failure("Cannot Add Server with blank url");
-            return;
-        }
-        this.serverList[name] = url;
-        this.storageSystem["cass.server.list"] = JSON.stringify(this.serverList);
-        if (success != null) 
-            success();
-    };
+    constructor.serverController = null;
     /**
-     *  Sets the server that the UI will communicate with, changes where the EcRepository and 
-     *  EcRemoteIdentity Manager are pointing to and communicating with
+     *  Manages the current user's identities and contacts through the
+     *  KBAC libraries. 
      *  
-     *  @method selectServer
-     *  @param {String} identifier
-     *  			Name of the server that was selected from the list, used to find URL to point at
-     *  @param {Callback0} success
-     *  			Callback when successfully change where the components are pointing and set the
-     *  			selected server values
-     *  @param {Callback1<String>} failure
-     *  			Callback if any errors occur during changing where the components are pointing
+     *  @property identityController
+     *  @static
+     *  @type IdentityController
      */
-    prototype.selectServer = function(identifier, success, failure) {
-        if (LoginController.getLoggedIn()) {
-            LoginController.setLoggedIn(false);
-        }
-        var that = this;
-        var oldServer = this.selectedServerUrl;
-        var oldServerName = this.selectedServerName;
-        for (var serverName in this.serverList) {
-            if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
-                this.selectedServerName = serverName;
-                this.selectedServerUrl = this.serverList[serverName];
-                if (this.repoInterface != null) 
-                    this.repoInterface.selectedServer = this.selectedServerUrl;
-                if (this.remoteIdentityManager != null) 
-                    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-                this.remoteIdentityManager.configureFromServer(function(p1) {
-                    that.storageSystem["cass.server.selected"] = that.selectedServerName;
-                    if (success != null) 
-                        success();
-                }, function(p1) {
-                    if (that.repoInterface != null) 
-                        that.repoInterface.selectedServer = oldServer;
-                    if (that.remoteIdentityManager != null) 
-                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
-                    that.selectedServerUrl = oldServer;
-                    that.selectedServerName = oldServerName;
-                    that.remoteIdentityManager.configureFromServer(null, null);
-                    if (failure != null) 
-                        failure(p1);
-                });
-                return;
-            }
-        }
-        if (failure != null) 
-            failure("Unable to select server requested: " + identifier);
-    };
+    constructor.identityController = null;
     /**
-     *  Used to retrieve the interface to the repository we are currently pointed at
+     *  Handles the login/logout and admin communications with the server.
      *  
-     *  @method getRepoInterface
-     *  @return {EcRepository}
-     *  			Repository Interface to call search/get/delete methods on
+     *  @property loginController
+     *  @static
+     *  @type LoginController
      */
-    prototype.getRepoInterface = function() {
-        return this.repoInterface;
-    };
+    constructor.loginController = null;
     /**
-     *  Used during setup to set which EcRepository the server controller manages
+     *  Handles the browser storage
      *  
-     *  @method setRepoInterface
-     *  @param {EcRepository} repoInterface
-     *  			The interface to the repository to be used by the search controller
+     *  @property sessionController
+     *  @static
+     *  @type SessionController
      */
-    prototype.setRepoInterface = function(repoInterface) {
-        this.repoInterface = repoInterface;
-        repoInterface.selectedServer = this.selectedServerUrl;
-    };
-    prototype.getRemoteIdentityManager = function() {
-        return this.remoteIdentityManager;
-    };
+    constructor.storageController = null;
     /**
-     *  Used during setup to set which EcRemoteIdentityManager the server controller manages
+     *  Entry point of the application
      *  
-     *  @method setRemoteIdentityManager
-     *  @param {EcRemoteIdentityManager} loginServer
-     *  			The interface to the server for managing identities and logging in with
-     *  			the identity controller and login controller
+     *  @param {String[]} args
+     *  			Not used at all...
      */
-    prototype.setRemoteIdentityManager = function(loginServer) {
-        this.remoteIdentityManager = loginServer;
-        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-        this.remoteIdentityManager.configureFromServer(null, function(p1) {
-            alert(p1);
+    constructor.main = function(args) {
+        AppController.identityController = new IdentityController();
+        AppController.storageController = new StorageController();
+        AppController.loginController = new LoginController(AppController.storageController);
+        AppController.serverController = new ServerController(AppController.storageController, AppSettings.defaultServerUrl, AppSettings.defaultServerName);
+        AppSettings.loadSettings();
+        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
+        AppController.loginController.identity = AppController.identityController;
+        ScreenManager.setDefaultScreen(new WelcomeScreen());
+        $(window.document).ready(function(arg0, arg1) {
+            ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
+                ($(window.document)).foundation();
+                var menu = ViewManager.getView(AppController.topBarContainerId);
+                menu.showRepoMenu(AppSettings.showRepoMenu);
+                menu.showExamplesMenu(AppSettings.showExamplesMenu);
+            });
+            return true;
         });
     };
-}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "Storage", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
+}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", storageController: "StorageController"}, {});
+if (!stjs.mainCallDisabled) 
+    AppController.main();
+/**
+ *  Created by fray on 3/23/17.
+ */
+var AlignmentExplorerColumn = function() {
+    AlignmentEditorColumn.call(this);
+};
+AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorColumn, [], function(constructor, prototype) {
+    prototype.idToComments = null;
+    prototype.selectElement = function(id) {
+        for (var i = 0; i < this.selected.length; i++) 
+            if (this.selected[i].shortId() == id) {
+                this.selected.splice(i, 1);
+                if (this.right != null) 
+                    this.right.deselectedEvent(id, true);
+                if (this.left != null) 
+                    this.left.deselectedEvent(id, false);
+                return;
+            }
+        for (var i = 0; i < this.collection.length; i++) 
+            if (this.collection[i].shortId() == id) {
+                this.selected.push(this.collection[i]);
+                if (this.right != null) 
+                    this.right.selectedEvent(id, true);
+                if (this.left != null) 
+                    this.left.selectedEvent(id, false);
+                return;
+            }
+    };
+    prototype.selectedEvent = function(id, propegatesRight) {
+        if (this.screenHook != null) 
+            this.screenHook();
+    };
+    prototype.redraw = function() {
+        var sel = null;
+        if (this.left != null) 
+            sel = this.left.selected;
+        var rels = this.relations;
+        if (rels == null) 
+            rels = new Array();
+        if (this.left != null) 
+            rels = rels.concat(this.left.relations);
+        if (sel != null) {
+            this.idToComments = new Object();
+            this.highlighted = new Array();
+            for (var i = 0; i < sel.length; i++) {
+                var t = sel[i];
+                this.highlight(t, rels, new Array());
+            }
+            this.selected = this.highlighted;
+        }
+        this.redrawJs();
+    };
+    prototype.redrawJs = function() {};
+    prototype.redrawJsInit = function() {};
+    prototype.appendComment = function(id, comment) {
+        var tray = (this.idToComments)[id];
+        if (tray == null) {
+            tray = new Array();
+            (this.idToComments)[id] = tray;
+        }
+        EcArray.setAdd(tray, comment);
+    };
+    prototype.highlight = function(selectedItem, rels, walked) {
+        if (EcArray.has(walked, selectedItem)) 
+            return;
+        walked.push(selectedItem);
+        if (!EcArray.has(this.highlighted, selectedItem)) 
+            if (EcArray.has(this.collection, selectedItem)) 
+                this.highlighted.push(selectedItem);
+        for (var j = 0; j < rels.length; j++) {
+            var relation = rels[j];
+            if (new Relation().isA(relation.type)) {
+                var r = relation;
+                if (selectedItem.shortId() == r.source || selectedItem.shortId() == r.target) {
+                    var relationOk = false;
+                    var comment = "";
+                    if (selectedItem.shortId() == r.target && r.relationType == Relation.NARROWS) {
+                        relationOk = true;
+                        comment = "Subcompetency.";
+                    }
+                    if (r.relationType == Relation.IS_EQUIVALENT_TO) {
+                        relationOk = true;
+                        comment = "Equivalent competency.";
+                    }
+                    if (selectedItem.shortId() == r.source && r.relationType == Relation.REQUIRES) {
+                        relationOk = true;
+                        comment = "Required competency.";
+                    }
+                    if (relationOk) 
+                        for (var k = 0; k < this.collection.length; k++) {
+                            var candidate = this.collection[k];
+                            if (candidate.shortId() == r.source || candidate.shortId() == r.target) {
+                                this.appendComment(selectedItem.shortId(), comment);
+                                EcArray.setAdd(this.highlighted, candidate);
+                                this.highlight(candidate, rels, walked);
+                            }
+                        }
+                }
+            }
+            if (new CreativeWork().isA(relation.type)) {
+                var r = relation;
+                if (r.educationalAlignment != null) 
+                    if (selectedItem.shortId() == r.url || selectedItem.shortId() == r.educationalAlignment.targetUrl) {
+                        for (var k = 0; k < this.collection.length; k++) {
+                            var candidate = this.collection[k];
+                            if (candidate.shortId() == r.url || candidate.shortId() == r.educationalAlignment.targetUrl) {
+                                var comment = "";
+                                if (candidate.shortId() == r.url) {
+                                    if (r.educationalAlignment.alignmentType == "requires") 
+                                        comment = "Requires " + this.left.selectedCategory;
+                                }
+                                if (candidate.shortId() == r.educationalAlignment.targetUrl) {
+                                    if (r.educationalAlignment.alignmentType == "teaches") 
+                                        comment = "Taught by " + this.left.selectedCategory;
+                                    if (r.educationalAlignment.alignmentType == "assesses") 
+                                        comment = "Assessed by " + this.left.selectedCategory;
+                                    if (r.educationalAlignment.alignmentType == "http://schema.cassproject.org/0.2/vocab/asserts") 
+                                        comment = "Asserted by " + this.left.selectedCategory;
+                                }
+                                if (comment != "") 
+                                    this.appendComment(selectedItem.shortId(), comment);
+                                EcArray.setAdd(this.highlighted, candidate);
+                                this.highlight(candidate, rels, walked);
+                            }
+                        }
+                    }
+            }
+        }
+    };
+    prototype.deselectedEvent = function(id, propegatesRight) {
+        this.selectedEvent(id, propegatesRight);
+    };
+}, {idToComments: "Object", sourceRepo: "EcRepository", collection: {name: "Array", arguments: ["Thing"]}, selected: {name: "Array", arguments: ["Thing"]}, highlighted: {name: "Array", arguments: ["Thing"]}, weight: {name: "Map", arguments: [null, null]}, lift: {name: "Map", arguments: [null, null]}, relations: {name: "Array", arguments: ["Thing"]}, left: "AlignmentEditorColumn", right: "AlignmentEditorColumn", screenHook: "Callback0"}, {});
 var CassManagerScreen = function() {
     EcScreen.call(this);
 };
@@ -1101,7 +1597,7 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
         ModalManager.hideModal();
         var currentScreen = ScreenManager.getCurrentScreen();
         if (o == null) 
-            currentScreen.setData(EcView.urlParameters());
+            currentScreen.setData(URLParams.getParams());
          else 
             currentScreen.setData(o);
         ScreenManager.replaceScreen(currentScreen, null, null);
@@ -1110,11 +1606,11 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
         CassManagerScreen.showLoginModalIfReload();
     };
     constructor.showLoginModalIfReload = function() {
-        if (LoginController.getPreviouslyLoggedIn() && !LoginController.getLoggedIn()) {
+        if (AppController.loginController.getPreviouslyLoggedIn() && !AppController.loginController.getLoggedIn()) {
             ModalManager.showModal(new LoginModal(CassManagerScreen.reloadLoginCallback, null, AppSettings.returnLoginMessage), null);
         }
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 var FrameworkSearchScreen = function(lastViewed, query, ownership) {
     CassManagerScreen.call(this);
     this.lastViewed = lastViewed;
@@ -1132,7 +1628,7 @@ FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, []
     prototype.getHtmlLocation = function() {
         return "partial/screen/frameworkSearch.html";
     };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
@@ -1171,11 +1667,101 @@ FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], functi
     prototype.getHtmlLocation = function() {
         return "partial/screen/fileManager.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
             ScreenManager.startupScreen = new FileManagerScreen();
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var LevelSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+LevelSearchScreen = stjs.extend(LevelSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "levelSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return LevelSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/levelSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + LevelSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new LevelSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new LevelSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RollupRuleSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+RollupRuleSearchScreen = stjs.extend(RollupRuleSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "ruleSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return RollupRuleSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/ruleSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RollupRuleSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new RollupRuleSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new RollupRuleSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });
@@ -1197,7 +1783,7 @@ CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, 
     prototype.getHtmlLocation = function() {
         return "partial/screen/competencySearch.html";
     };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencySearchScreen.displayName)) {
@@ -1238,7 +1824,7 @@ RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function
     prototype.getHtmlLocation = function() {
         return "partial/screen/repoCreate.html";
     };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
@@ -1260,12 +1846,43 @@ AssertionSearchScreen = stjs.extend(AssertionSearchScreen, CassManagerScreen, []
     prototype.getHtmlLocation = function() {
         return "partial/screen/assertionSearch.html";
     };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + AssertionSearchScreen.displayName)) {
             ScreenManager.startupScreen = new AssertionSearchScreen(null);
             CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var UserIdentityScreen = function() {
+    CassManagerScreen.call(this);
+};
+UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "identity";
+    prototype.getDisplayName = function() {
+        return UserIdentityScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userIdentity.html";
+    };
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (AppController.loginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
+                ScreenManager.startupScreen = new UserIdentityScreen();
+                ModalManager.showModal(new LoginModal(function(o) {
+                    ModalManager.hideModal();
+                }, function() {
+                    if (!AppController.loginController.getLoggedIn()) {
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
+                    } else {
+                        ScreenManager.reloadCurrentScreen(null);
+                    }
+                }, AppSettings.returnLoginMessage), null);
+            }
         }
     });
 })();
@@ -1288,11 +1905,11 @@ RepoSearchScreen = stjs.extend(RepoSearchScreen, CassManagerScreen, [], function
     prototype.getHtmlLocation = function() {
         return "partial/screen/repoSearch.html";
     };
-}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RepoSearchScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+            var urlParameters = (URLParams.getParams());
             var query = urlParameters["query"];
             var ownership = urlParameters["ownership"];
             var ts = urlParameters["types"];
@@ -1326,7 +1943,7 @@ RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScre
     prototype.getHtmlLocation = function() {
         return "partial/screen/relationshipSearch.html";
     };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RelationshipSearchScreen.displayName)) {
@@ -1354,18 +1971,238 @@ RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScre
         }
     });
 })();
-var WelcomeScreen = function() {
+var AlignmentEditorScreen = function() {
     CassManagerScreen.call(this);
+    this.columns = new Array();
 };
-WelcomeScreen = stjs.extend(WelcomeScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "welcome";
+AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "AlignmentEditor";
+    prototype.columns = null;
+    prototype.containerId = null;
+    prototype.addColumn = function() {
+        var column = new AlignmentEditorColumn();
+        column.columnIndex = this.columns.length;
+        var lastColumn = null;
+        if (this.columns.length > 0) 
+            lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn != null) {
+            lastColumn.right = column;
+            column.left = lastColumn;
+        }
+        this.columns.push(column);
+        this.addedColumn(column);
+        var me = this;
+        column.screenHook = function() {
+            me.updateControls();
+            me.reflow();
+        };
+        column.display(this.containerId);
+        this.reflow();
+        return column;
+    };
+    prototype.createRelations = function(relationType) {
+        var left = this.columns[0].selected;
+        var right = this.columns[1].selected;
+        var leftFramework = null;
+        var rightFramework = null;
+        if (this.columns[0].selectedCollection != null) 
+            leftFramework = EcFramework.getBlocking(this.columns[0].selectedCollection);
+        if (this.columns[1].selectedCollection != null) 
+            rightFramework = EcFramework.getBlocking(this.columns[1].selectedCollection);
+        var me = this;
+        for (var i = 0; i < left.length; i++) 
+            for (var j = 0; j < right.length; j++) {
+                if (this.columns[0].selectedCategory == "competency") 
+                    if (this.columns[1].selectedCategory == "competency") {
+                        var a = new EcAlignment();
+                        a.generateId(this.columns[0].sourceRepo.selectedServer);
+                        if (AppController.identityController.selectedIdentity == null) 
+                             throw new RuntimeException("No identity selected.");
+                        a.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+                        a.source = left[i].shortId();
+                        a.target = right[j].shortId();
+                        a.relationType = relationType;
+                        var found = false;
+                        var relations = this.columns[0].relations;
+                        for (var ii = 0; ii < relations.length; ii++) {
+                            var r = relations[ii];
+                            if (r.source == a.source && r.target == a.target && r.relationType == a.relationType) {
+                                found = true;
+                                if (leftFramework != null) 
+                                    if (AppController.identityController.canEdit(leftFramework)) 
+                                        leftFramework.removeRelation(r.id);
+                                if (rightFramework != null) 
+                                    if (AppController.identityController.canEdit(rightFramework)) 
+                                        rightFramework.removeRelation(r.id);
+                                EcRepository._delete(r, function(s) {
+                                    me.columns[0].getRelations();
+                                }, function(s) {
+                                     throw new RuntimeException(s);
+                                });
+                            }
+                        }
+                        if (!found) {
+                            relations.push(a);
+                            if (leftFramework != null) 
+                                if (AppController.identityController.canEdit(leftFramework)) 
+                                    leftFramework.addRelation(a.id);
+                            if (rightFramework != null) 
+                                if (AppController.identityController.canEdit(rightFramework)) 
+                                    rightFramework.addRelation(a.id);
+                            EcRepository.save(a, function(s) {
+                                me.columns[0].getRelations();
+                            }, function(s) {
+                                 throw new RuntimeException(s);
+                            });
+                        }
+                    }
+            }
+        if (leftFramework != null) 
+            if (AppController.identityController.canEdit(leftFramework)) 
+                leftFramework.save(null, null);
+        if (rightFramework != null) 
+            if (AppController.identityController.canEdit(rightFramework)) 
+                rightFramework.save(null, null);
+    };
+    prototype.createAlignments = function(relationType) {
+        var left = this.columns[0].selected;
+        var right = this.columns[1].selected;
+        var me = this;
+        for (var i = 0; i < left.length; i++) 
+            for (var j = 0; j < right.length; j++) {
+                if ((this.columns[0].selectedCategory != "competency") || (this.columns[1].selectedCategory != "competency")) {
+                    var a = new CreativeWork();
+                    a.generateId(this.columns[0].sourceRepo.selectedServer);
+                    if (AppController.identityController.selectedIdentity == null) 
+                         throw new RuntimeException("No identity selected.");
+                    a.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+                    a.url = left[i].shortId();
+                    a.educationalAlignment = new AlignmentObject();
+                    a.educationalAlignment.alignmentType = relationType;
+                    a.educationalAlignment.educationalFramework = this.columns[1].selectedCollection;
+                    a.educationalAlignment.targetUrl = right[j].shortId();
+                    a.educationalAlignment.targetName = right[j].name;
+                    a.educationalAlignment.targetDescription = right[j].description;
+                    var found = false;
+                    var relations = this.columns[0].relations;
+                    for (var ii = 0; ii < relations.length; ii++) {
+                        var r = relations[ii];
+                        if (r.educationalAlignment != null) 
+                            if (r.url == a.url && r.educationalAlignment.targetUrl == a.educationalAlignment.targetUrl && r.educationalAlignment.alignmentType == a.educationalAlignment.alignmentType) {
+                                found = true;
+                                EcRepository._delete(r, function(s) {
+                                    me.columns[0].getRelations();
+                                }, function(s) {
+                                     throw new RuntimeException(s);
+                                });
+                            }
+                    }
+                    if (!found) {
+                        relations.push(a);
+                        EcRepository.save(a, function(s) {
+                            me.columns[0].getRelations();
+                        }, function(s) {
+                             throw new RuntimeException(s);
+                        });
+                    }
+                }
+            }
+    };
+    prototype.reflow = function() {};
+    prototype.addedColumn = function(column) {
+        ViewManager.showView(column, this.createColumnDiv(), function() {});
+    };
+    prototype.updateControls = function() {};
+    prototype.createColumnDiv = function() {
+        return null;
+    };
     prototype.getDisplayName = function() {
-        return WelcomeScreen.displayName;
+        return AlignmentEditorScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/welcome.html";
+        return "partial/screen/alignmentEditor.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+    prototype.display = function(containerId) {
+        this.containerId = containerId;
+        this.columns = new Array();
+        this.addColumn();
+        this.addColumn();
+        this.bindControls(containerId);
+    };
+    prototype.bindControls = function(containerId) {};
+}, {columns: {name: "Array", arguments: ["AlignmentEditorColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + AlignmentEditorScreen.displayName)) {
+            ScreenManager.startupScreen = new AlignmentEditorScreen();
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+/**
+ *  Created by fray on 3/23/17.
+ */
+var AlignmentExplorerScreen = function() {
+    CassManagerScreen.call(this);
+};
+AlignmentExplorerScreen = stjs.extend(AlignmentExplorerScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "AlignmentExplorer";
+    prototype.columns = null;
+    prototype.containerId = null;
+    prototype.addColumn = function() {
+        var column = new AlignmentExplorerColumn();
+        column.columnIndex = this.columns.length;
+        var lastColumn = null;
+        if (this.columns.length > 0) 
+            lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn != null) {
+            lastColumn.right = column;
+            column.left = lastColumn;
+        }
+        this.columns.push(column);
+        this.addedColumn(column);
+        var me = this;
+        column.screenHook = function() {
+            me.updateControls();
+            me.reflow();
+        };
+        column.display(this.containerId);
+        this.reflow();
+        return column;
+    };
+    prototype.reflow = function() {};
+    prototype.addedColumn = function(column) {
+        ViewManager.showView(column, this.createColumnDiv(), function() {});
+    };
+    prototype.updateControls = function() {};
+    prototype.createColumnDiv = function() {
+        return null;
+    };
+    prototype.getDisplayName = function() {
+        return AlignmentExplorerScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/alignmentExplorer.html";
+    };
+    prototype.display = function(containerId) {
+        this.containerId = containerId;
+        this.columns = new Array();
+        this.addColumn();
+        this.addColumn();
+        this.addColumn();
+        this.addColumn();
+        this.bindControls(containerId);
+    };
+    prototype.bindControls = function(containerId) {};
+}, {columns: {name: "Array", arguments: ["AlignmentExplorerColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + AlignmentExplorerScreen.displayName)) {
+            ScreenManager.startupScreen = new AlignmentExplorerScreen();
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
 var FrameworkEditScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
@@ -1379,11 +2216,11 @@ FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], fu
     prototype.getHtmlLocation = function() {
         return "partial/screen/frameworkEdit.html";
     };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
                 EcFramework.get(id, function(data) {
@@ -1399,336 +2236,42 @@ FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], fu
         }
     });
 })();
-var CompetencyEditScreen = function(data, frameworkIdToAddCompetencyTo) {
-    CassManagerScreen.call(this);
-    this.data = data;
-    this.frameworkId = frameworkIdToAddCompetencyTo;
-};
-CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencyEdit";
-    prototype.frameworkId = null;
-    prototype.getDisplayName = function() {
-        return CompetencyEditScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/competencyEdit.html";
-    };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcCompetency.get(id, function(data) {
-                    ScreenManager.replaceScreen(new CompetencyEditScreen(data, urlParameters["frameworkId"]), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new CompetencyEditScreen(null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var AssertionViewScreen = function(data) {
+var FrameworkViewScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
 };
-AssertionViewScreen = stjs.extend(AssertionViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "assertionView";
-    prototype.data = null;
+FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkView";
+    prototype.mc = null;
+    prototype.getData = function() {
+        return this.data;
+    };
     prototype.getDisplayName = function() {
-        return AssertionViewScreen.displayName;
+        return FrameworkViewScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/assertionView.html";
+        return "partial/screen/frameworkView.html";
     };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+    prototype.display = function(containerId) {};
+}, {mc: "MessageContainer", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + AssertionViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+        if (window.document.location.hash.startsWith("#" + FrameworkViewScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
-                EcAssertion.get(id, function(data) {
-                    ScreenManager.replaceScreen(new AssertionViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                EcFramework.get(id, function(data) {
+                    ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                     CassManagerScreen.showLoginModalIfReload();
                 }, function(p1) {
-                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                     CassManagerScreen.showLoginModalIfReload();
                 });
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                 return;
             }
-            ScreenManager.startupScreen = new AssertionSearchScreen(null);
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var AssertionEditScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "assertionEdit";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return AssertionEditScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/assertionEdit.html";
-    };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + AssertionEditScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcAssertion.get(id, function(data) {
-                    ScreenManager.replaceScreen(new AssertionEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new AssertionSearchScreen(null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new AssertionEditScreen(null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RepoViewScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-RepoViewScreen = stjs.extend(RepoViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "repoView";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return RepoViewScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/repoView.html";
-    };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RepoViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcRepository.get(id, function(data) {
-                    ScreenManager.replaceScreen(new RepoViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new RepoSearchScreen(null, null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new RepoSearchScreen(null, null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RelationshipViewScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "relationView";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return RelationshipViewScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/relationshipView.html";
-    };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RelationshipViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcAlignment.get(id, function(data) {
-                    ScreenManager.replaceScreen(new RelationshipViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                    CassManagerScreen.showLoginModalIfReload();
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                    CassManagerScreen.showLoginModalIfReload();
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RelationshipEditScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "relationEdit";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return RelationshipEditScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/relationshipEdit.html";
-    };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
-            var id = urlParameters["id"];
-            if (id != null) {
-                EcAlignment.get(id, function(data) {
-                    ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                }, function(p1) {
-                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
-                });
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                return;
-            }
-            ScreenManager.startupScreen = new RelationshipEditScreen(null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var UserIdentityScreen = function() {
-    CassManagerScreen.call(this);
-};
-UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "identity";
-    prototype.getDisplayName = function() {
-        return UserIdentityScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/userIdentity.html";
-    };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (LoginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
-                ScreenManager.startupScreen = new UserIdentityScreen();
-                ModalManager.showModal(new LoginModal(function(o) {
-                    ModalManager.hideModal();
-                }, function() {
-                    if (!LoginController.getLoggedIn()) {
-                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
-                    } else {
-                        ScreenManager.reloadCurrentScreen(null);
-                    }
-                }, AppSettings.returnLoginMessage), null);
-            }
-        }
-    });
-})();
-/**
- *  Main entry point of the application. Figures out the settings and
- *  starts the EC UI Framework at the appropriate screen.
- *  
- *  @module cass.manager
- *  @class AppController
- *  @static
- *  
- *  @author devlin.junker@eduworks.com
- */
-var AppController = function() {};
-AppController = stjs.extend(AppController, null, [], function(constructor, prototype) {
-    constructor.topBarContainerId = "#menuContainer";
-    /**
-     *  Manages the server connection by storing and configuring 
-     *  the CASS instance endpoint for the rest of the application
-     *  and managing the interfaces to it.  
-     *  
-     *  @property serverController
-     *  @static
-     *  @type ServerController
-     */
-    constructor.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
-    /**
-     *  Manages the current user's identities and contacts through the
-     *  KBAC libraries. 
-     *  
-     *  @property identityController
-     *  @static
-     *  @type IdentityController
-     */
-    constructor.identityController = new IdentityController();
-    /**
-     *  Handles the login/logout and admin communications with the server.
-     *  
-     *  @property loginController
-     *  @static
-     *  @type LoginController
-     */
-    constructor.loginController = new LoginController();
-    /**
-     *  Entry point of the application
-     *  
-     *  @param {String[]} args
-     *  			Not used at all...
-     */
-    constructor.main = function(args) {
-        AppSettings.loadSettings();
-        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
-        AppController.loginController.identity = AppController.identityController;
-        ScreenManager.setDefaultScreen(new WelcomeScreen());
-        $(window.document).ready(function(arg0, arg1) {
-            ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
-                ($(window.document)).foundation();
-            });
-            return true;
-        });
-    };
-}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController"}, {});
-if (!stjs.mainCallDisabled) 
-    AppController.main();
-var UserAdminScreen = function() {
-    CassManagerScreen.call(this);
-};
-UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "admin";
-    prototype.getDisplayName = function() {
-        return UserAdminScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/userAdmin.html";
-    };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + UserAdminScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (LoginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
-                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
-                ModalManager.showModal(new LoginModal(function(o) {
-                    ModalManager.hideModal();
-                    if (!AppController.loginController.getAdmin()) {
-                        ScreenManager.replaceScreen(new UserIdentityScreen(), null, null);
-                    } else {
-                        ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
-                    }
-                }, function() {
-                    if (!LoginController.getLoggedIn()) {
-                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
-                    } else if (LoginController.admin) {
-                        ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
-                    } else {
-                        ScreenManager.reloadCurrentScreen(null);
-                    }
-                }, AppSettings.returnLoginMessage), null);
-            }
         }
     });
 })();
@@ -1758,8 +2301,10 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         ViewManager.showView(this.mc = new MessageContainer("competencyView"), "#competencyViewMessageContainer", null);
         this.autoConfigure($(containerId));
         var me = this;
-        EcCompetency.get(this.getData().id, function(framework) {
-            me.data = framework;
+        EcCompetency.get(this.getData().id, function(competency) {
+            AppController.storageController.addRecent(EcCompetency.myType, me.getData().id);
+            (ViewManager.getView(AppController.topBarContainerId)).buildRecentCompetencyList(AppController.storageController.getRecent(EcCompetency.myType));
+            me.data = competency;
             me.bindControls();
             me.predisplayCompetency();
         }, function(msg) {
@@ -1806,11 +2351,11 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         this.mc.displayAlert(err, "getFramework");
     };
     prototype.bindControls = function() {};
-}, {data: "Object", mc: "MessageContainer", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", mc: "MessageContainer", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + CompetencyViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
                 EcCompetency.get(id, function(data) {
@@ -1828,99 +2373,259 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
         }
     });
 })();
-var FrameworkViewScreen = function(data) {
+var CompetencyEditScreen = function(data, frameworkIdToAddCompetencyTo) {
+    CassManagerScreen.call(this);
+    this.data = data;
+    this.frameworkId = frameworkIdToAddCompetencyTo;
+};
+CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "competencyEdit";
+    prototype.frameworkId = null;
+    prototype.getDisplayName = function() {
+        return CompetencyEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/competencyEdit.html";
+    };
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + CompetencyEditScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcCompetency.get(id, function(data) {
+                    ScreenManager.replaceScreen(new CompetencyEditScreen(data, urlParameters["frameworkId"]), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new CompetencyEditScreen(null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var AssertionViewScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
 };
-FrameworkViewScreen = stjs.extend(FrameworkViewScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkView";
-    prototype.mc = null;
-    prototype.getData = function() {
-        return this.data;
-    };
+AssertionViewScreen = stjs.extend(AssertionViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "assertionView";
+    prototype.data = null;
     prototype.getDisplayName = function() {
-        return FrameworkViewScreen.displayName;
+        return AssertionViewScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/frameworkView.html";
+        return "partial/screen/assertionView.html";
     };
-    prototype.display = function(containerId) {
-        if (this.getData().id != null) {
-            var params = new Object();
-            (params)["id"] = this.getData().id;
-            ScreenManager.setScreenParameters(params);
-        }
-        ViewManager.showView(this.mc = new MessageContainer("frameworkView"), "#frameworkViewMessageContainer", null);
-        this.autoConfigure($(containerId));
-        var me = this;
-        EcFramework.get(this.getData().id, function(framework) {
-            me.data = framework;
-            me.predisplayFramework(function() {
-                me.bindControls();
-            });
-        }, function(msg) {
-            EcFramework.get(EcRemoteLinkedData.trimVersionFromUrl(me.getData().id), function(framework) {
-                me.data = framework;
-                me.predisplayFramework(function() {
-                    me.bindControls();
-                });
-            }, function(msg) {
-                me.errorRetrieving(msg);
-            });
-        });
-    };
-    prototype.predisplayFramework = function(callback) {
-        var me = this;
-        AppController.serverController.getRepoInterface().precache(this.getData().competency, function() {
-            AppController.serverController.getRepoInterface().precache(me.getData().relation, function() {
-                AppController.serverController.getRepoInterface().precache(me.getData().level, function() {
-                    me.autoRemove($("body"), "framework");
-                    me.autoAppend($("body"), "framework");
-                    me.autoFill($("body"), me.getData());
-                    me.displayVisualization();
-                    callback();
-                });
-            });
-        });
-    };
-    prototype.deleteFramework = function() {
-        var me = this;
-        ModalManager.showModal(new ConfirmModal(function() {
-            me.getData()._delete(function(p1) {
-                ScreenManager.changeScreen(new FrameworkSearchScreen(null, null, null), null, null, null);
-            }, function(err) {
-                if (err == null) 
-                    err = "Unable to connect to server to delete framework";
-                me.mc.displayAlert(err, null);
-            });
-            ModalManager.hideModal();
-        }, "Are you sure you want to delete this framework?", null), null);
-    };
-    prototype.errorRetrieving = function(err) {
-        if (err == null) 
-            err = "Unable to Connect to Server to Retrieve Framework";
-        this.mc.displayAlert(err, "getFramework");
-    };
-    prototype.displayVisualization = function() {};
-    prototype.bindControls = function() {};
-}, {mc: "MessageContainer", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkViewScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+        if (window.document.location.hash.startsWith("#" + AssertionViewScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
-                EcFramework.get(id, function(data) {
-                    ScreenManager.replaceScreen(new FrameworkViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                EcAssertion.get(id, function(data) {
+                    ScreenManager.replaceScreen(new AssertionViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                     CassManagerScreen.showLoginModalIfReload();
                 }, function(p1) {
-                    ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    ScreenManager.replaceScreen(new CompetencySearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                     CassManagerScreen.showLoginModalIfReload();
                 });
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                 return;
             }
-            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
+            ScreenManager.startupScreen = new AssertionSearchScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var AssertionEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+AssertionEditScreen = stjs.extend(AssertionEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "assertionEdit";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return AssertionEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/assertionEdit.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + AssertionEditScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcAssertion.get(id, function(data) {
+                    ScreenManager.replaceScreen(new AssertionEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new AssertionSearchScreen(null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new AssertionEditScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var UserAdminScreen = function() {
+    CassManagerScreen.call(this);
+};
+UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "admin";
+    prototype.getDisplayName = function() {
+        return UserAdminScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userAdmin.html";
+    };
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + UserAdminScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (AppController.loginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                ModalManager.showModal(new LoginModal(function(o) {
+                    ModalManager.hideModal();
+                    if (!AppController.loginController.getAdmin()) {
+                        ScreenManager.replaceScreen(new UserIdentityScreen(), null, null);
+                    } else {
+                        ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
+                    }
+                }, function() {
+                    if (!AppController.loginController.getLoggedIn()) {
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
+                    } else if (AppController.loginController.getAdmin()) {
+                        ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
+                    } else {
+                        ScreenManager.reloadCurrentScreen(null);
+                    }
+                }, AppSettings.returnLoginMessage), null);
+            }
+        }
+    });
+})();
+var RepoViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+RepoViewScreen = stjs.extend(RepoViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoView";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return RepoViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/repoView.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RepoViewScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcRepository.get(id, function(data) {
+                    ScreenManager.replaceScreen(new RepoViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new RepoSearchScreen(null, null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new RepoSearchScreen(null, null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RelationshipViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationView";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return RelationshipViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipView.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipViewScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcAlignment.get(id, function(data) {
+                    ScreenManager.replaceScreen(new RelationshipViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RelationshipEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationEdit";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return RelationshipEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipEdit.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcAlignment.get(id, function(data) {
+                    ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            var source = urlParameters["source"];
+            if (source != null) {
+                var data = new Object();
+                (data)["source"] = source;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            var target = urlParameters["target"];
+            if (target != null) {
+                var data = new Object();
+                (data)["target"] = target;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            ScreenManager.startupScreen = new RelationshipEditScreen(null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });

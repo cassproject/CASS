@@ -462,10 +462,13 @@ li.cass-competency-level:before {
 	font-weight: bold;
 }
 
-#frameworkContents .competency:hover{
+#frameworkContentsList .competency:hover{
 	background-color: rgba(173, 216, 230, 0.4)
 }
 
+#frameworkContentsList .competency.selected{
+	background-color: rgba(223, 234, 164, 0.38);
+}
 
 
 .searchSelect.empty{

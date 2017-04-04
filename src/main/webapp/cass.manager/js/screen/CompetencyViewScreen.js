@@ -39,18 +39,41 @@ CompetencyViewScreen.prototype.bindControls = function(containerId)
 			event.preventDefault();
 		});
 		
+		$(".relationViewLink").off("click");
 		$(".relationViewLink").on("click", function(){
 			ScreenManager.changeScreen(new RelationshipViewScreen({id:$(this).closest(".relation").attr("id")}));
+		});
+		
+		$("#addToFrameworkBtn").off("click");
+		$("#addToFrameworkBtn").on("click", function(event){
+			event.preventDefault();
+			ModalManager.showModal(new AddToFrameworkModal(data));
 		});
 		
 		if(AppController.identityController.canEdit(data)){
 			$("#editCompetencyBtn").click(function(event){
 				event.preventDefault();
-				ScreenManager.changeScreen(new CompetencyEditScreen(data))
+				ScreenManager.changeScreen(new CompetencyEditScreen(data));
 			})
 		}else{
 			$("#editCompetencyBtn").remove();
 		}
+		
+		$("#createSourceRelation").off("click");
+		$("#createSourceRelation").attr("href", "#"+RelationshipEditScreen.prototype.getDisplayName()+"?source="+data.shortId());
+		$("#createSourceRelation").click("click", function(ev){
+			ev.preventDefault();
+			ScreenManager.changeScreen(new RelationshipEditScreen({"source":data.shortId()}));
+			return false;
+		})
+		
+		$("#createTargetRelation").off("click");
+		$("#createTargetRelation").attr("href", "#"+RelationshipEditScreen.prototype.getDisplayName()+"?target="+data.shortId());
+		$("#createTargetRelation").on("click", function(ev){
+			ev.preventDefault();
+			ScreenManager.changeScreen(new RelationshipEditScreen({"target":data.shortId()}));
+			return false;
+		});
 		
 		$('[ec-container="competency"]').on("click","a[id]",null,function(evt){
 			if (this.getAttribute("id").indexOf(".competency/") != -1)

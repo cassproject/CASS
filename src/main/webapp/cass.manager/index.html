@@ -1,39 +1,43 @@
 <html>
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
-	<title>CASS Manager</title>
-	
-	<link rel="stylesheet" href="css/foundation.min.css" />
-	<link rel="stylesheet" href="css/font-awesome.min.css" />
-	
-	<link rel="stylesheet" href="css/ec-ui-framework.css" />
-	
-	<link rel="stylesheet" href="css/app.css" />
-	<link rel="stylesheet" href="css/cube.css" />
-  	<link rel="stylesheet" href="css/animate.css" />
-</head>
-<body>
-	<div id="menuContainer">
-	</div>
 
-	<div id="screenContainer">
-	</div>
-	
-	<div id="modalContainer" class="reveal tiny" data-reveal>
-	</div>
-	
-	<div id="overlay" style="display:none;">
-		<span id="closeOverlay" class="exit close-overlay" title="Cancel">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CASS Manager</title>
+
+    <link rel="stylesheet" href="css/foundation.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="css/ec-ui-framework.css" />
+
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/alignmentEditor.css" />
+    <link rel="stylesheet" href="css/alignmentExplorer.css" />
+    <link rel="stylesheet" href="css/cube.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+</head>
+
+<body>
+    <div id="menuContainer">
+    </div>
+
+    <div id="screenContainer">
+    </div>
+
+    <div id="modalContainer" class="reveal tiny" data-reveal>
+    </div>
+
+    <div id="overlay" style="display:none;">
+        <span id="closeOverlay" class="exit close-overlay" title="Cancel">
 			<i class="fa fa-times fa-5x hidden" id="close-overlay-btn"></i>
 		</span>
-		<div id="overlayContainer" class="centeredOverlay">
-		
-		</div>
-	</div>
-    
+        <div id="overlayContainer" class="centeredOverlay">
+
+        </div>
+    </div>
+
     <script src="forge/forge.min.js"></script>
     <script src="js/timeout.js"></script>
     <script src="js/vendor/jquery.js"></script>
@@ -46,7 +50,7 @@
     <script src="js/vendor/typeahead.js"></script>
     <script src="js/vendor/papaparse.js"></script>
     <script src="js/vendor/xml2json.js"></script>
-    
+
     <script src="generated-js/stjs.js"></script>
     <script src="generated-js/ec.base.js"></script>
     <script src="generated-js/random.js"></script>
@@ -56,6 +60,8 @@
     <script src="generated-js/org.json-ld.js"></script>
     <script src="generated-js/org.cassproject.schema.general.js"></script>
     <script src="generated-js/org.schema.js"></script>
+    <script src="generated-js/org.credentialengine.js"></script>
+    <script src="generated-js/org.schema.js"></script>
     <script src="generated-js/org.cassproject.schema.ebac.js"></script>
     <script src="generated-js/org.cassproject.schema.cass.js"></script>
     <script src="generated-js/ebac.identity.js"></script>
@@ -63,36 +69,40 @@
     <script src="generated-js/cass.competency.js"></script>
     <script src="generated-js/cass.import.js"></script>
     <script src="generated-js/cass.adapter.js"></script>
-    
-    
-    <script src="generated-js/ec.ui.framework.js"></script>
-    
-    
-    <script src="generated-js/es.cassManager.js"></script>
-    
-    <script src="js/common.js"></script>
-    
-	<script src="js/screen/WelcomeScreen.js"></script>
-	<script src="js/screen/UserIdentityScreen.js"></script>
-	<script src="js/screen/UserAdminScreen.js"></script>
-	<script src="js/screen/RepoSearchScreen.js"></script>
-	<script src="js/screen/RepoViewScreen.js"></script>
-	<script src="js/screen/RepoCreateScreen.js"></script>
-	<script src="js/screen/FileManagerScreen.js"></script>
-	<script src="js/screen/FrameworkSearchScreen.js"></script>
-	<script src="js/screen/FrameworkViewScreen.js"></script>
-	<script src="js/screen/FrameworkEditScreen.js"></script>
-	<script src="js/screen/CompetencySearchScreen.js"></script>
-	<script src="js/screen/CompetencyViewScreen.js"></script>
-	<script src="js/screen/CompetencyEditScreen.js"></script>
-	<script src="js/screen/RelationshipEditScreen.js"></script>
-	<script src="js/screen/RelationshipSearchScreen.js"></script>
-	<script src="js/screen/RelationshipViewScreen.js"></script>
-	<script src="js/screen/AssertionSearchScreen.js"></script>
-	<script src="js/screen/AssertionEditScreen.js"></script>
-	<script src="js/screen/AssertionViewScreen.js"></script>		
 
-    
+
+    <script src="generated-js/ec.ui.framework.js"></script>
+
+
+    <script src="generated-js/es.cassManager.js"></script>
+
+    <script src="js/common.js"></script>
+
+    <script src="js/screen/WelcomeScreen.js"></script>
+    <script src="js/screen/UserIdentityScreen.js"></script>
+    <script src="js/screen/UserAdminScreen.js"></script>
+    <script src="js/screen/RepoSearchScreen.js"></script>
+    <script src="js/screen/RepoViewScreen.js"></script>
+    <script src="js/screen/RepoCreateScreen.js"></script>
+    <script src="js/screen/FileManagerScreen.js"></script>
+    <script src="js/screen/FrameworkSearchScreen.js"></script>
+    <script src="js/screen/FrameworkViewScreen.js"></script>
+    <script src="js/screen/FrameworkEditScreen.js"></script>
+    <script src="js/screen/CompetencySearchScreen.js"></script>
+    <script src="js/screen/CompetencyViewScreen.js"></script>
+    <script src="js/screen/CompetencyEditScreen.js"></script>
+    <script src="js/screen/RelationshipEditScreen.js"></script>
+    <script src="js/screen/RelationshipSearchScreen.js"></script>
+    <script src="js/screen/RelationshipViewScreen.js"></script>
+    <script src="js/screen/AssertionSearchScreen.js"></script>
+    <script src="js/screen/AssertionEditScreen.js"></script>
+    <script src="js/screen/AssertionViewScreen.js"></script>
+    <script src="js/screen/LevelSearchScreen.js"></script>
+    <script src="js/screen/RollupRuleSearchScreen.js"></script>
+    <script src="js/screen/AlignmentEditorScreen.js"></script>
+    <script src="js/screen/AlignmentExplorerScreen.js"></script>
+
+
     <script src="js/modal/LoginModal.js"></script>
     <script src="js/modal/CreateUserModal.js"></script>
     <script src="js/modal/SaveIdModal.js"></script>
@@ -110,16 +120,20 @@
     <script src="js/modal/MessageModal.js"></script>
     <script src="js/modal/AdvancedPermissionsModal.js"></script>
     <script src="js/modal/EvidenceViewModal.js"></script>
-    <script src="js/modal/AddCompetenciesToFrameworkModal.js"></script>
+    <script src="js/modal/AddToFrameworkModal.js"></script>
     <script src="js/modal/EncryptOptionsModal.js"></script>
     <script src="js/modal/AddOwnerModal.js"></script>
     <script src="js/modal/PermissionPropagationModal.js"></script>
-    
+
     <script src="js/other/AppMenu.js"></script>
+    <script src="js/other/AlignmentEditorColumn.js"></script>
+    <script src="js/other/AlignmentExplorerColumn.js"></script>
     <script src="js/other/RepoEdit.js"></script>
     <script src="js/other/MessageContainer.js"></script>
     <script src="js/other/DataViewer.js"></script>
     <script src="js/other/IdentityDisplay.js"></script>
-    
+    <script src="js/other/FrameworkList.js"></script>
+
 </body>
+
 </html>

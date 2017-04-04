@@ -82,7 +82,7 @@ var DataViewer = (function(DataViewer){
 					return 0;
 				}
 			});
-		}else if(sortType == "owner" || (LoginController.getLoggedIn() && defaultSort)){
+		}else if(sortType == "owner" || (AppController.loginController.getLoggedIn() && defaultSort)){
 			arr.sort(function(a, b){
 				if(AppController.identityController.owns(a)){
 					if(AppController.identityController.owns(b)){
@@ -104,7 +104,7 @@ var DataViewer = (function(DataViewer){
 					return 0;
 				}
 			});
-		}else if(sortType == "timestamp" || (!LoginController.getLoggedIn() && defaultSort)){
+		}else if(sortType == "timestamp" || (!AppController.loginController.getLoggedIn() && defaultSort)){
 			arr.sort(function(a, b){
 				// By ID Timestamp (date newest -> oldest)
 				var aId = a.id.split("/");
@@ -120,7 +120,7 @@ var DataViewer = (function(DataViewer){
 				}
 			});
 		}else if(callbacks != undefined && callbacks["sort"] != undefined){
-			arr.sort(callback["sort"][sortType]);
+			arr.sort(callbacks["sort"][sortType]);
 		}
 		
 		return arr;
@@ -147,6 +147,7 @@ var DataViewer = (function(DataViewer){
 	 */
 	function buildSort(prefix, data, self, callbacks){
 		$("#"+prefix+"-sortSelect").html("");
+		$("#"+prefix+"-sortSelect").off("change");
 		
 		var urlParams = {};
 		if(window.location.hash.split("?").length > 1){
@@ -159,21 +160,21 @@ var DataViewer = (function(DataViewer){
 		}
 		
 		var option = $("<option value='timestamp'>Sort by Timestamp</option>");
-		if(urlParams["sort"] == undefined && !LoginController.getLoggedIn())
+		if(urlParams["sort"] == undefined && !AppController.loginController.getLoggedIn())
 			option.attr("selected","selected");
 		$("#"+prefix+"-sortSelect").append(option);
 		
 		option = $("<option value='owner'>Sort by Owner</option>");
-		if(urlParams["sort"] == "owner" || (urlParams["sort"] == undefined && LoginController.getLoggedIn()))
+		if(urlParams["sort"] == "owner" || (urlParams["sort"] == undefined && AppController.loginController.getLoggedIn()))
 			option.attr("selected","selected");
 		$("#"+prefix+"-sortSelect").append(option);
 		
 		if(callbacks != undefined && callbacks["sort"] != undefined && callbacks["sort"] instanceof Object){
 			for(var type in callbacks["sort"]){
-				if(callbacks["sort"][type]() == undefined)
-					option = $("<option value='"+type+"'>Sort by"+type+"</option>")
-				else
-					option = $("<option value='"+type+"'>Sort by"+callbacks["sort"][type]()+"</option>");
+				option = $("<option value='"+type+"'>Sort by "+type+"</option>")
+				
+				if(urlParams["sort"] == undefined && callbacks["sort"][type]())
+					option.attr("selected","selected");
 				
 				if(urlParams["sort"] == type)
 					option.attr("selected","selected");
@@ -192,10 +193,24 @@ var DataViewer = (function(DataViewer){
 		$("#"+prefix+"-sortSelect").on("change", function(){
 			urlParams["sort"] = $("#"+prefix+"-sortSelect").val();
 
-			if(urlParams["sort"] == "timestamp" && !LoginController.getLoggedIn())
+			var otherDefault = false;
+			if(callbacks["sort"] != undefined){
+				for(var type in callbacks["sort"]){
+					if(callbacks["sort"][type]()){
+						otherDefault = true;
+						if(urlParams["sort"] == type)
+							delete urlParams["sort"];
+					}
+				}
+			}
+			if(otherDefault){
+				
+			}else if(urlParams["sort"] == "timestamp" && !AppController.loginController.getLoggedIn()){
 				delete urlParams["sort"];
-			else if(urlParams["sort"] == "owner" && LoginController.getLoggedIn())
+			}else if(urlParams["sort"] == "owner" && AppController.loginController.getLoggedIn()){
 				delete urlParams["sort"];
+			}
+				
 			
 			ScreenManager.setScreenParameters(urlParams);
 			
@@ -261,7 +276,9 @@ var DataViewer = (function(DataViewer){
 					id = idx;
 				}
 				
-				buildData(data[idx]["id"], data[idx], prefix, callbacks, self);
+				if(self.dataStore[id] == undefined){
+					buildData(data[idx]["id"], data[idx], prefix, callbacks, self);
+				}
 				
 				self.dataStore[id] = data[idx];
 			}
@@ -314,8 +331,13 @@ var DataViewer = (function(DataViewer){
 	 * 			Reference to 'this' DataViewer because of JavaScript weirdness
 	 */
 	function buildData(id, datum, prefix, callbacks, self){
+		var row;
+		if($(".row[data-id='"+id+"']").size() == 0){
+			row = $("<div class='row column' style='padding:7px 2px;padding-left:40px;'></div>");
+		}else{
+			return;
+		}
 		
-		var row = $("<div class='row column' style='padding:7px 2px;padding-left:40px;'></div>");
 		row.attr("data-id", id);
 		row.attr("title", id);
 		
@@ -387,7 +409,7 @@ var DataViewer = (function(DataViewer){
 					$("#"+prefix+"-menu").slideDown();
 				}
 				
-				$(".dataViewMenu .dataViewSelected").text($(".dataView").find(".datum-select:checked").size());
+				$(".dataViewMenu .dataViewSelected").text($(".dataView").find("[data-id] .datum-select:checked").size());
 			}else{
 				$(ev.target).closest(".dataView").removeClass("selecting");
 				
@@ -398,7 +420,13 @@ var DataViewer = (function(DataViewer){
 			
 		});
 		
-		$("#"+prefix+"-data").append(row);
+		
+		if(callbacks != undefined && callbacks["aggregateDataRows"] != undefined){
+			callbacks["aggregateDataRows"](row, id, datum);
+		}else{
+			$("#"+prefix+"-data").append(row);
+		}
+		
 		
 		var dataDisplay;
 		
@@ -849,7 +877,8 @@ var DataViewer = (function(DataViewer){
 	function getSelectedData(prefix, self){
 		var selected = [];
 		$("#"+prefix+"-data").find(".row.selected").each(function(i, obj){
-			selected.push(self.dataStore[$(obj).attr("data-id")]);
+			if(self.dataStore[$(obj).attr("data-id")] != undefined)
+				selected.push(self.dataStore[$(obj).attr("data-id")]);
 		});
 		return selected;
 	}
@@ -901,7 +930,7 @@ var DataViewer = (function(DataViewer){
 				
 				$(".dataView .datum-select").prop("checked", true);
 				
-				$(".dataViewMenu .dataViewSelected").text($(".dataView").find(".datum-select:checked").size());
+				$(".dataViewMenu .dataViewSelected").text($(".dataView").find("[data-id] .datum-select:checked").size());
 				
 				if(!$("#"+prefix+"-menu").is(":visible") && menu != undefined){
 					$("#"+prefix+"-menu").slideDown();

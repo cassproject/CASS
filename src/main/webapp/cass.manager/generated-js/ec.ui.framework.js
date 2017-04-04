@@ -197,82 +197,6 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
             }
         return null;
     };
-    /**
-     *  Returns the URL parameters of the browser window
-     *  
-     *  @memberOf EcView
-     *  @method getUrlParameters
-     *  @return {Map<String, String>}
-     *  			URL Parameters in a map
-     */
-    prototype.getUrlParameters = function() {
-        return EcView.urlParameters();
-    };
-    /**
-     *  Returns the URL Query parameters of the browser window
-     *  
-     *  @memberOf EcView
-     *  @method urlParameters
-     *  @static
-     *  @return {Map<String, String>}
-     *  			URL Query Parameters in a map
-     */
-    constructor.queryParams = function() {
-        if (window.document.location.search == null) 
-            return new Object();
-        var hashSplit = (window.document.location.search.split("?"));
-        if (hashSplit.length > 1) {
-            var o = null;
-            var params = (o = new Object());
-            var paramString = hashSplit[1];
-            var parts = (paramString).split("&");
-            for (var i = 0; i < parts.length; i++) 
-                params[parts[i].split("=")[0]] = parts[i].replace(parts[i].split("=")[0] + "=", "");
-            return o;
-        }
-        return new Object();
-    };
-    /**
-     *  Returns the URL Hash parameters of the browser window
-     *  
-     *  @memberOf EcView
-     *  @method urlParameters
-     *  @static
-     *  @return {Map<String, String>}
-     *  			URL Hash Parameters in a map
-     */
-    constructor.hashParams = function() {
-        if (window.document.location.hash == null) 
-            return new Object();
-        var hashSplit = (window.document.location.hash.split("?"));
-        if (hashSplit.length > 1) {
-            var o = null;
-            var params = (o = new Object());
-            var paramString = hashSplit[1];
-            var parts = (paramString).split("&");
-            for (var i = 0; i < parts.length; i++) 
-                params[parts[i].split("=")[0]] = parts[i].replace(parts[i].split("=")[0] + "=", "");
-            return o;
-        }
-        return new Object();
-    };
-    /**
-     *  Returns the URL parameters of the browser window
-     *  
-     *  @memberOf EcView
-     *  @method urlParameters
-     *  @static
-     *  @return {Map<String, String>}
-     *  			URL Parameters in a map
-     */
-    constructor.urlParameters = function() {
-        var params = EcView.hashParams();
-        var queryParams = EcView.queryParams();
-        for (var key in (queryParams)) {
-            (params)[key] = (queryParams)[key];
-        }
-        return params;
-    };
 }, {}, {});
 /**
  *  STJS Wrapper for the Browser Native History Object
@@ -972,6 +896,114 @@ var EcOverlay = function() {
     EcScreen.call(this);
 };
 EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+var URLParams = function() {};
+URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
+    /**
+     *  Returns the URL Query parameters of the browser window
+     *  
+     *  @memberOf URLParams
+     *  @method queryParams
+     *  @static
+     *  @return {Map<String, String>}
+     *  			URL Query Parameters in a map
+     */
+    constructor.queryParams = function() {
+        if (window.document.location.search == null) 
+            return {};
+        var hashSplit = (window.document.location.search.split("?"));
+        if (hashSplit.length > 1) {
+            var o = {};
+            var paramString = hashSplit[1];
+            var parts = (paramString).split("&");
+            for (var i = 0; i < parts.length; i++) 
+                o[parts[i].split("=")[0]] = parts[i].replace(parts[i].split("=")[0] + "=", "");
+            return o;
+        }
+        return {};
+    };
+    /**
+     *  Returns the URL Hash parameters of the browser window
+     *  
+     *  @memberOf EcView
+     *  @method hashParams
+     *  @static
+     *  @return {Map<String, String>}
+     *  			URL Hash Parameters in a map
+     */
+    constructor.hashParams = function() {
+        if (window.document.location.hash == null) 
+            return {};
+        var hashSplit = (window.document.location.hash.split("?"));
+        if (hashSplit.length > 1) {
+            var o = {};
+            var paramString = hashSplit[1];
+            var parts = (paramString).split("&");
+            for (var i = 0; i < parts.length; i++) 
+                o[parts[i].split("=")[0]] = parts[i].replace(parts[i].split("=")[0] + "=", "");
+            return o;
+        }
+        return {};
+    };
+    /**
+     *  Returns the URL parameters of the browser window
+     *  
+     *  @memberOf URLParams
+     *  @method getParams
+     *  @static
+     *  @return {Map<String, String>}
+     *  			URL Parameters in a map
+     */
+    constructor.getParams = function() {
+        var params = URLParams.hashParams();
+        var queryParams = URLParams.queryParams();
+        for (var key in (queryParams)) {
+            (params)[key] = (queryParams)[key];
+        }
+        return params;
+    };
+    /**
+     *  Returns a specific URL parameter
+     *  
+     *  @memberOf URLParams
+     *  @method get
+     *  @static
+     *  @param {String} paramName
+     *  			Name of URL parameter to retrieve
+     *  @return {String}
+     *  			Value of URL parameter if it exists
+     */
+    constructor.get = function(paramName) {
+        return URLParams.getParams()[paramName];
+    };
+    /**
+     *  Sets a specific URL Parameter
+     *  
+     *  @memberOf URLParams
+     *  @method set
+     *  @static
+     *  @param {String} paramName
+     *  			Name of URL parameter to set
+     *  @param {String} val
+     *  			Value to set for URL parameter
+     */
+    constructor.set = function(paramName, val) {
+        var params = URLParams.getParams();
+        params[paramName] = val;
+        ScreenManager.setScreenParameters(params);
+    };
+    /**
+     *  Sets a specific URL Parameter
+     *  
+     *  @memberOf URLParams
+     *  @method setAll
+     *  @static
+     *  @param {Object} params
+     *  			Map of Strings to Strings for URL parameters
+     */
+    constructor.setAll = function(params) {
+        ScreenManager.setScreenParameters(params);
+    };
+}, {}, {});
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays
@@ -1119,7 +1151,7 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
     constructor.hideOverlay = function() {
         $(OverlayManager.OVERLAY_WRAPPER_ID).fadeOut();
         OverlayManager.inOverlay = false;
-        if (ScreenManager.myHistory.length <= 2 && OverlayManager.refreshOnOverlayClose) 
+        if (ScreenManager.myHistory.length <= 2 && OverlayManager.refreshOnOverlayClose && OverlayManager.lastScreen != null) 
             OverlayManager.changeScreen(OverlayManager.lastScreen, null, OverlayManager.lastScreenParams, null);
         ViewManager.setView(OverlayManager.OVERLAY_CONTAINER_ID, null);
     };

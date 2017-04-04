@@ -15,8 +15,14 @@
                     <div ec-container="competency" ec-attr-id class="row">
                         <div class="small-12 columns">
                             <h3>
-								<i class="fa fa-unlock-alt hide" id="competencyViewerPrivateSymbol"></i> <span ec-field="name"
-									class="competencyViewerName">Competency</span> <a class="float-right button" id="editCompetencyBtn">Edit</a> <br>
+                            	<a style="margin-left: 1rem;" class="float-right button" id="addToFrameworkBtn">Add To Framework</a>
+								<a class="float-right button" id="editCompetencyBtn">Edit</a> 
+                            
+								<i class="fa fa-unlock-alt hide" id="competencyViewerPrivateSymbol"></i> 
+								<span ec-field="name" class="competencyViewerName">Competency</span> 
+								
+								
+								<br>
 								<small style="font-size: 45%"><i ec-field="id" id="competencyViewerId"></i></small>
 							</h3>
                         </div>
@@ -43,7 +49,18 @@
                     </div> 
                     <div class="row">
                         <div class="small-12 columns">
-                            <span class="prefix">Relations:</span>
+                            <span class="prefix">Relations:</span> 
+                            <ul class="dropdown menu" style="display:inline-block; font-size:0.75rem;" data-dropdown-menu>
+                            	<li>
+                            		<span class="fake-a" style="line-height: 0.9;">
+                            			(Create)
+                            		</span>
+                            		<ul class="menu">
+      									<li><a id="createSourceRelation">as Relation Source</a></li>
+      									<li><a id="createTargetRelation">as Relation Target</a></li>
+    								</ul>
+                            	</li>
+                            </ul>
                             <ul ec-container="relation" ec-attr-shortId ec-condition-shortId-source ec-condition-shortId-target ec-attr-id ec-condition-id-source ec-condition-id-target class='competencyRelations' style='list-style: none;'>
                                 <li ec-template="relation" class='relation' ec-attr-id="">
                                 	<small>  

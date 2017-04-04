@@ -22,6 +22,125 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
+ *  Base class for all exporters, can hold helper functions 
+ *  that are useful for all exporters
+ *  
+ *  @module org.cassproject
+ *  @class Exporter
+ *  @abstract
+ *  @author devlin.junker@eduworks.com
+ */
+var Exporter = function() {};
+Exporter = stjs.extend(Exporter, null, [], null, {}, {});
+/**
+ *  Export methods to handle exporting two CSV file , one of competencies
+ *  and one of relationships representing a framework
+ *  
+ *  @module org.cassproject
+ *  @class CSVExport
+ *  @static
+ *  @extends Exporter
+ *  
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ */
+var CSVExport = function() {
+    Exporter.call(this);
+};
+CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
+    constructor.csvOutput = null;
+    constructor.csvRelationOutput = null;
+    /**
+     *  Method to export the CSV files of competencies and relationships for a framework
+     *  
+     *  @memberOf CSVExport
+     *  @method export
+     *  @static
+     *  @param {String} frameworkId
+     *  			Id of the framework to export
+     *   @param {Callback0} success
+     *  			Callback triggered after both files have been successfully exported
+     *   @param {Callback1<String>} failure
+     *  			Callback triggered if an error occurs during export
+     */
+    constructor.exportFramework = function(frameworkId, success, failure) {
+        if (frameworkId == null) {
+            failure("Framework not selected.");
+            return;
+        }
+        CSVExport.csvOutput = [];
+        CSVExport.csvRelationOutput = [];
+        EcRepository.get(frameworkId, function(data) {
+            if (data.isAny(new EcFramework().getTypes())) {
+                var fw = new EcFramework();
+                fw.copyFrom(data);
+                if (fw.competency == null || fw.competency.length == 0) 
+                    failure("No Competencies in Framework");
+                for (var i = 0; i < fw.competency.length; i++) {
+                    var competencyUrl = fw.competency[i];
+                    EcRepository.get(competencyUrl, function(competency) {
+                        CSVExport.csvOutput.push(JSON.parse(competency.toJson()));
+                        var props = (JSON.parse(competency.toJson()));
+                        for (var prop in props) {
+                            if (props[prop] != null && props[prop] != "") {
+                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
+                                    var row = CSVExport.csvOutput[i];
+                                    if (!(row).hasOwnProperty(prop)) {
+                                        (row)[prop] = "";
+                                    }
+                                }
+                            }
+                        }
+                        if (CSVExport.csvOutput.length == fw.competency.length) {
+                            var csv = Papa.unparse(CSVExport.csvOutput);
+                            var pom = window.document.createElement("a");
+                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                            pom.setAttribute("download", fw.name + " - Competencies.csv");
+                            if ((window.document)["createEvent"] != null) {
+                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
+                                ((event)["initEvent"]).call(event, "click", true, true);
+                                pom.dispatchEvent(event);
+                            } else {
+                                ((pom)["click"]).call(pom);
+                            }
+                        } else {}
+                    }, failure);
+                }
+                for (var i = 0; i < fw.relation.length; i++) {
+                    var relationUrl = fw.relation[i];
+                    EcRepository.get(relationUrl, function(relation) {
+                        CSVExport.csvRelationOutput.push(JSON.parse(relation.toJson()));
+                        var props = (JSON.parse(relation.toJson()));
+                        for (var prop in props) {
+                            if (props[prop] != null && props[prop] != "") {
+                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
+                                    var row = CSVExport.csvOutput[i];
+                                    if (!(row).hasOwnProperty(prop)) {
+                                        (row)[prop] = "";
+                                    }
+                                }
+                            }
+                        }
+                        if (CSVExport.csvRelationOutput.length == fw.relation.length) {
+                            var csv = Papa.unparse(CSVExport.csvRelationOutput);
+                            var pom = window.document.createElement("a");
+                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+                            pom.setAttribute("download", fw.name + " - Relations.csv");
+                            if ((window.document)["createEvent"] != null) {
+                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
+                                ((event)["initEvent"]).call(event, "click", true, true);
+                                pom.dispatchEvent(event);
+                            } else {
+                                ((pom)["click"]).call(pom);
+                            }
+                        } else {}
+                    }, failure);
+                }
+            }
+        }, failure);
+    };
+}, {csvOutput: {name: "Array", arguments: ["Object"]}, csvRelationOutput: {name: "Array", arguments: ["Object"]}}, {});
+/**
  *  Importer methods to create competencies based on a
  *  Medbiquitous competency XML file
  *  
@@ -307,6 +426,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         var competencies = [];
         Papa.parse(file, {complete: function(results) {
             var tabularData = (results)["data"];
+            var colNames = tabularData[0];
             for (var i = 1; i < tabularData.length; i++) {
                 var competency = new EcCompetency();
                 if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == ""))) {
@@ -340,6 +460,13 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     (CSVImport.importCsvLookup)[shortId] = competency.shortId();
                 if (owner != null) 
                     competency.addOwner(owner.ppk.toPk());
+                for (var idx = 0; idx < tabularData[i].length; idx++) {
+                    if (colNames[idx] == null || colNames[idx] == "" || colNames[idx].startsWith("@") || idx == nameIndex || idx == descriptionIndex || idx == scopeIndex || idx == idIndex) {
+                        continue;
+                    } else {
+                        (competency)[colNames[idx]] = tabularData[i][idx];
+                    }
+                }
                 competencies.push(competency);
             }
             CSVImport.saved = 0;
@@ -807,9 +934,12 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
  */
 var FrameworkImport = function() {};
 FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
-    constructor.saved = 0;
+    constructor.savedComp = 0;
+    constructor.savedRel = 0;
     constructor.targetUsable = null;
     constructor.competencies = null;
+    constructor.relations = null;
+    constructor.compMap = null;
     /**
      *  Copies or links competencies that exist in one framework in a CASS instance, 
      *  to another different framework in the same CASS instance.
@@ -848,23 +978,55 @@ FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, p
             return;
         }
         FrameworkImport.competencies = [];
+        FrameworkImport.relations = [];
         if (copy) {
-            FrameworkImport.saved = 0;
+            FrameworkImport.compMap = {};
+            FrameworkImport.savedComp = 0;
+            FrameworkImport.savedRel = 0;
             for (var i = 0; i < source.competency.length; i++) {
                 var id = source.competency[i];
                 EcCompetency.get(id, function(comp) {
                     var competency = new EcCompetency();
                     competency.copyFrom(comp);
                     competency.generateId(serverUrl);
+                    FrameworkImport.compMap[comp.shortId()] = competency.shortId();
                     if (owner != null) 
                         competency.addOwner(owner.ppk.toPk());
                     var id = competency.id;
                     competency.save(function(str) {
-                        FrameworkImport.saved++;
+                        FrameworkImport.savedComp++;
                         FrameworkImport.targetUsable.addCompetency(id);
-                        if (FrameworkImport.saved == FrameworkImport.competencies.length) {
+                        if (FrameworkImport.savedComp == FrameworkImport.competencies.length) {
                             FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
+                                for (var i = 0; i < source.relation.length; i++) {
+                                    var id = source.relation[i];
+                                    EcAlignment.get(id, function(rel) {
+                                        var relation = new EcAlignment();
+                                        relation.copyFrom(rel);
+                                        relation.generateId(serverUrl);
+                                        relation.source = FrameworkImport.compMap[rel.source];
+                                        relation.target = FrameworkImport.compMap[rel.target];
+                                        if (owner != null) 
+                                            relation.addOwner(owner.ppk.toPk());
+                                        var id = relation.id;
+                                        relation.save(function(str) {
+                                            FrameworkImport.savedRel++;
+                                            FrameworkImport.targetUsable.addRelation(id);
+                                            if (FrameworkImport.savedRel == FrameworkImport.relations.length) {
+                                                FrameworkImport.targetUsable.save(function(p1) {
+                                                    success(FrameworkImport.competencies, FrameworkImport.relations);
+                                                }, function(p1) {
+                                                    failure(p1);
+                                                });
+                                            }
+                                        }, function(str) {
+                                            failure("Trouble Saving Copied Competency");
+                                        });
+                                        FrameworkImport.relations.push(relation);
+                                    }, function(str) {
+                                        failure(str);
+                                    });
+                                }
                             }, function(p1) {
                                 failure(p1);
                             });
@@ -886,7 +1048,24 @@ FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, p
                         if (FrameworkImport.competencies.length == source.competency.length) {
                             delete (FrameworkImport.targetUsable)["competencyObjects"];
                             FrameworkImport.targetUsable.save(function(p1) {
-                                success(FrameworkImport.competencies);
+                                for (var i = 0; i < source.relation.length; i++) {
+                                    if (target.relation == null || (target.relation.indexOf(source.relation[i]) == -1 && target.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
+                                        EcAlignment.get(source.relation[i], function(relation) {
+                                            FrameworkImport.relations.push(relation);
+                                            FrameworkImport.targetUsable.addRelation(relation.id);
+                                            if (FrameworkImport.relations.length == source.relation.length) {
+                                                delete (FrameworkImport.targetUsable)["competencyObjects"];
+                                                FrameworkImport.targetUsable.save(function(p1) {
+                                                    success(FrameworkImport.competencies, FrameworkImport.relations);
+                                                }, function(p1) {
+                                                    failure(p1);
+                                                });
+                                            }
+                                        }, function(p1) {
+                                            failure(p1);
+                                        });
+                                    }
+                                }
                             }, function(p1) {
                                 failure(p1);
                             });
@@ -898,4 +1077,4 @@ FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, p
             }
         }
     };
-}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}}, {});
+}, {targetUsable: "EcFramework", competencies: {name: "Array", arguments: ["EcCompetency"]}, relations: {name: "Array", arguments: ["EcAlignment"]}, compMap: {name: "Map", arguments: [null, null]}}, {});

@@ -14,9 +14,14 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
     constructor.FIELD_MSG_RETURN = "returnLoginMessage";
     constructor.FIELD_SERVER_URL = "defaultServerUrl";
     constructor.FIELD_SERVER_NAME = "defaultServerName";
+    constructor.FIELD_SHOW_REPO_MENU = "showRepoMenu";
+    constructor.FIELD_SHOW_EXAMPLES_MENU = "showExamplesMenu";
     constructor.returnLoginMessage = "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.";
     constructor.defaultServerUrl = "https://sandbox.service.cassproject.org/";
     constructor.defaultServerName = "CASS Sandbox";
+    constructor.showRepoMenu = false;
+    constructor.showExamplesMenu = false;
+    constructor.relationTypes = null;
     /**
      *  Loads the settings from the settings file at settings/settings.js
      *  
@@ -35,8 +40,17 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
             var serverName = (settingsObj)[AppSettings.FIELD_SERVER_NAME];
             if (serverName != null) 
                 AppSettings.defaultServerUrl = serverName;
+            var showRepo = Boolean((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU]);
+            if (showRepo != null) 
+                AppSettings.showRepoMenu = showRepo;
+            var showExamples = Boolean((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU]);
+            if (showExamples != null) 
+                AppSettings.showExamplesMenu = showExamples;
         }, function(p1) {
             console.error("Unable to load settings file");
         });
     };
-}, {}, {});
+}, {relationTypes: {name: "Map", arguments: [null, null]}}, {});
+(function() {
+    AppSettings.relationTypes = {"isEnabledBy": "is Enabled by", "requires": "Requires", "desires": "Desires", "narrows": "Narrows", "isRelatedTo": "is Related to", "isEquivalentTo": "is Equivalent to"};
+})();

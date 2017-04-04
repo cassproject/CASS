@@ -1,3 +1,12 @@
+/**
+ * 
+ *  @author Fritz
+ */
+var EcCrypto = function() {};
+EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
+    constructor.caching = false;
+    constructor.decryptionCache = new Object();
+}, {decryptionCache: "Object"}, {});
 var AlgorithmIdentifier = function() {};
 AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
     prototype.name = null;
@@ -4338,91 +4347,6 @@ define(['require', 'module', './util'], function() {
   defineFunc.apply(null, Array.prototype.slice.call(arguments, 0));
 });
 })();
-/**
- *  Helper methods for performing RSA Encryption methods. 
- *  Uses Optimal Asymmetric Encryption Padding (OAEP) encryption and decryption.
- *  Uses RSA SSA PKCS#1 v1.5 (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcRsaOaep
- */
-var EcRsaOaep = function() {};
-EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
-    /**
-     *  Encrypts a block of plaintext (no more than 256 bytes) with a public key using RSA OAEP encryption.
-     *  Returns a base64 encoded ciphertext.
-     *  @method encrypt
-     *  @static
-     *  @param {EcPk} pk Public Key.
-     *  @param {string} plaintext Plaintext. Does not perform encoding.
-     */
-    constructor.encrypt = function(pk, plaintext) {
-        return forge.util.encode64(pk.pk.encrypt(plaintext, "RSA-OAEP"));
-    };
-    /**
-     *  Decrypts a block of ciphertext (no more than 256 bytes) with a private key using RSA OAEP encryption.
-     *  Returns a unencoded plaintext.
-     *  @method decrypt
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
-     *  @param {string} ciphertext Ciphertext.
-     *  @return {string} Unencoded plaintext.
-     */
-    constructor.decrypt = function(ppk, ciphertext) {
-        return ppk.ppk.decrypt(forge.util.decode64(ciphertext), "RSA-OAEP");
-    };
-    /**
-     *  Creates a signature for the provided text using the public private keypair.
-     *  May be verified with the public key.
-     *  Uses SHA1 hash with a UTF8 decoding of the text.
-     *  Returns base64 encoded signature.
-     *  @method sign
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     */
-    constructor.sign = function(ppk, text) {
-        var s = forge.md.sha1.create();
-        s.update(text, "utf8");
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Creates a signature for the provided text using the public private keypair.
-     *  May be verified with the public key.
-     *  Uses SHA256 hash with a UTF8 decoding of the text.
-     *  Returns base64 encoded signature.
-     *  @method signSha256
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
-     *  @param {string} text Text to sign.
-     *  @return Base64 encoded signature.
-     */
-    constructor.signSha256 = function(ppk, text) {
-        var s = forge.md.sha256.create();
-        s.update(text, "utf8");
-        return forge.util.encode64(ppk.ppk.sign(s));
-    };
-    /**
-     *  Verifies the integrity of the provided text using a signature and a public key.
-     *  Uses SHA1 hash with a UTF8 decoding of the text.
-     *  @static
-     *  @method verify
-     *  @param {EcPk} pk Public key.
-     *  @param {string} text Text to verify.
-     *  @param {string} signature Base64 encoded signature.
-     *  @return True IFF the signature is valid.
-     */
-    constructor.verify = function(pk, text, signature) {
-        var s = forge.md.sha1.create();
-        s.update(text, "utf8");
-        try {
-            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
-        }catch (ex) {
-            return false;
-        }
-    };
-}, {}, {});
 var EcAesParameters = function(iv) {
     this.iv = forge.util.decode64(iv);
 };
@@ -6612,6 +6536,120 @@ define([
   defineFunc.apply(null, Array.prototype.slice.call(arguments, 0));
 });
 })();
+/**
+ *  Helper methods for performing RSA Encryption methods. Uses Optimal Asymmetric
+ *  Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
+ *  (RSASSA-PKCS1-V1_5) signing and verifying with UTF8 encoding.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcRsaOaep
+ */
+var EcRsaOaep = function() {};
+EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
+    /**
+     *  Encrypts a block of plaintext (no more than 256 bytes) with a public key
+     *  using RSA OAEP encryption. Returns a base64 encoded ciphertext.
+     * 
+     *  @method encrypt
+     *  @static
+     *  @param {EcPk} pk Public Key.
+     *  @param {string} plaintext Plaintext. Does not perform encoding.
+     */
+    constructor.encrypt = function(pk, plaintext) {
+        if ($ == null) {
+            return rsaEncrypt(plaintext, pk.toPem());
+        }
+        return forge.util.encode64(pk.pk.encrypt(plaintext, "RSA-OAEP"));
+    };
+    /**
+     *  Decrypts a block of ciphertext (no more than 256 bytes) with a private
+     *  key using RSA OAEP encryption. Returns a unencoded plaintext.
+     * 
+     *  @method decrypt
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {string} ciphertext Ciphertext.
+     *  @return {string} Unencoded plaintext.
+     */
+    constructor.decrypt = function(ppk, ciphertext) {
+        if (EcCrypto.caching) {
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
+            if (cacheGet != null) {
+                return cacheGet;
+            }
+        }
+        var result;
+        if ($ == null) {
+            result = rsaDecrypt(ciphertext, ppk.toPem());
+        } else {
+            result = ppk.ppk.decrypt(forge.util.decode64(ciphertext), "RSA-OAEP");
+        }
+        if (EcCrypto.caching) {
+            (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = result;
+        }
+        return result;
+    };
+    /**
+     *  Creates a signature for the provided text using the public private
+     *  keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
+     *  decoding of the text. Returns base64 encoded signature.
+     * 
+     *  @method sign
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {string} text Text to sign.
+     *  @return Base64 encoded signature.
+     */
+    constructor.sign = function(ppk, text) {
+        if ($ == null) {
+            return rsaSign(text, ppk.toPem());
+        }
+        var s = forge.md.sha1.create();
+        s.update(text, "utf8");
+        return forge.util.encode64(ppk.ppk.sign(s));
+    };
+    /**
+     *  Creates a signature for the provided text using the public private
+     *  keypair. May be verified with the public key. Uses SHA256 hash with a
+     *  UTF8 decoding of the text. Returns base64 encoded signature.
+     * 
+     *  @method signSha256
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {string} text Text to sign.
+     *  @return Base64 encoded signature.
+     */
+    constructor.signSha256 = function(ppk, text) {
+        var s = forge.md.sha256.create();
+        s.update(text, "utf8");
+        return forge.util.encode64(ppk.ppk.sign(s));
+    };
+    /**
+     *  Verifies the integrity of the provided text using a signature and a
+     *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
+     * 
+     *  @static
+     *  @method verify
+     *  @param {EcPk} pk Public key.
+     *  @param {string} text Text to verify.
+     *  @param {string} signature Base64 encoded signature.
+     *  @return True IFF the signature is valid.
+     */
+    constructor.verify = function(pk, text, signature) {
+        if ($ == null) {
+            return rsaVerify(signature, pk.toPem(), text);
+        }
+        var s = forge.md.sha1.create();
+        s.update(text, "utf8");
+        try {
+            return pk.verify(s.digest().bytes(), forge.util.decode64(signature));
+        }catch (ex) {
+            return false;
+        }
+    };
+}, {}, {});
 var EcAesCtrAsyncNative = function() {};
 EcAesCtrAsyncNative = stjs.extend(EcAesCtrAsyncNative, null, [], function(constructor, prototype) {
     constructor.encrypt = function(text, secret, iv, success, failure) {
@@ -6807,180 +6845,6 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     };
 }, {ppk: "forge.ppk"}, {});
 /**
- *  Asynchronous implementation of {{#crossLink "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
- *  @class EcRsaOaepAsync
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var EcRsaOaepAsync = function() {};
-EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
-    constructor.rotator = 0;
-    constructor.w = null;
-    constructor.q1 = null;
-    constructor.q2 = null;
-    constructor.initWorker = function() {
-        if ((typeof self).equals("undefined")) 
-            return;
-        if (!EcRemote.async) 
-            return;
-        if (EcRsaOaepAsync.w != null) 
-            return;
-        EcRsaOaepAsync.rotator = 0;
-        EcRsaOaepAsync.q1 = new Array();
-        EcRsaOaepAsync.q2 = new Array();
-        EcRsaOaepAsync.w = new Array();
-        for (var index = 0; index < 8; index++) {
-            EcRsaOaepAsync.createWorker(index);
-        }
-    };
-    constructor.createWorker = function(index) {
-        EcRsaOaepAsync.q1.push(new Array());
-        EcRsaOaepAsync.q2.push(new Array());
-        var wkr;
-        EcRsaOaepAsync.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
-        wkr.onmessage = function(p1) {
-            var o = p1.data;
-            var success = EcRsaOaepAsync.q1[index].shift();
-            var failure = EcRsaOaepAsync.q2[index].shift();
-            if (success != null) 
-                success((o)["result"]);
-        };
-        wkr.onerror = function(p1) {
-            var success = EcRsaOaepAsync.q1[index].shift();
-            var failure = EcRsaOaepAsync.q2[index].shift();
-            if (failure != null) 
-                failure(p1.toString());
-        };
-    };
-    /**
-     *  Asynchronous form of {{#crossLink "EcRsaOaep/encrypt:method"}}EcRsaOaep.encrypt{{/crossLink}}
-     *  @method encrypt
-     *  @static
-     *  @param {EcPk} pk Public Key to use to encrypt.
-     *  @param {string} plaintext Plaintext to encrypt.
-     *  @param {function(string)} success Success method, result is Base64 encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error message.
-     */
-    constructor.encrypt = function(pk, plaintext, success, failure) {
-        EcRsaOaepAsync.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.encrypt(pk, plaintext));
-        } else {
-            var worker = EcRsaOaepAsync.rotator++;
-            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
-            var o = new Object();
-            (o)["pk"] = pk.toPem();
-            (o)["text"] = plaintext;
-            (o)["cmd"] = "encryptRsaOaep";
-            EcRsaOaepAsync.q1[worker].push(success);
-            EcRsaOaepAsync.q2[worker].push(failure);
-            EcRsaOaepAsync.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink "EcRsaOaep/decrypt:method"}}EcRsaOaep.decrypt{{/crossLink}}
-     *  @method decrypt
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to decrypt.
-     *  @param {string} ciphertext Ciphertext to decrypt.
-     *  @param {function(string)} success Success method, result is unencoded plaintext.
-     *  @param {function(string)} failure Failure method, parameter is error message.
-     */
-    constructor.decrypt = function(ppk, ciphertext, success, failure) {
-        EcRsaOaepAsync.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.decrypt(ppk, ciphertext));
-        } else {
-            var worker = EcRsaOaepAsync.rotator++;
-            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
-            var o = new Object();
-            (o)["ppk"] = ppk.toPem();
-            (o)["text"] = ciphertext;
-            (o)["cmd"] = "decryptRsaOaep";
-            EcRsaOaepAsync.q1[worker].push(success);
-            EcRsaOaepAsync.q2[worker].push(failure);
-            EcRsaOaepAsync.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink "EcRsaOaep/sign:method"}}EcRsaOaep.sign{{/crossLink}}
-     *  @method sign
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to sign message.
-     *  @param {string} text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64 encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error message.
-     */
-    constructor.sign = function(ppk, text, success, failure) {
-        EcRsaOaepAsync.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.sign(ppk, text));
-        } else {
-            var worker = EcRsaOaepAsync.rotator++;
-            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
-            var o = new Object();
-            (o)["ppk"] = ppk.toPem();
-            (o)["text"] = text;
-            (o)["cmd"] = "signRsaOaep";
-            EcRsaOaepAsync.q1[worker].push(success);
-            EcRsaOaepAsync.q2[worker].push(failure);
-            EcRsaOaepAsync.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink "EcRsaOaep/signSha256:method"}}EcRsaOaep.signSha256{{/crossLink}}
-     *  @method signSha256
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to sign message.
-     *  @param {string} text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64 encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error message.
-     */
-    constructor.signSha256 = function(ppk, text, success, failure) {
-        EcRsaOaepAsync.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.signSha256(ppk, text));
-        } else {
-            var worker = EcRsaOaepAsync.rotator++;
-            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
-            var o = new Object();
-            (o)["ppk"] = ppk.toPem();
-            (o)["text"] = text;
-            (o)["cmd"] = "signSha256RsaOaep";
-            EcRsaOaepAsync.q1[worker].push(success);
-            EcRsaOaepAsync.q2[worker].push(failure);
-            EcRsaOaepAsync.w[worker].postMessage(o);
-        }
-    };
-    /**
-     *  Asynchronous form of {{#crossLink "EcRsaOaep/verify:method"}}EcRsaOaep.verify{{/crossLink}}
-     *  @method verify
-     *  @static
-     *  @param {EcPk} pk Public key to use to verify message.
-     *  @param {string} text Text to use in verification.
-     *  @param {string} signature Signature to use in verification.
-     *  @param {function(boolean)} success Success method, result is whether signature is valid.
-     *  @param {function(string)} failure Failure method, parameter is error message.
-     */
-    constructor.verify = function(pk, text, signature, success, failure) {
-        EcRsaOaepAsync.initWorker();
-        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
-            success(EcRsaOaep.verify(pk, text, signature));
-        } else {
-            var worker = EcRsaOaepAsync.rotator++;
-            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
-            var o = new Object();
-            (o)["pk"] = pk.toPem();
-            (o)["text"] = text;
-            (o)["signature"] = signature;
-            (o)["cmd"] = "verifyRsaOaep";
-            EcRsaOaepAsync.q1[worker].push(success);
-            EcRsaOaepAsync.q2[worker].push(failure);
-            EcRsaOaepAsync.w[worker].postMessage(o);
-        }
-    };
-}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
-/**
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
  *  @author fritz.ray@eduworks.com
@@ -7001,6 +6865,8 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
      *  @return {string} Ciphertext encoded using base64.
      */
     constructor.encrypt = function(plaintext, secret, iv) {
+        if ($ == null && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) 
+            return aesEncrypt(plaintext, iv, secret);
         var c = forge.cipher.createCipher("AES-CTR", forge.util.decode64(secret));
         c.start(new EcAesParameters(iv));
         c.update(forge.util.createBuffer(plaintext));
@@ -7020,16 +6886,248 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
      *  @return {string} Plaintext with no encoding.
      */
     constructor.decrypt = function(ciphertext, secret, iv) {
+        if (EcCrypto.caching) {
+            var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            if (cacheGet != null) 
+                return cacheGet;
+        }
+        if ($ == null && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) {
+            var result = aesDecrypt(ciphertext, iv, secret);
+            if (EcCrypto.caching) 
+                (EcCrypto.decryptionCache)[secret + iv + ciphertext] = result;
+            return result;
+        }
         var c = forge.cipher.createDecipher("AES-CTR", forge.util.decode64(secret));
         c.start(new EcAesParameters(iv));
         c.update(forge.util.createBuffer(forge.util.decode64(ciphertext)));
         c.finish();
         var decrypted = c.output;
+        if (EcCrypto.caching) 
+            (EcCrypto.decryptionCache)[secret + iv + ciphertext] = decrypted.data;
         return decrypted.data;
     };
 }, {}, {});
 /**
- *  Asynchronous implementation of {{#crossLink "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
+ *  Asynchronous implementation of {{#crossLink
+ *  "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
+ * 
+ *  @class EcRsaOaepAsync
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var EcRsaOaepAsync = function() {};
+EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
+    constructor.rotator = 0;
+    constructor.w = null;
+    constructor.q1 = null;
+    constructor.q2 = null;
+    constructor.initWorker = function() {
+        if (window == null && (typeof self).equals("undefined")) {
+            return;
+        }
+        if (!EcRemote.async) {
+            return;
+        }
+        if (EcRsaOaepAsync.w != null) {
+            return;
+        }
+        EcRsaOaepAsync.rotator = 0;
+        EcRsaOaepAsync.q1 = new Array();
+        EcRsaOaepAsync.q2 = new Array();
+        EcRsaOaepAsync.w = new Array();
+        for (var index = 0; index < 8; index++) {
+            EcRsaOaepAsync.createWorker(index);
+        }
+    };
+    constructor.createWorker = function(index) {
+        EcRsaOaepAsync.q1.push(new Array());
+        EcRsaOaepAsync.q2.push(new Array());
+        var wkr;
+        EcRsaOaepAsync.w.push(wkr = new Worker((window)["scriptPath"] + "forgeAsync.js"));
+        wkr.onmessage = function(p1) {
+            var o = p1.data;
+            var success = EcRsaOaepAsync.q1[index].shift();
+            var failure = EcRsaOaepAsync.q2[index].shift();
+            if (success != null) {
+                success((o)["result"]);
+            }
+        };
+        wkr.onerror = function(p1) {
+            var success = EcRsaOaepAsync.q1[index].shift();
+            var failure = EcRsaOaepAsync.q2[index].shift();
+            if (failure != null) {
+                failure(p1.toString());
+            }
+        };
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/encrypt:method"}}EcRsaOaep.encrypt{{/crossLink}}
+     * 
+     *  @method encrypt
+     *  @static
+     *  @param {EcPk} pk Public Key to use to encrypt.
+     *  @param {string} plaintext Plaintext to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *  encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
+     */
+    constructor.encrypt = function(pk, plaintext, success, failure) {
+        EcRsaOaepAsync.initWorker();
+        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
+            success(EcRsaOaep.encrypt(pk, plaintext));
+        } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
+            var o = new Object();
+            (o)["pk"] = pk.toPem();
+            (o)["text"] = plaintext;
+            (o)["cmd"] = "encryptRsaOaep";
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
+        }
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/decrypt:method"}}EcRsaOaep.decrypt{{/crossLink}}
+     * 
+     *  @method decrypt
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to decrypt.
+     *  @param {string} ciphertext Ciphertext to decrypt.
+     *  @param {function(string)} success Success method, result is unencoded
+     *  plaintext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
+     */
+    constructor.decrypt = function(ppk, ciphertext, success, failure) {
+        if (EcCrypto.caching) {
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext];
+            if (cacheGet != null) {
+                success(cacheGet);
+                return;
+            }
+        }
+        EcRsaOaepAsync.initWorker();
+        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
+            success(EcRsaOaep.decrypt(ppk, ciphertext));
+        } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
+            var o = new Object();
+            (o)["ppk"] = ppk.toPem();
+            (o)["text"] = ciphertext;
+            (o)["cmd"] = "decryptRsaOaep";
+            if (EcCrypto.caching) {
+                EcRsaOaepAsync.q1[worker].push(function(p1) {
+                    (EcCrypto.decryptionCache)[ppk.toPem() + ciphertext] = p1;
+                    success(p1);
+                });
+            } else {
+                EcRsaOaepAsync.q1[worker].push(success);
+            }
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
+        }
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/sign:method"}}EcRsaOaep.sign{{/crossLink}}
+     * 
+     *  @method sign
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to sign message.
+     *  @param {string} text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *  encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
+     */
+    constructor.sign = function(ppk, text, success, failure) {
+        EcRsaOaepAsync.initWorker();
+        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
+            success(EcRsaOaep.sign(ppk, text));
+        } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
+            var o = new Object();
+            (o)["ppk"] = ppk.toPem();
+            (o)["text"] = text;
+            (o)["cmd"] = "signRsaOaep";
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
+        }
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/signSha256:method"}}EcRsaOaep.signSha256{{/crossLink}}
+     * 
+     *  @method signSha256
+     *  @static
+     *  @param {EcPpk} ppk Public private keypair to use to sign message.
+     *  @param {string} text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *  encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
+     */
+    constructor.signSha256 = function(ppk, text, success, failure) {
+        EcRsaOaepAsync.initWorker();
+        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
+            success(EcRsaOaep.signSha256(ppk, text));
+        } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
+            var o = new Object();
+            (o)["ppk"] = ppk.toPem();
+            (o)["text"] = text;
+            (o)["cmd"] = "signSha256RsaOaep";
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
+        }
+    };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/verify:method"}}EcRsaOaep.verify{{/crossLink}}
+     * 
+     *  @method verify
+     *  @static
+     *  @param {EcPk} pk Public key to use to verify message.
+     *  @param {string} text Text to use in verification.
+     *  @param {string} signature Signature to use in verification.
+     *  @param {function(boolean)} success Success method, result is whether
+     *  signature is valid.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
+     */
+    constructor.verify = function(pk, text, signature, success, failure) {
+        EcRsaOaepAsync.initWorker();
+        if (!EcRemote.async || EcRsaOaepAsync.w == null) {
+            success(EcRsaOaep.verify(pk, text, signature));
+        } else {
+            var worker = EcRsaOaepAsync.rotator++;
+            EcRsaOaepAsync.rotator = EcRsaOaepAsync.rotator % 8;
+            var o = new Object();
+            (o)["pk"] = pk.toPem();
+            (o)["text"] = text;
+            (o)["signature"] = signature;
+            (o)["cmd"] = "verifyRsaOaep";
+            EcRsaOaepAsync.q1[worker].push(success);
+            EcRsaOaepAsync.q2[worker].push(failure);
+            EcRsaOaepAsync.w[worker].postMessage(o);
+        }
+    };
+}, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
+/**
+ *  Asynchronous implementation of {{#crossLink
+ *  "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
+ * 
  *  @class EcAesCtrAsync
  *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
@@ -7041,12 +7139,15 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if ((typeof self).equals("undefined")) 
+        if (window == null && (typeof self).equals("undefined")) {
             return;
-        if (!EcRemote.async) 
+        }
+        if (!EcRemote.async) {
             return;
-        if (EcAesCtrAsync.w != null) 
+        }
+        if (EcAesCtrAsync.w != null) {
             return;
+        }
         EcAesCtrAsync.rotator = 0;
         EcAesCtrAsync.q1 = new Array();
         EcAesCtrAsync.q2 = new Array();
@@ -7064,25 +7165,31 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             var o = p1.data;
             var success = EcAesCtrAsync.q1[index].shift();
             var failure = EcAesCtrAsync.q2[index].shift();
-            if (success != null) 
+            if (success != null) {
                 success((o)["result"]);
+            }
         };
         wkr.onerror = function(p1) {
             var success = EcAesCtrAsync.q1[index].shift();
             var failure = EcAesCtrAsync.q2[index].shift();
-            if (failure != null) 
+            if (failure != null) {
                 failure(p1.toString());
+            }
         };
     };
     /**
-     *  Asynchronous form of {{#crossLink "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
+     * 
      *  @method encrypt
      *  @static
      *  @param {string} plaintext Text to encrypt.
      *  @param {string} secret Secret to use to encrypt.
      *  @param {string} iv Initialization Vector to use to encrypt.
-     *  @param {function(string)} success Success method, result is Base64 encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error message.
+     *  @param {function(string)} success Success method, result is Base64
+     *  encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
      */
     constructor.encrypt = function(plaintext, secret, iv, success, failure) {
         EcAesCtrAsync.initWorker();
@@ -7102,16 +7209,28 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         }
     };
     /**
-     *  Asynchronous form of {{#crossLink "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
+     * 
      *  @method decrypt
      *  @static
      *  @param {string} ciphertext Text to decrypt.
      *  @param {string} secret Secret to use to decrypt.
      *  @param {string} iv Initialization Vector to use to decrypt.
-     *  @param {function(string)} success Success method, result is Plaintext with no encoding.
-     *  @param {function(string)} failure Failure method, parameter is error message.
+     *  @param {function(string)} success Success method, result is Plaintext
+     *  with no encoding.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *  message.
      */
     constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
+        if (EcCrypto.caching) {
+            var cacheGet = null;
+            cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
+            if (cacheGet != null) {
+                success(cacheGet);
+                return;
+            }
+        }
         EcAesCtrAsync.initWorker();
         if (!EcRemote.async || EcAesCtrAsync.w == null) {
             success(EcAesCtr.decrypt(ciphertext, secret, iv));
@@ -7123,7 +7242,14 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             (o)["iv"] = iv;
             (o)["text"] = ciphertext;
             (o)["cmd"] = "decryptAesCtr";
-            EcAesCtrAsync.q1[worker].push(success);
+            if (EcCrypto.caching) {
+                EcAesCtrAsync.q1[worker].push(function(p1) {
+                    (EcCrypto.decryptionCache)[secret + iv + ciphertext] = p1;
+                    success(p1);
+                });
+            } else {
+                EcAesCtrAsync.q1[worker].push(success);
+            }
             EcAesCtrAsync.q2[worker].push(failure);
             EcAesCtrAsync.w[worker].postMessage(o);
         }

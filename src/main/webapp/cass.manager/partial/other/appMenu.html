@@ -66,7 +66,7 @@
         </ul>
 
         <ul id="appMenuMain" class="menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
-            <li>
+            <li id="appMenuRepo">
                 <a class="menu-text" id="appMenuRepository">General</a>
                 <ul class="vertical menu submenu">
                     <li>
@@ -75,16 +75,122 @@
                     <li>
                         <a id="appMenuRepoCreate">Create</a>
                     </li>
+                </ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text" id="appMenuCompetencies">Competencies</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+						<a id="appMenuCompetencySearch">Search</a>
+                    </li>
                     <li>
-                        <a>Examples</a>
-                        <ul class="vertical menu submenu">
-                            <li><a id="appMenuFileManager">Secure File Store</a></li>
-                        </ul>
+                         <a id="appMenuCompetencyCreate">New...</a>
+                    </li>
+                    <li>
+                         <a id="appMenuCompetencyImport">Import</a>
+                    </li>
+                   	
+                   	<div style="position:relative;" id="appMenuCompetencyListStart" class="hide">
+	                    <hr style="margin:0.6rem auto"/>
+	                    <span style="background-color:white;padding:2px;position: absolute;top: -0.6rem;left: 0.5rem;font-size: 0.67rem;">
+	                    	Viewed Recently
+	                    </span>
+                    </div>
+            	</ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text" id="appMenuFrameworks">Frameworks</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+                        <a id="appMenuFrameworkSearch">Search</a>
+                    </li>
+                    
+                    <li>
+                        <a id="appMenuFrameworkCreate">New...</a>
+                    </li>
+                    
+                    <div style="position:relative;" id="appMenuFrameworkListStart" class="hide">
+	                    <hr style="margin:0.6rem auto"/>
+	                    <span style="background-color:white;padding:2px;position: absolute;top: -0.6rem;left: 0.5rem;font-size: 0.67rem;">
+	                    	Viewed Recently
+	                    </span>
+                    </div>
+            	</ul>
+            </li>
+
+            <li>
+                <a class="menu-text" id="appMenuAssertions">Assertions</a>
+                <ul class="vertical menu">
+                    <li>
+                        <a id="appMenuAssertionSearch">View All</a>
+                    </li>
+                    <li>
+                        <a id="appMenuAssertionCreate">New...</a>
                     </li>
                 </ul>
             </li>
 
             <li>
+                <a class="menu-text" id="appMenuAlignment">Alignments</a>
+                <ul class="vertical menu">
+                    <li>
+                        <a id="appMenuAlignmentExplorer">Alignment Explorer</a>
+                    </li>
+                    <li>
+                        <a id="appMenuAlignmentEditor">Alignment Editor</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text">More</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+                        <a id="appMenuRelationships">Relationships</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuRelationshipSearch">Search</a>
+                            </li>
+                            <li>
+                                <a id="appMenuRelationshipCreate">New...</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a id="appMenuLevels">Levels</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuLevelSearch">Search</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a id="appMenuRollupRules">Rollup Rules</a>
+                        <ul class="vertical menu submenu">
+                            <li>
+                                <a id="appMenuRollupRulesSearch">Search</a>
+                            </li>
+                        </ul>
+                    </li>
+            	</ul>
+            </li>
+            
+            <li id="appMenuExamples">
+                <a class="menu-text">Examples</a>
+                <ul class="vertical menu submenu">
+                    <li><a id="appMenuFileManager">Secure File Store</a></li>
+                </ul>
+            </li>
+            
+            <li class="appMenuUser hide" id="appMenuProfile">
+            	<a class="menu-text">Profile</a>
+            </li>
+
+            <!--li>
                 <a class="menu-text" id="appMenuCompetency">Models</a>
                 <ul class="vertical menu">
                     <li>
@@ -151,7 +257,7 @@
                     <li><a onclick="alert('Not yet implemented.');">Rules</a></li>
                     <li class="divider"></li>
                 </ul>
-            </li>
+            </li-->
         </ul>
     </section>
 </nav>

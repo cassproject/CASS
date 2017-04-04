@@ -20,7 +20,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  @static
      *  @type ServerController
      */
-    constructor.serverController = new ServerController(AppSettings.defaultServerUrl, AppSettings.defaultServerName);
+    constructor.serverController = null;
     /**
      *  Manages the current user's identities and contacts through the
      *  KBAC libraries. 
@@ -29,7 +29,7 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  @static
      *  @type IdentityController
      */
-    constructor.identityController = new IdentityController();
+    constructor.identityController = null;
     /**
      *  Handles the login/logout and admin communications with the server.
      *  
@@ -37,7 +37,15 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  @static
      *  @type LoginController
      */
-    constructor.loginController = new LoginController();
+    constructor.loginController = null;
+    /**
+     *  Handles the browser storage
+     *  
+     *  @property sessionController
+     *  @static
+     *  @type SessionController
+     */
+    constructor.storageController = null;
     /**
      *  Entry point of the application
      *  
@@ -45,6 +53,10 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
      *  			Not used at all...
      */
     constructor.main = function(args) {
+        AppController.identityController = new IdentityController();
+        AppController.storageController = new StorageController();
+        AppController.loginController = new LoginController(AppController.storageController);
+        AppController.serverController = new ServerController(AppController.storageController, AppSettings.defaultServerUrl, AppSettings.defaultServerName);
         AppSettings.loadSettings();
         AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
         AppController.loginController.identity = AppController.identityController;
@@ -52,10 +64,13 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         $(window.document).ready(function(arg0, arg1) {
             ViewManager.showView(new AppMenu(), AppController.topBarContainerId, function() {
                 ($(window.document)).foundation();
+                var menu = ViewManager.getView(AppController.topBarContainerId);
+                menu.showRepoMenu(AppSettings.showRepoMenu);
+                menu.showExamplesMenu(AppSettings.showExamplesMenu);
             });
             return true;
         });
     };
-}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController"}, {});
+}, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", storageController: "StorageController"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();

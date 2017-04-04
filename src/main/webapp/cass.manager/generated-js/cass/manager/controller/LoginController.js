@@ -8,14 +8,20 @@
  *  
  *  @author devlin.junker@eduworks.com
  */
-var LoginController = function() {};
+var LoginController = /**
+ *  On startup, check if the last time the user was on the page, whether or not they were signed in
+ */
+function(storage) {
+    this.storageSystem = storage;
+    this.refreshLoggedIn = this.storageSystem.getStoredValue("cass.login") == "true" ? true : false;
+};
 LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
     prototype.loginServer = null;
     prototype.identity = null;
-    constructor.refreshLoggedIn = false;
-    constructor.loggedIn = false;
-    constructor.admin = false;
-    constructor.storageSystem = null;
+    prototype.refreshLoggedIn = false;
+    prototype.loggedIn = false;
+    prototype.admin = false;
+    prototype.storageSystem = null;
     /**
      *  Setter for the boolean flag of whether or not a user is loged in
      *  
@@ -24,10 +30,10 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  @param {boolean} val 
      *  			true if signed in, false if logged out
      */
-    constructor.setLoggedIn = function(val) {
-        LoginController.loggedIn = val;
-        if (LoginController.storageSystem != null) 
-            LoginController.storageSystem["cass.login"] = val;
+    prototype.setLoggedIn = function(val) {
+        this.loggedIn = val;
+        if (this.storageSystem != null) 
+            this.storageSystem.setStoredValue("cass.login", val);
     };
     /**
      *  Getter for boolean flag of whether or not user is logged in
@@ -37,8 +43,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  @return {boolean} 
      *  			true if signed in, false if logged out
      */
-    constructor.getLoggedIn = function() {
-        return LoginController.loggedIn;
+    prototype.getLoggedIn = function() {
+        return this.loggedIn;
     };
     /**
      *  Setter for boolean flag of whether or not the current user is admin
@@ -48,7 +54,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  			true = admin, false = not admin
      */
     prototype.setAdmin = function(val) {
-        LoginController.admin = val;
+        this.admin = val;
     };
     /**
      *  Getter for boolean flag of whether or not current user is admin
@@ -58,7 +64,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  			true = admin, false = not admin
      */
     prototype.getAdmin = function() {
-        return LoginController.admin;
+        return this.admin;
     };
     /**
      *  If the last time the user was using the application, they were signed in this
@@ -70,8 +76,8 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
      *  		true if previously signed in, false if not signed in last time, or user is here for
      *  		the first time from this computer
      */
-    constructor.getPreviouslyLoggedIn = function() {
-        return LoginController.refreshLoggedIn;
+    prototype.getPreviouslyLoggedIn = function() {
+        return this.refreshLoggedIn;
     };
     prototype.setLoginServer = function(loginServer) {
         this.loginServer = loginServer;
@@ -98,7 +104,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         this.loginServer.fetch(function(p1) {
             EcIdentityManager.readContacts();
             EcRepository.cache = new Object();
-            LoginController.setLoggedIn(true);
+            that.setLoggedIn(true);
             if (EcIdentityManager.ids.length > 0) {
                 identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
                 that.loginServer.fetchServerAdminKeys(function(keys) {
@@ -128,7 +134,7 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         this.loginServer.clear();
         this.identity.selectedIdentity = null;
         EcRepository.cache = new Object();
-        LoginController.setLoggedIn(false);
+        this.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
         this.setAdmin(false);
@@ -176,14 +182,4 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             return null;
         });
     };
-}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "Storage"}, {});
-(function() {
-    if (localStorage != null) 
-        LoginController.storageSystem = localStorage;
-     else if (sessionStorage != null) 
-        LoginController.storageSystem = sessionStorage;
-    if (LoginController.storageSystem["cass.login"] != null) {
-        LoginController.refreshLoggedIn = LoginController.storageSystem["cass.login"] == "true" ? true : false;
-        LoginController.storageSystem["cass.login"] = false;
-    }
-})();
+}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "StorageController"}, {});

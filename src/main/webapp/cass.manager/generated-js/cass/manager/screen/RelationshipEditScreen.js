@@ -11,11 +11,11 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
     prototype.getHtmlLocation = function() {
         return "partial/screen/relationshipEdit.html";
     };
-}, {data: "Object", data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {
-            var urlParameters = (EcView.urlParameters());
+            var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
                 EcAlignment.get(id, function(data) {
@@ -24,6 +24,22 @@ RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, 
                     ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                 });
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            var source = urlParameters["source"];
+            if (source != null) {
+                var data = new Object();
+                (data)["source"] = source;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            var target = urlParameters["target"];
+            if (target != null) {
+                var data = new Object();
+                (data)["target"] = target;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
                 return;
             }
             ScreenManager.startupScreen = new RelationshipEditScreen(null);

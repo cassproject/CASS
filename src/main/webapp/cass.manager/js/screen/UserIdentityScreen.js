@@ -364,7 +364,7 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         ViewManager.showView(new MessageContainer("userIdentity"), "#userIdentityMessageContainer");
         ViewManager.showView(new MessageContainer("copyInvitation"), "#invitationMessageContainer");
         
-        if (LoginController.getLoggedIn()) {
+        if (AppController.loginController.getLoggedIn()) {
             checkNewContact(screen, containerId);
             refreshContacts(EcIdentityManager.contacts);
             checkContactGrants();

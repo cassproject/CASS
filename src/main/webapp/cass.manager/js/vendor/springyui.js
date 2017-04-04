@@ -34,6 +34,7 @@ Copyright (c) 2010 Dennis Hotson
         var damping = params.damping || 0.5;
         var minEnergyThreshold = params.minEnergyThreshold || 0.00001;
         var nodeSelected = params.nodeSelected || null;
+        var noNodeSelected = params.noNodeSelected || null;
         var nodeImages = {};
         var edgeLabelsUpright = true;
 
@@ -44,23 +45,20 @@ Copyright (c) 2010 Dennis Hotson
 
         // calculate bounding box of graph layout.. with ease-in
         var currentBB = layout.getBoundingBox();
-        var targetBB = {
-            bottomleft: new Springy.Vector(-2, -2),
-            topright: new Springy.Vector(2, 2)
-        };
+        var targetBB;
 
         // auto adjusting bounding box
         Springy.requestAnimationFrame(function adjust() {
-            targetBB = layout.getBoundingBox();
-            // current gets 20% closer to target every iteration
-            currentBB = {
-                bottomleft: currentBB.bottomleft.add(targetBB.bottomleft.subtract(currentBB.bottomleft)
-                    .divide(10)),
-                topright: currentBB.topright.add(targetBB.topright.subtract(currentBB.topright)
-                    .divide(10))
-            };
-
-            Springy.requestAnimationFrame(adjust);
+        	if(graph.nodes != undefined && graph.nodes.length > 1){
+        		targetBB = layout.getBoundingBox();
+                // current gets 20% closer to target every iteration
+                currentBB = {
+                    bottomleft: currentBB.bottomleft.add(targetBB.bottomleft.subtract(currentBB.bottomleft).divide(10)),
+                    topright: currentBB.topright.add(targetBB.topright.subtract(currentBB.topright).divide(10))
+                };
+        	}
+        	
+        	Springy.requestAnimationFrame(adjust);
         });
 
         // convert to/from screen coordinates
@@ -79,7 +77,7 @@ Copyright (c) 2010 Dennis Hotson
         };
 
         // half-assed drag and drop
-        var selected = null;
+        layout.selected = null;
         var nearest = null;
         var dragged = null;
 
@@ -89,16 +87,32 @@ Copyright (c) 2010 Dennis Hotson
                 x: e.pageX - pos.left,
                 y: e.pageY - pos.top
             });
-            selected = nearest = dragged = layout.nearest(p);
+            nearest = layout.nearest(p);
 
-            if (selected.node !== null) {
-                dragged.point.mold = dragged.point.m;
-                dragged.point.m = 10000.0;
+            
+            var bb = layout.getBoundingBox();
+            var screenWidth = bb.topright.subtract(bb.bottomleft).magnitude(); 
+            var allowedDist = screenWidth / graph.nodes.length / 3;
+            
+            if(nearest.distance < allowedDist){
+            	layout.selected = dragged = nearest;
+                if (layout.selected.node !== null) {
+                    dragged.point.mold = dragged.point.m;
+                    dragged.point.m = 10000.0;
 
-                if (nodeSelected) {
-                    nodeSelected(selected.node);
+                    if (nodeSelected) {
+                    	console.log(layout.selected);
+                        nodeSelected(layout.selected.node);
+                    }
                 }
+            }else{
+            	layout.selected = null;
+            	dragged = null;
+            	
+            	if(noNodeSelected)
+            		noNodeSelected();
             }
+            
 
             renderer.start();
         });
@@ -109,12 +123,24 @@ Copyright (c) 2010 Dennis Hotson
                 x: e.pageX - pos.left,
                 y: e.pageY - pos.top
             });
-            selected = nearest = dragged = layout.nearest(p);
+            layout.selected = nearest = dragged = layout.nearest(p);
 
-            if (selected.node !== null && dragged.point.mold !== null) {
-                dragged.point.m = dragged.point.mold;
+            var bb = layout.getBoundingBox();
+            var screenWidth = bb.topright.subtract(bb.bottomleft).magnitude(); 
+            var allowedDist = screenWidth / graph.nodes.length / 3;
+            
+            if(nearest.distance < allowedDist){
+            	layout.selected = dragged = nearest ;
+            	 if (layout.selected.node !== null && dragged.point.mold !== null) {
+                     dragged.point.m = dragged.point.mold;
 
+                 }
+            }else{
+            	layout.selected = null;
+            	dragged = null;
             }
+            
+           
 
             renderer.start();
         });
@@ -126,8 +152,8 @@ Copyright (c) 2010 Dennis Hotson
                 x: e.pageX - pos.left,
                 y: e.pageY - pos.top
             });
-            selected = layout.nearest(p);
-            node = selected.node;
+            layout.selected = layout.nearest(p);
+            node = layout.selected.node;
             if (node && node.data && node.data.ondoubleclick) {
                 node.data.ondoubleclick();
             }
@@ -345,7 +371,7 @@ Copyright (c) 2010 Dennis Hotson
 
                 // fill background
                 var text;
-                if (selected !== null && selected.node !== null && selected.node.id === node.id) {
+                if (layout.selected !== null && layout.selected.node !== null && layout.selected.node.id === node.id) {
                     ctx.fillStyle = "rgba(255,255,230,1)";
                     text = (node.data.name !== undefined) ? node.data.name : node.id;
                 } else if (nearest !== null && nearest.node !== null && nearest.node.id === node.id) {

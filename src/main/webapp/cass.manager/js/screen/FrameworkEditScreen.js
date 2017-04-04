@@ -9,15 +9,6 @@
 FrameworkEditScreen = (function (FrameworkEditScreen) {
 
 	var formDirty;
-	
-    var relationTypes = {
-        isEnabledBy: "Enabled By",
-        requires: "Requires",
-        desires: "Desires",
-        narrows: "Narrows",
-        isRelatedTo: "Related To",
-        isEquivalentTo: "Equivalent To"
-    }
 
     /**
      * Displays all of the framework details in the form on the screen
@@ -463,7 +454,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
                 var i = 0;
                 for (var j = 0; j < framework.competency.length; j++) {
-                    var id = framework.competency[i];
+                    var id = framework.competency[j];
                     EcCompetency.get(id, function (competency) {
                         competency.levels(AppController.serverController.getRepoInterface(), undefined, errorSearchingLevels, function (results) {
                             i++;
@@ -593,42 +584,17 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                 var relations = {};
 
                 var i = 0;
-                for (var id in framework.competency) {
-                    var compId = framework.competency[id];
-
-                    EcAlignment.searchBySource(AppController.serverController.getRepoInterface(), compId, function (results) {
-                        i++;
-
-                        for (var idx in results) {
-                            relations[results[idx].id] = results[idx];
-                        }
-
-                        if (i == framework.competency.length) {
-                            var ret = [];
-                            for (var id in relations) {
-                                if (framework.relation == undefined || framework.relation.indexOf(id) == -1 && framework.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(id)) == -1) {
-                                    var rel = relations[id];
-                                    ret.push(rel);
-                                    if (ret.length == Object.keys(relations).length)
-                                        asyncCallback(ret);
-                                } else {
-                                    delete relations[id]
-                                }
-                            }
-
-
-
-                        }
-                    }, errorSearchingRelations);
-                }
+                EcAlignment.searchBySources(AppController.serverController.getRepoInterface(), framework.competency, function (results) {
+                    asyncCallback(results);
+                }, errorSearchingRelations);
             },
             async: true,
             display: function (data) {
-                return EcCompetency.getBlocking(data.source).name + " " + relationTypes[data["relationType"]] + " " + EcCompetency.getBlocking(data.target).name;
+                return EcCompetency.getBlocking(data.source).name + " " + AppSettings.relationTypes[data["relationType"]] + " " + EcCompetency.getBlocking(data.target).name;
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.source).name + " <i>" + relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).name + " <span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.source).name + " <i>" + AppSettings.relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).name + " <span class='label secondary'>"+data["id"]+"</span></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {

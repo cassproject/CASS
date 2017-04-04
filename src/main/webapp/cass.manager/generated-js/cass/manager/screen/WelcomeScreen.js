@@ -1,7 +1,7 @@
 var WelcomeScreen = function() {
-    CassManagerScreen.call(this);
+    EcScreen.call(this);
 };
-WelcomeScreen = stjs.extend(WelcomeScreen, CassManagerScreen, [], function(constructor, prototype) {
+WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
     constructor.displayName = "welcome";
     prototype.getDisplayName = function() {
         return WelcomeScreen.displayName;
@@ -9,4 +9,4 @@ WelcomeScreen = stjs.extend(WelcomeScreen, CassManagerScreen, [], function(const
     prototype.getHtmlLocation = function() {
         return "partial/screen/welcome.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});

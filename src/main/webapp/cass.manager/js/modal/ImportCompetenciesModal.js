@@ -60,6 +60,9 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 			
 			cached_frameworks[id] = framework;
 		}
+		if(frameworks.length == 0){
+			$("#noLocation").text("No Specific Framework");
+		}
 	}
 	
 	/**
@@ -479,12 +482,16 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		var copy = $("#copySwitch").is(":checked");
 		
 		FrameworkImport.importCompetencies(source, framework, copy, AppController.serverController.selectedServerUrl, AppController.identityController.selectedIdentity,
-			function(savedCompetencies)
+			function(savedCompetencies, savedRelations)
 		{
 			if(editingFramework){
 				for(var i = 0; i < savedCompetencies.length; i++)
 				{
 					ScreenManager.getCurrentScreen().addCompetency(savedCompetencies[i]);
+				}
+				for(var i = 0; i < savedRelations.length; i++)
+				{
+					ScreenManager.getCurrentScreen().addRelation(savedRelations[i]);
 				}
 			}else{
 				ScreenManager.changeScreen(new FrameworkViewScreen(framework));
@@ -889,7 +896,12 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
 		if(AppController.identityController.selectedIdentity != undefined){
 			var pem = AppController.identityController.selectedIdentity.ppk.toPk().toPem();
 			
-			ViewManager.showView(new IdentityDisplay(pem), ".importCompetenciesOwner");
+			ViewManager.showView(new IdentityDisplay(pem), "#importCsvCompetenciesOwner");
+			ViewManager.showView(new IdentityDisplay(pem), "#importMedbiqCompetenciesOwner");
+			ViewManager.showView(new IdentityDisplay(pem), "#importAsnCompetenciesOwner");
+			ViewManager.showView(new IdentityDisplay(pem), "#importAsnCompetenciesCreateFrameworkOwner");
+			ViewManager.showView(new IdentityDisplay(pem), "#importFrameworkCompetenciesOwner");
+			
 		}
 
 	}

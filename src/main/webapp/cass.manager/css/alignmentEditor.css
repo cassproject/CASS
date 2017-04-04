@@ -1,0 +1,47 @@
+
+#alignmentEditorControls button{
+	margin-left:5px;
+	pointer-events: auto;
+	margin-bottom:0rem;
+}
+#alignmentEditorControls{
+    border: 1px solid hsla(0,0%,4%,.25);
+    border-radius: 0;
+    border-bottom: 0px black outset;
+    box-shadow: 0px 3px 3px #888888;
+	margin-bottom:.5rem;
+}
+
+#alignmentEditorColumns{
+    border: 1px solid hsla(0,0%,4%,.25);
+    border-radius: 0;
+    border-top: 0px black outset;
+}
+
+#alignmentEditorColumns>div:first-of-type .alignmentEditorContainer{
+    direction: rtl;
+}
+.alignmentEditorContainer {
+    height: 600px;
+    overflow-y: scroll;
+    margin-left:0px;
+    margin-bottom:0px;
+}
+
+.alignmentEditorElement {
+	direction: ltr;
+    background: beige;
+    border: 1px black solid;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    list-style: none;
+    color: black;
+    padding: 0.25rem;
+    cursor: pointer;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+.alignmentEditorElement.selected {
+    background: lightblue;
+    color: black;
+}

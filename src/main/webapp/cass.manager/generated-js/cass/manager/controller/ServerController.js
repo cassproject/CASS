@@ -22,14 +22,13 @@ var ServerController = /**
  *  @param {String} defaultServerName
  *  			Name of the Default Server (displayed to the user when selecting servers)
  */
-function(defaultServer, defaultServerName) {
+function(storageSystem, defaultServer, defaultServerName) {
+    this.storageSystem = storageSystem;
+    if (storageSystem == null) 
+        this.storageSystem = new StorageController();
     this.serverList = {};
     this.repoInterface = new EcRepository();
     this.remoteIdentityManager = new EcRemoteIdentityManager();
-    if (localStorage != null) 
-        this.storageSystem = localStorage;
-     else if (sessionStorage != null) 
-        this.storageSystem = sessionStorage;
     this.repoInterface.autoDetectRepository();
     EcRepository.caching = true;
     if (this.repoInterface.selectedServer != null) {
@@ -38,14 +37,14 @@ function(defaultServer, defaultServerName) {
         defaultServerName = "This Server (" + window.location.host + ")";
         this.addServer(defaultServerName, defaultServer, null, null);
     }
-    var cachedList = this.storageSystem["cass.server.list"];
+    var cachedList = storageSystem.getStoredValue("cass.server.list");
     if (cachedList != null) {
         cachedList = JSON.parse(cachedList);
         for (var serverName in (cachedList)) {
             this.addServer(serverName, (cachedList)[serverName], null, null);
         }
     }
-    var cachedSelected = this.storageSystem["cass.server.selected"];
+    var cachedSelected = storageSystem.getStoredValue("cass.server.selected");
     if (cachedSelected != null && this.serverList[cachedSelected] != null) {
         this.selectedServerName = cachedSelected;
         this.selectedServerUrl = this.serverList[this.selectedServerName];
@@ -61,7 +60,7 @@ function(defaultServer, defaultServerName) {
         this.selectedServerName = "Default (Localhost)";
         console.warn("Default Server Not Given, Set to LocalHost");
     }
-    this.storageSystem["cass.server.selected"] = this.selectedServerName;
+    storageSystem.setStoredValue("cass.server.selected", this.selectedServerName);
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
     this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
@@ -102,7 +101,7 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
             return;
         }
         this.serverList[name] = url;
-        this.storageSystem["cass.server.list"] = JSON.stringify(this.serverList);
+        this.storageSystem.setStoredValue("cass.server.list", JSON.stringify(this.serverList));
         if (success != null) 
             success();
     };
@@ -120,9 +119,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
      *  			Callback if any errors occur during changing where the components are pointing
      */
     prototype.selectServer = function(identifier, success, failure) {
-        if (LoginController.getLoggedIn()) {
-            LoginController.setLoggedIn(false);
-        }
         var that = this;
         var oldServer = this.selectedServerUrl;
         var oldServerName = this.selectedServerName;
@@ -135,7 +131,7 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
                 if (this.remoteIdentityManager != null) 
                     this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
                 this.remoteIdentityManager.configureFromServer(function(p1) {
-                    that.storageSystem["cass.server.selected"] = that.selectedServerName;
+                    that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
                     if (success != null) 
                         success();
                 }, function(p1) {
@@ -194,4 +190,4 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
             alert(p1);
         });
     };
-}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "Storage", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
+}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});

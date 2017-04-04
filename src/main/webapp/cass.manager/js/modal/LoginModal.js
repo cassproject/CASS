@@ -34,7 +34,7 @@ var LoginModal = (function(LoginModal){
 			function(){
 				if(loginSuccess != undefined)
 				{
-					loginSuccess(EcView.urlParameters());
+					loginSuccess(URLParams.getParams());
 				}
 				else
 				{

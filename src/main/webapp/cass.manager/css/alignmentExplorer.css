@@ -1,0 +1,12 @@
+#alignmentExplorerColumns .alignmentEditorElement {
+    display: none;
+}
+#alignmentExplorerColumns .alignmentEditorElement.highlighted {
+    display: block;
+}
+#alignmentExplorerColumns .alignmentEditorElement.selected {
+    background: beige;
+}
+#alignmentExplorerColumns>.columns:first-of-type .alignmentEditorElement.selected {
+    background: lightblue;
+}

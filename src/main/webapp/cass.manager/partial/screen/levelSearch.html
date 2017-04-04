@@ -1,0 +1,46 @@
+<div style="padding-top:1em">
+    <div class="row">
+        <div id="levelSearchMessageContainer" class="small-6 columns small-centered">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="row" style="margin-top:0px;padding-bottom:0px">
+                <div class="small-3 columns">
+                    <input id="levelSearchOwnership" type="range" min="1" max="3" step="1" style="width:100%;" value="2" />
+
+                    <div id="levelSearchOwnershipLoggedIn" class="hide" style="position: relative;">
+                        <small style="position:absolute">Public</small>
+                        <small style="position:absolute;left:31%">All</small>
+                        <small style="position:absolute;right:26%">Owned</small>
+                        <small style="position:absolute;right:0%">By Me</small>
+                    </div>
+
+                    <div id="levelSearchOwnershipPublic" style="position: relative; height: 2rem;">
+                        <small class="float-right">Owned</small>
+                        <small class="float-left">Public</small>
+                        <small class="float-center" style="width:25px; text-align:center;">All</small>
+                    </div>
+                </div>
+                <div class="small-8 columns" style="margin-bottom:0px">
+                    <input id="levelSearchText" type="search" placeholder="Search Levels...">
+                </div>
+                <div class="small-1 columns" style="margin-bottom:0px">
+                    <button id="levelSearchSubmit" class="button">Search</button>
+                </div>
+            </div>
+
+            <div id="levelSearchResults" class="row column callout dataViewResults">
+            </div>
+            
+            <div id="moreSearchResults" class="hide" style="height:2em; margin-top:2em; text-align:center;">
+       			<hr/>
+       			<i id="loadingMoreResults" class="fa fa-spin fa-spinner hide"></i>
+       			<button id="getMoreResults" class="tiny button hollow float-center" style="padding-left: 20px; padding-right: 20px;">
+       				More Results
+       			</button>
+       		</div>
+        </div>
+    </div>
+</div>

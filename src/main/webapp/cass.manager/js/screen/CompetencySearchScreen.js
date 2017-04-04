@@ -214,7 +214,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 				el.click(function(){
 					var selected = ViewManager.getView("#competencySearchResults").getSelected();
 					
-					ModalManager.showModal(new AddCompetenciesToFrameworkModal(selected));
+					ModalManager.showModal(new AddToFrameworkModal(selected));
 				})
 				
 				return el;
@@ -275,7 +275,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		if(query != null)
 			$("#competencySearchText").val(query)
 		
-		if(LoginController.getLoggedIn())
+		if(AppController.loginController.getLoggedIn())
 		{
 			$("#competencySearchOwnership").attr("max", 4);
 			$("#competencySearchOwnershipLoggedIn").removeClass("hide");

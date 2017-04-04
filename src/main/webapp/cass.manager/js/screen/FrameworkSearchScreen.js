@@ -240,7 +240,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		if(query != null)
 			$("#frameworkSearchText").val(query)
 		
-		if(LoginController.getLoggedIn())
+		if(AppController.loginController.getLoggedIn())
 		{
 			$("#frameworkSearchOwnership").attr("max", 4);
 			$("#frameworkSearchOwnershipLoggedIn").removeClass("hide");

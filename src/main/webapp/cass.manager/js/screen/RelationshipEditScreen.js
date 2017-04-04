@@ -46,6 +46,32 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	}
 	
 	/**
+	 * Builds the relationType selectors on the relationship edit form
+	 * 
+	 * @memberOf RelationshipEditScreen
+	 * @method buildRelationTypeInput
+	 * @private 
+	 * @param {EcAlignment} relation
+	 * 			relation that we are currently editing, to set the option selected attribute
+	 */
+	function buildRelationTypeInput(relation){
+		for (var type in AppSettings.relationTypes){
+			$("#relationEditType").append("<option value='"+type+"'>"+AppSettings.relationTypes[type]+"</option>")
+		}
+		
+		if(relation != null && relation.relationType != null && relation.relationType != ""){
+			var currentOption = $("#relationEditType option[value='"+relation.relationType+"']");
+			if(currentOption.size() > 0){
+				currentOption.attr("selected", "selected");
+			}else{
+				var typeDisplay = relation.relationType.split(/(?=[A-Z])/).join(" ");
+				
+				$("#relationEditType").append("<option value='"+relation.relationType+"'>"+typeDisplay+"</option>")
+			}
+		}
+	}
+	
+	/**
 	 * Starts to populate the disabled source fields in the form, asks for the
 	 * source competency info from the server
 	 * 
@@ -120,6 +146,9 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	{
 	    $('.topLevel').hide();
 	    currentRelation = relation;
+	    
+	    buildRelationTypeInput(relation);
+	    
 	    $("#relationEditId").val(relation.id);
 	    $("#relationEditName").val(relation.name);
 	    $("#relationEditDescription").val(relation.description);
@@ -265,9 +294,13 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	{
 		var data = this.data;
 		
-		if(data != undefined && data.id != null)
+		if(data != undefined && data.id != undefined)
 		{
 			ScreenManager.setScreenParameters({"id":data.id} )
+		}else if(data != undefined && data.source != undefined){
+			ScreenManager.setScreenParameters({"source":data.source} )
+		}else if(data != undefined && data.target != undefined){
+			ScreenManager.setScreenParameters({"target":data.target} )
 		}
 		
 		ViewManager.showView(new MessageContainer("relationshipEdit"), "#relationshipEditMessageContainer", function(){
@@ -277,12 +310,36 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 			}
 		});
 		
-		if(data != undefined)
+		if(data != undefined && data.id != undefined)
 		{
 			EcAlignment.get(data.id, function(relation){
 				data = relation;
 				relationshipEditActual(data);
 			}, errorRetrieving);
+		}
+		else if(data != undefined && data.source != undefined)
+		{
+			var source = data.source
+			data = new EcAlignment();
+		    data.generateId(AppController.serverController.getRepoInterface().selectedServer);
+		    data.name = NEW_RELATION_NAME;
+		    data.source = source;
+		    if(AppController.identityController.selectedIdentity != undefined)
+		    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+		    
+		    relationshipEditActual(data);
+		}
+		else if(data != undefined && data.target != undefined)
+		{
+			var target = data.target
+			data = new EcAlignment();
+		    data.generateId(AppController.serverController.getRepoInterface().selectedServer);
+		    data.name = NEW_RELATION_NAME;
+		    data.target = target;
+		    if(AppController.identityController.selectedIdentity != undefined)
+		    	data.addOwner(AppController.identityController.selectedIdentity.ppk.toPk());
+		    
+		    relationshipEditActual(data);
 		}
 		else
 		{

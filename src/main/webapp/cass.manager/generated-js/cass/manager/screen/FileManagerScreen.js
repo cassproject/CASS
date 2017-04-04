@@ -9,7 +9,7 @@ FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], functi
     prototype.getHtmlLocation = function() {
         return "partial/screen/fileManager.html";
     };
-}, {data: "Object", reloadLoginCallback: "Callback1", reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
         if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {

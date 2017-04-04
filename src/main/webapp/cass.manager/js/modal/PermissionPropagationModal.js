@@ -52,7 +52,8 @@ var PermissionPropagationModal = (function(PermissionPropagationModal){
 					}
 					display.append(col1);
 					
-					var col2 = $("<div class='small-11 columns'>"+data.name+"</div>");
+					var col2 = $("<div class='small-11 columns'></div>");
+					col2.text(data.name);
 					display.append(col2);
 					
 					$("#competencyOptGroup").append(display)
@@ -68,30 +69,46 @@ var PermissionPropagationModal = (function(PermissionPropagationModal){
 			for(var idx in framework.relation){
 				closeModal = false;
 				EcAlignment.get(framework.relation[idx], function(data){
-					var display = $("<div class='row'></div>")
-				
-					var col1 = $("<div class='small-1 columns'></div>");
+					EcCompetency.get(data.source, function(source){
+						EcCompetency.get(data.target, function(target){
+							var display = $("<div class='row'></div>")
+							
+							var col1 = $("<div class='small-1 columns'></div>");
+							
+							if(AppController.identityController.owns(data)){
+								col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
+								display.attr("title", "Permissions will be changed to match")
+							}else if(AppController.identityController.canEdit(data)){
+								col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
+								display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
+								
+								ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
+							}else{
+								col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
+								display.attr("title", "Not owned by you, cannot change permissions")
+								
+								ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
+							}
+							display.append(col1);
+							
+							
+							var typeDisplay = AppSettings.relationTypes[data.relationType];
+							if(typeDisplay == undefined){
+								typeDisplay = data.relationType.split(/(?=[A-Z])/).join(" ");
+							}
+							
+							var col2 = $("<div class='small-11 columns'></div>");
+							col2.text(source.name+" "+typeDisplay+" "+target.name);
+							display.append(col2);
+							
+							$("#relationsOptGroup").append(display)
+						}, function(err){
+							displayAlert(err)
+						});
+					}, function(err){
+						displayAlert(err)
+					});
 					
-					if(AppController.identityController.owns(data)){
-						col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
-						display.attr("title", "Permissions will be changed to match")
-					}else if(AppController.identityController.canEdit(data)){
-						col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
-						display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
-						
-						ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
-					}else{
-						col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
-						display.attr("title", "Not owned by you, cannot change permissions")
-						
-						ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
-					}
-					display.append(col1);
-					
-					var col2 = $("<div class='small-11 columns'>"+data.name+"</div>");
-					display.append(col2);
-					
-					$("#relationsOptGroup").append(display)
 				}, function(err){
 					displayAlert(err);
 				});
@@ -104,30 +121,35 @@ var PermissionPropagationModal = (function(PermissionPropagationModal){
 			for(var idx in framework.level){
 				closeModal = false;
 				EcLevel.get(framework.level[idx], function(data){
-					var display = $("<div class='row'></div>")
-				
-					var col1 = $("<div class='small-1 columns'></div>");
-					
-					if(AppController.identityController.owns(data)){
-						col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
-						display.attr("title", "Permissions will be changed to match")
-					}else if(AppController.identityController.canEdit(data)){
-						col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
-						display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
+					EcCompetency.get(data.competency, function(comp){
+						var display = $("<div class='row'></div>")
 						
-						ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
-					}else{
-						col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
-						display.attr("title", "Not owned by you, cannot change permissions")
+						var col1 = $("<div class='small-1 columns'></div>");
 						
-						ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
-					}
-					display.append(col1);
-					
-					var col2 = $("<div class='small-11 columns'>"+data.name+"</div>");
-					display.append(col2);
-					
-					$("#levelsOptGroup").append(display)
+						if(AppController.identityController.owns(data)){
+							col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
+							display.attr("title", "Permissions will be changed to match")
+						}else if(AppController.identityController.canEdit(data)){
+							col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
+							display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
+							
+							ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
+						}else{
+							col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
+							display.attr("title", "Not owned by you, cannot change permissions")
+							
+							ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
+						}
+						display.append(col1);
+						
+						var col2 = $("<div class='small-11 columns'></div>");
+						col2.text(comp.name +" : "+data.name)
+						display.append(col2);
+						
+						$("#levelsOptGroup").append(display)
+					}, function(err){
+						displayAlert(err);
+					})
 				}, function(err){
 					displayAlert(err);
 				});
@@ -140,30 +162,36 @@ var PermissionPropagationModal = (function(PermissionPropagationModal){
 			for(var idx in framework.rollupRule){
 				closeModal = false;
 				EcRollupRule.get(framework.rollupRule[idx], function(data){
-					var display = $("<div class='row'></div>")
-				
-					var col1 = $("<div class='small-1 columns'></div>");
-					
-					if(AppController.identityController.owns(data)){
-						col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
-						display.attr("title", "Permissions will be changed to match")
-					}else if(AppController.identityController.canEdit(data)){
-						col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
-						display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
+					EcCompetency.get(data.competency, function(comp){
+						var display = $("<div class='row'></div>")
 						
-						ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
-					}else{
-						col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
-						display.attr("title", "Not owned by you, cannot change permissions")
+						var col1 = $("<div class='small-1 columns'></div>");
 						
-						ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
-					}
-					display.append(col1);
+						if(AppController.identityController.owns(data)){
+							col1.prepend("<i class='fa fa-check' style='color:lightgreen;margin-top:0.25rem;'></i>");
+							display.attr("title", "Permissions will be changed to match")
+						}else if(AppController.identityController.canEdit(data)){
+							col1.prepend("<i class='fa fa-minus' style='color:lightblue;margin-top:0.25rem;'></i>")
+							display.attr("title", "Publicly owned, permissions will remain unchanged, but still editable by anyone")
+							
+							ViewManager.getView("#propagateMessageContainer").displayPrimary("One or more of the objects contained is publicly owned and permissions will not be affected", "publicObject");
+						}else{
+							col1.prepend("<i class='fa fa-times' style='color:red;margin-top:0.25rem;'></i>")
+							display.attr("title", "Not owned by you, cannot change permissions")
+							
+							ViewManager.getView("#propagateMessageContainer").displayAlert("You are not allowed to modify the permissions on one or more of the objects contained", "noPropagation");
+						}
+						display.append(col1);
+						
+						var col2 = $("<div class='small-11 columns'></div>");
+						col2.text(comp.name+" : "+data.name)
+						display.append(col2);
+						
+						$("#rulesOptGroup").append(display)
+					}, function(err){
+						displayAlert(err);
+					});
 					
-					var col2 = $("<div class='small-11 columns'>"+data.name+"</div>");
-					display.append(col2);
-					
-					$("#rulesOptGroup").append(display)
 				}, function(err){
 					displayAlert(err);
 				});

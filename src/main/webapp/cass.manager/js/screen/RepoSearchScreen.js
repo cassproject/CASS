@@ -385,7 +385,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		if(query != null)
 			$("#repoSearchText").val(query);
 		
-		if(LoginController.getLoggedIn())
+		if(AppController.loginController.getLoggedIn())
 		{
 			$("#repoSearchOwnership").attr("max", 4);
 			$("#repoSearchOwnershipLoggedIn").removeClass("hide");
