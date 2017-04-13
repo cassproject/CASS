@@ -213,7 +213,7 @@ replaceInSection = #object(
 		key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
 		obj="@sectionAddition"
 	)
-).get(a="")
+).get(a="");
 
 addToSection = #object(
 	a=#add(
