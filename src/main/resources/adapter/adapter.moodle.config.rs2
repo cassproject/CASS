@@ -64,6 +64,15 @@ enabled=#moodleConfigVal(key="enabled");
 enabled=#if(operator=enabled,operand="true",eq="true",ne="false");
 #moodleAdapterEnabled=enabled;
 
+cassToMoodleEnabled=#moodleConfigVal(key="moodleToCassEnabled");
+cassToMoodleEnabled=#if(operator=cassToMoodleEnabled,operand="true",eq="true",ne="false");
+#moodleAdapterCassToMoodleEnabled=cassToMoodleEnabled;
+
+moodleToCassEnabled=#moodleConfigCal(key="cassToMoodleEnabled");
+moodleToCassEnabled=#if(operator=moodleToCassEnabled,operand="true",eq="true",ne="false");
+#moodleAdapterMoodleToCassEnabled=moodleToCassEnabled;
+
+
 
 baseContext=#string(str="1");
 #moodleBaseContext=baseContext;
@@ -77,6 +86,9 @@ scaleConfiguration=#object(
 
 scaleId=#string(str="2");
 #moodleFrameworkDefaultScaleId=scaleId;
+
+
+
 
 ppk=#fileLoad(path="adapter.moodle.private.pem").fileToString();
 ppk=#if(

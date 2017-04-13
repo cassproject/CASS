@@ -168,22 +168,148 @@ checkRelationNarrows=#if(
 	ne=relationNarrows
 );
 
+shortId=#toArray(obj="@splitId").removeFromArray(item=#toArray(obj="@splitId").getIndex(index=#toArray(obj="@splitId").count().add(z="-1"))).flatten(_delimiter="/");
+
+startSection=#moodleUpdateCompetency(
+	id=#toObject(obj="@moodleCompetencySource").get(idnumber=""),
+	internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+	description=#add(
+		a="@description",
+		b=#if(operator="@description", operand="",
+			ne=#if(operator=#string(
+					op="split", 
+					str="@description", 
+					regex="\|CASS\|"
+				).count().debug(),
+				operand="1",
+				le="<br />",
+				gt=""
+			),
+			eq=""
+		),
+		c="<br />|CASS|",
+		d="@sectionName",
+		e=": ",
+		f="@sectionAddition"
+	).debug(),
+	name=#toObject(obj="@moodleCompetencySource").get(shortname=""),
+	lastModified=#add(a=#toObject(obj="@moodleCompetencySource").get(timemodified=""), b="1")
+);
+
+appendSection=#moodleUpdateCompetency(
+	id=#toObject(obj="@moodleCompetencySource").get(idnumber=""),
+	internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+	description="@description",
+	name=#toObject(obj="@moodleCompetencySource").get(shortname=""),
+	lastModified=#add(a=#toObject(obj="@moodleCompetencySource").get(timemodified=""), b="1")
+);
+
+replaceInSection = #object(
+	a=#string(op="replace", str="@section", regex="@oldAddition", with="@sectionAddition"),
+	b=#idxSet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+		obj="@sectionAddition"
+	)
+).get(a="")
+
+addToSection = #object(
+	a=#add(
+		a="@section",
+		b=", ",
+		c="@sectionAddition"
+	),
+	b=#idxSet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+		obj="@sectionAddition"
+	)
+).get(a="");
+
+checkSectionHasAddition=#if(operator=#indexOf(str="@section", substr="@sectionAddition"),
+	operand="0",
+	lt=#if(operator="@oldAddition", operand="",
+		eq=addToSection,
+		ne=#if(operator=#indexOf(str="@section", substr="@oldAddition"), 
+			operand="0",
+			ge=replaceInSection,
+			lt=addToSection
+		)
+	).ccall(
+		oldAddition=#idxGet(
+			databaseName="adapter.moodle.sync.db",
+			indexDir=".",
+			index=#moodleWsToken(),
+			key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/"))
+		).debug()
+	),
+	ge="@section"
+);
+
+checkSection=#if(operator=#indexOf(str="@section", substr="@sectionName"),
+	operand="0",
+	eq=checkSectionHasAddition,
+	ne="@section"
+);
+
+checkDescriptionHasSection=#if(operator=#indexOf(str="@description", substr=#add(a="|CASS|", b="@sectionName")), 
+	operand="0",
+	ge=#string(
+		op="split", 
+		str="@description", 
+		regex="\|CASS\|"
+	).toArray().forEach(
+		op=checkSection,
+		paramName="section", 
+		array="true"
+	).toArray().flatten(_delimiter="|CASS|").toParameter(op=appendSection, paramName="description"),
+	lt=#object(
+		a=startSection,
+		b=#idxSet(
+			databaseName="adapter.moodle.sync.db",
+			indexDir=".",
+			index=#moodleWsToken(),
+			key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+			obj="@sectionAddition"
+		)
+	)
+);
+
+checkRelationRequires=checkDescriptionHasSection.call(
+	description=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")).get(description=""),
+	sectionName="Required Competencies",
+	sectionAddition=#toObject(obj="@moodleCompetencyTarget").get(shortname=""),
+	moodleCompetencySource=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")),
+	object=#toObject(obj="@relation")
+);
+
 checkRelation=#if(
 	operator=#toObject(obj="@relation").get(relationType=""),
 	operand="narrows",
-	eq=checkRelationNarrows
+	eq=checkRelationNarrows,
+	ne=#if(
+		operator=#toObject(obj="@relation").get(relationType=""),
+		operand="requires",
+		eq=checkRelationRequires,
+	)
+).call(
+	moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(source="").split(split="/")),
+	moodleCompetencyTarget=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(target="").split(split="/"))
 );
 
 checkRelations=#toObject(obj="@framework").get(relation="").forEach(
 	paramName="relationShortId",
 	array="true",
+	threaded="false",
 	op=checkRelation.call(
-		moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(source="").split(split="/")),
-		moodleCompetencyTarget=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(target="").split(split="/"))
-	).call(
+		moodleCompetencies=#moodleListCompetencies(),
 		relation=#getRelationById(id="@relationShortId")
 	)
-).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
+).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
 
 cassToMoodleRelations=#getFrameworks(ppk=#moodlePpk()).forEach(
 	array="true",
@@ -327,6 +453,58 @@ cassToMoodleDeleteRelations=#moodleListCompetencyFrameworks().forEach(
 ).call(frameworks=#getFrameworks());
 
 
+//-----CREATIVE WORKS--------
+
+frameworkShortId=#toArray(obj="@frameworkId").removeFromArray(item=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-1"))).flatten(_delimiter="/");
+
+checkCreativeWorkInDescription=checkDescriptionHasSection.call(
+	description=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")).get(description="").debug(),
+	sectionName=#add(a=#toObject(obj="@creativeWork").get(educationalUse=""), b="s"),
+	sectionAddition=#if(operator=#toObject(obj="@creativeWork").get(educationalUse=""), operand="Reference",
+		eq=#add(
+			a='<a href="',
+			b=#toObject(obj="@creativeWork").get(url=""),
+			c='">',
+			d=#toObject(obj="@creativeWork").get(name=""),
+			e='</a>'
+		),
+		ne=#toObject(obj="@creativeWork").get(name="")
+	),
+	moodleCompetencySource=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")),
+	object=#toObject(obj="@creativeWork")
+);
+
+
+checkCreativeWork=#if(operator="@creativeWork", operand="",
+	ne=#if(operator=#toObject(obj="@creativeWork").count(), operand="0",
+		gt=checkCreativeWorkInDescription.ccall(
+			moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@creativeWork").get(educationalAlignment="").get(targetUrl="").split(split="/"))
+		)
+	)
+);
+
+checkFrameworkWorks=#getFrameworkCreativeWorks(frameworkId=frameworkShortId).forEach(
+	op=checkCreativeWork.call(
+		moodleCompetencies=#moodleListCompetencies()
+	),
+	paramName="creativeWork",
+	threaded="false"
+);
+
+checkCreativeWorks=checkFrameworkWorks.ccall(
+	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
+);
+
+cassToMoodleCreativeWorks=#getFrameworks(ppk=#moodlePpk()).forEach(
+	array="true",
+	paramName="framework",
+	threaded="false",
+	op=#if(operator=#variableGet(key=#add(a="cassNewer-",b=frameworkGuid)), operand="true",
+		eq=checkCreativeWorks
+	).call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+
 
 //-----CONTROL FUNCTIONS-----
 
@@ -334,15 +512,16 @@ cassToMoodle=#object(
 	a_frameworks=cassToMoodleFrameworks,
 	b_competencies=cassToMoodleCompetencies,
 	c_relations=cassToMoodleRelations,
-	d_delete_frameworks=cassToMoodleDeleteFrameworks,
-	e_delete_competencies=cassToMoodleDeleteCompetencies,
-	f_delete_relations=cassToMoodleDeleteRelations
+	d_creativeWorks=cassToMoodleCreativeWorks,
+	e_delete_frameworks=cassToMoodleDeleteFrameworks,
+	f_delete_competencies=cassToMoodleDeleteCompetencies,
+	g_delete_relations=cassToMoodleDeleteRelations
 );
 
 cassToMoodleDebug=cassToMoodle.displayJson(_collapse="true");
 
 cassToMoodleIf=#if(
-	operator=#moodleAdapterEnabled(),
+	operator=#moodleAdapterCassToMoodleEnabled(),
 	operand="true",
 	eq=cassToMoodleDebug
 );
