@@ -9,3 +9,8 @@ build.xml
 *.pem
 target
 scripts/node/node_modules
+/adapter.moodle.json
+/adapter.moodle.sync.db
+/adapter.moodle.sync.db.p
+/adapter.moodle.sync.db.t
+/backup/

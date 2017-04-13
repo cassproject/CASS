@@ -234,15 +234,26 @@ var RepoEdit = (function(RepoEdit){
 	    try{
 	    	obj = JSON.parse(data.toJson());
 	    }catch(ex){
-	    	try{
-		        obj=JSON.parse(data);
-		    }
-		    catch(ex)
-		    {
-		    }
+//	    	try{
+//	    		var ecData = new EcRemoteLinkedData();
+//	    		ecData.copyFrom(data);
+//	    		obj = ecData;
+//		    }
+//		    catch(ex)
+//		    {
+		    	try{
+		    		obj=JSON.parse(data);
+		    	}catch(ex){
+		    		obj = undefined;
+		    	}
+		        
+//		    }
 	    }
-	    if (isObject(obj))
+	    if (isObject(obj) || isObject(data))
 	    {   
+	    	if(obj == undefined)
+	    		obj = data;
+	    	
 	    	if(field.attr("field") == undefined)
 				field.attr("field", "dataObject")
 	        field.append("<div style='margin-left:20px;'></div>");
@@ -309,8 +320,8 @@ var RepoEdit = (function(RepoEdit){
 		if (field.children("div").length > 0)
 	    {
 	        field.children("div").append('<div field="'+f+'"></div>');
-	        field.children("div").children("[field='"+f+"']").append('<label>'+f+'</label>');
-	        replaceField(field.children("div").children("[field='"+f+"']"),value, f);
+	        field.children("div").children("[field='"+f+"']").append('<label class="repoEdit-label" style="font-weight:500;text-decoration:underline;">'+f+'</label>');
+	        replaceField(field.children("div").children("[field='"+f+"']"), value, f);
 	    }
 	    else if (field.children("ul").length > 0)
 	    {
@@ -335,8 +346,11 @@ var RepoEdit = (function(RepoEdit){
 	    //If isNotCryptoFields AND is an object
 	    if (f.indexOf("@") == -1 && f != "payload" && f != "secret" && field.children("div").length > 0)
 	    {
-	    	var buttonStr = "<section style='display:block' class='clearfix'>";
-	    	
+	    	var buttonStr = "<section class='clearfix";
+	    	if(!(obj instanceof EcRemoteLinkedData))
+	    		buttonStr += " float-right";
+	    	buttonStr += "'>";
+	    		
 	    	if(f != "" || (obj.owner != null && obj.owner.length != null && obj.owner.length > 0 
 	    					&& AppController.identityController.canEdit(obj)))
 	    	{
