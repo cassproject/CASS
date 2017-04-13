@@ -487,4 +487,4 @@ moodleToCassIf=#if(
 
 #moodleToCass=moodleToCassIf;
 
-/moodle/moodleToCass=moodleToCassDebug;
+/moodle/moodleToCass=moodleToCassIf;

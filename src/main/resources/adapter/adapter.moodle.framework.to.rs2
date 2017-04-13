@@ -528,4 +528,4 @@ cassToMoodleIf=#if(
 
 #cassToMoodle=cassToMoodleIf;
 
-/moodle/cassToMoodle=cassToMoodleDebug;
+/moodle/cassToMoodle=cassToMoodleIf;

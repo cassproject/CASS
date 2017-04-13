@@ -64,11 +64,11 @@ enabled=#moodleConfigVal(key="enabled");
 enabled=#if(operator=enabled,operand="true",eq="true",ne="false");
 #moodleAdapterEnabled=enabled;
 
-cassToMoodleEnabled=#moodleConfigVal(key="moodleToCassEnabled");
+cassToMoodleEnabled=#moodleConfigVal(key="cassToMoodleEnabled");
 cassToMoodleEnabled=#if(operator=cassToMoodleEnabled,operand="true",eq="true",ne="false");
 #moodleAdapterCassToMoodleEnabled=cassToMoodleEnabled;
 
-moodleToCassEnabled=#moodleConfigCal(key="cassToMoodleEnabled");
+moodleToCassEnabled=#moodleConfigVal(key="moodleToCassEnabled");
 moodleToCassEnabled=#if(operator=moodleToCassEnabled,operand="true",eq="true",ne="false");
 #moodleAdapterMoodleToCassEnabled=moodleToCassEnabled;
 
