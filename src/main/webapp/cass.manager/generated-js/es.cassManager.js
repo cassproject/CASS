@@ -581,185 +581,384 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         });
     };
 }, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "StorageController"}, {});
+var ImportCompetenciesModal = function(data) {
+    EcModal.call(this);
+    this.data = data;
+};
+ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/importCompetencies.html";
+    };
+}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
 /**
  *  Manages the current selected identity for the user, and interfaces 
  *  the EBAC Identity Manager library to provide helper functions for 
  *  ownership and key identification
  *  
  *  @module cass.manager
- *  @class IdentityController
- *  @constructor
- *  
  *  @author devlin.junker@eduworks.com
+ *  @class AddFieldModal
+ *  @extends EcModal
+ *  @constructor
  */
-var IdentityController = function() {
-    EcIdentityManager.clearContacts();
+var AddFieldModal = /**
+ *  @constructor
+ *  @param {Object} field
+ *  @param {String} repoEditContainerId
+ */
+function(field, repoEditContainerId) {
+    EcModal.call(this);
+    this.field = field;
+    this.repoEditContainerId = repoEditContainerId;
 };
-IdentityController = stjs.extend(IdentityController, null, [], function(constructor, prototype) {
-    prototype.selectedIdentity = null;
-    /**
-     *  Sets the currently selected identity to the ppk specified, only works if the ppk is in the 
-     *  list of identities that the user owns
-     *  
-     *  @method select
-     *  @param {String} ppkPem
-     *  			PEM of the identity that will be set to the current identity
-     */
-    prototype.select = function(ppkPem) {
-        var clickedPpk = EcPpk.fromPem(ppkPem);
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
-            if (EcIdentityManager.ids[i].ppk.equals(clickedPpk)) 
-                this.selectedIdentity = EcIdentityManager.ids[i];
+AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.field = null;
+    prototype.repoEditContainerId = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
     };
-    /**
-     *  Clears the selected identity, so the user will be identified as public for any actions
-     *  that they make going forward
-     *  
-     *  @method unselect
-     */
-    prototype.unselect = function() {
-        this.selectedIdentity = null;
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addField.html";
     };
-    constructor.unknownContact = new EcContact();
-    /**
-     *  Returns the contact that is associated with the PEM given, looks at both the user's
-     *  identities and contacts to match the PEM. The Contact returned will contain the display
-     *  name that the user set for the PEM
-     * 
-     *  @method lookup
-     *  @param {String} pkPem 
-     *  			PEM of the contact to lookup
-     *  @return Contact that contains the displayName and public key, if the user
-     *  			does not have a display name stored for the PEM in either their contacts or identities,
-     *  			will return the Unknown Contact which contains the key and a display name of "Unknown"
-     */
-    prototype.lookup = function(pkPem) {
-        var candidatePk = EcPk.fromPem(pkPem);
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (EcIdentityManager.ids[i].ppk.toPk().equals(candidatePk)) {
-                var newContact = new EcContact();
-                newContact.pk = candidatePk;
-                newContact.displayName = EcIdentityManager.ids[i].displayName;
-                return newContact;
-            }
-        }
-        for (var i = 0; i < EcIdentityManager.contacts.length; i++) 
-            if (EcIdentityManager.contacts[i].pk.equals(candidatePk)) 
-                return EcIdentityManager.contacts[i];
-        IdentityController.unknownContact.pk = candidatePk;
-        IdentityController.unknownContact.displayName = "Unknown";
-        return IdentityController.unknownContact;
+}, {field: "Object", onClose: "Callback0"}, {});
+var ChangeServerModal = function() {
+    EcModal.call(this);
+};
+ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.getModalSize = function() {
+        return this.modalSize;
     };
-    /**
-     *  Adds a Key to the list of user identities managed by the EcIdentityManager
-     *  
-     *  @method addKey
-     *  @param {String} ppk
-     *  			PEM representation of PPK Key to save to user identities
-     *  @param {String} displayName 
-     *  			Name to associate with the key to be saved, to identify it
-     *  @param {Callback0} success
-     *  			Callback function once the key has been added
-     */
-    prototype.addKey = function(ppk, displayName, success) {
-        var ident = new EcIdentity();
-        ident.ppk = EcPpk.fromPem(ppk);
-        ident.displayName = displayName;
-        EcIdentityManager.addIdentity(ident);
-        if (success != null) 
-            success();
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/changeServer.html";
     };
-    /**
-     *  Adds a contact to the list of user's contacts managed by EcIdentityManager
-     *  
-     *  @method addContact
-     *  @param {String} pk
-     *  			PEM representation of PK Key to save user contact
-     *  @param {String} displayName
-     *  			Name to associate with the key to be saved, to identify it
-     *  @param {Callback0} success
-     *  			Callback function once the contact has been added
-     */
-    prototype.addContact = function(pk, displayName, success) {
-        var contact = new EcContact();
-        contact.pk = EcPk.fromPem(pk);
-        contact.displayName = displayName;
-        EcIdentityManager.addContact(contact);
-        if (success != null) 
-            success();
+}, {onClose: "Callback0"}, {});
+var EvidenceViewModal = function(evidence) {
+    EcModal.call(this);
+    this.evidence = evidence;
+};
+EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.evidence = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
     };
-    /**
-     *  Generates a new Encryption Key to save to the identity manager list
-     *  
-     *  @method generateIdentity
-     *  @param {Callback1<EcIdentity>} success
-     *  			callback, once they key has been generated and added to the identity manager
-     *  @param {String} displayName
-     *  			display name for the key that is being generated to identify it
-     */
-    prototype.generateIdentity = function(success, displayName) {
-        EcPpk.generateKeyAsync(function(p1) {
-            var ident = new EcIdentity();
-            ident.ppk = p1;
-            if (displayName != null && displayName != "") 
-                ident.displayName = displayName;
-            EcIdentityManager.addIdentity(ident);
-            if (success != null) 
-                success(ident);
-        });
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/viewEvidence.html";
     };
-    /**
-     *  Helper function to determine if the logged in user owns a piece of data from the repository,
-     *  useful for showing certain actions
-     *  
-     *  @method owns
-     *  @param {EcRemoteLiinkedData} data 
-     *  			The object to check for ownership of
-     *  @return {boolean} true if owned, false if not owned by the current user
-     */
-    prototype.owns = function(data) {
-        if ((data)["hasOwner"] != null) 
-            for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                if (data.hasOwner(EcIdentityManager.ids[i].ppk.toPk())) {
-                    return true;
-                }
-            }
-        return false;
+}, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
+var ContactAcceptModal = function(grant, close) {
+    EcModal.call(this);
+    this.grant = grant;
+    this.onClose = close;
+};
+ContactAcceptModal = stjs.extend(ContactAcceptModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.grant = null;
+    prototype.onClose = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
     };
-    /**
-     *  Helper function to determine if the logged in user can modify a piece of data, this means 
-     *  that they either own the data, or it is public
-     *  
-     *  @method canEdit
-     *  @param {EcRemoteLinkedData} data
-     *  			The object to check for ability to edit
-     *  @return {boolean} true if editable, false if not
-     */
-    prototype.canEdit = function(data) {
-        if (data.owner == null || data.owner.length == 0) 
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/contactAccept.html";
+    };
+}, {grant: "EcContactGrant", onClose: "Callback0", onClose: "Callback0"}, {});
+var LoginModal = function(success, cancel, warningMessage) {
+    EcModal.call(this);
+    this.loginSuccess = success;
+    this.onClose = cancel;
+    this.warning = warningMessage;
+};
+LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+    prototype.loginSuccess = null;
+    prototype.warning = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/login.html";
+    };
+}, {onClose: "Callback0", loginSuccess: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});
+var ConfirmModal = function(confirmCallback, message, header) {
+    EcModal.call(this);
+    this.confirmCallback = confirmCallback;
+    this.message = message;
+    this.header = header;
+};
+ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.header = null;
+    prototype.message = null;
+    prototype.confirmCallback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/confirm.html";
+    };
+}, {confirmCallback: "Callback0", onClose: "Callback0"}, {});
+var MessageModal = function(header, text, size, okCallback) {
+    EcModal.call(this);
+    this.header = header;
+    this.message = text;
+    if (size != null) 
+        this.modalSize = size;
+    this.okCallback = okCallback;
+};
+MessageModal = stjs.extend(MessageModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.header = "";
+    prototype.message = "";
+    prototype.okCallback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/message.html";
+    };
+}, {okCallback: "Callback0", onClose: "Callback0"}, {});
+var RepoImportModal = function() {
+    EcModal.call(this);
+};
+RepoImportModal = stjs.extend(RepoImportModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/import.html";
+    };
+}, {onClose: "Callback0"}, {});
+var EditLevelModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.closeCallback = callback;
+};
+EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.data = null;
+    prototype.closeCallback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/editLevel.html";
+    };
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
+/**
+ *  Stub for the AddCompetenciesToFrameworkModal
+ *  
+ *  @module cass.manager
+ *  @author devlin.junker@eduworks.com
+ *  @class AddCompetenciesToFrameworkModal
+ *  @extends EcModal
+ *  @constructor
+ */
+var AddToFrameworkModal = /**
+ *  @constructor
+ *  @param {EcRemoteLinkedData || EcRemoteLinkedData[]} data
+ *  			The competency or array of competencies to add to the framework selected in the modal
+ */
+function(data) {
+    EcModal.call(this);
+    this.data = data;
+};
+AddToFrameworkModal = stjs.extend(AddToFrameworkModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addToFramework.html";
+    };
+}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+var AdvancedPermissionsModal = function(data, callback, onlyReaders) {
+    EcModal.call(this);
+    this.data = data;
+    this.saveCallback = callback;
+    if (onlyReaders == null) 
+        this.onlyReaders = false;
+     else 
+        this.onlyReaders = onlyReaders;
+};
+AdvancedPermissionsModal = stjs.extend(AdvancedPermissionsModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.saveCallback = null;
+    prototype.onlyReaders = false;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/advancedPermissions.html";
+    };
+}, {data: "EcRemoteLinkedData", saveCallback: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});
+var CreateUserModal = function() {
+    EcModal.call(this);
+};
+CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/createUser.html";
+    };
+}, {onClose: "Callback0"}, {});
+var SaveIdModal = function(msg) {
+    EcModal.call(this);
+    this.msg = msg;
+};
+SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.msg = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/saveId.html";
+    };
+}, {onClose: "Callback0"}, {});
+var AddServerModal = function(modalClose) {
+    EcModal.call(this);
+    this.onClose = modalClose;
+};
+AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.onClose = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/addServer.html";
+    };
+}, {onClose: "Callback0", onClose: "Callback0"}, {});
+var CopyResourceModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.callback = callback;
+};
+CopyResourceModal = stjs.extend(CopyResourceModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "medium";
+    prototype.data = null;
+    prototype.callback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/copyResource.html";
+    };
+}, {data: "Object", callback: "Callback0", onClose: "Callback0"}, {});
+var ChangeTypeModal = function(changeObj, repoEditContainerId) {
+    EcModal.call(this);
+    this.changeObj = changeObj;
+    this.repoEditContainerId = repoEditContainerId;
+};
+ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.changeObj = null;
+    prototype.repoEditContainerId = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/changeType.html";
+    };
+}, {changeObj: "Object", onClose: "Callback0"}, {});
+var EditRollupRuleModal = function(data, callback) {
+    EcModal.call(this);
+    this.data = data;
+    this.closeCallback = callback;
+};
+EditRollupRuleModal = stjs.extend(EditRollupRuleModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.data = null;
+    prototype.closeCallback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/editRollupRule.html";
+    };
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcRollupRule"]}, onClose: "Callback0"}, {});
+var ContactGrantModal = function(contact, token, signature, close) {
+    EcModal.call(this);
+    this.contact = contact;
+    this.token = token;
+    this.signature = signature;
+    this.onClose = close;
+};
+ContactGrantModal = stjs.extend(ContactGrantModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.contact = null;
+    prototype.token = null;
+    prototype.signature = null;
+    prototype.onClose = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/contactGrant.html";
+    };
+}, {contact: "EcContact", onClose: "Callback0", onClose: "Callback0"}, {});
+var EncryptOptionsModal = function(callback) {
+    EcModal.call(this);
+    this.callback = callback;
+};
+EncryptOptionsModal = stjs.extend(EncryptOptionsModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "tiny";
+    prototype.callback = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/encryptOptions.html";
+    };
+}, {callback: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});
+var Switch = function(onSwitch, switchedOn, switchName) {
+    EcView.call(this);
+    this.onSwitch = onSwitch;
+    this.switchName = switchName;
+    if (switchedOn != null) 
+        this.switched = switchedOn;
+};
+Switch = stjs.extend(Switch, EcView, [], function(constructor, prototype) {
+    prototype.onSwitch = null;
+    prototype.switchName = null;
+    prototype.switchId = null;
+    prototype.switched = false;
+    prototype.getHtmlLocation = function() {
+        return "partial/other/switch.html";
+    };
+    prototype.display = function(containerId) {
+        this.switchId = containerId + "-switch";
+        if (this.switchId.startsWith("#")) 
+            this.switchName = this.switchId.substring(1);
+        $(containerId).find(".switch-input").prop("id", this.switchName);
+        $(containerId).find(".switch-input").prop("name", this.switchName);
+        $(containerId).find(".switch-paddle").prop("for", this.switchName);
+        if (this.switched) 
+            $(containerId).find(".switch-input").prop("checked", this.switched);
+        var me = this;
+        $(containerId).find(".switch-input").change(stjs.bind(this, function(ev, THIS) {
+            me.switched = !me.switched;
+            if (me.onSwitch != null) 
+                return me.onSwitch(ev, THIS);
             return true;
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (data.canEdit(EcIdentityManager.ids[i].ppk.toPk())) {
-                return true;
-            }
-        }
-        return false;
+        }, 1));
+        ($(containerId)).foundation();
     };
-    /**
-     *  Helper function to determine if the current user is associated with the key passed in
-     *  
-     *  @method isCurrentUser
-     *  @param {String} pk
-     *  			PEM representation of pk to check
-     *  @return {boolean} true if the current logged in user is associated with the key
-     */
-    prototype.isCurrentUser = function(pk) {
-        for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-            if (EcIdentityManager.ids[i].ppk.toPk().toString() == pk) {
-                return true;
-            }
-        }
-        return false;
+    prototype.isChecked = function() {
+        return $(this.switchId).prop("checked");
     };
 }, {selectedIdentity: "EcIdentity", unknownContact: "EcContact"}, {});
 /**
@@ -975,6 +1174,43 @@ MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructo
     prototype.displayAlert = function(msg, msgId) {};
 }, {}, {});
 /**
+ *  @author djunker
+ * 
+ * 	RepoEdit Stub for RepoEdit.js
+ */
+var RepoEdit = /**
+ *  
+ *  @param data
+ *  @param saveButtonId
+ *  @param messageContainerId
+ */
+function(data, saveButtonId, messageContainerId) {
+    EcView.call(this);
+    this.data = data;
+    this.saveButtonId = saveButtonId;
+    this.messageContainerId = messageContainerId;
+};
+RepoEdit = stjs.extend(RepoEdit, EcView, [], function(constructor, prototype) {
+    prototype.data = null;
+    prototype.saveButtonId = null;
+    prototype.messageContainerId = null;
+    prototype.getHtmlLocation = function() {
+        return "partial/other/repoEdit.html";
+    };
+}, {data: "Object"}, {});
+var AppMenu = function() {
+    EcView.call(this);
+};
+AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
+    prototype.getHtmlLocation = function() {
+        return "partial/other/appMenu.html";
+    };
+    prototype.showRepoMenu = function(show) {};
+    prototype.showExamplesMenu = function(show) {};
+    prototype.buildRecentCompetencyList = function(list) {};
+    prototype.buildRecentFrameworkList = function(list) {};
+}, {}, {});
+/**
  *  Created by fray on 3/10/17.
  */
 var AlignmentEditorColumn = function() {
@@ -1164,6 +1400,18 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
         }, function(s) {});
     };
 }, {sourceRepo: "EcRepository", collection: {name: "Array", arguments: ["Thing"]}, selected: {name: "Array", arguments: ["Thing"]}, highlighted: {name: "Array", arguments: ["Thing"]}, weight: {name: "Map", arguments: [null, null]}, lift: {name: "Map", arguments: [null, null]}, relations: {name: "Array", arguments: ["Thing"]}, left: "AlignmentEditorColumn", right: "AlignmentEditorColumn", screenHook: "Callback0"}, {});
+var WelcomeScreen = function() {
+    EcScreen.call(this);
+};
+WelcomeScreen = stjs.extend(WelcomeScreen, EcScreen, [], function(constructor, prototype) {
+    constructor.displayName = "welcome";
+    prototype.getDisplayName = function() {
+        return WelcomeScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/welcome.html";
+    };
+}, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 /**
  *  Manages the server that the search controller (through EcRepository) and
  *  the identity controller (through EcIdentityManager) communicate with.
@@ -1688,169 +1936,6 @@ CassManagerScreen = stjs.extend(CassManagerScreen, EcScreen, [], function(constr
         }
     };
 }, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-var FrameworkSearchScreen = function(lastViewed, query, ownership) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-};
-FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkSearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.getDisplayName = function() {
-        return FrameworkSearchScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/frameworkSearch.html";
-    };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new FrameworkSearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
-            }
-            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var FileManagerScreen = function() {
-    CassManagerScreen.call(this);
-};
-FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "fileManager";
-    prototype.getDisplayName = function() {
-        return FileManagerScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/fileManager.html";
-    };
-}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
-            ScreenManager.startupScreen = new FileManagerScreen();
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var UserIdentityScreen = function() {
-    CassManagerScreen.call(this);
-};
-UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "identity";
-    prototype.getDisplayName = function() {
-        return UserIdentityScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/userIdentity.html";
-    };
-}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (AppController.loginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
-                ScreenManager.startupScreen = new UserIdentityScreen();
-                ModalManager.showModal(new LoginModal(function(o) {
-                    ModalManager.hideModal();
-                }, function() {
-                    if (!AppController.loginController.getLoggedIn()) {
-                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
-                    } else {
-                        ScreenManager.reloadCurrentScreen(null);
-                    }
-                }, AppSettings.returnLoginMessage), null);
-            }
-        }
-    });
-})();
-var LevelSearchScreen = function(lastViewed, query, ownership) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-};
-LevelSearchScreen = stjs.extend(LevelSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "levelSearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.getDisplayName = function() {
-        return LevelSearchScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/levelSearch.html";
-    };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + LevelSearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new LevelSearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
-            }
-            ScreenManager.startupScreen = new LevelSearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RepoCreateScreen = function(data) {
-    CassManagerScreen.call(this);
-    this.data = data;
-};
-RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "repoCreate";
-    prototype.data = null;
-    prototype.getDisplayName = function() {
-        return RepoCreateScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/repoCreate.html";
-    };
-}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
-            ScreenManager.startupScreen = new RepoCreateScreen(null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
 var RollupRuleSearchScreen = function(lastViewed, query, ownership) {
     CassManagerScreen.call(this);
     this.lastViewed = lastViewed;
@@ -1896,137 +1981,102 @@ RollupRuleSearchScreen = stjs.extend(RollupRuleSearchScreen, CassManagerScreen, 
         }
     });
 })();
-var CompetencySearchScreen = function(lastViewed, query, ownership) {
+/**
+ *  Created by fray on 3/23/17.
+ */
+var AlignmentExplorerScreen = function() {
     CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
 };
-CompetencySearchScreen = stjs.extend(CompetencySearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "competencySearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
+AlignmentExplorerScreen = stjs.extend(AlignmentExplorerScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "AlignmentExplorer";
+    prototype.columns = null;
+    prototype.containerId = null;
+    prototype.addColumn = function() {
+        var column = new AlignmentExplorerColumn();
+        column.columnIndex = this.columns.length;
+        var lastColumn = null;
+        if (this.columns.length > 0) 
+            lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn != null) {
+            lastColumn.right = column;
+            column.left = lastColumn;
+        }
+        this.columns.push(column);
+        this.addedColumn(column);
+        var me = this;
+        column.screenHook = function() {
+            me.updateControls();
+            me.reflow();
+        };
+        column.display(this.containerId);
+        this.reflow();
+        return column;
+    };
+    prototype.reflow = function() {};
+    prototype.addedColumn = function(column) {
+        ViewManager.showView(column, this.createColumnDiv(), function() {});
+    };
+    prototype.updateControls = function() {};
+    prototype.createColumnDiv = function() {
+        return null;
+    };
     prototype.getDisplayName = function() {
-        return CompetencySearchScreen.displayName;
+        return AlignmentExplorerScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/competencySearch.html";
+        return "partial/screen/alignmentExplorer.html";
     };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+    prototype.display = function(containerId) {
+        this.containerId = containerId;
+        this.columns = new Array();
+        this.addColumn();
+        this.addColumn();
+        this.addColumn();
+        this.addColumn();
+        this.bindControls(containerId);
+    };
+    prototype.bindControls = function(containerId) {};
+}, {columns: {name: "Array", arguments: ["AlignmentExplorerColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + CompetencySearchScreen.displayName)) {
+        if (window.document.location.hash.startsWith("#" + AlignmentExplorerScreen.displayName)) {
+            ScreenManager.startupScreen = new AlignmentExplorerScreen();
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var UserIdentityScreen = function() {
+    CassManagerScreen.call(this);
+};
+UserIdentityScreen = stjs.extend(UserIdentityScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "identity";
+    prototype.getDisplayName = function() {
+        return UserIdentityScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/userIdentity.html";
+    };
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + UserIdentityScreen.displayName)) {
             var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new CompetencySearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
+            if (AppController.loginController.getPreviouslyLoggedIn() || (hashSplit.length == 2 && hashSplit[1].startsWith("action"))) {
+                ScreenManager.startupScreen = new UserIdentityScreen();
+                ModalManager.showModal(new LoginModal(function(o) {
+                    ModalManager.hideModal();
+                }, function() {
+                    if (!AppController.loginController.getLoggedIn()) {
+                        ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
+                    } else {
+                        ScreenManager.reloadCurrentScreen(null);
+                    }
+                }, AppSettings.returnLoginMessage), null);
             }
-            ScreenManager.startupScreen = new CompetencySearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
         }
     });
 })();
-var RelationshipSearchScreen = function(lastViewed, query, ownership) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-};
-RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "relationSearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.getDisplayName = function() {
-        return RelationshipSearchScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/relationshipSearch.html";
-    };
-}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RelationshipSearchScreen.displayName)) {
-            var hashSplit = (window.document.location.hash.split("?"));
-            if (hashSplit.length > 1) {
-                var query = null;
-                var ownership = null;
-                var param = hashSplit[1];
-                var paramSplit = (param.split("&"));
-                for (var i = 0; i < paramSplit.length; i++) {
-                    var paramPiece = paramSplit[i];
-                    if (paramPiece.startsWith("query")) 
-                        query = paramSplit[i].split("=")[1];
-                     else if (paramPiece.startsWith("ownership")) 
-                        ownership = paramSplit[i].split("=")[1];
-                }
-                if (query != null || ownership != null) {
-                    ScreenManager.startupScreen = new RelationshipSearchScreen(null, query, ownership);
-                    CassManagerScreen.showLoginModalIfReload();
-                    return;
-                }
-            }
-            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var RepoSearchScreen = function(lastViewed, query, ownership, types) {
-    CassManagerScreen.call(this);
-    this.lastViewed = lastViewed;
-    this.query = query;
-    this.ownership = ownership;
-    this.types = types;
-};
-RepoSearchScreen = stjs.extend(RepoSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "repoSearch";
-    prototype.lastViewed = null;
-    prototype.query = null;
-    prototype.ownership = null;
-    prototype.types = null;
-    prototype.getDisplayName = function() {
-        return RepoSearchScreen.displayName;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/screen/repoSearch.html";
-    };
-}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
-(function() {
-    ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + RepoSearchScreen.displayName)) {
-            var urlParameters = (URLParams.getParams());
-            var query = urlParameters["query"];
-            var ownership = urlParameters["ownership"];
-            var ts = urlParameters["types"];
-            var types = null;
-            if (ts != null) 
-                types = (ts.toString().split(","));
-            if (query != null || ownership != null || types != null) {
-                ScreenManager.startupScreen = new RepoSearchScreen(null, query, ownership, types);
-                CassManagerScreen.showLoginModalIfReload();
-                return;
-            }
-            ScreenManager.startupScreen = new RepoSearchScreen(null, null, null, null);
-            CassManagerScreen.showLoginModalIfReload();
-        }
-    });
-})();
-var AlignmentEditorScreen = function() {
+var LevelSearchScreen = function(lastViewed, query, ownership) {
     CassManagerScreen.call(this);
     this.columns = new Array();
 };
@@ -2194,66 +2244,299 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
         }
     });
 })();
-/**
- *  Created by fray on 3/23/17.
- */
-var AlignmentExplorerScreen = function() {
+var RepoCreateScreen = function(data) {
     CassManagerScreen.call(this);
+    this.data = data;
 };
-AlignmentExplorerScreen = stjs.extend(AlignmentExplorerScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "AlignmentExplorer";
-    prototype.columns = null;
-    prototype.containerId = null;
-    prototype.addColumn = function() {
-        var column = new AlignmentExplorerColumn();
-        column.columnIndex = this.columns.length;
-        var lastColumn = null;
-        if (this.columns.length > 0) 
-            lastColumn = this.columns[this.columns.length - 1];
-        if (lastColumn != null) {
-            lastColumn.right = column;
-            column.left = lastColumn;
-        }
-        this.columns.push(column);
-        this.addedColumn(column);
-        var me = this;
-        column.screenHook = function() {
-            me.updateControls();
-            me.reflow();
-        };
-        column.display(this.containerId);
-        this.reflow();
-        return column;
-    };
-    prototype.reflow = function() {};
-    prototype.addedColumn = function(column) {
-        ViewManager.showView(column, this.createColumnDiv(), function() {});
-    };
-    prototype.updateControls = function() {};
-    prototype.createColumnDiv = function() {
-        return null;
-    };
+RepoCreateScreen = stjs.extend(RepoCreateScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoCreate";
+    prototype.data = null;
     prototype.getDisplayName = function() {
-        return AlignmentExplorerScreen.displayName;
+        return RepoCreateScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/alignmentExplorer.html";
+        return "partial/screen/repoCreate.html";
     };
-    prototype.display = function(containerId) {
-        this.containerId = containerId;
-        this.columns = new Array();
-        this.addColumn();
-        this.addColumn();
-        this.addColumn();
-        this.addColumn();
-        this.bindControls(containerId);
-    };
-    prototype.bindControls = function(containerId) {};
-}, {columns: {name: "Array", arguments: ["AlignmentExplorerColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + AlignmentExplorerScreen.displayName)) {
-            ScreenManager.startupScreen = new AlignmentExplorerScreen();
+        if (window.document.location.hash.startsWith("#" + RepoCreateScreen.displayName)) {
+            ScreenManager.startupScreen = new RepoCreateScreen(null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RollupRuleSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return RelationshipSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new RelationshipSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+FrameworkSearchScreen = stjs.extend(FrameworkSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return FrameworkSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/frameworkSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new FrameworkSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new FrameworkSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RelationshipSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+RelationshipSearchScreen = stjs.extend(RelationshipSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return RelationshipSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new RelationshipSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var LevelSearchScreen = function(lastViewed, query, ownership) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+};
+LevelSearchScreen = stjs.extend(LevelSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "levelSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.getDisplayName = function() {
+        return LevelSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/levelSearch.html";
+    };
+}, {lastViewed: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + LevelSearchScreen.displayName)) {
+            var hashSplit = (window.document.location.hash.split("?"));
+            if (hashSplit.length > 1) {
+                var query = null;
+                var ownership = null;
+                var param = hashSplit[1];
+                var paramSplit = (param.split("&"));
+                for (var i = 0; i < paramSplit.length; i++) {
+                    var paramPiece = paramSplit[i];
+                    if (paramPiece.startsWith("query")) 
+                        query = paramSplit[i].split("=")[1];
+                     else if (paramPiece.startsWith("ownership")) 
+                        ownership = paramSplit[i].split("=")[1];
+                }
+                if (query != null || ownership != null) {
+                    ScreenManager.startupScreen = new LevelSearchScreen(null, query, ownership);
+                    CassManagerScreen.showLoginModalIfReload();
+                    return;
+                }
+            }
+            ScreenManager.startupScreen = new LevelSearchScreen(null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RepoSearchScreen = function(lastViewed, query, ownership, types) {
+    CassManagerScreen.call(this);
+    this.lastViewed = lastViewed;
+    this.query = query;
+    this.ownership = ownership;
+    this.types = types;
+};
+RepoSearchScreen = stjs.extend(RepoSearchScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "repoSearch";
+    prototype.lastViewed = null;
+    prototype.query = null;
+    prototype.ownership = null;
+    prototype.types = null;
+    prototype.getDisplayName = function() {
+        return RepoSearchScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/repoSearch.html";
+    };
+}, {lastViewed: "Object", types: {name: "Array", arguments: [null]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RepoSearchScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var query = urlParameters["query"];
+            var ownership = urlParameters["ownership"];
+            var ts = urlParameters["types"];
+            var types = null;
+            if (ts != null) 
+                types = (ts.toString().split(","));
+            if (query != null || ownership != null || types != null) {
+                ScreenManager.startupScreen = new RepoSearchScreen(null, query, ownership, types);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            ScreenManager.startupScreen = new RepoSearchScreen(null, null, null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var AlignmentEditorScreen = function() {
+    CassManagerScreen.call(this);
+};
+FileManagerScreen = stjs.extend(FileManagerScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "fileManager";
+    prototype.getDisplayName = function() {
+        return FileManagerScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/fileManager.html";
+    };
+}, {data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FileManagerScreen.displayName)) {
+            ScreenManager.startupScreen = new FileManagerScreen();
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var RelationshipViewScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+RelationshipViewScreen = stjs.extend(RelationshipViewScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationView";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return RelationshipViewScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/relationshipView.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + RelationshipViewScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcAlignment.get(id, function(data) {
+                    ScreenManager.replaceScreen(new RelationshipViewScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    CassManagerScreen.showLoginModalIfReload();
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new RelationshipSearchScreen(null, null, null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });
@@ -2323,31 +2606,47 @@ var FrameworkEditScreen = function(data) {
     CassManagerScreen.call(this);
     this.data = data;
 };
-FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
-    constructor.displayName = "frameworkEdit";
+RelationshipEditScreen = stjs.extend(RelationshipEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "relationEdit";
     prototype.data = null;
     prototype.getDisplayName = function() {
-        return FrameworkEditScreen.displayName;
+        return RelationshipEditScreen.displayName;
     };
     prototype.getHtmlLocation = function() {
-        return "partial/screen/frameworkEdit.html";
+        return "partial/screen/relationshipEdit.html";
     };
 }, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 (function() {
     ScreenManager.addStartupScreenCallback(function() {
-        if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
+        if (window.document.location.hash.startsWith("#" + RelationshipEditScreen.displayName)) {
             var urlParameters = (URLParams.getParams());
             var id = urlParameters["id"];
             if (id != null) {
-                EcFramework.get(id, function(data) {
-                    ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                EcAlignment.get(id, function(data) {
+                    ScreenManager.replaceScreen(new RelationshipEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                 }, function(p1) {
-                    ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                    ScreenManager.replaceScreen(new RelationshipSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
                 });
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                 return;
             }
-            ScreenManager.startupScreen = new FrameworkEditScreen(null);
+            var source = urlParameters["source"];
+            if (source != null) {
+                var data = new Object();
+                (data)["source"] = source;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            var target = urlParameters["target"];
+            if (target != null) {
+                var data = new Object();
+                (data)["target"] = target;
+                ScreenManager.startupScreen = new RelationshipEditScreen(data);
+                CassManagerScreen.showLoginModalIfReload();
+                return;
+            }
+            ScreenManager.startupScreen = new RelationshipEditScreen(null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });
@@ -2420,6 +2719,39 @@ CompetencyEditScreen = stjs.extend(CompetencyEditScreen, CassManagerScreen, [], 
                 return;
             }
             ScreenManager.startupScreen = new CompetencyEditScreen(null, null);
+            CassManagerScreen.showLoginModalIfReload();
+        }
+    });
+})();
+var FrameworkEditScreen = function(data) {
+    CassManagerScreen.call(this);
+    this.data = data;
+};
+FrameworkEditScreen = stjs.extend(FrameworkEditScreen, CassManagerScreen, [], function(constructor, prototype) {
+    constructor.displayName = "frameworkEdit";
+    prototype.data = null;
+    prototype.getDisplayName = function() {
+        return FrameworkEditScreen.displayName;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/screen/frameworkEdit.html";
+    };
+}, {data: "Object", data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+(function() {
+    ScreenManager.addStartupScreenCallback(function() {
+        if (window.document.location.hash.startsWith("#" + FrameworkEditScreen.displayName)) {
+            var urlParameters = (URLParams.getParams());
+            var id = urlParameters["id"];
+            if (id != null) {
+                EcFramework.get(id, function(data) {
+                    ScreenManager.replaceScreen(new FrameworkEditScreen(data), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                }, function(p1) {
+                    ScreenManager.replaceScreen(new FrameworkSearchScreen(null, null, null), CassManagerScreen.reloadShowLoginCallback, urlParameters);
+                });
+                ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
+                return;
+            }
+            ScreenManager.startupScreen = new FrameworkEditScreen(null);
             CassManagerScreen.showLoginModalIfReload();
         }
     });

@@ -80,7 +80,7 @@ addCompetency=#object(
 updateCompetency=#cassUpdateCompetency(
 	id=moodleCompetencyId.debug(prefix="MOODLE updating competency: "),
 	name=#toObject(obj="@moodleCompetency").get(shortname=""),
-	description=#toObject(obj="@moodleCompetency").get(description=""),
+	description=#string(str=#toObject(obj="@moodleCompetency").get(description=""), op="split", regex="\|CASS\|").toArray().getIndex(index="0"),
 	lastModified=moodleCompetencyLastModified,
 	ppk=#moodlePpk()
 ).cache(name="moodleToCassAddCompetencyLock",justLock="true");
@@ -480,11 +480,11 @@ moodleToCass=#object(
 moodleToCassDebug=moodleToCass.displayJson(_collapse="true");
 
 moodleToCassIf=#if(
-	operator=#moodleAdapterEnabled(),
+	operator=#moodleAdapterMoodleToCassEnabled(),
 	operand="true",
 	eq=moodleToCass
 );
 
 #moodleToCass=moodleToCassIf;
 
-/moodle/moodleToCass=moodleToCassDebug;
+/moodle/moodleToCass=moodleToCassIf;

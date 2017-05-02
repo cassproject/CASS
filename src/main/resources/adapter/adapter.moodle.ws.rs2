@@ -1,3 +1,12 @@
+getCompetency=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_read_competency",
+	moodlewsrestformat="json",
+	id="@internalId",
+).httpPost(formdata="true",url=#moodleEndpoint());
+#moodleGetCompetency = getCompetency;
+
+
 listCompetencyFrameworks=#object(
 	wstoken=#moodleWsToken(),
 	wsfunction="core_competency_list_competency_frameworks",
@@ -52,7 +61,7 @@ updateCompetency=#object(
 ).put(_key="competency[competencyframeworkid]",_value="@competencyframeworkid"
 ).put(_key="competency[timemodified]",_value="@lastmodified"
 ).put(_key="competency[parentid]",_value="@parentId"
-).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+).debug().httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
 
 #moodleUpdateCompetency=updateCompetency;
 
