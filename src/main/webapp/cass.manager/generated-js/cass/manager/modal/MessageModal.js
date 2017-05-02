@@ -17,4 +17,4 @@ MessageModal = stjs.extend(MessageModal, EcModal, [], function(constructor, prot
     prototype.getHtmlLocation = function() {
         return "partial/modal/message.html";
     };
-}, {okCallback: "Callback0", onClose: "Callback0"}, {});
+}, {okCallback: "Callback0"}, {});

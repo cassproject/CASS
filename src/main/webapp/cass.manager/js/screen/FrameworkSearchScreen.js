@@ -184,6 +184,21 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 			clickDataEdit:function(datum){
 				ScreenManager.changeScreen(new FrameworkEditScreen(datum));
 			},
+			moreMenuTools:function(){
+				var container = $("<div></div>");
+				
+				el = $("<li><span><i class='fa fa-download'></i> Export</span></li>");
+				
+				el.click(function(){
+					var selected = ViewManager.getView("#frameworkSearchResults").getSelected();
+					
+					ModalManager.showModal(new RepoExportModal(selected));
+				})
+				
+				container.append(el);
+				
+				return container.contents();
+			},
 			buildDataRow:function(row, id, datum){
 				var comps = (datum.competency == undefined ? 0 : datum.competency.length);
 				var rels = (datum.relation == undefined ? 0 : datum.relation.length)

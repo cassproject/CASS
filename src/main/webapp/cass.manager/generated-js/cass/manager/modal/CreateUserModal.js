@@ -9,4 +9,4 @@ CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor
     prototype.getHtmlLocation = function() {
         return "partial/modal/createUser.html";
     };
-}, {onClose: "Callback0"}, {});
+}, {}, {});

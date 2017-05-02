@@ -84,6 +84,12 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
             EcRemote.postExpectingString(serverUrl, "adapter/moodle/config/key", fd, success, failure);
         });
     };
+    constructor.syncCassToMoodle = function(serverUrl, success, failure) {
+        EcRemote.postExpectingString(serverUrl, "moodle/cassToMoodle", new FormData(), success, failure);
+    };
+    constructor.syncMoodleToCass = function(serverUrl, success, failure) {
+        EcRemote.postExpectingString(serverUrl, "moodle/moodleToCass", new FormData(), success, failure);
+    };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Object that holds the xAPI Adapter configuration values returned 

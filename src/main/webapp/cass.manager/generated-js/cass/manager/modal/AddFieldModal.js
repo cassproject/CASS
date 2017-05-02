@@ -27,4 +27,4 @@ AddFieldModal = stjs.extend(AddFieldModal, EcModal, [], function(constructor, pr
     prototype.getHtmlLocation = function() {
         return "partial/modal/addField.html";
     };
-}, {field: "Object", onClose: "Callback0"}, {});
+}, {field: "Object"}, {});

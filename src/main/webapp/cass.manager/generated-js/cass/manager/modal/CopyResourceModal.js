@@ -13,4 +13,4 @@ CopyResourceModal = stjs.extend(CopyResourceModal, EcModal, [], function(constru
     prototype.getHtmlLocation = function() {
         return "partial/modal/copyResource.html";
     };
-}, {data: "Object", callback: "Callback0", onClose: "Callback0"}, {});
+}, {data: "Object", callback: "Callback0"}, {});

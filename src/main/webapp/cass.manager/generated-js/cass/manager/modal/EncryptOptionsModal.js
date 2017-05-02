@@ -11,4 +11,4 @@ EncryptOptionsModal = stjs.extend(EncryptOptionsModal, EcModal, [], function(con
     prototype.getHtmlLocation = function() {
         return "partial/modal/encryptOptions.html";
     };
-}, {callback: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});
+}, {callback: {name: "Callback1", arguments: ["Object"]}}, {});

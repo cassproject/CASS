@@ -13,4 +13,4 @@ ChangeTypeModal = stjs.extend(ChangeTypeModal, EcModal, [], function(constructor
     prototype.getHtmlLocation = function() {
         return "partial/modal/changeType.html";
     };
-}, {changeObj: "Object", onClose: "Callback0"}, {});
+}, {changeObj: "Object"}, {});

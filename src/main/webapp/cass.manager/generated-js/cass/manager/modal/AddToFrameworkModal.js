@@ -25,4 +25,4 @@ AddToFrameworkModal = stjs.extend(AddToFrameworkModal, EcModal, [], function(con
     prototype.getHtmlLocation = function() {
         return "partial/modal/addToFramework.html";
     };
-}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData"}, {});

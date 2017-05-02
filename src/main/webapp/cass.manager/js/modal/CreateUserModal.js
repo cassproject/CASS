@@ -22,25 +22,25 @@ var CreateUserModal = (function(CreateUserModal){
 		
 		var server = $("#createServer").val();
 		
-		AppController.serverController.selectServer(server);
-		
-		AppController.loginController.create(
-		        $("#createUsername").val(),
-		        $("#createPassword").val(),
-		        function(){
-		        	ModalManager.hideModal();
-		    		ViewManager.getView(AppController.topBarContainerId).setLoggedIn();
-		    		ScreenManager.changeScreen(new UserIdentityScreen());
-		    		
-		    		AppController.serverController.selectServer($("#createServer").val());
-		        },
-		        function(err){
-		        	if(err == undefined)
-		        		err = "Unable to Connect to Server to Create User";
-		        	
-		        	ViewManager.getView("#createMessageContainer").displayAlert(err, "createFail");
-		        }		       
-		    );
+		AppController.serverController.selectServer(server,function(){
+			AppController.loginController.create(
+					$("#createUsername").val(),
+					$("#createPassword").val(),
+					function(){
+						ModalManager.hideModal();
+						ViewManager.getView(AppController.topBarContainerId).setLoggedIn();
+						ScreenManager.changeScreen(new UserIdentityScreen());
+
+						AppController.serverController.selectServer($("#createServer").val());
+					},
+					function(err){
+						if(err == undefined)
+							err = "Unable to Connect to Server to Create User";
+
+						ViewManager.getView("#createMessageContainer").displayAlert(err, "createFail");
+					}
+				);
+		});
 	}
 	
 	/**

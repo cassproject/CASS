@@ -27,4 +27,4 @@ AddOwnerModal = stjs.extend(AddOwnerModal, EcModal, [], function(constructor, pr
     prototype.getHtmlLocation = function() {
         return "partial/modal/addOwner.html";
     };
-}, {field: "Object", onClose: "Callback0"}, {});
+}, {field: "Object"}, {});

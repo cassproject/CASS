@@ -5,12 +5,12 @@
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>0.2.0</version>
+	<version>0.3.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.ebac.skyid</artifactId>
-			<version>5.0.1</version>
+			<version>5.3.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -37,6 +37,16 @@
 						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
 						<containerIncludeJarPattern>^$</containerIncludeJarPattern>
 					</webApp>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>dev</server>
+					<path>/</path>
 				</configuration>
 			</plugin>
 		</plugins>

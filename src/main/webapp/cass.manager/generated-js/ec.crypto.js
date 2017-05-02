@@ -6948,7 +6948,10 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             var o = p1.data;
             var success = EcRsaOaepAsync.q1[index].shift();
             var failure = EcRsaOaepAsync.q2[index].shift();
-            if (success != null) {
+            if ((o)["error"] != null) {
+                if (failure != null) 
+                    failure((o)["error"]);
+            } else if (success != null) {
                 success((o)["result"]);
             }
         };
@@ -7029,7 +7032,6 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             } else {
                 EcRsaOaepAsync.q1[worker].push(success);
             }
-            EcRsaOaepAsync.q2[worker].push(failure);
             EcRsaOaepAsync.q2[worker].push(failure);
             EcRsaOaepAsync.w[worker].postMessage(o);
         }
@@ -7128,9 +7130,9 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
  *  Asynchronous implementation of {{#crossLink
  *  "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
  * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcAesCtrAsync
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
@@ -7165,7 +7167,10 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             var o = p1.data;
             var success = EcAesCtrAsync.q1[index].shift();
             var failure = EcAesCtrAsync.q2[index].shift();
-            if (success != null) {
+            if ((o)["error"] != null) {
+                if (failure != null) 
+                    failure((o)["error"]);
+            } else if (success != null) {
                 success((o)["result"]);
             }
         };
@@ -7181,15 +7186,15 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
      *  Asynchronous form of {{#crossLink
      *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
      * 
+     *  @param {string}           plaintext Text to encrypt.
+     *  @param {string}           secret Secret to use to encrypt.
+     *  @param {string}           iv Initialization Vector to use to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method encrypt
      *  @static
-     *  @param {string} plaintext Text to encrypt.
-     *  @param {string} secret Secret to use to encrypt.
-     *  @param {string} iv Initialization Vector to use to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *  encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.encrypt = function(plaintext, secret, iv, success, failure) {
         EcAesCtrAsync.initWorker();
@@ -7212,15 +7217,15 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
      *  Asynchronous form of {{#crossLink
      *  "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
      * 
+     *  @param {string}           ciphertext Text to decrypt.
+     *  @param {string}           secret Secret to use to decrypt.
+     *  @param {string}           iv Initialization Vector to use to decrypt.
+     *  @param {function(string)} success Success method, result is Plaintext
+     *                            with no encoding.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method decrypt
      *  @static
-     *  @param {string} ciphertext Text to decrypt.
-     *  @param {string} secret Secret to use to decrypt.
-     *  @param {string} iv Initialization Vector to use to decrypt.
-     *  @param {function(string)} success Success method, result is Plaintext
-     *  with no encoding.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
         if (EcCrypto.caching) {

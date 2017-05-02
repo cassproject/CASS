@@ -6,6 +6,7 @@ var AlignmentExplorerColumn = function() {
 };
 AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorColumn, [], function(constructor, prototype) {
     prototype.idToComments = null;
+    prototype.idToCommentHighlight = null;
     prototype.selectElement = function(id) {
         for (var i = 0; i < this.selected.length; i++) 
             if (this.selected[i].shortId() == id) {
@@ -41,6 +42,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
             rels = rels.concat(this.left.relations);
         if (sel != null) {
             this.idToComments = new Object();
+            this.idToCommentHighlight = new Object();
             this.highlighted = new Array();
             for (var i = 0; i < sel.length; i++) {
                 var t = sel[i];
@@ -60,6 +62,12 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
         }
         EcArray.setAdd(tray, comment);
     };
+    prototype.highlightComment = function(id) {
+        var tray = (this.idToComments)[id];
+        if (tray == null) {
+            (this.idToCommentHighlight)[id] = true;
+        }
+    };
     prototype.highlight = function(selectedItem, rels, walked) {
         if (EcArray.has(walked, selectedItem)) 
             return;
@@ -76,7 +84,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     var comment = "";
                     if (selectedItem.shortId() == r.target && r.relationType == Relation.NARROWS) {
                         relationOk = true;
-                        comment = "Subcompetency.";
+                        comment = "Subcompetency of " + (EcRepository.getBlocking(r.target)).name;
                     }
                     if (r.relationType == Relation.IS_EQUIVALENT_TO) {
                         relationOk = true;
@@ -84,7 +92,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     }
                     if (selectedItem.shortId() == r.source && r.relationType == Relation.REQUIRES) {
                         relationOk = true;
-                        comment = "Required competency.";
+                        comment = "Required by " + (EcRepository.getBlocking(r.source)).name;
                     }
                     if (relationOk) 
                         for (var k = 0; k < this.collection.length; k++) {
@@ -107,15 +115,27 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                                 var comment = "";
                                 if (candidate.shortId() == r.url) {
                                     if (r.educationalAlignment.alignmentType == "requires") 
-                                        comment = "Requires " + this.left.selectedCategory;
+                                        comment = "Requires " + (EcRepository.getBlocking(r.educationalAlignment.targetUrl)).name;
+                                    if (r.educationalAlignment.alignmentType == "teaches") 
+                                        comment = "Teaches " + (EcRepository.getBlocking(r.educationalAlignment.targetUrl)).name;
+                                    if (r.educationalAlignment.alignmentType == "assesses") 
+                                        comment = "Assesses " + (EcRepository.getBlocking(r.educationalAlignment.targetUrl)).name;
+                                    if (r.educationalAlignment.alignmentType == "http://schema.cassproject.org/0.2/vocab/asserts") 
+                                        comment = "Asserts " + (EcRepository.getBlocking(r.educationalAlignment.targetUrl)).name;
+                                    if (selectedItem.shortId() == r.educationalAlignment.targetUrl) 
+                                        this.highlightComment(comment);
                                 }
                                 if (candidate.shortId() == r.educationalAlignment.targetUrl) {
+                                    if (r.educationalAlignment.alignmentType == "requires") 
+                                        comment = "Required by " + (EcRepository.getBlocking(r.url)).name;
                                     if (r.educationalAlignment.alignmentType == "teaches") 
-                                        comment = "Taught by " + this.left.selectedCategory;
+                                        comment = "Taught by " + (EcRepository.getBlocking(r.url)).name;
                                     if (r.educationalAlignment.alignmentType == "assesses") 
-                                        comment = "Assessed by " + this.left.selectedCategory;
+                                        comment = "Assessed by " + (EcRepository.getBlocking(r.url)).name;
                                     if (r.educationalAlignment.alignmentType == "http://schema.cassproject.org/0.2/vocab/asserts") 
-                                        comment = "Asserted by " + this.left.selectedCategory;
+                                        comment = "Asserted by " + (EcRepository.getBlocking(r.url)).name;
+                                    if (selectedItem.shortId() == r.url) 
+                                        this.highlightComment(comment);
                                 }
                                 if (comment != "") 
                                     this.appendComment(selectedItem.shortId(), comment);
@@ -130,4 +150,4 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
     prototype.deselectedEvent = function(id, propegatesRight) {
         this.selectedEvent(id, propegatesRight);
     };
-}, {idToComments: "Object", sourceRepo: "EcRepository", collection: {name: "Array", arguments: ["Thing"]}, selected: {name: "Array", arguments: ["Thing"]}, highlighted: {name: "Array", arguments: ["Thing"]}, weight: {name: "Map", arguments: [null, null]}, lift: {name: "Map", arguments: [null, null]}, relations: {name: "Array", arguments: ["Thing"]}, left: "AlignmentEditorColumn", right: "AlignmentEditorColumn", screenHook: "Callback0"}, {});
+}, {idToComments: "Object", idToCommentHighlight: "Object", sourceRepo: "EcRepository", collection: {name: "Array", arguments: ["Thing"]}, selected: {name: "Array", arguments: ["Thing"]}, highlighted: {name: "Array", arguments: ["Thing"]}, weight: {name: "Map", arguments: [null, null]}, lift: {name: "Map", arguments: [null, null]}, relations: {name: "Array", arguments: ["Thing"]}, left: "AlignmentEditorColumn", right: "AlignmentEditorColumn", screenHook: "Callback0"}, {});

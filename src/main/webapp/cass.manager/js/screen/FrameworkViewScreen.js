@@ -9,6 +9,7 @@
 FrameworkViewScreen = (function (FrameworkViewScreen) {
     
 	EcRepository.caching = true;
+	var springyHandleMap = {};
 	
 	var fonts = {
 	    node: "bold 12px Arial",
@@ -57,7 +58,16 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
     		$("#frameworkEmpty").removeClass("hide");
     	}
     }
-    
+
+	FrameworkViewScreen.prototype.onClose = function(){
+		if (window.springy != springyHandleMap[this.data.shortId()])
+			return true;
+		if (window.springy != null && window.springy !== undefined)
+			window.springy.layout.stop();
+		window.springy = null;
+		return true;
+	}
+
     /**
 	 * Handles displaying relationship details in DOM
 	 * 
@@ -89,6 +99,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                 stiffness:1000,
                 minEnergyThreshold:0.1
             });
+            springyHandleMap[framework.shortId()] = springy;
         });
 
         //window.springs = new Springy.Layout.ForceDirected(graph, 0.0, new Springy.Vector(200.0, 100.0), 0.1);
@@ -159,6 +170,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
         	});
         }
     }
+
     
     function deleteFramework(framework){
     	ModalManager.showModal(new ConfirmModal(function(){

@@ -234,6 +234,21 @@ LevelSearchScreen = (function(LevelSearchScreen){
 					}
 				}
 			},
+			moreMenuTools:function(){
+				var container = $("<div></div>");
+				
+				el = $("<li><span><i class='fa fa-download'></i> Export</span></li>");
+				
+				el.click(function(){
+					var selected = ViewManager.getView("#levelSearchResults").getSelected();
+					
+					ModalManager.showModal(new RepoExportModal(selected));
+				})
+				
+				container.append(el);
+				
+				return container.contents();
+			},
 			aggregateDataRows:function(row, id, datum){
 				var aggId;
 				if($("#levelSearchResults #"+dataViewPrefix+"-sortSelect").val() == "Competency" && datum["competency"] != undefined){

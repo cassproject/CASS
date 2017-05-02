@@ -1309,15 +1309,16 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         var relationLookup = this.constructor.relationLookup;
         if (relationLookup == null) {
             relationLookup = new Object();
-            for (var i = 0; i < ep.context.relation.length; i++) {
-                var a = EcAlignment.getBlocking(ep.context.relation[i]);
-                if ((relationLookup)[a.source] == null) 
-                    (relationLookup)[a.source] = new Array();
-                ((relationLookup)[a.source]).push(a);
-                if ((relationLookup)[a.target] == null) 
-                    (relationLookup)[a.target] = new Array();
-                ((relationLookup)[a.target]).push(a);
-            }
+            if (ep.context != null && ep.context.relation != null) 
+                for (var i = 0; i < ep.context.relation.length; i++) {
+                    var a = EcAlignment.getBlocking(ep.context.relation[i]);
+                    if ((relationLookup)[a.source] == null) 
+                        (relationLookup)[a.source] = new Array();
+                    ((relationLookup)[a.source]).push(a);
+                    if ((relationLookup)[a.target] == null) 
+                        (relationLookup)[a.target] = new Array();
+                    ((relationLookup)[a.target]).push(a);
+                }
             if (this.profileMode) 
                 this.constructor.relationLookup = relationLookup;
         }

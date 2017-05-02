@@ -13,4 +13,4 @@ EditRollupRuleModal = stjs.extend(EditRollupRuleModal, EcModal, [], function(con
     prototype.getHtmlLocation = function() {
         return "partial/modal/editRollupRule.html";
     };
-}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcRollupRule"]}, onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcRollupRule"]}}, {});

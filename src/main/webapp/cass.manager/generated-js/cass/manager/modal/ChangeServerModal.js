@@ -9,4 +9,4 @@ ChangeServerModal = stjs.extend(ChangeServerModal, EcModal, [], function(constru
     prototype.getHtmlLocation = function() {
         return "partial/modal/changeServer.html";
     };
-}, {onClose: "Callback0"}, {});
+}, {}, {});

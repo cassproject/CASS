@@ -1,4 +1,3 @@
-
 AlignmentExplorerScreen = (function(AlignmentExplorerScreen){
 
 	var columnCounter = 0;

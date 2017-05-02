@@ -13,4 +13,4 @@ PermissionPropagationModal = stjs.extend(PermissionPropagationModal, EcModal, []
     prototype.getHtmlLocation = function() {
         return "partial/modal/permissionPropagation.html";
     };
-}, {data: "EcRemoteLinkedData", onCancel: "Callback0", onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData", onCancel: "Callback0"}, {});

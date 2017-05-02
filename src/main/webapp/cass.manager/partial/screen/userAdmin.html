@@ -3,132 +3,266 @@
 		<div id="userAdminMessageContainer" class="small-6 columns small-centered" >
 		</div>
 	</div>
-
 	
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-				<div class="small-12 columns">
-					<h3>Adapter Configurations </h3>
-					<p>Select an Adapter to Configure</p>
-					
-					<button id="xapiAdapterConfigureBtn" class="button">xAPI</button>
-					
-					<button id="moodleAdapterConfigureBtn" class="button" style="margin-left:1rem;">Moodle</button>
+			<div class="callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px; padding:1rem 2rem;">
+				
+				<div class="row" style="">
+					<div class="small-12 columns">
+						<h3>Adapter Configurations </h3>
+						<p>Select an adapter to configure.</p>
+						
+						<button id="xapiAdapterConfigureBtn" class="button">xAPI</button>
+						
+						<button id="moodleAdapterConfigureBtn" class="button" style="margin-left:1rem;">Moodle</button>
+					</div>
 				</div>
+				
+				<div class="row hide configRow" id="xapiConfiguration" style="padding-left:2rem;" >
+					<div class="large-12 columns">
+						<div class="row">
+							<div class="small-9 columns small-centered">
+								<hr/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 columns">
+								<button class="button float-right" id="xapiSaveBtn">Save xAPI Configuration</button>
+								<h4>xAPI Configuration </h4>
+								<p>Please modify these details and then press save to store them on the server</p>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">xAPI Endpoint</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<input id="xapiEndpointInput" type="text" placeholder="No Endpoint Set (e.g. https://lrs.adlnet.gov/xapi)"/>
+									</div>
+								</div>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">xAPI Hostname</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<input id="xapiEndpointHostnameInput" type="text" placeholder="No Hostname Set (e.g. https://lrs.adlnet.gov)"/>
+									</div>
+								</div>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">xAPI Authentication Key</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<input id="xapiAuthKeyInput" type="text" placeholder="No Key Set"/>
+									</div>
+								</div>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">xAPI Adapter Enabled</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<div>
+											<span style="vertical-align:30%">No</span>
+											<div class="switch" style="display:inline-block;">
+												<input class="switch-input" id="xapiAdapterEnabledSwitch" type="checkbox" name="xapiAdapterEnabledSwitch">
+											  	<label class="switch-paddle" for="xapiAdapterEnabledSwitch">
+											  	</label>
+											</div>
+											<span style="vertical-align:30%">Yes</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row hide configRow" id="moodleConfiguration" style="padding-left:2rem;" >
+					<div class="large-12 columns">
+						<div class="row">
+							<div class="small-9 columns small-centered">
+								<hr/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="small-12 columns">
+								<button class="button float-right" id="moodleSaveBtn">Save Moodle Configuration</button>
+								<h4>Moodle Configuration </h4>
+								<p>Please modify these details and then press save to store them on the server</p>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">Moodle Endpoint</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<input style="display:inline;width:50%;" id="moodleEndpointInput" type="text" placeholder="No Endpoint Address Set"/>/webservice/rest/server.php
+									</div>
+								</div>
+								
+								<div class="row collapse">
+									<div class="small-4 large-3 columns">
+										<span class="prefix">Moodle Token</span>
+									</div>
+									<div class="small-8 large-9 columns">
+										<input id="moodleTokenInput" type="text" placeholder="No Token Set"/>
+									</div>
+								</div>
+								
+								
+								
+								<div class="row collapse">
+									<div class="small-6 columns">
+										<div class="row text-center">
+											<h5>CASS to Moodle</h5>
+										</div>
+										<div class="row collapse">
+											<div class="small-4 large-3 columns text-right">
+												<div class="prefix" style="margin:0.4rem;">Enabled:</div>
+											</div>
+											<div class="small-8 large-9 columns">
+												<div>
+													<span style="vertical-align:30%">No</span>
+													<div class="switch" style="display:inline-block;">
+														<input class="switch-input" id="cassToMoodleEnabledSwitch" type="checkbox" name="cassToMoodleEnabledSwitch">
+													  	<label class="switch-paddle" for="cassToMoodleEnabledSwitch">
+													  	</label>
+													</div>
+													<span style="vertical-align:30%">Yes</span>
+												</div>
+											</div>
+										</div>
+										<div id="cassToMoodleContainer">
+											<div class="row hide">
+												<div class="small-4 large-3 columns">
+													<span class="prefix">Operations</span>
+												</div>
+												<div class="small-8 large-9 columns">
+													<input type="checkbox" id="cassToMoodleAddFramework"/> Add Framework <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleAddCompetency"/> Add Competency <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleAddRelation"/> Add Relation <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleAddAlignments"/> Add Aligned Resources <br/>
+													<input type="checkbox" id="cassToMoodleUpdateFramework"/> Update Framework <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleUpdateCompetency"/> Update Competency <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleUpdateRelation"/> Update Relation <br/>
+													&nbsp;<input type="checkbox" id="cassToMoodleUpdateAlignments"/> Update Aligned Resources <br/>
+													<input type="checkbox" id="cassToMoodleDeleteFramework"/> Delete Framework <br/>
+													<input type="checkbox" id="cassToMoodleDeleteCompetency"/> Delete Competency <br/>
+													<input type="checkbox" id="cassToMoodleDeleteRelation"/> Delete Relation <br/>
+													<input type="checkbox" id="cassToMoodleDeleteAlignments"/> Delete Aligned Resources <br/>
+												</div>
+											</div>
+											<div class="row collapse hide">
+												<div class="small-4 large-3 columns text-right">
+													<div class="prefix" style="margin-right:0.4rem;">Relationships:</div>
+												</div>
+												<div class="small-8 large-9 columns">
+													<fieldset>
+														<legend>Narrows</legend>
+														<input type="radio" name="narrowsMoodleType" value="parentChild" id="narrowsPC" required><label for="narrowsPC">Moodle Relationship</label>
+														<input type="radio" name="narrowsMoodleType" value="description" id="narrowsDesc"><label for="narrowsDesc">in Description</label>
+														<input type="radio" name="narrowsMoodleType" value="none" id="narrowsNone"><label for="narrowsNone">Ignored</label>
+													</fieldset>
+													<fieldset>
+														<legend>Requires</legend>
+														<input type="radio" name="requiresMoodleType" value="parentChild" id="requiresPC" required><label for="requiresPC">Moodle Relationship</label>
+														<input type="radio" name="requiresMoodleType" value="description" id="requiresDesc"><label for="requiresDesc">in Description</label>
+														<input type="radio" name="requiresMoodleType" value="none" id="requiresNone"><label for="requiresNone">Ignored</label>
+													</fieldset>
+												</div>
+											</div>
+											<div class="row" style="margin-top:0.5rem;">
+												<div class="small-8 columns">
+													<div id="cassToMoodleMessageContainer"></div>
+												</div>
+												<div class="small-4 columns">
+													<button class="button float-right" id="cassToMoodleBtn" disabled="disabled" style='margin-right:1rem;'>Sync Now</button>
+													<span class="float-left hide" id="cassToMoodleSyncing" style="margin:0.75rem;"><i class="fa fa-spin fa-spinner"></i></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="small-6 columns">
+										<div class="row text-center column">
+											<h5>Moodle to CASS</h5>
+										</div>
+										<div class="row collapse">
+											<div class="small-4 large-3 columns text-right">
+												<div class="prefix" style="margin:0.4rem;">Enabled:</div>
+											</div>
+											<div class="small-8 large-9 columns">
+												<div>
+													<span style="vertical-align:30%">No</span>
+													<div class="switch" style="display:inline-block;">
+														<input class="switch-input" id="moodleToCassEnabledSwitch" type="checkbox" name="moodleToCassEnabledSwitch">
+													  	<label class="switch-paddle" for="moodleToCassEnabledSwitch">
+													  	</label>
+													</div>
+													<span style="vertical-align:30%">Yes</span>
+												</div>
+											</div>
+										</div>
+										<div id="moodleToCassContainer">
+											<div class="row hide">
+												<div class="small-4 large-3 columns">
+													<span class="prefix">Operations:</span>
+												</div>
+												<div class="small-8 large-9 columns">
+													<input type="checkbox" id="moodleToCassAddFramework"/> Add Framework <br/>
+													&nbsp;<input type="checkbox" id="moodleToCassAddCompetency"/> Add Competency <br/>
+													&nbsp;<input type="checkbox" id="moodleToCassAddRelation"/> Add Relation <br/>
+													<input type="checkbox" id="moodleToCassUpdateFramework"/> Update Framework <br/>
+													&nbsp;<input type="checkbox" id="moodleToCassUpdateCompetency"/> Update Competency <br/>
+													&nbsp;<input type="checkbox" id="moodleToCassUpdateRelation"/> Update Relation <br/>
+													<input type="checkbox" id="moodleToCassDeleteFramework"/> Delete Framework <br/>
+													<input type="checkbox" id="moodleToCassDeleteCompetency"/> Delete Competency <br/>
+													<input type="checkbox" id="moodleToCassDeleteRelation"/> Delete Relation <br/>
+													<input type="checkbox" id="moodleToCassDeleteAlignments"/> Delete Aligned Resources <br/>
+												</div>
+											</div>
+											<div class="row" style="margin-top:0.5rem;">
+												<div class="small-8 columns">
+													<div id="cassToMoodleMessageContainer"></div>
+												</div>
+												<div class="small-4 columns">
+													<button class="button float-right" id="moodleToCassBtn" disabled="disabled" style='margin-right:1rem;'>Sync Now</button>
+													<span class="float-left hide" id="moodleToCassSyncing" style="margin:0.75rem;"><i class="fa fa-spin fa-spinner"></i></span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	
 			</div>
 		</div>
 	</div>
 	
-	<div class="row hide configRow" id="xapiConfiguration" >
+	<div class="row">
 		<div class="large-12 columns">
-			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-				<div class="small-12 columns">
-					<h3>xAPI Configuration </h3>
-					<p>Please modify these details and then press save to store them on the server</p>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">xAPI Endpoint</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="xapiEndpointInput" type="text" placeholder="No Endpoint Set (e.g. https://lrs.adlnet.gov/xapi)"/>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">xAPI Hostname</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="xapiEndpointHostnameInput" type="text" placeholder="No Hostname Set (e.g. https://lrs.adlnet.gov)"/>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">xAPI Authentication Key</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="xapiAuthKeyInput" type="text" placeholder="No Key Set"/>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">xAPI Adapter Enabled</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<div>
-								<span style="vertical-align:30%">No</span>
-								<div class="switch" style="display:inline-block;">
-									<input class="switch-input" id="xapiAdapterEnabledSwitch" type="checkbox" name="xapiAdapterEnabledSwitch">
-								  	<label class="switch-paddle" for="xapiAdapterEnabledSwitch">
-								  	</label>
-								</div>
-								<span style="vertical-align:30%">Yes</span>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-12 large-12 columns" style="text-align:right">
-							<button class="button" id="xapiSaveBtn">Save xAPI Configuration</button>
-						</div>
+			<div class="callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px;padding:1rem 2rem;">
+				<div class="row" >
+					<div class="small-12 columns">
+						<h3>Database Management</h3>
+						<p>SkyRepo mechanisms to backup the ElasticSearch database, once it is backed up it can be restored from 
+						the backup or the database can be wiped and then later restored with the backup files.</p>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-
-	
-	<div class="row hide configRow" id="moodleConfiguration" >
-		<div class="large-12 columns">
-			<div class="row callout radius" style="box-shadow:6px 0px 4px rgba(0,0,0,.4);margin-bottom:20px">
-				<div class="small-12 columns">
-					<h3>Moodle Configuration </h3>
-					<p>Please modify these details and then press save to store them on the server</p>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Moodle Endpoint</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input style="display:inline;width:50%;" id="moodleEndpointInput" type="text" placeholder="No Endpoint Address Set"/>/webservice/rest/server.php
-						</div>
+				<div class="row">
+					<div class="small-5 columns">
+						<button id="skyrepoBackup" class="button">Backup</button>
+						
+						<button id="skyrepoRestore" class="button" style="margin-left:1rem;">Restore</button>
+						
+						<button id="skyrepoWipe" class="button" style="margin-left:1rem;">Wipe</button>
 					</div>
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Moodle Token</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<input id="moodleTokenInput" type="text" placeholder="No Token Set"/>
-						</div>
-					</div>
-					
-					
-					<div class="row collapse">
-						<div class="small-4 large-3 columns">
-							<span class="prefix">Moodle Adapter Enabled</span>
-						</div>
-						<div class="small-8 large-9 columns">
-							<div>
-								<span style="vertical-align:30%">No</span>
-								<div class="switch" style="display:inline-block;">
-									<input class="switch-input" id="moodleAdapterEnabledSwitch" type="checkbox" name="moodleAdapterEnabledSwitch">
-								  	<label class="switch-paddle" for="moodleAdapterEnabledSwitch">
-								  	</label>
-								</div>
-								<span style="vertical-align:30%">Yes</span>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row collapse">
-						<div class="small-12 large-12 columns" style="text-align:right">
-							<button class="button" id="moodleSaveBtn">Save Moodle Configuration</button>
-						</div>
+					<div class="small-7 columns">
+						<div id="databaseMessageContainer"></div>
 					</div>
 				</div>
 			</div>

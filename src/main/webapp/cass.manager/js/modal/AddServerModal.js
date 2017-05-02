@@ -20,19 +20,24 @@ var AddServerModal = (function(AddServerModal){
 	function submitAddServer(onClose){
 		var name = $("#addServerName").val();
 		var url = $("#addServerUrl").val();
-		
-		AppController.serverController.addServer(name, url, function(){
-			AppController.serverController.selectServer(name);
-			if(AppController.loginController.getLoggedIn()){
-				AppController.loginController.setLoggedIn(false);
-				ViewManager.getView("#menuContainer").setLoggedOut();
-			}
-			
-			AppMenu.prototype.setCurrentServer();
-			
-			ModalManager.hideModal();
-			
-			onClose();
+
+		EcRepository r = new EcRepository();
+		r.selectedServer = url;
+		r.autoDetectRepository(function(){
+			AppController.serverController.addServer(name, r.selectedServer, function(){
+				AppController.serverController.selectServer(name,function(){
+					if(AppController.loginController.getLoggedIn()){
+						AppController.loginController.setLoggedIn(false);
+						ViewManager.getView("#menuContainer").setLoggedOut();
+					}
+
+					AppMenu.prototype.setCurrentServer();
+
+					ModalManager.hideModal();
+
+					onClose();
+				});
+			},displayError);
 		}, displayError);
 	}
 	

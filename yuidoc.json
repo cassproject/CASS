@@ -5,7 +5,7 @@
     "url": "http://cassproject.org/",
     "logo": "http://docs.cassproject.org/img/customLogo-blue.png",
     "options": {
-        "exclude": "base64toArrayBuffer.js,base64x-1.1.js,blobHelper.js,FileSaver.js,forgeAsync.js,openpgp.js,papaparse.js,random.js,stjs.js,xml2json.js",
+        "exclude": "moment-with-locales.js,base64toArrayBuffer.js,base64x-1.1.js,blobHelper.js,FileSaver.js,forgeAsync.js,openpgp.js,papaparse.js,random.js,stjs.js,xml2json.js",
         "themedir": "/scripts/node/node_modules/yuidoc-ember-cli-theme",
         "helpers": ["/scripts/node/node_modules/yuidoc-ember-cli-theme/helpers.js"]
     }

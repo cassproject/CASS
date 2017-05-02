@@ -706,6 +706,14 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      */
     constructor.async = true;
     /**
+     *  Timeout for AJAX requests
+     * 
+     *  @property async
+     *  @static
+     *  @type boolean
+     */
+    constructor.timeout = 60 * 1000 * 5;
+    /**
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
      *  URL) and a service (service path). Sends form data as a multi-part mime
      *  request.
@@ -773,6 +781,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         (p)["contentType"] = false;
         p.cache = false;
         p.async = EcRemote.async;
+        p.timeout = EcRemote.timeout;
         p.processData = false;
         p.success = successCallback;
         p.error = failureCallback;
@@ -812,6 +821,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.url = url;
         p.cache = false;
         p.async = EcRemote.async;
+        p.timeout = EcRemote.timeout;
         p.processData = false;
         p.dataType = "json";
         p.success = EcRemote.getSuccessJSONCallback(success, failure);
@@ -841,6 +851,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.method = "DELETE";
         p.url = url;
         p.async = EcRemote.async;
+        p.timeout = EcRemote.timeout;
         p.headers = new Object();
         p.headers["signatureSheet"] = signatureSheet;
         p.success = EcRemote.getSuccessCallback(success, failure);

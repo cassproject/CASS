@@ -15,4 +15,4 @@ ConfirmModal = stjs.extend(ConfirmModal, EcModal, [], function(constructor, prot
     prototype.getHtmlLocation = function() {
         return "partial/modal/confirm.html";
     };
-}, {confirmCallback: "Callback0", onClose: "Callback0"}, {});
+}, {confirmCallback: "Callback0"}, {});

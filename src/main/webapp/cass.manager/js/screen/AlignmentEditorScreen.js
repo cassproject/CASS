@@ -1,4 +1,3 @@
-
 AlignmentEditorScreen = (function(AlignmentEditorScreen){
 
 	var columnCounter = 0;
@@ -130,6 +129,7 @@ AlignmentEditorScreen = (function(AlignmentEditorScreen){
 		for (var i = 0; i < this.columns.length; i++)
 			this.columns[i].redraw();
 	}
+
 	AlignmentEditorScreen.prototype.bindControls = function(containerId){
 		var me = this;
 		var resizer = function(evt){

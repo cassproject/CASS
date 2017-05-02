@@ -112,24 +112,58 @@ fi
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading ElasticSearch 2.2...
-wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.2.1/elasticsearch-2.2.1.deb
-apt-get -qqy install gdebi
-echo -----
-echo Installing ElasticSearch 2.2...
-gdebi -q -n elasticsearch-2.2.1.deb
-rm elasticsearch-2.2.1.deb
-update-rc.d elasticsearch defaults
+echo Downloading and installing ElasticSearch 5.x...
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+apt-get -qqy install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
+apt-get -qqy update
+apt-get -qqy install elasticsearch
+update-rc.d elasticsearch defaults 95 10
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
-echo Downloading ElasticSearch 2.2...
-wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/2.2.1/elasticsearch-2.2.1.rpm
+echo Downloading and installing ElasticSearch 5.x...
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+echo "[elasticsearch-5.x]" >> /etc/yum.repos.d/elasticsearch.repo
+echo "name=Elasticsearch repository for 5.x packages" >> /etc/yum.repos.d/elasticsearch.repo
+echo "baseurl=https://artifacts.elastic.co/packages/5.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
+echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.repo
+echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "autorefresh=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "type=rpm-md" >> /etc/yum.repos.d/elasticsearch.repo
+yum install elasticsearch
+chkconfig --add elasticsearch
+chkconfig elasticsearch on
+fi
+
+#Upgrade script
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
+ then
 echo -----
-echo Installing ElasticSearch 2.2...
-yum -y -q --nogpgcheck localinstall elasticsearch-2.2.1.rpm
-rm elasticsearch-2.2.1.rpm
+echo Upgrading ElasticSearch 2.2 to 5.x...
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+apt-get -qqy install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
+apt-get -qqy update
+apt-get -qqy install elasticsearch
+update-rc.d elasticsearch defaults 95 10
+fi
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
+ then
+echo -----
+echo Upgrading ElasticSearch 2.2 to 5.x...
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+echo "[elasticsearch-5.x]" >> /etc/yum.repos.d/elasticsearch.repo
+echo "name=Elasticsearch repository for 5.x packages" >> /etc/yum.repos.d/elasticsearch.repo
+echo "baseurl=https://artifacts.elastic.co/packages/5.x/yum" >> /etc/yum.repos.d/elasticsearch.repo
+echo "gpgcheck=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch" >> /etc/yum.repos.d/elasticsearch.repo
+echo "enabled=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "autorefresh=1" >> /etc/yum.repos.d/elasticsearch.repo
+echo "type=rpm-md" >> /etc/yum.repos.d/elasticsearch.repo
+yum install elasticsearch
 chkconfig --add elasticsearch
 chkconfig elasticsearch on
 fi

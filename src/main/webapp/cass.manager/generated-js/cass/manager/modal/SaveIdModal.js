@@ -11,4 +11,4 @@ SaveIdModal = stjs.extend(SaveIdModal, EcModal, [], function(constructor, protot
     prototype.getHtmlLocation = function() {
         return "partial/modal/saveId.html";
     };
-}, {onClose: "Callback0"}, {});
+}, {}, {});

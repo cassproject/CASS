@@ -18,4 +18,4 @@ AdvancedPermissionsModal = stjs.extend(AdvancedPermissionsModal, EcModal, [], fu
     prototype.getHtmlLocation = function() {
         return "partial/modal/advancedPermissions.html";
     };
-}, {data: "EcRemoteLinkedData", saveCallback: {name: "Callback1", arguments: ["Object"]}, onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData", saveCallback: {name: "Callback1", arguments: ["Object"]}}, {});

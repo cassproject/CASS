@@ -66,7 +66,7 @@ deleteOrOther = #if(
 data=deleteOrOther.call(type="data");
 /data=data;
 
-multiGet=postArray.cforEach(paramName="urlRemainder",op=get.call(type="data"),array="true").displayJson(_collapse="true");
+multiGet=postArray.cforEach(paramName="urlRemainder",op=get.call(type="data").catch(runtime=#object(a="").get(b="")),array="true").displayJson(_collapse="true");
 
 /sky/repo/multiGet=multiGet;
 

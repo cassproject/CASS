@@ -10,3 +10,15 @@
 #alignmentExplorerColumns>.columns:first-of-type .alignmentEditorElement.selected {
     background: lightblue;
 }
+
+#alignmentExplorerColumns{
+	max-width:inherit;
+}
+
+.alignmentEditorElement ul li{
+	font-size:small;
+}
+
+.fulfilled{
+	color:blue;
+}

@@ -48,8 +48,72 @@ var CSVExport = function() {
     Exporter.call(this);
 };
 CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
-    constructor.csvOutput = null;
-    constructor.csvRelationOutput = null;
+    constructor.CSVExportProcess = function() {
+        this.csvOutput = [];
+    };
+    constructor.CSVExportProcess = stjs.extend(constructor.CSVExportProcess, null, [], function(constructor, prototype) {
+        prototype.csvOutput = null;
+        prototype.flattenObject = function(flattenedObject, object, prefix) {
+            var data = new EcRemoteLinkedData((object)["@context"], (object)["@type"]);
+            data.copyFrom(object);
+            var tempObj = JSON.parse(data.toJson());
+            var props = (tempObj);
+            for (var prop in props) {
+                var id;
+                if (prefix != null && prefix != undefined) 
+                    id = prefix + "." + prop;
+                 else 
+                    id = prop;
+                if (props[prop] != null && props[prop] != "" && stjs.isInstanceOf(props[prop].constructor, Object)) {
+                    this.flattenObject(flattenedObject, props[prop], id);
+                } else {
+                    (flattenedObject)[id] = props[prop];
+                }
+            }
+        };
+        prototype.addCSVRow = function(object) {
+            var flattenedObject = new EcRemoteLinkedData(object.context, object.type);
+            this.flattenObject(flattenedObject, object, null);
+            this.csvOutput.push(JSON.parse(flattenedObject.toJson()));
+            var props = (JSON.parse(flattenedObject.toJson()));
+            for (var prop in props) {
+                if (props[prop] != null && props[prop] != "") {
+                    for (var i = 0; i < this.csvOutput.length; i++) {
+                        var row = this.csvOutput[i];
+                        if (!(row).hasOwnProperty(prop)) {
+                            (row)[prop] = "";
+                        }
+                    }
+                }
+            }
+        };
+        prototype.buildExport = function(objects) {
+            for (var i = 0; i < objects.length; i++) {
+                var object = objects[i];
+                this.addCSVRow(object);
+            }
+        };
+        prototype.downloadCSV = function(name) {
+            var csv = Papa.unparse(this.csvOutput);
+            var pom = window.document.createElement("a");
+            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+            pom.setAttribute("download", name);
+            if ((window.document)["createEvent"] != null) {
+                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
+                ((event)["initEvent"]).call(event, "click", true, true);
+                pom.dispatchEvent(event);
+            } else {
+                ((pom)["click"]).call(pom);
+            }
+        };
+    }, {csvOutput: {name: "Array", arguments: ["Object"]}}, {});
+    constructor.exportObjects = function(objects, fileName) {
+        var compExport = new CSVExport.CSVExportProcess();
+        compExport.buildExport(objects);
+        compExport.downloadCSV(fileName);
+    };
+    constructor.frameworkCompetencies = null;
+    constructor.frameworkRelations = null;
     /**
      *  Method to export the CSV files of competencies and relationships for a framework
      *  
@@ -68,8 +132,8 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
             failure("Framework not selected.");
             return;
         }
-        CSVExport.csvOutput = [];
-        CSVExport.csvRelationOutput = [];
+        CSVExport.frameworkCompetencies = [];
+        CSVExport.frameworkRelations = [];
         EcRepository.get(frameworkId, function(data) {
             if (data.isAny(new EcFramework().getTypes())) {
                 var fw = new EcFramework();
@@ -79,67 +143,30 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                 for (var i = 0; i < fw.competency.length; i++) {
                     var competencyUrl = fw.competency[i];
                     EcRepository.get(competencyUrl, function(competency) {
-                        CSVExport.csvOutput.push(JSON.parse(competency.toJson()));
-                        var props = (JSON.parse(competency.toJson()));
-                        for (var prop in props) {
-                            if (props[prop] != null && props[prop] != "") {
-                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
-                                    var row = CSVExport.csvOutput[i];
-                                    if (!(row).hasOwnProperty(prop)) {
-                                        (row)[prop] = "";
-                                    }
-                                }
-                            }
-                        }
-                        if (CSVExport.csvOutput.length == fw.competency.length) {
-                            var csv = Papa.unparse(CSVExport.csvOutput);
-                            var pom = window.document.createElement("a");
-                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
-                            pom.setAttribute("download", fw.name + " - Competencies.csv");
-                            if ((window.document)["createEvent"] != null) {
-                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
-                                ((event)["initEvent"]).call(event, "click", true, true);
-                                pom.dispatchEvent(event);
-                            } else {
-                                ((pom)["click"]).call(pom);
-                            }
+                        CSVExport.frameworkCompetencies.push(competency);
+                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.downloadCSV(fw.name + " - Competencies.csv");
                         } else {}
                     }, failure);
                 }
                 for (var i = 0; i < fw.relation.length; i++) {
                     var relationUrl = fw.relation[i];
                     EcRepository.get(relationUrl, function(relation) {
-                        CSVExport.csvRelationOutput.push(JSON.parse(relation.toJson()));
-                        var props = (JSON.parse(relation.toJson()));
-                        for (var prop in props) {
-                            if (props[prop] != null && props[prop] != "") {
-                                for (var i = 0; i < CSVExport.csvOutput.length; i++) {
-                                    var row = CSVExport.csvOutput[i];
-                                    if (!(row).hasOwnProperty(prop)) {
-                                        (row)[prop] = "";
-                                    }
-                                }
-                            }
-                        }
-                        if (CSVExport.csvRelationOutput.length == fw.relation.length) {
-                            var csv = Papa.unparse(CSVExport.csvRelationOutput);
-                            var pom = window.document.createElement("a");
-                            pom.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
-                            pom.setAttribute("download", fw.name + " - Relations.csv");
-                            if ((window.document)["createEvent"] != null) {
-                                var event = ((window.document)["createEvent"]).call(window.document, "MouseEvents");
-                                ((event)["initEvent"]).call(event, "click", true, true);
-                                pom.dispatchEvent(event);
-                            } else {
-                                ((pom)["click"]).call(pom);
-                            }
+                        CSVExport.frameworkRelations.push(relation);
+                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.downloadCSV(fw.name + " - Relations.csv");
+                            success();
                         } else {}
                     }, failure);
                 }
             }
         }, failure);
     };
-}, {csvOutput: {name: "Array", arguments: ["Object"]}, csvRelationOutput: {name: "Array", arguments: ["Object"]}}, {});
+}, {frameworkCompetencies: {name: "Array", arguments: ["EcRemoteLinkedData"]}, frameworkRelations: {name: "Array", arguments: ["EcRemoteLinkedData"]}}, {});
 /**
  *  Importer methods to create competencies based on a
  *  Medbiquitous competency XML file
@@ -416,7 +443,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  			returns an object indicating the number of competencies (and relationships?) created so far
      *  			
      */
-    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure, incremental) {
+    constructor.importCompetencies = function(file, serverUrl, owner, nameIndex, descriptionIndex, scopeIndex, idIndex, relations, sourceIndex, relationTypeIndex, destIndex, success, failure, incremental, uniquify) {
         CSVImport.progressObject = null;
         CSVImport.importCsvLookup = new Object();
         if (nameIndex < 0) {
@@ -428,40 +455,39 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             var tabularData = (results)["data"];
             var colNames = tabularData[0];
             for (var i = 1; i < tabularData.length; i++) {
+                if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == undefined || tabularData[i][0] == ""))) {
+                    continue;
+                }
+                if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == undefined || tabularData[i][nameIndex] == "") {
+                    continue;
+                }
                 var competency = new EcCompetency();
-                if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == ""))) {
-                    continue;
-                }
-                if (tabularData[i][nameIndex] == null || tabularData[i][nameIndex] == "") {
-                    continue;
-                }
                 competency.name = tabularData[i][nameIndex];
                 if (descriptionIndex >= 0) 
                     competency.description = tabularData[i][descriptionIndex];
                 if (scopeIndex >= 0) 
                     competency.scope = tabularData[i][scopeIndex];
-                var shortId = null;
-                if (idIndex != null && idIndex >= 0) {
+                if ((uniquify == undefined || uniquify == null || uniquify == false) && idIndex != null && idIndex >= 0) {
                     competency.id = tabularData[i][idIndex];
-                    shortId = competency.shortId();
-                }
-                if (idIndex != null && idIndex >= 0) 
                     CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
-                 else 
+                } else {
                     competency.generateId(serverUrl);
-                if (idIndex != null && idIndex >= 0 && tabularData[i][idIndex] != null && tabularData[i][idIndex] != "") {
-                    if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] != null) 
-                        continue;
-                    (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
-                } else if ((CSVImport.importCsvLookup)[competency.name] != null) 
-                    continue;
-                (CSVImport.importCsvLookup)[competency.name] = competency.shortId();
-                if (shortId != null && idIndex >= 0) 
-                    (CSVImport.importCsvLookup)[shortId] = competency.shortId();
-                if (owner != null) 
+                }
+                if (owner != undefined && owner != null) 
                     competency.addOwner(owner.ppk.toPk());
+                var shortId = null;
+                if (idIndex != null && idIndex != undefined && idIndex >= 0) {
+                    var oldId = tabularData[i][idIndex];
+                    shortId = EcRemoteLinkedData.trimVersionFromUrl(oldId);
+                    (CSVImport.importCsvLookup)[shortId] = competency.shortId();
+                }
+                if (idIndex != null && idIndex != undefined && idIndex >= 0 && tabularData[i][idIndex] != null && tabularData[i][idIndex] != "") {
+                    if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] == null) 
+                        (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
+                }
                 for (var idx = 0; idx < tabularData[i].length; idx++) {
-                    if (colNames[idx] == null || colNames[idx] == "" || colNames[idx].startsWith("@") || idx == nameIndex || idx == descriptionIndex || idx == scopeIndex || idx == idIndex) {
+                    var name = colNames[idx];
+                    if (name == null || name.trim() == "" || name.startsWith("@") || name.indexOf(".") != -1 || tabularData[i][idx].trim() == "" || idx == nameIndex || idx == descriptionIndex || idx == scopeIndex || idx == idIndex) {
                         continue;
                     } else {
                         (competency)[colNames[idx]] = tabularData[i][idx];
@@ -558,8 +584,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             }
             CSVImport.saved = 0;
             for (var i = 0; i < relations.length; i++) {
-                var comp = relations[i];
-                comp.save(function(results) {
+                var relation = relations[i];
+                relation.save(function(results) {
                     CSVImport.saved++;
                     if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) {
                         if (CSVImport.progressObject == null) 
@@ -579,6 +605,151 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     for (var j = 0; j < relations.length; j++) {
                         relations[j]._delete(null, null);
                     }
+                });
+            }
+        }, error: failure});
+    };
+    constructor.hasContextColumn = function(colNames) {
+        for (var idx = 0; idx < colNames.length; idx++) {
+            if (colNames[idx] == "@context") {
+                return idx;
+            }
+        }
+        return -1;
+    };
+    constructor.hasTypeColumn = function(colNames) {
+        for (var idx = 0; idx < colNames.length; idx++) {
+            if (colNames[idx] == "@type") {
+                return idx;
+            }
+        }
+        return -1;
+    };
+    constructor.expandObject = function(nestedFields, nestedObj, value) {
+        if (nestedFields.length == 0) {
+            return;
+        } else if (nestedFields.length == 1) {
+            (nestedObj)[nestedFields[0]] = value;
+        } else {
+            var key = nestedFields[0];
+            if ((nestedObj)[key] == null || (nestedObj)[key] == undefined) 
+                (nestedObj)[key] = new Object();
+            nestedFields.splice(0, 1);
+            CSVImport.expandObject(nestedFields, (nestedObj)[key], value);
+        }
+    };
+    constructor.transformReferences = function(data) {
+        var props = (data);
+        for (var prop in props) {
+            if (props[prop] == null || props[prop] == undefined || !toString.call(props[prop]).contains("String")) {
+                if (EcObject.isObject(props[prop])) {
+                    var nested = props[prop];
+                    CSVImport.transformReferences(nested);
+                    (data)[prop] = nested;
+                }
+                continue;
+            }
+            var oldVal = props[prop];
+            if ((CSVImport.importCsvLookup)[oldVal] != null && (CSVImport.importCsvLookup)[oldVal] != undefined && (CSVImport.importCsvLookup)[oldVal] != "") {
+                (data)[prop] = (CSVImport.importCsvLookup)[oldVal];
+            }
+        }
+    };
+    constructor.importData = function(file, serverUrl, owner, success, failure, incremental, idIndex, assignedContext, assignedType) {
+        var objects = [];
+        var hasAssignedContext = assignedContext != undefined && assignedContext != null && assignedContext.trim() != "";
+        var hasAssignedType = assignedType != undefined && assignedType != null && assignedType.trim() != "";
+        CSVImport.importCsvLookup = new Object();
+        Papa.parse(file, {complete: function(results) {
+            var tabularData = (results)["data"];
+            var colNames = tabularData[0];
+            var contextIdx = -1;
+            var typeIdx = -1;
+            if (!hasAssignedContext && (contextIdx = CSVImport.hasContextColumn(colNames)) == -1) {
+                failure("Was not passed and cannot find column with data context");
+            } else if (!hasAssignedType && (typeIdx = CSVImport.hasTypeColumn(colNames)) == 1) {
+                failure("Was not passed and cannot find column with data type");
+            }
+            for (var i = 1; i < tabularData.length; i++) {
+                if (tabularData[i].length == 0 || (tabularData[i].length == 1 && (tabularData[i][0] == null || tabularData[i][0] == undefined || tabularData[i][0] == ""))) {
+                    continue;
+                }
+                var context = null;
+                var type = null;
+                if (hasAssignedContext) 
+                    context = assignedContext;
+                 else 
+                    context = tabularData[i][contextIdx];
+                if (hasAssignedType) 
+                    type = assignedType;
+                 else 
+                    type = tabularData[i][typeIdx];
+                var data = new EcRemoteLinkedData(context, type);
+                var nestedObjs = {};
+                for (var idx = 0; idx < tabularData[i].length; idx++) {
+                    var name = colNames[idx];
+                    if (name == "@id" || name == "id") {
+                        data.id = tabularData[i][idx];
+                        continue;
+                    } else if (name == null || name.trim() == "" || name.startsWith("@") || tabularData[i][idx].trim() == "" || idx == contextIdx || idx == typeIdx) {
+                        continue;
+                    } else if (name.indexOf(".") != -1) {
+                        var split = (name.split("."));
+                        if (split.length > 1) {
+                            var key = split[0];
+                            if (nestedObjs[key] == null || nestedObjs[key] == undefined) 
+                                nestedObjs[key] = new Object();
+                            split.splice(0, 1);
+                            CSVImport.expandObject(split, nestedObjs[key], tabularData[i][idx]);
+                            continue;
+                        }
+                        name = split[0];
+                    }
+                    var val = tabularData[i][idx];
+                    (data)[name] = val;
+                }
+                for (var key in nestedObjs) {
+                    (data)[key] = nestedObjs[key];
+                }
+                if (owner != null) 
+                    data.addOwner(owner.ppk.toPk());
+                var fileId = data.id;
+                if (idIndex != undefined && idIndex != null && idIndex >= 0) {
+                    data.id = tabularData[i][idIndex];
+                    CSVImport.transformId(tabularData[i][idIndex], data, serverUrl);
+                } else {
+                    data.generateId(serverUrl);
+                }
+                var shortId;
+                if (idIndex != null && idIndex != undefined && idIndex >= 0) {
+                    var oldId = tabularData[i][idIndex];
+                    shortId = EcRemoteLinkedData.trimVersionFromUrl(oldId);
+                    (CSVImport.importCsvLookup)[shortId] = data.shortId();
+                }
+                if (idIndex != null && idIndex != undefined && idIndex >= 0 && tabularData[i][idIndex] != null && tabularData[i][idIndex] != "") {
+                    if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] == null) 
+                        (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = data.shortId();
+                } else if (fileId != null && fileId != undefined && fileId != "") {
+                    if ((CSVImport.importCsvLookup)[fileId] == null) 
+                        (CSVImport.importCsvLookup)[fileId] = data.shortId();
+                    shortId = EcRemoteLinkedData.trimVersionFromUrl(fileId);
+                    if ((CSVImport.importCsvLookup)[shortId] == null) 
+                        (CSVImport.importCsvLookup)[shortId] = data.shortId();
+                }
+                objects.push(data);
+            }
+            CSVImport.saved = 0;
+            for (var i = 0; i < objects.length; i++) {
+                var data = objects[i];
+                CSVImport.transformReferences(data);
+                EcRepository.save(data, function(results) {
+                    CSVImport.saved++;
+                    if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) 
+                        incremental(CSVImport.saved);
+                    if (CSVImport.saved == objects.length) 
+                        success(objects);
+                }, function(results) {
+                    failure("Failed to save object");
                 });
             }
         }, error: failure});

@@ -209,6 +209,8 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 				ScreenManager.changeScreen(new CompetencyEditScreen(datum));
 			},
 			moreMenuTools:function(){
+				var container = $("<div></div>");
+				
 				var el = $("<li><span><i class='fa fa-sitemap'></i> Add to Framework</span></li>");
 				
 				el.click(function(){
@@ -217,7 +219,19 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 					ModalManager.showModal(new AddToFrameworkModal(selected));
 				})
 				
-				return el;
+				container.append(el);
+				
+				el = $("<li><span><i class='fa fa-download'></i> Export</span></li>");
+				
+				el.click(function(){
+					var selected = ViewManager.getView("#competencySearchResults").getSelected();
+					
+					ModalManager.showModal(new RepoExportModal(selected));
+				})
+				
+				container.append(el);
+				
+				return container.contents();
 			},
 			buildDataRow:function(row, id, datum){
 				row.append("<div class='small-8 columns'>" +

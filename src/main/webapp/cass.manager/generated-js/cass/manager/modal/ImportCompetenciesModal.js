@@ -11,4 +11,4 @@ ImportCompetenciesModal = stjs.extend(ImportCompetenciesModal, EcModal, [], func
     prototype.getHtmlLocation = function() {
         return "partial/modal/importCompetencies.html";
     };
-}, {data: "EcRemoteLinkedData", onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData"}, {});

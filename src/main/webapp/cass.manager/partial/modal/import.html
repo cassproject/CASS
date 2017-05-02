@@ -1,0 +1,35 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	CSV Import
+</h3>
+
+<div class="row">
+	<div class="small-10 small-centered columns">
+		<div id="generalImportMessageContainer" class="errorContainer"></div>
+	</div>
+</div>
+
+<div class="row sourceRow">
+	<div class="small-12 columns">
+		<em>Step 1: Select a CSV File on your computer</em>
+		<input type="file" id="generalImportFile" accept=".csv"/>
+		
+		<em>Step 2: Select the Id column</em>
+		<select id="generalImportColumnId"></select>
+
+		<em>Verify Ownership:</em>
+		<div id="generalImportOwner">Public</div>
+		
+		<div class="row">
+			<div class="small-5 columns">
+				<div id="generalImportProgressMessageContainer"></div>
+			</div>
+			<div class="small-7 columns">
+				<button class="button float-right" disabled='disabled' id="submitGeneralImport"><i class="fa fa-spin fa-spinner hide"></i> <span>Import from CSV</span></button>
+				<button class="button float-right cancelImport secondary" style="margin-right:1rem;">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

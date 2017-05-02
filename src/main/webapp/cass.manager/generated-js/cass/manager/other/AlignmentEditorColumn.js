@@ -157,7 +157,10 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
                     query += " OR ";
                 query += "url:\"" + me.collection[i].shortId() + "\"";
             }
-            query = "(" + query + ") AND " + new CreativeWork().getSearchStringByType();
+            if (query != null && query != "") 
+                query = "(" + query + ") AND " + new CreativeWork().getSearchStringByType();
+             else 
+                query = new CreativeWork().getSearchStringByType();
             var params = new Object();
             (params)["size"] = 5000;
             me.relations = new Array();

@@ -11,4 +11,4 @@ EvidenceViewModal = stjs.extend(EvidenceViewModal, EcModal, [], function(constru
     prototype.getHtmlLocation = function() {
         return "partial/modal/viewEvidence.html";
     };
-}, {evidence: {name: "Array", arguments: [null]}, onClose: "Callback0"}, {});
+}, {evidence: {name: "Array", arguments: [null]}}, {});

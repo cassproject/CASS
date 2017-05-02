@@ -13,4 +13,4 @@ EditLevelModal = stjs.extend(EditLevelModal, EcModal, [], function(constructor, 
     prototype.getHtmlLocation = function() {
         return "partial/modal/editLevel.html";
     };
-}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}, onClose: "Callback0"}, {});
+}, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcLevel"]}}, {});

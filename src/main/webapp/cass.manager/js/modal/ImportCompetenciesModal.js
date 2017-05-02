@@ -294,7 +294,7 @@ var ImportCompetenciesModal = (function(ImportCompetenciesModal){
                 if(data[0][i].toLowerCase().includes("source")){
                 	$("#importCsvColumnSource [index="+i+"]").attr("selected", "selected");
                 	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
-                }else if(data[0][i].toLowerCase().includes("type")){
+                }else if(data[0][i].toLowerCase().includes("relationType")){
                 	$("#importCsvColumnRelationType [index="+i+"]").attr("selected", "selected");
                 	ViewManager.getView("#importCompetenciesMessageContainer").displayPrimary("CSV column names atuomatically determined based off of name", "csvGuess");
                 }else if(data[0][i].toLowerCase().includes("target")){

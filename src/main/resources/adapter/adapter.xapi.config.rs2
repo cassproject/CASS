@@ -18,8 +18,6 @@ configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
 configVal=configObject.getByParam(param="@key");
 #xapiConfigVal=configVal;
 
-
-
 isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
 	operand="0",
 	gt=#true(),
@@ -33,18 +31,12 @@ checkConfigSet=#if(operator=isSkyAdmin, operand=#true(),
 );
 /adapter/xapi/config/set=checkConfigSet;
 
-
-
 configGet = configObject.displayJson(_collapse="true");
 checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
 	eq=configGet,
 	ne=#error(code="403", msg="Only those with the admin key can view the adapter configuration")
 );
 /adapter/xapi/config/get=checkConfigGet;
-
-
-
-
 
 xapiEndpoint=#xapiConfigVal(key="xapiEndpoint");
 #xapiEndpoint=xapiEndpoint;

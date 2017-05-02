@@ -73,7 +73,10 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     constructor.showView = function(view, containerId, callback) {
         var htmlLocation = view.getHtmlLocation();
         if (htmlLocation != null) {
+            var oldView = ViewManager.getView(containerId);
             ViewManager.setView(containerId, view);
+            if (oldView != null) 
+                oldView.onClose();
             $(containerId).load(htmlLocation, null, function(p1, p2, p3) {
                 view.display(containerId);
                 if (callback != null) 
@@ -92,6 +95,12 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
      */
     constructor.hideView = function(containerId) {
         $(containerId).addClass("hide");
+    };
+    constructor.destroyView = function(containerId) {
+        if (ViewManager.getView(containerId) == null) 
+            return;
+        ViewManager.getView(containerId).onClose();
+        delete ViewManager.viewMap[containerId];
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 /**
@@ -206,6 +215,17 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
             }
         return null;
     };
+    /**
+     *  Event that is called when the view is deleted, removed, or found to have no applicable selector.
+     *  Called upon screen change or when replacing a view with the same selector.
+     * 
+     *  @memberOf EcView
+     *  @method onClose
+     *  @return {Boolean} True if the view finished cleaning up after itself. False otherwise.
+     */
+    prototype.onClose = function() {
+        return true;
+    };
 }, {}, {});
 /**
  *  STJS Wrapper for the Browser Native History Object
@@ -217,13 +237,13 @@ HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, proto
     prototype.name = null;
 }, {}, {});
 /**
- *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that 
+ *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
  *  they work properly
- *  
+ * 
  *  @module com.eduworks.ec.ui
  *  @class ModalManager
  *  @extends ViewManager
- *  
+ * 
  *  @author devlin.junker@eduworks.com
  */
 var ModalManager = function() {
@@ -232,22 +252,22 @@ var ModalManager = function() {
 ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, prototype) {
     /**
      *  DOM Selector (ID) of the container to display Modal's in
-     *  
+     * 
      *  @property MODAL_CONTAINER_ID
      *  @type String
      */
     constructor.MODAL_CONTAINER_ID = "#modalContainer";
     /**
-     *  Application flag that is set when a modal is open, so we can check from the application whether we're in a 
+     *  Application flag that is set when a modal is open, so we can check from the application whether we're in a
      *  modal or not.
-     *  
+     * 
      *  @property inModal
      *  @type boolean
      */
     constructor.inModal = false;
     /**
      *  Retrieves the current view that corresponds to the Modal Container Element (Should be a Modal)
-     *  
+     * 
      *  @memberOf ModalManager
      *  @method getCurrentModal
      *  @static
@@ -259,7 +279,7 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     };
     /**
      *  Sets the current modal and then shows it by calling the modals display function
-     *  
+     * 
      *  @memberOf ModalManager
      *  @method showModal
      *  @static
@@ -291,7 +311,7 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     };
     /**
      *  Hides the modal container and returns to the screen or overlay that was being displayed beneath it
-     *  
+     * 
      *  @memberOf ModalManager
      *  @method hideModal
      *  @static
@@ -303,9 +323,10 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 (function() {
     $(ModalManager.MODAL_CONTAINER_ID).one("closed.zf.reveal", function(arg0, arg1) {
-        if (ModalManager.getCurrentModal().onClose != null) 
-            ModalManager.getCurrentModal().onClose();
-        return true;
+        var result = ModalManager.getCurrentModal().onClose();
+        if (result == null || undefined == result) 
+            return true;
+        return result;
     });
 })();
 /**
@@ -330,14 +351,6 @@ EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
      */
     prototype.modalSize = "small";
     /**
-     *  Function to be invoked when the modal is closed, can be overriden or left blank if nothing
-     *  needs to happen on the modal close 
-     *  
-     *  @property onClose
-     *  @type Callback0
-     */
-    prototype.onClose = null;
-    /**
      *  
      *  @memberOf EcModal
      *  @method getModalSize
@@ -345,7 +358,7 @@ EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
      *  @return tiny, small, medium, large, or full depending on how large the modal should be
      */
     prototype.getModalSize = function() {};
-}, {onClose: "Callback0"}, {});
+}, {}, {});
 /**
  *  Subclass of view that is specific for a screen, providing a display name that
  *  will be shown in the URL bar and that can be used on startup to check if the
@@ -666,7 +679,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                     }
                 }
                 ScreenManager.replaceHistory(ScreenManager.startupScreen, ScreenManager.SCREEN_CONTAINER_ID, params);
-                ViewManager.showView(ScreenManager.startupScreen, ScreenManager.SCREEN_CONTAINER_ID, function() {
+                ScreenManager.showScreen(ScreenManager.startupScreen, ScreenManager.SCREEN_CONTAINER_ID, function() {
                     ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
                 });
                 return true;
@@ -705,7 +718,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             addHistory = true;
         if (addHistory) 
             ScreenManager.addHistory(page, ScreenManager.SCREEN_CONTAINER_ID, params);
-        ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
+        ScreenManager.showScreen(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
             ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
             if (callback != null) 
                 callback();
@@ -728,7 +741,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      */
     constructor.replaceScreen = function(page, callback, params) {
         ScreenManager.replaceHistory(page, ScreenManager.SCREEN_CONTAINER_ID, params);
-        ViewManager.showView(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
+        ScreenManager.showScreen(page, ScreenManager.SCREEN_CONTAINER_ID, function() {
             ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
             if (callback != null) 
                 callback();
@@ -744,7 +757,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  			Function to invoke after the page has been redisplayed and foundation has been set up on the new HTML
      */
     constructor.reloadCurrentScreen = function(callback) {
-        ViewManager.showView(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, function() {
+        ScreenManager.showScreen(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, function() {
             ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
             if (callback != null) 
                 callback();
@@ -855,7 +868,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                     var screen = ScreenManager.myHistory[i].screen;
                     if (ScreenManager.loadHistoryCallback != null) 
                         ScreenManager.loadHistoryCallback(screen, ScreenManager.myHistory[i].screenParameters);
-                    ViewManager.showView(screen, ScreenManager.myHistory[i].containerId, function() {
+                    ScreenManager.showScreen(screen, ScreenManager.myHistory[i].containerId, function() {
                         ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
                     });
                     ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(name, screen, ScreenManager.myHistory[i].containerId, ScreenManager.myHistory[i].screenParameters);
@@ -878,6 +891,19 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         var defaultName = name;
         if (name.equals(defaultName)) {
             window.history.go(-1 * window.history.length);
+        }
+    };
+    /**
+     *  Shows a screen, and cleans up the previous screen.
+     *  @param screen Screen to display.
+     *  @param screenContainerId Container ID to display the screen in.
+     *  @param callback0 Event to call when finished displaying.
+     */
+    constructor.showScreen = function(screen, screenContainerId, callback0) {
+        ViewManager.showView(screen, screenContainerId, callback0);
+        for (var viewContainerId in ViewManager.viewMap) {
+            if ($(viewContainerId).length == 0) 
+                ViewManager.destroyView(viewContainerId);
         }
     };
 }, {myHistory: {name: "Array", arguments: ["HistoryClosure"]}, LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback2", arguments: ["EcScreen", "Object"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});

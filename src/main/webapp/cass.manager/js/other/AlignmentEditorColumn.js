@@ -265,29 +265,15 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
             container.find(".alignmentEditorContainer").hide();
             var source = container.find(".alignmentEditorSource");
             source.html("<option disabled selected value> -- Select Source -- </option>").show();
-            if (selectedCategory == "course") {
-                source.append("<option/>").children().last().attr("value", "https://dev.cassproject.org/").text("Developer Testbed");
-                source.append("<option/>").children().last().attr("value", "https://army.cass.eduworks.us/").text("Army University Courses");
-            }
-            if (selectedCategory == "competency") {
-                source.append("<option/>").children().last().attr("value", "https://sandbox.cassproject.org/").text("Sandbox");
-                source.append("<option/>").children().last().attr("value", "https://dev.cassproject.org/").text("Dev");
-                source.append("<option/>").children().last().attr("value", "https://cass.tla.cassproject.org/").text("TLA");
-                source.append("<option/>").children().last().attr("value", "https://army.cass.eduworks.us/").text("Army Sandbox");
-            }
-            if (selectedCategory == "credential") {
-                source.append("<option/>").children().last().attr("value", "https://dev.cassproject.org/").text("Developer Testbed");
-                source.append("<option/>").children().last().attr("value", "https://credentialfinder.org/").text("Credential Engine");
-            }
-            if (selectedCategory == "badge") {
-                source.append("<option/>").children().last().attr("value", "https://army.cass.eduworks.us/").text("Mil-Cred");
-            }
-            if (selectedCategory == "resource") {
-                source.append("<option/>").children().last().attr("value", "https://sandbox.cassproject.org/").text("Sandbox");
-                source.append("<option/>").children().last().attr("value", "https://dev.cassproject.org/").text("Dev");
-                source.append("<option/>").children().last().attr("value", "https://cass.tla.cassproject.org/").text("TLA");
-                source.append("<option/>").children().last().attr("value", "https://army.cass.eduworks.us/").text("Army Sandbox");
-            }
+            var lookup = {
+            	"course":"Courses",
+            	"competency":"Frameworks",
+            	"credential":"Credentials",
+            	"badge":"Badges",
+            	"resource":"Resources"
+            };
+            for (var name in AppController.serverController.serverList)
+    			source.append("<option/>").children().last().attr("value", AppController.serverController.serverList[name]).text(name + " " + lookup[selectedCategory]);
             me.redraw();
         });
         container.find(".alignmentEditorSource").change(function (evt) {
@@ -299,7 +285,8 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
             me.selectedCategory = selectedCategory;
             me.selectedSource = selectedSource;
             me.sourceRepo = new EcRepository();
-            me.sourceRepo.selectedServer = selectedSource + "api/custom/";
+            me.sourceRepo.selectedServer = selectedSource;
+            me.sourceRepo.autoDetectRepository();
             if (selectedCategory == "course") {
                 me.populateListCourses();
             }

@@ -363,7 +363,23 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	
 		ViewManager.showView(new MessageContainer("repoSearch"), "#repoSearchMessageContainer");
 		
-		ViewManager.showView(new DataViewer("repoResults", {}), "#repoSearchResults");
+		ViewManager.showView(new DataViewer("repoResults", {
+			moreMenuTools:function(){
+				var container = $("<div></div>");
+				
+				el = $("<li><span><i class='fa fa-download'></i> Export</span></li>");
+				
+				el.click(function(){
+					var selected = ViewManager.getView("#repoSearchResults").getSelected();
+					
+					ModalManager.showModal(new RepoExportModal(selected));
+				})
+				
+				container.append(el);
+				
+				return container.contents();
+			}
+		}), "#repoSearchResults");
 		
 		$("#repoSearchBtn").click(function(event){
 			event.preventDefault();
