@@ -139,7 +139,7 @@ chkconfig elasticsearch on
 fi
 
 #Upgrade script
-if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
+if [ "$platformDebian" -ne 0 ] && [ -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
  then
 echo -----
 echo Upgrading ElasticSearch 2.2 to 5.x...
@@ -150,7 +150,7 @@ apt-get -qqy update
 apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
 fi
-if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
+if [ "$platformFedora" -ne 0 ] && [ -e "/usr/share/elasticsearch/lib/elasticsearch-2.2.1.jar" ]
  then
 echo -----
 echo Upgrading ElasticSearch 2.2 to 5.x...
