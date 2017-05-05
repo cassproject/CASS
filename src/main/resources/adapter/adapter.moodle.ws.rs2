@@ -61,9 +61,19 @@ updateCompetency=#object(
 ).put(_key="competency[competencyframeworkid]",_value="@competencyframeworkid"
 ).put(_key="competency[timemodified]",_value="@lastmodified"
 ).put(_key="competency[parentid]",_value="@parentId"
-).debug().httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
 
 #moodleUpdateCompetency=updateCompetency;
+
+updateCompetencyDescription=#object(
+	wstoken=#moodleWsToken(),
+	wsfunction="core_competency_update_competency",
+	moodlewsrestformat="json",
+).put(_key="competency[id]",_value="@internalId"
+).put(_key="competency[description]",_value="@description"
+).httpPost(formdata="true",url=#moodleEndpoint()).cache(name="moodle",justLock="true");
+
+#moodleUpdateCompetencyDescription=updateCompetencyDescription;
 
 updateCompetencyParent=#object(
 	wstoken=#moodleWsToken(),

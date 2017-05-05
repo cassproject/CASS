@@ -5,3 +5,15 @@ creativeWorks=#add(
 ).httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
 
 #getFrameworkCreativeWorks=creativeWorks;
+
+creativeWork=#add(
+	a='(@type:"CreativeWork" AND educationalUse:"',
+	b="@educationalUse",
+	c='" AND educationalAlignment.educationalFramework:"',
+	d="@frameworkId",
+	e='" AND name:"',
+	f="@name",
+	g='")'
+).httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
+
+#getCreativeWork=creativeWork;
