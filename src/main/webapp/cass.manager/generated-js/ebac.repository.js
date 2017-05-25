@@ -1502,6 +1502,31 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcRemote._delete(data.shortId(), signatureSheet, success, failure);
         });
     };
+    /**
+     *  Fetches the admin keys from the server to compare for check if current
+     *  user is an admin user
+     * 
+     *  @memberOf EcRemoteIdentityManager
+     *  @method fetchServerAdminKeys
+     *  @param {Callback1<String[]>} success
+     *  			Callback triggered when the admin keys are successfully returned,
+     *  			returns an array of the admin public keys
+     *  @param {Callback1<String>} failure
+     *  			Callback triggered if error occurs fetching admin keys
+     */
+    prototype.fetchServerAdminKeys = function(success, failure) {
+        var service;
+        if (this.selectedServer.endsWith("/")) {
+            service = "sky/admin";
+        } else {
+            service = "/sky/admin";
+        }
+        EcRemote.getExpectingObject(this.selectedServer, service, function(p1) {
+            success(p1);
+        }, function(p1) {
+            failure("");
+        });
+    };
 }, {cache: "Object", fetching: "Object"}, {});
 /**
  *  Implementation of a file with methods for communicating with repository services

@@ -319,7 +319,7 @@ AssertionViewScreen = (function(AssertionViewScreen){
 			$("#editAssertionBtn").remove();
 		}
 		
-		if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+		if(!AppController.identityController.owns(data) && !AppController.serverController.getAdmin()){
 			$("#assertionViewDeleteBtn").remove();
 		}else{
 			$("#assertionViewDeleteBtn").click(function(){

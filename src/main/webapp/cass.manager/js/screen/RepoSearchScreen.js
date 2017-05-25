@@ -151,6 +151,7 @@ RepoSearchScreen = (function(RepoSearchScreen){
 	 */
 	function displayResults(results)
 	{ 
+		ViewManager.getView("#menuContainer").showSortBasic();
 		ViewManager.getView("#repoSearchResults").populate(results);
 		
 		var rows = $("#repoResults-data").first().children();
@@ -426,7 +427,52 @@ RepoSearchScreen = (function(RepoSearchScreen){
 		AppController.serverController.getRepoInterface().listTypes(displayTypes, errorDisplayingTypes);
 		
 		runRepoSearch();
+		ViewManager.getView("#menuContainer").showSortBasic();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf RepoSearchScreen
+	 * @method onClose
+	 */
+	RepoSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	RepoSearchScreen.prototype.sortByTimestamp = function(){
+		$("#repoResults-sortSelect").val("timestamp");
+		$("#repoResults-sortSelect").trigger("change");
+	}
+	
+	RepoSearchScreen.prototype.sortByOwner = function(){
+		$("#repoResults-sortSelect").val("owner");
+		$("#repoResults-sortSelect").trigger("change");
+	}
+	
+	RepoSearchScreen.prototype.filterPublic = function(){
+		$("#repoSearchOwnership").val(1);
+		runRepoSearch();
+	}
+	
+	RepoSearchScreen.prototype.filterAll = function(){
+		$("#repoSearchOwnership").val(2);
+		runRepoSearch();
+	}
+	
+	RepoSearchScreen.prototype.filterOwned = function(){
+		$("#repoSearchOwnership").val(3);
+		runRepoSearch();
+	}
+	
+	RepoSearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#repoSearchOwnership").val(4);
+		runRepoSearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

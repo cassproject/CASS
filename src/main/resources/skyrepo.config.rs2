@@ -3,6 +3,9 @@ urlBase=#add(
 );
 #urlBase=urlBase;
 
+indexBase=#add(a="data");
+#indexBase=indexBase;
+
 // Interval between adapter runs between get requests (in seconds)
 beforeGetInterval=#string(str="1800");
 

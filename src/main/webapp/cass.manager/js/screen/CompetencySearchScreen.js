@@ -112,6 +112,7 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 	 */
 	function displayResults(results)
 	{ 
+		ViewManager.getView("#menuContainer").showSortBasic();
 		ViewManager.getView("#competencySearchResults").populate(results);
 		
 		
@@ -314,7 +315,52 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 		
 		runCompetencySearch();
 		
+		ViewManager.getView("#menuContainer").showSortBasic();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf CompetencySearchScreen
+	 * @method onClose
+	 */
+	CompetencySearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	CompetencySearchScreen.prototype.sortByTimestamp = function(){
+		$("#competencyResults-sortSelect").val("timestamp");
+		$("#competencyResults-sortSelect").trigger("change");
+	}
+	
+	CompetencySearchScreen.prototype.sortByOwner = function(){
+		$("#competencyResults-sortSelect").val("owner");
+		$("#competencyResults-sortSelect").trigger("change");
+	}
+	
+	CompetencySearchScreen.prototype.filterPublic = function(){
+		$("#competencySearchOwnership").val(1);
+		runCompetencySearch();
+	}
+	
+	CompetencySearchScreen.prototype.filterAll = function(){
+		$("#competencySearchOwnership").val(2);
+		runCompetencySearch();
+	}
+	
+	CompetencySearchScreen.prototype.filterOwned = function(){
+		$("#competencySearchOwnership").val(3);
+		runCompetencySearch();
+	}
+	
+	CompetencySearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#competencySearchOwnership").val(4);
+		runCompetencySearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

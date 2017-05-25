@@ -19,6 +19,10 @@ function base64ToBlob(base64Data, contentType) {
     return new Blob(byteArrays, { type: contentType });
 }
 
+function stringToFile(string,filename,contentType){
+	return new File([string],filename,{type:contentType});
+}
+
 function ab2str(buf) {
 	return new TextDecoder("utf-8").decode(buf);
 }

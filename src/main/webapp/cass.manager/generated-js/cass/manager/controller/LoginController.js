@@ -1,12 +1,11 @@
 /**
- *  Manages the current user's logged in state and interfaces with the server to 
+ *  Manages the current user's logged in state and interfaces with the server to
  *  sign in/out and create users
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module cass.manager
  *  @class LoginController
  *  @constructor
- *  
- *  @author devlin.junker@eduworks.com
  */
 var LoginController = /**
  *  On startup, check if the last time the user was on the page, whether or not they were signed in
@@ -20,15 +19,14 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     prototype.identity = null;
     prototype.refreshLoggedIn = false;
     prototype.loggedIn = false;
-    prototype.admin = false;
     prototype.storageSystem = null;
     /**
      *  Setter for the boolean flag of whether or not a user is loged in
-     *  
+     * 
+     *  @param {boolean} val
+     *                   true if signed in, false if logged out
      *  @method setLoggedIn
      *  @static
-     *  @param {boolean} val 
-     *  			true if signed in, false if logged out
      */
     prototype.setLoggedIn = function(val) {
         this.loggedIn = val;
@@ -37,97 +35,86 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     };
     /**
      *  Getter for boolean flag of whether or not user is logged in
-     *  
+     * 
+     *  @return {boolean}
+     *  true if signed in, false if logged out
      *  @method getLoggedin
      *  @static
-     *  @return {boolean} 
-     *  			true if signed in, false if logged out
      */
     prototype.getLoggedIn = function() {
         return this.loggedIn;
     };
     /**
-     *  Setter for boolean flag of whether or not the current user is admin
-     *  
-     *  @method setAdmin
-     *  @param val 
-     *  			true = admin, false = not admin
-     */
-    prototype.setAdmin = function(val) {
-        this.admin = val;
-    };
-    /**
-     *  Getter for boolean flag of whether or not current user is admin
-     *  
-     *  @method getAdmin
-     *  @return {boolean}
-     *  			true = admin, false = not admin
-     */
-    prototype.getAdmin = function() {
-        return this.admin;
-    };
-    /**
      *  If the last time the user was using the application, they were signed in this
      *  returns true (used to remind them to sign in again once they return)
-     *  
+     * 
+     *  @return {boolean}
+     *  true if previously signed in, false if not signed in last time, or user is here for
+     *  the first time from this computer
      *  @method getPreviouslyLoggedIn
      *  @static
-     *  @return {boolean}
-     *  		true if previously signed in, false if not signed in last time, or user is here for
-     *  		the first time from this computer
      */
     prototype.getPreviouslyLoggedIn = function() {
         return this.refreshLoggedIn;
     };
-    prototype.setLoginServer = function(loginServer) {
-        this.loginServer = loginServer;
+    prototype.hello = function(network, success, failure) {
+        var identityManager = this.identity;
+        var me = this;
+        this.loginServer = new OAuth2FileBasedRemoteIdentityManager(function() {
+            me.loginServer.setDefaultIdentityManagementServer(network);
+            me.loginServer.startLogin(null, null);
+            me.loginServer.fetch(function(p1) {
+                EcIdentityManager.readContacts();
+                EcRepository.cache = new Object();
+                me.setLoggedIn(true);
+                if (EcIdentityManager.ids.length > 0) {
+                    identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                }
+                success();
+            }, function(p1) {
+                failure(p1);
+            });
+        });
     };
     /**
      *  Validates a username and password on the server and then parses the user's credentials and
      *  checks if they have an admin key. Also tells the identity manager to check for contacts in
      *  local storage after signed in.
-     *  
-     *  @method login
-     *  @param {String} username 
-     *  			username of the user signing in
+     * 
+     *  @param {String} username
+     *                  username of the user signing in
      *  @param {String} password
-     *  			password of the user signing in
-     *  @param {String} success 
-     *  			callback on successful login
+     *                  password of the user signing in
+     *  @param {String} success
+     *                  callback on successful login
      *  @param {String} failure
-     *  			callback on error during login
+     *                  callback on error during login
+     *  @method login
      */
-    prototype.login = function(username, password, success, failure) {
+    prototype.login = function(username, password, server, success, failure) {
         var identityManager = this.identity;
         var that = this;
-        this.loginServer.startLogin(username, password);
-        this.loginServer.fetch(function(p1) {
-            EcIdentityManager.readContacts();
-            EcRepository.cache = new Object();
-            that.setLoggedIn(true);
-            if (EcIdentityManager.ids.length > 0) {
-                identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
-                that.loginServer.fetchServerAdminKeys(function(keys) {
-                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
-                            that.setAdmin(true);
-                            break;
-                        }
-                        that.setAdmin(false);
-                    }
-                    success();
-                }, function(p1) {});
-            } else {
+        this.loginServer = new EcRemoteIdentityManager();
+        this.loginServer.setDefaultIdentityManagementServer(server);
+        this.loginServer.configureFromServer(function(o) {
+            that.loginServer.startLogin(username, password);
+            that.loginServer.fetch(function(p1) {
+                EcIdentityManager.readContacts();
+                EcRepository.cache = new Object();
+                that.setLoggedIn(true);
+                if (EcIdentityManager.ids.length > 0) {
+                    identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                }
                 success();
-            }
-        }, function(p1) {
-            failure(p1);
-        });
+            }, function(p1) {
+                failure(p1);
+            });
+        }, failure);
     };
     /**
      *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
      *  authenticated and is unidentified
-     *  
+     * 
      *  @method logout
      */
     prototype.logout = function() {
@@ -137,27 +124,26 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
         this.setLoggedIn(false);
         EcIdentityManager.ids = new Array();
         EcIdentityManager.clearContacts();
-        this.setAdmin(false);
     };
     /**
      *  Creates a new user and saves the account details on the login server, then signs in
      *  to the new account on successful creation
-     *  
-     *  @method create
-     *  @param {String} username
-     *  			username of the new account
-     *  @param {String} password
-     *  			password of the new account
-     *  @param {Callback0} success
-     *  			callback for successful creation and sign in 
+     * 
+     *  @param {String}            username
+     *                             username of the new account
+     *  @param {String}            password
+     *                             password of the new account
+     *  @param {Callback0}         success
+     *                             callback for successful creation and sign in
      *  @param {Callback1<String>} failure
-     *  			callback for error during creation
+     *                             callback for error during creation
+     *  @method create
      */
-    prototype.create = function(username, password, success, failure) {
+    prototype.create = function(username, password, server, success, failure) {
         this.loginServer.startLogin(username, password);
         var me = this;
         this.loginServer.create(function(p1) {
-            me.login(username, password, success, failure);
+            me.login(username, password, server, success, failure);
         }, function(p1) {
             failure(p1);
         }, function() {
@@ -166,12 +152,12 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
     };
     /**
      *  Saves the users credentials and contacts to the server
-     *  
-     *  @method save
-     *  @param {Callback0} success
-     *  			callback for successful save
+     * 
+     *  @param {Callback0}         success
+     *                             callback for successful save
      *  @param {Callback1<String>} failure
-     *  			callback for error during save
+     *                             callback for error during save
+     *  @method save
      */
     prototype.save = function(success, failure) {
         this.loginServer.commit(function(p1) {
@@ -182,4 +168,4 @@ LoginController = stjs.extend(LoginController, null, [], function(constructor, p
             return null;
         });
     };
-}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "StorageController"}, {});
+}, {loginServer: "RemoteIdentityManagerInterface", identity: "IdentityController", storageSystem: "StorageController"}, {});

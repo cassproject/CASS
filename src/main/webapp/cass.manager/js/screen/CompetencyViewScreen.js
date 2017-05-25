@@ -80,7 +80,7 @@ CompetencyViewScreen.prototype.bindControls = function(containerId)
 				ScreenManager.changeScreen(new CompetencyViewScreen({id:this.getAttribute("id")}));
 		});
 		
-		if(AppController.identityController.owns(data) || AppController.loginController.getAdmin()){
+		if(AppController.identityController.owns(data) || AppController.serverController.getAdmin()){
 			$("#competencyViewDeleteBtn").click(function(){
 				ModalManager.showModal(new ConfirmModal(function(){
 					data._delete(function(){

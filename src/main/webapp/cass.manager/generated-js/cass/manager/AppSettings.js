@@ -40,12 +40,10 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
             var serverName = (settingsObj)[AppSettings.FIELD_SERVER_NAME];
             if (serverName != null) 
                 AppSettings.defaultServerUrl = serverName;
-            var showRepo = Boolean((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU]);
-            if (showRepo != null) 
-                AppSettings.showRepoMenu = showRepo;
-            var showExamples = Boolean((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU]);
-            if (showExamples != null) 
-                AppSettings.showExamplesMenu = showExamples;
+            if ((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU] == "true") 
+                AppSettings.showRepoMenu = true;
+            if ((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU] == "true") 
+                AppSettings.showExamplesMenu = true;
         }, function(p1) {
             console.error("Unable to load settings file");
         });

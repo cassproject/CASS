@@ -20,10 +20,10 @@ var AddServerModal = (function(AddServerModal){
 	function submitAddServer(onClose){
 		var name = $("#addServerName").val();
 		var url = $("#addServerUrl").val();
-
-		EcRepository r = new EcRepository();
+		var me = this;
+		var r = new EcRepository();
 		r.selectedServer = url;
-		r.autoDetectRepository(function(){
+		r.autoDetectRepositoryAsync(function(){
 			AppController.serverController.addServer(name, r.selectedServer, function(){
 				AppController.serverController.selectServer(name,function(){
 					if(AppController.loginController.getLoggedIn()){
@@ -34,8 +34,6 @@ var AddServerModal = (function(AddServerModal){
 					AppMenu.prototype.setCurrentServer();
 
 					ModalManager.hideModal();
-
-					onClose();
 				});
 			},displayError);
 		}, displayError);

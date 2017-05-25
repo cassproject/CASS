@@ -1,17 +1,20 @@
 <button class="close-button" data-close aria-label="Close modal" type="button">
 	<span aria-hidden="true">&times;</span>
 </button>
-<h3 class="row small-12 columns">
-	Account Login
-</h3>
 <form id="loginForm">
 	<div class="row">
 		<div id="loginMessageContainer" class="small-10 small-centered columns">
 			
 		</div>
 	</div>
-	
+
+	<div id="oauth" style="display:none;" class="row">
+		<h4>Login Globally:</h4>
+		<button class="button" id="loginOauth2Google">Login with Google</button>
+	</div>
+
 	<div class="row">
+		<h4>Login Locally:</h4>
 		<div class="small-11 columns">
 			<select id="loginServer">
 				<option value="http://localhost:9722/api/custom/">Localhost</option>
@@ -23,7 +26,7 @@
 			</span>
 		</div>
 	</div>
-    
+
     <div class="row">
     	<label class="small-12 columns" for="loginUserId">
 			Username:

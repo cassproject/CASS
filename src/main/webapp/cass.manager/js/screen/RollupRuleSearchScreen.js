@@ -107,6 +107,9 @@ RollupRuleSearchScreen = (function(RollupRuleSearchScreen){
 	 */
 	function displayResults(results)
 	{  
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortByCompetency();
+		
 		ViewManager.getView("#rollupRuleSearchResults").populate(results);
 		
 		if(results.length == 0 && $("#rollupRuleResults-data").first().children().size() == 0)
@@ -311,7 +314,7 @@ RollupRuleSearchScreen = (function(RollupRuleSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -454,7 +457,7 @@ RollupRuleSearchScreen = (function(RollupRuleSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -630,7 +633,54 @@ RollupRuleSearchScreen = (function(RollupRuleSearchScreen){
 		}
 		
 		runRuleSearch();
+		
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortByCompetency();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf RollupRuleSearchScreen
+	 * @method onClose
+	 */
+	RollupRuleSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	RollupRuleSearchScreen.prototype.sortByTimestamp = function(){
+		$("#rollupRuleResults-sortSelect").val("timestamp");
+		$("#rollupRuleResults-sortSelect").trigger("change");
+	}
+	
+	RollupRuleSearchScreen.prototype.sortByOwner = function(){
+		$("#rollupRuleResults-sortSelect").val("owner");
+		$("#rollupRuleResults-sortSelect").trigger("change");
+	}
+	
+	RollupRuleSearchScreen.prototype.filterPublic = function(){
+		$("#rollupRuleSearchOwnership").val(1);
+		runRuleSearch();
+	}
+	
+	RollupRuleSearchScreen.prototype.filterAll = function(){
+		$("#rollupRuleSearchOwnership").val(2);
+		runRuleSearch();
+	}
+	
+	RollupRuleSearchScreen.prototype.filterOwned = function(){
+		$("#rollupRuleSearchOwnership").val(3);
+		runRuleSearch();
+	}
+	
+	RollupRuleSearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#rollupRuleSearchOwnership").val(4);
+		runRuleSearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

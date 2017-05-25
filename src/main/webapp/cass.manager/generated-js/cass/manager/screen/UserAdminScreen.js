@@ -18,7 +18,7 @@ UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(c
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                 ModalManager.showModal(new LoginModal(function(o) {
                     ModalManager.hideModal();
-                    if (!AppController.loginController.getAdmin()) {
+                    if (!AppController.serverController.getAdmin()) {
                         ScreenManager.replaceScreen(new UserIdentityScreen(), null, null);
                     } else {
                         ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
@@ -26,7 +26,7 @@ UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(c
                 }, function() {
                     if (!AppController.loginController.getLoggedIn()) {
                         ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
-                    } else if (AppController.loginController.getAdmin()) {
+                    } else if (AppController.serverController.getAdmin()) {
                         ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
                     } else {
                         ScreenManager.reloadCurrentScreen(null);

@@ -24,8 +24,11 @@ var ChangeServerModal = (function (ChangeServerModal) {
         AppController.serverController.selectServer(server, function () {
             ModalManager.hideModal();
 
-            AppController.loginController.logout();
-            ViewManager.getView("#menuContainer").setLoggedOut();
+			if (!AppController.loginController.loginServer.isGlobal())
+			{
+            	AppController.loginController.logout();
+            	ViewManager.getView("#menuContainer").setLoggedOut();
+            }
             AppMenu.prototype.setCurrentServer();
 
             ScreenManager.changeScreen(new WelcomeScreen());
@@ -72,7 +75,8 @@ var ChangeServerModal = (function (ChangeServerModal) {
 
         ViewManager.showView(new MessageContainer("changeServer"), "#changeServerMessageContainer", function () {
             if (AppController.loginController.getLoggedIn()) {
-                ViewManager.getView("#changeServerMessageContainer").displayWarning("You are currently logged in, you will be logged out if you change servers");
+            	if (!AppController.loginController.loginServer.isGlobal())
+                	ViewManager.getView("#changeServerMessageContainer").displayWarning("You are currently logged in, you will be logged out if you change servers");
             }
         });
 

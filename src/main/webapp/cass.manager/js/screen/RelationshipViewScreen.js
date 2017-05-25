@@ -189,7 +189,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             $("#editRelationshipBtn").remove();
         }
 
-        if (!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()) {
+        if (!AppController.identityController.owns(data) && !AppController.serverController.getAdmin()) {
             $("#relationshipViewDeleteBtn").remove();
         } else {
             $("#relationshipViewDeleteBtn").click(function () {

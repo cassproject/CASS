@@ -97,7 +97,8 @@ var AppMenu = (function (AppMenu) {
         if (!identitySelected) {
             element.addClass("selected");
             $("#appMenuUserIdentity").children().first().text(PUBLIC_NAME + " @ " + AppController.serverController.selectedServerName);
-            $("#appMenuPublicTop").text(PUBLIC_NAME + " (Not Logged In) @ " + AppController.serverController.selectedServerName);
+            //$("#appMenuPublicTop").text(PUBLIC_NAME + " (Not Logged In) @ " + AppController.serverController.selectedServerName);
+            $("#appMenuPublicTop").text("Login / Sign Up");
         }
 
         element.attr("title", PUBLIC_TITLE);
@@ -147,20 +148,23 @@ var AppMenu = (function (AppMenu) {
 	 * 			ID of a competency to build an item for
 	 */
 	function buildCompetencyItem(compId){
-		EcCompetency.get(compId, function(comp){
-			var recentListItem = $("<li><a></a></li>")
-			recentListItem.attr("data-id", compId);
-			recentListItem.find("a").text(comp.name);
-			recentListItem.find("a").attr("title", compId);
-			recentListItem.find("a").attr("href", "#"+CompetencyViewScreen.prototype.getDisplayName()+"?id="+compId)
-			recentListItem.find("a").click(function(ev){
-				ev.preventDefault();
-				ScreenManager.changeScreen(new CompetencyViewScreen(comp));
-				return false;
-			})
-			$("#appMenuCompetencyListStart").after(recentListItem);
-			$("#appMenuCompetencyListStart").removeClass("hide");
-		})
+		compId = EcRemoteLinkedData.trimVersionFromUrl(compId);
+		if($("#appMenuRecentList li[data-id='"+compId+"']").size() == 0){
+			EcCompetency.get(compId, function(comp){
+				var recentListItem = $("<li data-recent='competency'><a></a></li>")
+				recentListItem.attr("data-id", compId);
+				recentListItem.find("a").text(comp.name);
+				recentListItem.find("a").attr("title", compId);
+				recentListItem.find("a").attr("href", "#"+CompetencyViewScreen.prototype.getDisplayName()+"?id="+compId)
+				recentListItem.find("a").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new CompetencyViewScreen(comp));
+					return false;
+				})
+				$("#appMenuCompetencyListStart").after(recentListItem);
+				$("#appMenuCompetencyListStart").removeClass("hide");
+			});
+		}
 	}
 	
 	/**
@@ -174,7 +178,8 @@ var AppMenu = (function (AppMenu) {
 	 */
 	function buildCompetencyList(compList){
 		if(compList != null && compList.length > 0){
-			$("#appMenuCompetencyListStart").nextAll("[data-id]").remove();
+			$("#appMenuNoRecent").addClass("hide");
+			$("#appMenuCompetencyListStart").nextAll("[data-recent='competency']").remove();
 			for(var idx in compList){
 				buildCompetencyItem(compList[idx]);
 			}
@@ -194,20 +199,23 @@ var AppMenu = (function (AppMenu) {
 	 * 			ID of a competency to build an item for
 	 */
 	function buildFrameworkItem(frameworkId){
-		EcFramework.get(frameworkId, function(framework){
-			var recentListItem = $("<li><a></a></li>")
-			recentListItem.attr("data-id", frameworkId);
-			recentListItem.find("a").text(framework.name);
-			recentListItem.find("a").attr("title", frameworkId);
-			recentListItem.find("a").attr("href", "#"+FrameworkViewScreen.prototype.getDisplayName()+"?id="+frameworkId)
-			recentListItem.find("a").click(function(ev){
-				ev.preventDefault();
-				ScreenManager.changeScreen(new FrameworkViewScreen(framework));
-				return false;
-			})
-			$("#appMenuFrameworkListStart").after(recentListItem);
-			$("#appMenuFrameworkListStart").removeClass("hide");
-		})
+		frameworkId = EcRemoteLinkedData.trimVersionFromUrl(frameworkId);
+		if($("#appMenuRecentList li[data-id='"+frameworkId+"']").size() == 0){
+			EcFramework.get(frameworkId, function(framework){
+				var recentListItem = $("<li data-recent='framework'><a></a></li>")
+				recentListItem.attr("data-id", frameworkId);
+				recentListItem.find("a").text(framework.name);
+				recentListItem.find("a").attr("title", frameworkId);
+				recentListItem.find("a").attr("href", "#"+FrameworkViewScreen.prototype.getDisplayName()+"?id="+frameworkId)
+				recentListItem.find("a").click(function(ev){
+					ev.preventDefault();
+					ScreenManager.changeScreen(new FrameworkViewScreen(framework));
+					return false;
+				})
+				$("#appMenuFrameworkListStart").after(recentListItem);
+				$("#appMenuFrameworkListStart").removeClass("hide");
+			});
+		}
 	}
 	
 	/**
@@ -219,7 +227,13 @@ var AppMenu = (function (AppMenu) {
 	 */
 	function buildFrameworkList(frameworkList){
 		if(frameworkList != null && frameworkList.length > 0){
-			$("#appMenuFrameworkListStart").nextAll("[data-id]").remove();
+			$("#appMenuNoRecent").addClass("hide");
+			var inList = $("#appMenuFrameworkListStart").nextAll("[data-recent='framework']");
+			inList.each(function(idx, el){
+				if(frameworkList.indexOf($(el).attr("data-id")) == -1){
+					$(el).remove();
+				}
+			})
 			for(var idx in frameworkList){
 				buildFrameworkItem(frameworkList[idx]);
 			}
@@ -440,6 +454,82 @@ var AppMenu = (function (AppMenu) {
             ScreenManager.changeScreen(new AlignmentExplorerScreen());
         });
 
+        
+        $("#appMenuViewPublic").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().filterPublic != undefined){
+            	ScreenManager.getCurrentScreen().filterPublic();
+            }
+        });
+        
+        $("#appMenuViewAll").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().filterAll != undefined){
+            	ScreenManager.getCurrentScreen().filterAll();
+            }
+        });
+        
+        $("#appMenuViewAdvanced").click(function (event) {
+            event.preventDefault();
+            ModalManager.showModal(new MessageModal("Advanced View Options Incomplete"));
+        });
+        
+        $("#appMenuSortByTime").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().sortByTimestamp != undefined){
+            	ScreenManager.getCurrentScreen().sortByTimestamp();
+            }
+        });
+        
+        $("#appMenuSortByOwner").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().sortByOwner != undefined){
+            	ScreenManager.getCurrentScreen().sortByOwner();
+            }
+        });
+        
+        $("#appMenuSortBySource").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().sortBySource != undefined){
+            	ScreenManager.getCurrentScreen().sortBySource();
+            }
+        });
+        
+        $("#appMenuSortByTarget").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().sortByTarget != undefined){
+            	ScreenManager.getCurrentScreen().sortByTarget();
+            }
+        });
+        
+        $("#appMenuSortByCompetency").click(function (event) {
+            event.preventDefault();
+            if(ScreenManager.getCurrentScreen().sortByCompetency != undefined){
+            	ScreenManager.getCurrentScreen().sortByCompetency();
+            }
+        });
+        
+        $("#appMenuHowTo").click(function (event) {
+        	event.preventDefault();
+            ModalManager.showModal(new MessageModal("How To Incomplete"));
+        });
+        
+        $("#appMenuApi").click(function (event) {
+        	event.preventDefault();
+        	window.open("http://docs.cassproject.org", "_blank")
+        });
+        
+        $("#appMenuReportIssue").click(function (event) {
+        	event.preventDefault();
+            ModalManager.showModal(new MessageModal("Report Issue Incomplete"));
+        });
+        
+        $("#appMenuGetInvolved").click(function (event) {
+        	event.preventDefault();
+        	window.open("http://www.cassproject.org", "_blank")
+        });
+        
+     
         var compList = AppController.storageController.getRecent(EcCompetency.myType);
         buildCompetencyList(compList);
 
@@ -515,7 +605,7 @@ var AppMenu = (function (AppMenu) {
 		$("#appMenuUserInfo").removeClass("hide");
 		$(".appMenuUser").removeClass("hide");
 		
-		if( AppController.loginController.getAdmin() )
+		if( AppController.serverController.getAdmin() )
 		{
 			$("#appMenuAdmin").removeClass("hide");
 		}else{
@@ -547,12 +637,39 @@ var AppMenu = (function (AppMenu) {
 	 * @method checkAdmin
 	 */
 	AppMenu.prototype.checkAdmin = function(){
-		if( AppController.loginController.getAdmin() )
+		if( AppController.serverController.getAdmin() )
 		{
 			$("#appMenuAdmin").removeClass("hide");
 		}else{
 			$("#appMenuAdmin").addClass("hide");
 		}
+	}
+	
+	AppMenu.prototype.showSortBasic = function(){
+		$("#appMenuSortBar").removeClass("hide");
+		$("#appMenuSortByTime").removeClass("hide");
+		$("#appMenuSortByOwner").removeClass("hide");
+	}
+	
+	AppMenu.prototype.showSortRelations = function(){
+		$("#appMenuSortBar").removeClass("hide");
+		$("#appMenuSortBySource").removeClass("hide");
+		$("#appMenuSortByTarget").removeClass("hide");
+	}
+	
+	AppMenu.prototype.showSortByCompetency = function(){
+		$("#appMenuSortBar").removeClass("hide");
+		$("#appMenuSortByCompetency").removeClass("hide");
+	}
+	
+	AppMenu.prototype.hideSort = function(){
+		$("#appMenuSortBar").addClass("hide");
+		$("#appMenuSortByTime").addClass("hide");
+		$("#appMenuSortByOwner").addClass("hide");
+		$("#appMenuSortBySource").addClass("hide");
+		$("#appMenuSortByTarget").addClass("hide");
+		$("#appMenuSortByCompetency").addClass("hide");
+		
 	}
 	
 	AppMenu.prototype.showRepoMenu = function(show){

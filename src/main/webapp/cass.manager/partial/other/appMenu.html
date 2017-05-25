@@ -2,7 +2,7 @@
     <section class="top-bar-title">
     	<h1>
     	<a class="menu-text" id="appMenuHeader">
-    			&nbsp;&nbsp;CASS Manager&nbsp;&nbsp;
+    		<img src="images/CASS-Logo-website-white_2.png" style="height:24px; margin-top:-10px;">
     	</a>
     	</h1>
 
@@ -12,21 +12,21 @@
         <ul id="appMenuPublic" class="vertical menu top-bar-right align-right" data-responsive-menu="medium-dropdown" data-alignment="right">
             <li>
                 <a class="menu-text" id="appMenuPublicTop">
-	    			Public (Not Logged In)
+	    			Login / Sign Up
 	    		</a>
                 <ul class="vertical menu">
                     <li>
-                        <div id="appMenuPublicChangeServer" class="fake-a" style="font-size:0.75rem;">
-                            &nbsp;Identity Server:
-
-                            <div id="currentServer" style="margin-top:0.2rem; margin-left:0.2rem; font-size:0.8rem;"></div>
-                        </div>
+                        <a id="appMenuLogin"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
                     </li>
                     <li>
-                        <a id="appMenuLogin">Login</a>
+                        <a id="appMenuCreateAccount"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
                     </li>
+                    <hr>
                     <li>
-                        <a id="appMenuCreateAccount" >Create Account</a>
+                        <a id="appMenuPublicChangeServer" class="">
+                           Change Server
+<!--                           (<span id="currentServer" style="margin-top:0.2rem; margin-left:0.2rem; font-size:0.8rem;"></span>)-->
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -66,8 +66,8 @@
         </ul>
 
         <ul id="appMenuMain" class="menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
-            <li id="appMenuRepo">
-                <a class="menu-text" id="appMenuRepository">General</a>
+            <li id="appMenuRepo" class="hide">
+                <a class="menu-text" id="appMenuRepository">Debug</a>
                 <ul class="vertical menu submenu">
                     <li>
                         <a id="appMenuRepoSearch">Search</a>
@@ -75,13 +75,134 @@
                     <li>
                         <a id="appMenuRepoCreate">Create</a>
                     </li>
-                    <li>
-                        <a id="appMenuGeneralImport">Import</a>
-                    </li>
                 </ul>
             </li>
             
             <li>
+            	<a class="menu-text" id="appMenuFile">File</a>
+            	<ul class="vertical menu submenu">
+            		 <li>
+                        <a id="appMenuRecent">Open Recent</a>
+                        <ul id="appMenuRecentList" class="vertical menu submenu">
+                            <li id="appMenuNoRecent" style='font-style:italic;padding:0.5rem 1rem; background-color:#f7f7f7;'>
+                            	<span style="padding:1px;">Nothing Viewed Recently...</span>
+                            </li>
+                            
+                            <div style="position:relative;" id="appMenuCompetencyListStart" class="hide">
+			                    <hr style="margin:0.6rem auto"/>
+			                    <span style="background-color:white;padding:2px;position: absolute;top: -0.6rem;left: 0.5rem;font-size: 0.67rem;">
+			                    	Competencies
+			                    </span>
+		                    </div>
+                            <li></li>
+                            
+                             <div style="position:relative;" id="appMenuFrameworkListStart" class="hide">
+			                    <hr style="margin:0.6rem auto"/>
+			                    <span style="background-color:white;padding:2px;position: absolute;top: -0.6rem;left: 0.5rem;font-size: 0.67rem;">
+			                    	Frameworks
+			                    </span>
+		                    </div>
+		                    <li></li>
+                        </ul>
+                    </li>
+                    <li>
+                    	<a id="appMenuCreate">New</a>
+                        <ul class="vertical menu submenu">
+                            <li><a id="appMenuCompetencyCreate">Competency</a></li>
+                            <li><a id="appMenuFrameworkCreate">Framework</a></li>
+                            <li><a id="appMenuAssertionCreate">Assertion</a></li>
+                            <li><a id="appMenuRelationshipCreate">Relationship</a></li>
+                            <li><a id="appMenuAlignmentEditor">Alignment</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                         <a id="appMenuImport">Import</a>
+                         <ul class="vertical menu submenu">
+                         	<li><a id="appMenuCompetencyImport">Competencies</a></li>
+                         </ul>
+                    </li>
+            	</ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text" id="appMenuWorkspaces">Workspace</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+						<a id="appMenuCompetencySearch">Competencies</a>
+                    </li>
+                    <li>
+                         <a id="appMenuFrameworkSearch">Frameworks</a>
+                    </li>
+                    <li>
+                         <a id="appMenuAssertionSearch">Assertions</a>
+                    </li>
+                    <li>
+                         <a id="appMenuAlignmentExplorer">Alignments</a>
+                    </li>
+                   	<li>
+                         <a id="appMenuRelationshipSearch">Relationships</a>
+                    </li>
+                    <li>
+                         <a id="appMenuLevelSearch">Levels</a>
+                    </li>
+                    <li>
+                         <a id="appMenuRollupRulesSearch">Rollup Rules</a>
+                    </li>
+            	</ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text" id="appMenuView">View</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+						<a id="appMenuViewPublic">Public</a>
+                    </li>
+                    <li>
+                         <a id="appMenuViewAll">All</a>
+                    </li>
+                    <li>
+                         <a id="appMenuViewAdvanced">Advanced...</a>
+                    </li>
+                    <hr id="appMenuSortBar" class="hide">
+                    <li>
+						<a id="appMenuSortByTime" class="hide">Sort By Time</a>
+                    </li>
+                    <li>
+                         <a id="appMenuSortByOwner" class="hide">Sort By Owner</a>
+                    </li>
+                    <li>
+                         <a id="appMenuSortBySource" class="hide">Sort By Source</a>
+                    </li>
+                    <li>
+                         <a id="appMenuSortByTarget" class="hide">Sort By Target</a>
+                    </li>
+                    <li>
+                         <a id="appMenuSortByCompetency" class="hide">Sort By Target</a>
+                    </li>
+            	</ul>
+            </li>
+            
+            <li>
+            	<a class="menu-text" id="appMenuHelp">Help</a>
+            	<ul class="vertical menu submenu">
+            		<li>
+						<a id="appMenuHowTo">How To Use CASS Manager</a>
+                    </li>
+                    <li>
+                         <a id="appMenuApi">CASS API & Schema</a>
+                    </li>
+                    <hr>
+                    <li>
+						<a id="appMenuReportIssue">Report an Issue</a>
+                    </li>
+                    <li>
+                         <a id="appMenuGetInvolved">Get Involved</a>
+                    </li>
+
+            	</ul>
+            </li>
+            
+            <!-- li>
             	<a class="menu-text" id="appMenuCompetencies">Competencies</a>
             	<ul class="vertical menu submenu">
             		<li>
@@ -180,7 +301,7 @@
                         </ul>
                     </li>
             	</ul>
-            </li>
+            </li-->
             
             <li id="appMenuExamples">
                 <a class="menu-text">Examples</a>

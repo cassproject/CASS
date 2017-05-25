@@ -78,6 +78,7 @@ AssertionSearchScreen = (function (AssertionSearchScreen) {
      * 			results to add to to the DataViewer
      */
     function displayResults(results) {
+    	ViewManager.getView("#menuContainer").showSortBasic();
         ViewManager.getView("#assertionSearchResults").populate(results);
 
         if (results.length == 0 && $("#assertionResults-data").first().children().size() == 0) {
@@ -218,8 +219,30 @@ AssertionSearchScreen = (function (AssertionSearchScreen) {
         }), "#assertionSearchResults");
 
         runAssertionSearch();
-
-    };
+        
+    	ViewManager.getView("#menuContainer").showSortBasic();
+	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf AssertionSearchScreen
+	 * @method onClose
+	 */
+	AssertionSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	AssertionSearchScreen.prototype.sortByTimestamp = function(){
+		$("#assertionResults-sortSelect").val("timestamp");
+		$("#assertionResults-sortSelect").trigger("change");
+	}
+	
+	AssertionSearchScreen.prototype.sortByOwner = function(){
+		$("#assertionResults-sortSelect").val("owner");
+		$("#assertionResults-sortSelect").trigger("change");
+	}
+	
 
     return AssertionSearchScreen;
 })(AssertionSearchScreen);

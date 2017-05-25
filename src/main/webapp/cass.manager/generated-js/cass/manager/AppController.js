@@ -58,7 +58,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         AppController.loginController = new LoginController(AppController.storageController);
         AppController.serverController = new ServerController(AppController.storageController, AppSettings.defaultServerUrl, AppSettings.defaultServerName);
         AppSettings.loadSettings();
-        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());
         $(window.document).ready(function(arg0, arg1) {

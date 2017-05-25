@@ -373,7 +373,7 @@ var DataViewer = (function(DataViewer){
 				
 				if(!AppController.identityController.owns(datum)){
 					$("#"+prefix+"-menu").find(".fa-group").addClass("hide");
-					var admin = AppController.loginController.getAdmin();
+					var admin = AppController.serverController.getAdmin();
 					if(!admin){
 						$("#"+prefix+"-menu").find(".fa-trash").addClass("hide");
 					}
@@ -550,7 +550,7 @@ var DataViewer = (function(DataViewer){
 			element.find(".fa-group").remove();
 			
 			// TODO: Figure out admin user stuff
-			var adminUser = AppController.loginController.getAdmin();
+			var adminUser = AppController.serverController.getAdmin();
 			if(!adminUser){
 				element.find(".fa-trash").remove();
 			}else{
@@ -952,7 +952,7 @@ var DataViewer = (function(DataViewer){
 					$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
 				}
 				
-				if(AppController.loginController.getAdmin()){
+				if(AppController.serverController.getAdmin()){
 					$("#"+prefix+"-menu").find(".fa-trash").removeClass("hide");
 				}
 			}

@@ -107,6 +107,9 @@ LevelSearchScreen = (function(LevelSearchScreen){
 	 */
 	function displayResults(results)
 	{  
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortByCompetency();
+		
 		ViewManager.getView("#levelSearchResults").populate(results);
 		
 		if(results.length == 0 && $("#levelResults-data").first().children().size() == 0)
@@ -311,7 +314,7 @@ LevelSearchScreen = (function(LevelSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -454,7 +457,7 @@ LevelSearchScreen = (function(LevelSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -631,7 +634,54 @@ LevelSearchScreen = (function(LevelSearchScreen){
 		}
 		
 		runLevelSearch();
+		
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortByCompetency();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf LevelSearchScreen
+	 * @method onClose
+	 */
+	LevelSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	LevelSearchScreen.prototype.sortByTimestamp = function(){
+		$("#levelResults-sortSelect").val("timestamp");
+		$("#levelResults-sortSelect").trigger("change");
+	}
+	
+	LevelSearchScreen.prototype.sortByOwner = function(){
+		$("#levelResults-sortSelect").val("owner");
+		$("#levelResults-sortSelect").trigger("change");
+	}
+	
+	LevelSearchScreen.prototype.filterPublic = function(){
+		$("#levelSearchOwnership").val(1);
+		runLevelSearch();
+	}
+	
+	LevelSearchScreen.prototype.filterAll = function(){
+		$("#levelSearchOwnership").val(2);
+		runLevelSearch();
+	}
+	
+	LevelSearchScreen.prototype.filterOwned = function(){
+		$("#levelSearchOwnership").val(3);
+		runLevelSearch();
+	}
+	
+	LevelSearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#levelSearchOwnership").val(4);
+		runRepoSearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

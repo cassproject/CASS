@@ -263,7 +263,7 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
             $("#editFrameworkBtn").hide();
         }
         
-        if (!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()) {
+        if (!AppController.identityController.owns(data) && !AppController.serverController.getAdmin()) {
             $("#frameworkViewDeleteBtn").remove();
         } else {
             $("#frameworkViewDeleteBtn").click(function () {

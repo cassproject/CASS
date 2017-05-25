@@ -32,7 +32,7 @@ RepoViewScreen = (function(RepoViewScreen){
 			ScreenManager.changeScreen(new RepoSearchScreen(data))
 		});
 		
-		if(!AppController.identityController.owns(data) && !AppController.loginController.getAdmin()){
+		if(!AppController.identityController.owns(data) && !AppController.serverController.getAdmin()){
 			$("#repoViewDeleteBtn").remove();
 		}else{
 			$("#repoViewDeleteBtn").click(function(){

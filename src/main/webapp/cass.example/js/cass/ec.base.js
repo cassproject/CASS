@@ -799,7 +799,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  GETs something from a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
      * 
-     *  @method postExpectingString
+     *  @method getExpectingObject
      *  @static
      *  @param {string} server Protocol, hostname and path to the remote handler.
      *  @param {string} service Path to service to invoke.
@@ -825,6 +825,42 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         p.processData = false;
         p.dataType = "json";
         p.success = EcRemote.getSuccessJSONCallback(success, failure);
+        p.error = EcRemote.getFailureCallback(failure);
+        EcRemote.upgradeHttpToHttps(p);
+        if ($ == null) {
+            success(httpGet(p.url));
+        } else {
+            $.ajax(p);
+        }
+    };
+    /**
+     *  GETs something from a remote endpoint. Composed of a server endpoint
+     *  (root URL) and a service (service path).
+     * 
+     *  @method getExpectingString
+     *  @static
+     *  @param {string} server Protocol, hostname and path to the remote handler.
+     *  @param {string} service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *  responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *  responds with an error (per jQuery ajax) or a non-200/300.
+     */
+    constructor.getExpectingString = function(server, service, success, failure) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && service.equals("")) {
+            url += "/";
+        }
+        if (service != null) {
+            url += service;
+        }
+        var p = {};
+        p.method = "GET";
+        p.url = url;
+        p.async = EcRemote.async;
+        p.timeout = EcRemote.timeout;
+        p.processData = false;
+        p.success = EcRemote.getSuccessCallback(success, failure);
         p.error = EcRemote.getFailureCallback(failure);
         EcRemote.upgradeHttpToHttps(p);
         if ($ == null) {

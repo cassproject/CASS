@@ -1581,6 +1581,8 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         }
         EcRepository._save(this, success, failure);
     };
+    constructor.relDone = {};
+    constructor.levelDone = {};
     /**
      *  Deletes the competency from the server
      *  
@@ -1612,8 +1614,12 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                         }
                     }
                 }, failure, function(p1) {
-                    if (success != null) 
-                        success("");
+                    if (EcCompetency.levelDone[this.id]) {
+                        if (success != null) 
+                            success("");
+                    } else {
+                        EcCompetency.relDone[this.id] = true;
+                    }
                 });
                 me.levels(repo, function(p1) {
                     for (var i = 0; i < EcIdentityManager.ids.length; i++) {
@@ -1628,8 +1634,12 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
                         }
                     }
                 }, failure, function(p1) {
-                    if (success != null) 
-                        success("");
+                    if (EcCompetency.relDone[this.id]) {
+                        if (success != null) 
+                            success("");
+                    } else {
+                        EcCompetency.levelDone[this.id] = true;
+                    }
                 });
             } else {
                 if (success != null) 
@@ -1760,7 +1770,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
-}, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Implementation of a Framework object with methods for interacting with CASS
  *  services on a server.

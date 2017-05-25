@@ -116,6 +116,9 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 	 */
 	function displayResults(results)
 	{  
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortRelations();
+		
 		ViewManager.getView("#relationshipSearchResults").populate(results);
 		
 		if(results.length == 0 && $("#relationshipResults-data").first().children().size() == 0)
@@ -343,7 +346,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -486,7 +489,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 									$("#"+dataViewPrefix+"-menu").find(".fa-trash").removeClass("hide");
 								}else{
 									$("#"+dataViewPrefix+"-menu").find(".fa-group").addClass("hide");
-									var admin = AppController.loginController.getAdmin();
+									var admin = AppController.serverController.getAdmin();
 									if(!admin){
 										$("#"+dataViewPrefix+"-menu").find(".fa-trash").addClass("hide");
 									}
@@ -681,7 +684,54 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 		}
 		
 		runRelationshipSearch();
+		
+		ViewManager.getView("#menuContainer").showSortBasic();
+		ViewManager.getView("#menuContainer").showSortRelations();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf RelationshipSearchScreen
+	 * @method onClose
+	 */
+	RelationshipSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	RelationshipSearchScreen.prototype.sortByTimestamp = function(){
+		$("#relationshipResults-sortSelect").val("timestamp");
+		$("#relationshipResults-sortSelect").trigger("change");
+	}
+	
+	RelationshipSearchScreen.prototype.sortByOwner = function(){
+		$("#relationshipResults-sortSelect").val("owner");
+		$("#relationshipResults-sortSelect").trigger("change");
+	}
+	
+	RelationshipSearchScreen.prototype.filterPublic = function(){
+		$("#relationshipSearchOwnership").val(1);
+		runRelationshipSearch();
+	}
+	
+	RelationshipSearchScreen.prototype.filterAll = function(){
+		$("#relationshipSearchOwnership").val(2);
+		runRelationshipSearch();
+	}
+	
+	RelationshipSearchScreen.prototype.filterOwned = function(){
+		$("#relationshipSearchOwnership").val(3);
+		runRelationshipSearch();
+	}
+	
+	RelationshipSearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#relationshipSearchOwnership").val(4);
+		runRelationshipSearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

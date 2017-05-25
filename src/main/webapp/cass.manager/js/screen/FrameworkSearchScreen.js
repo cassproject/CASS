@@ -106,6 +106,7 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 	 */
 	function displayResults(results)
 	{  
+		ViewManager.getView("#menuContainer").showSortBasic();
 		ViewManager.getView("#frameworkSearchResults").populate(results);
 		
 		if(results.length == 0 && $("#frameworkResults-data").first().children().size() == 0){
@@ -208,7 +209,12 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
 							"<div class='small-4 columns datum-owner'></div>");
 				
-				row.find(".datum-name").text(datum.name);
+				if(datum.name != undefined && datum.name != ""){
+					row.find(".datum-name").text(datum.name);
+				}else{
+					row.find(".datum-name").html("<i>No Name</i>");
+				}
+					
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
 					for(var i in datum["owner"]){
@@ -279,8 +285,53 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 		}
 		
 		runFrameworkSearch();
-			
+		
+		ViewManager.getView("#menuContainer").showSortBasic();
 	};
+	
+	/**
+	 * Overridden onClose callback, called when leaving screen
+	 * 
+	 * @memberOf FrameworkSearchScreen
+	 * @method onClose
+	 */
+	FrameworkSearchScreen.prototype.onClose = function(){
+		ViewManager.getView("#menuContainer").hideSort();
+	}
+	
+	FrameworkSearchScreen.prototype.sortByTimestamp = function(){
+		$("#frameworkResults-sortSelect").val("timestamp");
+		$("#frameworkResults-sortSelect").trigger("change");
+	}
+	
+	FrameworkSearchScreen.prototype.sortByOwner = function(){
+		$("#frameworkResults-sortSelect").val("owner");
+		$("#frameworkResults-sortSelect").trigger("change");
+	}
+	
+	FrameworkSearchScreen.prototype.filterPublic = function(){
+		$("#frameworkSearchOwnership").val(1);
+		runFrameworkSearch();
+	}
+	
+	FrameworkSearchScreen.prototype.filterAll = function(){
+		$("#frameworkSearchOwnership").val(2);
+		runFrameworkSearch();
+	}
+	
+	FrameworkSearchScreen.prototype.filterOwned = function(){
+		$("#frameworkSearchOwnership").val(3);
+		runFrameworkSearch();
+	}
+	
+	FrameworkSearchScreen.prototype.filterOwnedByMe = function(){
+		if(!AppController.loginController.getLoggedIn()){
+			return;
+		}
+		
+		$("#frameworkSearchOwnership").val(4);
+		runFrameworkSearch();
+	}
 	
 	/**
 	 * Sets the search parameters on the view, so they can be reloaded if the page is

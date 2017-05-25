@@ -22,8 +22,30 @@ body
     color: rgb(68,84,106);
 }
 
+small {
+    line-height: normal !important;
+}
+
+.section {
+    padding: 2rem 0;
+}
+
+.section.white {
+    background-color: #fff;
+}
+
+.section.blue {
+    color: white;
+    background-color: #137499;
+}
+
+.circle {
+    display: inline-block;
+    border-radius: 100%;
+    border: 3px solid;
+}
 #screenContainer{
-	padding-bottom:3rem;
+/*	padding-bottom:3rem;*/
 }
 
 .topLevel
@@ -80,6 +102,11 @@ body
 .top-bar .menu .submenu a:hover
 {
     background-color: #eee;
+}
+
+.top-bar .menu .submenu hr {
+    margin: 0 1rem;
+    border-bottom: 1px solid #ddd;
 }
 
 /* --- Accordians --- */
@@ -512,7 +539,7 @@ li.cass-competency-level:before {
 
 
 .callout.dataViewResults{
-	box-shadow:6px 0px 4px rgba(0,0,0,.4);
+/*	box-shadow:6px 0px 4px rgba(0,0,0,.4);*/
 	margin-bottom:0px;
 	background-color: lightgrey;
 	margin-bottom:0px; 
@@ -525,7 +552,7 @@ li.cass-competency-level:before {
 	top:-35px;
 	right: 0px;
 	width:200px;
-	box-shadow: 7px -3px 4px rgba(0,0,0,.4);
+/*	box-shadow: 7px -3px 4px rgba(0,0,0,.4);*/
 	border-right: 1px solid lightgrey;
 	background-color: lightgray;
 	border-bottom: 1px solid grey;

@@ -20,4 +20,40 @@ LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototyp
     prototype.getHtmlLocation = function() {
         return "partial/modal/login.html";
     };
+    prototype.submitOauth2 = function(server) {
+        var me = this;
+        var failure = function(err) {
+            ViewManager.getView("#loginMessageContainer").displayAlert(err, "loginFail");
+        };
+        ViewManager.getView("#loginMessageContainer").clearAlert("loginFail");
+        AppController.loginController.hello(server, function() {
+            AppController.serverController.checkForAdmin(function() {
+                if (me.loginSuccess != null) {
+                    me.loginSuccess(URLParams.getParams());
+                } else {
+                    ModalManager.hideModal();
+                }
+                new AppMenu().setLoggedIn();
+            });
+        }, failure);
+    };
+    prototype.submitLogin = function(userId, password, server) {
+        var me = this;
+        var failure = function(err) {
+            ViewManager.getView("#loginMessageContainer").displayAlert(err, "loginFail");
+        };
+        ViewManager.getView("#loginMessageContainer").clearAlert("loginFail");
+        AppController.loginController.login(userId, password, server, function() {
+            AppController.serverController.checkForAdmin(function() {
+                AppController.serverController.checkForAdmin(function() {
+                    if (me.loginSuccess != null) {
+                        me.loginSuccess(URLParams.getParams());
+                    } else {
+                        ModalManager.hideModal();
+                    }
+                    new AppMenu().setLoggedIn();
+                });
+            });
+        }, failure);
+    };
 }, {cancel: "Callback0", loginSuccess: {name: "Callback1", arguments: ["Object"]}}, {});

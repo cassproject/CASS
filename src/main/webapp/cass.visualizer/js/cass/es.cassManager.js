@@ -406,191 +406,6 @@ EditRollupRuleModal = stjs.extend(EditRollupRuleModal, EcModal, [], function(con
     };
 }, {data: "EcRemoteLinkedData", closeCallback: {name: "Callback1", arguments: ["EcRollupRule"]}}, {});
 /**
- *  Manages the current user's logged in state and interfaces with the server to 
- *  sign in/out and create users
- *  
- *  @module cass.manager
- *  @class LoginController
- *  @constructor
- *  
- *  @author devlin.junker@eduworks.com
- */
-var LoginController = /**
- *  On startup, check if the last time the user was on the page, whether or not they were signed in
- */
-function(storage) {
-    this.storageSystem = storage;
-    this.refreshLoggedIn = this.storageSystem.getStoredValue("cass.login") == "true" ? true : false;
-};
-LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
-    prototype.loginServer = null;
-    prototype.identity = null;
-    prototype.refreshLoggedIn = false;
-    prototype.loggedIn = false;
-    prototype.admin = false;
-    prototype.storageSystem = null;
-    /**
-     *  Setter for the boolean flag of whether or not a user is loged in
-     *  
-     *  @method setLoggedIn
-     *  @static
-     *  @param {boolean} val 
-     *  			true if signed in, false if logged out
-     */
-    prototype.setLoggedIn = function(val) {
-        this.loggedIn = val;
-        if (this.storageSystem != null) 
-            this.storageSystem.setStoredValue("cass.login", val);
-    };
-    /**
-     *  Getter for boolean flag of whether or not user is logged in
-     *  
-     *  @method getLoggedin
-     *  @static
-     *  @return {boolean} 
-     *  			true if signed in, false if logged out
-     */
-    prototype.getLoggedIn = function() {
-        return this.loggedIn;
-    };
-    /**
-     *  Setter for boolean flag of whether or not the current user is admin
-     *  
-     *  @method setAdmin
-     *  @param val 
-     *  			true = admin, false = not admin
-     */
-    prototype.setAdmin = function(val) {
-        this.admin = val;
-    };
-    /**
-     *  Getter for boolean flag of whether or not current user is admin
-     *  
-     *  @method getAdmin
-     *  @return {boolean}
-     *  			true = admin, false = not admin
-     */
-    prototype.getAdmin = function() {
-        return this.admin;
-    };
-    /**
-     *  If the last time the user was using the application, they were signed in this
-     *  returns true (used to remind them to sign in again once they return)
-     *  
-     *  @method getPreviouslyLoggedIn
-     *  @static
-     *  @return {boolean}
-     *  		true if previously signed in, false if not signed in last time, or user is here for
-     *  		the first time from this computer
-     */
-    prototype.getPreviouslyLoggedIn = function() {
-        return this.refreshLoggedIn;
-    };
-    prototype.setLoginServer = function(loginServer) {
-        this.loginServer = loginServer;
-    };
-    /**
-     *  Validates a username and password on the server and then parses the user's credentials and
-     *  checks if they have an admin key. Also tells the identity manager to check for contacts in
-     *  local storage after signed in.
-     *  
-     *  @method login
-     *  @param {String} username 
-     *  			username of the user signing in
-     *  @param {String} password
-     *  			password of the user signing in
-     *  @param {String} success 
-     *  			callback on successful login
-     *  @param {String} failure
-     *  			callback on error during login
-     */
-    prototype.login = function(username, password, success, failure) {
-        var identityManager = this.identity;
-        var that = this;
-        this.loginServer.startLogin(username, password);
-        this.loginServer.fetch(function(p1) {
-            EcIdentityManager.readContacts();
-            EcRepository.cache = new Object();
-            that.setLoggedIn(true);
-            if (EcIdentityManager.ids.length > 0) {
-                identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
-                that.loginServer.fetchServerAdminKeys(function(keys) {
-                    for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                        if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
-                            that.setAdmin(true);
-                            break;
-                        }
-                        that.setAdmin(false);
-                    }
-                    success();
-                }, function(p1) {});
-            } else {
-                success();
-            }
-        }, function(p1) {
-            failure(p1);
-        });
-    };
-    /**
-     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
-     *  authenticated and is unidentified
-     *  
-     *  @method logout
-     */
-    prototype.logout = function() {
-        this.loginServer.clear();
-        this.identity.selectedIdentity = null;
-        EcRepository.cache = new Object();
-        this.setLoggedIn(false);
-        EcIdentityManager.ids = new Array();
-        EcIdentityManager.clearContacts();
-        this.setAdmin(false);
-    };
-    /**
-     *  Creates a new user and saves the account details on the login server, then signs in
-     *  to the new account on successful creation
-     *  
-     *  @method create
-     *  @param {String} username
-     *  			username of the new account
-     *  @param {String} password
-     *  			password of the new account
-     *  @param {Callback0} success
-     *  			callback for successful creation and sign in 
-     *  @param {Callback1<String>} failure
-     *  			callback for error during creation
-     */
-    prototype.create = function(username, password, success, failure) {
-        this.loginServer.startLogin(username, password);
-        var me = this;
-        this.loginServer.create(function(p1) {
-            me.login(username, password, success, failure);
-        }, function(p1) {
-            failure(p1);
-        }, function() {
-            return "";
-        });
-    };
-    /**
-     *  Saves the users credentials and contacts to the server
-     *  
-     *  @method save
-     *  @param {Callback0} success
-     *  			callback for successful save
-     *  @param {Callback1<String>} failure
-     *  			callback for error during save
-     */
-    prototype.save = function(success, failure) {
-        this.loginServer.commit(function(p1) {
-            success();
-        }, function(p1) {
-            failure(p1);
-        }, function() {
-            return null;
-        });
-    };
-}, {loginServer: "EcRemoteIdentityManager", identity: "IdentityController", storageSystem: "StorageController"}, {});
-/**
  *  Manages the current selected identity for the user, and interfaces 
  *  the EBAC Identity Manager library to provide helper functions for 
  *  ownership and key identification
@@ -827,34 +642,12 @@ AppMenu = stjs.extend(AppMenu, EcView, [], function(constructor, prototype) {
     prototype.getHtmlLocation = function() {
         return "partial/other/appMenu.html";
     };
+    prototype.setLoggedIn = function() {};
     prototype.showRepoMenu = function(show) {};
     prototype.showExamplesMenu = function(show) {};
     prototype.buildRecentCompetencyList = function(list) {};
     prototype.buildRecentFrameworkList = function(list) {};
 }, {}, {});
-var LoginModal = function(success, cancel, warningMessage) {
-    EcModal.call(this);
-    this.loginSuccess = success;
-    this.cancel = cancel;
-    this.warning = warningMessage;
-};
-LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
-    prototype.modalSize = "small";
-    prototype.cancel = null;
-    prototype.loginSuccess = null;
-    prototype.warning = null;
-    prototype.onClose = function() {
-        if (this.cancel != null) 
-            this.cancel();
-        return EcView.prototype.onClose.call(this);
-    };
-    prototype.getModalSize = function() {
-        return this.modalSize;
-    };
-    prototype.getHtmlLocation = function() {
-        return "partial/modal/login.html";
-    };
-}, {cancel: "Callback0", loginSuccess: {name: "Callback1", arguments: ["Object"]}}, {});
 var Switch = function(onSwitch, switchedOn, switchName) {
     EcView.call(this);
     this.onSwitch = onSwitch;
@@ -1202,7 +995,6 @@ function(storageSystem, defaultServer, defaultServerName) {
         this.storageSystem = new StorageController();
     this.serverList = {};
     this.repoInterface = new EcRepository();
-    this.remoteIdentityManager = new EcRemoteIdentityManager();
     var me = this;
     var r = new EcRepository();
     r.autoDetectRepositoryAsync(function() {
@@ -1236,10 +1028,6 @@ function(storageSystem, defaultServer, defaultServerName) {
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
     EcRepository.caching = true;
-    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-    this.remoteIdentityManager.configureFromServer(null, function(p1) {
-        alert(p1);
-    });
     this.repoInterface.selectedServer = this.selectedServerUrl;
 };
 ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
@@ -1248,7 +1036,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
     prototype.repoInterface = null;
-    prototype.remoteIdentityManager = null;
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      * 
@@ -1295,7 +1082,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         var that = this;
         var oldServer = this.selectedServerUrl;
         var oldServerName = this.selectedServerName;
-        var me = this;
         for (var serverName in this.serverList) {
             if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
                 this.selectedServerName = serverName;
@@ -1303,36 +1089,56 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
                 if (this.repoInterface != null) 
                     this.repoInterface.selectedServer = this.selectedServerUrl;
                 this.repoInterface.autoDetectRepositoryAsync(function() {
-                    if (me.remoteIdentityManager != null) 
-                        me.remoteIdentityManager.setDefaultIdentityManagementServer(me.repoInterface.selectedServer);
-                    me.remoteIdentityManager.configureFromServer(function(p1) {
-                        that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
-                        if (success != null) 
-                            success();
-                    }, function(p1) {
-                        if (that.repoInterface != null) 
-                            that.repoInterface.selectedServer = oldServer;
-                        if (that.remoteIdentityManager != null) 
-                            that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
-                        that.selectedServerUrl = oldServer;
-                        that.selectedServerName = oldServerName;
-                        that.remoteIdentityManager.configureFromServer(null, null);
-                        if (failure != null) 
-                            failure(p1);
-                    });
+                    that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
+                    that.checkForAdmin(success);
                 }, function(error) {
                     if (that.repoInterface != null) 
                         that.repoInterface.selectedServer = oldServer;
-                    if (that.remoteIdentityManager != null) 
-                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
                     that.selectedServerUrl = oldServer;
                     that.selectedServerName = oldServerName;
-                    that.remoteIdentityManager.configureFromServer(null, null);
                     if (failure != null) 
                         failure(error);
                 });
             }
         }
+    };
+    prototype.admin = false;
+    /**
+     *  Setter for boolean flag of whether or not the current user is admin
+     * 
+     *  @param val true = admin, false = not admin
+     *  @method setAdmin
+     */
+    prototype.setAdmin = function(val) {
+        this.admin = val;
+    };
+    /**
+     *  Getter for boolean flag of whether or not current user is admin
+     * 
+     *  @return {boolean}
+     *  true = admin, false = not admin
+     *  @method getAdmin
+     */
+    prototype.getAdmin = function() {
+        return this.admin;
+    };
+    prototype.checkForAdmin = function(success) {
+        var me = this;
+        me.repoInterface.fetchServerAdminKeys(function(keys) {
+            me.setAdmin(false);
+            for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
+                    me.setAdmin(true);
+                    break;
+                }
+            }
+            if (success != null) 
+                success();
+        }, function(p1) {
+            me.setAdmin(false);
+            if (success != null) 
+                success();
+        });
     };
     /**
      *  Used to retrieve the interface to the repository we are currently pointed at
@@ -1355,25 +1161,178 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         this.repoInterface = repoInterface;
         repoInterface.selectedServer = this.selectedServerUrl;
     };
-    prototype.getRemoteIdentityManager = function() {
-        return this.remoteIdentityManager;
+}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository"}, {});
+/**
+ *  Manages the current user's logged in state and interfaces with the server to
+ *  sign in/out and create users
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module cass.manager
+ *  @class LoginController
+ *  @constructor
+ */
+var LoginController = /**
+ *  On startup, check if the last time the user was on the page, whether or not they were signed in
+ */
+function(storage) {
+    this.storageSystem = storage;
+    this.refreshLoggedIn = this.storageSystem.getStoredValue("cass.login") == "true" ? true : false;
+};
+LoginController = stjs.extend(LoginController, null, [], function(constructor, prototype) {
+    prototype.loginServer = null;
+    prototype.identity = null;
+    prototype.refreshLoggedIn = false;
+    prototype.loggedIn = false;
+    prototype.storageSystem = null;
+    /**
+     *  Setter for the boolean flag of whether or not a user is loged in
+     * 
+     *  @param {boolean} val
+     *                   true if signed in, false if logged out
+     *  @method setLoggedIn
+     *  @static
+     */
+    prototype.setLoggedIn = function(val) {
+        this.loggedIn = val;
+        if (this.storageSystem != null) 
+            this.storageSystem.setStoredValue("cass.login", val);
     };
     /**
-     *  Used during setup to set which EcRemoteIdentityManager the server controller manages
+     *  Getter for boolean flag of whether or not user is logged in
      * 
-     *  @param {EcRemoteIdentityManager} loginServer
-     *                                   The interface to the server for managing identities and logging in with
-     *                                   the identity controller and login controller
-     *  @method setRemoteIdentityManager
+     *  @return {boolean}
+     *  true if signed in, false if logged out
+     *  @method getLoggedin
+     *  @static
      */
-    prototype.setRemoteIdentityManager = function(loginServer) {
-        this.remoteIdentityManager = loginServer;
-        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-        this.remoteIdentityManager.configureFromServer(null, function(p1) {
-            alert(p1);
+    prototype.getLoggedIn = function() {
+        return this.loggedIn;
+    };
+    /**
+     *  If the last time the user was using the application, they were signed in this
+     *  returns true (used to remind them to sign in again once they return)
+     * 
+     *  @return {boolean}
+     *  true if previously signed in, false if not signed in last time, or user is here for
+     *  the first time from this computer
+     *  @method getPreviouslyLoggedIn
+     *  @static
+     */
+    prototype.getPreviouslyLoggedIn = function() {
+        return this.refreshLoggedIn;
+    };
+    prototype.hello = function(network, success, failure) {
+        var identityManager = this.identity;
+        var me = this;
+        this.loginServer = new OAuth2FileBasedRemoteIdentityManager(function() {
+            me.loginServer.setDefaultIdentityManagementServer(network);
+            me.loginServer.startLogin(null, null);
+            me.loginServer.fetch(function(p1) {
+                EcIdentityManager.readContacts();
+                EcRepository.cache = new Object();
+                me.setLoggedIn(true);
+                if (EcIdentityManager.ids.length > 0) {
+                    identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                }
+                success();
+            }, function(p1) {
+                failure(p1);
+            });
         });
     };
-}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
+    /**
+     *  Validates a username and password on the server and then parses the user's credentials and
+     *  checks if they have an admin key. Also tells the identity manager to check for contacts in
+     *  local storage after signed in.
+     * 
+     *  @param {String} username
+     *                  username of the user signing in
+     *  @param {String} password
+     *                  password of the user signing in
+     *  @param {String} success
+     *                  callback on successful login
+     *  @param {String} failure
+     *                  callback on error during login
+     *  @method login
+     */
+    prototype.login = function(username, password, server, success, failure) {
+        var identityManager = this.identity;
+        var that = this;
+        this.loginServer = new EcRemoteIdentityManager();
+        this.loginServer.setDefaultIdentityManagementServer(server);
+        this.loginServer.configureFromServer(function(o) {
+            that.loginServer.startLogin(username, password);
+            that.loginServer.fetch(function(p1) {
+                EcIdentityManager.readContacts();
+                EcRepository.cache = new Object();
+                that.setLoggedIn(true);
+                if (EcIdentityManager.ids.length > 0) {
+                    identityManager.select(EcIdentityManager.ids[0].ppk.toPem());
+                }
+                success();
+            }, function(p1) {
+                failure(p1);
+            });
+        }, failure);
+    };
+    /**
+     *  Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
+     *  authenticated and is unidentified
+     * 
+     *  @method logout
+     */
+    prototype.logout = function() {
+        this.loginServer.clear();
+        this.identity.selectedIdentity = null;
+        EcRepository.cache = new Object();
+        this.setLoggedIn(false);
+        EcIdentityManager.ids = new Array();
+        EcIdentityManager.clearContacts();
+    };
+    /**
+     *  Creates a new user and saves the account details on the login server, then signs in
+     *  to the new account on successful creation
+     * 
+     *  @param {String}            username
+     *                             username of the new account
+     *  @param {String}            password
+     *                             password of the new account
+     *  @param {Callback0}         success
+     *                             callback for successful creation and sign in
+     *  @param {Callback1<String>} failure
+     *                             callback for error during creation
+     *  @method create
+     */
+    prototype.create = function(username, password, server, success, failure) {
+        this.loginServer.startLogin(username, password);
+        var me = this;
+        this.loginServer.create(function(p1) {
+            me.login(username, password, server, success, failure);
+        }, function(p1) {
+            failure(p1);
+        }, function() {
+            return "";
+        });
+    };
+    /**
+     *  Saves the users credentials and contacts to the server
+     * 
+     *  @param {Callback0}         success
+     *                             callback for successful save
+     *  @param {Callback1<String>} failure
+     *                             callback for error during save
+     *  @method save
+     */
+    prototype.save = function(success, failure) {
+        this.loginServer.commit(function(p1) {
+            success();
+        }, function(p1) {
+            failure(p1);
+        }, function() {
+            return null;
+        });
+    };
+}, {loginServer: "RemoteIdentityManagerInterface", identity: "IdentityController", storageSystem: "StorageController"}, {});
 /**
  *  Handles loading the CASS Manager settings from the settings.js file,
  *  this includes the default server to show and the message to show when the user
@@ -1416,12 +1375,10 @@ AppSettings = stjs.extend(AppSettings, null, [], function(constructor, prototype
             var serverName = (settingsObj)[AppSettings.FIELD_SERVER_NAME];
             if (serverName != null) 
                 AppSettings.defaultServerUrl = serverName;
-            var showRepo = Boolean((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU]);
-            if (showRepo != null) 
-                AppSettings.showRepoMenu = showRepo;
-            var showExamples = Boolean((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU]);
-            if (showExamples != null) 
-                AppSettings.showExamplesMenu = showExamples;
+            if ((settingsObj)[AppSettings.FIELD_SHOW_REPO_MENU] == "true") 
+                AppSettings.showRepoMenu = true;
+            if ((settingsObj)[AppSettings.FIELD_SHOW_EXAMPLES_MENU] == "true") 
+                AppSettings.showExamplesMenu = true;
         }, function(p1) {
             console.error("Unable to load settings file");
         });
@@ -1655,7 +1612,6 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
         AppController.loginController = new LoginController(AppController.storageController);
         AppController.serverController = new ServerController(AppController.storageController, AppSettings.defaultServerUrl, AppSettings.defaultServerName);
         AppSettings.loadSettings();
-        AppController.loginController.setLoginServer(AppController.serverController.getRemoteIdentityManager());
         AppController.loginController.identity = AppController.identityController;
         ScreenManager.setDefaultScreen(new WelcomeScreen());
         $(window.document).ready(function(arg0, arg1) {
@@ -1671,6 +1627,65 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
 }, {serverController: "ServerController", identityController: "IdentityController", loginController: "LoginController", storageController: "StorageController"}, {});
 if (!stjs.mainCallDisabled) 
     AppController.main();
+var LoginModal = function(success, cancel, warningMessage) {
+    EcModal.call(this);
+    this.loginSuccess = success;
+    this.cancel = cancel;
+    this.warning = warningMessage;
+};
+LoginModal = stjs.extend(LoginModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.cancel = null;
+    prototype.loginSuccess = null;
+    prototype.warning = null;
+    prototype.onClose = function() {
+        if (this.cancel != null) 
+            this.cancel();
+        return EcView.prototype.onClose.call(this);
+    };
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/login.html";
+    };
+    prototype.submitOauth2 = function(server) {
+        var me = this;
+        var failure = function(err) {
+            ViewManager.getView("#loginMessageContainer").displayAlert(err, "loginFail");
+        };
+        ViewManager.getView("#loginMessageContainer").clearAlert("loginFail");
+        AppController.loginController.hello(server, function() {
+            AppController.serverController.checkForAdmin(function() {
+                if (me.loginSuccess != null) {
+                    me.loginSuccess(URLParams.getParams());
+                } else {
+                    ModalManager.hideModal();
+                }
+                new AppMenu().setLoggedIn();
+            });
+        }, failure);
+    };
+    prototype.submitLogin = function(userId, password, server) {
+        var me = this;
+        var failure = function(err) {
+            ViewManager.getView("#loginMessageContainer").displayAlert(err, "loginFail");
+        };
+        ViewManager.getView("#loginMessageContainer").clearAlert("loginFail");
+        AppController.loginController.login(userId, password, server, function() {
+            AppController.serverController.checkForAdmin(function() {
+                AppController.serverController.checkForAdmin(function() {
+                    if (me.loginSuccess != null) {
+                        me.loginSuccess(URLParams.getParams());
+                    } else {
+                        ModalManager.hideModal();
+                    }
+                    new AppMenu().setLoggedIn();
+                });
+            });
+        }, failure);
+    };
+}, {cancel: "Callback0", loginSuccess: {name: "Callback1", arguments: ["Object"]}}, {});
 var CassManagerScreen = function() {
     EcScreen.call(this);
 };
@@ -2381,7 +2396,7 @@ UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(c
                 ScreenManager.startupScreen = ScreenManager.LOADING_STARTUP_PAGE;
                 ModalManager.showModal(new LoginModal(function(o) {
                     ModalManager.hideModal();
-                    if (!AppController.loginController.getAdmin()) {
+                    if (!AppController.serverController.getAdmin()) {
                         ScreenManager.replaceScreen(new UserIdentityScreen(), null, null);
                     } else {
                         ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
@@ -2389,7 +2404,7 @@ UserAdminScreen = stjs.extend(UserAdminScreen, CassManagerScreen, [], function(c
                 }, function() {
                     if (!AppController.loginController.getLoggedIn()) {
                         ScreenManager.replaceScreen(new WelcomeScreen(), null, null);
-                    } else if (AppController.loginController.getAdmin()) {
+                    } else if (AppController.serverController.getAdmin()) {
                         ScreenManager.replaceScreen(new UserAdminScreen(), null, null);
                     } else {
                         ScreenManager.reloadCurrentScreen(null);

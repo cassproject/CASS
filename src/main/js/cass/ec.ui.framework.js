@@ -226,6 +226,23 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     prototype.onClose = function() {
         return true;
     };
+    /**
+     *  Display this alert on the view.
+     * 
+     *  @memberOf EcView
+     *  @method displayAlert
+     *  @param {String} Error to display.
+     *  @param {String} Type of error.
+     */
+    prototype.displayAlert = function(err, type) {};
+    /**
+     *  Clear the alert.
+     * 
+     *  @memberOf EcView
+     *  @method clearAlert
+     *  @param {String} Type of error.
+     */
+    prototype.clearAlert = function(type) {};
 }, {}, {});
 /**
  *  STJS Wrapper for the Browser Native History Object

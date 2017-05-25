@@ -27,7 +27,6 @@ function(storageSystem, defaultServer, defaultServerName) {
         this.storageSystem = new StorageController();
     this.serverList = {};
     this.repoInterface = new EcRepository();
-    this.remoteIdentityManager = new EcRemoteIdentityManager();
     var me = this;
     var r = new EcRepository();
     r.autoDetectRepositoryAsync(function() {
@@ -61,10 +60,6 @@ function(storageSystem, defaultServer, defaultServerName) {
     if (this.serverList[this.selectedServerName] == null) 
         this.addServer(this.selectedServerName, this.selectedServerUrl, null, null);
     EcRepository.caching = true;
-    this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-    this.remoteIdentityManager.configureFromServer(null, function(p1) {
-        alert(p1);
-    });
     this.repoInterface.selectedServer = this.selectedServerUrl;
 };
 ServerController = stjs.extend(ServerController, null, [], function(constructor, prototype) {
@@ -73,7 +68,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
     prototype.repoInterface = null;
-    prototype.remoteIdentityManager = null;
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      * 
@@ -120,7 +114,6 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         var that = this;
         var oldServer = this.selectedServerUrl;
         var oldServerName = this.selectedServerName;
-        var me = this;
         for (var serverName in this.serverList) {
             if (identifier.equals(serverName) || identifier.equals(this.serverList[serverName])) {
                 this.selectedServerName = serverName;
@@ -128,36 +121,56 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
                 if (this.repoInterface != null) 
                     this.repoInterface.selectedServer = this.selectedServerUrl;
                 this.repoInterface.autoDetectRepositoryAsync(function() {
-                    if (me.remoteIdentityManager != null) 
-                        me.remoteIdentityManager.setDefaultIdentityManagementServer(me.repoInterface.selectedServer);
-                    me.remoteIdentityManager.configureFromServer(function(p1) {
-                        that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
-                        if (success != null) 
-                            success();
-                    }, function(p1) {
-                        if (that.repoInterface != null) 
-                            that.repoInterface.selectedServer = oldServer;
-                        if (that.remoteIdentityManager != null) 
-                            that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
-                        that.selectedServerUrl = oldServer;
-                        that.selectedServerName = oldServerName;
-                        that.remoteIdentityManager.configureFromServer(null, null);
-                        if (failure != null) 
-                            failure(p1);
-                    });
+                    that.storageSystem.setStoredValue("cass.server.selected", that.selectedServerName);
+                    that.checkForAdmin(success);
                 }, function(error) {
                     if (that.repoInterface != null) 
                         that.repoInterface.selectedServer = oldServer;
-                    if (that.remoteIdentityManager != null) 
-                        that.remoteIdentityManager.setDefaultIdentityManagementServer(oldServer);
                     that.selectedServerUrl = oldServer;
                     that.selectedServerName = oldServerName;
-                    that.remoteIdentityManager.configureFromServer(null, null);
                     if (failure != null) 
                         failure(error);
                 });
             }
         }
+    };
+    prototype.admin = false;
+    /**
+     *  Setter for boolean flag of whether or not the current user is admin
+     * 
+     *  @param val true = admin, false = not admin
+     *  @method setAdmin
+     */
+    prototype.setAdmin = function(val) {
+        this.admin = val;
+    };
+    /**
+     *  Getter for boolean flag of whether or not current user is admin
+     * 
+     *  @return {boolean}
+     *  true = admin, false = not admin
+     *  @method getAdmin
+     */
+    prototype.getAdmin = function() {
+        return this.admin;
+    };
+    prototype.checkForAdmin = function(success) {
+        var me = this;
+        me.repoInterface.fetchServerAdminKeys(function(keys) {
+            me.setAdmin(false);
+            for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                if (keys.indexOf(EcIdentityManager.ids[i].ppk.toPk().toPem()) != -1) {
+                    me.setAdmin(true);
+                    break;
+                }
+            }
+            if (success != null) 
+                success();
+        }, function(p1) {
+            me.setAdmin(false);
+            if (success != null) 
+                success();
+        });
     };
     /**
      *  Used to retrieve the interface to the repository we are currently pointed at
@@ -180,22 +193,4 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
         this.repoInterface = repoInterface;
         repoInterface.selectedServer = this.selectedServerUrl;
     };
-    prototype.getRemoteIdentityManager = function() {
-        return this.remoteIdentityManager;
-    };
-    /**
-     *  Used during setup to set which EcRemoteIdentityManager the server controller manages
-     * 
-     *  @param {EcRemoteIdentityManager} loginServer
-     *                                   The interface to the server for managing identities and logging in with
-     *                                   the identity controller and login controller
-     *  @method setRemoteIdentityManager
-     */
-    prototype.setRemoteIdentityManager = function(loginServer) {
-        this.remoteIdentityManager = loginServer;
-        this.remoteIdentityManager.setDefaultIdentityManagementServer(this.selectedServerUrl);
-        this.remoteIdentityManager.configureFromServer(null, function(p1) {
-            alert(p1);
-        });
-    };
-}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository", remoteIdentityManager: "EcRemoteIdentityManager"}, {});
+}, {serverList: {name: "Map", arguments: [null, null]}, storageSystem: "StorageController", repoInterface: "EcRepository"}, {});

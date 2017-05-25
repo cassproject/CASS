@@ -10,52 +10,6 @@ var LoginModal = (function (LoginModal) {
     var ERROR_CONTAINER_ID = "#loginError";
 
     /**
-     * Submits the information from the inputs to the server for authentication
-     * and handles response
-     * 
-     * @memberOf LoginModal
-     * @method submitLogin
-     * @private
-     */
-    function submitLogin(loginSuccess) {
-        var server = $("#loginServer").val();
-        var userId = $("#loginUserId").val();
-        var password = $("#loginPassword").val();
-
-        var oldSelectedServer = AppController.serverController.selectedServerName;
-
-        var failure = function (err) {
-            AppController.serverController.selectServer(oldSelectedServer,function(){
-				if (err == undefined)
-					err = "Unable to Connect to Server";
-
-				ViewManager.getView("#loginMessageContainer").displayAlert(err, "loginFail");
-            });
-        }
-
-        AppController.serverController.selectServer(server, function () {
-            AppController.loginController.setLoginServer(AppController.serverController.remoteIdentityManager);
-
-            ViewManager.getView("#loginMessageContainer").clearAlert("loginFail");
-
-            AppController.loginController.login(
-                userId,
-                password,
-                function () {
-                    if (loginSuccess != undefined) {
-                        loginSuccess(URLParams.getParams());
-                    } else {
-                        ModalManager.hideModal();
-                        ScreenManager.changeScreen(new UserIdentityScreen())
-                    }
-
-                    AppMenu.prototype.setLoggedIn();
-                },failure
-            );
-        }, failure);
-    }
-
-    /**
      * Overridden display function, called once html partial is loaded into DOM
      * 
      * @memberOf LoginModal
@@ -66,6 +20,7 @@ var LoginModal = (function (LoginModal) {
     LoginModal.prototype.display = function (containerId) {
         var loginSuccess = this.loginSuccess;
 
+		var me = this;
         var warning = this.warning;
 
         ViewManager.showView(new MessageContainer("login"), "#loginMessageContainer", function () {
@@ -101,13 +56,26 @@ var LoginModal = (function (LoginModal) {
 
         $("#loginForm").submit(function (event) {
             event.preventDefault();
-            submitLogin(loginSuccess);
+        var server = $("#loginServer").val();
+        var userId = $("#loginUserId").val();
+        var password = $("#loginPassword").val();
+			me.submitLogin(userId,password,server);
         });
 
         $("#loginCancel").click(function (event) {
             event.preventDefault();
             ModalManager.hideModal();
         });
+
+        $("#loginOauth2Google").click(function (event) {
+            event.preventDefault();
+            me.submitOauth2("google");
+        });
+        var testOauth = new OAuth2FileBasedRemoteIdentityManager(
+        	function(){
+        		$("#oauth").show()
+        	}
+        );
     }
 
     return LoginModal;
