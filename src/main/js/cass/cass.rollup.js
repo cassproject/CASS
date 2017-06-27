@@ -8,6 +8,16 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 /**
+ *  Created by fray on 5/30/17.
+ */
+var AssertionCoprocessor = function() {};
+AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
+    prototype.assertionProcessor = null;
+    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
+        success(new Array());
+    };
+}, {assertionProcessor: "AssertionProcessor"}, {});
+/**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
  *  (hereafter, "Inquiry")
  *  @class InquiryPacket
@@ -774,11 +784,16 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             this.numberOfRelationsToProcess = 0;
             for (var i = 0; i < this.ip.competency.length; i++) {
                 var relationsRelatedToThisCompetency = (this.relationLookup)[this.ip.competency[i].shortId()];
+                if (relationsRelatedToThisCompetency == null) 
+                    relationsRelatedToThisCompetency = new Array();
                 this.numberOfRelationsToProcess += relationsRelatedToThisCompetency.length;
                 this.numberOfRelationsProcessed = 0;
                 for (var j = 0; j < relationsRelatedToThisCompetency.length; j++) {
                     this.ip.numberOfQueriesRunning++;
                     rpg.processFindCompetencyRelationshipSuccess(relationsRelatedToThisCompetency[j], rpg.ip);
+                }
+                if (relationsRelatedToThisCompetency.length == 0) {
+                    this.checkForFinish();
                 }
             }
         }
@@ -828,13 +843,14 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
  *  Processor used in Assertion Processing. Can estimate or determine competence
  *  of individuals.
  * 
- *  @class AssertionProcessor
- *  @module org.cassproject
  *  @author fritz.ray@eduworks.com
  *  @author tom.buskirk@eduworks.com
+ *  @class AssertionProcessor
+ *  @module org.cassproject
  */
 var AssertionProcessor = function() {
     this.repositories = new Array();
+    this.coprocessors = new Array();
     this.step = AssertionProcessor.DEF_STEP;
     this.profileMode = false;
 };
@@ -844,6 +860,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.profileMode = false;
     prototype.logFunction = null;
     prototype.assertions = null;
+    prototype.coprocessors = null;
     constructor.DEF_STEP = false;
     prototype.processedEquivalencies = null;
     prototype.context = null;
@@ -861,22 +878,22 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
      *  Asynchronously processes and provides an answer to the question: Does an
      *  individual hold a competency?
      * 
-     *  @method has
-     *  @param {EcPk[]} subject Public keys that identify the subject.
-     *  @param {EcCompetency} competency The Competency being inquired about.
-     *  @param {EcLevel} level The Level of the Competency at which the question
-     *  is being asked.
-     *  @param {EcFramework} context The Framework in which to scope the inquiry.
-     *  @param {EbacSignature[]} additionalSignatures Additional signatures
-     *  provided by an authority, used to request additional access on a one-time
-     *  basis.
+     *  @param {EcPk[]}                  subject Public keys that identify the subject.
+     *  @param {EcCompetency}            competency The Competency being inquired about.
+     *  @param {EcLevel}                 level The Level of the Competency at which the question
+     *                                   is being asked.
+     *  @param {EcFramework}             context The Framework in which to scope the inquiry.
+     *  @param {EbacSignature[]}         additionalSignatures Additional signatures
+     *                                   provided by an authority, used to request additional access on a one-time
+     *                                   basis.
      *  @param {function(InquiryPacket)} success The method that is invoked when
-     *  a decision has been reached.
-     *  @param {string function(string)} ask The method that is invoked when the
-     *  assertion processor detects that it needs information. (Usernames,
-     *  passwords, etc)
-     *  @param {function(string)} failure The method that is invoked when the
-     *  assertion processor has failed.
+     *                                   a decision has been reached.
+     *  @param {string                   function(string)} ask The method that is invoked when the
+     *                                   assertion processor detects that it needs information. (Usernames,
+     *                                   passwords, etc)
+     *  @param {function(string)}        failure The method that is invoked when the
+     *                                   assertion processor has failed.
+     *  @method has
      */
     prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
         var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
@@ -896,15 +913,13 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         listOfActivatedCompetencies.sort(function(a, b) {
             return b.compareTo(a);
         });
-        for (var i = 0; i < this.repositories.length; i++) {
-            var currentRepository = this.repositories[i];
-            var searchQuery = this.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
-            this.log(ip, "Querying repositories for subject assertions on " + listOfActivatedCompetencies.length + " competencies: " + searchQuery);
-            ip.numberOfQueriesRunning++;
+        var eah = new EcAsyncHelper();
+        eah.each(this.repositories, function(currentRepository, callback0) {
+            var searchQuery = me.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
+            me.log(ip, "Querying repositories for subject assertions on " + listOfActivatedCompetencies.length + " competencies: " + searchQuery);
             var params = new Object();
             (params)["size"] = 5000;
             EcAssertion.search(currentRepository, searchQuery, function(p1) {
-                ip.numberOfQueriesRunning--;
                 me.log(ip, p1.length + " assertions found.");
                 me.assertions = new Object();
                 for (var i = 0; i < p1.length; i++) {
@@ -915,14 +930,29 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                     var as = (me.assertions)[competency];
                     as.push(a);
                 }
-                if (ip.numberOfQueriesRunning == 0) 
-                    success(ip);
+                callback0();
             }, function(p1) {
-                ip.numberOfQueriesRunning--;
-                if (ip.numberOfQueriesRunning == 0) 
-                    success(ip);
+                callback0();
             }, params);
-        }
+        }, function(strings) {
+            var eah2 = new EcAsyncHelper();
+            eah2.each(me.coprocessors, function(ac, callback00) {
+                ac.assertionProcessor = me;
+                ac.collectAssertions(ip, listOfActivatedCompetencies, function(assertions) {
+                    for (var i = 0; i < assertions.length; i++) {
+                        var a = assertions[i];
+                        var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
+                        if ((me.assertions)[competency] == null) 
+                            (me.assertions)[competency] = new Array();
+                        var as = (me.assertions)[competency];
+                        as.push(a);
+                    }
+                    callback00();
+                });
+            }, function(strings) {
+                success(ip);
+            });
+        });
     };
     prototype.isIn = function(ip, alreadyDone) {
         for (var i = 0; i < alreadyDone.length; i++) 
@@ -1118,7 +1148,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         for (var i = 0; i < ip.subPackets.length; i++) 
             this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var RollupRuleProcessor = function(ip, ep) {
     this.ip = ip;
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
@@ -1189,9 +1219,7 @@ var CombinatorAssertionProcessor = function() {
 };
 CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, AssertionProcessor, [], function(constructor, prototype) {
     constructor.relationLookup = null;
-    prototype.processFoundAssertion = function(searchData, ip, success, failure) {
-        var a = new EcAssertion();
-        a.copyFrom(searchData);
+    prototype.processFoundAssertion = function(a, ip, success, failure) {
         var eah = new EcAsyncHelper();
         var me = this;
         eah.each(ip.subject, function(p1, p2) {
@@ -1285,7 +1313,9 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                     currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
                         var eah = new EcAsyncHelper();
                         eah.each(p1, function(p1, p2) {
-                            me.processFoundAssertion(p1, ip, p2, function(p1) {
+                            var a = new EcAssertion();
+                            a.copyFrom(p1);
+                            me.processFoundAssertion(a, ip, p2, function(p1) {
                                 p2();
                             });
                         }, function(p1) {
@@ -1358,7 +1388,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         this.log(ip, "Executing rollup rule interpreter");
         rri.go();
     };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1555,7 +1585,7 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var PessimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1734,4 +1764,4 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});

@@ -259,10 +259,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (readers == null) 
             readers = new Array();
         if (this.subject != null) {
-            owners.concat(this.subject.owner);
-            readers.concat(this.subject.reader);
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
         }
-        owners = owners.concat(this.owner);
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
         readers.push(pk.toPem());
         this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
     };

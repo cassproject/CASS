@@ -115,109 +115,6 @@ Level = stjs.extend(Level, Intangible, [], function(constructor, prototype) {
     };
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
- *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
- *  @author fritz.ray@eduworks.com
- *  @class Assertion
- *  @module org.cassproject
- *  @extends Intangible
- */
-var Assertion = function() {
-    Intangible.call(this);
-    this.setContextAndType(Cass.context, Assertion.myType);
-};
-Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/assertion";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
-    constructor.myType = Assertion.TYPE_0_3;
-    /**
-     *  URL of the competency.
-     *  @property competency
-     *  @type string(URL)
-     */
-    prototype.competency = null;
-    /**
-     *  URL of the framework within which the assertion is restricted.
-     *  @property framework
-     *  @type string(URL)
-     */
-    prototype.framework = null;
-    /**
-     *  URL of the level, or null if 'held with no performance expectations'.
-     *  @property level
-     *  @type string
-     */
-    prototype.level = null;
-    /**
-     *  Public Key in PEM format of the recipient of the assertion.
-     *  @property subject
-     *  @type EcEncryptedValue<Public Key PEM>
-     */
-    prototype.subject = null;
-    /**
-     *  Public Key in PEM format of the identity making the assertion.
-     *  @property agent
-     *  @type EcEncryptedValue<Public Key PEM>
-     */
-    prototype.agent = null;
-    /**
-     *  Encrypted evidence. May be a string, URL or schema.org/Thing.
-     *  @property evidence
-     *  @type EcEncryptedValue<string | URL | Thing>[]
-     */
-    prototype.evidence = null;
-    /**
-     *  Confidence with which the assertion was made. 
-     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
-     *  @property confidence
-     *  @type float [0,1]
-     */
-    prototype.confidence = null;
-    /**
-     *  Time that the assertion was made in milliseconds since the Unix Epoch.
-     *  @property assertionDate
-     *  @type EcEncryptedValue<long>
-     */
-    prototype.assertionDate = null;
-    /**
-     *  Time that the assertion expires, specified in milliseconds since the Unix Epoch.
-     *  @property expirationDate
-     *  @type EcEncryptedValue<long>
-     */
-    prototype.expirationDate = null;
-    /**
-     *  Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).
-     *  @property decayFunction
-     *  @type EcEncryptedValue<string>
-     */
-    prototype.decayFunction = null;
-    /**
-     *  True if the assertion is a claim that the subject cannot demonstrate the competency.
-     *  @property negative
-     *  @type EcEncryptedValue<boolean>
-     */
-    prototype.negative = null;
-    prototype.upgrade = function() {
-        EcLinkedData.prototype.upgrade.call(this);
-        if (Assertion.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Cass.context_0_2, Assertion.TYPE_0_2);
-        }
-        if (Assertion.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
-        }
-    };
-    prototype.getTypes = function() {
-        var a = new Array();
-        a.push(Assertion.TYPE_0_3);
-        a.push(Assertion.TYPE_0_2);
-        a.push(Assertion.TYPE_0_1);
-        return a;
-    };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
  *  A segment of script that defines in a domain specific language how competence is transferred from one competency to another.
  *  
  *  @author fritz.ray@eduworks.com
@@ -440,3 +337,265 @@ Relation = stjs.extend(Relation, Intangible, [], function(constructor, prototype
         return a;
     };
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
+ *  @author fritz.ray@eduworks.com
+ *  @class Assertion
+ *  @module org.cassproject
+ *  @extends Intangible
+ */
+var Assertion = function() {
+    Intangible.call(this);
+    this.setContextAndType(Cass.context, Assertion.myType);
+};
+Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototype) {
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/assertion";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
+    constructor.myType = Assertion.TYPE_0_3;
+    /**
+     *  URL of the competency.
+     *  @property competency
+     *  @type string(URL)
+     */
+    prototype.competency = null;
+    /**
+     *  URL of the framework within which the assertion is restricted.
+     *  @property framework
+     *  @type string(URL)
+     */
+    prototype.framework = null;
+    /**
+     *  URL of the level, or null if 'held with no performance expectations'.
+     *  @property level
+     *  @type string
+     */
+    prototype.level = null;
+    /**
+     *  Public Key in PEM format of the recipient of the assertion.
+     *  @property subject
+     *  @type EcEncryptedValue<Public Key PEM>
+     */
+    prototype.subject = null;
+    /**
+     *  Public Key in PEM format of the identity making the assertion.
+     *  @property agent
+     *  @type EcEncryptedValue<Public Key PEM>
+     */
+    prototype.agent = null;
+    /**
+     *  Encrypted evidence. May be a string, URL or schema.org/Thing.
+     *  @property evidence
+     *  @type EcEncryptedValue<string | URL | Thing>[]
+     */
+    prototype.evidence = null;
+    /**
+     *  Confidence with which the assertion was made. 
+     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
+     *  @property confidence
+     *  @type float [0,1]
+     */
+    prototype.confidence = null;
+    /**
+     *  Time that the assertion was made in milliseconds since the Unix Epoch.
+     *  @property assertionDate
+     *  @type EcEncryptedValue<long>
+     */
+    prototype.assertionDate = null;
+    /**
+     *  Time that the assertion expires, specified in milliseconds since the Unix Epoch.
+     *  @property expirationDate
+     *  @type EcEncryptedValue<long>
+     */
+    prototype.expirationDate = null;
+    /**
+     *  Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).
+     *  @property decayFunction
+     *  @type EcEncryptedValue<string>
+     */
+    prototype.decayFunction = null;
+    /**
+     *  True if the assertion is a claim that the subject cannot demonstrate the competency.
+     *  @property negative
+     *  @type EcEncryptedValue<boolean>
+     */
+    prototype.negative = null;
+    prototype.getSubject = function() {
+        return EcPk.fromPem(this.subject);
+    };
+    prototype.getSubjectAsync = function(success, failure) {
+        success(EcPk.fromPem(this.subject));
+    };
+    prototype.getAgent = function() {
+        return EcPk.fromPem(this.agent);
+    };
+    prototype.getAgentAsync = function(success, failure) {
+        success(EcPk.fromPem(this.agent));
+    };
+    prototype.getSubjectName = function() {
+        if (this.subject == null) 
+            return "Nobody";
+        var subjectPk = this.getSubject();
+        var identity = EcIdentityManager.getIdentity(subjectPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(subjectPk);
+        if (contact == null || contact.displayName == null) 
+            return "Unknown Subject";
+        return contact.displayName;
+    };
+    prototype.getSubjectNameAsync = function(success, failure) {
+        if (this.subject == null) {
+            success("Nobody");
+            return;
+        }
+        this.getSubjectAsync(function(subjectPk) {
+            var identity = EcIdentityManager.getIdentity(subjectPk);
+            if (identity != null && identity.displayName != null) {
+                success(identity.displayName + " (You)");
+                return;
+            }
+            var contact = EcIdentityManager.getContact(subjectPk);
+            if (contact == null || contact.displayName == null) {
+                success("Unknown Subject");
+                return;
+            }
+            success(contact.displayName);
+        }, failure);
+    };
+    prototype.getAgentName = function() {
+        if (this.agent == null) 
+            return "Nobody";
+        var agentPk = this.getAgent();
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(agentPk);
+        if (contact == null || contact.displayName == null) 
+            return "Unknown Agent";
+        return contact.displayName;
+    };
+    prototype.getAgentNameAsync = function(success, failure) {
+        if (this.subject == null) {
+            success("Nobody");
+            return;
+        }
+        this.getAgentAsync(function(subjectPk) {
+            var identity = EcIdentityManager.getIdentity(subjectPk);
+            if (identity != null && identity.displayName != null) {
+                success(identity.displayName + " (You)");
+                return;
+            }
+            var contact = EcIdentityManager.getContact(subjectPk);
+            if (contact == null || contact.displayName == null) {
+                success("Unknown Agent");
+                return;
+            }
+            success(contact.displayName);
+        }, failure);
+    };
+    prototype.getAssertionDate = function() {
+        return this.assertionDate;
+    };
+    prototype.getAssertionDateAsync = function(success, failure) {
+        success(this.assertionDate);
+    };
+    prototype.getExpirationDate = function() {
+        return this.expirationDate;
+    };
+    prototype.getExpirationDateAsync = function(success, failure) {
+        success(this.expirationDate);
+    };
+    prototype.getEvidenceCount = function() {
+        if (this.evidence == null) 
+            return 0;
+        return this.evidence.length;
+    };
+    prototype.getEvidence = function(index) {
+        return this.evidence[index];
+    };
+    prototype.getEvidenceAsync = function(index, success, failure) {
+        success(this.evidence[index]);
+    };
+    prototype.getDecayFunction = function() {
+        return this.decayFunction;
+    };
+    prototype.getDecayFunctionAsync = function(success, failure) {
+        success(this.decayFunction);
+    };
+    prototype.getNegative = function() {
+        return "true".equals(this.negative);
+    };
+    prototype.getNegativeAsync = function(success, failure) {
+        success("true".equals(this.negative));
+    };
+    /**
+     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
+     *  object should be able to see and change the encrypted value. Owners and
+     *  readers of the object should be persisted.
+     * 
+     *  @param pk
+     */
+    prototype.setSubject = function(pk) {
+        var owners = new Array();
+        var readers = this.reader;
+        if (readers == null) 
+            readers = new Array();
+        if (this.subject != null) {
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
+        }
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        this.subject = pk.toPem();
+    };
+    prototype.setAgent = function(pk) {
+        this.agent = pk.toPem();
+    };
+    prototype.setCompetency = function(competencyUrl) {
+        this.competency = competencyUrl;
+    };
+    prototype.setLevel = function(levelUrl) {
+        this.level = levelUrl;
+    };
+    prototype.setConfidence = function(confidenceZeroToOne) {
+        this.confidence = confidenceZeroToOne;
+    };
+    prototype.setEvidence = function(evidences) {
+        this.evidence = evidences;
+    };
+    prototype.setAssertionDate = function(assertionDateMs) {
+        this.assertionDate = assertionDateMs;
+    };
+    prototype.setExpirationDate = function(expirationDateMs) {
+        this.expirationDate = expirationDateMs;
+    };
+    prototype.setDecayFunction = function(decayFunctionText) {
+        this.decayFunction = decayFunctionText;
+    };
+    prototype.setNegative = function(negativeB) {
+        this.negative = negativeB;
+    };
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (Assertion.TYPE_0_1.equals(this.type)) {
+            var me = (this);
+            if (me["@context"] == null && me["@schema"] != null) 
+                me["@context"] = me["@schema"];
+            this.setContextAndType(Cass.context_0_2, Assertion.TYPE_0_2);
+        }
+        if (Assertion.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(Assertion.TYPE_0_3);
+        a.push(Assertion.TYPE_0_2);
+        a.push(Assertion.TYPE_0_1);
+        return a;
+    };
+}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

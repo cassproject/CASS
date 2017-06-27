@@ -854,7 +854,7 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
         var me = this;
         var params = new Object();
         (params)["size"] = 5000;
-        this.sourceRepo.searchWithParams(new Course().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(strings) {
+        this.sourceRepo.searchWithParams("@type:Course", params, function(ecRemoteLinkedData) {}, function(strings) {
             me.collection = strings;
             me.selected = new Array();
             me.highlighted = new Array();
@@ -865,7 +865,7 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
         var me = this;
         var params = new Object();
         (params)["size"] = 5000;
-        this.sourceRepo.searchWithParams(new Credential().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(credentials) {
+        this.sourceRepo.searchWithParams("@type:Credential", params, function(ecRemoteLinkedData) {}, function(credentials) {
             me.collection = credentials;
             me.selected = new Array();
             me.highlighted = new Array();
@@ -876,7 +876,7 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
         var me = this;
         var params = new Object();
         (params)["size"] = 5000;
-        this.sourceRepo.searchWithParams(new Badge().getSearchStringByType(), params, function(ecRemoteLinkedData) {}, function(badges) {
+        this.sourceRepo.searchWithParams("@type:Badge", params, function(ecRemoteLinkedData) {}, function(badges) {
             me.collection = badges;
             me.selected = new Array();
             me.highlighted = new Array();

@@ -299,7 +299,7 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                     collection.show();
                     me.redraw();
                 }, function (error) {
-                });
+                },{size:5000});
             }
             if (selectedCategory == "credential") {
                 me.populateListCredentials();

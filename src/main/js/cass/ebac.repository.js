@@ -193,18 +193,32 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 v.addOwner(EcPk.fromPem(owners[i]));
             }
         }
-        if (owners != null) {
-            for (var i = 0; i < v.owner.length; i++) {
-                var eSecret = new EbacEncryptedSecret();
-                eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
-                eSecret.iv = newIv;
-                eSecret.secret = newSecret;
-                if (v.secret == null) {
-                    v.secret = new Array();
+        if (owners != null) 
+            if (v.owner != null) {
+                for (var i = 0; i < v.owner.length; i++) {
+                    var eSecret = new EbacEncryptedSecret();
+                    eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
+                    eSecret.iv = newIv;
+                    eSecret.secret = newSecret;
+                    if (v.secret == null) {
+                        v.secret = new Array();
+                    }
+                    v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
                 }
-                v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.owner[i]), eSecret.toEncryptableJson()));
             }
-        }
+        if (readers != null) 
+            if (v.reader != null) {
+                for (var i = 0; i < v.reader.length; i++) {
+                    var eSecret = new EbacEncryptedSecret();
+                    eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
+                    eSecret.iv = newIv;
+                    eSecret.secret = newSecret;
+                    if (v.secret == null) {
+                        v.secret = new Array();
+                    }
+                    v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(v.reader[i]), eSecret.toEncryptableJson()));
+                }
+            }
         if (readers != null) {
             for (var i = 0; i < readers.length; i++) {
                 v.addReader(EcPk.fromPem(readers[i]));
@@ -558,11 +572,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  @param {EcPk} newReader PK of the new reader.
      */
     prototype.addReader = function(newReader) {
-        var payloadSecret = this.decryptSecret();
-        if (payloadSecret == null) {
-            console.error("Cannot add a Reader if you don't know the secret");
-            return;
-        }
         var pem = newReader.toPem();
         if (this.reader == null) {
             this.reader = new Array();
@@ -573,7 +582,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             }
         }
         this.reader.push(pem);
-        this.secret.push(EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
+        var payloadSecret = this.decryptSecret();
+        if (payloadSecret == null) {
+            console.error("Cannot add a Reader if you don't know the secret");
+            return;
+        }
+        EcArray.setAdd(this.secret, EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
     };
     /**
      *  Removes a reader from the object, if the reader does exist.
@@ -711,6 +725,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.selectedServer = null;
     constructor.caching = false;
     constructor.cachingSearch = false;
+    constructor.unsigned = false;
     constructor.cache = new Object();
     constructor.fetching = new Object();
     /**
@@ -747,8 +762,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var fd = new FormData();
         fd.append("data", JSON.stringify(cacheUrls));
         var me = this;
-        EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
-            fd.append("signatureSheet", p1);
+        if (EcRepository.unsigned) {
             EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
                 var results = p1;
                 for (var i = 0; i < results.length; i++) {
@@ -764,7 +778,25 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     success();
                 }
             }, null);
-        });
+        } else 
+            EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
+                fd.append("signatureSheet", p1);
+                EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
+                    var results = p1;
+                    for (var i = 0; i < results.length; i++) {
+                        var d = new EcRemoteLinkedData(null, null);
+                        d.copyFrom(results[i]);
+                        results[i] = d;
+                        if (EcRepository.caching) {
+                            (EcRepository.cache)[d.shortId()] = d;
+                            (EcRepository.cache)[d.id] = d;
+                        }
+                    }
+                    if (success != null) {
+                        success();
+                    }
+                }, null);
+            });
     };
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
@@ -805,13 +837,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }
         }
         var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
-            if ((EcRepository.cache)[url] != null) {
-                delete (EcRepository.fetching)[url];
-                success((EcRepository.cache)[url]);
-                return;
-            }
-            fd.append("signatureSheet", p1);
+        if (EcRepository.unsigned) {
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
                 delete (EcRepository.fetching)[url];
                 var d = new EcRemoteLinkedData("", "");
@@ -833,7 +859,36 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     failure(p1);
                 }
             });
-        });
+        } else 
+            EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
+                if ((EcRepository.cache)[url] != null) {
+                    delete (EcRepository.fetching)[url];
+                    success((EcRepository.cache)[url]);
+                    return;
+                }
+                fd.append("signatureSheet", p1);
+                EcRemote.postExpectingObject(url, null, fd, function(p1) {
+                    delete (EcRepository.fetching)[url];
+                    var d = new EcRemoteLinkedData("", "");
+                    d.copyFrom(p1);
+                    if (d.getFullType() == null) {
+                        if (failure != null) {
+                            failure(JSON.stringify(p1));
+                        }
+                        return;
+                    }
+                    if (EcRepository.caching) {
+                        (EcRepository.cache)[d.id] = d;
+                        (EcRepository.cache)[d.shortId()] = d;
+                    }
+                    success(d);
+                }, function(p1) {
+                    delete (EcRepository.fetching)[url];
+                    if (failure != null) {
+                        failure(p1);
+                    }
+                });
+            });
     };
     /**
      *  Retrieves a piece of data synchronously from the server, blocking until
@@ -852,8 +907,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }
         }
         var fd = new FormData();
-        var p1 = EcIdentityManager.signatureSheet(60000, url);
-        fd.append("signatureSheet", p1);
+        var p1 = null;
+        if (EcRepository.unsigned == false) {
+            p1 = EcIdentityManager.signatureSheet(60000, url);
+            fd.append("signatureSheet", p1);
+        }
         var oldAsync = EcRemote.async;
         EcRemote.async = false;
         EcRemote.postExpectingObject(url, null, fd, function(p1) {
@@ -912,8 +970,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var fd = new FormData();
         fd.append("data", JSON.stringify(onServer));
         var me = this;
-        EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
-            fd.append("signatureSheet", p1);
+        if (EcRepository.unsigned == true) 
             EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
                 var results = p1;
                 for (var i = 0; i < results.length; i++) {
@@ -929,7 +986,25 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     success(results);
                 }
             }, failure);
-        });
+         else 
+            EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
+                fd.append("signatureSheet", p1);
+                EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
+                    var results = p1;
+                    for (var i = 0; i < results.length; i++) {
+                        var d = new EcRemoteLinkedData(null, null);
+                        d.copyFrom(results[i]);
+                        results[i] = d;
+                        if (EcRepository.caching) {
+                            (EcRepository.cache)[d.shortId()] = d;
+                            (EcRepository.cache)[d.id] = d;
+                        }
+                    }
+                    if (success != null) {
+                        success(results);
+                    }
+                }, failure);
+            });
     };
     /**
      *  Search a repository for JSON-LD compatible data.
@@ -1037,8 +1112,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             fd.append("searchParams", JSON.stringify(params));
         }
         var me = this;
-        EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(signatureSheet) {
-            fd.append("signatureSheet", signatureSheet);
+        if (EcRepository.unsigned == true || (paramObj)["unsigned"] == true) {
+            fd.append("signatureSheet", "[]");
             EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
                 if (EcRepository.cachingSearch) {
                     (EcRepository.cache)[cacheKey] = p1;
@@ -1055,7 +1130,26 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     failure(p1);
                 }
             });
-        });
+        } else 
+            EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(signatureSheet) {
+                fd.append("signatureSheet", signatureSheet);
+                EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
+                    if (EcRepository.cachingSearch) {
+                        (EcRepository.cache)[cacheKey] = p1;
+                    }
+                    if (cacheKey != null) {
+                        delete (EcRepository.fetching)[cacheKey];
+                    }
+                    me.handleSearchResults(p1, eachSuccess, success);
+                }, function(p1) {
+                    if (cacheKey != null) {
+                        delete (EcRepository.fetching)[cacheKey];
+                    }
+                    if (failure != null) {
+                        failure(p1);
+                    }
+                });
+            });
     };
     /**
      *  Searches known repository endpoints to set the server configuration for
@@ -1326,6 +1420,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             results[i] = d;
             if (EcRepository.caching) {
                 (EcRepository.cache)[d.shortId()] = d;
+                (EcRepository.cache)[d.id] = d;
             }
             if (eachSuccess != null) {
                 eachSuccess(results[i]);
@@ -1515,13 +1610,13 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  Fetches the admin keys from the server to compare for check if current
      *  user is an admin user
      * 
+     *  @param {Callback1<String[]>} success
+     *                               Callback triggered when the admin keys are successfully returned,
+     *                               returns an array of the admin public keys
+     *  @param {Callback1<String>}   failure
+     *                               Callback triggered if error occurs fetching admin keys
      *  @memberOf EcRemoteIdentityManager
      *  @method fetchServerAdminKeys
-     *  @param {Callback1<String[]>} success
-     *  			Callback triggered when the admin keys are successfully returned,
-     *  			returns an array of the admin public keys
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs fetching admin keys
      */
     prototype.fetchServerAdminKeys = function(success, failure) {
         var service;

@@ -68,6 +68,16 @@ EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
     constructor.isObject = function(o) {
         return (typeof o) == "object";
     };
+    /**
+     *  Returns keys on the object
+     *  @static
+     *  @method keys
+     *  @param {any} o Object to test.
+     *  @return List of keys
+     */
+    constructor.keys = function(o) {
+        return ecKeys(o);
+    };
 }, {}, {});
 var Callback5 = function() {};
 Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
@@ -689,10 +699,10 @@ EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
 /**
  *  Wrapper to handle all remote web service invocations.
  * 
- *  @class EcRemote
- *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  *  @author devlin.junker@eduworks.com
+ *  @class EcRemote
+ *  @module com.eduworks.ec
  */
 var EcRemote = function() {};
 EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
@@ -718,15 +728,15 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  URL) and a service (service path). Sends form data as a multi-part mime
      *  request.
      * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
      *  @method postExpectingObject
      *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(object)} success Method that is invoked if the server
-     *  responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
@@ -736,15 +746,15 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  URL) and a service (service path). Sends form data as a multi-part mime
      *  request.
      * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {function(string)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
      *  @method postExpectingString
      *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {FormData} fd Form data to send as multi-part mime.
-     *  @param {function(string)} success Method that is invoked if the server
-     *  responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.postExpectingString = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
@@ -799,14 +809,14 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  GETs something from a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
      * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
      *  @method getExpectingObject
      *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *  responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
         var url = server;
@@ -837,14 +847,14 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  GETs something from a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
      * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
      *  @method getExpectingString
      *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *  responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor.getExpectingString = function(server, service, success, failure) {
         var url = server;
@@ -873,14 +883,14 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  DELETEs something at a remote endpoint. Composed of a server endpoint
      *  (root URL) and a service (service path).
      * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {function(object)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
      *  @method _delete
      *  @static
-     *  @param {string} server Protocol, hostname and path to the remote handler.
-     *  @param {string} service Path to service to invoke.
-     *  @param {function(object)} success Method that is invoked if the server
-     *  responds with a success (per jQuery ajax)
-     *  @param {function(string)} failure Method that is invoked if the server
-     *  responds with an error (per jQuery ajax) or a non-200/300.
      */
     constructor._delete = function(url, signatureSheet, success, failure) {
         var p = {};
@@ -934,7 +944,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.getSuccessCallback = function(success, failure) {
         return function(arg0, arg1, arg2) {
             if (arg2.status > 300 || arg2.status < 200) {
-                failure("Error with code: " + arg2.status);
+                if (failure != null) 
+                    failure("Error with code: " + arg2.status);
             } else if (success != null) {
                 success(arg2.responseText);
             }
@@ -943,7 +954,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.getSuccessJSONCallback = function(success, failure) {
         return function(arg0, arg1, arg2) {
             if (arg2.status > 300 || arg2.status < 200) {
-                failure("Error with code: " + arg2.status);
+                if (failure != null) 
+                    failure("Error with code: " + arg2.status);
             } else if (success != null) {
                 try {
                     if (EcObject.isObject(arg2.responseText)) 
@@ -954,11 +966,12 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                         success(JSON.parse(arg2.responseText));
                 }catch (ex) {
                     if (ex != null) {
-                        if ((ex)["getMessage"] != null) {
-                            failure(ex.getMessage());
-                        } else {
-                            failure(ex);
-                        }
+                        if (failure != null) 
+                            if ((ex)["getMessage"] != null) {
+                                failure(ex.getMessage());
+                            } else {
+                                failure(ex);
+                            }
                     }
                 }
             }

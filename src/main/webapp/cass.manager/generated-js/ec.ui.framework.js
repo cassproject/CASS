@@ -243,7 +243,8 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
 var HistoryObject = function() {};
 HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
     prototype.name = null;
-}, {}, {});
+    prototype.params = null;
+}, {params: "Object"}, {});
 /**
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
  *  they work properly
@@ -550,14 +551,13 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
 /**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
- *  session, so  when the back button is pressed, the application will load the previous screen with any data that 
+ *  session, so  when the back button is pressed, the application will load the previous screen with any data that
  *  was associated with it.
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class Screenmanager
  *  @extends ViewManager
- *  
- *  @author devlin.junker@eduworks.com
  */
 var ScreenManager = function() {
     ViewManager.call(this);
@@ -565,14 +565,14 @@ var ScreenManager = function() {
 ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor, prototype) {
     /**
      *  DOM Selector (ID) of the Screen Container that will display all of the screen views
-     *  
+     * 
      *  @property SCREEN_CONTAINER_ID
      *  @type String
      */
     constructor.SCREEN_CONTAINER_ID = "#screenContainer";
     /**
      *  Array to track the history of the current session
-     *  
+     * 
      *  @property myHistory
      *  @type HistoryClosure[]
      */
@@ -591,15 +591,15 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     /**
      *  Screen to be set by application on application startup, dictates what the screen should be if the startup
      *  Screen hasn't been set
-     *  
+     * 
      *  @property defaultScreen
      *  @type EcScreen
      */
     constructor.defaultScreen = null;
     /**
-     *  Screen to be set by application if it notices that a certain screen should be loaded on startup that is 
+     *  Screen to be set by application if it notices that a certain screen should be loaded on startup that is
      *  different from the default Screen
-     *  
+     * 
      *  @property startupScreen
      *  @type EcScreen
      */
@@ -607,14 +607,14 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     /**
      *  Callback to be invoked once the application has started and the first screen has been completely loaded
      *  and displayed
-     *  
+     * 
      *  @property startupCallback
      *  @type Callback1<String>
      */
     constructor.startupCallback = null;
     /**
      *  Callback invoked during a history load (used in Overlay Manager to open an overlay if it was last history view)
-     *  
+     * 
      *  @property loadHistoryCallback
      *  @type Callback2<EcScreen, Object>
      */
@@ -623,31 +623,31 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  Array of callbacks that will compare any markers saved in the browser to see if a specific startup screen
      *  should be set. These callbacks should be defined in the screen Java implementation to check if the screen
      *  should be loaded.
-     *  
+     * 
      *  @property startupScreenCallbacks
      *  @type Callback0[]
      */
     constructor.startupScreenCallbacks = [];
     /**
      *  Function to add startup screen callbacks to the array of callbacks
-     *  
+     * 
+     *  @param {Callback0} callback
+     *                     callback to add, all callbacks will be invoked on the application startup
      *  @memberOf ScreenManager
      *  @method addStartupScreenCallback
      *  @static
-     *  @param {Callback0} callback
-     *  			callback to add, all callbacks will be invoked on the application startup
      */
     constructor.addStartupScreenCallback = function(callback) {
         ScreenManager.startupScreenCallbacks.unshift(callback);
     };
     /**
      *  Retrieves the current view that corresponds to the Screen Container Element (Should be a screen)
-     *  
+     * 
+     *  @return {EcScreen}
+     *  EcScreen instance that is currently being shown in the screen container element
      *  @memberOf ScreenManager
      *  @method getCurrentScreen
      *  @static
-     *  @return {EcScreen}
-     *  		EcScreen instance that is currently being shown in the screen container element
      */
     constructor.getCurrentScreen = function() {
         return ViewManager.getView(ScreenManager.SCREEN_CONTAINER_ID);
@@ -657,12 +657,12 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  Also sets up some code to run during the application load, that calls the startup callbacks
      *  to see if there is a startup screen different than the defaultScreen, then displays it or the
      *  defaultScreen depending on the results
-     *  
+     * 
+     *  @param {EcPage} page
+     *                  The default screen that will be displayed if no startup screen is defined during load
      *  @memberOf ScreenManager
      *  @method setDefaultScreen
      *  @static
-     *  @param {EcPage} page
-     *  			The default screen that will be displayed if no startup screen is defined during load
      */
     constructor.setDefaultScreen = function(page) {
         ScreenManager.defaultScreen = page;
@@ -707,19 +707,18 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     /**
      *  Set's the current screen, then show's it by calling the display function. Depending on the
      *  addHistory flag, will add the page passed in to the history array, tracking session page history
-     *  
+     * 
+     *  @param {EcScreen}  page
+     *                     The screen to set as current and display
+     *  @param {Callback0} callback
+     *                     Function to invoke after the page has been displayed and foundation has been set up on the new HTML
+     *  @param {Object}    params
+     *                     URL parameters to set when the screen changes
+     *  @param {boolean}   addHistory
+     *                     Flag for whether to store this page in the history array
      *  @memberOf ScreenManager
      *  @method changeScreen
      *  @static
-     *  @param {EcScreen} page
-     *  			The screen to set as current and display
-     *  @param {Callback0} callback
-     *  			Function to invoke after the page has been displayed and foundation has been set up on the new HTML
-     *  @param {Object} params
-     *  			URL parameters to set when the screen changes
-     *  @param {boolean} addHistory
-     *  			Flag for whether to store this page in the history array
-     *  
      */
     constructor.changeScreen = function(page, callback, params, addHistory) {
         if (addHistory == null) 
@@ -736,16 +735,16 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  Set's the current screen, then show's it by calling the display function. This replaces the current HistoryClosure
      *  element for the current screen in the history array, rather than leaving it and (potentially) adding another
      *  history array element like changeScreen
-     *  
+     * 
+     *  @param {EcScreen}  page
+     *                     Screen to set as current and display
+     *  @param {Callback0} callback
+     *                     Function to invoke after the page has been displayed and foundation has been set up on the new HTML
+     *  @param {Object}    params
+     *                     URL Parameters to set when replacing screen
      *  @memberOf ScreenManager
      *  @method replaceScreen
      *  @static
-     *  @param {EcScreen} page
-     *  			Screen to set as current and display
-     *  @param {Callback0} callback
-     *  			Function to invoke after the page has been displayed and foundation has been set up on the new HTML
-     *  @param {Object} params
-     *  			URL Parameters to set when replacing screen
      */
     constructor.replaceScreen = function(page, callback, params) {
         ScreenManager.replaceHistory(page, ScreenManager.SCREEN_CONTAINER_ID, params);
@@ -757,12 +756,12 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
     };
     /**
      *  Reloads the current screen, leaving the history alone
-     *  
+     * 
+     *  @param {Callback0} callback
+     *                     Function to invoke after the page has been redisplayed and foundation has been set up on the new HTML
      *  @memberOf ScreenManager
      *  @method reloadCurrentScreen
      *  @static
-     *  @param {Callback0} callback
-     *  			Function to invoke after the page has been redisplayed and foundation has been set up on the new HTML
      */
     constructor.reloadCurrentScreen = function(callback) {
         ScreenManager.showScreen(ScreenManager.getCurrentScreen(), ScreenManager.SCREEN_CONTAINER_ID, function() {
@@ -772,18 +771,18 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         });
     };
     /**
-     *  Adds the screen passed in and the display container to a HistoryClosure element and pushes it 
+     *  Adds the screen passed in and the display container to a HistoryClosure element and pushes it
      *  on the end of the history cache array. This does not ensure that the screen is displayed though.
-     *  
+     * 
+     *  @param {EcScreen} screen
+     *                    The screen to add to the history cache array
+     *  @param {String}   displayContainerId
+     *                    DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)
+     *  @param {Object}   params
+     *                    Object containing key to value pairs that should be put in the url bar to store in history
      *  @memberOf ScreenManager
      *  @method addHistory
      *  @static
-     *  @param {EcScreen} screen
-     *  			The screen to add to the history cache array
-     *  @param {String} displayContainerId
-     *  			DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)
-     *  @param {Object} params
-     *  			Object containing key to value pairs that should be put in the url bar to store in history
      */
     constructor.addHistory = function(screen, displayContainerId, params) {
         var name = screen.getDisplayName();
@@ -805,21 +804,21 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         }
         var pageName = name;
         ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(pageName, screen, displayContainerId, params);
-        (window.history).pushState({name: pageName}, pageName, hash);
+        (window.history).pushState({name: pageName, params: this.params}, pageName, hash);
     };
     /**
-     *  Replaces the current end of the history array with a new HistoryClosure element that contains the screen and 
+     *  Replaces the current end of the history array with a new HistoryClosure element that contains the screen and
      *  containerId passed in.
-     *  
+     * 
+     *  @param {EcScreen} screen
+     *                    Screen to add to the history element that will replace the last in the history array
+     *  @param {String}   displayContainerId
+     *                    DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)
+     *  @param {Object{   params
+     *                    Object containing key to value pairs that should be put in the url bar to remember state at this history point
      *  @memberOf ScreenManager
      *  @method replaceHistory
      *  @static
-     *  @param {EcScreen} screen
-     *  			Screen to add to the history element that will replace the last in the history array
-     *  @param {String} displayContainerId
-     *  			DOM Element ID corresponding to where the screen will be displayed (likely the SCREEN_CONTAINER_ID)
-     *  @param {Object{ params
-     *  			Object containing key to value pairs that should be put in the url bar to remember state at this history point
      */
     constructor.replaceHistory = function(screen, displayContainerId, params) {
         var name = screen.getDisplayName();
@@ -833,27 +832,30 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             idx = 0;
         ScreenManager.myHistory[idx] = new HistoryClosure(pageName, screen, displayContainerId, params);
         var hash = "#" + pageName;
+        var query = "";
         if (params != null) {
-            hash += "?";
+            query += "?";
             for (var str in (params)) {
-                if (!hash.endsWith("?")) 
-                    hash += "&";
-                hash += str + "=" + (params)[str];
+                if (!query.endsWith("?")) 
+                    query += "&";
+                query += str + "=" + (params)[str];
             }
         }
-        if (hash.endsWith("?")) {
-            hash = hash.substring(0, hash.length - 1);
+        window.location.hash = hash;
+        window.location.search = query;
+        if (query.endsWith("?")) {
+            query = query.substring(0, hash.length - 1);
         }
-        (window.history).replaceState({name: pageName}, pageName, hash);
+        (window.history).replaceState({name: window.location.hash + window.location.search, params: this.params}, pageName, hash);
     };
     /**
      *  Sets the url parameters on the current page
-     *  
+     * 
+     *  @param {Object} params
+     *                  url parameters json object
      *  @memberOf ScreenManager
      *  @method setScreenParameters
      *  @static
-     *  @param {Object} params
-     *  			url parameters json object
      */
     constructor.setScreenParameters = function(params) {
         ScreenManager.replaceHistory(ScreenManager.myHistory[ScreenManager.myHistory.length - 1].screen, ScreenManager.SCREEN_CONTAINER_ID, params);
@@ -862,15 +864,17 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  Searches through the history array for the last screen that was loaded with the name passed in, and then displays
      *  it in the container that it was associated with. If there is no screen in the history, then check
      *  if there is a startupScreen that can be loaded right now, otherwise load the default screen
-     *  
+     * 
+     *  @param {String} name
+     *                  Name of the screen to search for in the history array
      *  @memberOf ScreenManager
      *  @method loadHistoryScreen
      *  @static
-     *  @param {String} name
-     *  			Name of the screen to search for in the history array
      */
     constructor.loadHistoryScreen = function(name) {
+        var backCount = 0;
         for (var i = ScreenManager.myHistory.length - 1; i > -1; i--) {
+            backCount++;
             if (ScreenManager.myHistory[i].pageName == name) {
                 if (ScreenManager.myHistory[i].screen != null) {
                     var screen = ScreenManager.myHistory[i].screen;
@@ -880,6 +884,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                         ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
                     });
                     ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(name, screen, ScreenManager.myHistory[i].containerId, ScreenManager.myHistory[i].screenParameters);
+                    window.history.go(-backCount);
                     return;
                 }
             }
