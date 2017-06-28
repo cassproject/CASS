@@ -894,7 +894,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     *  @method toPkcs1Pem
      *  @return {string} PEM encoded public key without whitespace.
      */
     prototype.toPkcs1Pem = function() {
@@ -903,7 +903,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     *  @method toPkcs8Pem
      *  @return {string} PEM encoded public key without whitespace.
      */
     prototype.toPkcs8Pem = function() {
@@ -911,7 +911,7 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     };
     /**
      *  Hashes the public key into an SSH compatible fingerprint.
-     *  @method toHash
+     *  @method fingerprint
      *  @return {string} Public key fingerprint.
      */
     prototype.fingerprint = function() {

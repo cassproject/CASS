@@ -947,9 +947,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 if ((EcRepository.cache)[urls[i]] != null) {
                     cachedVals.push((EcRepository.cache)[urls[i]]);
                 }
-                if (cachedValues != null) 
-                    cachedValues(cachedVals);
             }
+            if (cachedValues != null) 
+                cachedValues(cachedVals);
         }
         var onServer = new Array();
         for (var i = 0; i < urls.length; i++) {

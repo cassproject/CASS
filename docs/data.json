@@ -2131,7 +2131,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 163,
+            "line": 177,
             "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'. \nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. \nWhen all callbacks have been called, 'after(array)' is called.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2146,7 +2146,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 210,
+            "line": 224,
             "description": "A hypergraph, consisting of a set of vertices of type <code>V</code> and a\nset of hyperedges of type <code>E</code> which connect the vertices. This is\nthe base interface for all JUNG graph types.\n<P>\nThis interface permits, but does not enforce, any of the following common\nvariations of graphs:\n<ul>\n<li/>hyperedges (edges which connect a set of vertices of any size)\n<li/>edges (these have have exactly two endpoints, which may or may not be\ndistinct)\n<li/>self-loops (edges which connect exactly one vertex)\n<li>directed and undirected edges\n<li>vertices and edges with attributes (for example, weighted edges)\n<li>vertices and edges with different constraints or properties (for example,\nbipartite or multimodal graphs)\n<li>parallel edges (multiple edges which connect a single set of vertices)\n<li>internal representations as matrices or as adjacency lists or adjacency\nmaps\n</ul>\nExtensions or implementations of this interface may enforce or disallow any\nor all of these variations.\n<p>\n<b>Notes</b>:\n<ul>\n<li/>The collections returned by <code>Hypergraph</code> instances should be\ntreated in general as if read-only. While they are not contractually\nguaranteed (or required) to be immutable, this interface does not define the\noutcome if they are mutated. Mutations should be done via\n<code>{add,remove}{Edge,Vertex}</code>, or in the constructor.\n<li/>\n</ul>",
             "author": "Tom Buskirk (Eduworks)"
         },
@@ -2161,7 +2161,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 699,
+            "line": 713,
             "description": "Wrapper to handle all remote web service invocations.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2176,7 +2176,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 986,
+            "line": 1000,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints \nmust be distinct depends on the implementation.\n<P>\nThis interface permits, but does not enforce, any of the following \ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite \n     or multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul> \nExtensions or implementations of this interface \nmay enforce or disallow any or all of these variations.\n\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed \nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code> \n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an \noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "extends": "Hypergraph",
             "author": "Tom Buskirk (Eduworks)"
@@ -2192,7 +2192,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1193,
+            "line": 1207,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "extends": "Graph",
             "author": "fray",
@@ -16457,7 +16457,7 @@
             "line": 271,
             "description": "Identity change hook.",
             "itemtype": "property",
-            "name": "onIdentityChange",
+            "name": "onIdentityChanged",
             "type": "Callback1<EcIdentity>",
             "static": 1,
             "class": "EcIdentityManager",
@@ -16468,7 +16468,7 @@
             "line": 279,
             "description": "Contacts change hook.",
             "itemtype": "property",
-            "name": "onIdentityChange",
+            "name": "onContactChanged",
             "type": "Callback1<EcIdentity>",
             "static": 1,
             "class": "EcIdentityManager",
@@ -18703,6 +18703,28 @@
         {
             "file": "src/main/js/cass/ec.base.js",
             "line": 140,
+            "description": "Removes a value from the array.",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "Array to add to.",
+                    "type": "Array"
+                },
+                {
+                    "name": "o",
+                    "description": "Object to add to the array if it isn't in there already.",
+                    "type": "Object"
+                }
+            ],
+            "static": 1,
+            "itemtype": "method",
+            "name": "setAdd",
+            "class": "EcArray",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 154,
             "description": "Returns true if the array has the value already.",
             "params": [
                 {
@@ -18724,7 +18746,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 175,
+            "line": 189,
             "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
             "itemtype": "property",
             "name": "counter",
@@ -18734,7 +18756,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 181,
+            "line": 195,
             "description": "\"Each\" method. See class description.",
             "itemtype": "method",
             "name": "each",
@@ -18760,7 +18782,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 202,
+            "line": 216,
             "description": "Will prevent 'after' from being called.",
             "itemtype": "method",
             "name": "stop",
@@ -18769,7 +18791,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 253,
+            "line": 267,
             "description": "Returns a view of all edges in this graph. In general, this obeys the\n<code>Array</code> contract, and therefore makes no guarantees about the\nordering of the vertices within the set.",
             "itemtype": "method",
             "name": "getEdges",
@@ -18781,7 +18803,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 262,
+            "line": 276,
             "description": "Returns a view of all vertices in this graph. In general, this obeys the\n<code>Array</code> contract, and therefore makes no guarantees about the\nordering of the vertices within the set.",
             "itemtype": "method",
             "name": "getVerticies",
@@ -18793,7 +18815,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 271,
+            "line": 285,
             "description": "Returns true if this graph's vertex collection contains\n<code>vertex</code>. Equivalent to\n<code>getVertices().contains(vertex)</code>.",
             "itemtype": "method",
             "name": "containsVertex",
@@ -18811,7 +18833,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 282,
+            "line": 296,
             "description": "Returns true if this graph's edge collection contains <code>edge</code>.\nEquivalent to <code>getEdges().contains(edge)</code>.",
             "itemtype": "method",
             "name": "containsEdge",
@@ -18829,7 +18851,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 292,
+            "line": 306,
             "description": "Returns the number of edges in this graph.",
             "itemtype": "method",
             "name": "getEdgeCount",
@@ -18841,7 +18863,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 299,
+            "line": 313,
             "description": "Returns the number of vertices in this graph.",
             "itemtype": "method",
             "name": "getVertexCount",
@@ -18853,7 +18875,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 306,
+            "line": 320,
             "description": "Returns the collection of vertices which are connected to\n<code>vertex</code> via any edges in this graph. If <code>vertex</code>\nis connected to itself with a self-loop, then it will be included in the\ncollection returned.",
             "itemtype": "method",
             "name": "getNeighbors",
@@ -18871,7 +18893,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 320,
+            "line": 334,
             "description": "Returns the collection of edges in this graph which are connected to\n<code>vertex</code>.",
             "itemtype": "method",
             "name": "getIncidentEdges",
@@ -18889,7 +18911,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 332,
+            "line": 346,
             "description": "Returns the collection of vertices in this graph which are connected to\n<code>edge</code>. Note that for some graph types there are guarantees\nabout the size of this collection (i.e., some graphs contain edges that\nhave exactly two endpoints, which may or may not be distinct).\nImplementations for those graph types may provide alternate methods that\nprovide more convenient access to the vertices.",
             "itemtype": "method",
             "name": "getIncidentVertices",
@@ -18907,7 +18929,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 348,
+            "line": 362,
             "description": "Returns an edge that connects this vertex to <code>v</code>. If this edge\nis not uniquely defined (that is, if the graph contains more than one\nedge connecting <code>v1</code> to <code>v2</code>), any of these edges\nmay be returned. <code>findEdgeSet(v1, v2)</code> may be used to return\nall such edges. Returns null if either of the following is true:\n<ul>\n<li/><code>v2</code> is not connected to <code>v1</code>\n<li/>either <code>v1</code> or <code>v2</code> are not present in this\ngraph\n</ul>\n<p>\n<b>Note</b>: for purposes of this method, <code>v1</code> is only\nconsidered to be connected to <code>v2</code> via a given <i>directed</i>\nedge <code>e</code> if\n<code>v1 == e.getSource() && v2 == e.getDest()</code> evaluates to\n<code>true</code>. (<code>v1</code> and <code>v2</code> are connected by\nan undirected edge <code>u</code> if <code>u</code> is incident to both\n<code>v1</code> and <code>v2</code>.)",
             "itemtype": "method",
             "name": "findEdge",
@@ -18933,7 +18955,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 377,
+            "line": 391,
             "description": "Returns all edges that connects this vertex to <code>v</code>. If this\nedge is not uniquely defined (that is, if the graph contains more than\none edge connecting <code>v1</code> to <code>v2</code>), any of these\nedges may be returned. <code>findEdgeSet(v1, v2)</code> may be used to\nreturn all such edges. Returns null if <code>v2</code> is not connected\nto <code>v1</code>. <br/>\nReturns an empty collection if either <code>v1</code> or <code>v2</code>\nare not present in this graph.\n\n<p>\n<b>Note</b>: for purposes of this method, <code>v1</code> is only\nconsidered to be connected to <code>v2</code> via a given <i>directed</i>\nedge <code>d</code> if\n<code>v1 == d.getSource() && v2 == d.getDest()</code> evaluates to\n<code>true</code>. (<code>v1</code> and <code>v2</code> are connected by\nan undirected edge <code>u</code> if <code>u</code> is incident to both\n<code>v1</code> and <code>v2</code>.)",
             "itemtype": "method",
             "name": "findEdgeSet",
@@ -18959,7 +18981,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 405,
+            "line": 419,
             "description": "Adds <code>vertex</code> to this graph. Fails if <code>vertex</code> is\nnull or already in the graph.",
             "itemtype": "method",
             "name": "addVertex",
@@ -18980,7 +19002,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 418,
+            "line": 432,
             "description": "Adds <code>edge</code> to this graph. Fails under the following\ncircumstances:\n<ul>\n<li/><code>edge</code> is already an element of the graph\n<li/>either <code>edge</code> or <code>vertices</code> is\n<code>null</code>\n<li/><code>vertices</code> has the wrong number of vertices for the graph\ntype\n<li/><code>vertices</code> are already connected by another edge in this\ngraph, and this graph does not accept parallel edges\n</ul>",
             "itemtype": "method",
             "name": "addHyperEdge",
@@ -19005,7 +19027,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 443,
+            "line": 457,
             "description": "Removes <code>vertex</code> from this graph. As a side effect, removes\nany edges <code>e</code> incident to <code>vertex</code> if the removal\nof <code>vertex</code> would cause <code>e</code> to be incident to an\nillegal number of vertices. (Thus, for example, incident hyperedges are\nnot removed, but incident edges--which must be connected to a vertex at\nboth endpoints--are removed.)\n\n<p>\nFails under the following circumstances:\n<ul>\n<li/><code>vertex</code> is not an element of this graph\n<li/><code>vertex</code> is <code>null</code>\n</ul>",
             "itemtype": "method",
             "name": "removeVertex",
@@ -19023,7 +19045,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 465,
+            "line": 479,
             "description": "Removes <code>edge</code> from this graph. Fails if <code>edge</code> is\nnull, or is otherwise not an element of this graph.",
             "itemtype": "method",
             "name": "removeEdge",
@@ -19041,7 +19063,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 476,
+            "line": 490,
             "description": "Returns <code>true</code> if <code>v1</code> and <code>v2</code> share an\nincident edge. Equivalent to <code>getNeighbors(v1).contains(v2)</code>.",
             "itemtype": "method",
             "name": "isNeighbor",
@@ -19063,7 +19085,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 489,
+            "line": 503,
             "description": "Returns <code>true</code> if <code>vertex</code> and <code>edge</code>\nare incident to each other. Equivalent to\n<code>getIncidentEdges(vertex).contains(edge)</code> and to\n<code>getIncidentVertices(edge).contains(vertex)</code>.",
             "itemtype": "method",
             "name": "isIncident",
@@ -19085,7 +19107,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 502,
+            "line": 516,
             "description": "Returns the number of edges incident to <code>vertex</code>. Special\ncases of interest:\n<ul>\n<li/>Incident self-loops are counted once.\n<li>If there is only one edge that connects this vertex to each of its\nneighbors (and vice versa), then the value returned will also be equal to\nthe number of neighbors that this vertex has (that is, the output of\n<code>getNeighborCount</code>).\n<li>If the graph is directed, then the value returned will be the sum of\nthis vertex's indegree (the number of edges whose destination is this\nvertex) and its outdegree (the number of edges whose source is this\nvertex), minus the number of incident self-loops (to avoid\ndouble-counting).\n</ul>\n<p>\nEquivalent to <code>getIncidentEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "degree",
@@ -19106,7 +19128,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 527,
+            "line": 541,
             "description": "Returns the number of vertices that are adjacent to <code>vertex</code>\n(that is, the number of vertices that are incident to edges in\n<code>vertex</code>'s incident edge set).\n\n<p>\nEquivalent to <code>getNeighbors(vertex).size()</code>.",
             "itemtype": "method",
             "name": "getNeighborCount",
@@ -19124,7 +19146,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 541,
+            "line": 555,
             "description": "Returns the number of vertices that are incident to <code>edge</code>.\nFor hyperedges, this can be any nonnegative integer; for edges this must\nbe 2 (or 1 if self-loops are permitted).\n\n<p>\nEquivalent to <code>getIncidentVertices(edge).size()</code>.",
             "itemtype": "method",
             "name": "getIncidentCount",
@@ -19142,7 +19164,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 555,
+            "line": 569,
             "description": "Returns the edge type of <code>edge</code> in this graph.",
             "itemtype": "method",
             "name": "getEdgeType",
@@ -19160,7 +19182,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 564,
+            "line": 578,
             "description": "Returns the default edge type for this graph.",
             "itemtype": "method",
             "name": "getDefaultEdgeType",
@@ -19172,7 +19194,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 571,
+            "line": 585,
             "description": "Returns the collection of edges in this graph which are of type\n<code>edge_type</code>.",
             "itemtype": "method",
             "name": "getEdgesOfType",
@@ -19193,7 +19215,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 584,
+            "line": 598,
             "description": "Returns the number of edges of type <code>edge_type</code> in this graph.",
             "itemtype": "method",
             "name": "getEdgeCountOfType",
@@ -19211,7 +19233,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 593,
+            "line": 607,
             "description": "Returns a <code>Array</code> view of the incoming edges incident to\n<code>vertex</code> in this graph.",
             "itemtype": "method",
             "name": "getInEdges",
@@ -19229,7 +19251,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 604,
+            "line": 618,
             "description": "Returns a <code>Array</code> view of the outgoing edges incident to\n<code>vertex</code> in this graph.",
             "itemtype": "method",
             "name": "getOutEdges",
@@ -19247,7 +19269,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 615,
+            "line": 629,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "inDegree",
@@ -19265,7 +19287,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 625,
+            "line": 639,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "outDegree",
@@ -19283,7 +19305,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 635,
+            "line": 649,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns\nthe source; otherwise returns <code>null</code>. The source of a directed\nedge <code>d</code> is defined to be the vertex for which <code>d</code>\nis an outgoing edge. <code>directed_edge</code> is guaranteed to be a\ndirected edge if its <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getSource",
@@ -19301,7 +19323,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 648,
+            "line": 662,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns\nthe destination; otherwise returns <code>null</code>. The destination of\na directed edge <code>d</code> is defined to be the vertex incident to\n<code>d</code> for which <code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if its\n<code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getDest",
@@ -19319,7 +19341,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 662,
+            "line": 676,
             "description": "Returns a <code>Array</code> view of the predecessors of\n<code>vertex</code> in this graph. A predecessor of <code>vertex</code>\nis defined as a vertex <code>v</code> which is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an\noutgoing edge of <code>v</code> and an incoming edge of\n<code>vertex</code>.",
             "itemtype": "method",
             "name": "getPredecessors",
@@ -19337,7 +19359,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 677,
+            "line": 691,
             "description": "Returns a <code>Array</code> view of the successors of\n<code>vertex</code> in this graph. A successor of <code>vertex</code> is\ndefined as a vertex <code>v</code> which is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an\nincoming edge of <code>v</code> and an outgoing edge of\n<code>vertex</code>.",
             "itemtype": "method",
             "name": "getSuccessors",
@@ -19355,7 +19377,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 709,
+            "line": 723,
             "description": "Turn this property off to cause all remote web service calls to be\nsynchronous. Can be useful for test scripts, blocking calls, etc.",
             "itemtype": "property",
             "name": "async",
@@ -19366,7 +19388,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 718,
+            "line": 732,
             "description": "Timeout for AJAX requests",
             "itemtype": "property",
             "name": "async",
@@ -19377,7 +19399,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 726,
+            "line": 740,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -19414,7 +19436,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 744,
+            "line": 758,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -19451,7 +19473,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 808,
+            "line": 822,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19483,7 +19505,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 846,
+            "line": 860,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19515,7 +19537,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 882,
+            "line": 896,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19547,7 +19569,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1029,
+            "line": 1043,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getInEdges",
@@ -19565,7 +19587,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1038,
+            "line": 1052,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "itemtype": "method",
             "name": "getOutEdges",
@@ -19583,7 +19605,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1047,
+            "line": 1061,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code> \nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of \n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getPredecessors",
@@ -19601,7 +19623,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1059,
+            "line": 1073,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code> \nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code> \nwhich is connected to \n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of \n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "itemtype": "method",
             "name": "getSuccessors",
@@ -19619,7 +19641,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1071,
+            "line": 1085,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "inDegree",
@@ -19637,7 +19659,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1079,
+            "line": 1093,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "itemtype": "method",
             "name": "outDegree",
@@ -19655,7 +19677,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1087,
+            "line": 1101,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isPredecessor",
@@ -19677,7 +19699,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1096,
+            "line": 1110,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "itemtype": "method",
             "name": "isSuccessor",
@@ -19699,7 +19721,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1105,
+            "line": 1119,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "itemtype": "method",
             "name": "getPredecessorCount",
@@ -19717,7 +19739,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1113,
+            "line": 1127,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "itemtype": "method",
             "name": "getSuccessorCount",
@@ -19735,7 +19757,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1121,
+            "line": 1135,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source; \notherwise returns <code>null</code>. \nThe source of a directed edge <code>d</code> is defined to be the vertex for which  \n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getSource",
@@ -19753,7 +19775,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1133,
+            "line": 1147,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination; \notherwise returns <code>null</code>. \nThe destination of a directed edge <code>d</code> is defined to be the vertex \nincident to <code>d</code> for which  \n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if \nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "itemtype": "method",
             "name": "getDest",
@@ -19771,7 +19793,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1146,
+            "line": 1160,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "itemtype": "method",
             "name": "isSource",
@@ -19793,7 +19815,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1155,
+            "line": 1169,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -19813,7 +19835,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1163,
+            "line": 1177,
             "description": "Adds edge <code>e</code> to this graph such that it connects \nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>, \nor both, implementations may choose to either silently add \nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "itemtype": "method",
             "name": "addEdge",
@@ -19847,7 +19869,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1183,
+            "line": 1197,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "itemtype": "method",
             "name": "getOpposite",
@@ -19933,7 +19955,7 @@
             "line": 75,
             "description": "Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
-            "name": "toPem",
+            "name": "toPkcs1Pem",
             "return": {
                 "description": "PEM encoded public key without whitespace.",
                 "type": "String"
@@ -19946,7 +19968,7 @@
             "line": 84,
             "description": "Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.\n(In case you were curious.)",
             "itemtype": "method",
-            "name": "toPem",
+            "name": "toPkcs8Pem",
             "return": {
                 "description": "PEM encoded public key without whitespace.",
                 "type": "String"
@@ -19959,7 +19981,7 @@
             "line": 93,
             "description": "Hashes the public key into an SSH compatible fingerprint.",
             "itemtype": "method",
-            "name": "toHash",
+            "name": "fingerprint",
             "return": {
                 "description": "Public key fingerprint.",
                 "type": "String"
@@ -61370,7 +61392,7 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1155"
+            "line": " src/main/js/cass/ec.base.js:1169"
         },
         {
             "message": "Missing item type",

@@ -271,7 +271,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Identity change hook.
      * 
-     *  @property onIdentityChange
+     *  @property onIdentityChanged
      *  @type Callback1<EcIdentity>
      *  @static
      */
@@ -279,7 +279,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
     /**
      *  Contacts change hook.
      * 
-     *  @property onIdentityChange
+     *  @property onContactChanged
      *  @type Callback1<EcIdentity>
      *  @static
      */

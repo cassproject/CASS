@@ -129,6 +129,20 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
             a.push(o);
     };
     /**
+     *  Removes a value from the array.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     */
+    constructor.setRemove = function(a, o) {
+        for (var i = 0; i < a.length; i++) 
+             while (a[i] == o){
+                a.splice(i, 1);
+            }
+    };
+    /**
      *  Returns true if the array has the value already.
      * 
      *  @param a {Array} Array.
