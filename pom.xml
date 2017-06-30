@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.ebac.skyid</artifactId>
-			<version>5.5.0</version>
+			<version>5.5.1</version>
 		</dependency>
 	</dependencies>
 	<build>

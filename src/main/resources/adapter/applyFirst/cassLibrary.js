@@ -1,0 +1,38 @@
+var $ = null;
+var document = null;
+var window = {};
+var localStorage = {};
+
+load("src/main/webapp/cass.example/js/cass/stjs.js");
+load("src/main/webapp/cass.example/js/cass/blobHelper.js");
+load("classpath:formdata.js");
+print("src/main/webapp/cass.example/js/cass/random.js");
+load("src/main/webapp/cass.example/js/cass/random.js");
+print("src/main/webapp/cass.example/js/cass/ec.base.js");
+load("src/main/webapp/cass.example/js/cass/ec.base.js");
+print("src/main/webapp/cass.example/forge/forge.min.js");
+load("src/main/webapp/cass.example/forge/forge.min.js");
+print("src/main/webapp/cass.example/js/cass/ec.crypto.js");
+load("src/main/webapp/cass.example/js/cass/ec.crypto.js");
+print("src/main/webapp/cass.example/js/cass/org.json-ld.js");
+load("src/main/webapp/cass.example/js/cass/org.json-ld.js");
+print("src/main/webapp/cass.example/js/cass/org.cassproject.schema.general.js");
+load("src/main/webapp/cass.example/js/cass/org.cassproject.schema.general.js");
+print("src/main/webapp/cass.example/js/cass/org.schema.js");
+load("src/main/webapp/cass.example/js/cass/org.schema.js");
+print("src/main/webapp/cass.example/js/cass/org.cassproject.schema.ebac.js");
+load("src/main/webapp/cass.example/js/cass/org.cassproject.schema.ebac.js");
+print("src/main/webapp/cass.example/js/cass/org.cassproject.schema.cass.js");
+load("src/main/webapp/cass.example/js/cass/org.cassproject.schema.cass.js");
+print("src/main/webapp/cass.example/js/cass/ebac.identity.js");
+load("src/main/webapp/cass.example/js/cass/ebac.identity.js");
+print("src/main/webapp/cass.example/js/cass/ebac.repository.js");
+load("src/main/webapp/cass.example/js/cass/ebac.repository.js");
+print("src/main/webapp/cass.example/js/cass/cass.competency.js");
+load("src/main/webapp/cass.example/js/cass/cass.competency.js");
+print("src/main/webapp/cass.example/js/cass/cass.rollup.js");
+load("src/main/webapp/cass.example/js/cass/cass.rollup.js");
+
+EcRepository.caching = true;
+EcRemote.async = false;
+EcIdentityManager.async = false;
