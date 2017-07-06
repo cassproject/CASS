@@ -1175,7 +1175,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     constructor.trimVersionFromUrl = function(id) {
         if (id == null) 
             return null;
-        if (!id.substring(id.lastIndexOf(&quot;/&quot;)).matches(&quot;^\\/[0-9]+$&quot;)) 
+        if (!id.substring(id.lastIndexOf(&quot;/&quot;)).matches(&quot;\\/[0-9]+&quot;)) 
             return id;
         var rawId = id.substring(0, id.lastIndexOf(&quot;/&quot;));
         if (rawId.endsWith(&quot;/&quot;)) 

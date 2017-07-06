@@ -842,7 +842,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             }
         }
         window.location.hash = hash;
-        window.location.search = query;
         if (query.endsWith("?")) {
             query = query.substring(0, hash.length - 1);
         }

@@ -71,76 +71,74 @@ function newFramework() {
     }, error);
 }
 
-function populateFramework(frameworkId) {
+function populateFramework(frameworkId,fwui) {
     EcRepository.get(frameworkId, function (fw) {
+    	var ids = [];
+
         if (fw.competency != null)
-            repo.precache(fw.competency);
+            ids = ids.concat(fw.competency);
         if (fw.relation != null)
-            repo.precache(fw.relation);
+            ids = ids.concat(fw.relation);
         if (fw.level != null)
-            repo.precache(fw.level);
-
-        var fwui = $("[url='" + fw.shortId() + "']");
-        fwui.find(".cass-framework-name").text(fw.name);
-        if ($("#frameworks").find(".is-active").attr("url") == null) {
-            $("#selectedFramework").text("All Frameworks").show();
-            $("#selectedCompetency").hide();
-        } else {
-
-            $("#selectedFramework").text(fw.name).show();
-            $("#selectedCompetency").hide();
-        }
-        if (fw.description === undefined || fw.description == null)
-            fwui.find(".cass-framework-description").text("No description");
-        else
-            fwui.find(".cass-framework-description").text(fw.description);
-        var url = fw.shortId();
-        if (fw.sameAs != null)
-            url = fw.sameAs;
-        fwui.find(".cass-framework-url").text(url).attr("href", url).unbind().click(function (e) {
-            e.preventDefault();
-            if (confirm("This will navigate to another page. Continue?"))
-                window.open($(this).attr("href"), "_blank");
+            ids = ids.concat(fw.level);
+		if (fwui == null) fwui = $("[url='" + fw.shortId() + "']");
+		fwui.find(".cass-framework-name").text(fw.name);
+		if ($("#frameworks").find(".is-active").attr("url") == null) {
+			$("#selectedFramework").text("All Frameworks").show();
+			$("#selectedCompetency").hide();
+		} else {
+			$("#selectedFramework").text(fw.name).show();
+			$("#selectedCompetency").hide();
+		}
+		if (fw.description === undefined || fw.description == null)
+			fwui.find(".cass-framework-description").text("No description");
+		else
+			fwui.find(".cass-framework-description").text(fw.description);
+		var url = fw.shortId();
+		if (fw.sameAs != null)
+			url = fw.sameAs;
+		fwui.find(".cass-framework-url").text(url).attr("href", url).unbind().click(function (e) {
+			e.preventDefault();
+			if (confirm("This will navigate to another page. Continue?"))
+				window.open($(this).attr("href"), "_blank");
+		});
+		fwui.find(".cass-framework-competencies").html(competencyTemplate);
+		fwui.find("#competency").html("<center>Loading "+ids.length+" records...</center>");
+        repo.precache(ids,function(){
+			fwui.find("#competency").html("");
+			if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
+				for (var i = 0; i < fw.competency.length; i++) {
+					var competencyUrl = fw.competency[i];
+					var ui = fwui.find("#competency").append(cassCompetencyTemplate).children().last();
+					ui.attr("url", competencyUrl);
+					ui.find(".cass-competency-relations").html("");
+					(function (competencyUrl, i,ui) {
+						populateCompetency(competencyUrl,ui);
+					})(competencyUrl, i,ui);
+				}
+				fwui.find("#competency").foundation();
+			} else {
+				fwui.find("#competency").html("&nbsp;No competencies found.");
+				for (var i = 0; i < EcIdentityManager.ids.length; i++)
+					if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
+						fwui.find("#competency").html("&nbsp;No competencies found. You may add to this framework in the Framework Manager through the Insert menu.");
+			}
+			populateFrameworkRelations(frameworkId,fwui);
+			populateFrameworkLevels(frameworkId);
+			$(".canEditFramework").hide();
+			for (var i = 0; i < EcIdentityManager.ids.length; i++)
+				if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
+					if (identity != null)
+						$(".canEditFramework").show();
+			frameworkFilter();
         });
-        fwui.find(".cass-framework-competencies").html(competencyTemplate);
-        fwui.find("#competency").html("");
-        if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
-            for (var i = 0; i < fw.competency.length; i++) {
-                var competencyUrl = fw.competency[i];
-                fwui.find("#competency").append(cassCompetencyTemplate);
-                var ui = fwui.find("#competency").children().last();
-                ui.attr("url", competencyUrl);
-                ui.find(".cass-competency-relations").html("");
-                (function (competencyUrl, i) {
-                    timeout(function () {
-                        populateCompetency(competencyUrl);
-                    });
-                })(competencyUrl, i);
-            }
-            fwui.find("#competency").foundation();
-        } else {
-            fwui.find("#competency").html("&nbsp;No competencies found.");
-            for (var i = 0; i < EcIdentityManager.ids.length; i++)
-                if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
-                    fwui.find("#competency").html("&nbsp;No competencies found. You may add to this framework in the Framework Manager through the Insert menu.");
-        }
-        populateFrameworkRelations(frameworkId);
-        populateFrameworkLevels(frameworkId);
-        $(".canEditFramework").hide();
-        for (var i = 0; i < EcIdentityManager.ids.length; i++)
-            if (fw.canEdit(EcIdentityManager.ids[i].ppk.toPk()))
-                if (identity != null)
-                    $(".canEditFramework").show();
-        frameworkFilter();
     });
 }
 
 $("body").on("click", ".cass-framework", null, function (e) {
-    setTimeout((function (frameworkUrl) {
-        $(".canEditFramework").hide();
-        populateFramework(frameworkUrl);
-        //setTimeout(function(){helpAssist('#joyride-framework-detail');},500);
-    })($(this).attr("url")), 0);
+	$(".canEditFramework").hide();
+	if ($(this).find(".accordion-title").attr("aria-expanded") == "true")
+		populateFramework($(this).attr("url"),$(this));
 }, error);
 
 function editFramework(e) {

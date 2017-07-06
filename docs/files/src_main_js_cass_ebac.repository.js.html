@@ -1569,7 +1569,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         for (var i = 0; i &lt; urls.length; i++) {
             var url = urls[i];
             if (url.startsWith(this.selectedServer) &amp;&amp; (EcRepository.cache)[url] == null) {
-                cacheUrls.push(url.replace(this.selectedServer, &quot;&quot;));
+                cacheUrls.push(url.replace(this.selectedServer, &quot;&quot;).replace(&quot;custom/&quot;, &quot;&quot;));
             }
         }
         if (cacheUrls.length == 0) {
@@ -1635,9 +1635,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.caching) {
             if ((EcRepository.cache)[url] != null) {
                 if (EcRemote.async) {
-                    setTimeout(function() {
+                    Task.immediate(function() {
                         success((EcRepository.cache)[url]);
-                    }, 0);
+                    });
                 } else {
                     success((EcRepository.cache)[url]);
                 }
@@ -1783,7 +1783,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         for (var i = 0; i &lt; urls.length; i++) {
             var url = urls[i];
             if (url.startsWith(this.selectedServer)) {
-                onServer.push(url.replace(this.selectedServer, &quot;&quot;));
+                onServer.push(url.replace(this.selectedServer, &quot;&quot;).replace(&quot;custom/&quot;, &quot;&quot;));
             }
         }
         var fd = new FormData();
@@ -2013,7 +2013,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 hostnames.push(window.location.hostname, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;), window.location.hostname + &quot;:8080&quot;, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;) + &quot;:8080&quot;);
             }
         }
-        servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;, &quot;/&quot;, &quot;/service/&quot;, &quot;/api/custom/&quot;);
+        servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/&quot;, &quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;, &quot;/&quot;, &quot;/service/&quot;, &quot;/api/&quot;, &quot;/api/custom/&quot;);
         var me = this;
         me.autoDetectFound = false;
         for (var j = 0; j &lt; hostnames.length; j++) {
@@ -2072,7 +2072,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 hostnames.push(window.location.hostname, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;), window.location.hostname + &quot;:8080&quot;, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;) + &quot;:8080&quot;);
             }
         }
-        servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;, &quot;/&quot;, &quot;/service/&quot;, &quot;/api/custom/&quot;);
+        servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/&quot;, &quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;, &quot;/&quot;, &quot;/service/&quot;, &quot;/api/&quot;, &quot;/api/custom/&quot;);
         for (var j = 0; j &lt; hostnames.length; j++) {
             for (var k = 0; k &lt; servicePrefixes.length; k++) {
                 for (var i = 0; i &lt; protocols.length; i++) {
