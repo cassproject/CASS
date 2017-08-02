@@ -227,7 +227,7 @@ function asnFrameworkToCass(){
 
 					if(idMap[parentId] != undefined && idMap[parentId] != ""){
 						
-						var relation = {source:idMap[parentId], target:compactedComp["@id"], relationType:"narrows"};
+						var relation = {source:compactedComp["@id"], target:idMap[parentId], relationType:"narrows"};
 						relation["@context"] = "http://schema.cassproject.org/0.3/";
 						relation["@type"] = "Relation";
 						relation["@id"] = repoEndpoint() + "data/" + relType + "/" + relId + "/" + relVersion;
