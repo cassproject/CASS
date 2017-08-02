@@ -194,7 +194,24 @@ function asnFrameworkToCass(){
 				var childComps = asnComp["gemq:hasChild"];
 				if(childComps != undefined && childComps.length != undefined){
 					for(var idx in childComps){
-						parentMap[childComps[idx]["@id"]] = newId; 
+						if(idMap[childComps[idx]["@id"]] == undefined){
+							parentMap[childComps[idx]["@id"]] = newId;
+						}else{
+							var relType = "schema.cassproject.org.0.3.Relation";
+							var relId = generateUUID();
+							var relVersion = date(null, null, true);
+
+							var relation = {source:idMap[childComps[idx]["@id"]], target:newId, relationType:"narrows"};
+							relation["@context"] = "http://schema.cassproject.org/0.3/";
+							relation["@type"] = "Relation";
+							relation["@id"] = repoEndpoint() + "data/" + relType + "/" + relId + "/" + relVersion;
+							
+							cassRelationships.push(relation["@id"]);
+							
+							// Create Parent-Child Relation
+							skyrepoPut({"obj":JSON.stringify(relation), "type":relType, "id":relId, "version":relVersion})
+						}
+						 
 					}
 				}
 				
