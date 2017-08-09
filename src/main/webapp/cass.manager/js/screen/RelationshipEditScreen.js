@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen that handles editing a relationship in a form
  * 
@@ -26,9 +35,9 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
         {
             var competency = results[i];
             $("#relationEditSource").append("<option/>");
-            $("#relationEditSource").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.name);               
+            $("#relationEditSource").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.getName());               
             $("#relationEditTarget").append("<option/>");
-            $("#relationEditTarget").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.name);
+            $("#relationEditTarget").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.getName());
             if (currentRelation != null)
             {
                 if (competency.isId(currentRelation.source))
@@ -111,7 +120,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationEditPopulateSource(competency)
 	{
 	    $("#relationEditSourceId").val(competency.shortId());
-	    $("#relationEditSourceName").val(competency.name);
+	    $("#relationEditSourceName").val(competency.getName());
 	    $("#relationEditSourceDescription").val(competency.description);
 	    $("#relationEditSourceScope").val(competency.scope);
 	}
@@ -128,7 +137,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationEditPopulateTarget(competency)
 	{
 	    $("#relationEditTargetId").val(competency.shortId());
-	    $("#relationEditTargetName").val(competency.name);
+	    $("#relationEditTargetName").val(competency.getName());
 	    $("#relationEditTargetDescription").val(competency.description);
 	    $("#relationEditTargetScope").val(competency.scope);
 	}

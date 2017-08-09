@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen for displaying search results from a competency search in 
  * a DataViewer view. 
@@ -240,15 +249,27 @@ CompetencySearchScreen = (function(CompetencySearchScreen){
 							"<span class='datum-description'></span>" +
 							"</div>" +
 							"<div class='small-4 columns datum-owner'></div>");
-				if(datum["name"] != undefined)
-					row.find(".datum-name").text(datum["name"]);
-				else
-					row.find(".datum-name").text(id);
 				
-				if(datum["description"] != undefined)
-					row.find(".datum-description").text(" - "+datum["description"]);
-				else
-					row.find(".datum-description").text("");
+				var name;
+				if(datum.getName != undefined){
+					name = datum.getName();
+				}else if(datum["name"] != undefined){
+					name = datum["name"];
+				}else{
+					name = id;
+				}
+					
+				row.find(".datum-name").text(name);
+				
+				var desc;
+				if(datum.getDescription != undefined && datum.getDescription() != null && datum.getDescription() != ""){
+					desc = " - "+datum.getDescription();
+				}else if(datum["description"] != undefined && datum["description"] != ""){
+					desc = " - "+datum["description"];
+				}else{
+					desc = "";
+				}
+				row.find(".datum-description").text(desc);
 				
 				if(datum["owner"] != undefined && datum["owner"].length > 0){
 					for(var i in datum["owner"]){

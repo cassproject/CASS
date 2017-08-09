@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen that handles searching and displaying frameworks
  * 
@@ -209,8 +218,11 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
 							"<div class='small-4 columns datum-owner'></div>");
 				
-				if(datum.name != undefined && datum.name != ""){
-					row.find(".datum-name").text(datum.name);
+				var name;
+				if(datum.getName != undefined && datum.getName() != ""){
+					row.find(".datum-name").text(datum.getName());
+				}else if(datum["name"] != undefined && datum["name"] != ""){
+					row.find(".datum-name").text(datum["name"]);
 				}else{
 					row.find(".datum-name").html("<i>No Name</i>");
 				}

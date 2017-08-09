@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen that handles displaying Framework Details
  * 
@@ -26,9 +35,22 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 	 * 			Relation to display
 	 */
     function buildFramework(framework) {
-    	$("#frameworkViewerName").text(framework.name);
+    	var name;
+		if(framework.getName != undefined){
+			$("#frameworkViewerName").text(framework.getName());
+		}else if(framework["name"] != undefined){
+			$("#frameworkViewerName").text(framework["name"]);
+		}else{
+			$("#frameworkViewerName").html("<i>Unnamed Framework</i>");
+		}
+    		
     	$("#frameworkViewerId").text(framework.id);
-    	$("#frameworkViewerDescription").text(framework.description);
+    	
+    	if(framework.getDescription != undefined){
+			$("#frameworkViewerDescription").text(framework.getDescription());
+		}else if(framework["description"] != undefined){
+			$("#frameworkViewerDescription").text(framework["description"]);
+		}
     	
     	cacheShowObjects(framework);
     }
@@ -113,9 +135,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                     timeout(function () {
                         EcCompetency.get(framework.competency[i], function (competency) {
                             fetches--;
-                            competency.font = fonts.node;
-                            competency.mass = 2;
-                            nodes[competency.shortId()] = graph.newNode(competency);
+                            
+                            var name = competency.getName()
+                            
+                            
+                            nodes[competency.shortId()] = graph.newNode({id:competency.id, "name":name, font: fonts.node, mass: 2});
                             nodes[competency.shortId()].gravity = 0.0;
                             nodes[competency.shortId()].fixed = true;
                             if (framework.competency.length < 20)

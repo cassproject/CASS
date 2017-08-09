@@ -4,6 +4,6 @@
 	
 	"returnLoginMessage": "For Your Security, You are Logged Out on Page Reload. Please Enter Your Credentials to Continue Logged In.",
 
-	"showRepoMenu": "false",
+	"showRepoMenu": "true",
 	"showExamplesMenu": "false"
 }

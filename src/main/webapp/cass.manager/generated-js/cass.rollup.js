@@ -1,3 +1,35 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
+    };
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 /**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
  *  (hereafter, "Inquiry")
@@ -348,29 +380,16 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         return false;
     };
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
+/**
+ *  Created by fray on 5/30/17.
+ */
+var AssertionCoprocessor = function() {};
+AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
+    prototype.assertionProcessor = null;
+    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
+        success(new Array());
     };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
+}, {assertionProcessor: "AssertionProcessor"}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);
@@ -765,11 +784,16 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             this.numberOfRelationsToProcess = 0;
             for (var i = 0; i < this.ip.competency.length; i++) {
                 var relationsRelatedToThisCompetency = (this.relationLookup)[this.ip.competency[i].shortId()];
+                if (relationsRelatedToThisCompetency == null) 
+                    relationsRelatedToThisCompetency = new Array();
                 this.numberOfRelationsToProcess += relationsRelatedToThisCompetency.length;
                 this.numberOfRelationsProcessed = 0;
                 for (var j = 0; j < relationsRelatedToThisCompetency.length; j++) {
                     this.ip.numberOfQueriesRunning++;
                     rpg.processFindCompetencyRelationshipSuccess(relationsRelatedToThisCompetency[j], rpg.ip);
+                }
+                if (relationsRelatedToThisCompetency.length == 0) {
+                    this.checkForFinish();
                 }
             }
         }
@@ -819,13 +843,14 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
  *  Processor used in Assertion Processing. Can estimate or determine competence
  *  of individuals.
  * 
- *  @class AssertionProcessor
- *  @module org.cassproject
  *  @author fritz.ray@eduworks.com
  *  @author tom.buskirk@eduworks.com
+ *  @class AssertionProcessor
+ *  @module org.cassproject
  */
 var AssertionProcessor = function() {
     this.repositories = new Array();
+    this.coprocessors = new Array();
     this.step = AssertionProcessor.DEF_STEP;
     this.profileMode = false;
 };
@@ -835,6 +860,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     prototype.profileMode = false;
     prototype.logFunction = null;
     prototype.assertions = null;
+    prototype.coprocessors = null;
     constructor.DEF_STEP = false;
     prototype.processedEquivalencies = null;
     prototype.context = null;
@@ -852,22 +878,22 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
      *  Asynchronously processes and provides an answer to the question: Does an
      *  individual hold a competency?
      * 
-     *  @method has
-     *  @param {EcPk[]} subject Public keys that identify the subject.
-     *  @param {EcCompetency} competency The Competency being inquired about.
-     *  @param {EcLevel} level The Level of the Competency at which the question
-     *  is being asked.
-     *  @param {EcFramework} context The Framework in which to scope the inquiry.
-     *  @param {EbacSignature[]} additionalSignatures Additional signatures
-     *  provided by an authority, used to request additional access on a one-time
-     *  basis.
+     *  @param {EcPk[]}                  subject Public keys that identify the subject.
+     *  @param {EcCompetency}            competency The Competency being inquired about.
+     *  @param {EcLevel}                 level The Level of the Competency at which the question
+     *                                   is being asked.
+     *  @param {EcFramework}             context The Framework in which to scope the inquiry.
+     *  @param {EbacSignature[]}         additionalSignatures Additional signatures
+     *                                   provided by an authority, used to request additional access on a one-time
+     *                                   basis.
      *  @param {function(InquiryPacket)} success The method that is invoked when
-     *  a decision has been reached.
-     *  @param {string function(string)} ask The method that is invoked when the
-     *  assertion processor detects that it needs information. (Usernames,
-     *  passwords, etc)
-     *  @param {function(string)} failure The method that is invoked when the
-     *  assertion processor has failed.
+     *                                   a decision has been reached.
+     *  @param {string                   function(string)} ask The method that is invoked when the
+     *                                   assertion processor detects that it needs information. (Usernames,
+     *                                   passwords, etc)
+     *  @param {function(string)}        failure The method that is invoked when the
+     *                                   assertion processor has failed.
+     *  @method has
      */
     prototype.has = function(subject, competency, level, context, additionalSignatures, success, ask, failure) {
         var ip = new InquiryPacket(subject, competency, level, context, success, failure, null, InquiryPacket.IPType.COMPETENCY);
@@ -887,15 +913,13 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         listOfActivatedCompetencies.sort(function(a, b) {
             return b.compareTo(a);
         });
-        for (var i = 0; i < this.repositories.length; i++) {
-            var currentRepository = this.repositories[i];
-            var searchQuery = this.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
-            this.log(ip, "Querying repositories for subject assertions on " + listOfActivatedCompetencies.length + " competencies: " + searchQuery);
-            ip.numberOfQueriesRunning++;
+        var eah = new EcAsyncHelper();
+        eah.each(this.repositories, function(currentRepository, callback0) {
+            var searchQuery = me.buildAssertionsSearchQuery(ip, listOfActivatedCompetencies);
+            me.log(ip, "Querying repositories for subject assertions on " + listOfActivatedCompetencies.length + " competencies: " + searchQuery);
             var params = new Object();
             (params)["size"] = 5000;
             EcAssertion.search(currentRepository, searchQuery, function(p1) {
-                ip.numberOfQueriesRunning--;
                 me.log(ip, p1.length + " assertions found.");
                 me.assertions = new Object();
                 for (var i = 0; i < p1.length; i++) {
@@ -906,14 +930,29 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                     var as = (me.assertions)[competency];
                     as.push(a);
                 }
-                if (ip.numberOfQueriesRunning == 0) 
-                    success(ip);
+                callback0();
             }, function(p1) {
-                ip.numberOfQueriesRunning--;
-                if (ip.numberOfQueriesRunning == 0) 
-                    success(ip);
+                callback0();
             }, params);
-        }
+        }, function(strings) {
+            var eah2 = new EcAsyncHelper();
+            eah2.each(me.coprocessors, function(ac, callback00) {
+                ac.assertionProcessor = me;
+                ac.collectAssertions(ip, listOfActivatedCompetencies, function(assertions) {
+                    for (var i = 0; i < assertions.length; i++) {
+                        var a = assertions[i];
+                        var competency = EcRemoteLinkedData.trimVersionFromUrl(a.competency);
+                        if ((me.assertions)[competency] == null) 
+                            (me.assertions)[competency] = new Array();
+                        var as = (me.assertions)[competency];
+                        as.push(a);
+                    }
+                    callback00();
+                });
+            }, function(strings) {
+                success(ip);
+            });
+        });
     };
     prototype.isIn = function(ip, alreadyDone) {
         for (var i = 0; i < alreadyDone.length; i++) 
@@ -1109,7 +1148,7 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
         for (var i = 0; i < ip.subPackets.length; i++) 
             this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
     };
-}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var RollupRuleProcessor = function(ip, ep) {
     this.ip = ip;
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
@@ -1180,9 +1219,7 @@ var CombinatorAssertionProcessor = function() {
 };
 CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, AssertionProcessor, [], function(constructor, prototype) {
     constructor.relationLookup = null;
-    prototype.processFoundAssertion = function(searchData, ip, success, failure) {
-        var a = new EcAssertion();
-        a.copyFrom(searchData);
+    prototype.processFoundAssertion = function(a, ip, success, failure) {
         var eah = new EcAsyncHelper();
         var me = this;
         eah.each(ip.subject, function(p1, p2) {
@@ -1276,7 +1313,9 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
                     currentRepository.search(this.buildAssertionSearchQuery(ip, null), function(p1) {}, function(p1) {
                         var eah = new EcAsyncHelper();
                         eah.each(p1, function(p1, p2) {
-                            me.processFoundAssertion(p1, ip, p2, function(p1) {
+                            var a = new EcAssertion();
+                            a.copyFrom(p1);
+                            me.processFoundAssertion(a, ip, p2, function(p1) {
                                 p2();
                             });
                         }, function(p1) {
@@ -1349,7 +1388,186 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         this.log(ip, "Executing rollup rule interpreter");
         rri.go();
     };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+var PessimisticQuadnaryAssertionProcessor = function() {
+    CombinatorAssertionProcessor.call(this);
+};
+PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
+    prototype.transferIndeterminateOptimistically = true;
+    prototype.determineCombinatorAndResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (ip.anyChildPacketsAreUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else 
+            ip.result = InquiryPacket.ResultType.TRUE;
+    };
+    prototype.determineCombinatorNarrowsResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorBroadensResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorRequiresResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorIsRequiredByResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorOrResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (ip.allChildPacketsUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else 
+            ip.result = InquiryPacket.ResultType.FALSE;
+    };
+    prototype.getPacketAssertionResult = function(ip) {
+        if (ip.positive.length > 0 && ip.negative.length == 0) 
+            return InquiryPacket.ResultType.TRUE;
+         else if (ip.positive.length == 0 && ip.negative.length > 0) 
+            return InquiryPacket.ResultType.FALSE;
+         else if (ip.positive.length > 0 && ip.negative.length > 0) 
+            return InquiryPacket.ResultType.INDETERMINANT;
+         else 
+            return InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineResultForUnknownAssertionResult = function(ip) {
+        if (ip.allChildPacketsUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else if (ip.allEquivalentPacketsUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else if (ip.allEquivalentPacketsTrueOrUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else if (ip.allEquivalentPacketsFalseOrUnknown()) {
+            if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    prototype.determineResultForTrueAssertionResult = function(ip) {
+        if (ip.allEquivalentPacketsTrueOrUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    prototype.determineResultForFalseAssertionResult = function(ip) {
+        if (ip.allEquivalentPacketsFalseOrUnknown()) {
+            if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    /**
+     *  IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of
+     *  positive assertions > 0 && number of negative assertions = 0 THEN
+     *  assertionResult = TRUE IF number of positive assertions = 0 && number of
+     *  negative assertions > 0 THEN assertionResult = FALSE IF number of
+     *  positive assertions > 0 && number of negative assertions > 0 THEN
+     *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &&
+     *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
+     *  
+     *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
+     *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
+     *  packets = INDETERMINANT THEN INDETERMINANT
+     *  
+     *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
+     *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
+     *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
+     *  INDETERMINANT
+     *  
+     *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
+     *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
+     *  
+     *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
+     *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     *  
+     *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
+     *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
+     *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
+     *  INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     */
+    prototype.determineCompetencyOrRollupRuleResult = function(ip) {
+        var assertionResult = this.getPacketAssertionResult(ip);
+        if (InquiryPacket.ResultType.INDETERMINANT.equals(assertionResult) || ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (InquiryPacket.ResultType.UNKNOWN.equals(assertionResult)) 
+            this.determineResultForUnknownAssertionResult(ip);
+         else if (InquiryPacket.ResultType.TRUE.equals(assertionResult)) 
+            this.determineResultForTrueAssertionResult(ip);
+         else 
+            this.determineResultForFalseAssertionResult(ip);
+    };
+    prototype.determineResult = function(ip) {
+        if (ip.numberOfQueriesRunning == 0) {
+            if (InquiryPacket.IPType.RELATION_AND.equals(ip.type)) 
+                this.determineCombinatorAndResult(ip);
+             else if (InquiryPacket.IPType.RELATION_OR.equals(ip.type)) 
+                this.determineCombinatorOrResult(ip);
+             else if (InquiryPacket.IPType.RELATION_NARROWS.equals(ip.type)) 
+                this.determineCombinatorNarrowsResult(ip);
+             else if (InquiryPacket.IPType.RELATION_BROADENS.equals(ip.type)) 
+                this.determineCombinatorBroadensResult(ip);
+             else if (InquiryPacket.IPType.RELATION_REQUIRES.equals(ip.type)) 
+                this.determineCombinatorRequiresResult(ip);
+             else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
+                this.determineCombinatorIsRequiredByResult(ip);
+             else 
+                this.determineCompetencyOrRollupRuleResult(ip);
+        } else {
+            this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
+        }
+    };
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
@@ -1546,183 +1764,4 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
     };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
-var PessimisticQuadnaryAssertionProcessor = function() {
-    CombinatorAssertionProcessor.call(this);
-};
-PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
-    prototype.transferIndeterminateOptimistically = true;
-    prototype.determineCombinatorAndResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (ip.anyChildPacketsAreUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else 
-            ip.result = InquiryPacket.ResultType.TRUE;
-    };
-    prototype.determineCombinatorNarrowsResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorBroadensResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorRequiresResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorIsRequiredByResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorOrResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (ip.allChildPacketsUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else 
-            ip.result = InquiryPacket.ResultType.FALSE;
-    };
-    prototype.getPacketAssertionResult = function(ip) {
-        if (ip.positive.length > 0 && ip.negative.length == 0) 
-            return InquiryPacket.ResultType.TRUE;
-         else if (ip.positive.length == 0 && ip.negative.length > 0) 
-            return InquiryPacket.ResultType.FALSE;
-         else if (ip.positive.length > 0 && ip.negative.length > 0) 
-            return InquiryPacket.ResultType.INDETERMINANT;
-         else 
-            return InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineResultForUnknownAssertionResult = function(ip) {
-        if (ip.allChildPacketsUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else if (ip.allEquivalentPacketsUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else if (ip.allEquivalentPacketsTrueOrUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else if (ip.allEquivalentPacketsFalseOrUnknown()) {
-            if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    prototype.determineResultForTrueAssertionResult = function(ip) {
-        if (ip.allEquivalentPacketsTrueOrUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    prototype.determineResultForFalseAssertionResult = function(ip) {
-        if (ip.allEquivalentPacketsFalseOrUnknown()) {
-            if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    /**
-     *  IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of
-     *  positive assertions > 0 && number of negative assertions = 0 THEN
-     *  assertionResult = TRUE IF number of positive assertions = 0 && number of
-     *  negative assertions > 0 THEN assertionResult = FALSE IF number of
-     *  positive assertions > 0 && number of negative assertions > 0 THEN
-     *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &&
-     *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
-     *  
-     *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
-     *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
-     *  packets = INDETERMINANT THEN INDETERMINANT
-     *  
-     *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
-     *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
-     *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
-     *  INDETERMINANT
-     *  
-     *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
-     *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
-     *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
-     *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     *  
-     *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
-     *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
-     *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
-     *  INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     */
-    prototype.determineCompetencyOrRollupRuleResult = function(ip) {
-        var assertionResult = this.getPacketAssertionResult(ip);
-        if (InquiryPacket.ResultType.INDETERMINANT.equals(assertionResult) || ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (InquiryPacket.ResultType.UNKNOWN.equals(assertionResult)) 
-            this.determineResultForUnknownAssertionResult(ip);
-         else if (InquiryPacket.ResultType.TRUE.equals(assertionResult)) 
-            this.determineResultForTrueAssertionResult(ip);
-         else 
-            this.determineResultForFalseAssertionResult(ip);
-    };
-    prototype.determineResult = function(ip) {
-        if (ip.numberOfQueriesRunning == 0) {
-            if (InquiryPacket.IPType.RELATION_AND.equals(ip.type)) 
-                this.determineCombinatorAndResult(ip);
-             else if (InquiryPacket.IPType.RELATION_OR.equals(ip.type)) 
-                this.determineCombinatorOrResult(ip);
-             else if (InquiryPacket.IPType.RELATION_NARROWS.equals(ip.type)) 
-                this.determineCombinatorNarrowsResult(ip);
-             else if (InquiryPacket.IPType.RELATION_BROADENS.equals(ip.type)) 
-                this.determineCombinatorBroadensResult(ip);
-             else if (InquiryPacket.IPType.RELATION_REQUIRES.equals(ip.type)) 
-                this.determineCombinatorRequiresResult(ip);
-             else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
-                this.determineCombinatorIsRequiredByResult(ip);
-             else 
-                this.determineCompetencyOrRollupRuleResult(ip);
-        } else {
-            this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
-        }
-    };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});

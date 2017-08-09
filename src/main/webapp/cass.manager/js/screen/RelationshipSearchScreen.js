@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Screen that handles displaying search results of relationships
  * 
@@ -391,7 +400,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 						
 						competencyRow.attr("style","padding:7px 2px;padding-left:30px;background-color:#f3f3f3;cursor:default;");
 						competencyRow.append("<div class='small-9 columns'></div>");
-						competencyRow.find(".small-9").append(competency["name"]);
+						competencyRow.find(".small-9").append(competency.getName());
 						
 						if(version != "")
 							competencyRow.find(".small-9").append("<small>(Version:"+version+")</small>");
@@ -599,7 +608,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 				
 				if(row.find(".datum-source").size() > 0){
 					EcCompetency.get(datum.source, function(competency){
-						row.find(".datum-source").text(competency.name)
+						row.find(".datum-source").text(competency.getName())
 					}, function(){
 						row.find(".datum-source").text("Unknown Competency");
 					})
@@ -608,7 +617,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 				
 				if(row.find(".datum-target").size() > 0){
 					EcCompetency.get(datum.target, function(competency){
-						row.find(".datum-target").text(competency.name)
+						row.find(".datum-target").text(competency.getName())
 					}, function(){
 						row.find(".datum-target").text("Unknown Competency");
 					})

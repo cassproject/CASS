@@ -1,3 +1,12 @@
+/*
+ Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 /**
  * Abstracted viewer for 'Rows' of data in a table on a page.
  * 
@@ -621,15 +630,31 @@ var DataViewer = (function(DataViewer){
 					"<div class='small-2 columns datum-type'></div>" +
 					"<div class='small-4 columns datum-owner'></div>")
 		
-		if(datum["name"] != undefined){
-			row.find(".datum-name").text(datum["name"]);
+		var name;
+		if(Array.isArray(datum["name"])){
+			
+		}else if(datum["name"] instanceof Object && datum["name"]["@value"] != undefined && datum["name"]["@value"] != ""){
+			name = datum["name"]["@value"];
+		}else if(datum["name"] != undefined && datum["name"] != ""){
+			name = datum["name"];
 		}else{
-			row.find(".datum-name").text(id);
+			name = id;
 			row.find(".datum-name").css("font-size", "0.8rem");
-		}
+		}			
+		row.find(".datum-name").text(name);
+
 		
-		if(datum["description"] != undefined)
-			row.find(".datum-description").text(" - "+datum["description"]);
+		var desc;
+		if(Array.isArray(datum["description"])){
+			
+		}else if(datum["description"] instanceof Object && datum["description"]["@value"] != undefined && datum["description"]["@value"] != ""){
+			desc = " - "+datum["description"]["@value"];
+		}else if(datum["description"] != undefined && datum["description"] != ""){
+			desc = " - "+datum["description"];
+		}else{
+			desc = "";
+		}
+		row.find(".datum-description").text(desc);
 		
 		if(datum["type"] != undefined){
 			var typeSplit = datum["type"].split("/");
