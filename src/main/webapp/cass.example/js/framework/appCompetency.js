@@ -98,29 +98,34 @@ function editCompetencyDelete() {
     }
 }
 
-function populateCompetency(id) {
+function populateCompetency(id,cui) {
     if (id == null) return;
-    var competency = EcRepository.getBlocking(id);
-    if (competency == null) return;
-    var ui = $("[url='" + competency.shortId() + "']");
-    ui.children(".cass-competency-name").text(competency.name);
-    if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
-        $("#selectedCompetency").text(competency.name).show();
-        $("#selectedFramework").hide();
-    }
-    ui.find(".cass-competency-description").text(competency.description);
-    var url = competency.shortId();
-    if (competency.sameAs != null)
-        url = competency.sameAs;
-    ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
-        e.preventDefault();
-        if (confirm("This will navigate to another page. Continue?"))
-            window.open($(this).attr("href"), "_blank");
-    });
-    if (identity != null && competency.canEdit(identity.ppk.toPk()))
-        $(".canEditCompetency").show();
-    else
-        $(".canEditCompetency").hide();
+    EcCompetency.get(id,function(competency){
+		if (competency == null) return;
+		var ui = null;
+		if (cui != null)
+			ui = cui;
+		else
+			ui = $("[url='" + competency.shortId() + "']");
+		ui.children(".cass-competency-name").text(competency.name);
+		if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
+			$("#selectedCompetency").text(competency.name).show();
+			$("#selectedFramework").hide();
+		}
+		ui.find(".cass-competency-description").text(competency.description);
+		var url = competency.shortId();
+		if (competency.sameAs != null)
+			url = competency.sameAs;
+		ui.find(".cass-competency-url").text(url).attr("href", url).unbind().click(function (e) {
+			e.preventDefault();
+			if (confirm("This will navigate to another page. Continue?"))
+				window.open($(this).attr("href"), "_blank");
+		});
+		if (identity != null && competency.canEdit(identity.ppk.toPk()))
+			ui.find(".canEditCompetency").show();
+		else
+			ui.find(".canEditCompetency").hide();
+	},error);
 }
 
 function insertExistingCompetency() {

@@ -8,44 +8,48 @@
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-function populateFrameworkRelations(frameworkId) {
+function populateFrameworkRelations(frameworkId,ui) {
     EcRepository.get(frameworkId, function (fw) {
         var relationUi = $("[url='" + frameworkId + "']").find(".cass-competency-relations").html("");
         if (relationUi.length > 0 && fw.relation !== undefined) {
             repo.precache(fw.relation);
             for (var i = 0; i < fw.relation.length; i++) {
-                populateFrameworkRelation(fw, fw.relation[i]);
+                populateFrameworkRelation(fw, fw.relation[i],ui);
             }
         }
     });
 }
 
-function populateFrameworkRelation(fw, relationId) {
-    timeout(function () {
-        EcRepository.get(relationId, function (relation) {
-            var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
-            var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
-            $("[url='" + fw.shortId() + "']").find("[url='" + relation.shortId() + "']").remove();
-            var ui = $("[url='" + fw.shortId() + "']").find("[url='" + source + "']");
-            ui.find(".cass-competency-relations").append(cassRelationTemplate);
-            ui = ui.find(".cass-competency-relations").children().last();
-            ui.attr("url", relation.shortId());
-            ui.find(".cass-relation-source").attr("url", source);
-            ui.find(".cass-relation-target").attr("url", target);
-            ui.find(".cass-relation-type").text(relation.relationType);
-            populateCompetency(source);
-            populateCompetency(target);
-            if (identity != null && relation.canEdit(identity.ppk.toPk()))
-                ui.find(".canEditRelation").show();
-            else
-                ui.find(".canEditRelation").hide();
-            if (identity != null && fw.canEdit(identity.ppk.toPk()))
-                ui.find(".canEditFramework").show();
-            else
-                ui.find(".canEditFramework").hide();
-            $("[url='" + fw.shortId() + "']").find("[url='" + target + "']").find(".cass-competency-relations").append(ui.clone());
-        }, error);
-    });
+function populateFrameworkRelation(fw, relationId,fwui) {
+	EcRepository.get(relationId, function (relation) {
+		var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
+		var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
+		var base = null;
+		if (base != null)
+			base = fwui;
+		else
+			base = $("[url='" + fw.shortId() + "']");
+		base.find("[url='" + relation.shortId() + "']").remove();
+		var ui = base.find("[url='" + source + "']");
+		ui.find(".cass-competency-relations").append(cassRelationTemplate);
+		ui = ui.find(".cass-competency-relations").children().last();
+		ui.attr("url", relation.shortId());
+		ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(EcRepository.getBlocking(source).name);
+		ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(EcRepository.getBlocking(target).name);
+		ui.find(".cass-relation-type").text(relation.relationType);
+		if (identity != null && relation.canEdit(identity.ppk.toPk()))
+			ui.find(".canEditRelation").show();
+		else
+			ui.find(".canEditRelation").hide();
+		if (identity != null && fw.canEdit(identity.ppk.toPk()))
+			ui.find(".canEditFramework").show();
+		else
+			ui.find(".canEditFramework").hide();
+		var tui = base.find("[url='" + target + "']").find(".cass-competency-relations").append(ui.clone()).children().last();
+//            tui = tui.add(ui);
+//            populateCompetency(source,tui.find(".cass-relation-source"));
+//            populateCompetency(target,tui.find(".cass-relation-target"));
+	}, error);
 }
 
 function insertExistingRelationIntoFramework(me) {

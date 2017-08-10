@@ -31,6 +31,16 @@ RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
     };
 }, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 /**
+ *  Created by fray on 5/30/17.
+ */
+var AssertionCoprocessor = function() {};
+AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
+    prototype.assertionProcessor = null;
+    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
+        success(new Array());
+    };
+}, {assertionProcessor: "AssertionProcessor"}, {});
+/**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
  *  (hereafter, "Inquiry")
  *  @class InquiryPacket
@@ -1389,7 +1399,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         rri.go();
     };
 }, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
-var PessimisticQuadnaryAssertionProcessor = function() {
+var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
 PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
@@ -1568,7 +1578,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         }
     };
 }, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
-var OptimisticQuadnaryAssertionProcessor = function() {
+var PessimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
 OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {

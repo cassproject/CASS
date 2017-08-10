@@ -284,6 +284,8 @@ fi
 echo -----
 echo -----
 echo Navigate to this server to see CASS.
+echo  -If you are upgrading from 0.2, there is a significant delay before all data will be available.
+echo  -This is due to database migration. To view, curl http://localhost:9200/_cat/indices?v
 echo
 echo We highly recommend the following next steps:
 echo  -Mapping DNS to this machine.

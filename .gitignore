@@ -14,3 +14,7 @@ scripts/node/node_modules
 /adapter.moodle.sync.db.p
 /adapter.moodle.sync.db.t
 /backup/
+
+node_modules/
+
+etc/

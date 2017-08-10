@@ -1,67 +1,3 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-/**
- *  Created by fray on 7/5/17.
- */
-var Task = function() {};
-Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 10;
-    constructor.lastFrame = null;
-    constructor.tasks = null;
-    constructor.delayedFunctions = 0;
-    constructor.immediateFunctions = 0;
-    constructor.immediate = function(c) {
-        var currentMs = Date.now();
-        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        if (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs) 
-            return setTimeout(function() {
-                Task.delayedFunctions++;
-                Task.lastFrame = Date.now();
-                c();
-            }, 0);
-         else {
-            Task.immediateFunctions++;
-            c();
-        }
-        return null;
-    };
-}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
-/**
- *  Object Helper Functions
- *  @class EcObject
- *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
- */
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    /**
-     *  Returns true if the result is an object.
-     *  @static
-     *  @method isArray
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an object.
-     */
-    constructor.isObject = function(o) {
-        return (typeof o) == "object";
-    };
-    /**
-     *  Returns keys on the object
-     *  @static
-     *  @method keys
-     *  @param {any} o Object to test.
-     *  @return List of keys
-     */
-    constructor.keys = function(o) {
-        return ecKeys(o);
-    };
-}, {}, {});
 /**
  *  Object to hold a triple, used in graph.
  *  @class Triple
@@ -104,6 +40,39 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
         }
         return false;
     };
+}, {}, {});
+/**
+ *  Object Helper Functions
+ *  @class EcObject
+ *  @module com.eduworks.ec
+ *  @author fritz.ray@eduworks.com
+ */
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+    /**
+     *  Returns true if the result is an object.
+     *  @static
+     *  @method isArray
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an object.
+     */
+    constructor.isObject = function(o) {
+        return (typeof o) == "object";
+    };
+    /**
+     *  Returns keys on the object
+     *  @static
+     *  @method keys
+     *  @param {any} o Object to test.
+     *  @return List of keys
+     */
+    constructor.keys = function(o) {
+        return ecKeys(o);
+    };
+}, {}, {});
+var Callback5 = function() {};
+Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
+    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
 }, {}, {});
 /**
  *  Array Helper Functions
@@ -196,12 +165,32 @@ EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, pro
         ((s)["removeItem"])(key);
     };
 }, {}, {});
-var EcDate = function() {};
-EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
-    constructor.toISOString = function(obj) {
-        return ((obj)["toISOString"])();
+/**
+ *  Created by fray on 7/5/17.
+ */
+var Task = function() {};
+Task = stjs.extend(Task, null, [], function(constructor, prototype) {
+    constructor.desiredFps = 10;
+    constructor.lastFrame = null;
+    constructor.tasks = null;
+    constructor.delayedFunctions = 0;
+    constructor.immediateFunctions = 0;
+    constructor.immediate = function(c) {
+        var currentMs = Date.now();
+        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
+        if (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs) 
+            return setTimeout(function() {
+                Task.delayedFunctions++;
+                Task.lastFrame = Date.now();
+                c();
+            }, 0);
+         else {
+            Task.immediateFunctions++;
+            c();
+        }
+        return null;
     };
-}, {}, {});
+}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
 /**
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
  *  set of hyperedges of type <code>E</code> which connect the vertices. This is
@@ -685,60 +674,10 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
-var Callback5 = function() {};
-Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
-    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
-}, {}, {});
-/**
- *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
- *  Will iterate over all items in an array and perform 'each(item,callback)'. 
- *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
- *  When all callbacks have been called, 'after(array)' is called. 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcAsyncHelper
- */
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
-    /**
-     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
-     *  @property counter
-     *  @type integer
-     */
-    prototype.counter = null;
-    /**
-     *  "Each" method. See class description.
-     *  @method each
-     *  @param {Array} array Array to iterate over.
-     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
-     *  @param {function(array)} after Method invoked when all callbacks are called.
-     */
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                this.execute(array, each, after, me, i);
-        }
-    };
-    prototype.execute = function(array, each, after, me, i) {
-        Task.immediate(function() {
-            each(array[i], function() {
-                me.counter--;
-                if (me.counter == 0) 
-                    after(array);
-            });
-        });
-    };
-    /**
-     *  Will prevent 'after' from being called.
-     *  @method stop
-     */
-    prototype.stop = function() {
-        this.counter = -1;
+var EcDate = function() {};
+EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    constructor.toISOString = function(obj) {
+        return ((obj)["toISOString"])();
     };
 }, {}, {});
 /**
@@ -825,7 +764,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                     all = all + chunks[i];
                 }
             }
-            all = all + "\r\n" + "\r\n" + "--" + (fd)["_boundary"] + "--";
+            all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
             p.headers = new Object();
             p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
             p.data = all;
@@ -1026,6 +965,58 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         return function(paramP1, paramP2, paramP3) {
             EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
         };
+    };
+}, {}, {});
+/**
+ *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
+ *  Will iterate over all items in an array and perform 'each(item,callback)'. 
+ *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
+ *  When all callbacks have been called, 'after(array)' is called. 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcAsyncHelper
+ */
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    /**
+     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     *  @property counter
+     *  @type integer
+     */
+    prototype.counter = null;
+    /**
+     *  "Each" method. See class description.
+     *  @method each
+     *  @param {Array} array Array to iterate over.
+     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
+     *  @param {function(array)} after Method invoked when all callbacks are called.
+     */
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                this.execute(array, each, after, me, i);
+        }
+    };
+    prototype.execute = function(array, each, after, me, i) {
+        Task.immediate(function() {
+            each(array[i], function() {
+                me.counter--;
+                if (me.counter == 0) 
+                    after(array);
+            });
+        });
+    };
+    /**
+     *  Will prevent 'after' from being called.
+     *  @method stop
+     */
+    prototype.stop = function() {
+        this.counter = -1;
     };
 }, {}, {});
 /**

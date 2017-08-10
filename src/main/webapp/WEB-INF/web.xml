@@ -14,9 +14,13 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>resolver</servlet-name>
 		<url-pattern>/api/custom/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>resolver</servlet-name>
+		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 </web-app>
