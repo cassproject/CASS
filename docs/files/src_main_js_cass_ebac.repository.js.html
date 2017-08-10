@@ -2302,7 +2302,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @static
      */
     constructor.save = function(data, success, failure) {
-        console.warn(&quot;Using EcRepository &#x27;save&#x27; method, if this is intentional consider calling &#x27;_save&#x27;&quot;);
         EcRepository._save(data, success, failure);
     };
     /**

@@ -7,29 +7,6 @@
 
  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
-}, {}, {});
-var RrQuery = function() {};
-RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
-    prototype.query = null;
-}, {}, {});
-var RrS = function() {
-    this.token = new Array();
-    this.query = new Array();
-};
-RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
-    prototype.token = null;
-    prototype.query = null;
-    prototype.addToken = function(rrToken) {
-        this.token.push(rrToken);
-    };
-    prototype.addQuery = function(rrQuery) {
-        this.query.push(rrQuery);
-    };
-}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 /**
  *  Created by fray on 5/30/17.
  */
@@ -390,16 +367,29 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
         return false;
     };
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
-/**
- *  Created by fray on 5/30/17.
- */
-var AssertionCoprocessor = function() {};
-AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(constructor, prototype) {
-    prototype.assertionProcessor = null;
-    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
-        success(new Array());
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var RrQuery = function() {};
+RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
+    prototype.query = null;
+}, {}, {});
+var RrS = function() {
+    this.token = new Array();
+    this.query = new Array();
+};
+RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
+    prototype.token = null;
+    prototype.query = null;
+    prototype.addToken = function(rrToken) {
+        this.token.push(rrToken);
     };
-}, {assertionProcessor: "AssertionProcessor"}, {});
+    prototype.addQuery = function(rrQuery) {
+        this.query.push(rrQuery);
+    };
+}, {token: {name: "Array", arguments: ["RrToken"]}, query: {name: "Array", arguments: ["RrQuery"]}}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);
@@ -1402,185 +1392,6 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };
-PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
-    prototype.transferIndeterminateOptimistically = true;
-    prototype.determineCombinatorAndResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (ip.anyChildPacketsAreUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else 
-            ip.result = InquiryPacket.ResultType.TRUE;
-    };
-    prototype.determineCombinatorNarrowsResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorBroadensResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorRequiresResult = function(ip) {
-        if (ip.anyChildPacketsAreFalse()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorIsRequiredByResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
-         else 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineCombinatorOrResult = function(ip) {
-        if (ip.anyChildPacketsAreTrue()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
-         else if (ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (ip.allChildPacketsUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else 
-            ip.result = InquiryPacket.ResultType.FALSE;
-    };
-    prototype.getPacketAssertionResult = function(ip) {
-        if (ip.positive.length > 0 && ip.negative.length == 0) 
-            return InquiryPacket.ResultType.TRUE;
-         else if (ip.positive.length == 0 && ip.negative.length > 0) 
-            return InquiryPacket.ResultType.FALSE;
-         else if (ip.positive.length > 0 && ip.negative.length > 0) 
-            return InquiryPacket.ResultType.INDETERMINANT;
-         else 
-            return InquiryPacket.ResultType.UNKNOWN;
-    };
-    prototype.determineResultForUnknownAssertionResult = function(ip) {
-        if (ip.allChildPacketsUnknown()) 
-            ip.result = InquiryPacket.ResultType.UNKNOWN;
-         else if (ip.allEquivalentPacketsUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else if (ip.allEquivalentPacketsTrueOrUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else if (ip.allEquivalentPacketsFalseOrUnknown()) {
-            if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    prototype.determineResultForTrueAssertionResult = function(ip) {
-        if (ip.allEquivalentPacketsTrueOrUnknown()) {
-            if (ip.allSubPacketsTrueOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.TRUE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    prototype.determineResultForFalseAssertionResult = function(ip) {
-        if (ip.allEquivalentPacketsFalseOrUnknown()) {
-            if (ip.allSubPacketsFalseOrUnknown()) 
-                ip.result = InquiryPacket.ResultType.FALSE;
-             else 
-                ip.result = InquiryPacket.ResultType.INDETERMINANT;
-        } else 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-    };
-    /**
-     *  IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of
-     *  positive assertions > 0 && number of negative assertions = 0 THEN
-     *  assertionResult = TRUE IF number of positive assertions = 0 && number of
-     *  negative assertions > 0 THEN assertionResult = FALSE IF number of
-     *  positive assertions > 0 && number of negative assertions > 0 THEN
-     *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &&
-     *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
-     *  
-     *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
-     *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
-     *  packets = INDETERMINANT THEN INDETERMINANT
-     *  
-     *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
-     *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
-     *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
-     *  INDETERMINANT
-     *  
-     *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
-     *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
-     *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
-     *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     *  
-     *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
-     *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
-     *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
-     *  INDETERMINANT
-     *  
-     *  ELSE INDETERMINANT
-     *  
-     */
-    prototype.determineCompetencyOrRollupRuleResult = function(ip) {
-        var assertionResult = this.getPacketAssertionResult(ip);
-        if (InquiryPacket.ResultType.INDETERMINANT.equals(assertionResult) || ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.INDETERMINANT;
-         else if (InquiryPacket.ResultType.UNKNOWN.equals(assertionResult)) 
-            this.determineResultForUnknownAssertionResult(ip);
-         else if (InquiryPacket.ResultType.TRUE.equals(assertionResult)) 
-            this.determineResultForTrueAssertionResult(ip);
-         else 
-            this.determineResultForFalseAssertionResult(ip);
-    };
-    prototype.determineResult = function(ip) {
-        if (ip.numberOfQueriesRunning == 0) {
-            if (InquiryPacket.IPType.RELATION_AND.equals(ip.type)) 
-                this.determineCombinatorAndResult(ip);
-             else if (InquiryPacket.IPType.RELATION_OR.equals(ip.type)) 
-                this.determineCombinatorOrResult(ip);
-             else if (InquiryPacket.IPType.RELATION_NARROWS.equals(ip.type)) 
-                this.determineCombinatorNarrowsResult(ip);
-             else if (InquiryPacket.IPType.RELATION_BROADENS.equals(ip.type)) 
-                this.determineCombinatorBroadensResult(ip);
-             else if (InquiryPacket.IPType.RELATION_REQUIRES.equals(ip.type)) 
-                this.determineCombinatorRequiresResult(ip);
-             else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
-                this.determineCombinatorIsRequiredByResult(ip);
-             else 
-                this.determineCompetencyOrRollupRuleResult(ip);
-        } else {
-            this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
-        }
-    };
-}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
-var PessimisticQuadnaryAssertionProcessor = function() {
-    CombinatorAssertionProcessor.call(this);
-};
 OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
     prototype.transferIndeterminateOptimistically = true;
     prototype.determineCombinatorAndResult = function(ip) {
@@ -1770,6 +1581,185 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             } else {
                 this.determineCompetencyOrRollupRuleResult(ip);
             }
+        } else {
+            this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
+        }
+    };
+}, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+var PessimisticQuadnaryAssertionProcessor = function() {
+    CombinatorAssertionProcessor.call(this);
+};
+PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertionProcessor, CombinatorAssertionProcessor, [], function(constructor, prototype) {
+    prototype.transferIndeterminateOptimistically = true;
+    prototype.determineCombinatorAndResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (ip.anyChildPacketsAreUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else 
+            ip.result = InquiryPacket.ResultType.TRUE;
+    };
+    prototype.determineCombinatorNarrowsResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorBroadensResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorRequiresResult = function(ip) {
+        if (ip.anyChildPacketsAreFalse()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorIsRequiredByResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
+         else 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineCombinatorOrResult = function(ip) {
+        if (ip.anyChildPacketsAreTrue()) 
+            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (ip.allChildPacketsUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else 
+            ip.result = InquiryPacket.ResultType.FALSE;
+    };
+    prototype.getPacketAssertionResult = function(ip) {
+        if (ip.positive.length > 0 && ip.negative.length == 0) 
+            return InquiryPacket.ResultType.TRUE;
+         else if (ip.positive.length == 0 && ip.negative.length > 0) 
+            return InquiryPacket.ResultType.FALSE;
+         else if (ip.positive.length > 0 && ip.negative.length > 0) 
+            return InquiryPacket.ResultType.INDETERMINANT;
+         else 
+            return InquiryPacket.ResultType.UNKNOWN;
+    };
+    prototype.determineResultForUnknownAssertionResult = function(ip) {
+        if (ip.allChildPacketsUnknown()) 
+            ip.result = InquiryPacket.ResultType.UNKNOWN;
+         else if (ip.allEquivalentPacketsUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else if (ip.allEquivalentPacketsTrueOrUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else if (ip.allEquivalentPacketsFalseOrUnknown()) {
+            if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    prototype.determineResultForTrueAssertionResult = function(ip) {
+        if (ip.allEquivalentPacketsTrueOrUnknown()) {
+            if (ip.allSubPacketsTrueOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.TRUE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    prototype.determineResultForFalseAssertionResult = function(ip) {
+        if (ip.allEquivalentPacketsFalseOrUnknown()) {
+            if (ip.allSubPacketsFalseOrUnknown()) 
+                ip.result = InquiryPacket.ResultType.FALSE;
+             else 
+                ip.result = InquiryPacket.ResultType.INDETERMINANT;
+        } else 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+    };
+    /**
+     *  IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of
+     *  positive assertions > 0 && number of negative assertions = 0 THEN
+     *  assertionResult = TRUE IF number of positive assertions = 0 && number of
+     *  negative assertions > 0 THEN assertionResult = FALSE IF number of
+     *  positive assertions > 0 && number of negative assertions > 0 THEN
+     *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &&
+     *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
+     *  
+     *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
+     *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
+     *  packets = INDETERMINANT THEN INDETERMINANT
+     *  
+     *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
+     *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
+     *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
+     *  INDETERMINANT
+     *  
+     *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
+     *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
+     *  
+     *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
+     *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     *  
+     *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
+     *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
+     *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
+     *  INDETERMINANT
+     *  
+     *  ELSE INDETERMINANT
+     *  
+     */
+    prototype.determineCompetencyOrRollupRuleResult = function(ip) {
+        var assertionResult = this.getPacketAssertionResult(ip);
+        if (InquiryPacket.ResultType.INDETERMINANT.equals(assertionResult) || ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.INDETERMINANT;
+         else if (InquiryPacket.ResultType.UNKNOWN.equals(assertionResult)) 
+            this.determineResultForUnknownAssertionResult(ip);
+         else if (InquiryPacket.ResultType.TRUE.equals(assertionResult)) 
+            this.determineResultForTrueAssertionResult(ip);
+         else 
+            this.determineResultForFalseAssertionResult(ip);
+    };
+    prototype.determineResult = function(ip) {
+        if (ip.numberOfQueriesRunning == 0) {
+            if (InquiryPacket.IPType.RELATION_AND.equals(ip.type)) 
+                this.determineCombinatorAndResult(ip);
+             else if (InquiryPacket.IPType.RELATION_OR.equals(ip.type)) 
+                this.determineCombinatorOrResult(ip);
+             else if (InquiryPacket.IPType.RELATION_NARROWS.equals(ip.type)) 
+                this.determineCombinatorNarrowsResult(ip);
+             else if (InquiryPacket.IPType.RELATION_BROADENS.equals(ip.type)) 
+                this.determineCombinatorBroadensResult(ip);
+             else if (InquiryPacket.IPType.RELATION_REQUIRES.equals(ip.type)) 
+                this.determineCombinatorRequiresResult(ip);
+             else if (InquiryPacket.IPType.RELATION_ISREQUIREDBY.equals(ip.type)) 
+                this.determineCombinatorIsRequiredByResult(ip);
+             else 
+                this.determineCompetencyOrRollupRuleResult(ip);
         } else {
             this.log(ip, "We are not finished accumulating data to answer this query. Error: " + ip.numberOfQueriesRunning);
         }
