@@ -32,3 +32,15 @@ function ab2str(buf) {
 function str2ab(str) {
 	return new TextEncoder("utf-8").encode(str).buffer;
 }
+
+function ecLog(str){
+if (console)
+	if (console.log)
+	{
+		console.log(str);
+		return;
+	}
+else
+	if (print)
+		print(str);
+}

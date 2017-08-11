@@ -890,6 +890,19 @@ StorageController = stjs.extend(StorageController, null, [], function(constructo
         this.recent[type] = list;
         this.storageSystem[&quot;cass.recent&quot;] = JSON.stringify(this.recent);
     };
+    prototype.removeRecent = function(type, id) {
+        if (id == null || id == undefined || id == &quot;&quot;) {
+            return;
+        }
+        var list = this.recent[type];
+        if (list == null) {
+            return;
+        } else if (list.indexOf(id) == -1) {
+            delete (list)[Integer.toString(list.indexOf(id))];
+            this.recent[type] = list;
+            this.storageSystem[&quot;cass.recent&quot;] = JSON.stringify(this.recent);
+        }
+    };
 }, {storageSystem: &quot;Storage&quot;, recent: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [null]}]}}, {});
 var PermissionPropagationModal = function(data, cancelCallback) {
     EcModal.call(this);

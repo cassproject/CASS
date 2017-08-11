@@ -165,9 +165,9 @@ function displayAssertionSearchItem(where, assertion)
         if (a.competency != null)
             (function (ui, a)
             {
-                EcRepository.get(a.competency, function (competency)
+                EcCompetency.get(a.competency, function (competency)
                 {
-                    ui.find(".assertionCompetency").attr("url", competency.shortId()).text(competency.name);
+                    ui.find(".assertionCompetency").attr("url", competency.shortId()).text(competency.getName());
                 }, error);
             })(ui, a);
 
@@ -175,9 +175,9 @@ function displayAssertionSearchItem(where, assertion)
         {
             (function (ui, a)
             {
-                EcRepository.get(a.level, function (level)
+                EcLevel.get(a.level, function (level)
                 {
-                    ui.find(".assertionLevel").text(level.name);
+                    ui.find(".assertionLevel").text(level.getName());
                 }, error);
             })(ui, a);
         }

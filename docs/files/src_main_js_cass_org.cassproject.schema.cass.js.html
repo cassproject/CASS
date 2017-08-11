@@ -838,7 +838,7 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_2 = &quot;http://schema.eduworks.com/cass/0.2&quot;;
     constructor.context_0_3 = &quot;http://schema.cassproject.org/0.2&quot;;
     constructor.context_0_4 = &quot;http://schema.cassproject.org/0.3&quot;;
-    constructor.context = &quot;http://schema.cassproject.org/0.2&quot;;
+    constructor.context = Cass.context_0_4;
 }, {}, {});
 /**
  *  Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.
@@ -846,17 +846,18 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
  *  @author fritz.ray@eduworks.com
  *  @class Competency
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var Competency = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, Competency.myType);
 };
-Competency = stjs.extend(Competency, Intangible, [], function(constructor, prototype) {
+Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/cass/0.1/competency&quot;;
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/competency&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Competency&quot;;
-    constructor.myType = Competency.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Competency&quot;;
+    constructor.myType = Competency.TYPE_0_4;
     /**
      *  Scope in which the competency may be applied. e.g. Underwater.
      *  @property scope
@@ -878,31 +879,36 @@ Competency = stjs.extend(Competency, Intangible, [], function(constructor, proto
         if (Competency.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, Competency.TYPE_0_3);
         }
+        if (Competency.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, Competency.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Competency.TYPE_0_4);
         a.push(Competency.TYPE_0_3);
         a.push(Competency.TYPE_0_2);
         a.push(Competency.TYPE_0_1);
         return a;
     };
-}, {identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  When an individual&#x27;s performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.
  *  @author fritz.ray@eduworks.com
  *  @class Level
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var Level = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, Level.myType);
 };
-Level = stjs.extend(Level, Intangible, [], function(constructor, prototype) {
+Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/cass/0.1/level&quot;;
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/level&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Level&quot;;
-    constructor.myType = Level.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Level&quot;;
+    constructor.myType = Level.TYPE_0_4;
     /**
      *  Specifies the URL of the competency this level relates to.
      *  @property competency
@@ -933,31 +939,36 @@ Level = stjs.extend(Level, Intangible, [], function(constructor, prototype) {
         if (Level.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, Level.TYPE_0_3);
         }
+        if (Level.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, Level.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Level.TYPE_0_4);
         a.push(Level.TYPE_0_3);
         a.push(Level.TYPE_0_2);
         a.push(Level.TYPE_0_1);
         return a;
     };
-}, {identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  A segment of script that defines in a domain specific language how competence is transferred from one competency to another.
  *  
  *  @author fritz.ray@eduworks.com
  *  @class RollupRule
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var RollupRule = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, RollupRule.myType);
 };
-RollupRule = stjs.extend(RollupRule, Intangible, [], function(constructor, prototype) {
+RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/rollupRule&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/RollupRule&quot;;
-    constructor.myType = RollupRule.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.4/RollupRule&quot;;
+    constructor.myType = RollupRule.TYPE_0_4;
     /**
      *  The rollup rule encoded as source code that is understandable to the assertion processor.
      *  @property rule
@@ -975,31 +986,36 @@ RollupRule = stjs.extend(RollupRule, Intangible, [], function(constructor, proto
         if (RollupRule.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, RollupRule.TYPE_0_3);
         }
+        if (RollupRule.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, RollupRule.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(RollupRule.TYPE_0_4);
         a.push(RollupRule.TYPE_0_3);
         a.push(RollupRule.TYPE_0_2);
         return a;
     };
-}, {identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.
  *  
  *  @author fritz.ray@eduworks.com
  *  @class Framework
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var Framework = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, Framework.myType);
 };
-Framework = stjs.extend(Framework, Intangible, [], function(constructor, prototype) {
+Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/cass/0.1/framework&quot;;
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/framework&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Framework&quot;;
-    constructor.myType = Framework.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Framework&quot;;
+    constructor.myType = Framework.TYPE_0_4;
     /**
      *  URLs of competencies included in this framework.
      *  @property competency
@@ -1035,31 +1051,36 @@ Framework = stjs.extend(Framework, Intangible, [], function(constructor, prototy
         if (Framework.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, Framework.TYPE_0_3);
         }
+        if (Framework.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, Framework.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Framework.TYPE_0_4);
         a.push(Framework.TYPE_0_3);
         a.push(Framework.TYPE_0_2);
         a.push(Framework.TYPE_0_1);
         return a;
     };
-}, {competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  A relation between two objects.
  *  @author fritz.ray@eduworks.com
  *  @class Relation
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var Relation = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, Relation.myType);
 };
-Relation = stjs.extend(Relation, Intangible, [], function(constructor, prototype) {
+Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/cass/0.1/relation&quot;;
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/relation&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Relation&quot;;
-    constructor.myType = Relation.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Relation&quot;;
+    constructor.myType = Relation.TYPE_0_4;
     /**
      *  Relation type when one object enables the capability to obtain another.
      *  Enabling relations do not imply a requirement, but makes the acquisition of the source much easier.
@@ -1156,31 +1177,36 @@ Relation = stjs.extend(Relation, Intangible, [], function(constructor, prototype
         if (Relation.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, Relation.TYPE_0_3);
         }
+        if (Relation.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, Relation.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Relation.TYPE_0_4);
         a.push(Relation.TYPE_0_3);
         a.push(Relation.TYPE_0_2);
         a.push(Relation.TYPE_0_1);
         return a;
     };
-}, {identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
  *  @author fritz.ray@eduworks.com
  *  @class Assertion
  *  @module org.cassproject
- *  @extends Intangible
+ *  @extends CreativeWork
  */
 var Assertion = function() {
-    Intangible.call(this);
+    CreativeWork.call(this);
     this.setContextAndType(Cass.context, Assertion.myType);
 };
-Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototype) {
+Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.eduworks.com/cass/0.1/assertion&quot;;
     constructor.TYPE_0_2 = &quot;http://schema.eduworks.com/cass/0.2/assertion&quot;;
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Assertion&quot;;
-    constructor.myType = Assertion.TYPE_0_3;
+    constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Assertion&quot;;
+    constructor.myType = Assertion.TYPE_0_4;
     /**
      *  URL of the competency.
      *  @property competency
@@ -1418,15 +1444,19 @@ Assertion = stjs.extend(Assertion, Intangible, [], function(constructor, prototy
         if (Assertion.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_3, Assertion.TYPE_0_3);
         }
+        if (Assertion.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_4, Assertion.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Assertion.TYPE_0_4);
         a.push(Assertion.TYPE_0_3);
         a.push(Assertion.TYPE_0_2);
         a.push(Assertion.TYPE_0_1);
         return a;
     };
-}, {subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>

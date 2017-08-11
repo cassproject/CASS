@@ -621,15 +621,31 @@ var DataViewer = (function(DataViewer){
 					"<div class='small-2 columns datum-type'></div>" +
 					"<div class='small-4 columns datum-owner'></div>")
 		
-		if(datum["name"] != undefined){
-			row.find(".datum-name").text(datum["name"]);
+		var name;
+		if(Array.isArray(datum["name"])){
+			
+		}else if(datum["name"] instanceof Object && datum["name"]["@value"] != undefined && datum["name"]["@value"] != ""){
+			name = datum["name"]["@value"];
+		}else if(datum["name"] != undefined && datum["name"] != ""){
+			name = datum["name"];
 		}else{
-			row.find(".datum-name").text(id);
+			name = id;
 			row.find(".datum-name").css("font-size", "0.8rem");
-		}
+		}			
+		row.find(".datum-name").text(name);
+
 		
-		if(datum["description"] != undefined)
-			row.find(".datum-description").text(" - "+datum["description"]);
+		var desc;
+		if(Array.isArray(datum["description"])){
+			
+		}else if(datum["description"] instanceof Object && datum["description"]["@value"] != undefined && datum["description"]["@value"] != ""){
+			desc = " - "+datum["description"]["@value"];
+		}else if(datum["description"] != undefined && datum["description"] != ""){
+			desc = " - "+datum["description"];
+		}else{
+			desc = "";
+		}
+		row.find(".datum-description").text(desc);
 		
 		if(datum["type"] != undefined){
 			var typeSplit = datum["type"].split("/");

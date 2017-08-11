@@ -243,8 +243,8 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
 var HistoryObject = function() {};
 HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, prototype) {
     prototype.name = null;
-    prototype.params = null;
-}, {params: "Object"}, {});
+    prototype.parameters = null;
+}, {parameters: "Object"}, {});
 /**
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
  *  they work properly
@@ -417,37 +417,48 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
     };
     prototype.fillInnerString = function(scope, dataObj, key) {
+        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+            return;
         var a = (dataObj);
         var v = a[key];
         var textTypes = "[ec-field='" + key + "']";
         if ((typeof v) == "string") {
-            var s = v;
             var textFieldTypes = scope.find(textTypes);
             var attrFieldTypes = scope.find("[ec-attr-" + key + "]");
             textFieldTypes.text(v).val(v);
-            attrFieldTypes.attr(key, v);
-            attrFieldTypes.attr(key.toLowerCase(), v);
+            var attrValue = attrFieldTypes.attr("ec-attr-" + key + "");
+            var writeKey = key;
+            if (attrValue != null && attrValue != "") 
+                writeKey = attrValue;
+            attrFieldTypes.attr(writeKey, v);
+            attrFieldTypes.attr(writeKey.toLowerCase(), v);
             if (scope.is("[ec-field='" + key + "']")) 
                 scope.text(v);
             if (scope.is("[ec-attr-" + key + "]")) {
-                scope.attr(key, v);
-                scope.attr(key.toLowerCase(), v);
+                scope.attr(writeKey, v);
+                scope.attr(writeKey.toLowerCase(), v);
             }
         }
         if ((typeof v) == "function") {
             if ((v)["length"] == 0) {
                 var textFieldTypes = scope.find(textTypes);
                 var attrFieldTypes = scope.find("[ec-attr-" + key + "]");
+                var attrValue = scope.attr("ec-attr-" + key + "");
+                var writeKey = key;
+                if (attrValue != null && attrValue != "") 
+                    writeKey = attrValue;
                 if (textFieldTypes.length + attrFieldTypes.length > 0) {
                     v = (v).apply(dataObj, new Array(0));
                     textFieldTypes.text(v).val(v);
-                    attrFieldTypes.attr(key, v);
-                    attrFieldTypes.attr(key.toLowerCase(), v);
+                    attrFieldTypes.attr(writeKey, v);
+                    attrFieldTypes.attr(writeKey.toLowerCase(), v);
                 }
             }
         }
     };
     prototype.fillInnerStringReferences = function(scope, dataObj, key) {
+        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+            return;
         var a = (dataObj);
         var v = a[key];
         if ((typeof v) == "string") {
@@ -463,6 +474,8 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         if ((typeof v) == "function") {}
     };
     prototype.fillInnerArray = function(scope, dataObj, key) {
+        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+            return;
         var props = (dataObj);
         var v = props[key];
         if (EcArray.isArray(v)) {
@@ -478,7 +491,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
     };
     prototype.fillInnerArrayContainer = function(scope, dataObj, key, props, container, array, i) {
         var arrayValue = array[i];
-        if (arrayValue.toLowerCase().startsWith("http")) {
+        if ((typeof arrayValue) == "string" && arrayValue.toLowerCase().startsWith("http")) {
             var p1 = EcRepository.getBlocking(arrayValue);
             if (this.shouldFillInnerArray(props, container, p1)) {
                 var newContainer = null;
@@ -490,6 +503,9 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
                     this.fillInnerArray(newContainer, dataObj, k2);
                 }
             }
+        } else if (EcObject.isObject(arrayValue)) {
+            var c = this.autoAppend(scope, key);
+            this.autoFill(c, arrayValue);
         } else if (arrayValue.trim().startsWith("{")) {
             var c = this.autoAppend(scope, key);
             this.autoFill(c, JSON.parse(arrayValue));
@@ -529,6 +545,8 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         from.find("[ec-template='" + template + "']").remove();
     };
     prototype.autoAppend = function(from, template) {
+        if ((this.nameToTemplate)[template] == null) 
+            return from;
         if (from.is("[ec-container~='" + template + "']")) {
             return from.append((this.nameToTemplate)[template]).children().last();
         }
@@ -804,7 +822,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         }
         var pageName = name;
         ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(pageName, screen, displayContainerId, params);
-        (window.history).pushState({name: pageName, params: this.params}, pageName, hash);
+        (window.history).pushState({name: pageName, parameters: params}, pageName, hash);
     };
     /**
      *  Replaces the current end of the history array with a new HistoryClosure element that contains the screen and
@@ -845,7 +863,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         if (query.endsWith("?")) {
             query = query.substring(0, hash.length - 1);
         }
-        (window.history).replaceState({name: window.location.hash + window.location.search, params: this.params}, pageName, hash);
+        (window.history).replaceState({name: window.location.hash + window.location.search, parameters: params}, pageName, hash + query);
     };
     /**
      *  Sets the url parameters on the current page
@@ -872,6 +890,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      */
     constructor.loadHistoryScreen = function(name) {
         var backCount = 0;
+        name = name.replace("#", "");
         for (var i = ScreenManager.myHistory.length - 1; i > -1; i--) {
             backCount++;
             if (ScreenManager.myHistory[i].pageName == name) {
@@ -883,7 +902,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                         ($(ScreenManager.SCREEN_CONTAINER_ID)).foundation();
                     });
                     ScreenManager.myHistory[ScreenManager.myHistory.length] = new HistoryClosure(name, screen, ScreenManager.myHistory[i].containerId, ScreenManager.myHistory[i].screenParameters);
-                    window.history.go(-backCount);
                     return;
                 }
             }

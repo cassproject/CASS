@@ -391,7 +391,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 						
 						competencyRow.attr("style","padding:7px 2px;padding-left:30px;background-color:#f3f3f3;cursor:default;");
 						competencyRow.append("<div class='small-9 columns'></div>");
-						competencyRow.find(".small-9").append(competency["name"]);
+						competencyRow.find(".small-9").append(competency.getName());
 						
 						if(version != "")
 							competencyRow.find(".small-9").append("<small>(Version:"+version+")</small>");
@@ -599,7 +599,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 				
 				if(row.find(".datum-source").size() > 0){
 					EcCompetency.get(datum.source, function(competency){
-						row.find(".datum-source").text(competency.name)
+						row.find(".datum-source").text(competency.getName())
 					}, function(){
 						row.find(".datum-source").text("Unknown Competency");
 					})
@@ -608,7 +608,7 @@ RelationshipSearchScreen = (function(RelationshipSearchScreen){
 				
 				if(row.find(".datum-target").size() > 0){
 					EcCompetency.get(datum.target, function(competency){
-						row.find(".datum-target").text(competency.name)
+						row.find(".datum-target").text(competency.getName())
 					}, function(){
 						row.find(".datum-target").text("Unknown Competency");
 					})

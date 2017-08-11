@@ -91,6 +91,56 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
      *  @type schema,URL | schema,CreativeWork
      */
     prototype.mainEntityOfPage = null;
+    /**
+     *  Method to set Thing name
+     *  
+     *  @memberOf Thing
+     *  @method setName
+     *  @param {String} name
+     * 			Name to set for this Thing
+     */
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    /**
+     *  Returns the name of the thing
+     *  
+     *  @memberOf Thing
+     *  @method getName
+     *  @return {String} name of Thing
+     */
+    prototype.getName = function() {
+        if (this.name != null && EcObject.isObject(this.name) && (this.name).hasOwnProperty("@value")) {
+            return (this.name)["@value"];
+        } else {
+            return this.name;
+        }
+    };
+    /**
+     *  Method to set Thing description
+     *  
+     *  @memberOf Thing
+     *  @method setDescription
+     *  @param {String} description
+     *  			Description to set for its Thing
+     */
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    /**
+     *  Returns the description of the thing
+     *  
+     *  @memberOf Thing
+     *  @method getDescription
+     *  @return {String} description of Thing
+     */
+    prototype.getDescription = function() {
+        if (this.description != null && EcObject.isObject(this.description) && (this.description).hasOwnProperty("@value")) {
+            return (this.description)["@value"];
+        } else {
+            return this.description;
+        }
+    };
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Place

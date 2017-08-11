@@ -27,7 +27,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             EcCompetency.get(relation.source, function (competency) {
                 var a = $("<a></a>");
                 a.attr("href", "#" + CompetencyViewScreen.displayName);
-                a.text(competency.name)
+                a.text(competency.getName())
                 $("#relationshipViewerSource").html(a);
                 $("#relationshipViewerSource").click(function (event) {
                     event.preventDefault();
@@ -50,7 +50,7 @@ RelationshipViewScreen = (function (RelationshipViewScreen) {
             EcCompetency.get(relation.target, function (competency) {
                 var a = $("<a></a>");
                 a.attr("href", "#" + CompetencyViewScreen.displayName);
-                a.text(competency.name)
+                a.text(competency.getName())
                 $("#relationshipViewerTarget").html(a);
                 $("#relationshipViewerTarget").click(function (event) {
                     event.preventDefault();

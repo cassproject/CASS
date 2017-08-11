@@ -169,7 +169,7 @@ AssertionSearchScreen = (function (AssertionSearchScreen) {
 
                 row.find(".datum-competency").text("Loading..");
                 EcCompetency.get(datum.competency, function (competency) {
-                    $("[data-id='" + datum.id + "']").find(".datum-competency").text(competency.name);
+                    $("[data-id='" + datum.id + "']").find(".datum-competency").text(competency.getName());
                 }, function () {
                     row.find(".datum-competency").text("Unknown Competency");
                 })

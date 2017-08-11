@@ -83,7 +83,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 	    				competencyOption.attr("selected", "selected");
 	    			}else{
 	    				var option = $("<option></option>");
-						option.text(competency.name);
+						option.text(competency.getName());
 						option.attr("value", EcRemoteLinkedData.trimVersionFromUrl(competency.id));
 						if(assertion.competency == EcRemoteLinkedData.trimVersionFromUrl(competency.id)){
 							$("#assertionCompetencyInput option").removeAttr("selected");
@@ -272,7 +272,7 @@ AssertionEditScreen = (function(AssertionEditScreen){
 					competencyOption.attr("selected", "selected");
 				}else{
 					var option = $("<option></option>");
-					option.text(competencies[i].name);
+					option.text(competencies[i].getName());
 					option.attr("value", EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id));
 					if(assertion.competency == EcRemoteLinkedData.trimVersionFromUrl(competencies[i].id)){
 						$("#assertionCompetencyInput option").removeAttr("selected");

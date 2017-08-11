@@ -39,10 +39,12 @@ function createNewAssertion() {
     if (frameworkId == null) {
         var searchString = new EcCompetency().getSearchStringByType();
         repo.search(searchString, function (competency) {
+        	var c = new EcCompetency();
+        	c.copyFrom(competency);
             $("#newAssertionCompetency").append("<option/>").children().last()
-                .text(competency.name)
-                .attr("value", competency.shortId());
-            if (competency.shortId() == competencyId) {
+                .text(c.getName())
+                .attr("value", c.shortId());
+            if (c.shortId() == competencyId) {
                 $("#newAssertionCompetency").children().last().prop("selected", true);
                 createNewAssertionSelectedCompetencyChanged(null);
             }
@@ -51,9 +53,9 @@ function createNewAssertion() {
         EcRepository.get(frameworkId, function (framework) {
             if (framework.competency != null)
                 for (var i = 0; i < framework.competency.length; i++) {
-                    EcRepository.get(framework.competency[i], function (competency) {
+                    EcCompetency.get(framework.competency[i], function (competency) {
                         $("#newAssertionCompetency").append("<option/>").children().last()
-                            .text(competency.name)
+                            .text(competency.getName())
                             .attr("value", competency.shortId());
                         if (competency.shortId() == competencyId) {
                             $("#newAssertionCompetency").children().last().prop("selected", true);
@@ -81,8 +83,10 @@ function createNewAssertionSelectedCompetencyChanged(e) {
     if (frameworkId == null) {
         var searchString = new EcLevel().getSearchStringByType() + " AND (competency:\"" + competencyId + "\")";
         repo.search(searchString, function (level) {
+        	var l = new EcLevel();
+        	l.copyFrom(level);
             $("#newAssertionLevel").append("<option/>").children().last()
-                .text(level.name)
+                .text(level.getName())
                 .attr("value", level.shortId());
         }, null, error);
     } else {
@@ -90,13 +94,13 @@ function createNewAssertionSelectedCompetencyChanged(e) {
             if (framework.level != null) {
                 var first = true;
                 for (var i = 0; i < framework.level.length; i++) {
-                    EcRepository.get(framework.level[i], function (level) {
+                    EcLevel.get(framework.level[i], function (level) {
                         if (level.competency == competencyId) {
                             if (first)
                                 $("#newAssertionLevel").html("").append("<option value=''>No level selected.</option>");
                             first = false;
                             $("#newAssertionLevel").append("<option/>").children().last()
-                                .text(level.name + " (" + level.description + ")")
+                                .text(level.getName() + " (" + level.getDescription() + ")")
                                 .attr("value", level.shortId());
                         }
                     }, error);

@@ -62,4 +62,17 @@ StorageController = stjs.extend(StorageController, null, [], function(constructo
         this.recent[type] = list;
         this.storageSystem["cass.recent"] = JSON.stringify(this.recent);
     };
+    prototype.removeRecent = function(type, id) {
+        if (id == null || id == undefined || id == "") {
+            return;
+        }
+        var list = this.recent[type];
+        if (list == null) {
+            return;
+        } else if (list.indexOf(id) == -1) {
+            delete (list)[Integer.toString(list.indexOf(id))];
+            this.recent[type] = list;
+            this.storageSystem["cass.recent"] = JSON.stringify(this.recent);
+        }
+    };
 }, {storageSystem: "Storage", recent: {name: "Map", arguments: [null, {name: "Array", arguments: [null]}]}}, {});

@@ -138,7 +138,15 @@ var FrameworkList = (function(FrameworkList){
 							"</div></li>");
 		
 		element.attr("data-id", competency.shortId())
-		element.find(".competencyName a").text(competency.name);
+		
+		if(competency.getName != undefined){
+			element.find(".competencyName a").text(competency.getName());
+		}else if(datum["name"] != undefined){
+			element.find(".competencyName a").text(competency["name"]);
+		}else{
+			element.find(".competencyName a").html("<i>Unknown Competency Name</i>");
+		}
+	
 		element.find(".competencyDescription").text(competency.description);
 		
 		element.find(".competencyId").text(competency.shortId())

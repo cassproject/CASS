@@ -209,8 +209,11 @@ FrameworkSearchScreen = (function(FrameworkSearchScreen){
 							"<div class='small-2 columns'>"+ rels + (rels == 1 ? " Relationship" : " Relationships")+"</div>" +
 							"<div class='small-4 columns datum-owner'></div>");
 				
-				if(datum.name != undefined && datum.name != ""){
-					row.find(".datum-name").text(datum.name);
+				var name;
+				if(datum.getName != undefined && datum.getName() != ""){
+					row.find(".datum-name").text(datum.getName());
+				}else if(datum["name"] != undefined && datum["name"] != ""){
+					row.find(".datum-name").text(datum["name"]);
 				}else{
 					row.find(".datum-name").html("<i>No Name</i>");
 				}

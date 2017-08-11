@@ -562,7 +562,7 @@ LevelSearchScreen = (function(LevelSearchScreen){
 				if(row.find(".datum-competency").size() > 0){
 					EcCompetency.get(datum.competency, function(competency){
 						row.find(".datum-competency").html("on <span style='font-style:italic;'></span>");
-						row.find(".datum-competency span").text(competency.name);
+						row.find(".datum-competency span").text(competency.getName());
 					}, function(){
 						row.find(".datum-competency").text("Unknown Competency");
 					})

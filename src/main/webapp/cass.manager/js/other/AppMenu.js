@@ -153,7 +153,7 @@ var AppMenu = (function (AppMenu) {
 			EcCompetency.get(compId, function(comp){
 				var recentListItem = $("<li data-recent='competency'><a></a></li>")
 				recentListItem.attr("data-id", compId);
-				recentListItem.find("a").text(comp.name);
+				recentListItem.find("a").text(comp.getName());
 				recentListItem.find("a").attr("title", compId);
 				recentListItem.find("a").attr("href", "#"+CompetencyViewScreen.prototype.getDisplayName()+"?id="+compId)
 				recentListItem.find("a").click(function(ev){
@@ -163,6 +163,8 @@ var AppMenu = (function (AppMenu) {
 				})
 				$("#appMenuCompetencyListStart").after(recentListItem);
 				$("#appMenuCompetencyListStart").removeClass("hide");
+			}, function(){
+				AppController.storageController.removeRecent(EcCompetency.myType, frameworkId);
 			});
 		}
 	}
@@ -204,7 +206,7 @@ var AppMenu = (function (AppMenu) {
 			EcFramework.get(frameworkId, function(framework){
 				var recentListItem = $("<li data-recent='framework'><a></a></li>")
 				recentListItem.attr("data-id", frameworkId);
-				recentListItem.find("a").text(framework.name);
+				recentListItem.find("a").text(framework.getName());
 				recentListItem.find("a").attr("title", frameworkId);
 				recentListItem.find("a").attr("href", "#"+FrameworkViewScreen.prototype.getDisplayName()+"?id="+frameworkId)
 				recentListItem.find("a").click(function(ev){
@@ -214,6 +216,8 @@ var AppMenu = (function (AppMenu) {
 				})
 				$("#appMenuFrameworkListStart").after(recentListItem);
 				$("#appMenuFrameworkListStart").removeClass("hide");
+			}, function(){
+				AppController.storageController.removeRecent(EcFramework.myType, frameworkId);
 			});
 		}
 	}

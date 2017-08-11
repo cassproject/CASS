@@ -26,9 +26,9 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
         {
             var competency = results[i];
             $("#relationEditSource").append("<option/>");
-            $("#relationEditSource").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.name);               
+            $("#relationEditSource").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.getName());               
             $("#relationEditTarget").append("<option/>");
-            $("#relationEditTarget").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.name);
+            $("#relationEditTarget").children("option").last().attr("value",EcRemoteLinkedData.trimVersionFromUrl(competency.id)).text(competency.getName());
             if (currentRelation != null)
             {
                 if (competency.isId(currentRelation.source))
@@ -111,7 +111,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationEditPopulateSource(competency)
 	{
 	    $("#relationEditSourceId").val(competency.shortId());
-	    $("#relationEditSourceName").val(competency.name);
+	    $("#relationEditSourceName").val(competency.getName());
 	    $("#relationEditSourceDescription").val(competency.description);
 	    $("#relationEditSourceScope").val(competency.scope);
 	}
@@ -128,7 +128,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	function relationEditPopulateTarget(competency)
 	{
 	    $("#relationEditTargetId").val(competency.shortId());
-	    $("#relationEditTargetName").val(competency.name);
+	    $("#relationEditTargetName").val(competency.getName());
 	    $("#relationEditTargetDescription").val(competency.description);
 	    $("#relationEditTargetScope").val(competency.scope);
 	}

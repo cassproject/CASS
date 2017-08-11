@@ -919,6 +919,56 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
      *  @type schema,URL | schema,CreativeWork
      */
     prototype.mainEntityOfPage = null;
+    /**
+     *  Method to set Thing name
+     *  
+     *  @memberOf Thing
+     *  @method setName
+     *  @param {String} name
+     * 			Name to set for this Thing
+     */
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    /**
+     *  Returns the name of the thing
+     *  
+     *  @memberOf Thing
+     *  @method getName
+     *  @return {String} name of Thing
+     */
+    prototype.getName = function() {
+        if (this.name != null &amp;&amp; EcObject.isObject(this.name) &amp;&amp; (this.name).hasOwnProperty(&quot;@value&quot;)) {
+            return (this.name)[&quot;@value&quot;];
+        } else {
+            return this.name;
+        }
+    };
+    /**
+     *  Method to set Thing description
+     *  
+     *  @memberOf Thing
+     *  @method setDescription
+     *  @param {String} description
+     *  			Description to set for its Thing
+     */
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    /**
+     *  Returns the description of the thing
+     *  
+     *  @memberOf Thing
+     *  @method getDescription
+     *  @return {String} description of Thing
+     */
+    prototype.getDescription = function() {
+        if (this.description != null &amp;&amp; EcObject.isObject(this.description) &amp;&amp; (this.description).hasOwnProperty(&quot;@value&quot;)) {
+            return (this.description)[&quot;@value&quot;];
+        } else {
+            return this.description;
+        }
+    };
 }, {identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Schema.org/Place

@@ -26,9 +26,22 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
 	 * 			Relation to display
 	 */
     function buildFramework(framework) {
-    	$("#frameworkViewerName").text(framework.name);
+    	var name;
+		if(framework.getName != undefined){
+			$("#frameworkViewerName").text(framework.getName());
+		}else if(framework["name"] != undefined){
+			$("#frameworkViewerName").text(framework["name"]);
+		}else{
+			$("#frameworkViewerName").html("<i>Unnamed Framework</i>");
+		}
+    		
     	$("#frameworkViewerId").text(framework.id);
-    	$("#frameworkViewerDescription").text(framework.description);
+    	
+    	if(framework.getDescription != undefined){
+			$("#frameworkViewerDescription").text(framework.getDescription());
+		}else if(framework["description"] != undefined){
+			$("#frameworkViewerDescription").text(framework["description"]);
+		}
     	
     	cacheShowObjects(framework);
     }
@@ -113,9 +126,11 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                     timeout(function () {
                         EcCompetency.get(framework.competency[i], function (competency) {
                             fetches--;
-                            competency.font = fonts.node;
-                            competency.mass = 2;
-                            nodes[competency.shortId()] = graph.newNode(competency);
+                            
+                            var name = competency.getName()
+                            
+                            
+                            nodes[competency.shortId()] = graph.newNode({id:competency.id, "name":name, font: fonts.node, mass: 2});
                             nodes[competency.shortId()].gravity = 0.0;
                             nodes[competency.shortId()].fixed = true;
                             if (framework.competency.length < 20)

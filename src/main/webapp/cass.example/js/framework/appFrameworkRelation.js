@@ -34,8 +34,8 @@ function populateFrameworkRelation(fw, relationId,fwui) {
 		ui.find(".cass-competency-relations").append(cassRelationTemplate);
 		ui = ui.find(".cass-competency-relations").children().last();
 		ui.attr("url", relation.shortId());
-		ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(EcRepository.getBlocking(source).name);
-		ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(EcRepository.getBlocking(target).name);
+		ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(EcRepository.getBlocking(source).getName());
+		ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(EcRepository.getBlocking(target).getName());
 		ui.find(".cass-relation-type").text(relation.relationType);
 		if (identity != null && relation.canEdit(identity.ppk.toPk()))
 			ui.find(".canEditRelation").show();

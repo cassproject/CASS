@@ -561,7 +561,7 @@ RollupRuleSearchScreen = (function(RollupRuleSearchScreen){
 				if(row.find(".datum-competency").size() > 0){
 					EcCompetency.get(datum.competency, function(competency){
 						row.find(".datum-competency").html("for <span style='font-style:italic;'></span>");
-						row.find(".datum-competency span").text(competency.name);
+						row.find(".datum-competency span").text(competency.getName());
 					}, function(){
 						row.find(".datum-competency").text("Unknown Competency");
 					})

@@ -13644,7 +13644,7 @@ module.exports = withPublic;
 
 /* WEBPACK VAR INJECTION */(function(global) {global.pemJwk = __webpack_require__(81);
 
-module.exports = global.pem-jwk;
+module.exports = global.pem_jwk;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 

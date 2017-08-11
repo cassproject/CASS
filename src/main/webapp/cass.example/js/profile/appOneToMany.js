@@ -192,7 +192,7 @@ function updateAssertionTranscript(acs)
                 var ui = $("#frameworks").find(".cass-competency[url='" + competencyId + "']");
                 var name = ui.children(".cass-competency-name");
 
-                name.html("").append(competency.name);
+                name.text(competency.getName());
 
                 var mostRecentAssertion = 0;
                 var leastRecentAssertion = Math.pow(2, 62) - 1;

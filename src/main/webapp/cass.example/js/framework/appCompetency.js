@@ -56,8 +56,8 @@ function editCompetency(competencyId) {
         return;
     }
     EcRepository.get(competencyId, function (competency) {
-        $("#editCompetencyName").val(competency.name);
-        $("#editCompetencyDescription").val(competency.description);
+        $("#editCompetencyName").val(competency.getName());
+        $("#editCompetencyDescription").val(competency.getDescription());
         $("#editCompetency").foundation('open');
         $("#editCompetency").select();
     }, error);
@@ -107,12 +107,12 @@ function populateCompetency(id,cui) {
 			ui = cui;
 		else
 			ui = $("[url='" + competency.shortId() + "']");
-		ui.children(".cass-competency-name").text(competency.name);
+		ui.children(".cass-competency-name").text(competency.getName());
 		if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
-			$("#selectedCompetency").text(competency.name).show();
+			$("#selectedCompetency").text(competency.getName()).show();
 			$("#selectedFramework").hide();
 		}
-		ui.find(".cass-competency-description").text(competency.description);
+		ui.find(".cass-competency-description").text(competency.getDescription());
 		var url = competency.shortId();
 		if (competency.sameAs != null)
 			url = competency.sameAs;
@@ -151,9 +151,9 @@ function insertExistingCompetency() {
                 results.append(cassCompetencyTemplate);
                 var ui = results.children().last();
                 ui.attr("url", competency.shortId());
-                if (!ui.find(".cass-competency-name").text().startsWith(competency.name))
-                    ui.find(".cass-competency-name").text(competency.name);
-                ui.find(".cass-competency-description").text(competency.description);
+                if (!ui.find(".cass-competency-name").text().startsWith(competency.getName()))
+                    ui.find(".cass-competency-name").text(competency.getName());
+                ui.find(".cass-competency-description").text(competency.getDescription());
                 if ($("[url='" + frameworkId + "']").find("[url='" + competency.shortId() + "']").length > 0)
                     ui.find(".cass-competency-actions").html("<a class='button small disabled float-right'>Exists</a>");
                 else

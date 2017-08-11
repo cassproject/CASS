@@ -25,7 +25,10 @@ function permissionsPopulate(objectUrl)
             $('#permissionsVisibility').attr("checked", "false");
             $(".permissionsViewer").hide();
         }
-        $("#permissionsObjectName").text(object.name);
+        if (object.getName != null)
+        	$("#permissionsObjectName").text(object.getName());
+        else
+        	$("#permissionsObjectName").text(object.name);
         $("#permissionsObjectOwners").html("");
         $("#permissionsUrl").text(object.shortId());
         $("#permissionsVisibilitySwitch").hide();
