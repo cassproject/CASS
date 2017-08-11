@@ -890,8 +890,14 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         var repo = EcRepository.repos[i];
-        if (((history)[repo.selectedServer]) == true) 
+        if (repo.selectedServer == null) {
             EcRepository.find(url, error, history, i + 1, success, failure);
+            return;
+        }
+        if (((history)[repo.selectedServer]) == true) {
+            EcRepository.find(url, error, history, i + 1, success, failure);
+            return;
+        }
         (history)[repo.selectedServer] = true;
         repo.search("@id:\"" + url + "\"", null, function(strings) {
             if (strings == null || strings.length == 0) 
