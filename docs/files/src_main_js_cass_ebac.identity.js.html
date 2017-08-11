@@ -989,7 +989,7 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
     prototype.source = null;
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
-            return this.ppk.equals((obj).ppk);
+            return this.ppk.toPem().equals((obj).ppk.toPem());
         return Object.prototype.equals.call(this, obj);
     };
     /**

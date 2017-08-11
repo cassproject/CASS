@@ -72,14 +72,14 @@ function getImgSrc(result) {
 }
 
 function getNodeName(ip) {
-    if (ip.type == "COMPETENCY") return ip.competency[0].name;
+    if (ip.type == "COMPETENCY") return ip.competency[0].getName();
     else if (ip.type == "ROLLUPRULE") return ip.type;
     else if (ip.type != null) return ip.type._name.replace("RELATION_", "");
 }
 
 function displayInquiryPacketDetails(ip) {
     //change this to fill in details div
-    if (ip.competency) alert(ip.type + "\n" + ip.competency.name);
+    if (ip.competency) alert(ip.type + "\n" + ip.competency.getName());
     else alert(ip.type);
 }
 

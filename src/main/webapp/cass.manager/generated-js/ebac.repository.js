@@ -711,7 +711,9 @@ GeneralFile = stjs.extend(GeneralFile, EcRemoteLinkedData, [], function(construc
  *  @module com.eduworks.ec
  *  @class EcRepository
  */
-var EcRepository = function() {};
+var EcRepository = function() {
+    EcRepository.repos.push(this);
+};
 EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototype) {
     prototype.selectedServer = null;
     constructor.caching = false;
@@ -719,6 +721,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.unsigned = false;
     constructor.cache = new Object();
     constructor.fetching = new Object();
+    constructor.repos = new Array();
     /**
      *  Retrieves data from the server and caches it for use later during the
      *  application. This should be called before the data is needed if possible,
@@ -834,9 +837,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 var d = new EcRemoteLinkedData("", "");
                 d.copyFrom(p1);
                 if (d.getFullType() == null) {
-                    if (failure != null) {
-                        failure(JSON.stringify(p1));
-                    }
+                    EcRepository.find(url, JSON.stringify(p1), new Object(), 0, success, failure);
                     return;
                 }
                 if (EcRepository.caching) {
@@ -845,10 +846,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }
                 success(d);
             }, function(p1) {
-                delete (EcRepository.fetching)[url];
-                if (failure != null) {
-                    failure(p1);
-                }
+                EcRepository.find(url, p1, new Object(), 0, success, failure);
             });
         } else 
             EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
@@ -863,9 +861,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     var d = new EcRemoteLinkedData("", "");
                     d.copyFrom(p1);
                     if (d.getFullType() == null) {
-                        if (failure != null) {
-                            failure(JSON.stringify(p1));
-                        }
+                        EcRepository.find(url, JSON.stringify(p1), new Object(), 0, success, failure);
                         return;
                     }
                     if (EcRepository.caching) {
@@ -874,12 +870,58 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     }
                     success(d);
                 }, function(p1) {
-                    delete (EcRepository.fetching)[url];
-                    if (failure != null) {
-                        failure(p1);
-                    }
+                    EcRepository.find(url, p1, new Object(), 0, success, failure);
                 });
             });
+    };
+    constructor.find = function(url, error, history, i, success, failure) {
+        if (i > EcRepository.repos.length) {
+            delete (EcRepository.fetching)[url];
+            failure(error);
+            return;
+        }
+        var repo = EcRepository.repos[i];
+        if (((history)[repo.selectedServer]) == true) 
+            EcRepository.find(url, error, history, i + 1, success, failure);
+        (history)[repo.selectedServer] = true;
+        repo.search("@id:\"" + url + "\"", null, function(strings) {
+            if (strings == null || strings.length == 0) 
+                EcRepository.find(url, error, history, i + 1, success, failure);
+             else {
+                var done = false;
+                for (var i = 0; i < strings.length; i++) {
+                    if (strings[i].id == url) {
+                        if (done) 
+                            log("Searching for exact ID:" + url + ", found more than one@:" + repo.selectedServer);
+                        done = true;
+                        success(strings[i]);
+                    }
+                }
+            }
+        }, function(s) {
+            EcRepository.find(url, error, history, i + 1, success, failure);
+        });
+    };
+    constructor.findBlocking = function(url, error, history, i) {
+        if (i > EcRepository.repos.length) {
+            delete (EcRepository.fetching)[url];
+            return null;
+        }
+        var repo = EcRepository.repos[i];
+        if (((history)[repo.selectedServer]) == true) 
+            EcRepository.findBlocking(url, error, history, i + 1);
+        (history)[repo.selectedServer] = true;
+        var strings = repo.searchBlocking("@id:\"" + url + "\"");
+        if (strings == null || strings.length == 0) 
+            return EcRepository.findBlocking(url, error, history, i + 1);
+         else {
+            for (var j = 0; j < strings.length; j++) {
+                if (strings[j].id == url) {
+                    return strings[j];
+                }
+            }
+        }
+        return EcRepository.findBlocking(url, error, history, i + 1);
     };
     /**
      *  Retrieves a piece of data synchronously from the server, blocking until
@@ -909,10 +951,13 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             var d = new EcRemoteLinkedData("", "");
             d.copyFrom(p1);
             if (d.getFullType() == null) {
+                EcRepository.findBlocking(url, JSON.stringify(p1), new Object(), 0);
                 return;
             }
             (EcRepository.cache)[url] = d;
-        }, null);
+        }, function(s) {
+            (EcRepository.cache)[url] = EcRepository.findBlocking(url, s, new Object(), 0);
+        });
         EcRemote.async = oldAsync;
         var result = (EcRepository.cache)[url];
         if (!EcRepository.caching) {
@@ -1016,6 +1061,20 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         this.searchWithParams(query, null, eachSuccess, success, failure);
     };
     /**
+     *  Search a repository for JSON-LD compatible data synchronously.
+     *  <p>
+     *  Uses a signature sheet gathered from {@link EcIdentityManager}.
+     * 
+     *  @param {String} query ElasticSearch compatible query string, similar to
+     *                  Google query strings.
+     *  @returns EcRemoteLinkedData[]
+     *  @memberOf EcRepository
+     *  @method search
+     */
+    prototype.searchBlocking = function(query) {
+        return this.searchWithParamsBlocking(query, null);
+    };
+    /**
      *  Search a repository for JSON-LD compatible data.
      *  <p>
      *  Uses a signature sheet gathered from {@link EcIdentityManager}.
@@ -1042,36 +1101,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var params = new Object();
         var paramProps = (params);
-        if ((paramObj)["start"] != null) {
-            paramProps["start"] = (paramObj)["start"];
-        }
-        if ((paramObj)["size"] != null) {
-            paramProps["size"] = (paramObj)["size"];
-        }
-        if ((paramObj)["types"] != null) {
-            paramProps["types"] = (paramObj)["types"];
-        }
-        if ((paramObj)["ownership"] != null) {
-            var ownership = (paramObj)["ownership"];
-            if (!query.startsWith("(") || !query.endsWith(")")) {
-                query = "(" + query + ")";
-            }
-            if (ownership.equals("public")) {
-                query += " AND (_missing_:@owner)";
-            } else if (ownership.equals("owned")) {
-                query += " AND (_exists_:@owner)";
-            } else if (ownership.equals("me")) {
-                query += " AND (";
-                for (var i = 0; i < EcIdentityManager.ids.length; i++) {
-                    if (i != 0) {
-                        query += " OR ";
-                    }
-                    var id = EcIdentityManager.ids[i];
-                    query += "@owner:\"" + id.ppk.toPk().toPem() + "\"";
-                }
-                query += ")";
-            }
-        }
+        query = this.searchParamProps(query, paramObj, paramProps);
         if ((paramObj)["fields"] != null) {
             paramProps["fields"] = (paramObj)["fields"];
         }
@@ -1141,6 +1171,117 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     }
                 });
             });
+    };
+    /**
+     *  Search a repository for JSON-LD compatible data synchronously.
+     *  <p>
+     *  Uses a signature sheet gathered from {@link EcIdentityManager}.
+     * 
+     *  @param {String} query ElasticSearch compatible query string, similar to
+     *                  Google query strings.
+     *  @param {Object} paramObj Additional parameters that can be used to tailor
+     *                  the search.
+     *  @param size
+     *  @param start
+     *  @returns EcRemoteLinkedData[]
+     *  @memberOf EcRepository
+     *  @method searchWithParams
+     */
+    prototype.searchWithParamsBlocking = function(originalQuery, originalParamObj) {
+        var query = originalQuery;
+        var paramObj = originalParamObj;
+        if (paramObj == null) {
+            paramObj = new Object();
+        }
+        var params = new Object();
+        var paramProps = (params);
+        query = this.searchParamProps(query, paramObj, paramProps);
+        if ((paramObj)["fields"] != null) {
+            paramProps["fields"] = (paramObj)["fields"];
+        }
+        var oldAsync = EcRemote.async;
+        EcRemote.async = false;
+        var cacheKey;
+        cacheKey = JSON.stringify(paramProps) + query;
+        if (EcRepository.cachingSearch) {
+            if ((EcRepository.cache)[cacheKey] != null) {
+                return this.handleSearchResults((EcRepository.cache)[cacheKey], null, null);
+            }
+        }
+        var fd = new FormData();
+        fd.append("data", query);
+        if (params != null) {
+            fd.append("searchParams", JSON.stringify(params));
+        }
+        var me = this;
+        if (EcRepository.unsigned == true || (paramObj)["unsigned"] == true) {
+            fd.append("signatureSheet", "[]");
+            EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
+                (EcRepository.cache)[cacheKey] = p1;
+                if (cacheKey != null) {
+                    delete (EcRepository.fetching)[cacheKey];
+                }
+            }, function(p1) {
+                if (cacheKey != null) {
+                    delete (EcRepository.fetching)[cacheKey];
+                }
+                (EcRepository.cache)[cacheKey] = null;
+            });
+        } else {
+            var signatureSheet;
+            signatureSheet = EcIdentityManager.signatureSheet(60000, this.selectedServer);
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingObject(me.selectedServer, "sky/repo/search", fd, function(p1) {
+                (EcRepository.cache)[cacheKey] = p1;
+                if (cacheKey != null) {
+                    delete (EcRepository.fetching)[cacheKey];
+                }
+            }, function(p1) {
+                if (cacheKey != null) {
+                    delete (EcRepository.fetching)[cacheKey];
+                }
+                (EcRepository.cache)[cacheKey] = null;
+            });
+        }
+        var result = this.handleSearchResults((EcRepository.cache)[cacheKey], null, null);
+        if (!EcRepository.cachingSearch) {
+            delete (EcRepository.cache)[cacheKey];
+        }
+        EcRemote.async = oldAsync;
+        return result;
+    };
+    prototype.searchParamProps = function(query, paramObj, paramProps) {
+        if ((paramObj)["start"] != null) {
+            paramProps["start"] = (paramObj)["start"];
+        }
+        if ((paramObj)["size"] != null) {
+            paramProps["size"] = (paramObj)["size"];
+        }
+        if ((paramObj)["types"] != null) {
+            paramProps["types"] = (paramObj)["types"];
+        }
+        if ((paramObj)["ownership"] != null) {
+            var ownership = (paramObj)["ownership"];
+            if (!query.startsWith("(") || !query.endsWith(")")) {
+                query = "(" + query + ")";
+            }
+            if (ownership.equals("public")) {
+                query += " AND (_missing_:@owner)";
+            } else if (ownership.equals("owned")) {
+                query += " AND (_exists_:@owner)";
+            } else if (ownership.equals("me")) {
+                query += " AND (";
+                for (var i = 0; i < EcIdentityManager.ids.length; i++) {
+                    if (i != 0) {
+                        query += " OR ";
+                    }
+                    var id = EcIdentityManager.ids[i];
+                    query += "@owner:\"" + id.ppk.toPk().toPem() + "\"";
+                }
+                query += ")";
+            }
+        }
+        return query;
     };
     /**
      *  Searches known repository endpoints to set the server configuration for
@@ -1420,6 +1561,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (success != null) {
             success(results);
         }
+        return results;
     };
     /**
      *  Escapes a search query
@@ -1542,7 +1684,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
-        if (data.owner != null && data.owner.length > 0) {
+        if (EcRemote.async == false) {
+            if (data.owner != null && data.owner.length > 0) {
+                var arg0 = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
+                fd.append("signatureSheet", arg0);
+                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+            } else {
+                var arg0 = EcIdentityManager.signatureSheet(60000, data.id);
+                fd.append("signatureSheet", arg0);
+                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+            }
+        } else if (data.owner != null && data.owner.length > 0) {
             EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(arg0) {
                 fd.append("signatureSheet", arg0);
                 EcRemote.postExpectingString(data.id, "", fd, success, failure);
@@ -1621,7 +1773,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             failure("");
         });
     };
-}, {cache: "Object", fetching: "Object"}, {});
+}, {cache: "Object", fetching: "Object", repos: {name: "Array", arguments: ["EcRepository"]}}, {});
 /**
  *  Implementation of a file with methods for communicating with repository services
  *  

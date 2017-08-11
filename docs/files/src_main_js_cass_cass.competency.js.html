@@ -2506,6 +2506,8 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
         var competency = new EcCompetency();
         if (p1.isA(EcEncryptedValue.myType)) {
             var encrypted = new EcEncryptedValue();

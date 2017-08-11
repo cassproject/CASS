@@ -36,3 +36,6 @@ load("webapps/cass/cass.example/js/cass/cass.rollup.js");
 EcRepository.caching = true;
 EcRemote.async = false;
 EcIdentityManager.async = false;
+
+console = {};
+console.log = function(s){print(s);}

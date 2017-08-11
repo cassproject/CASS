@@ -87,10 +87,10 @@ function insertNewRelation() {
         for (var i = 0; i < framework.competency.length; i++) {
             EcRepository.get(framework.competency[i], function (competency) {
                 var ui = $("#newRelationSource").append("<option/>").children().last();
-                ui.text(competency.name);
+                ui.text(competency.getName());
                 ui.attr("value", competency.shortId());
                 ui = $("#newRelationTarget").append("<option/>").children().last();
-                ui.text(competency.name);
+                ui.text(competency.getName());
                 ui.attr("value", competency.shortId());
             }, error);
         }
@@ -147,20 +147,20 @@ function editRelation(relationId) {
     }
     EcRepository.get(relationId, function (relation) {
         $("#editRelationId").val(relation.shortId());
-        $("#editRelationName").val(relation.name);
-        $("#editRelationDescription").val(relation.description);
+        $("#editRelationName").val(relation.getName());
+        $("#editRelationDescription").val(relation.getDescription());
         EcRepository.get(frameworkId, function (framework) {
             $("#editRelationSource").html("");
             $("#editRelationTarget").html("");
             for (var i = 0; i < framework.competency.length; i++) {
                 EcRepository.get(framework.competency[i], function (competency) {
                     var ui = $("#editRelationSource").append("<option/>").children().last();
-                    ui.text(competency.name);
+                    ui.text(competency.getName());
                     ui.attr("value", competency.shortId());
                     if (EcRemoteLinkedData.trimVersionFromUrl(relation.source) == competency.shortId())
                         ui.attr("selected", true);
                     ui = $("#editRelationTarget").append("<option/>").children().last();
-                    ui.text(competency.name);
+                    ui.text(competency.getName());
                     ui.attr("value", competency.shortId());
                     if (EcRemoteLinkedData.trimVersionFromUrl(relation.target) == competency.shortId())
                         ui.attr("selected", true);

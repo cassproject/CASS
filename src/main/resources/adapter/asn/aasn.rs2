@@ -1,0 +1,11 @@
+ppk=#fileLoad(path="adapter.asn.private.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="adapter.asn.private.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="adapter.asn.private.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="adapter.asn.private.pem");
+#asnPpk=ppk;

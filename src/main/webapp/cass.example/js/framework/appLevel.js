@@ -29,14 +29,14 @@ function insertExistingLevel() {
             else
                 $("#insertExistingLevelsResults").html("");
             for (var i = 0; i < levels.length; i++) {
-                EcRepository.get(levels[i].shortId(), function (level) {
+                EcLevel.get(levels[i].shortId(), function (level) {
                     var ui = $("#insertExistingLevel");
                     ui.find(".cass-competency-levels").append(cassLevelTemplate);
                     ui = ui.find(".cass-competency-levels").children().last();
                     ui.attr("url", level.shortId());
-                    ui.find(".cass-level-name").text(level.name);
+                    ui.find(".cass-level-name").text(level.getName());
                     ui.find(".cass-level-title").text(level.title);
-                    ui.find(".cass-level-description").text(level.description);
+                    ui.find(".cass-level-description").text(level.getDescription());
                     if ($("[url='" + frameworkId + "']").find("[url='" + competencyId + "']").find("[url='" + level.shortId() + "']").length > 0)
                         ui.find(".cass-level-actions").html("<a class='button tiny float-right disabled'>Exists</a>&nbsp;");
                     else
@@ -112,9 +112,9 @@ function editLevel(levelId) {
     }
     EcRepository.get(levelId, function (level) {
         $("#editLevelId").val(level.shortId());
-        $("#editLevelName").val(level.name);
+        $("#editLevelName").val(level.getName());
         $("#editLevelTitle").val(level.title);
-        $("#editLevelDescription").val(level.description);
+        $("#editLevelDescription").val(level.getDescription());
         $("#editLevel").foundation('open');
     }, error);
 }

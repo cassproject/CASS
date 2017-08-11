@@ -19,19 +19,19 @@ function frameworkSearch() {
             $("#frameworks").replaceWith(frameworksTemplate);
             $("#frameworks-frameworks").html("");
             for (var i = 0; i < frameworks.length; i++) {
-                var fw = frameworks[i];
+            	var fw = new EcFramework();
+            	fw.copyFrom(frameworks[i]);
                 $("#frameworks-frameworks").append(cassFrameworkTemplate);
                 var ui = $("#frameworks-frameworks").children().last();
                 ui.attr("url", fw.shortId());
-                ui.find(".cass-framework-name").text(fw.name);
-                ui.find(".cass-framework-description").text(fw.description);
+                ui.find(".cass-framework-name").text(fw.getName());
+                ui.find(".cass-framework-description").text(fw.getDescription());
                 //helpAssist('#joyride-framework');
             }
             $(document).foundation();
             frameworkFilter();
         }, error
     );
-
 }
 
 function frameworkFilter() {
@@ -72,7 +72,7 @@ function newFramework() {
 }
 
 function populateFramework(frameworkId,fwui) {
-    EcRepository.get(frameworkId, function (fw) {
+    EcFramework.get(frameworkId, function (fw) {
     	var ids = [];
 
         if (fw.competency != null)
@@ -82,18 +82,18 @@ function populateFramework(frameworkId,fwui) {
         if (fw.level != null)
             ids = ids.concat(fw.level);
 		if (fwui == null) fwui = $("[url='" + fw.shortId() + "']");
-		fwui.find(".cass-framework-name").text(fw.name);
+		fwui.find(".cass-framework-name").text(fw.getName());
 		if ($("#frameworks").find(".is-active").attr("url") == null) {
 			$("#selectedFramework").text("All Frameworks").show();
 			$("#selectedCompetency").hide();
 		} else {
-			$("#selectedFramework").text(fw.name).show();
+			$("#selectedFramework").text(fw.getName()).show();
 			$("#selectedCompetency").hide();
 		}
 		if (fw.description === undefined || fw.description == null)
 			fwui.find(".cass-framework-description").text("No description");
 		else
-			fwui.find(".cass-framework-description").text(fw.description);
+			fwui.find(".cass-framework-description").text(fw.getDescription());
 		var url = fw.shortId();
 		if (fw.sameAs != null)
 			url = fw.sameAs;
@@ -149,8 +149,8 @@ function editFramework(e) {
         return;
     }
     EcRepository.get(frameworkId, function (framework) {
-        $("#editFrameworkName").val(framework.name);
-        $("#editFrameworkDescription").val(framework.description);
+        $("#editFrameworkName").val(framework.getName());
+        $("#editFrameworkDescription").val(framework.getDescription());
         $("#editFramework").foundation('open');
     }, error);
 }

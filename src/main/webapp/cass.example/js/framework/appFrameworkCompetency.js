@@ -78,9 +78,10 @@ function bulkFromFrameworkButton() {
             $("#bulkFromFrameworkSource").html("");
             $("#bulkFromFrameworkSource").append("<option/>");
             for (var i = 0; i < frameworks.length; i++) {
-                var fw = frameworks[i];
+            	var fw = new EcFramework();
+            	fw.copyFrom(frameworks[i]);
                 $("#bulkFromFrameworkSource").append("<option/>");
-                $("#bulkFromFrameworkSource").children().last().attr("value", fw.shortId()).text(fw.name);
+                $("#bulkFromFrameworkSource").children().last().attr("value", fw.shortId()).text(fw.getName());
             }
             $("#bulkFromFramework").foundation('open');
         }, error

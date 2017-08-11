@@ -19,9 +19,9 @@ function populateFrameworkLevels(frameworkId) {
                     ui.find(".cass-competency-levels").append(cassLevelTemplate);
                     ui = ui.find(".cass-competency-levels").children().last();
                     ui.attr("url", level.shortId());
-                    ui.find(".cass-level-name").text(level.name);
+                    ui.find(".cass-level-name").text(level.getName());
                     ui.find(".cass-level-title").text(level.title);
-                    ui.find(".cass-level-description").text(level.description);
+                    ui.find(".cass-level-description").text(level.getDescription());
                     if (identity != null && level.canEdit(identity.ppk.toPk()))
                         ui.find(".canEditLevel").show();
                     else

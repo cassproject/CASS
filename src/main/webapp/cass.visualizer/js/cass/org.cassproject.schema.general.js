@@ -336,6 +336,13 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id = rawId;
     };
     /**
+     *  Updates the ID timestamp of the object, for versioning purposes.
+     *  @method updateTimestamp
+     */
+    prototype.getTimestamp = function() {
+        return Integer.parseInt(this.id.substring(this.id.lastIndexOf("/")));
+    };
+    /**
      *  Returns true if the provided ID represents this object. 
      *  Use this, as version information can make direct comparison difficult.
      *  @method isId

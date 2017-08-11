@@ -220,7 +220,7 @@ function exportCsv() {
     $("#exportCsv").foundation('open');
     csvOutput = [];
     csvRelationOutput = [];
-    EcRepository.get(frameworkId, function (fw) {
+    EcFramework.get(frameworkId, function (fw) {
         if (fw.competency === undefined || fw.competency.length == 0)
             timeout(function () {
                 $("#exportCsv").foundation('close');
@@ -229,13 +229,13 @@ function exportCsv() {
             var competencyUrl = fw.competency[i];
             (function (competencyUrl, fw) {
                 timeout(function () {
-                    EcRepository.get(competencyUrl, function (competency) {
+                    EcCompetency.get(competencyUrl, function (competency) {
                         csvOutput.push(JSON.parse(competency.toJson()));
                         if (csvOutput.length == fw.competency.length) {
                             var csv = Papa.unparse(csvOutput);
                             var pom = document.createElement('a');
                             pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-                            pom.setAttribute('download', fw.name + ".csv");
+                            pom.setAttribute('download', fw.getName() + ".csv");
 
                             if (document.createEvent) {
                                 var event = document.createEvent('MouseEvents');
@@ -255,13 +255,13 @@ function exportCsv() {
             var relationUrl = fw.relation[i];
             (function (relationUrl, fw) {
                 timeout(function () {
-                    EcRepository.get(relationUrl, function (relation) {
+                    EcRelation.get(relationUrl, function (relation) {
                         csvRelationOutput.push(JSON.parse(relation.toJson()));
                         if (csvRelationOutput.length == fw.relation.length) {
                             var csv = Papa.unparse(csvRelationOutput);
                             var pom = document.createElement('a');
                             pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-                            pom.setAttribute('download', fw.name + "Relations.csv");
+                            pom.setAttribute('download', fw.getName() + "Relations.csv");
 
                             if (document.createEvent) {
                                 var event = document.createEvent('MouseEvents');

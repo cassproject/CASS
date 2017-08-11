@@ -12,26 +12,19 @@ var asnContext = {
 	skos:"http://www.w3.org/2004/02/skos/core#",
 	xsd:"http://www.w3.org/2001/XMLSchema#"
 };
+
+var asnIdentity = new EcIdentity();
+asnIdentity.ppk = EcPpk.fromPem(asnPpk());
+asnIdentity.displayName="ASN Server Identity";
+EcIdentityManager.addIdentity(asnIdentity);
+
 //asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
 
-
-
-
-/**
- * 
- */
 function cassFrameworkAsAsn(){
+	if (false && repoEndpoint().contains("localhost"))
+		error("Endpoint Configuration is not set.",500);
 	var query = queryParse.call(this);
-
-	
-    var framework = skyrepoGet.call(this,{id:this.params.id});
-    
-    var idSplit = framework["@id"].split("/");
-    
-    framework = skyrepoGet.call(this,{id:this.params.id, version:idSplit[idSplit.length-1], type:idSplit[idSplit.length-3]});
-    
-    debug(framework)
-    
+    var framework = skyrepoGet.call(this,query);
     if (framework == null)
     	error("Framework not found.","404");
 
@@ -43,25 +36,17 @@ function cassFrameworkAsAsn(){
     var ids = [];
     ids = ids.concat(f.competency);
     ids = ids.concat(f.relation);
-
-	if (ids.length > 0)
-	{
-    	var repo = new EcRepository();
-    	var firstId = ids[0];
-    	if (firstId.indexOf("data") != -1)
-    	{
-    		repo.selectedServer = firstId.substring(0,firstId.indexOf("/data"));
-    		print(repo.selectedServer);
-			repo.multiget(ids, function (results) {}, print, function (results) {});
-		}
-	}
+	var repo = new EcRepository();
+	repo.selectedServer = repoEndpoint();
+	repo.multiget(ids, function (results) {}, print, function (results) {});
 	var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
     var topLevelCompIds = []
     for (var i = 0;i < f.competency.length;i++){
     	competencies[f.competency[i]] = EcCompetency.getBlocking(f.competency[i]);
+    	if (competencies[f.competency[i]] == null)
+    		error("Competency not found.",404);
     }
-    	
 
     for (var i = 0;i < f.relation.length;i++)
     {
@@ -69,9 +54,7 @@ function cassFrameworkAsAsn(){
     	if (r.relationType == Relation.NARROWS)
     	{
     		EcArray.setRemove(f.competency,r.target);
-    		if (competencies[r.target].competency == null)
-    			competencies[r.target].competency = [];
-    		competencies[r.target].competency.push(competencies[r.source].id);
+
     		if (competencies[r.source]["gemq:hasChild"] == null)
     			competencies[r.source]["gemq:hasChild"] = [];
     		competencies[r.source]["gemq:hasChild"].push(competencies[r.target].id);
@@ -224,6 +207,9 @@ function fixScalars(jsonLd){
  * 
  */
 function importFrameworkToCass(frameworkObj, competencyList){
+	if (false && repoEndpoint().contains("localhost"))
+		error("Endpoint Configuration is not set.",500);
+
 	var asnToCassFrameworkContext = JSON.parse(JSON.stringify(asnContext));
 	asnToCassFrameworkContext["@vocab"] = "http://schema.cassproject.org/0.3/";
 	asnToCassFrameworkContext["asn:StandardDocument"] = "http://schema.cassproject.org/0.3/Framework";
@@ -238,111 +224,107 @@ function importFrameworkToCass(frameworkObj, competencyList){
 	
 	var cassCompetencies = [];
 	var cassRelationships = [];
-	var idMap = {};
+	var relationshipMap = {};
 	var parentMap = {};
+
+	debug(EcIdentityManager.ids);
+	EcIdentityManager.addIdentity(asnIdentity);
+	EcRemote.async = false;
+	debug(EcIdentityManager.ids.length);
 	
 	for(var idx in competencyList){
 		var asnComp = competencyList[idx];
-		
-		var compType="schema.cassproject.org.0.3.Competency";
-		var compGuid = generateUUID();
+
+		var compGuid = stringToHex(md5(asnComp["@id"]));
 		var compVersion=date(null, null, true);
 		
-		var newId = repoEndpoint() + "data/" + compType + "/" + compGuid + "/" + compVersion;
-		
-		idMap[asnComp["@id"]] = newId;
-		cassCompetencies.push(newId);
+		var canonicalId = asnComp["@id"];
+
+		cassCompetencies.push(canonicalId);
 		
 		var childComps = asnComp["gemq:hasChild"];
 		if(childComps != undefined && childComps.length != undefined){
 			for(var idx in childComps){
-				if(idMap[childComps[idx]["@id"]] == undefined){
-					parentMap[childComps[idx]["@id"]] = newId;
-				}else{
-					var relType = "schema.cassproject.org.0.3.Relation";
-					var relId = generateUUID();
-					var relVersion = date(null, null, true);
+				var r = new EcAlignment();
+				r.source=childComps[idx]["@id"];
+				r.target=canonicalId;
+				r.relationType=Relation.NARROWS;
+				r.generateId(repoEndpoint());
+				r.addOwner(asnIdentity.ppk.toPk());
 
-					var relation = {source:idMap[childComps[idx]["@id"]], target:newId, relationType:"narrows"};
-					relation["@context"] = "http://schema.cassproject.org/0.3/";
-					relation["@type"] = "Relation";
-					relation["@id"] = repoEndpoint() + "data/" + relType + "/" + relId + "/" + relVersion;
-					
-					cassRelationships.push(relation["@id"]);
-					
-					// Create Parent-Child Relation
-					skyrepoPut({"obj":JSON.stringify(relation), "type":relType, "id":relId, "version":relVersion})
+				if (relationshipMap[r.source+r.target] != true)
+				{
+					relationshipMap[r.source+r.target] = true;
+					r.save(null,print);
+					cassRelationships.push(r.id);
 				}
-				 
 			}
 		}
-		
-		
+
 		var newComp = JSON.parse(JSON.stringify(asnComp));
 		delete newComp["gemq:hasChild"];
 		
 		newComp["@context"] = asnToCassCompetencyContext;
-		newComp["sameAs"] = asnComp["@id"];
 		
 		var expandedComp = jsonLdExpand(JSON.stringify(newComp));
 		
 		var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
 		
 		delete compactedComp["gemq:isChildOf"];
-		
-		compactedComp["@id"] = newId;
-		
-		debug(JSON.stringify(compactedComp, null, 2))
-		
-		// Create Competency
-		skyrepoPut({"obj":JSON.stringify(compactedComp), "type":compType, "id":compGuid, "version":compVersion});
-		
+
+		var c = new EcCompetency();
+		c.copyFrom(compactedComp);
+		c.addOwner(asnIdentity.ppk.toPk());
+		EcIdentityManager.sign(c);
+		print(this.dataStreams);
+		this.dataStreams.put("signatureSheet",new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(c.owner, 60000, c.id)));
+		skyrepoPut.call(this,{obj:c.toJson(),type:c.getFullType().replace("http://", "").replaceAll("/", "."),id:compGuid,version:compVersion});
+
 		if(asnComp["gemq:isChildOf"] != undefined && asnComp["gemq:isChildOf"] != ""){
 			var parentId = asnComp["gemq:isChildOf"]["@id"];
-			
-			var relType = "schema.cassproject.org.0.3.Relation";
-			var relId = generateUUID();
-			var relVersion = date(null, null, true);
+			if (parentId != frameworkObj["@id"])
+			{
+				var r = new EcAlignment();
+				r.source=compactedComp["@id"];
 
-			if(idMap[parentId] != undefined && idMap[parentId] != ""){
-				
-				var relation = {source:compactedComp["@id"], target:idMap[parentId], relationType:"narrows"};
-				relation["@context"] = "http://schema.cassproject.org/0.3/";
-				relation["@type"] = "Relation";
-				relation["@id"] = repoEndpoint() + "data/" + relType + "/" + relId + "/" + relVersion;
-				
-				cassRelationships.push(relation["@id"]);
-				
-				// Create Parent-Child Relation
-				skyrepoPut({"obj":JSON.stringify(relation), "type":relType, "id":relId, "version":relVersion})
-			} 
+				r.target=parentId;
+				r.relationType=Relation.NARROWS;
+				r.generateId(repoEndpoint());
+				r.addOwner(asnIdentity.ppk.toPk());
+
+				if (relationshipMap[r.source+r.target] != true)
+				{
+					relationshipMap[r.source+r.target] = true;
+					r.save(null,print);
+					cassRelationships.push(r.id);
+				}
+			}
 		}	
 	} // end for each competency in  competencyList
 	
 	if(frameworkObj != null){
-		var guid=generateUUID();
-		var type="schema.cassproject.org.0.3.Framework";
-		var version= date(null, null, true);
+		var guid=stringToHex(md5(frameworkObj["@id"]));
+		var version=date(null, null, true);
 		
 		frameworkObj["@context"] = asnToCassFrameworkContext;
-		frameworkObj["sameAs"] = frameworkObj["@id"];
-		frameworkObj["@id"] = repoEndpoint() + "data/" + type + "/" + guid + "/" + version;
 
-		
 		var expanded = jsonLdExpand(JSON.stringify(frameworkObj))[0];
 		
 		var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
-		
-		
+
 		delete compacted["gemq:hasChild"];
 		
 		compacted["competency"] = cassCompetencies;
 		compacted["relation"] = cassRelationships;
-		
-		debug(JSON.stringify(compacted));
-		
-		// Create Framework
-		skyrepoPut({"obj":JSON.stringify(compacted), "type":type, "id":guid, "version":version});
+
+		var f = new EcFramework();
+		f.copyFrom(compacted);
+		f.addOwner(asnIdentity.ppk.toPk());
+		EcIdentityManager.sign(f);
+		this.dataStreams.put("signatureSheet",new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(f.owner, 60000, f.id)));
+		skyrepoPut.call(this,{obj:f.toJson(),type:f.getFullType().replace("http://", "").replaceAll("/", "."),id:guid,version:version});
+
+		return repoEndpoint()+"asn/"+guid;
 	} // end if frameworkObj != null
 }
 
@@ -353,42 +335,31 @@ function asnFrameworkToCass(){
 
 	var jsonLd, text;
 
-	if(this.params.url != undefined && this.params.url != ""){
-		text = httpGet(this.params.url)
-	}else if(this.params.path != undefined && this.params.path  != ""){
-		text = fileToString(fileLoad(this.params.path));
-	}else if(this.params.text != undefined && this.params.text != ""){
-		text = this.params.text
-	}else{
-		var file = getFileFromPost();
-		
-		if(file == undefined || file == null){
-			error("Unable to find ASN to Convert");
-		}else if(file.length != undefined){
-			var data = getFileFromPost("data");
-			if(data != undefined && data != null){
-				text = fileToString(data);
-			}else{
-				text = fileToString(file[0]);
-			}
+	var file = getFileFromPost.call(this);
+
+	if(file == undefined || file == null){
+		error("Unable to find ASN to Convert");
+	}else if(file.length != undefined){
+		var data = getFileFromPost.call(this,"data");
+		if(data != undefined && data != null){
+			text = fileToString(data);
 		}else{
-			text = fileToString(file);
+			text = fileToString(file[0]);
 		}
+	}else{
+		text = fileToString(file);
 	}
 	
 	try{
 		jsonLd = JSON.parse(text);
 	}catch(e){
-		debug("Not json")
-		
+		debug("Not json.");
 		jsonLd = rdfToJsonLd(text);
 	}
-	
 
 	var frameworkObj = undefined;
 	var competencyList = [];
-	
-	
+
 	if(jsonLd["@graph"] != undefined && jsonLd["@graph"] != ""){
 		var graph = jsonLd["@graph"];
 		
@@ -403,9 +374,9 @@ function asnFrameworkToCass(){
 		}
 		
 		if(frameworkObj == undefined && competencyList.length != Object.keys(graph).length){
-			importJsonLdGraph(graph, jsonLd["@context"]);
+			return importJsonLdGraph.call(this,graph, jsonLd["@context"]);
 		}else{
-			importFrameworkToCass(frameworkObj, competencyList)
+			return importFrameworkToCass.call(this,frameworkObj, competencyList)
 		}
 	}else{
 		error("no @graph created, unsure how to parse");
@@ -448,126 +419,19 @@ function importJsonLdGraph(graph, context){
 	}
 }
 
-/**
- * 
- */
-function importJsonLd(){
-	var jsonLd, text;
-
-	if(this.params.url != undefined && this.params.url != ""){
-		text = httpGet(this.params.url)
-	}else if(this.params.path != undefined && this.params.path  != ""){
-		text = fileToString(fileLoad(this.params.path));
-	}else if(this.params.text != undefined && this.params.text != ""){
-		text = this.params.text
-	}else{
-		var file = getFileFromPost();
-		
-		if(file == undefined || file == null){
-			error("Unable to find ASN to Convert");
-		}else if(file.length != undefined){
-			var data = getFileFromPost("data");
-			if(data != undefined && data != null){
-				text = fileToString(data);
-			}else if(file.length != 0){
-				text = fileToString(file[0]);
-			}else{
-				error("No File Found");
-			}
-		}else{
-			text = fileToString(file);
-		}
-	}
-	
-	try{
-		jsonLd = JSON.parse(text);
-	}catch(e){
-		debug("Not json")
-		
-		jsonLd = rdfToJsonLd(text);
-	}
-	
-	//print(JSON.stringify(jsonLd));
-	
-	jsonLd = fixScalars(jsonLd);
-	
-	//print(JSON.stringify(jsonLd));
-	
-	var frameworkObj = undefined;
-	var competencyList = [];
-	
-	var graph = undefined;
-	var context = undefined;
-	if(jsonLd["@graph"] != undefined && jsonLd["@graph"] != ""){
-		graph = jsonLd["@graph"];
-		context = jsonLd["@context"];
-		
-		for(var idx in graph){
-			var graphObj = graph[idx];
-			
-			if(graphObj["@type"] == "asn:StandardDocument"){
-				frameworkObj = graphObj;
-			}else if (graphObj["@type"] == "asn:Statement" ){ //&& graphObj["asn:statementLabel"] != undefined && (graphObj["asn:statementLabel"] == "Competency" || graphObj["asn:statementLabel"]["@value"] == "Competency")){
-				competencyList.push(graphObj);
-			}
-		}
-		
-	}else{
-		graph = [];
-		context = asnContext;
-		
-		for(var idx in jsonLd){
-			var obj = jsonLd[idx];
-			
-			var context = JSON.parse(JSON.stringify(asnContext));
-			context["type"] = "@type";
-			context["uri"] = "@id";
-			
-			obj["@context"] = context;
-			
-			if(obj["@id"] == undefined)
-				obj["@id"] = idx;
-			
-			var expanded = jsonLdExpand(JSON.stringify(obj));
-			
-			//print(JSON.stringify(expanded));
-			
-			var graphObj = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
-			
-			//print(JSON.stringify(graphObj));
-			
-			if(graphObj["rdf:type"] != undefined && graphObj["@type"] == undefined){
-				//print(JSON.stringify(graphObj["rdf:type"]));
-				//print(Object.keys(graphObj["rdf:type"]));
-				if(graphObj["rdf:type"]["@id"] == undefined){
-					graphObj["@type"] = graphObj["rdf:type"]
-				}else{
-					graphObj["@type"] = graphObj["rdf:type"]["@id"]
-				}
-				delete graphObj["rdf:type"];
-			}
-			
-			if(graphObj["@type"] == "asn:StandardDocument"){
-				frameworkObj = graphObj;
-			}else if (graphObj["@type"] == "asn:Statement" ){
-				competencyList.push(graphObj);
-			}
-			
-			graph.push[graphObj];
-		}
-	}
-	
-	if(frameworkObj == undefined && competencyList.length != Object.keys(graph).length){
-		importJsonLdGraph(graph, context);
-	}else{
-		importFrameworkToCass(frameworkObj, competencyList)
+function asnEndpoint(){
+	if (this.params.methodType == "GET")
+		return cassFrameworkAsAsn.call(this);
+	else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
+		return asnFrameworkToCass.call(this);
+	else if (this.params.methodType == "DELETE")
+	{
+		error("Not Yet Implemented.","405");
+		return "Not Yet Implemented";
 	}
 }
 
-bindWebService("/jsonld", importJsonLd);
-bindWebService("/toAsn", cassFrameworkAsAsn);
-bindWebService("/fromAsn", asnFrameworkToCass);
-
+bindWebService("/asn", asnEndpoint);
 
 
 //function test(){

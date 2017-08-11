@@ -17,8 +17,8 @@ function selectFramework(me) {
         return;
     }
     selectedFramework = frameworkId;
-    EcRepository.get(frameworkId, function (framework) {
-        $("#selectedFramework").text("Framework (" + framework.name + ")");
+    EcFramework.get(frameworkId, function (framework) {
+        $("#selectedFramework").text("Framework (" + framework.getName() + ")");
         $('#selectFramework').foundation('close');
     }, error);
 }
