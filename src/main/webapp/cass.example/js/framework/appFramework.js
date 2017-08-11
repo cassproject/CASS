@@ -148,7 +148,7 @@ function editFramework(e) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         $("#editFrameworkName").val(framework.getName());
         $("#editFrameworkDescription").val(framework.getDescription());
         $("#editFramework").foundation('open');
@@ -161,7 +161,7 @@ function editFrameworkSave() {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         framework.name = $("#editFrameworkName").val();
         framework.description = $("#editFrameworkDescription").val();
         EcRepository.save(framework, function (framework) {
@@ -178,13 +178,13 @@ function editFrameworkDelete() {
         return;
     }
     if (confirm("This will delete the selected framework. Continue?") == true)
-        EcRepository.get(frameworkId, function (framework) {
+        EcFramework.get(frameworkId, function (framework) {
             if (confirm("Delete all competencies, levels, and relations as well?") == true) {
                 if (framework.competency != null)
                     for (var i = 0; i < framework.competency.length; i++)
                         (function (framework, i) {
                             timeout(function () {
-                                EcRepository.get(framework.competency[i], function (competency) {
+                                EcCompetency.get(framework.competency[i], function (competency) {
                                     EcRepository._delete(competency, function (success) {}, error);
                                 });
                             })
@@ -193,7 +193,7 @@ function editFrameworkDelete() {
                     for (var i = 0; i < framework.level.length; i++)
                         (function (framework, i) {
                             timeout(function () {
-                                EcRepository.get(framework.level[i], function (level) {
+                                EcLevel.get(framework.level[i], function (level) {
                                     EcRepository._delete(level, function (success) {}, error);
                                 });
                             })
@@ -202,7 +202,7 @@ function editFrameworkDelete() {
                     for (var i = 0; i < framework.relation.length; i++)
                         (function (framework, i) {
                             timeout(function () {
-                                EcRepository.get(framework.relation[i], function (relation) {
+                                EcAlignment.get(framework.relation[i], function (relation) {
                                     EcRepository._delete(relation, function (success) {}, error);
                                 });
                             })
