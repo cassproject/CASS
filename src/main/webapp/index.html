@@ -129,8 +129,8 @@
         if (location.protocol == "http:") {
             $("#compus,#viewer").attr("title", "Global services require your server to run HTTPS. Click to navigate using default servers.").attr("disabled", true);
         } else {
-            $("#compus").attr("href", $("#compus").attr("href") + "?server=" + location.protocol + location.host);
-            $("#viewer").attr("href", $("#viewer").attr("href") + "?server=" + location.protocol + location.host);
+            $("#compus").attr("href", $("#compus").attr("href") + "?server=" + location.origin);
+            $("#viewer").attr("href", $("#viewer").attr("href") + "?server=" + location.origin);
         }
 
     </script>
