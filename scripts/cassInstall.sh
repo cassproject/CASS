@@ -219,21 +219,33 @@ rm -rf CASS
 
 if [ "$platformDebian" -ne 0 ];
  then
-echo -----
-echo Configuring Apache
-num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
-	if [ "$num" -eq 0 ]
-	 then
+ echo -----
+ echo Configuring Apache
+ num=`grep ProxyPass /etc/apache2/sites-enabled/000-default.conf | wc -l`
+ if [ "$num" -eq 0 ]
+  then
+  echo -----
+  echo Configuring Apache...
 
-	echo -----
-	echo Configuring Apache...
-
-	echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
-	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
-	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
-
-	fi
-	a2enmod proxy_http ssl
+  echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
+ fi
+ num=`grep ws /etc/apache2/sites-enabled/000-default.conf | wc -l`
+ if [ "$num" -eq 0 ]
+  then
+  echo -----
+  echo Configuring Apache...
+  awk -i inplace -v rmv="ProxyRequests Off" '!index($0,rmv)' /etc/apache2/sites-enabled/000-default.conf
+  awk -i inplace -v rmv="ProxyPass / http://localhost:8080/cass/" '!index($0,rmv)' /etc/apache2/sites-enabled/000-default.conf
+  awk -i inplace -v rmv="ProxyPassReverse  /  http://localhost:8080/cass/" '!index($0,rmv)' /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyRequests Off" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPass /ws ws://localhost:8080/cass/ws" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPassReverse  /ws  ws://localhost:8080/cass/ws" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPass / http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
+  echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
+ fi
+ a2enmod proxy_http ssl proxy_wstunnel
 fi
 
 if [ "$platformFedora" -ne 0 ];
@@ -246,6 +258,23 @@ if [ "$platformFedora" -ne 0 ];
 	echo Configuring HTTPD...
 
 	echo "ProxyRequests Off" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
+
+	fi
+	num=`grep ws /etc/httpd/conf/httpd.conf | wc -l`
+	if [ "$num" -eq 0 ]
+	 then
+
+	echo -----
+	echo Configuring HTTPD...
+
+    awk -i inplace -v rmv="ProxyRequests Off" '!index($0,rmv)' /etc/httpd/conf/httpd.conf
+    awk -i inplace -v rmv="ProxyPass / http://localhost:8080/cass/" '!index($0,rmv)' /etc/httpd/conf/httpd.conf
+    awk -i inplace -v rmv="ProxyPassReverse  /  http://localhost:8080/cass/" '!index($0,rmv)' /etc/httpd/conf/httpd.conf
+	echo "ProxyRequests Off" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPass /ws ws://localhost:8080/cass/ws" >> /etc/httpd/conf/httpd.conf
+	echo "ProxyPassReverse  /ws  ws://localhost:8080/cass/ws" >> /etc/httpd/conf/httpd.conf
 	echo "ProxyPass / http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
 	echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/httpd/conf/httpd.conf
 
