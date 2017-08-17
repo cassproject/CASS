@@ -12,7 +12,19 @@ if [ "$EUID" -ne 0 ];
   exit
 fi
 
-cd
+md5Local=`cat cassInstall.sh | md5sum`
+md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
+if [ "$md5Local" != "$md5Remote" ]
+ then
+ read -p "Update script has changed. Update from Github? [default=yes]" result
+ result=${result:-yes}
+ if [ "$result" == "yes" ]
+  then
+  curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh > cassInstall.sh
+  echo Updated. Please re run.
+  exit 0
+ fi
+fi
 
 echo -----
 echo Detecting Platform...
@@ -21,16 +33,16 @@ platformFedora=`cat /etc/*release | grep fedora | wc -l`
 platformDebian=`cat /etc/*release | grep debian | wc -l`
 if [ "$platformDebian" -ne 0 ];
  then
-echo Debian based platform found...
+ echo Debian based platform found...
 fi
 if [ "$platformFedora" -ne 0 ];
  then
-echo Fedora based platform found...
+ echo Fedora based platform found...
 fi
 if [ "$platformDebian" -ne 0 ] && [ "$platformFedora" -ne 0 ];
  then
-echo No compatible platform found. Exiting.
-exit 1
+ echo No compatible platform found. Exiting.
+ exit 1
 fi
 
 echo -----
