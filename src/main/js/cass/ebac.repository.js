@@ -728,6 +728,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.caching = false;
     constructor.cachingSearch = false;
     constructor.unsigned = false;
+    constructor.alwaysTryUrl = false;
     constructor.cache = new Object();
     constructor.fetching = new Object();
     constructor.repos = new Array();
@@ -839,6 +840,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 (EcRepository.fetching)[url] = new Date().getTime() + 60000;
             }
         }
+        if (!EcRepository.shouldTryUrl(url)) {
+            EcRepository.find(url, "Could not locate object. May be due to EcRepository.alwaysTryUrl flag.", new Object(), 0, success, failure);
+            return;
+        }
         var fd = new FormData();
         if (EcRepository.unsigned) {
             EcRemote.postExpectingObject(url, null, fd, function(p1) {
@@ -883,8 +888,27 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 });
             });
     };
+    constructor.shouldTryUrl = function(url) {
+        if (url == null) 
+            return false;
+        if (EcRepository.alwaysTryUrl) 
+            return true;
+        if (EcRepository.repos.length == 0) 
+            return true;
+        if (url.contains("/api/") || url.contains("/data/")) 
+            return true;
+        var validUrlFound = false;
+        for (var i = 0; i < EcRepository.repos.length; i++) {
+            if (EcRepository.repos[i].selectedServer == null) 
+                continue;
+            validUrlFound = true;
+        }
+        if (!validUrlFound) 
+            return true;
+        return false;
+    };
     constructor.find = function(url, error, history, i, success, failure) {
-        if (i > EcRepository.repos.length) {
+        if (i > EcRepository.repos.length || EcRepository.repos[i] == null) {
             delete (EcRepository.fetching)[url];
             failure(error);
             return;
@@ -918,7 +942,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         });
     };
     constructor.findBlocking = function(url, error, history, i) {
-        if (i > EcRepository.repos.length) {
+        if (i > EcRepository.repos.length || EcRepository.repos[i] == null) {
             delete (EcRepository.fetching)[url];
             return null;
         }
@@ -949,10 +973,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @static
      */
     constructor.getBlocking = function(url) {
+        if (url == null) 
+            return null;
         if (EcRepository.caching) {
             if ((EcRepository.cache)[url] != null) {
                 return (EcRepository.cache)[url];
             }
+        }
+        if (!EcRepository.shouldTryUrl(url)) {
+            return EcRepository.findBlocking(url, "Could not locate object. May be due to EcRepository.alwaysTryUrl flag.", new Object(), 0);
         }
         var fd = new FormData();
         var p1 = null;

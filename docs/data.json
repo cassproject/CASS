@@ -2079,7 +2079,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1792,
+            "line": 1821,
             "description": "Implementation of a file with methods for communicating with repository services"
         },
         "Triple": {
@@ -17818,7 +17818,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 734,
+            "line": 735,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -17840,7 +17840,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 804,
+            "line": 805,
             "description": "Gets a JSON-LD object from the place designated by the URI.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -17868,7 +17868,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 941,
+            "line": 965,
             "description": "Retrieves a piece of data synchronously from the server, blocking until\nit is returned",
             "params": [
                 {
@@ -17890,7 +17890,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 983,
+            "line": 1012,
             "description": "Gets a JSON-LD object from the place designated by the URI.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -17918,7 +17918,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1060,
+            "line": 1089,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -17950,7 +17950,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1078,
+            "line": 1107,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -17970,7 +17970,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1092,
+            "line": 1121,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18015,7 +18015,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1190,
+            "line": 1219,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18048,7 +18048,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1301,
+            "line": 1330,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -18058,7 +18058,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1359,
+            "line": 1388,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -18068,7 +18068,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1417,
+            "line": 1446,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -18091,7 +18091,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1455,
+            "line": 1484,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -18114,7 +18114,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1494,
+            "line": 1523,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18136,7 +18136,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1514,
+            "line": 1543,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -18163,7 +18163,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1526,
+            "line": 1555,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -18190,7 +18190,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1538,
+            "line": 1567,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -18217,7 +18217,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1550,
+            "line": 1579,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -18246,7 +18246,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1581,
+            "line": 1610,
             "description": "Escapes a search query",
             "params": [
                 {
@@ -18268,7 +18268,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1616,
+            "line": 1645,
             "description": "Attempts to save a piece of data. Does some checks before saving to\nensure the data is valid. Warns the developer that they are using the\nrepository save function rather than an object specific version, this can\nbe avoided by calling _save\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -18296,7 +18296,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1636,
+            "line": 1665,
             "description": "Attempts to save a piece of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -18324,7 +18324,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1676,
+            "line": 1705,
             "description": "Attempts to save a piece of data without signing it.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -18352,7 +18352,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1724,
+            "line": 1753,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -18380,7 +18380,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1742,
+            "line": 1771,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -18408,7 +18408,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1766,
+            "line": 1795,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -18430,7 +18430,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1806,
+            "line": 1835,
             "description": "Saves this file in the repository using the repository web services",
             "memberof": "EcFile",
             "itemtype": "method",
@@ -18452,7 +18452,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1827,
+            "line": 1856,
             "description": "Deletes the file from the repository using repository web services",
             "memberof": "EcFile",
             "itemtype": "method",
@@ -18474,7 +18474,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1840,
+            "line": 1869,
             "description": "Factory method for creating a file with certain values",
             "memberof": "EcFile",
             "itemtype": "method",
@@ -18506,7 +18506,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1862,
+            "line": 1891,
             "description": "Retrieves a file from the server specified by it's ID",
             "memberof": "EcFile",
             "itemtype": "method",
@@ -18534,7 +18534,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1896,
+            "line": 1925,
             "description": "Searches the repository given for files that match the query passed in",
             "memberof": "EcFile",
             "itemtype": "method",
@@ -62739,127 +62739,127 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:734"
+            "line": " src/main/js/cass/ebac.repository.js:735"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:804"
+            "line": " src/main/js/cass/ebac.repository.js:805"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:941"
+            "line": " src/main/js/cass/ebac.repository.js:965"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:983"
+            "line": " src/main/js/cass/ebac.repository.js:1012"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1060"
+            "line": " src/main/js/cass/ebac.repository.js:1089"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1078"
+            "line": " src/main/js/cass/ebac.repository.js:1107"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1078"
+            "line": " src/main/js/cass/ebac.repository.js:1107"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1092"
+            "line": " src/main/js/cass/ebac.repository.js:1121"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1190"
+            "line": " src/main/js/cass/ebac.repository.js:1219"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1190"
+            "line": " src/main/js/cass/ebac.repository.js:1219"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1301"
+            "line": " src/main/js/cass/ebac.repository.js:1330"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1359"
+            "line": " src/main/js/cass/ebac.repository.js:1388"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1417"
+            "line": " src/main/js/cass/ebac.repository.js:1446"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1455"
+            "line": " src/main/js/cass/ebac.repository.js:1484"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1494"
+            "line": " src/main/js/cass/ebac.repository.js:1523"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1514"
+            "line": " src/main/js/cass/ebac.repository.js:1543"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1526"
+            "line": " src/main/js/cass/ebac.repository.js:1555"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1538"
+            "line": " src/main/js/cass/ebac.repository.js:1567"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1550"
+            "line": " src/main/js/cass/ebac.repository.js:1579"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1581"
+            "line": " src/main/js/cass/ebac.repository.js:1610"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1616"
+            "line": " src/main/js/cass/ebac.repository.js:1645"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1636"
+            "line": " src/main/js/cass/ebac.repository.js:1665"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1676"
+            "line": " src/main/js/cass/ebac.repository.js:1705"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1724"
+            "line": " src/main/js/cass/ebac.repository.js:1753"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1742"
+            "line": " src/main/js/cass/ebac.repository.js:1771"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1766"
+            "line": " src/main/js/cass/ebac.repository.js:1795"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1806"
+            "line": " src/main/js/cass/ebac.repository.js:1835"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1827"
+            "line": " src/main/js/cass/ebac.repository.js:1856"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1840"
+            "line": " src/main/js/cass/ebac.repository.js:1869"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1862"
+            "line": " src/main/js/cass/ebac.repository.js:1891"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1896"
+            "line": " src/main/js/cass/ebac.repository.js:1925"
         },
         {
             "message": "unknown tag: memberof",
