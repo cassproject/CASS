@@ -33,6 +33,13 @@ afterSave=#if(
 	ne=afterSave
 );
 
+postData=#fileFromDatastream(name="data");
+postObject=postData.fileToString().toObject();
+afterSave=#object(
+	a=afterSave,
+	b=#wsBroadcast(obj=postObject.getByParam(param=#id()))
+);
+
 #afterSave=afterSave;
 
 beforeGet=#if(
