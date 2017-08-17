@@ -106,7 +106,7 @@ function populateFramework(frameworkId,fwui) {
 		fwui.find("#competency").html("<center>Loading "+ids.length+" records...</center>");
         repo.precache(ids,function(){
 			fwui.find("#competency").html("");
-			if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency.length != 0) {
+			if (fwui.find(".cass-framework-competencies").length > 0 && fw.competency !== undefined && fw.competency != null && fw.competency.length != 0) {
 				for (var i = 0; i < fw.competency.length; i++) {
 					var competencyUrl = fw.competency[i];
 					var ui = fwui.find("#competency").append(cassCompetencyTemplate).children().last();
