@@ -1,5 +1,7 @@
+//Ensure thisEndpoint ends with a slash.
 thisEndpoint=#string(str="http://localhost:8080/api/");
 #thisEndpoint=thisEndpoint;
 
+//Ensure repoEndpoint ends with a slash.
 repoEndpoint=#string(str="http://localhost:8080/api/");
 #repoEndpoint=repoEndpoint;

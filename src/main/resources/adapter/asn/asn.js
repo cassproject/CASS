@@ -21,14 +21,42 @@ EcIdentityManager.addIdentity(asnIdentity);
 //asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
 
 function cassFrameworkAsAsn(){
+	EcRepository.cache = {};
+	var repo = new EcRepository();
+	repo.selectedServer = repoEndpoint();
+
 	if (false && repoEndpoint().contains("localhost"))
 		error("Endpoint Configuration is not set.",500);
 	var query = queryParse.call(this);
-    var framework = skyrepoGet.call(this,query);
+    var framework = null;
+    if (framework == null)
+    	framework = skyrepoGet.call(this,query);
+    if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
+    	framework = null;
+    if (framework == null)
+    	framework = EcFramework.getBlocking(urlDecode(this.params.id));
+    if (framework == null)
+	{
+    	var competency = null;
+    	competency = skyrepoGet.call(this,query);
+    	if (competency == null)
+    		competency = EcCompetency.getBlocking(urlDecode(this.params.id));
+    	else
+    	{
+    		var c = new EcCompetency();
+           	c.copyFrom(competency);
+           	competency = c;
+		}
+    	if (competency != null)
+    	{
+			competency.context="http://schema.cassproject.org/0.3/cass2asn";
+			return jsonLdToRdfJson(competency.toJson());
+		}
+    }
     if (framework == null)
     	error("Framework not found.","404");
 
-    var f = new EcFramework();
+    f = new EcFramework();
     f.copyFrom(framework);
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
@@ -36,9 +64,9 @@ function cassFrameworkAsAsn(){
     var ids = [];
     ids = ids.concat(f.competency);
     ids = ids.concat(f.relation);
-	var repo = new EcRepository();
-	repo.selectedServer = repoEndpoint();
+
 	repo.multiget(ids, function (results) {}, print, function (results) {});
+
 	var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
     var topLevelCompIds = []
@@ -227,15 +255,14 @@ function importFrameworkToCass(frameworkObj, competencyList){
 	var relationshipMap = {};
 	var parentMap = {};
 
-	debug(EcIdentityManager.ids);
 	EcIdentityManager.addIdentity(asnIdentity);
 	EcRemote.async = false;
-	debug(EcIdentityManager.ids.length);
-	
+
 	for(var idx in competencyList){
 		var asnComp = competencyList[idx];
 
 		var compGuid = stringToHex(md5(asnComp["@id"]));
+		print(compGuid);
 		var compVersion=date(null, null, true);
 		
 		var canonicalId = asnComp["@id"];
@@ -276,7 +303,6 @@ function importFrameworkToCass(frameworkObj, competencyList){
 		c.copyFrom(compactedComp);
 		c.addOwner(asnIdentity.ppk.toPk());
 		EcIdentityManager.sign(c);
-		print(this.dataStreams);
 		this.dataStreams.put("signatureSheet",new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(c.owner, 60000, c.id)));
 		skyrepoPut.call(this,{obj:c.toJson(),type:c.getFullType().replace("http://", "").replaceAll("/", "."),id:compGuid,version:compVersion});
 
