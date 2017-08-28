@@ -36,7 +36,7 @@
 				<version>9.3.7.v20160115</version>
 				<configuration>
 					<httpConnector>
-						<port>9722</port>
+						<port>8080</port>
 					</httpConnector>
 					<scanIntervalSeconds>20</scanIntervalSeconds>
 					<webApp>
