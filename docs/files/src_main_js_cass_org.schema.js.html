@@ -928,7 +928,13 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
      * 			Name to set for this Thing
      */
     prototype.setName = function(name) {
-        this.name = name;
+        if (this.name != null &amp;&amp; EcObject.isObject(this.name) &amp;&amp; (this.name).hasOwnProperty(&quot;@value&quot;)) {
+            var obj = (this)[&quot;name&quot;];
+            (obj)[&quot;@value&quot;] = name;
+            (this)[&quot;name&quot;] = obj;
+        } else {
+            this.name = name;
+        }
     };
     /**
      *  Returns the name of the thing
@@ -953,7 +959,13 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
      *  			Description to set for its Thing
      */
     prototype.setDescription = function(description) {
-        this.description = description;
+        if (this.description != null &amp;&amp; EcObject.isObject(this.description) &amp;&amp; (this.description).hasOwnProperty(&quot;@value&quot;)) {
+            var obj = (this)[&quot;description&quot;];
+            (obj)[&quot;@value&quot;] = description;
+            (this)[&quot;description&quot;] = obj;
+        } else {
+            this.description = description;
+        }
     };
     /**
      *  Returns the description of the thing

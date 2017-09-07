@@ -1210,6 +1210,16 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return parts[parts.length - 1];
     };
     /**
+     *  Return the URL Base portion of the short ID.
+     *  @method getServerBaseUrl
+     *  @return {string} Server Base URL of the linked data object.
+     */
+    prototype.getServerBaseUrl = function() {
+        var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
+        var parts = shortId.split(&quot;/&quot;);
+        return parts.slice(0, parts.indexOf(&quot;data&quot;)).join(&quot;/&quot;);
+    };
+    /**
      *  Return a valid ElasticSearch search string that will retrieve all objects with this type.
      *  @method getSearchStringByType
      *  @return {string} ElasticSearch compatible search string.
@@ -1232,6 +1242,33 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             result += &quot; OR (@context:\&quot;&quot; + Ebac.context + &quot;\&quot; AND @encryptedType:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
         }
         return &quot;(&quot; + result + &quot;)&quot;;
+    };
+    prototype.asRdfXml = function(success, failure, signatureSheet) {
+        var fd = new FormData();
+        var id = this.id;
+        if (signatureSheet != null || signatureSheet != undefined) 
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+        var headers = {};
+        headers[&quot;Accept&quot;] = &quot;application/rdf+xml&quot;;
+        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
+    };
+    prototype.asNQuads = function(success, failure, signatureSheet) {
+        var fd = new FormData();
+        var id = this.id;
+        if (signatureSheet != null || signatureSheet != undefined) 
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+        var headers = {};
+        headers[&quot;Accept&quot;] = &quot;text/n4&quot;;
+        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
+    };
+    prototype.asTurtle = function(success, failure, signatureSheet) {
+        var fd = new FormData();
+        var id = this.id;
+        if (signatureSheet != null || signatureSheet != undefined) 
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+        var headers = {};
+        headers[&quot;Accept&quot;] = &quot;text/turtle&quot;;
+        EcRemote.postWithHeadersExpectingString(id, &quot;&quot;, fd, headers, success, failure);
     };
 }, {owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 

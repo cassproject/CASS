@@ -21,7 +21,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
             (params)["id"] = this.getData().id;
             ScreenManager.setScreenParameters(params);
         }
-        ViewManager.showView(this.mc = new MessageContainer("competencyView"), "#competencyViewMessageContainer", null);
+        ViewManager.showView(this.mc = new MessageContainer("competencyView", null), "#competencyViewMessageContainer", null);
         this.autoConfigure($(containerId));
         var me = this;
         EcCompetency.get(this.getData().id, function(competency) {

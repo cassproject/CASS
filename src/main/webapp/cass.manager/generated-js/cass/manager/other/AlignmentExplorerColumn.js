@@ -84,7 +84,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     var comment = "";
                     if (selectedItem.shortId() == r.target && r.relationType == Relation.NARROWS) {
                         relationOk = true;
-                        comment = "Subcompetency of " + (EcRepository.getBlocking(r.target)).name;
+                        comment = "Subcompetency of " + (EcRepository.getBlocking(r.target)).getName();
                     }
                     if (r.relationType == Relation.IS_EQUIVALENT_TO) {
                         relationOk = true;
@@ -92,7 +92,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     }
                     if (selectedItem.shortId() == r.source && r.relationType == Relation.REQUIRES) {
                         relationOk = true;
-                        comment = "Required by " + (EcRepository.getBlocking(r.source)).name;
+                        comment = "Required by " + (EcRepository.getBlocking(r.source)).getName();
                     }
                     if (relationOk) 
                         for (var k = 0; k < this.collection.length; k++) {

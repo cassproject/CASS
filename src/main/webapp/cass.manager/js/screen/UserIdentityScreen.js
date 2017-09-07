@@ -464,5 +464,9 @@ UserIdentityScreen = (function (UserIdentityScreen) {
         });
     };
 
+    UserIdentityScreen.prototype.refreshIdentities = function(ids){
+        refreshIdentities(ids);
+    }
+
     return UserIdentityScreen;
 })(UserIdentityScreen);

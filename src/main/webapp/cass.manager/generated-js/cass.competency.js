@@ -2030,6 +2030,24 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+    prototype.asAsnJson = function(success, failure, fallbackServerUrl) {
+        var id = this.id;
+        var server = this.getServerBaseUrl();
+        if (server != null && server != undefined && !server.endsWith("/")) {
+            server = server + "/";
+        }
+        EcRemote.getExpectingString(server, "asn?id=" + this.getGuid(), success, function(p1) {
+            if (fallbackServerUrl != null && fallbackServerUrl != undefined) {
+                var server = fallbackServerUrl;
+                if (!server.endsWith("/")) {
+                    server = server + "/";
+                }
+                EcRemote.getExpectingString(server, "asn?id=" + id, success, failure);
+            } else {
+                failure(p1);
+            }
+        });
+    };
     /**
      *  Retrieves a framework from the server, specified by the ID
      * 

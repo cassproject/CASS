@@ -1,4 +1,6 @@
 {
+	"appName":"Competencies.us",
+	"appDescription":""
 	"defaultServerUrl": "https://sandbox.service.cassproject.org/",
 	"defaultServerName": "CASS Sandbox",
 	

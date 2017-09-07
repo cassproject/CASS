@@ -7226,12 +7226,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 pk.key = key;
                 window.crypto.subtle.encrypt(algorithm, key, str2ab(text)).then(function(p1) {
                     success(base64.encode(p1));
-                });
-            });
+                }, failure);
+            }, failure);
          else 
             window.crypto.subtle.encrypt(algorithm, pk.key, str2ab(text)).then(function(p1) {
                 success(base64.encode(p1));
-            });
+            }, failure);
     };
     constructor.decrypt = function(ppk, text, success, failure) {
         if (EcCrypto.caching) {
@@ -7260,12 +7260,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 ppk.key = key;
                 window.crypto.subtle.decrypt(algorithm, key, base64.decode(text)).then(function(p1) {
                     success(ab2str(p1));
-                });
-            });
+                }, failure);
+            }, failure);
          else 
             window.crypto.subtle.decrypt(algorithm, ppk.key, base64.decode(text)).then(function(p1) {
                 success(ab2str(p1));
-            });
+            }, failure);
     };
     constructor.sign = function(ppk, text, success, failure) {
         if (EcRemote.async == false) {
@@ -7286,12 +7286,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 ppk.signKey = key;
                 window.crypto.subtle.sign(algorithm, key, str2ab(text)).then(function(p1) {
                     success(base64.encode(p1));
-                });
-            });
+                }, failure);
+            }, failure);
          else 
             window.crypto.subtle.sign(algorithm, ppk.signKey, str2ab(text)).then(function(p1) {
                 success(base64.encode(p1));
-            });
+            }, failure);
     };
     constructor.signSha256 = function(ppk, text, success, failure) {
         if (EcRemote.async == false) {
@@ -7312,12 +7312,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 ppk.signKey = key;
                 window.crypto.subtle.sign(algorithm, key, str2ab(text)).then(function(p1) {
                     success(base64.encode(p1));
-                });
-            });
+                }, failure);
+            }, failure);
          else 
             window.crypto.subtle.sign(algorithm, ppk.signKey, str2ab(text)).then(function(p1) {
                 success(base64.encode(p1));
-            });
+            }, failure);
     };
     constructor.verify = function(pk, text, signature, success, failure) {
         if (EcRemote.async == false) {
@@ -7338,12 +7338,12 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 pk.signKey = key;
                 window.crypto.subtle.verify(algorithm, key, base64.decode(signature), str2ab(text)).then(function(p1) {
                     success(p1);
-                });
-            });
+                }, failure);
+            }, failure);
          else 
             window.crypto.subtle.verify(algorithm, pk.signKey, base64.decode(signature), str2ab(text)).then(function(p1) {
                 success(p1);
-            });
+            }, failure);
     };
 }, {}, {});
 var EcAesCtrAsync = function() {};
@@ -7365,8 +7365,8 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             var p = window.crypto.subtle.encrypt(algorithm, key, data);
             p.then(function(p1) {
                 success(base64.encode(p1));
-            });
-        });
+            }, failure);
+        }, failure);
     };
     constructor.decrypt = function(text, secret, iv, success, failure) {
         if (EcCrypto.caching) {
@@ -7392,7 +7392,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             var p = window.crypto.subtle.decrypt(algorithm, key, data);
             p.then(function(p1) {
                 success(ab2str(p1));
-            });
-        });
+            }, failure);
+        }, failure);
     };
 }, {}, {});

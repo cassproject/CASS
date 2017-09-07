@@ -117,15 +117,70 @@ AlignmentEditorScreen = (function(AlignmentEditorScreen){
 		}
 	}
 	AlignmentEditorScreen.prototype.reflow = function(){
+		if(this.columns != undefined && this.columns.length > 1){
+			var leftType = this.columns[0].selectedCategory;
+			var rightType = this.columns[1].selectedCategory;
+			if(leftType == "competency" && rightType == "competency"){
+				var leftFrameworkId = this.columns[0].selectedCollection;
+				var rightFrameworkId = this.columns[1].selectedCollection;
+				var leftFramework, rightFramework;
+				
+				if(leftFrameworkId != null && leftFrameworkId != undefined && leftFrameworkId != "")
+					leftFramework = EcFramework.getBlocking(leftFrameworkId);
+				
+				if(rightFrameworkId != null && rightFrameworkId != undefined && rightFrameworkId != "")
+					rightFramework = EcFramework.getBlocking(rightFrameworkId);
+				
+				if(leftFramework != undefined && rightFramework != undefined && leftFramework != null && rightFramework != null){
+					if(leftFrameworkId == rightFrameworkId){
+						if (AppController.identityController.canEdit(leftFramework)){
+							ViewManager.getView("#alignmentEditorMessageContainer").clearWarning("noEdit");
+						}else{
+							ViewManager.getView("#alignmentEditorMessageContainer").displayWarning("Cannot modify this framework, please select a different framework or two frameworks to align with each other", "noEdit");
+						}
+						
+						$("#mappingFrameworkColumn").slideUp();
+						var ctx = $("#canvas")[0].getContext("2d");
+						ctx.clearRect(0, 0, canvas.width,  $("#mappingFrameworkColumn").height());
+		                ctx.fillStyle = 'rgb(255,255,255)';
+		               
+		                ctx.fillRect(0, 0, canvas.width, $("#mappingFrameworkColumn").height());
+					}else{
+						var leftEdit = false;
+						var rightEdit = false;
+						
+						if (AppController.identityController.canEdit(leftFramework)){
+							leftEdit = true;
+						}
+						
+						if(AppController.identityController.canEdit(rightFramework)){
+							rightEdit = true;
+						}
+						
+						if(!leftEdit && !rightEdit){
+							ViewManager.getView("#alignmentEditorMessageContainer").displayWarning("Cannot modify either framework, created relationships will not be placed in a framework unless a third 'mapping' framework is chosen below", "noEdit");
+							$("#mappingFrameworkColumn").slideDown();
+						}else{
+							ViewManager.getView("#alignmentEditorMessageContainer").clearWarning("noEdit");
+							$("#mappingFrameworkColumn").slideUp();
+						}
+					}
+				}else{
+					$("#mappingFrameworkColumn").slideUp();
+				}
+			}
+		}
+		
 		var ctr = $(".alignmentEditorContainer:visible");
 		var ctrMinTop = canvas.height;
 		var ctrMaxTop = 0;
 		for (var i = 0;i < ctr.length;i++)
 		{
-			ctrMinTop = Math.min(ctrMinTop,$(ctr[i]).position().top);
-			ctrMaxTop = Math.max(ctrMaxTop,$(ctr[i]).position().top);
+			$(ctr[i]).css("height",$("#alignmentEditorColumns").innerHeight() - ($(ctr[i]).position().top - $("#alignmentEditorColumns").position().top));
+//			ctrMinTop = Math.min(ctrMinTop,$(ctr[i]).position().top);
+//			ctrMaxTop = Math.max(ctrMaxTop,$(ctr[i]).position().top);
 		}
-		$(".alignmentEditorContainer").css("height",window.innerHeight-ctrMinTop);
+//		$(".alignmentEditorContainer").css("height",$("#alignmentEditorColumns").innerHeight()-ctrMinTop);
 		for (var i = 0; i < this.columns.length; i++)
 			this.columns[i].redraw();
 	}

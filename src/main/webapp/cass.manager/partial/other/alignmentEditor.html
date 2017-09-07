@@ -1,5 +1,5 @@
 <div class="alignmentEditorColumn">
-	<center class="alignmentEditorColumnSelectCollapsed">Navigation 🔼</center>
+	<center class="alignmentEditorColumnSelectCollapsed"><i class='fa fa-caret-down'></i> Navigation</center>
 	<div class="alignmentEditorColumnSelects">
 		<select class="alignmentEditorCategory">
 			<option disabled selected value> -- Select Category -- </option>
@@ -10,17 +10,13 @@
 			<option value="resource">Resource</option>
 		</select>
 		<select class="alignmentEditorSource" style="display:none;">
-			<option value="sourceA">Sandbox</option>
-			<option value="sourceB">Dev</option>
-			<option value="sourceC">Army</option>
+
 		</select>
 		<select class="alignmentEditorCollection" style="display:none;">
-			<option value="collectionA">Framework A</option>
-			<option value="collectionB">Framework B</option>
-			<option value="collectionC">Framework C</option>
+
 		</select>
 	</div>
-	<input type="text" id="columnFilter" placeholder="Filter Results...">
+	<input class="columnFilter hide" type="text" placeholder="Filter Results...">
 	<div class="loadingRow" style="text-align:center;padding:7px 2px;font-style:italic;display:none"><div class=" fa fa-spinner fa-spin"></div> Loading...</div>
 	<ul class="alignmentEditorContainer" ec-container="" style="display:none;">
 		<li class="alignmentEditorElement" ec-template="">

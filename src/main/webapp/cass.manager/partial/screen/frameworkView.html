@@ -18,6 +18,20 @@
                         <div class="small-12 columns">
                             <h3>
 								<a class="float-right button" id="editFrameworkBtn">Edit</a>
+								<span class="float-right">
+									<button id="downloadFrameworkBtn" class="button dropdown" data-toggle="downloadDrop" aria-controls="downloadDrop" aria-expanded="false">
+										<i class="fa fa-download"></i>
+									</button>
+									<ul id="downloadDrop" data-dropdown data-position="bottom" data-alignment="right" class="dropdown-pane" aria-hidden="true" style="list-style:none;width:200px;">
+										<li><span id="jsonLdDownload" class="fake-a">JSON-LD</span></li>
+										<li><span id="rdfDownload" class="fake-a">RDF/XML</span></li>
+										<li><span id="ttlDownload" class="fake-a">TTL</span></li>
+										<li><span id="nQuadsDownload" class="fake-a">nQuads</span></li>
+										<li><span id="asnJsonDownload" class="fake-a">ASN JSON</span></li>
+										<li><span id="csvDownload" class="fake-a">CSV</span></li>
+									</ul>
+								</span>
+								
 								
 								<i class="fa fa-unlock-alt hide" id="frameworkViewerPrivateSymbol"></i> 
 								<span id="frameworkViewerName" ec-field="name"></span> 

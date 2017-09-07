@@ -23,8 +23,8 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
     function displayCompetency(competency) {
         $('#competencyEditor').show();
         $("#competencyEditId").val(competency.id);
-        $("#competencyEditName").val(competency.name);
-        $("#competencyEditDescription").val(competency.description);
+        $("#competencyEditName").val(competency.getName());
+        $("#competencyEditDescription").val(competency.getDescription());
         $("#competencyEditScope").val(competency.scope);
 
         if (competency.owner != undefined && competency.owner.length > 0) {
@@ -95,7 +95,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         $("#competencyNoLevels").addClass("hide");
 
         var container = $("<span data-tooltip data-fade-out-duration='1500' class='level fake-a has-tip top'></span>");
-        container.append(level.name);
+        container.append(level.getName());
         container.attr("id", level.id);
 
         var tip = "";
@@ -159,7 +159,7 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         $("#competencyNoRollupRules").addClass("hide");
 
         var container = $("<span data-tooltip data-fade-out-duration='1500' class='rollup-rule fake-a has-tip top'></span>");
-        container.append(rollupRule.name);
+        container.append(rollupRule.getName());
         container.attr("id", rollupRule.id);
 
         var tip = "";
@@ -428,8 +428,8 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         $("#competencyEditSaveBtn").click(function (event) {
             event.preventDefault();
 
-            data.name = $("#competencyEditName").val();
-            data.description = $("#competencyEditDescription").val();
+            data.setName($("#competencyEditName").val());
+            data.setDescription($("#competencyEditDescription").val());
             data.scope = $("#competencyEditScope").val();
 
             if (data.name != "") {
@@ -466,8 +466,8 @@ CompetencyEditScreen = (function (CompetencyEditScreen) {
         $("#competencyEditOwnerAdvanced").click(function (ev) {
             ev.preventDefault();
 
-            data.name = $("#competencyEditName").val();
-            data.description = $("#competencyEditDescription").val();
+            data.setName($("#competencyEditName").val());
+            data.setDescription($("#competencyEditDescription").val());
             data.scope = $("#competencyEditScope").val();
 
             ModalManager.showModal(new AdvancedPermissionsModal(data, function (dataAfter) {

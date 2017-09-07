@@ -121,16 +121,20 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
             me.collection = new Array();
             me.selected = new Array();
             me.highlighted = new Array();
-            eah.each(framework.competency, function(s, callback0) {
-                EcCompetency.get(s, function(ecCompetency) {
-                    me.collection.push(ecCompetency);
-                    callback0();
-                }, function(s) {
-                    callback0();
+            if (framework.competency != undefined && framework.competency != null) {
+                eah.each(framework.competency, function(s, callback0) {
+                    EcCompetency.get(s, function(ecCompetency) {
+                        me.collection.push(ecCompetency);
+                        callback0();
+                    }, function(s) {
+                        callback0();
+                    });
+                }, function(strings) {
+                    me.populate();
                 });
-            }, function(strings) {
+            } else {
                 me.populate();
-            });
+            }
         }, function(s) {});
     };
     prototype.getRelations = function() {

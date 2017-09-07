@@ -9,61 +9,78 @@
     </section>
 
     <section id="toggleMenu">
-        <ul id="appMenuPublic" class="vertical menu top-bar-right align-right" data-responsive-menu="medium-dropdown" data-alignment="right">
-            <li>
-                <a class="menu-text" id="appMenuPublicTop">
-	    			Login / Sign Up
-	    		</a>
-                <ul class="vertical menu">
-                    <li>
-                        <a id="appMenuLogin"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                    </li>
-                    <li>
-                        <a id="appMenuCreateAccount"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
-                    </li>
-                    <hr>
-                    <li>
-                        <a id="appMenuPublicChangeServer" class="">
-                           Change Server
-<!--                           (<span id="currentServer" style="margin-top:0.2rem; margin-left:0.2rem; font-size:0.8rem;"></span>)-->
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <form id="appMenuSessionInfo" class="top-bar-right align-right row" style="max-width:50%;">
+            <label for="sessionServerSelect" class="small-6 columns">
+                <div class="row collapse">
+                    <span class="small-3 columns" style="font-size:small;color:white;font-weight:bold;margin-top: 0.4rem;">
+                        Server:
+                    </span>
+                    <div class="small-7 columns" style="background-color:white;">
+                        <select id="sessionServerSelect" style="margin-bottom:0px;font-size: 0.8rem;height: 2rem;">
+                            <option id="noServers">No Known Servers</option>
+                        </select>
+                    </div>
+                    <span class="small-2 columns">
+                        <button id="appMenuAddServerBtn" class="button secondary postfix" style="font-weight:bold;margin-bottom:0rem;height: 2rem;padding: 0.4rem 0.7rem;">+</button>
+                    </span>
+                </div>
 
-        <ul id="appMenuUserInfo" class="vertical menu top-bar-right hide align-right" data-responsive-menu="medium-dropdown" data-alignment="right">
-            <li>
-                <a id="appMenuUserIdentity">
-                    <div>My Identity</div>
-                </a>
-                <ul class="vertical menu submenu">
-                    <li>
-                        <div id="appMenuUserChangeServer" class="fake-a" style="font-size:0.75rem;">
-                            Identity Server:
+            </label>
 
-                            <div id="appMenuIdentityServer" style="margin-top:0.2rem; font-size:0.8rem;"></div>
-                        </div>
-                    </li>
-                   
-                   	<li id="appMenuAdmin" class="hide">
-                        <a id="appMenuAdminPage"><i class="fa fa-gear" style="color:grey;"></i> Settings</a>
-                    </li>
-                   
-                    <li>
-                        <a id="appMenuUserIdentityPage">My Identities</a>
-                        <ul id="appMenuIdentityList" class="vertical menu submenu">
-                            <li></li>
-                        </ul>
-                    </li>
+            <label for="sessionLoginSelect" class="small-6 columns">
+                <div class="row collapse">
+                    <div class="small-3 columns" style="font-size:small;color:white;font-weight:bold;margin-top: 0.4rem;">
+                        Identity:
+                    </div>
+                    <div class="small-7 columns">
+                        <select id="sessionLoginSelect" style="margin-bottom:0px; font-size:0.8rem; height: 2rem;">
+                            <option class="hide" selected="selected">Sign in...</option>
+                            <option value="google">Globally with Google</option>
+                        </select>
+                        <select id="sessionIdentitySelect" class="hide" style="margin-bottom:0px; font-size:0.8rem; height: 2rem;">
+                            <option value="new">New Identity...</option>
+                            <option value="signout" id="appMenuSessionLogout">Sign out</option>
+                        </select>
+                    </div>
+                    <span class="small-2 columns">
+                        <button id="appMenuIdentityOptionsBtn" class="secondary button postfix invisible" title='Settings' style="margin-bottom:0rem; padding:0.3rem 0.5rem; height: 2rem;">
+                            <i class="fa fa-gear"></i>
+                        </button>
+                    </span>
+                </div>
+            </label>
+        </form>
 
-                    <li>
-                        <a id="appMenuUserLogout">Logout</a>
-                    </li>
-                </ul>
-            </li>
+        <form id="appMenuLoginPanel" class="top-bar-right align-right row" style="padding:0.25rem 4rem; background-color: #3598dc;position: fixed;right: -100%; top:0px;">
+            <label for="appMenuLoginUser" class="small-6 columns">
+                <div class="row collapse">
+                    <span class="small-3 columns" style="font-size:small;color:white;font-weight:bold;margin-top: 0.5rem;">
+                        User ID:
+                    </span>
+                    <div class="small-9 columns" >
+                       <input id="appMenuLoginUser" type="text" style="margin-bottom:0px"/>
+                    </div>
+                </div>
+            </label>
 
-        </ul>
+            <div  class="small-6 columns">
+                <div class="row collapse">
+                    <label for="appMenuLoginPass" class="small-3 columns" style="font-size:small;color:white;font-weight:bold;margin-top: 0.5rem;">
+                        Password:
+                    </label>
+                    <div class="small-6 columns" >
+                        <input id="appMenuLoginPass" type="password" style="margin-bottom:0px; width:100%;"/>
+                    </div>
+                    <span class="small-3 columns">
+                        <input type="submit" value='Go' id="appMenuLoginSubmit" class="secondary button postfix" style="margin:0rem; padding:0.7rem 0.5rem;"/>
+                        <span id="closeLoginPanel" style="font-weight:800; float:right; margin:0.7rem; cursor:pointer; color:white;">
+                            <i id="appMenuLoginSpinner" class="fa fa-spin fa-spinner hide"></i>
+                            <strong>X</strong>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </form>
 
         <ul id="appMenuMain" class="menu top-bar-left" data-responsive-menu="drilldown medium-dropdown">
             <li id="appMenuRepo" class="hide">

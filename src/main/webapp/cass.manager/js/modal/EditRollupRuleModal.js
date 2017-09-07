@@ -54,7 +54,7 @@ var EditRollupRuleModal = (function (EditRollupRuleModal) {
 
         ViewManager.showView(new MessageContainer("editRollupRule"), "#editRollupRuleError", function () {
             if (AppController.identityController.selectedIdentity == undefined && data.isAny(new EcCompetency().getTypes())) {
-                ViewManager.getView("#editRollupRuleError").displayWarning("You are Creating a Public RollupRule, this Rollup Rule can be modified by anyone");
+                ViewManager.getView("#editRollupRuleError").displayWarning("You are Creating a Public Rollup Rule, this rule can be modified by anyone");
             }
         });
 

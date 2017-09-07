@@ -723,7 +723,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
     };
     /**
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
@@ -741,9 +741,12 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingString = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
     };
-    constructor.postInner = function(server, service, fd, successCallback, failureCallback) {
+    constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
+        EcRemote.postInner(server, service, fd, headers, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+    };
+    constructor.postInner = function(server, service, fd, headers, successCallback, failureCallback) {
         var url = server;
         if (!url.endsWith("/") && service != null && !"".equals(service)) {
             url += "/";
@@ -765,12 +768,16 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             }
             all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
-            p.headers = new Object();
+            if (headers == null || headers == undefined) 
+                headers = new Object();
+            p.headers = headers;
             p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
             p.data = all;
         } else {
             p.mimeType = "multipart/form-data";
             p.data = fd;
+            if (headers != null && headers != undefined) 
+                p.headers = headers;
         }
         (p)["contentType"] = false;
         p.cache = false;

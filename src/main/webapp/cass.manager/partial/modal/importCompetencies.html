@@ -39,6 +39,14 @@
 
 <div class="row hide sourceRow" id="csvSourceRow">
 	<div class="small-12 columns">
+		<p>CSV files should be formatted so that each row contains a single competency's 
+		information. The only required column is the Competency name, other properties are 
+		optional. If you include an ID column, it can either be in the format of 
+		<em>&lt;URL&gt;</em> / <em>&lt;Unique ID&gt;</em> or just list the Unique ID.</p>
+		<p>The URL of the current server will replace a URL in the ID column, or prepend to the ID
+		if only the unique ID. Unique ID's must only contain alpha or symbol characters.</p>
+		
+	
 		<em>Step 3: Select a CSV File on your computer</em>
 		<input type="file" id="importCsvFile" accept=".csv"/>
 		

@@ -109,6 +109,26 @@ small {
     border-bottom: 1px solid #ddd;
 }
 
+.top-bar .button.secondary{
+    background-color:#dad6d6;
+    color:#4a4a4a;
+}
+
+.top-bar #sessionServerSelect.noServers{
+    background-color:rgba(255, 127, 98, 0.48);
+    color: #3a3939;
+    font-style:italic;
+    font-weight:bold;
+    width:110%;
+    padding-right:0px;
+}
+
+.top-bar input.error{
+    border-color: red;
+    box-shadow: red 1px 2px;
+    background-color: rgb(244, 174, 174);
+}
+
 /* --- Accordians --- */
 
 .accordion-title

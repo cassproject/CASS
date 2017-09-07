@@ -79,6 +79,11 @@ var AddServerModal = (function(AddServerModal){
 		
 		ViewManager.showView(new MessageContainer("addServer"), "#addServerMessageContainer");
 		
+		if(this.server != undefined && this.server != null){
+			$("#addServerUrl").val(this.server).attr("disabled", "disabled");
+			$("#addServerMessage").text("It looks like you are coming from a new CASS server. Enter a name below to identify it for future use. This will only be available to your computer.")
+		}
+		
 		$("#addServerForm").submit(function(event){
 			event.preventDefault();
 			submitAddServer(closeCallback);

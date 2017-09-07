@@ -66,7 +66,10 @@ var CopyResourceModal = (function(CopyResourceModal){
 	 * @param {EcLinkedData} resource
 	 */
 	function addResourceToList(resource){
-		$("#copyResources").append($("<li>"+resource.name+"</li>"));
+		var name = resource.name;
+		if(resource.getName != undefined)
+			name = resource.getName();
+		$("#copyResources").append($("<li>"+name+"</li>"));
 	}
 	
 	/**

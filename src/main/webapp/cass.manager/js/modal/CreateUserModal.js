@@ -53,8 +53,6 @@ var CreateUserModal = (function(CreateUserModal){
 	 */
 	CreateUserModal.prototype.display = function(containerId)
 	{
-		var view = this;
-		
 		ViewManager.showView(new MessageContainer("createUser"), "#createMessageContainer");
 		
 		if($(AppController.serverController.serverList).size() > 0 ){
@@ -81,7 +79,7 @@ var CreateUserModal = (function(CreateUserModal){
 		
 		$("#createForm").submit(function(event){
 			event.preventDefault();
-			submitCreateForm(view);
+			submitCreateForm();
 		})
 		
 	}

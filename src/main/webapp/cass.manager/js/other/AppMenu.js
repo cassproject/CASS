@@ -63,52 +63,34 @@ var AppMenu = (function (AppMenu) {
     function buildIdentityList() {
         var identities = EcIdentityManager.ids;
 
-        $("#appMenuIdentityList").html("");
+        $("#sessionIdentitySelect").find("option[data-id]").remove();
+
         var identitySelected = false;
         for (var index in identities) {
             var ppk = identities[index].ppk.toPem().replaceAll("\r?\n", "");
             var name = identities[index].displayName;
 
-            var container = $("<li></li>");
-            var element = $("<div class='fake-a'></div>");
+            var option = $("<option data-id='true' value='"+ppk+"'></option>");
+            option.text(name);
+
 
             if (AppController.identityController.selectedIdentity != undefined &&
                 name == AppController.identityController.selectedIdentity.displayName) {
-                element.addClass("selected");
+                option.prop("selected", true);
                 identitySelected = true;
-                $("#appMenuUserIdentity").children().first().text(AppController.identityController.selectedIdentity.displayName + " @ " + AppController.serverController.selectedServerName);
-                $("#appMenuPublicTop").text(AppController.identityController.selectedIdentity.displayName + " @ " + AppController.serverController.selectedServerName);
             }
+            $("#sessionIdentitySelect").prepend(option);
 
-            element.attr("title", ppk);
-            element.click(ppk, function (event) {
-                selectKey(event.data);
-            });
-            element.text(name);
-            element.append($("<i class='fa fa-check'></i>"))
 
-            container.append(element);
-
-            $("#appMenuIdentityList").append(container);
+           // element.click(ppk, function (event) {
+           //     selectKey(event.data);
+           // });
         }
 
-        var container = $("<li></li>");
-        var element = $("<div class='fake-a'></div>");
-        if (!identitySelected) {
-            element.addClass("selected");
-            $("#appMenuUserIdentity").children().first().text(PUBLIC_NAME + " @ " + AppController.serverController.selectedServerName);
-            //$("#appMenuPublicTop").text(PUBLIC_NAME + " (Not Logged In) @ " + AppController.serverController.selectedServerName);
-            $("#appMenuPublicTop").text("Login / Sign Up");
-        }
+        var container = $("<option data-id='true' value='public'>PUBLIC_NAME</option>");
 
-        element.attr("title", PUBLIC_TITLE);
-        element.click(ppk, function (event) {
-            deselectKey();
-        });
-        element.text(PUBLIC_NAME);
-        element.append($("<i class='fa fa-check'></i>"))
 
-        container.append(element);
+        container.prepend(container);
         $("#appMenuIdentityList").prepend(container);
     }
 
@@ -164,7 +146,7 @@ var AppMenu = (function (AppMenu) {
 				$("#appMenuCompetencyListStart").after(recentListItem);
 				$("#appMenuCompetencyListStart").removeClass("hide");
 			}, function(){
-				AppController.storageController.removeRecent(EcCompetency.myType, frameworkId);
+				AppController.storageController.removeRecent(EcCompetency.myType, compId);
 			});
 		}
 	}
@@ -247,32 +229,90 @@ var AppMenu = (function (AppMenu) {
 		}
 	}
 
-    /**
-     * Overridden display function, called once html partial is loaded into DOM
-     *
-     * @memberOf AppMenu
-     * @method display
-     * @param {String} containerId
-     * 			DOM ID for the element containing this menu
-     */
-    AppMenu.prototype.display = function (containerId) {
-        var view = this;
+    function buildServerList() {
+	    var serverList = AppController.serverController.getServerList();
 
-        $("#appMenuToggle").click(function (ev) {
-            ev.preventDefault();
-            return false;
+	    var select = $("#sessionServerSelect");
+        if(serverList != null && Object.keys(serverList).length > 0){
+            select.removeClass("noServers");
+            select.find("#noServers").addClass("hide");
+            select.find("#noServers").removeAttr("selected");
+            select.removeAttr("disabled");
+
+            var i = 0;
+            for(var name in serverList){
+                if (i < 2 && !AppController.loginController.getLoggedIn()){
+                    $("#sessionLoginSelect").append($("<option value='"+serverList[name]+"'>to "+name+"</option>"))
+
+                }else if(i == 2){
+                    $("#sessionLoginSelect").append($("<option value='new'>to Other...</option>"));
+                }
+                i++;
+                if(name === AppController.serverController.selectedServerName)
+                    select.append($("<option selected='selected' value='"+serverList[name]+"'>"+name+"</option>"))
+                else
+                    select.append($("<option value='"+serverList[name]+"'>"+name+"</option>"))
+            }
+
+            if(!AppController.loginController.getLoggedIn()){
+                $("#sessionLoginSelect").append($("<option value='create'>Create Account</option>"));
+            }
+        }else{
+            select.addClass("noServers");
+            select.find("#noServers").removeClass("hide");
+            select.find("#noServers").attr("selected", "selected");
+            select.attr("disabled", true);
+        }
+
+    }
+
+    function attemptLogin(){
+        var userId = $("#appMenuLoginUser").val();
+        var password = $("#appMenuLoginPass").val();
+        var server = $("#sessionLoginSelect").val();
+
+
+        if((userId == undefined || userId == "" ) && (password == undefined || password == "")){
+            $("#appMenuLoginUser").addClass("error");
+            $("#appMenuLoginPass").addClass("error");
+            return;
+        }else if(userId == undefined || userId == ""){
+            $("#appMenuLoginUser").addClass("error");
+            $("#appMenuLoginPass").removeClass("error");
+            return;
+        }else if(password == undefined || password == ""){
+            $("#appMenuLoginPass").addClass("error");
+            $("#appMenuLoginUser").removeClass("error");
+            return;
+        }
+        $("#appMenuLoginUser").removeClass("error");
+        $("#appMenuLoginPass").removeClass("error");
+
+        $("#appMenuLoginSpinner").next().addClass("hide");
+        $("#appMenuLoginSpinner").removeClass("hide");
+        $("#appMenuLoginUser").prop("disabled", true);
+        $("#appMenuLoginPass").prop("disabled", true);
+        AppController.loginController.login(userId, password, server, function() {
+            AppController.serverController.checkForAdmin(function() {
+                ViewManager.getView("#menuContainer").setLoggedIn();
+                $("#appMenuLoginPanel").animate({right:"-100%"}, 800);
+                $("#appMenuLoginSpinner").next().removeClass("hide");
+                $("#appMenuLoginSpinner").addClass("hide");
+                $("#appMenuLoginUser").removeAttr("disabled").val("");
+                $("#appMenuLoginPass").removeAttr("disabled").val("");
+                $("#sessionLoginSelect").find("option").not("[value]").prop("selected", "true");
+            });
+        }, function(err){
+            $("#appMenuLoginUser").addClass("error");
+            $("#appMenuLoginPass").addClass("error");
+            $("#appMenuLoginSpinner").next().removeClass("hide");
+            $("#appMenuLoginSpinner").addClass("hide");
+            $("#appMenuLoginUser").removeAttr("disabled");
+            $("#appMenuLoginPass").removeAttr("disabled");
         });
+    }
 
-        AppMenu.prototype.setCurrentServer();
-
-        $("#appMenuPublicChangeServer").click(function () {
-            ModalManager.showModal(new ChangeServerModal());
-        });
-
-        $("#appMenuUserChangeServer").click(function () {
-            ModalManager.showModal(new ChangeServerModal());
-        });
-
+    function setupMenuButtons(){
         $("#appMenuHeader").attr("href", "#" + WelcomeScreen.prototype.getDisplayName())
         $("#appMenuHeader").click(function (ev) {
             ev.preventDefault();
@@ -280,34 +320,7 @@ var AppMenu = (function (AppMenu) {
             return false;
         });
 
-        $("#appMenuPublicTop").click(function () {
-            ModalManager.showModal(new LoginModal(loginModalCallback));
-        })
-        $("#appMenuLogin").click(function () {
-            ModalManager.showModal(new LoginModal(loginModalCallback));
-        });
-        $("#appMenuCreateAccount").click(function () {
-            ModalManager.showModal(new CreateUserModal());
-        });
 
-        $("#appMenuAdminPage").click(function () {
-            ScreenManager.changeScreen(new UserAdminScreen());
-        })
-
-        $("#appMenuUserIdentityPage").attr("href", "#" + UserIdentityScreen.prototype.getDisplayName());
-        $("#appMenuUserIdentityPage").click(function (event) {
-            event.preventDefault();
-            ScreenManager.changeScreen(new UserIdentityScreen());
-        });
-
-        $("#appMenuUserLogout").click(function (event) {
-            event.preventDefault();
-
-            AppController.loginController.logout();
-            AppMenu.prototype.setLoggedOut();
-            AppMenu.prototype.setCurrentServer();
-            ScreenManager.changeScreen(new WelcomeScreen());
-        });
 
         $("#appMenuRepoSearch").attr("href", "#" + RepoSearchScreen.prototype.getDisplayName());
         $("#appMenuRepoSearch").click(function (event) {
@@ -326,11 +339,11 @@ var AppMenu = (function (AppMenu) {
             event.preventDefault();
             ScreenManager.changeScreen(new RepoCreateScreen());
         });
-        
+
         $("#appMenuGeneralImport").click(function(event){
-			event.preventDefault();
-			ModalManager.showModal(new RepoImportModal());
-		});
+            event.preventDefault();
+            ModalManager.showModal(new RepoImportModal());
+        });
 
         $("#appMenuFileManager").attr("href", "#" + FileManagerScreen.prototype.getDisplayName());
         $("#appMenuFileManager").click(function (event) {
@@ -458,87 +471,187 @@ var AppMenu = (function (AppMenu) {
             ScreenManager.changeScreen(new AlignmentExplorerScreen());
         });
 
-        
+
         $("#appMenuViewPublic").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().filterPublic != undefined){
-            	ScreenManager.getCurrentScreen().filterPublic();
+                ScreenManager.getCurrentScreen().filterPublic();
             }
         });
-        
+
         $("#appMenuViewAll").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().filterAll != undefined){
-            	ScreenManager.getCurrentScreen().filterAll();
+                ScreenManager.getCurrentScreen().filterAll();
             }
         });
-        
+
         $("#appMenuViewAdvanced").click(function (event) {
             event.preventDefault();
             ModalManager.showModal(new MessageModal("Advanced View Options Incomplete"));
         });
-        
+
         $("#appMenuSortByTime").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().sortByTimestamp != undefined){
-            	ScreenManager.getCurrentScreen().sortByTimestamp();
+                ScreenManager.getCurrentScreen().sortByTimestamp();
             }
         });
-        
+
         $("#appMenuSortByOwner").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().sortByOwner != undefined){
-            	ScreenManager.getCurrentScreen().sortByOwner();
+                ScreenManager.getCurrentScreen().sortByOwner();
             }
         });
-        
+
         $("#appMenuSortBySource").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().sortBySource != undefined){
-            	ScreenManager.getCurrentScreen().sortBySource();
+                ScreenManager.getCurrentScreen().sortBySource();
             }
         });
-        
+
         $("#appMenuSortByTarget").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().sortByTarget != undefined){
-            	ScreenManager.getCurrentScreen().sortByTarget();
+                ScreenManager.getCurrentScreen().sortByTarget();
             }
         });
-        
+
         $("#appMenuSortByCompetency").click(function (event) {
             event.preventDefault();
             if(ScreenManager.getCurrentScreen().sortByCompetency != undefined){
-            	ScreenManager.getCurrentScreen().sortByCompetency();
+                ScreenManager.getCurrentScreen().sortByCompetency();
             }
         });
-        
+
         $("#appMenuHowTo").click(function (event) {
-        	event.preventDefault();
+            event.preventDefault();
             ModalManager.showModal(new MessageModal("How To Incomplete"));
         });
-        
+
         $("#appMenuApi").click(function (event) {
-        	event.preventDefault();
-        	window.open("http://docs.cassproject.org", "_blank")
+            event.preventDefault();
+            window.open("http://docs.cassproject.org", "_blank")
         });
-        
+
         $("#appMenuReportIssue").click(function (event) {
-        	event.preventDefault();
+            event.preventDefault();
             ModalManager.showModal(new MessageModal("Report Issue Incomplete"));
         });
-        
+
         $("#appMenuGetInvolved").click(function (event) {
-        	event.preventDefault();
-        	window.open("http://www.cassproject.org", "_blank")
+            event.preventDefault();
+            window.open("http://www.cassproject.org", "_blank")
         });
+    }
+
+    /**
+     * Overridden display function, called once html partial is loaded into DOM
+     *
+     * @memberOf AppMenu
+     * @method display
+     * @param {String} containerId
+     * 			DOM ID for the element containing this menu
+     */
+    AppMenu.prototype.display = function (containerId) {
+        var view = this;
+
+        $("#appMenuToggle").click(function (ev) {
+            ev.preventDefault();
+            return false;
+        });
+
+        AppMenu.prototype.setCurrentServer();
+
+        setupMenuButtons();
         
      
         var compList = AppController.storageController.getRecent(EcCompetency.myType);
         buildCompetencyList(compList);
 
         var frameworkList = AppController.storageController.getRecent(EcFramework.myType);
-        buildFrameworkList(frameworkList);
+        buildFrameworkList(frameworkList)
+
+        buildServerList();
+
+        $("#appMenuAddServerBtn").click(function(){
+            ModalManager.showModal(new AddServerModal());
+        });
+
+        $("#sessionServerSelect").change(function(){
+            var select = $("#sessionServerSelect");
+            var server = select.val();
+
+            AppController.serverController.selectServer(server, function(){
+                var options = select.find("option");
+
+                options.removeAttr("selected");
+                var selected = options.filter("[value='"+server+"']");
+
+                selected.prop("selected", "true");
+
+
+                ScreenManager.reloadCurrentScreen();
+            }, function(){
+
+            })
+        });
+
+        $("#sessionLoginSelect").change(function(){
+            var loginSelect = $("#sessionLoginSelect");
+
+            var loginServer = loginSelect.val();
+
+            if(loginServer === "create") {
+                ModalManager.showModal(new CreateUserModal());
+                loginSelect.find("option").not("[value]").prop("selected", "true");
+            }else if(loginServer === "google"){
+                AppController.loginController.hello(loginServer, function(){
+                    AppController.serverController.checkForAdmin(function() {
+                        ViewManager.getView("#menuContainer").setLoggedIn();
+                        loginSelect.find("option").not("[value]").prop("selected", "true");
+                    });
+                }, function(){
+                    loginSelect.find("option").not("[value]").prop("selected", "true");
+                });
+            }else{
+                $("#appMenuLoginPanel").animate({right:"0px"}, 800);
+            }
+        });
+
+        $("#appMenuLoginPanel").submit(attemptLogin);
+
+        $("#sessionIdentitySelect").change(function(){
+            var val = $("#sessionIdentitySelect").val();
+
+            if(val == "new"){
+                ModalManager.showModal(new CreateIdentityModal(function(){
+                    buildIdentityList();
+                }));
+            }else if(val == "signout"){
+                AppController.loginController.logout();
+                ViewManager.getView("#menuContainer").setLoggedOut();
+                if(ScreenManager.getCurrentScreen().getDisplayName() == "Identity"){
+                    ScreenManager.changeScreen(new WelcomeScreen());
+                }else{
+                    ScreenManager.reloadCurrentScreen();
+                }
+
+            }else{
+                selectKey(val);
+            }
+        })
+
+        $("#appMenuIdentityOptionsBtn").click(function(){
+            ScreenManager.changeScreen(new UserIdentityScreen());
+        })
+
+        $("#closeLoginPanel").click(function(){
+            $("#appMenuLoginPanel").animate({right:"-100%"}, 800);
+            $("#sessionLoginSelect").find("option").not("[value]").prop("selected", "true");
+        });
 
         if (Foundation.MediaQuery.atLeast("medium")) {
             $("#appMenuMain").removeClass("vertical");
@@ -590,13 +703,18 @@ var AppMenu = (function (AppMenu) {
 	 * @method setCurrentServer
 	 */
 	AppMenu.prototype.setCurrentServer = function(){
-		$("#appMenuIdentityServer").text(AppController.serverController.selectedServerName);
-		$("#appMenuIdentityServer").attr('title', AppController.serverController.selectedServerUrl);
-		$("#currentServer").html(AppController.serverController.selectedServerName);
-		$("#currentServer").attr('title', AppController.serverController.selectedServerUrl);
-		buildIdentityList(); 
+
+	    if(AppController.loginController.loginServer != undefined && AppController.loginController.loginServer.server != undefined &&
+            AppController.loginController.loginServer.server != ""){
+            $("#appMenuSessionLogout").text("Sign out of "+AppController.loginController.loginServer.server);
+        }else{
+            $("#appMenuSessionLogout").text("Sign out");
+        }
+
+
+		buildIdentityList();
 	}
-	
+
 	/**
 	 * Sets the menu to the logged in state, showing the identities of the user and the
 	 * identity screen link
@@ -605,17 +723,11 @@ var AppMenu = (function (AppMenu) {
 	 * @method setLoggedIn
 	 */
 	AppMenu.prototype.setLoggedIn = function(){
-		$("#appMenuPublic").addClass("hide");
-		$("#appMenuUserInfo").removeClass("hide");
-		$(".appMenuUser").removeClass("hide");
-		
-		if( AppController.serverController.getAdmin() )
-		{
-			$("#appMenuAdmin").removeClass("hide");
-		}else{
-			$("#appMenuAdmin").addClass("hide");
-		}
-		
+
+	    $("#appMenuIdentityOptionsBtn").removeClass("invisible");
+        $("#sessionIdentitySelect").removeClass("hide");
+        $("#sessionLoginSelect").addClass("hide");
+
 		this.setCurrentServer();
 		buildIdentityList();
 	}
@@ -628,9 +740,9 @@ var AppMenu = (function (AppMenu) {
 	 * @method setLoggedOut
 	 */
 	AppMenu.prototype.setLoggedOut = function(){
-		$("#appMenuPublic").removeClass("hide");
-		$("#appMenuUserInfo").addClass("hide");
-		$(".appMenuUser").addClass("hide");
+        $("#appMenuIdentityOptionsBtn").addClass("invisible");
+        $("#sessionIdentitySelect").addClass("hide");
+        $("#sessionLoginSelect").removeClass("hide");
 	}
 	
 	/**

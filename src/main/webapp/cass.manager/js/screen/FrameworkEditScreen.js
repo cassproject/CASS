@@ -21,8 +21,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
      */
     function displayFramework(framework) {
         $("#frameworkEditId").val(framework.id);
-        $("#frameworkEditName").val(framework.name);
-        $("#frameworkEditDescription").val(framework.description);
+        $("#frameworkEditName").val(framework.getName());
+        $("#frameworkEditDescription").val(framework.getDescription());
 
         if (framework.owner != undefined && framework.owner.length != 0) {
             $("#frameworkEditOwner").html("");
@@ -111,7 +111,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         option.attr("title", competency.id);
         option.attr("id", competency.id);
         option.attr("value", competency.id);
-        option.text(competency.name + (competency.description == undefined ? "" : " - " + competency.description));
+        option.text(competency.getName() + (competency.getDescription() == undefined ? "" : " - " + competency.getDescription()));
         $("#frameworkEditCompetencies").append(option);
         formDirty = true;
     }
@@ -139,7 +139,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         if (competencyGroup.size() == 0) {
             competencyGroup = $("<optgroup></optgroup>");
             competencyGroup.attr("id", sourceId);
-            competencyGroup.attr("label", EcCompetency.getBlocking(relation.source).name)
+            competencyGroup.attr("label", EcCompetency.getBlocking(relation.source).getName())
             $("#frameworkEditRelations").append(competencyGroup);
         }
 
@@ -149,7 +149,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         var option = $("<option style='font-style:italic;'></option>");
         option.attr("id", basicId);
         option.val(relation.id);
-        option.text(relation["relationType"] + " " + EcCompetency.getBlocking(relation.target).name);
+        option.text(relation["relationType"] + " " + EcCompetency.getBlocking(relation.target).getName());
 
         competencyGroup.append(option)
         formDirty = true;
@@ -183,7 +183,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         if (competencyGroup.size() == 0) {
             competencyGroup = $("<optgroup></optgroup>");
             competencyGroup.attr("id", competencyId);
-            competencyGroup.attr("label", competency.name);
+            competencyGroup.attr("label", competency.getName());
             $("#frameworkEditLevels").append(competencyGroup);
         }
 
@@ -193,8 +193,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         var option = $("<option style='font-style:italic'></option>");
         option.attr("id", basicId);
         option.val(level.id);
-        option.attr("title", (level.performance == undefined ? level.description : level.performance) + "'>" + level.name + " (Title: " + level.title + ")");
-        option.text(level.name);
+        option.attr("title", (level.performance == undefined ? level.description : level.performance) + "'>" + level.getName() + " (Title: " + level.title + ")");
+        option.text(level.getName());
         competencyGroup.append(option);
 
         formDirty = true;
@@ -229,7 +229,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         if (competencyGroup.size() == 0) {
             competencyGroup = $("<optgroup></optgroup>");
             competencyGroup.attr("id", competencyId);
-            competencyGroup.attr("label", competency.name);
+            competencyGroup.attr("label", competency.getName());
             $("#frameworkEditRollupRules").append(competencyGroup);
         }
 
@@ -239,8 +239,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         var option = $("<option style='font-style:italic'></option>");
         option.attr("id", basicId);
         option.val(rollupRule.id);
-        option.attr("title", rollupRule.description);
-        option.text(rollupRule.name);
+        option.attr("title", rollupRule.getDescription());
+        option.text(rollupRule.getName());
         competencyGroup.append(option);
 
         formDirty = true;
@@ -479,11 +479,11 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             async: true,
             display: function (data) {
-                return EcCompetency.getBlocking(data.competency).name + " - " + data.name + " (Title: " + data["title"] + ")";
+                return EcCompetency.getBlocking(data.competency).getName() + " - " + data.getName() + " (Title: " + data["title"] + ")";
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + " (Title: " + data["title"] + ") <span class='label secondary'>"+data["id"]+"</span></i></div>";
+                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).getName() + " - <i>" + data["name"] + " (Title: " + data["title"] + ") <span class='label secondary'>"+data["id"]+"</span></i></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -544,11 +544,11 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             async: true,
             display: function (data) {
-                return EcCompetency.getBlocking(data.competency).name + " - " + data.name;
+                return EcCompetency.getBlocking(data.competency).getName() + " - " + data.name;
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).name + " - <i>" + data["name"] + "</i> <span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.competency).getName() + " - <i>" + data["name"] + "</i> <span class='label secondary'>"+data["id"]+"</span></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -590,11 +590,11 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             async: true,
             display: function (data) {
-                return EcCompetency.getBlocking(data.source).name + " " + AppSettings.relationTypes[data["relationType"]] + " " + EcCompetency.getBlocking(data.target).name;
+                return EcCompetency.getBlocking(data.source).getName() + " " + AppSettings.relationTypes[data["relationType"]] + " " + EcCompetency.getBlocking(data.target).getName();
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.source).name + " <i>" + AppSettings.relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).name + " <span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div class='typeaheadSuggestion'>" + EcCompetency.getBlocking(data.source).getName() + " <i>" + AppSettings.relationTypes[data["relationType"]] + "</i> " + EcCompetency.getBlocking(data.target).getName() + " <span class='label secondary'>"+data["id"]+"</span></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -640,11 +640,11 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
             },
             async: true,
             display: function (data) {
-                return data["name"];
+                return data.getName();
             },
             templates: {
                 suggestion: function (data) {
-                    return "<div class='typeaheadSuggestion' title='" + data["id"] + "'>" + data["name"] + "<span class='label secondary'>"+data["id"]+"</span></div>";
+                    return "<div class='typeaheadSuggestion' title='" + data["id"] + "'>" + data.getName() + "<span class='label secondary'>"+data["id"]+"</span></div>";
                 }
             }
         }).bind("typeahead:selected", function (ev, data) {
@@ -699,7 +699,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
 
         ViewManager.showView(new MessageContainer("frameworkEdit"), "#frameworkEditMessageContainer", function () {
             if (data.name == NEW_FRAMEWORK_NAME && AppController.identityController.selectedIdentity == undefined) {
-                ViewManager.getView("#frameworkEditMessageContainer").displayWarning("You are Creating a Public Framework, this competency can be modified by anyone")
+                ViewManager.getView("#frameworkEditMessageContainer").displayWarning("You are Creating a Public Framework, this framework can be modified by anyone")
             }
         });
 
@@ -777,8 +777,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         $("#frameworkEditSaveBtn").click(function (event) {
             event.preventDefault();
 
-            data.name = $("#frameworkEditName").val();
-            data.description = $("#frameworkEditDescription").val();
+            data.setName($("#frameworkEditName").val());
+            data.setDescription($("#frameworkEditDescription").val());
             data.id = $("#frameworkEditId").val();
 
             if (data.name != NEW_FRAMEWORK_NAME) {
@@ -809,7 +809,7 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         });
 
         $("#importCompetenciesBtn").click(function () {
-        	data.name = $("#frameworkEditName").val();
+        	data.setName($("#frameworkEditName").val());
         	
         	if(data.name == undefined || data.name.trim() == ""){
         		alert("Framework name cannot be empty");
@@ -845,8 +845,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
                     $("#frameworkEditLevels").html("");
                     $("#frameworkEditRollupRules").html("");
 
-                    data.name = $("#frameworkEditName").val();
-                    data.description = $("#frameworkEditDescription").val();
+                    data.setName($("#frameworkEditName").val());
+                    data.setDescription($("#frameworkEditDescription").val());
 
                     displayFramework(data);
                 }, errorRemovingCompetency);
@@ -959,8 +959,8 @@ FrameworkEditScreen = (function (FrameworkEditScreen) {
         $("#frameworkEditOwnerAdvanced").click(function (ev) {
             ev.preventDefault();
 
-            data.name = $("#frameworkEditName").val();
-            data.description = $("#frameworkEditDescription").val();
+            data.setName($("#frameworkEditName").val());
+            data.setDescription($("#frameworkEditDescription").val());
 
             var oldOwner = data.owner.slice(0);
             var oldReader = data.reader == undefined ? undefined :data.reader.slice(0);

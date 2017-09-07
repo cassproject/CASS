@@ -1,0 +1,32 @@
+<button class="close-button" data-close aria-label="Close modal" type="button">
+	<span aria-hidden="true">&times;</span>
+</button>
+<h3 class="row small-12 columns">
+	Create Account
+</h3>
+<form id="createForm">
+	<div class="row">
+		<div id="createIdentityMessageContainer" class="small-10 small-centered columns">
+		</div>
+	</div>
+
+	<div class="row columns">
+		<p>Identities are separate from user accounts, identities relate to a specific encryption key attached to a user account.</p>
+		<p>This key can be used sign/encrypt data for ownership. These keys are the only way to access or modify signed or encrypted
+			data if you forget your account password.</p>
+	</div>
+
+	<div class="row">
+		<label class="small-12 columns" for="createIdentityname">
+			Identity Name:
+			<input type="text" id="createIdentityName">
+		</label>
+	</div>
+	
+	<div class="row">
+		<div class="small-12 columns">
+			<input type="submit" id="createButton" value="Create" class="button float-right"/>
+			<i id="createIdentitySpinner" class="hide fa fa-spin fa-spinner"></i>
+		</div>
+	</div>
+</form>

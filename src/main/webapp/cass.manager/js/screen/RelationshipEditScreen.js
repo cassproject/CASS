@@ -112,7 +112,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	{
 	    $("#relationEditSourceId").val(competency.shortId());
 	    $("#relationEditSourceName").val(competency.getName());
-	    $("#relationEditSourceDescription").val(competency.description);
+	    $("#relationEditSourceDescription").val(competency.getDescription());
 	    $("#relationEditSourceScope").val(competency.scope);
 	}
 	
@@ -129,7 +129,7 @@ RelationshipEditScreen = (function(RelationshipEditScreen){
 	{
 	    $("#relationEditTargetId").val(competency.shortId());
 	    $("#relationEditTargetName").val(competency.getName());
-	    $("#relationEditTargetDescription").val(competency.description);
+	    $("#relationEditTargetDescription").val(competency.getDescription());
 	    $("#relationEditTargetScope").val(competency.scope);
 	}
 	

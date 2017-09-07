@@ -23,15 +23,15 @@ var ChangeServerModal = (function (ChangeServerModal) {
 
         AppController.serverController.selectServer(server, function () {
             ModalManager.hideModal();
-			AppController.loginController.loginServer=AppController.serverController.getRepoInterface();
 			if (!AppController.loginController.loginServer.isGlobal())
 			{
             	AppController.loginController.logout();
             	ViewManager.getView("#menuContainer").setLoggedOut();
             }
+			AppController.loginController.loginServer=AppController.serverController.getRepoInterface();
             AppMenu.prototype.setCurrentServer();
 
-            ScreenManager.changeScreen(new WelcomeScreen());
+            ScreenManager.reloadCurrentScreen();
         }, function (err) {
             $("#newServer").val(lastVal);
             displayError("Unable to change servers, reverting to previous server: " + err);

@@ -379,6 +379,20 @@ CreateUserModal = stjs.extend(CreateUserModal, EcModal, [], function(constructor
         return "partial/modal/createUser.html";
     };
 }, {}, {});
+var CreateIdentityModal = function(onSuccess) {
+    EcModal.call(this);
+    this.success = onSuccess;
+};
+CreateIdentityModal = stjs.extend(CreateIdentityModal, EcModal, [], function(constructor, prototype) {
+    prototype.modalSize = "small";
+    prototype.success = null;
+    prototype.getModalSize = function() {
+        return this.modalSize;
+    };
+    prototype.getHtmlLocation = function() {
+        return "partial/modal/createIdentity.html";
+    };
+}, {success: "Callback0"}, {});
 var SaveIdModal = function(msg) {
     EcModal.call(this);
     this.msg = msg;
@@ -750,13 +764,15 @@ FrameworkList = stjs.extend(FrameworkList, EcView, [], function(constructor, pro
         return "partial/other/frameworkList.html";
     };
 }, {data: "Object", callbacks: "Object"}, {});
-var AddServerModal = function(modalClose) {
+var AddServerModal = function(modalClose, server) {
     EcModal.call(this);
     this.closeEvent = modalClose;
+    this.server = server;
 };
 AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, prototype) {
     prototype.modalSize = "small";
     prototype.closeEvent = null;
+    prototype.server = null;
     prototype.onClose = function() {
         if (this.closeEvent != null) 
             this.closeEvent();
@@ -769,17 +785,20 @@ AddServerModal = stjs.extend(AddServerModal, EcModal, [], function(constructor, 
         return "partial/modal/addServer.html";
     };
 }, {closeEvent: "Callback0"}, {});
-var MessageContainer = function(idPrefix) {
+var MessageContainer = function(idPrefix, closeMessage) {
     EcView.call(this);
     this.prefix = idPrefix;
+    this.closeMessageCallback = closeMessage;
 };
 MessageContainer = stjs.extend(MessageContainer, EcView, [], function(constructor, prototype) {
     prototype.prefix = null;
+    prototype.closeMessageCallback = null;
     prototype.getHtmlLocation = function() {
         return "partial/other/messageContainer.html";
     };
     prototype.displayAlert = function(msg, msgId) {};
-}, {}, {});
+    prototype.clearAlert = function(msgId) {};
+}, {closeMessageCallback: "Callback0"}, {});
 /**
  *  Created by fray on 3/10/17.
  */
@@ -903,16 +922,20 @@ AlignmentEditorColumn = stjs.extend(AlignmentEditorColumn, EcView, [], function(
             me.collection = new Array();
             me.selected = new Array();
             me.highlighted = new Array();
-            eah.each(framework.competency, function(s, callback0) {
-                EcCompetency.get(s, function(ecCompetency) {
-                    me.collection.push(ecCompetency);
-                    callback0();
-                }, function(s) {
-                    callback0();
+            if (framework.competency != undefined && framework.competency != null) {
+                eah.each(framework.competency, function(s, callback0) {
+                    EcCompetency.get(s, function(ecCompetency) {
+                        me.collection.push(ecCompetency);
+                        callback0();
+                    }, function(s) {
+                        callback0();
+                    });
+                }, function(strings) {
+                    me.populate();
                 });
-            }, function(strings) {
+            } else {
                 me.populate();
-            });
+            }
         }, function(s) {});
     };
     prototype.getRelations = function() {
@@ -1002,13 +1025,14 @@ function(storageSystem, defaultServer, defaultServerName) {
     var me = this;
     var r = new EcRepository();
     r.autoDetectRepositoryAsync(function() {
-        me.addServer("This Server (" + window.location.host + ")", r.selectedServer, null, null);
+        me.addServer("This Server (" + r.selectedServer + ")", r.selectedServer, null, null);
     }, function(o) {});
     var cachedList = storageSystem.getStoredValue("cass.server.list");
     if (cachedList != null) {
         cachedList = JSON.parse(cachedList);
+        var repos = {};
         for (var serverName in (cachedList)) {
-            this.addServer(serverName, (cachedList)[serverName], null, null);
+            this.testAddEndpoint(serverName, (cachedList)[serverName]);
         }
     }
     this.addServer(defaultServerName, defaultServer, null, null);
@@ -1024,7 +1048,7 @@ function(storageSystem, defaultServer, defaultServerName) {
             this.selectedServerName = "Default";
         }
     } else {
-        this.selectedServerUrl = "http://localhost:9200/api/custom/";
+        this.selectedServerUrl = "http://localhost:8080/api/custom/";
         this.selectedServerName = "Default (Localhost)";
         console.warn("Default Server Not Given, Set to LocalHost");
     }
@@ -1040,6 +1064,17 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
     prototype.repoInterface = null;
+    prototype.testAddEndpoint = function(serverName, serverUrl) {
+        var that = this;
+        var repo = new EcRepository();
+        repo.selectedServer = this.serverList[serverName];
+        repo.autoDetectRepositoryAsync(function() {
+            that.addServer(serverName, serverUrl, null, null);
+        }, function(error) {});
+    };
+    prototype.getServerList = function() {
+        return this.serverList;
+    };
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      * 
@@ -1489,7 +1524,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     var comment = "";
                     if (selectedItem.shortId() == r.target && r.relationType == Relation.NARROWS) {
                         relationOk = true;
-                        comment = "Subcompetency of " + (EcRepository.getBlocking(r.target)).name;
+                        comment = "Subcompetency of " + (EcRepository.getBlocking(r.target)).getName();
                     }
                     if (r.relationType == Relation.IS_EQUIVALENT_TO) {
                         relationOk = true;
@@ -1497,7 +1532,7 @@ AlignmentExplorerColumn = stjs.extend(AlignmentExplorerColumn, AlignmentEditorCo
                     }
                     if (selectedItem.shortId() == r.source && r.relationType == Relation.REQUIRES) {
                         relationOk = true;
-                        comment = "Required by " + (EcRepository.getBlocking(r.source)).name;
+                        comment = "Required by " + (EcRepository.getBlocking(r.source)).getName();
                     }
                     if (relationOk) 
                         for (var k = 0; k < this.collection.length; k++) {
@@ -1625,6 +1660,16 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
                 menu.showRepoMenu(AppSettings.showRepoMenu);
                 menu.showExamplesMenu(AppSettings.showExamplesMenu);
             });
+            var server = URLParams.get("server");
+            if (server != null && server != undefined) {
+                for (var name in AppController.serverController.serverList) {
+                    if (AppController.serverController.serverList[name].startsWith(server)) {
+                        AppController.serverController.selectServer(name, null, null);
+                        return true;
+                    }
+                }
+                ModalManager.showModal(new AddServerModal(null, server), null);
+            }
             return true;
         });
     };
@@ -2084,6 +2129,16 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
         return column;
     };
     prototype.createRelations = function(relationType) {
+        if (AppController.identityController.selectedIdentity == null) {
+            if (AppController.loginController.getLoggedIn() == true) {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own the new relationship", "noIdentity");
+            } else {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a new relationship", "noIdentity");
+            }
+            this.reflow();
+            return;
+        }
+        (ViewManager.getView("#alignmentEditorMessageContainer")).clearAlert("noIdentity");
         var left = this.columns[0].selected;
         var right = this.columns[1].selected;
         var leftFramework = null;
@@ -2148,6 +2203,15 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
                 rightFramework.save(null, null);
     };
     prototype.createAlignments = function(relationType) {
+        if (AppController.identityController.selectedIdentity == null) {
+            if (AppController.loginController.getLoggedIn() == true) {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own the new relationship", "noIdentity");
+            } else {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a new relationship", "noIdentity");
+            }
+            this.reflow();
+            return;
+        }
         var left = this.columns[0].selected;
         var right = this.columns[1].selected;
         var me = this;
@@ -2209,8 +2273,21 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
         this.containerId = containerId;
         this.columns = new Array();
         this.addColumn();
+        ($(this.createColumnDiv()).attr("id", "mappingFrameworkColumn")).css("display", "none").html("<div style='font-weight: 800;'>Mapping Framework:</div><select id='mappingFrameworkServerSelect'><option disabled='' selected=''>-- Select Server --</option></select><select 'mappingFrameworkSelect'><option disabled='' selected=''>-- Select Framework or Create New --</option></select>");
         this.addColumn();
         this.bindControls(containerId);
+        var me = this;
+        ViewManager.showView(new MessageContainer("alignmentEditor", function() {
+            me.reflow();
+        }), "#alignmentEditorMessageContainer", function() {
+            if (AppController.identityController.selectedIdentity == null || AppController.identityController.selectedIdentity == undefined) {
+                if (AppController.loginController.getLoggedIn() == true) {
+                    (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own any relationships or alignments", "noIdentity");
+                } else {
+                    (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a relationship or alignment", "noIdentity");
+                }
+            }
+        });
     };
     prototype.bindControls = function(containerId) {};
 }, {columns: {name: "Array", arguments: ["AlignmentEditorColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
@@ -2475,7 +2552,7 @@ CompetencyViewScreen = stjs.extend(CompetencyViewScreen, CassManagerScreen, [], 
             (params)["id"] = this.getData().id;
             ScreenManager.setScreenParameters(params);
         }
-        ViewManager.showView(this.mc = new MessageContainer("competencyView"), "#competencyViewMessageContainer", null);
+        ViewManager.showView(this.mc = new MessageContainer("competencyView", null), "#competencyViewMessageContainer", null);
         this.autoConfigure($(containerId));
         var me = this;
         EcCompetency.get(this.getData().id, function(competency) {

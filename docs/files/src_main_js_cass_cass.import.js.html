@@ -975,7 +975,7 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                         if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
                             var compExport = new CSVExport.CSVExportProcess();
                             compExport.buildExport(CSVExport.frameworkCompetencies);
-                            compExport.downloadCSV(fw.name + &quot; - Competencies.csv&quot;);
+                            compExport.downloadCSV(fw.getName() + &quot; - Competencies.csv&quot;);
                         } else {}
                     }, failure);
                 }
@@ -986,8 +986,9 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                         if (CSVExport.frameworkRelations.length == fw.relation.length) {
                             var compExport = new CSVExport.CSVExportProcess();
                             compExport.buildExport(CSVExport.frameworkRelations);
-                            compExport.downloadCSV(fw.name + &quot; - Relations.csv&quot;);
-                            success();
+                            compExport.downloadCSV(fw.getName() + &quot; - Relations.csv&quot;);
+                            if (success != null &amp;&amp; success != undefined) 
+                                success();
                         } else {}
                     }, failure);
                 }

@@ -59,14 +59,25 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
         populated = {};
         for (var i = 0; i < me.collection.length; i++) {
             var item = me.collection[i];
-            var name = item.name;
-            if (item.name != null && me.filter != null && me.filter != "" && item.name.toLowerCase().indexOf(me.filter.toLowerCase()) == -1)
+            var name;
+            if(item.getName != undefined)
+            	name = item.getName();
+            else
+            	name = item.name;
+            
+            if (name != null && me.filter != null && me.filter != "" && name.toLowerCase().indexOf(me.filter.toLowerCase()) == -1)
                 continue;
             list.append(itemTemplate);
             var li = list.children().last();
             li.attr("id", item.shortId());
-            if (item.name != null)
-            	li.find("[ec-field='name']").text(item.name);
+            if (item.name != null){
+            	if(item.name["@value"] != null){
+            		li.find("[ec-field='name']").text(item.getName());
+            	}else{
+            		li.find("[ec-field='name']").text(item.name);
+            	}
+            }
+            	
 			else if (item.url != null)
             	li.find("[ec-field='name']").text(item.url);
             else
@@ -110,21 +121,24 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
         if (me.right == null) return;
         var allElementsRight = $(me.right.containerId).find(".alignmentEditorElement");
 
+        var margin = parseInt($("#alignmentEditorColumns").css("margin-bottom"));
+        
         var canvas = $("#canvas")[0];
         var columns = $("#alignmentEditorColumns");
-        canvas.style.width = '100%';
-        canvas.style.height = columns.height() + columns.position().top + "px";
+        canvas.style.width = $(canvas).parent().width() +"px";
+        canvas.style.height = (columns.height() + margin)+"px";
         if (canvas.width != canvas.offsetWidth)
             canvas.width = canvas.offsetWidth;
         if (canvas.height != canvas.offsetHeight)
-            canvas.height = columns.height() + columns.position().top;
+            canvas.height = columns.height()+margin;
         var ctx = $("#canvas")[0].getContext("2d");
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'rgb(255,255,255)';
-        ctx.fillRect($("#alignmentEditorControls").position().left, $("#alignmentEditorControls").position().top, $("#alignmentEditorControls").outerWidth(), canvas.height);
+       
+        ctx.fillRect(0, 0, canvas.width, canvas.height + margin);
 
-        if (me.relations != null)
+        if (me.relations != null){
             for (var i = 0; i < me.relations.length; i++) {
                 var relationType = me.relations[i].relationType;
                 if (relationType == null)
@@ -175,14 +189,14 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                     ctx.strokeStyle = colors[relationType];
 
                 //Full box height method.
-                var x1 = left.position().left + left.outerWidth();
-                var y1 = left.position().top + (left.outerHeight(true) - left.outerHeight(false)) / 2;
-                var x2 = right.position().left;
-                var y2 = right.position().top + (right.outerHeight(true) - right.outerHeight(false)) / 2;
+                var x1 = left.position().left + left.outerWidth() - $(canvas).position().left;
+                var y1 = left.position().top + (left.outerHeight(true) - left.outerHeight(false)) / 2 - $(canvas).position().top;
+                var x2 = right.position().left - $(canvas).position().left;
+                var y2 = right.position().top + (right.outerHeight(true) - right.outerHeight(false)) / 2 - $(canvas).position().top;
                 var x3 = x2;
-                var y3 = right.position().top + right.outerHeight(true) - (right.outerHeight(true) - right.outerHeight(false)) / 2;
+                var y3 = right.position().top + right.outerHeight(true) - (right.outerHeight(true) - right.outerHeight(false)) / 2 - $(canvas).position().top;
                 var x4 = x1;
-                var y4 = left.position().top + left.outerHeight(true) - (left.outerHeight(true) - left.outerHeight(false)) / 2;
+                var y4 = left.position().top + left.outerHeight(true) - (left.outerHeight(true) - left.outerHeight(false)) / 2 - $(canvas).position().top;
 
                 //Fixed height line method.
     //			var x1 = left.position().left+left.outerWidth();
@@ -221,6 +235,21 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                 ctx.fill();
                 ctx.stroke();
             }
+            
+            ctx.clearRect(0, canvas.height - margin, canvas.width, margin);
+            ctx.fillStyle = 'rgb(255,255,255)';
+           
+            ctx.fillRect(0, canvas.height - margin, canvas.width, margin);
+           
+            if($("#mappingFrameworkColumn").is(":visible")){
+            	ctx.clearRect(0, 0, canvas.width,  $("#mappingFrameworkColumn").height());
+                ctx.fillStyle = 'rgb(255,255,255)';
+               
+                ctx.fillRect(0, 0, canvas.width, $("#mappingFrameworkColumn").height());
+            }
+            
+        }
+        
 //        for (var i = 0;i < allElementsMe.length;i++)
 //        {
 //        	for (var j = 0;j < allElementsRight.length;j++)
@@ -236,23 +265,6 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
 //        		ctx.stroke();
 //        	}
 //        }
-        var controlsTop = canvas.height;
-        for (var i = 0; i < $("#alignmentEditorControls").length; i++)
-            controlsTop = Math.min(controlsTop, $($("#alignmentEditorControls")[i]).position().top)
-        var ctr = $(".alignmentEditorContainer:visible");
-        var ctrMinTop = canvas.height;
-        var ctrMaxTop = 0;
-        for (var i = 0; i < ctr.length; i++) {
-            ctrMinTop = Math.min(ctrMinTop, $(ctr[i]).position().top);
-            ctrMaxTop = Math.max(ctrMaxTop, $(ctr[i]).position().top);
-        }
-        if (ctr.length != 0) {
-            ctx.fillStyle = 'rgb(255,255,255)';
-            ctx.clearRect(0, 0, canvas.width, controlsTop);
-
-            ctx.fillRect($("#alignmentEditorControls").position().left, controlsTop, $("#alignmentEditorControls").outerWidth(), ctrMinTop - controlsTop);
-            ctx.clearRect(0, ctrMaxTop + ctr.outerHeight(), canvas.width, container.position().top + container.outerHeight());
-        }
     }
     AlignmentEditorColumn.prototype.bindControls = function (containerId) {
         var me = this;
@@ -263,6 +275,8 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
             var selectedCategory = container.find(".alignmentEditorCategory option:selected").val();
             container.find(".alignmentEditorCollection").hide();
             container.find(".alignmentEditorContainer").hide();
+            container.find(".alignmentEditorContainer").html("");
+            container.find(".columnFilter").addClass("hide");
             var source = container.find(".alignmentEditorSource");
             source.html("<option disabled selected value> -- Select Source -- </option>").show();
             var lookup = {
@@ -291,15 +305,29 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                 me.populateListCourses();
             }
             if (selectedCategory == "competency") {
+            	container.find(".alignmentEditorContainer").html("");
+            	container.find(".columnFilter").addClass("hide");
                 EcFramework.search(me.sourceRepo, "", function (ary) {
                     for (var i = 0; i < ary.length; i++) {
                         var framework = ary[i];
-                        collection.append("<option/>").children().last().attr("value", framework.shortId()).text(framework.name);
+                        collection.append("<option/>").children().last().attr("value", framework.shortId()).text(framework.getName());
                     }
                     collection.show();
                     me.redraw();
                 }, function (error) {
                 },{size:5000});
+            }else{
+            	var sourceName = container.find(".alignmentEditorSource option:selected").text();
+                container.find(".alignmentEditorColumnSelectCollapsed").html("<i class='fa fa-caret-right'></i> "+sourceName);
+            	container.find(".alignmentEditorColumnSelects").slideUp(function () {
+	                me.redraw();
+	                if (me.screenHook != null)
+	                    me.screenHook();
+	            });
+            	if(selectedSource != undefined && selectedSource != ""){
+                	container.find(".columnFilter").removeClass("hide");
+                	container.find(".alignmentEditorColumnSelectCollapsed").addClass("navigationHidden");
+                }
             }
             if (selectedCategory == "credential") {
                 me.populateListCredentials();
@@ -311,6 +339,8 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                 me.populateListResources();
             }
             me.redraw();
+            container.find(".alignmentEditorContainer").hide();
+            container.find(".loadingRow").show();
         });
         container.find(".alignmentEditorCollection").change(function (evt) {
             var selectedCategory = container.find(".alignmentEditorCategory option:selected").val();
@@ -325,6 +355,15 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
             }
             if (selectedCategory == "competency") {
                 me.populateListCompetencies();
+                
+                var sourceName = container.find(".alignmentEditorSource option:selected").text().substring(0, container.find(".alignmentEditorSource option:selected").text().length - 11);
+            	var collectionName = container.find(".alignmentEditorCollection option:selected").text()
+                container.find(".alignmentEditorColumnSelectCollapsed").html("<i class='fa fa-caret-right'></i> "+sourceName+" : "+collectionName);
+            	container.find(".alignmentEditorColumnSelects").slideUp(function () {
+	                me.redraw();
+	                if (me.screenHook != null)
+	                    me.screenHook();
+	            });
             }
             if (selectedCategory == "badge") {
                 me.populateListBadges();
@@ -336,10 +375,14 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
                 me.populateListResources();
             }
             me.redraw();
+            if (!container.find(".alignmentEditorColumnSelectCollapsed").hasClass("navigationHidden")){
+	        	container.find(".alignmentEditorColumnSelectCollapsed").addClass("navigationHidden");
+	        	container.find(".columnFilter").removeClass("hide");
+	        }
         });
-        container.find("#columnFilter").keyup(function (evt) {
+        container.find(".columnFilter").keyup(function (evt) {
             me.deselectAll();
-            me.filter = container.find("#columnFilter").val();
+            me.filter = container.find(".columnFilter").val();
             me.populate();
         })
         container.find(".alignmentEditorColumnSelectCollapsed").click(function (evt) {
@@ -349,10 +392,28 @@ AlignmentEditorColumn = (function (AlignmentEditorColumn) {
     AlignmentEditorColumn.prototype.toggleNavigation = function (evt) {
         var me = this;
         var container = $(me.containerId);
-        if (container.find(".alignmentEditorColumnSelectCollapsed").text() == "Navigation 🔼")
-            container.find(".alignmentEditorColumnSelectCollapsed").text("Navigation 🔽");
-        else
-            container.find(".alignmentEditorColumnSelectCollapsed").text("Navigation 🔼");
+        if (container.find(".alignmentEditorColumnSelectCollapsed").hasClass("navigationHidden")){
+        	var text = container.find(".alignmentEditorColumnSelectCollapsed").text();
+        	container.find(".alignmentEditorColumnSelectCollapsed").html("<i class='fa fa-caret-down'></i> "+text);
+        	container.find(".alignmentEditorColumnSelectCollapsed").removeClass("navigationHidden");
+        	
+        	var selectedCategory = container.find(".alignmentEditorCategory option:selected").val();
+            var selectedSource = container.find(".alignmentEditorSource option:selected").val();
+            var selectedCollection = container.find(".alignmentEditorCollection option:selected").val();
+            
+            if((selectedCategory == "competency" && selectedCollection != undefined && selectedCollection != "") 
+            		|| (selectedCategory != "competency" && selectedSource != undefined && selectedSource != "")){
+            	container.find(".columnFilter").removeClass("hide");
+            }else{
+            	container.find(".columnFilter").addClass("hide");
+            }
+        	
+        }else{
+        	var text = container.find(".alignmentEditorColumnSelectCollapsed").text();
+        	container.find(".alignmentEditorColumnSelectCollapsed").html("<i class='fa fa-caret-right'></i> "+text);
+        	container.find(".alignmentEditorColumnSelectCollapsed").addClass("navigationHidden");
+        }
+            
         container.find(".alignmentEditorColumnSelects").slideToggle(function () {
             me.redraw();
             if (me.screenHook != null)

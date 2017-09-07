@@ -208,8 +208,8 @@ var FrameworkList = (function(FrameworkList){
 		var targetEl = element.clone();
 		
 		EcCompetency.get(relation.source, function(comp){
-			sourceEl.find(".source").text(comp.name);
-			targetEl.find(".source").text(comp.name);
+			sourceEl.find(".source").text(comp.getName());
+			targetEl.find(".source").text(comp.getName());
 			
 			if(framework.competency.indexOf(relation.source) == -1){
 				element.find("small").append(" <i class='fa fa-small fa-external-link' style='font-size:0.65rem'></i> ");
@@ -217,8 +217,8 @@ var FrameworkList = (function(FrameworkList){
 		});
 		
 		EcCompetency.get(relation.target, function(comp){
-			sourceEl.find(".target").text(comp.name);
-			targetEl.find(".target").text(comp.name);
+			sourceEl.find(".target").text(comp.getName());
+			targetEl.find(".target").text(comp.getName());
 			
 			if(framework.competency.indexOf(relation.target) == -1){
 				element.find("small").append(" <i class='fa fa-small fa-external-link' style='font-size:0.65rem'></i> ");

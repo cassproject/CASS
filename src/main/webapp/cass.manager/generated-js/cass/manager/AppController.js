@@ -67,6 +67,16 @@ AppController = stjs.extend(AppController, null, [], function(constructor, proto
                 menu.showRepoMenu(AppSettings.showRepoMenu);
                 menu.showExamplesMenu(AppSettings.showExamplesMenu);
             });
+            var server = URLParams.get("server");
+            if (server != null && server != undefined) {
+                for (var name in AppController.serverController.serverList) {
+                    if (AppController.serverController.serverList[name].startsWith(server)) {
+                        AppController.serverController.selectServer(name, null, null);
+                        return true;
+                    }
+                }
+                ModalManager.showModal(new AddServerModal(null, server), null);
+            }
             return true;
         });
     };

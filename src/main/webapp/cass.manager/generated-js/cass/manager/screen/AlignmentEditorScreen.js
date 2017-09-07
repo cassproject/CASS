@@ -28,6 +28,16 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
         return column;
     };
     prototype.createRelations = function(relationType) {
+        if (AppController.identityController.selectedIdentity == null) {
+            if (AppController.loginController.getLoggedIn() == true) {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own the new relationship", "noIdentity");
+            } else {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a new relationship", "noIdentity");
+            }
+            this.reflow();
+            return;
+        }
+        (ViewManager.getView("#alignmentEditorMessageContainer")).clearAlert("noIdentity");
         var left = this.columns[0].selected;
         var right = this.columns[1].selected;
         var leftFramework = null;
@@ -92,6 +102,15 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
                 rightFramework.save(null, null);
     };
     prototype.createAlignments = function(relationType) {
+        if (AppController.identityController.selectedIdentity == null) {
+            if (AppController.loginController.getLoggedIn() == true) {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own the new relationship", "noIdentity");
+            } else {
+                (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a new relationship", "noIdentity");
+            }
+            this.reflow();
+            return;
+        }
         var left = this.columns[0].selected;
         var right = this.columns[1].selected;
         var me = this;
@@ -153,8 +172,21 @@ AlignmentEditorScreen = stjs.extend(AlignmentEditorScreen, CassManagerScreen, []
         this.containerId = containerId;
         this.columns = new Array();
         this.addColumn();
+        ($(this.createColumnDiv()).attr("id", "mappingFrameworkColumn")).css("display", "none").html("<div style='font-weight: 800;'>Mapping Framework:</div><select id='mappingFrameworkServerSelect'><option disabled='' selected=''>-- Select Server --</option></select><select 'mappingFrameworkSelect'><option disabled='' selected=''>-- Select Framework or Create New --</option></select>");
         this.addColumn();
         this.bindControls(containerId);
+        var me = this;
+        ViewManager.showView(new MessageContainer("alignmentEditor", function() {
+            me.reflow();
+        }), "#alignmentEditorMessageContainer", function() {
+            if (AppController.identityController.selectedIdentity == null || AppController.identityController.selectedIdentity == undefined) {
+                if (AppController.loginController.getLoggedIn() == true) {
+                    (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to select an identity to own any relationships or alignments", "noIdentity");
+                } else {
+                    (ViewManager.getView("#alignmentEditorMessageContainer")).displayAlert("You need to sign in in order to create a relationship or alignment", "noIdentity");
+                }
+            }
+        });
     };
     prototype.bindControls = function(containerId) {};
 }, {columns: {name: "Array", arguments: ["AlignmentEditorColumn"]}, data: "Object", reloadLoginCallback: {name: "Callback1", arguments: ["Object"]}, reloadShowLoginCallback: "Callback0", failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});

@@ -30,13 +30,14 @@ function(storageSystem, defaultServer, defaultServerName) {
     var me = this;
     var r = new EcRepository();
     r.autoDetectRepositoryAsync(function() {
-        me.addServer("This Server (" + window.location.host + ")", r.selectedServer, null, null);
+        me.addServer("This Server (" + r.selectedServer + ")", r.selectedServer, null, null);
     }, function(o) {});
     var cachedList = storageSystem.getStoredValue("cass.server.list");
     if (cachedList != null) {
         cachedList = JSON.parse(cachedList);
+        var repos = {};
         for (var serverName in (cachedList)) {
-            this.addServer(serverName, (cachedList)[serverName], null, null);
+            this.testAddEndpoint(serverName, (cachedList)[serverName]);
         }
     }
     this.addServer(defaultServerName, defaultServer, null, null);
@@ -52,7 +53,7 @@ function(storageSystem, defaultServer, defaultServerName) {
             this.selectedServerName = "Default";
         }
     } else {
-        this.selectedServerUrl = "http://localhost:9200/api/custom/";
+        this.selectedServerUrl = "http://localhost:8080/api/custom/";
         this.selectedServerName = "Default (Localhost)";
         console.warn("Default Server Not Given, Set to LocalHost");
     }
@@ -68,6 +69,17 @@ ServerController = stjs.extend(ServerController, null, [], function(constructor,
     prototype.selectedServerUrl = null;
     prototype.selectedServerName = null;
     prototype.repoInterface = null;
+    prototype.testAddEndpoint = function(serverName, serverUrl) {
+        var that = this;
+        var repo = new EcRepository();
+        repo.selectedServer = this.serverList[serverName];
+        repo.autoDetectRepositoryAsync(function() {
+            that.addServer(serverName, serverUrl, null, null);
+        }, function(error) {});
+    };
+    prototype.getServerList = function() {
+        return this.serverList;
+    };
     /**
      *  Adds a server to this list of servers that can be selected from the change server modal
      * 

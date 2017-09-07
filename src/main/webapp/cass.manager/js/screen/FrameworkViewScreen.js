@@ -141,7 +141,9 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                                     for (var i = 0; i < framework.relation.length; i++) {
                                         (function (i) {
                                             timeout(function () {
-                                                EcAlignment.get(framework.relation[i], function (relation) {
+                                                EcAlignment.get(framework.relation[i], function (rel) {
+                                                	var relation = new EcAlignment();
+                                                	relation.copyFrom(rel);
                                                     if (relation.source !== undefined) {
                                                         var shortSource = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
                                                         var shortTarget = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
@@ -217,7 +219,27 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
     }
 
     
-
+    /**
+	 * Attempts to download the file passed in
+	 * 
+	 * @memberOf FrameworkViewScreen
+	 * @method saveFile
+	 * @param content
+	 * 			Content of file to save
+	 * @param name
+	 * 			Name of file to save
+	 */
+    function saveFile(content, name){
+    	try {
+		    var isFileSaverSupported = !!new Blob;
+		    
+		    var blob = new Blob([content], {type:"text/plain;charset=utf-8"});
+    		saveAs(blob, name);
+		} catch (e) {
+			ViewManager.getView("#frameworkViewMessageContainer").displayAlert("Your browser doesn't support file downloads", "downloadFile");
+		}
+    }
+    
     /**
 	 * Overridden display function, called once html partial is loaded into DOM
 	 * 
@@ -285,6 +307,45 @@ FrameworkViewScreen = (function (FrameworkViewScreen) {
                 deleteFramework();
             })
         }
+        
+        $("#jsonLdDownload").click(function(){
+        	saveFile(data.toJson(), data.getGuid()+".jsonld");
+        });
+        
+        // May need to include the signatureSheet to allow access to hidden/encrypted objects
+        $("#rdfDownload").click(function(){
+        	data.asRdfXml(function(rdf){
+        		saveFile(rdf, data.getGuid()+".xml");
+        	});
+        });
+        
+        $("#ttlDownload").click(function(){
+        	data.asTurtle(function(ttl){
+        		saveFile(ttl, data.getGuid()+".ttl");
+        	});
+        });
+        
+        $("#nQuadsDownload").click(function(){
+        	data.asNQuads(function(nquads){
+        		saveFile(nquads, data.getGuid()+".n4");
+        	});
+        });
+        
+        $("#asnJsonDownload").click(function(){
+        	data.asAsnJson(function(asn){
+        		saveFile(asn, data.getGuid()+".json")
+        	}, function(err){
+        		ViewManager.getView("#frameworkViewMessageContainer").displayAlert("Cannot find ASN endpoint: "+err, "downloadFile");
+        	}, AppController.serverController.selectedServerUrl)
+        });
+        
+        $("#csvDownload").click(function(){
+        	CSVExport.exportFramework(data.id, function(){
+        		
+        	}, function(){
+        		
+        	});
+        })
         
         EcFramework.get(data.id, function(framework){
         	data = framework;

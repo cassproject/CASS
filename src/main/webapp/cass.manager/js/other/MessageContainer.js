@@ -101,13 +101,15 @@ var MessageContainer = (function(MessageContainer){
 	{	
 		var prefix = this.prefix;
 			
+		var closeCallback = this.closeMessageCallback;
 		$(containerId).find("[id]").each(function(i, e){
 			$(e).attr("id", prefix+"-"+$(e).attr("id"))
 		});
 		
 		$(containerId).find(".messageContainer").each(function(i, e){
 			$(e).find('button').click(function(){
-				hideMessageBox("#"+$(e).attr("id"));
+				hideMessageBox("#"+$(e).attr("id"), closeCallback);
+				
 			})
 		});
 	}

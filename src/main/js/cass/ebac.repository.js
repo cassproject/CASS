@@ -908,7 +908,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         return false;
     };
     constructor.find = function(url, error, history, i, success, failure) {
-        if (i > EcRepository.repos.length || EcRepository.repos[i] == null) {
+        if (isNaN(i) || i == undefined || i > EcRepository.repos.length || EcRepository.repos[i] == null) {
             delete (EcRepository.fetching)[url];
             failure(error);
             return;
