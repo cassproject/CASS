@@ -57,6 +57,32 @@ if [ "$platformFedora" -ne 0 ];
 yum -y -q update
 fi
 
+if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/lib/jvm/java-8-oracle" ];
+ then
+echo -----
+echo Installing Oracle Java...
+add-apt-repository ppa:webupd8team/java
+apt-get -qqy update
+apt-get -qqy remove tomcat7 maven
+apt-get -qqy autoremove
+apt-get -qqy install oracle-java8-installer
+echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat7
+apt-get -qqy install tomcat7
+fi
+if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/java/jdk1.8.0_144/jre/bin/java" ];
+ then
+echo -----
+echo Installing Oracle Java...
+yum -y -q remove tomcat maven
+echo If installing Java does not work, please download and install Oracle Java 8.
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm"
+yum -y -q mastlocalinstall jdk-8u144-linux-x64.rpm
+echo Please ensure Oracle Java is installed.
+pause
+alternatives --config java
+rm jdk-8u144-linux-x64.rpm
+fi
+
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
 echo -----
@@ -97,12 +123,13 @@ fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
-echo Installing Tomcat 7...
-yum -y -q install tomcat7
-mkdir /usr/share/tomcat7/backup
-chown tomcat:tomcat /usr/share/tomcat7/backup
-chown tomcat:tomcat /var/lib/tomcat7
+echo Installing Tomcat...
+yum -y -q install tomcat
+mkdir /usr/share/tomcat/backup
+chown tomcat:tomcat /usr/share/tomcat/backup
+chown tomcat:tomcat /var/lib/tomcat
 fi
+
 sleep 3s
 service tomcat7 stop
 sleep 3s
@@ -117,8 +144,8 @@ rm -rf /var/lib/tomcat7/webapps/cass*
 fi
 if [ "$platformFedora" -ne 0 ]
  then
-rm -rf /usr/share/tomcat7/webapps/levr*
-rm -rf /usr/share/tomcat7/webapps/cass*
+rm -rf /usr/share/tomcat/webapps/levr*
+rm -rf /usr/share/tomcat/webapps/cass*
 fi
 
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
@@ -131,6 +158,7 @@ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /e
 apt-get -qqy update
 apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
+systemctl enable elasticsearch.service
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
@@ -212,8 +240,17 @@ echo -----
 echo Downloading CASS Repo...
 git clone https://github.com/cassproject/CASS -b $branch
 cd CASS
+echo Compiling CASS...
 mvn -q clean install
-cp target/cass.war /var/lib/tomcat7/webapps
+echo Deploying CASS...
+if [ "$platformDebian" -ne 0 ];
+ then
+ cp target/cass.war /var/lib/tomcat7/webapps
+fi
+if [ "$platformFedora" -ne 0 ];
+ then
+ cp target/cass.war /usr/share/tomcat/webapps
+fi
 cd ..
 rm -rf CASS
 
@@ -299,7 +336,14 @@ fi
 
 echo -----
 echo Starting Tomcat...
-service tomcat7 start
+if [ "$platformDebian" -ne 0 ];
+ then
+ service tomcat7 start
+fi
+if [ "$platformFedora" -ne 0 ];
+ then
+ service tomcat start
+fi
 
 echo -----
 echo Starting ElasticSearch...
