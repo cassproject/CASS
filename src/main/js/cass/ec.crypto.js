@@ -1,12 +1,23 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 var AlgorithmIdentifier = function() {};
 AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
     prototype.name = null;
@@ -18,7 +29,6 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
     prototype.counter = null;
 }, {iv: "ArrayBuffer", counter: "ArrayBuffer"}, {});
 /**
- * 
  *  @author Fritz
  */
 var EcCrypto = function() {};
@@ -28,19 +38,25 @@ EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
 }, {decryptionCache: "Object"}, {});
 /**
  *  Helper classes for dealing with RSA Public Keys.
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcPk
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcPk = function() {};
 EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
+    prototype.pk = null;
+    prototype.jwk = null;
+    prototype.key = null;
+    prototype.signKey = null;
     /**
      *  Decodes a PEM encoded SubjectPublicKeyInfo (PKCS#8) or RSAPublicKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method fromPem
-     *  @static
+     * 
      *  @param {string} pem PEM as a string.
      *  @return {EcPk} Object used to perform public key operations.
+     *  @method fromPem
+     *  @static
      */
     constructor.fromPem = function(pem) {
         var pk = new EcPk();
@@ -51,15 +67,12 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
         }
         return pk;
     };
-    prototype.pk = null;
-    prototype.jwk = null;
-    prototype.key = null;
-    prototype.signKey = null;
     /**
      *  Compares two public keys, and returns true if their PEM forms match.
-     *  @method equals
+     * 
      *  @param {EcPk} obj Object to compare to.
      *  @return {boolean} True if the keys match.
+     *  @method equals
      */
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcPk)) 
@@ -69,8 +82,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPem
      */
     prototype.toPem = function() {
         return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
@@ -78,8 +92,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPkcs1Pem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
         return forge.pki.publicKeyToRSAPublicKeyPem(this.pk).replaceAll("\r?\n", "");
@@ -87,8 +102,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the public key into a PEM encoded SubjectPublicKeyInfo (PKCS#8) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPkcs8Pem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
         return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
@@ -100,8 +116,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     };
     /**
      *  Hashes the public key into an SSH compatible fingerprint.
-     *  @method fingerprint
+     * 
      *  @return {string} Public key fingerprint.
+     *  @method fingerprint
      */
     prototype.fingerprint = function() {
         var o = new Object();
@@ -3700,7 +3717,7 @@ define(['require', 'module'], function() {
 })();
 /**
  *  AES encryption tasks common across all variants of AES.
- *  @class EcAes 
+ *  @class EcAes
  *  @module com.eduworks.ec
  *  @author fritz.ray@eduworks.com
  */
@@ -6568,10 +6585,10 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  Encrypts a block of plaintext (no more than 256 bytes) with a public key
      *  using RSA OAEP encryption. Returns a base64 encoded ciphertext.
      * 
+     *  @param {EcPk}   pk Public Key.
+     *  @param {string} plaintext Plaintext. Does not perform encoding.
      *  @method encrypt
      *  @static
-     *  @param {EcPk} pk Public Key.
-     *  @param {string} plaintext Plaintext. Does not perform encoding.
      */
     constructor.encrypt = function(pk, plaintext) {
         if ($ == null) {
@@ -6583,11 +6600,11 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  Decrypts a block of ciphertext (no more than 256 bytes) with a private
      *  key using RSA OAEP encryption. Returns a unencoded plaintext.
      * 
-     *  @method decrypt
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {EcPpk}  ppk Public private keypair.
      *  @param {string} ciphertext Ciphertext.
      *  @return {string} Unencoded plaintext.
+     *  @method decrypt
+     *  @static
      */
     constructor.decrypt = function(ppk, ciphertext) {
         if (EcCrypto.caching) {
@@ -6613,11 +6630,11 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
      *  decoding of the text. Returns base64 encoded signature.
      * 
-     *  @method sign
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {EcPpk}  ppk Public private keypair.
      *  @param {string} text Text to sign.
      *  @return Base64 encoded signature.
+     *  @method sign
+     *  @static
      */
     constructor.sign = function(ppk, text) {
         if ($ == null) {
@@ -6632,11 +6649,11 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  keypair. May be verified with the public key. Uses SHA256 hash with a
      *  UTF8 decoding of the text. Returns base64 encoded signature.
      * 
-     *  @method signSha256
-     *  @static
-     *  @param {EcPpk} ppk Public private keypair.
+     *  @param {EcPpk}  ppk Public private keypair.
      *  @param {string} text Text to sign.
      *  @return Base64 encoded signature.
+     *  @method signSha256
+     *  @static
      */
     constructor.signSha256 = function(ppk, text) {
         var s = forge.md.sha256.create();
@@ -6647,12 +6664,12 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  Verifies the integrity of the provided text using a signature and a
      *  public key. Uses SHA1 hash with a UTF8 decoding of the text.
      * 
-     *  @static
-     *  @method verify
-     *  @param {EcPk} pk Public key.
+     *  @param {EcPk}   pk Public key.
      *  @param {string} text Text to verify.
      *  @param {string} signature Base64 encoded signature.
      *  @return True IFF the signature is valid.
+     *  @static
+     *  @method verify
      */
     constructor.verify = function(pk, text, signature) {
         if ($ == null) {
@@ -6669,19 +6686,25 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Helper classes for dealing with RSA Private Keys.
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcPpk
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcPpk = function() {};
 EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
+    prototype.jwk = null;
+    prototype.key = null;
+    prototype.signKey = null;
+    prototype.ppk = null;
     /**
      *  Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method fromPem
-     *  @static
+     * 
      *  @param {string} pem PEM as a string.
      *  @return {EcPk} Object used to perform public key operations.
+     *  @method fromPem
+     *  @static
      */
     constructor.fromPem = function(pem) {
         var pk = new EcPpk();
@@ -6694,9 +6717,10 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     };
     /**
      *  Generates an RSA Keypair using web workers.
+     * 
+     *  @param {function(EcPpk)} callback Method called when the keypair is generated.
      *  @method generateKeyAsync
      *  @static
-     *  @param {function(EcPpk)} callback Method called when the keypair is generated.
      */
     constructor.generateKeyAsync = function(callback) {
         var o = new Object();
@@ -6709,9 +6733,10 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     };
     /**
      *  Generates an RSA Keypair synchronously. Can take a while.
+     * 
+     *  @return {EcPpk} Public private keypair.
      *  @method generateKey
      *  @static
-     *  @return {EcPpk} Public private keypair.
      */
     constructor.generateKey = function() {
         var o = new Object();
@@ -6721,16 +6746,13 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         ppk.ppk = keypair.privateKey;
         return ppk;
     };
-    prototype.ppk = null;
-    prototype.jwk = null;
-    prototype.key = null;
-    prototype.signKey = null;
     /**
      *  Returns true iff the PEM forms of the public private keypair match.
      *  Can also match against a public key if the public portion of the keypair match.
-     *  @method equals
+     * 
      *  @param {EcPpk|EcPk} Key to compare to.
      *  @return boolean If they match.
+     *  @method equals
      */
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcPpk)) 
@@ -6742,8 +6764,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPem
      */
     prototype.toPem = function() {
         return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
@@ -6751,8 +6774,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPkcs1Pem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPkcs1Pem
      */
     prototype.toPkcs1Pem = function() {
         return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
@@ -6760,8 +6784,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     /**
      *  Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
      *  (In case you were curious.)
-     *  @method toPkcs8Pem
+     * 
      *  @return {string} PEM encoded public key without whitespace.
+     *  @method toPkcs8Pem
      */
     prototype.toPkcs8Pem = function() {
         return forge.pki.privateKeyInfoToPem(forge.pki.wrapRsaPrivateKey(forge.pki.privateKeyToAsn1(this.ppk))).replaceAll("\r?\n", "");
@@ -6776,8 +6801,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     };
     /**
      *  Extracts the public key portion from the public private keypair.
-     *  @method toPk
+     * 
      *  @return {EcPk} Public Key Helper.
+     *  @method toPk
      */
     prototype.toPk = function() {
         var pk = new EcPk();
@@ -6786,9 +6812,10 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns true if this PPK is in an array of PPKs.
-     *  @method inArray
+     * 
      *  @param {Array<EcPpk>} ppks Array of ppks
      *  @return true iff this PPK in ppks.
+     *  @method inArray
      */
     prototype.inArray = function(ppks) {
         for (var i = 0; i < ppks.length; i++) {
@@ -6797,10 +6824,11 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         }
         return false;
     };
-}, {ppk: "forge.ppk", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey"}, {});
+}, {jwk: "Object", key: "CryptoKey", signKey: "CryptoKey", ppk: "forge.ppk"}, {});
 /**
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @module com.eduworks.ec
  *  @class EcAesCtr
@@ -6808,15 +6836,16 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
 var EcAesCtr = function() {};
 EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
     /**
-     *  Encrypts plaintext using AES-256-CTR. 
+     *  Encrypts plaintext using AES-256-CTR.
      *  Plaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.
      *  Returns base64 encoded ciphertext.
-     *  @method encrypt
-     *  @static
+     * 
      *  @param {string} plaintext Text to encrypt.
      *  @param {string} secret Secret to use to encrypt.
      *  @param {string} iv Initialization Vector to use to encrypt.
      *  @return {string} Ciphertext encoded using base64.
+     *  @method encrypt
+     *  @static
      */
     constructor.encrypt = function(plaintext, secret, iv) {
         if ($ == null && forge.util.decode64(secret).length == 16 && forge.util.decode64(iv).length == 16) 
@@ -6829,15 +6858,16 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
         return forge.util.encode64(encrypted.bytes());
     };
     /**
-     *  Decrypts ciphertext using AES-256-CTR. 
+     *  Decrypts ciphertext using AES-256-CTR.
      *  Ciphertext must be base64 encoded ciphertext.
      *  Returns plaintext as a string (Sequence of bytes, no encoding).
-     *  @method decrypt
-     *  @static
+     * 
      *  @param {string} ciphertext Ciphertext to decrypt.
      *  @param {string} secret Secret to use to decrypt.
      *  @param {string} iv Initialization Vector to use to decrypt.
      *  @return {string} Plaintext with no encoding.
+     *  @method decrypt
+     *  @static
      */
     constructor.decrypt = function(ciphertext, secret, iv) {
         if (EcCrypto.caching) {
@@ -6865,9 +6895,9 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
  *  Asynchronous implementation of {{#crossLink
  *  "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
  * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcRsaOaepAsync
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcRsaOaepAsyncWorker = function() {};
 EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(constructor, prototype) {
@@ -6921,14 +6951,14 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
      *  Asynchronous form of {{#crossLink
      *  "EcRsaOaep/encrypt:method"}}EcRsaOaep.encrypt{{/crossLink}}
      * 
+     *  @param {EcPk}             pk Public Key to use to encrypt.
+     *  @param {string}           plaintext Plaintext to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method encrypt
      *  @static
-     *  @param {EcPk} pk Public Key to use to encrypt.
-     *  @param {string} plaintext Plaintext to encrypt.
-     *  @param {function(string)} success Success method, result is Base64
-     *  encoded Ciphertext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.encrypt = function(pk, plaintext, success, failure) {
         EcRsaOaepAsyncWorker.initWorker();
@@ -6950,14 +6980,14 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
      *  Asynchronous form of {{#crossLink
      *  "EcRsaOaep/decrypt:method"}}EcRsaOaep.decrypt{{/crossLink}}
      * 
+     *  @param {EcPpk}            ppk Public private keypair to use to decrypt.
+     *  @param {string}           ciphertext Ciphertext to decrypt.
+     *  @param {function(string)} success Success method, result is unencoded
+     *                            plaintext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method decrypt
      *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to decrypt.
-     *  @param {string} ciphertext Ciphertext to decrypt.
-     *  @param {function(string)} success Success method, result is unencoded
-     *  plaintext.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.decrypt = function(ppk, ciphertext, success, failure) {
         if (EcCrypto.caching) {
@@ -6994,14 +7024,14 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
      *  Asynchronous form of {{#crossLink
      *  "EcRsaOaep/sign:method"}}EcRsaOaep.sign{{/crossLink}}
      * 
+     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
+     *  @param {string}           text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method sign
      *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to sign message.
-     *  @param {string} text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *  encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.sign = function(ppk, text, success, failure) {
         EcRsaOaepAsyncWorker.initWorker();
@@ -7023,14 +7053,14 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
      *  Asynchronous form of {{#crossLink
      *  "EcRsaOaep/signSha256:method"}}EcRsaOaep.signSha256{{/crossLink}}
      * 
+     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
+     *  @param {string}           text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
      *  @method signSha256
      *  @static
-     *  @param {EcPpk} ppk Public private keypair to use to sign message.
-     *  @param {string} text Text to sign.
-     *  @param {function(string)} success Success method, result is Base64
-     *  encoded signature.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.signSha256 = function(ppk, text, success, failure) {
         EcRsaOaepAsyncWorker.initWorker();
@@ -7052,15 +7082,15 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
      *  Asynchronous form of {{#crossLink
      *  "EcRsaOaep/verify:method"}}EcRsaOaep.verify{{/crossLink}}
      * 
+     *  @param {EcPk}              pk Public key to use to verify message.
+     *  @param {string}            text Text to use in verification.
+     *  @param {string}            signature Signature to use in verification.
+     *  @param {function(boolean)} success Success method, result is whether
+     *                             signature is valid.
+     *  @param {function(string)}  failure Failure method, parameter is error
+     *                             message.
      *  @method verify
      *  @static
-     *  @param {EcPk} pk Public key to use to verify message.
-     *  @param {string} text Text to use in verification.
-     *  @param {string} signature Signature to use in verification.
-     *  @param {function(boolean)} success Success method, result is whether
-     *  signature is valid.
-     *  @param {function(string)} failure Failure method, parameter is error
-     *  message.
      */
     constructor.verify = function(pk, text, signature, success, failure) {
         EcRsaOaepAsyncWorker.initWorker();

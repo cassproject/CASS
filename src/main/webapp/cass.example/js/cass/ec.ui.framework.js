@@ -1,28 +1,38 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Parent class of all view manager classes, stores a cache of the views and
  *  their corresponding DOM selectors and provides functions for setting a view
  *  to correspond to a selector and displaying a view after it has been added to
  *  the cache.
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class ViewManager
- *  
- *  @author devlin.junker@eduworks.com
  */
 var ViewManager = function() {};
 ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype) {
     /**
      *  Storage that maps view class instances to DOM Elements
-     *  
+     * 
      *  @private
      *  @property viewMap
      *  @type Map<String, EcView>
@@ -30,13 +40,13 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     constructor.viewMap = {};
     /**
      *  Set's the view instance for a specific DOM selector
-     *  
+     * 
+     *  @param {String} containerId
+     *                  DOM Selector for the element that will correspond to the view
+     *  @param {EcView} view
+     *                  View that will correspond to the DOM Selector
      *  @memberOf ViewManager
      *  @method setView
-     *  @param {String} containerId
-     *             DOM Selector for the element that will correspond to the view
-     *  @param {EcView} view
-     *             View that will correspond to the DOM Selector
      */
     constructor.setView = function(containerId, view) {
         ViewManager.viewMap[containerId] = view;
@@ -44,14 +54,14 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     /**
      *  Returns the view instance that currently corresponds to a specific DOM
      *  selector
-     *  
+     * 
+     *  @param {String} containerId
+     *                  DOM Selector that corresponds to the view to be returned
+     *  @return {EcView}
+     *  The view that corresponds to the DOM Selector passed in, or null
+     *  if no view corresponds with it
      *  @memberOf ViewManager
      *  @method getView
-     *  @param {String} containerId
-     *           DOM Selector that corresponds to the view to be returned
-     *  @return {EcView} 
-     *  			The view that corresponds to the DOM Selector passed in, or null
-     *          	if no view corresponds with it
      */
     constructor.getView = function(containerId) {
         return ViewManager.viewMap[containerId];
@@ -59,16 +69,16 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     /**
      *  Relates the view to a DOM Selector and calls the view's display function
      *  to populate the inner html of the DOM Selector Element
-     *  
+     * 
+     *  @param {EcView}    view
+     *                     View to be displayed in the DOM Selector Element
+     *  @param {String}    containerId
+     *                     DOM Selector for element that the view will be displayed in
+     *  @param {Callback0} callback
+     *                     Callback function to be passed in to the view's display
+     *                     function (to be called once the view has been displayed)
      *  @memberOf ViewManager
      *  @method showView
-     *  @param {EcView} view
-     *             View to be displayed in the DOM Selector Element
-     *  @param {String} containerId
-     *             DOM Selector for element that the view will be displayed in
-     *  @param {Callback0} callback
-     *             Callback function to be passed in to the view's display
-     *             function (to be called once the view has been displayed)
      */
     constructor.showView = function(view, containerId, callback) {
         var htmlLocation = view.getHtmlLocation();
@@ -87,11 +97,11 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     };
     /**
      *  Hides the container specified by the containerId by adding 'hide' class
-     *  
+     * 
+     *  @param {String} containerId
+     *                  DOM Selector for the element to add the 'hide' class to
      *  @memberOf ViewManager
      *  @method hideView
-     *  @param {String} containerId
-     *             DOM Selector for the element to add the 'hide' class to
      */
     constructor.hideView = function(containerId) {
         $(containerId).addClass("hide");
@@ -104,26 +114,25 @@ ViewManager = stjs.extend(ViewManager, null, [], function(constructor, prototype
     };
 }, {viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 /**
- *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and 
+ *  Object stored in the ScreenManager's history cache array, to keep track of the history of screens and
  *  which DOM element they were displayed in
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class HistoryClosure
- *  
- *  @author devlin.junker@eduworks.com
  */
 var HistoryClosure = /**
  *  Constructor for the HistoryClosure Object
- *  
- *  @constructor
- *  @param {String} name
- *  			Page Name associated with this page (used for loading history screens)
+ * 
+ *  @param {String}   name
+ *                    Page Name associated with this page (used for loading history screens)
  *  @param {EcScreen} screen
- *  			Screen to associate with the page name (to display when loading history screens)
- *  @param {String} containerId
- *  			DOM Selector (ID) of the HTML container to display the screen in on load history
- *  @param {Object} params
- *  			URL Params associated with the screen shown
+ *                    Screen to associate with the page name (to display when loading history screens)
+ *  @param {String}   containerId
+ *                    DOM Selector (ID) of the HTML container to display the screen in on load history
+ *  @param {Object}   params
+ *                    URL Params associated with the screen shown
+ *  @constructor
  */
 function(name, screen, containerId, params) {
     this.pageName = name;
@@ -134,60 +143,60 @@ function(name, screen, containerId, params) {
 HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, prototype) {
     /**
      *  Name of the page (used to retrieve the correct screen on a back/forward button press)
-     *  
+     * 
      *  @property pageName
      *  @type String
      */
     prototype.pageName = null;
     /**
      *  Screen to store and associate with the page name so that it can be loaded if necessary
-     *  
+     * 
      *  @property screen
      *  @type EcScreen
      */
     prototype.screen = null;
     /**
      *  ID of the container to display the screen in, once it has been found by page name
-     *  
+     * 
      *  @property containerId
      *  @type String
      */
     prototype.containerId = null;
     /**
      *  URL Parameters associated with the screen
-     *  
+     * 
      *  @property screenParameters
      *  @type Object
      */
     prototype.screenParameters = null;
 }, {screen: "EcScreen", screenParameters: "Object"}, {});
 /**
- *  Class that represents a "view" that can be displayed in an container element on the page. The View should define 
+ *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
  *  a display function that loads HTML into the container element on the page and then finally calls the callback once
  *  the view has been completely initialized
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class EcView
- *  @author devlin.junker@eduworks.com
  */
 var EcView = function() {};
 EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     /**
      *  Function to be defined in subclasses that returns the location of the main html file associated with this view
-     *  
+     * 
+     *  @return {String}
+     *  The string path to an html file
      *  @memberOf EcView
      *  @method getHtmlLocation
      *  @abstract
-     *  @return {String}
-     *  			The string path to an html file
      */
     prototype.getHtmlLocation = function() {};
     /**
      *  Display function to override (usually in JavaScript) that will set up any event handlers
-     *  
+     * 
+     *  @param {String} containerId
      *  @memberOf EcView
      *  @method display
-     *  @param {String} containerId
      */
     prototype.display = function(containerId) {
         console.error("Not Implemented");
@@ -195,7 +204,7 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
     /**
      *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
      *  current type of the view
-     *  
+     * 
      *  @memberOf EcView
      *  @method as
      *  @param {Class} _interface
@@ -246,7 +255,7 @@ EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  STJS Wrapper for the Browser Native History Object
- *  
+ * 
  *  @author devlin.junker@eduworks.com
  */
 var HistoryObject = function() {};
@@ -258,11 +267,10 @@ HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, proto
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
  *  they work properly
  * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class ModalManager
  *  @extends ViewManager
- * 
- *  @author devlin.junker@eduworks.com
  */
 var ModalManager = function() {
     ViewManager.call(this);
@@ -286,11 +294,11 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     /**
      *  Retrieves the current view that corresponds to the Modal Container Element (Should be a Modal)
      * 
+     *  @return {EcModal}
+     *  EcModal instance that is currently being shown in the Modal container element
      *  @memberOf ModalManager
      *  @method getCurrentModal
      *  @static
-     *  @return {EcModal}
-     *  		EcModal instance that is currently being shown in the Modal container element
      */
     constructor.getCurrentModal = function() {
         return ViewManager.getView(ModalManager.MODAL_CONTAINER_ID);
@@ -298,13 +306,13 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
     /**
      *  Sets the current modal and then shows it by calling the modals display function
      * 
+     *  @param {EcModal}   modal
+     *                     Modal Instance to be displayed in the modal container and set as current
+     *  @param {Callback0} callback
+     *                     Function to invoke after the modal has been displayed
      *  @memberOf ModalManager
      *  @method showModal
      *  @static
-     *  @param {EcModal} modal
-     *  			Modal Instance to be displayed in the modal container and set as current
-     *  @param {Callback0} callback
-     *  			Function to invoke after the modal has been displayed
      */
     constructor.showModal = function(modal, callback) {
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("tiny");
@@ -349,12 +357,11 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
 })();
 /**
  *  View Subclass representing modal views that are displayed in the modal container
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class EcModal
  *  @extends EcView
- *  
- *  @author devlin.junker@eduworks.com
  */
 var EcModal = function() {
     EcView.call(this);
@@ -362,18 +369,17 @@ var EcModal = function() {
 EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
     /**
      *  To be overrided in subclasses, lets the developer define the size of the modal
-     *  (Possible: tiny, small, medium, large, xlarge) 
-     *  
+     *  (Possible: tiny, small, medium, large, xlarge)
+     * 
      *  @property modalSize
      *  @type String
      */
     prototype.modalSize = "small";
     /**
-     *  
+     *  @return tiny, small, medium, large, or full depending on how large the modal should be
      *  @memberOf EcModal
      *  @method getModalSize
      *  @abstract
-     *  @return tiny, small, medium, large, or full depending on how large the modal should be
      */
     prototype.getModalSize = function() {};
 }, {}, {});
@@ -381,12 +387,11 @@ EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
  *  Subclass of view that is specific for a screen, providing a display name that
  *  will be shown in the URL bar and that can be used on startup to check if the
  *  URL is asking for a certain page on startup.
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class EcScreen
  *  @extends EcView
- *  
- *  @author devlin.junker@eduworks.com
  */
 var EcScreen = function() {
     EcView.call(this);
@@ -396,22 +401,23 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
      *  Name that identifies a certain type of screen, shown in the URL bar to
      *  help the user understand the page that they are on and used during
      *  startup to decide whether or not to load a specific page on startup.
-     *  
+     * 
      *  @property displayName
      *  @type string
      */
     prototype.displayName = "";
+    prototype.failure = null;
+    prototype.nameToTemplate = null;
     /**
      *  Getter for the display name
-     *  
+     * 
+     *  @return The display name for the screen
      *  @memberOf EcScreen
      *  @method getDisplayName
-     *  @return The display name for the screen
      */
     prototype.getDisplayName = function() {
         return this.displayName;
     };
-    prototype.failure = null;
     prototype.setData = function(data) {};
     prototype.autoFill = function(scope, obj) {
         var props = (obj);
@@ -561,7 +567,6 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
         return from.find("[ec-container~='" + template + "']").append((this.nameToTemplate)[template]).children().last();
     };
-    prototype.nameToTemplate = null;
     prototype.autoConfigure = function(jQueryCore) {
         if (this.nameToTemplate == null) 
             this.nameToTemplate = new Object();
@@ -591,20 +596,6 @@ var ScreenManager = function() {
 };
 ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor, prototype) {
     /**
-     *  DOM Selector (ID) of the Screen Container that will display all of the screen views
-     * 
-     *  @property SCREEN_CONTAINER_ID
-     *  @type String
-     */
-    constructor.SCREEN_CONTAINER_ID = "#screenContainer";
-    /**
-     *  Array to track the history of the current session
-     * 
-     *  @property myHistory
-     *  @type HistoryClosure[]
-     */
-    constructor.myHistory = [];
-    /**
      *  Screen to be used when another screen is loading information from the server before being able to display
      *  itself. Notice that the display function does not affect the DOM on the page in any way.
      */
@@ -631,6 +622,20 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
      *  @type EcScreen
      */
     constructor.startupScreen = null;
+    /**
+     *  DOM Selector (ID) of the Screen Container that will display all of the screen views
+     * 
+     *  @property SCREEN_CONTAINER_ID
+     *  @type String
+     */
+    constructor.SCREEN_CONTAINER_ID = "#screenContainer";
+    /**
+     *  Array to track the history of the current session
+     * 
+     *  @property myHistory
+     *  @type HistoryClosure[]
+     */
+    constructor.myHistory = [];
     /**
      *  Callback to be invoked once the application has started and the first screen has been completely loaded
      *  and displayed
@@ -945,7 +950,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
                 ViewManager.destroyView(viewContainerId);
         }
     };
-}, {myHistory: {name: "Array", arguments: ["HistoryClosure"]}, LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback2", arguments: ["EcScreen", "Object"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+}, {LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", myHistory: {name: "Array", arguments: ["HistoryClosure"]}, startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback2", arguments: ["EcScreen", "Object"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 (function() {
     $(window).on("popstate", function(event, arg1) {
         var state = (event.originalEvent)["state"];
@@ -958,13 +963,12 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
 })();
 /**
  *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
- *  in the URL bar and in the history so the page can be loaded on back button or startup 
- *  
+ *  in the URL bar and in the history so the page can be loaded on back button or startup
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module com.eduworks.ec.ui
  *  @class EcOverlay
  *  @extends EcScreen
- *  
- *  @author devlin.junker@eduworks.com
  */
 var EcOverlay = function() {
     EcScreen.call(this);
@@ -974,12 +978,12 @@ var URLParams = function() {};
 URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     /**
      *  Returns the URL Query parameters of the browser window
-     *  
+     * 
+     *  @return {Map<String, String>}
+     *  URL Query Parameters in a map
      *  @memberOf URLParams
      *  @method queryParams
      *  @static
-     *  @return {Map<String, String>}
-     *  			URL Query Parameters in a map
      */
     constructor.queryParams = function() {
         if (window.document.location.search == null) 
@@ -997,12 +1001,12 @@ URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns the URL Hash parameters of the browser window
-     *  
+     * 
+     *  @return {Map<String, String>}
+     *  URL Hash Parameters in a map
      *  @memberOf EcView
      *  @method hashParams
      *  @static
-     *  @return {Map<String, String>}
-     *  			URL Hash Parameters in a map
      */
     constructor.hashParams = function() {
         if (window.document.location.hash == null) 
@@ -1020,12 +1024,12 @@ URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns the URL parameters of the browser window
-     *  
+     * 
+     *  @return {Map<String, String>}
+     *  URL Parameters in a map
      *  @memberOf URLParams
      *  @method getParams
      *  @static
-     *  @return {Map<String, String>}
-     *  			URL Parameters in a map
      */
     constructor.getParams = function() {
         var params = URLParams.hashParams();
@@ -1037,28 +1041,28 @@ URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     };
     /**
      *  Returns a specific URL parameter
-     *  
+     * 
+     *  @param {String} paramName
+     *                  Name of URL parameter to retrieve
+     *  @return {String}
+     *  Value of URL parameter if it exists
      *  @memberOf URLParams
      *  @method get
      *  @static
-     *  @param {String} paramName
-     *  			Name of URL parameter to retrieve
-     *  @return {String}
-     *  			Value of URL parameter if it exists
      */
     constructor.get = function(paramName) {
         return URLParams.getParams()[paramName];
     };
     /**
      *  Sets a specific URL Parameter
-     *  
+     * 
+     *  @param {String} paramName
+     *                  Name of URL parameter to set
+     *  @param {String} val
+     *                  Value to set for URL parameter
      *  @memberOf URLParams
      *  @method set
      *  @static
-     *  @param {String} paramName
-     *  			Name of URL parameter to set
-     *  @param {String} val
-     *  			Value to set for URL parameter
      */
     constructor.set = function(paramName, val) {
         var params = URLParams.getParams();
@@ -1067,12 +1071,12 @@ URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     };
     /**
      *  Sets a specific URL Parameter
-     *  
+     * 
+     *  @param {Object} params
+     *                  Map of Strings to Strings for URL parameters
      *  @memberOf URLParams
      *  @method setAll
      *  @static
-     *  @param {Object} params
-     *  			Map of Strings to Strings for URL parameters
      */
     constructor.setAll = function(params) {
         ScreenManager.setScreenParameters(params);
@@ -1081,117 +1085,116 @@ URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
 /**
  *  View Manager that manages displaying overlay views (views that take over the screen, but can be exited to return to
  *  the previous screen) with a few helper functions for managing overlays
- *  
+ * 
+ *  @author devlin.junker@eduworks.com
+ *          (NOT TESTED MUCH YET)
  *  @module com.eduworks.ec.ui
  *  @class OverlayManager
  *  @extends ScreenManager
- *  
- *  @author devlin.junker@eduworks.com
- *  (NOT TESTED MUCH YET)
  */
 var OverlayManager = function() {
     ScreenManager.call(this);
 };
 OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constructor, prototype) {
     /**
+     *  Used if one of the startupOverlayCallbacks decides that it should be displayed on startup (usually using
+     *  the URL to check what should be displayed on start)
+     * 
+     *  @property startupOverlay
+     *  @type EcOverlay
+     */
+    constructor.startupOverlay = null;
+    /**
+     *  Application flag to change the screen to the same screen on overlay close.
+     * 
+     *  @property refreshOnOverlayClose
+     *  @type boolean
+     */
+    constructor.refreshOnOverlayClose = true;
+    /**
      *  DOM Selector of the overlay wrapper (Should contain the overlay container and overlay close button)
-     *  
+     * 
      *  @property OVERLAY_WRAPPER_ID
      *  @type String
      */
     constructor.OVERLAY_WRAPPER_ID = "#overlay";
     /**
      *  DOM Selector of the overlay close button (clicking this should hide the current overlay)
-     *  
+     * 
      *  @property OVERLAY_CLOSE_BTN_ID
      *  @type String
      */
     constructor.OVERLAY_CLOSE_BTN_ID = "#closeOverlay";
     /**
      *  DOM Selector of the HTML Element that will display the Overlay's HTML
-     *  
+     * 
      *  @property OVERLAY_CONTAINER_ID
      *  @type String
      */
     constructor.OVERLAY_CONTAINER_ID = "#overlayContainer";
     /**
-     *  Used if one of the startupOverlayCallbacks decides that it should be displayed on startup (usually using
-     *  the URL to check what should be displayed on start)
-     *  
-     *  @property startupOverlay
-     *  @type EcOverlay
-     */
-    constructor.startupOverlay = null;
-    /**
      *  Callbacks that can be defined and run on startup, that should check to see if an overlay should be displayed
      *  immediately when the application starts
-     *  
+     * 
      *  @property startupOverlayCallbacks
-     *  @type Callback1<String>[] 
+     *  @type Callback1<String>[]
      */
     constructor.startupOverlayCallbacks = [];
     /**
-     *  Adds a callback to be run on startup that can check if an overlay should be displayed (the callback should
-     *  be defined in the overlay)
-     *  
-     *  @memberOf OverlayManager
-     *  @method addStartupOverlayCallback
-     *  @param {Callback1<String>} callback
-     *  			callback to be added to the startupOverlayCallbacks list
-     */
-    constructor.addStartupOverlayCallback = function(callback) {
-        OverlayManager.startupOverlayCallbacks.unshift(callback);
-    };
-    /**
      *  Application flag to check if we're currently in an overlay or not
-     *  
+     * 
      *  @property inOverlay
      *  @type boolean
      */
     constructor.inOverlay = false;
     /**
-     *  Application flag to change the screen to the same screen on overlay close.
-     *  
-     *  @property refreshOnOverlayClose
-     *  @type boolean
-     */
-    constructor.refreshOnOverlayClose = true;
-    /**
-     *  Retrieves the current view that corresponds to the Overlay Container Element (Should be a Overlay)
-     *  
-     *  @memberOf OverlayManager
-     *  @method getCurrentOverlay
-     *  @return {EcOverlay}
-     *  		EcOverlay instance that is currently being shown in the Overlay container element
-     */
-    constructor.getCurrentOverlay = function() {
-        return ViewManager.getView(OverlayManager.OVERLAY_CONTAINER_ID);
-    };
-    /**
      *  Variable to hold the last screen, this is useful if we follow a chain of overlays and then want to close them,
      *  we'll make sure to go back to the last screen that was visible to the user
-     *  
+     * 
      *  @property lastScreen
      *  @type EcScreen
      */
     constructor.lastScreen = null;
     /**
      *  Variable to hold the last screen URL Parameters
-     *  
+     * 
      *  @property lastScreenParams
      *  @type Object
      */
     constructor.lastScreenParams = null;
     /**
+     *  Adds a callback to be run on startup that can check if an overlay should be displayed (the callback should
+     *  be defined in the overlay)
+     * 
+     *  @param {Callback1<String>} callback
+     *                             callback to be added to the startupOverlayCallbacks list
+     *  @memberOf OverlayManager
+     *  @method addStartupOverlayCallback
+     */
+    constructor.addStartupOverlayCallback = function(callback) {
+        OverlayManager.startupOverlayCallbacks.unshift(callback);
+    };
+    /**
+     *  Retrieves the current view that corresponds to the Overlay Container Element (Should be a Overlay)
+     * 
+     *  @return {EcOverlay}
+     *  EcOverlay instance that is currently being shown in the Overlay container element
+     *  @memberOf OverlayManager
+     *  @method getCurrentOverlay
+     */
+    constructor.getCurrentOverlay = function() {
+        return ViewManager.getView(OverlayManager.OVERLAY_CONTAINER_ID);
+    };
+    /**
      *  Set's the current overlay, then show's it by calling the display function and unhiding the overlay container.
-     *  Depending on the addHistory flag, will add the overlay passed in to the history array 
-     *  
+     *  Depending on the addHistory flag, will add the overlay passed in to the history array
+     * 
+     *  @param {EcOverlay} overlay
+     *                     The overlay to set as current and display
+     *  @param {boolean}   addHistory
+     *                     Flag for whether to store this overlay in the history array
      *  @memberOf OverlayManager
      *  @method showOverlay
-     *  @param {EcOverlay} overlay
-     *  			The overlay to set as current and display
-     *  @param {boolean} addHistory
-     *  			Flag for whether to store this overlay in the history array
      */
     constructor.showOverlay = function(overlay, addHistory) {
         if (!OverlayManager.inOverlay && ScreenManager.myHistory[ScreenManager.myHistory.length - 1] != null) {
@@ -1218,7 +1221,7 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
      *  Hides the overlay container and sets the inOverlay flag to false, adds the last screen to the history array so
      *  there is a chain from initial screen to overlay (could be multiple) to initial screen. This way we can press the
      *  back button and be shown the last overlay.
-     *  
+     * 
      *  @memberOf OverlayManager
      *  @method hideOverlay
      */
@@ -1229,7 +1232,7 @@ OverlayManager = stjs.extend(OverlayManager, ScreenManager, [], function(constru
             OverlayManager.changeScreen(OverlayManager.lastScreen, null, OverlayManager.lastScreenParams, null);
         ViewManager.setView(OverlayManager.OVERLAY_CONTAINER_ID, null);
     };
-}, {startupOverlay: "EcOverlay", startupOverlayCallbacks: {name: "Array", arguments: [{name: "Callback1", arguments: [null]}]}, lastScreen: "EcScreen", lastScreenParams: "Object", myHistory: {name: "Array", arguments: ["HistoryClosure"]}, LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback2", arguments: ["EcScreen", "Object"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
+}, {startupOverlay: "EcOverlay", startupOverlayCallbacks: {name: "Array", arguments: [{name: "Callback1", arguments: [null]}]}, lastScreen: "EcScreen", lastScreenParams: "Object", LOADING_STARTUP_PAGE: "EcScreen", defaultScreen: "EcScreen", startupScreen: "EcScreen", myHistory: {name: "Array", arguments: ["HistoryClosure"]}, startupCallback: {name: "Callback1", arguments: [null]}, loadHistoryCallback: {name: "Callback2", arguments: ["EcScreen", "Object"]}, startupScreenCallbacks: {name: "Array", arguments: ["Callback0"]}, viewMap: {name: "Map", arguments: [null, "EcView"]}}, {});
 (function() {
     $(window).keydown(function(event, arg1) {
         if (event.keyCode == 27 && OverlayManager.inOverlay) {

@@ -97,7 +97,7 @@
 				<executions>
 					<execution>
 						<id>unpack-js</id>
-						<phase>compile</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
@@ -111,7 +111,7 @@
 					</execution>
 					<execution>
 						<id>unpack-example</id>
-						<phase>compile</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
@@ -125,7 +125,7 @@
 					</execution>
 					<execution>
 						<id>unpack-visualizer</id>
-						<phase>compile</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
@@ -167,6 +167,49 @@
 						</fileset>
 					</filesets>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.14</version>
+				<configuration>
+					<verbose>false</verbose>
+				</configuration>
+				<executions>
+					<execution>
+						<id>first</id>
+						<goals>
+							<goal>update-file-header</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<licenseName>apache_v2</licenseName>
+							<organizationName>Eduworks Corporation and other contributing parties.</organizationName>
+							<inceptionYear>2015</inceptionYear>
+							<projectName>Competency and Skills System</projectName>
+							<processStartTag>--BEGIN_LICENSE--</processStartTag>
+							<processEndTag>--END_LICENSE--</processEndTag>
+							<sectionDelimiter>-----</sectionDelimiter>
+							<emptyLineAfterHeader>true</emptyLineAfterHeader>
+							<roots>
+								<root>src/main/js</root>
+								<root>src/main/webapp/cass.example/js/cass</root>
+								<root>src/main/webapp/cass.visualizer/js/cass</root>
+								<root>src/main/webapp/cass.manager/generated-js</root>
+							</roots>
+							<excludes>
+								<exclude>**/xml2json.js</exclude>
+								<exclude>**/stjs.js</exclude>
+								<exclude>**/pem-jwk.js</exclude>
+								<exclude>**/require.js</exclude>
+								<exclude>**/openpgp.js</exclude>
+								<exclude>**/FileSaver.js</exclude>
+								<exclude>**/base64x-1.1.js</exclude>
+								<exclude>**/base64toArrayBuffer.js</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

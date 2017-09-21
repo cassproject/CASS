@@ -1,17 +1,29 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Location of strings that store the current namespace for general Eduworks Objects.
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class General
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var General = function() {};
 General = stjs.extend(General, null, [], function(constructor, prototype) {
@@ -19,6 +31,7 @@ General = stjs.extend(General, null, [], function(constructor, prototype) {
     constructor.context_0_1 = "http://schema.eduworks.com/general/0.1";
     /**
      *  The latest version of the Eduworks Object namespace.
+     * 
      *  @property context
      *  @static
      *  @type {string}
@@ -27,9 +40,10 @@ General = stjs.extend(General, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Location of strings that store the current namespace for EBAC/KBAC.
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class Ebac
  *  @module org.cassproject
- *  @author fritz.ray@eduworks.com
  */
 var Ebac = function() {};
 Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
@@ -38,6 +52,7 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
     constructor.context_0_3 = "http://schema.cassproject.org/kbac/0.2";
     /**
      *  Current version of KBAC.
+     * 
      *  @property context
      *  @static
      *  @type string (URL)
@@ -47,17 +62,18 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for
  *  permission controls, signing, identifying and locating the object.
- *  
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcRemoteLinkedData
  *  @extends EcLinkedData
  *  @module org.cassproject
- *  @author fritz.ray@eduworks.com
  */
 var EcRemoteLinkedData = /**
  *  Constructor for remote linked data object.
- *  @constructor
+ * 
  *  @param {string} context JSON-LD Context.
  *  @param {string} type JSON-LD Type.
+ *  @constructor
  */
 function(context, type) {
     EcLinkedData.call(this, context, type);
@@ -68,6 +84,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  receiving a write operation, will ensure either the data did not
      *  previously exist, or that an owner has provided a signature authorizing
      *  the replacement of the old data with the new data.
+     * 
      *  @property owner
      *  @type string[] (PEM)
      */
@@ -77,12 +94,14 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  signature field. Encode the object and its fields in ascii-sort order
      *  JSON-LD using a space-free, tab-free encoding. Sign the aforementioned
      *  string.
+     * 
      *  @property signature
      *  @type string[] (Base64)
      */
     prototype.signature = null;
     /**
      *  URL/URI used to retrieve, store and identify the object.
+     * 
      *  @property id
      *  @type string (URL)
      */
@@ -91,16 +110,36 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
      *  allow them to read the object.
+     * 
      *  @property reader
      *  @type string[] (PEM)
      */
     prototype.reader = null;
     /**
+     *  Removes the version information from an identifier.
+     *  Warning: Will remove identifier if the identifier is composed solely of digits!!!
+     * 
+     *  @param {string} id Slash delimited URL or path.
+     *  @return ID without version.
+     *  @method trimVersionFromUrl
+     *  @static
+     */
+    constructor.trimVersionFromUrl = function(id) {
+        if (id == null) 
+            return null;
+        if (!id.substring(id.lastIndexOf("/")).matches("\\/[0-9]+")) 
+            return id;
+        var rawId = id.substring(0, id.lastIndexOf("/"));
+        if (rawId.endsWith("/")) 
+            rawId = rawId.substring(0, rawId.length - 1);
+        return rawId;
+    };
+    /**
      *  Will generate an identifier using the server URL provided (usually from
      *  an EcRepository).
-     *  
-     *  @method generateId
+     * 
      *  @param {string} server Base URL of the server's repository functionality.
+     *  @method generateId
      */
     prototype.generateId = function(server) {
         this.id = server;
@@ -116,10 +155,10 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Will generate an identifier using the server URL provided (usually from
      *  an EcRepository) and unique identifier.
-     *  
-     *  @method assignId
+     * 
      *  @param {string} server Base URL of the server's repository functionality.
      *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
+     *  @method assignId
      */
     prototype.assignId = function(server, uniqueIdentifier) {
         this.id = server;
@@ -133,13 +172,13 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += new Date().getTime();
     };
     /**
-     *  Determines if the object has an owner identified by pk. 
-     *  Homogenizes the PEM strings for comparison. 
+     *  Determines if the object has an owner identified by pk.
+     *  Homogenizes the PEM strings for comparison.
      *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     *  
-     *  @method hasOwner
+     * 
      *  @param {EcPk} pk Public Key of the owner.
      *  @return {boolean} True if owner is represented by the PK, false otherwise.
+     *  @method hasOwner
      */
     prototype.hasOwner = function(pk) {
         if (this.owner == null) 
@@ -151,13 +190,13 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return false;
     };
     /**
-     *  Determines if the PK matches an owner or if the object is public. 
-     *  Homogenizes the PEM strings for comparison. 
+     *  Determines if the PK matches an owner or if the object is public.
+     *  Homogenizes the PEM strings for comparison.
      *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
-     *  
-     *  @method canEdit
+     * 
      *  @param {EcPk} pk Public Key of the owner.
      *  @return {boolean} True if owner is represented by the PK, false otherwise.
+     *  @method canEdit
      */
     prototype.canEdit = function(pk) {
         if (this.owner == null || this.owner.length == 0) 
@@ -165,11 +204,11 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return this.hasOwner(pk);
     };
     /**
-     *  Encodes the object in a form where it is ready to be signed. 
+     *  Encodes the object in a form where it is ready to be signed.
      *  This method is under long term review, and may change from version to version.
-     *  
-     *  @method toSignableJson
+     * 
      *  @return ASCII-sort order encoded space-free and tab-free JSON-LD.
+     *  @method toSignableJson
      */
     prototype.toSignableJson = function() {
         var d = JSON.parse(this.toJson());
@@ -187,11 +226,11 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return e.toJson();
     };
     /**
-     *  Sign this object using a private key. 
+     *  Sign this object using a private key.
      *  Does not check for ownership, objects signed with keys absent from @owner or @reader may be removed.
-     *  
-     *  @method signWith
+     * 
      *  @param {EcPpk} ppk Public private keypair.
+     *  @method signWith
      */
     prototype.signWith = function(ppk) {
         var signableJson = this.toSignableJson();
@@ -207,9 +246,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Verifies the object's signatures.
-     *  
-     *  @method verify
+     * 
      *  @return {boolean} true if all of the signatures could be verified, false if they could not
+     *  @method verify
      */
     prototype.verify = function() {
         if (this.signature != null) {
@@ -244,9 +283,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Adds an owner to the object, if the owner does not exist.
      *  Note that this method invalidates all signatures.
-     *  
-     *  @method addOwner
+     * 
      *  @param {EcPk} newOwner PK of the new owner.
+     *  @method addOwner
      */
     prototype.addOwner = function(newOwner) {
         var pem = newOwner.toPem();
@@ -261,9 +300,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Removes an owner from the object, if the owner does exist.
      *  Note that this method invalidates all signatures.
-     *  
-     *  @method removeOwner
+     * 
      *  @param {EcPk} oldOwner PK to remove.
+     *  @method removeOwner
      */
     prototype.removeOwner = function(oldOwner) {
         var pem = oldOwner.toPem();
@@ -277,9 +316,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Adds a reader to the object, if the reader does not exist.
      *  Note that this method invalidates all signatures.
-     *  
-     *  @method addReader
+     * 
      *  @param {EcPk} newReader PK of the new reader.
+     *  @method addReader
      */
     prototype.addReader = function(newReader) {
         var pem = newReader.toPem();
@@ -294,9 +333,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     /**
      *  Removes a reader from the object, if the reader does exist.
      *  Note that this method invalidates all signatures.
-     *  
-     *  @method removeReader
+     * 
      *  @param {EcPk} oldReader PK of the old reader.
+     *  @method removeReader
      */
     prototype.removeReader = function(oldReader) {
         var pem = oldReader.toPem();
@@ -309,9 +348,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Determines if the object is not retrievable from a repository should it be written.
-     *  
-     *  @method invalid
+     * 
      *  @return {boolean} True if the object is NOT VALID for storage, false otherwise.
+     *  @method invalid
      */
     prototype.invalid = function() {
         if (this.id == null) 
@@ -326,6 +365,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Updates the ID timestamp of the object, for versioning purposes.
+     * 
      *  @method updateTimestamp
      */
     prototype.updateTimestamp = function() {
@@ -337,53 +377,38 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Updates the ID timestamp of the object, for versioning purposes.
+     * 
      *  @method updateTimestamp
      */
     prototype.getTimestamp = function() {
         return Integer.parseInt(this.id.substring(this.id.lastIndexOf("/")));
     };
     /**
-     *  Returns true if the provided ID represents this object. 
+     *  Returns true if the provided ID represents this object.
      *  Use this, as version information can make direct comparison difficult.
-     *  @method isId
+     * 
      *  @param {string} id
      *  @return {boolean} True if the provided ID represents this object.
+     *  @method isId
      */
     prototype.isId = function(id) {
         return EcRemoteLinkedData.trimVersionFromUrl(this.id).equals(EcRemoteLinkedData.trimVersionFromUrl(id));
     };
     /**
-     *  Removes the version information from an identifier.
-     *  Warning: Will remove identifier if the identifier is composed solely of digits!!!
-     *  @method trimVersionFromUrl
-     *  @static
-     *  @param {string} id Slash delimited URL or path.
-     *  @return ID without version.
-     */
-    constructor.trimVersionFromUrl = function(id) {
-        if (id == null) 
-            return null;
-        if (!id.substring(id.lastIndexOf("/")).matches("\\/[0-9]+")) 
-            return id;
-        var rawId = id.substring(0, id.lastIndexOf("/"));
-        if (rawId.endsWith("/")) 
-            rawId = rawId.substring(0, rawId.length - 1);
-        return rawId;
-    };
-    /**
-     *  Return the ID of this object without the version information. 
+     *  Return the ID of this object without the version information.
      *  Used to reference the latest version of an object.
-     *  
-     *  @method shortId
+     * 
      *  @return {string} ID of the latest version of this object.
+     *  @method shortId
      */
     prototype.shortId = function() {
         return EcRemoteLinkedData.trimVersionFromUrl(this.id);
     };
     /**
      *  Return the GUID portion of the short ID.
-     *  @method getGuid
+     * 
      *  @return {string} Guid of the linked data object.
+     *  @method getGuid
      */
     prototype.getGuid = function() {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
@@ -392,8 +417,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Return the URL Base portion of the short ID.
-     *  @method getServerBaseUrl
+     * 
      *  @return {string} Server Base URL of the linked data object.
+     *  @method getServerBaseUrl
      */
     prototype.getServerBaseUrl = function() {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(this.id);
@@ -402,8 +428,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
     };
     /**
      *  Return a valid ElasticSearch search string that will retrieve all objects with this type.
-     *  @method getSearchStringByType
+     * 
      *  @return {string} ElasticSearch compatible search string.
+     *  @method getSearchStringByType
      */
     prototype.getSearchStringByType = function() {
         var types = this.getTypes();

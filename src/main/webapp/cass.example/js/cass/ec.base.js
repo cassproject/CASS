@@ -1,43 +1,59 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Object to hold a triple, used in graph.
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class Triple
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var Triple = function() {};
 Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
     /**
      *  Source vertex.
+     * 
      *  @property source
      *  @type any
      */
     prototype.source = null;
     /**
      *  Destination vertex.
+     * 
      *  @property destination
      *  @type any
      */
     prototype.destination = null;
     /**
      *  Object to hold in the edge.
+     * 
      *  @property edge
      *  @type any
      */
     prototype.edge = null;
     /**
      *  Returns true IFF sources, destinations, and edges match.
-     *  @method equals
+     * 
      *  @param {Edge} obj
      *  @return {boolean} true IFF <see method definition>
+     *  @method equals
      */
     prototype.equals = function(obj) {
         if (Object.prototype.equals.call(this, obj)) 
@@ -52,28 +68,31 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Object Helper Functions
+ * 
+ *  @author fritz.ray@eduworks.com
  *  @class EcObject
  *  @module com.eduworks.ec
- *  @author fritz.ray@eduworks.com
  */
 var EcObject = function() {};
 EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
     /**
      *  Returns true if the result is an object.
-     *  @static
-     *  @method isArray
+     * 
      *  @param {any} o Object to test.
      *  @return true iff the object is an object.
+     *  @static
+     *  @method isArray
      */
     constructor.isObject = function(o) {
         return (typeof o) == "object";
     };
     /**
      *  Returns keys on the object
-     *  @static
-     *  @method keys
+     * 
      *  @param {any} o Object to test.
      *  @return List of keys
+     *  @static
+     *  @method keys
      */
     constructor.keys = function(o) {
         return ecKeys(o);
@@ -204,7 +223,7 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
  *  set of hyperedges of type <code>E</code> which connect the vertices. This is
  *  the base interface for all JUNG graph types.
- *  <P>
+ *  <p>
  *  This interface permits, but does not enforce, any of the following common
  *  variations of graphs:
  *  <ul>
@@ -232,14 +251,14 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
  *  <code>{add,remove}{Edge,Vertex}</code>, or in the constructor.
  *  <li/>
  *  </ul>
- *  
+ * 
+ *  @author Joshua O'Madadhain
+ *          <p>
+ *          Ported to Javascript by:
+ *  @author Fritz Ray (fritz.ray@eduworks.com)
+ *  @author Tom Buskirk (tom.buskirk@eduworks.com)
  *  @class Hypergraph
  *  @module com.eduworks.ec
- *  @author Joshua O'Madadhain
- *   
- *  Ported to Javascript by:
- *  @author Fritz Ray (Eduworks)
- *  @author Tom Buskirk (Eduworks)
  */
 var Hypergraph = function() {};
 Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) {
@@ -247,53 +266,51 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  Returns a view of all edges in this graph. In general, this obeys the
      *  <code>Array</code> contract, and therefore makes no guarantees about the
      *  ordering of the vertices within the set.
-     *  
-     *  @method getEdges
+     * 
      *  @return a <code>Array</code> view of all edges in this graph
+     *  @method getEdges
      */
     prototype.getEdges = function() {};
     /**
      *  Returns a view of all vertices in this graph. In general, this obeys the
      *  <code>Array</code> contract, and therefore makes no guarantees about the
      *  ordering of the vertices within the set.
-     *  
-     *  @method getVerticies
+     * 
      *  @return a <code>Array</code> view of all vertices in this graph
+     *  @method getVerticies
      */
     prototype.getVertices = function() {};
     /**
      *  Returns true if this graph's vertex collection contains
      *  <code>vertex</code>. Equivalent to
      *  <code>getVertices().contains(vertex)</code>.
-     *  
-     *  @method containsVertex
-     *  @param vertex
-     *             the vertex whose presence is being queried
+     * 
+     *  @param vertex the vertex whose presence is being queried
      *  @return true iff this graph contains a vertex <code>vertex</code>
+     *  @method containsVertex
      */
     prototype.containsVertex = function(vertex) {};
     /**
      *  Returns true if this graph's edge collection contains <code>edge</code>.
      *  Equivalent to <code>getEdges().contains(edge)</code>.
-     *  
-     *  @method containsEdge
-     *  @param edge
-     *             the edge whose presence is being queried
+     * 
+     *  @param edge the edge whose presence is being queried
      *  @return true iff this graph contains an edge <code>edge</code>
+     *  @method containsEdge
      */
     prototype.containsEdge = function(edge) {};
     /**
      *  Returns the number of edges in this graph.
-     *  
-     *  @method getEdgeCount
+     * 
      *  @return the number of edges in this graph
+     *  @method getEdgeCount
      */
     prototype.getEdgeCount = function() {};
     /**
      *  Returns the number of vertices in this graph.
-     *  
-     *  @method getVertexCount
+     * 
      *  @return the number of vertices in this graph
+     *  @method getVertexCount
      */
     prototype.getVertexCount = function() {};
     /**
@@ -301,25 +318,23 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>vertex</code> via any edges in this graph. If <code>vertex</code>
      *  is connected to itself with a self-loop, then it will be included in the
      *  collection returned.
-     *  
-     *  @method getNeighbors
-     *  @param vertex
-     *             the vertex whose neighbors are to be returned
+     * 
+     *  @param vertex the vertex whose neighbors are to be returned
      *  @return the collection of vertices which are connected to
-     *          <code>vertex</code>, or <code>null</code> if <code>vertex</code>
-     *          is not present
+     *  <code>vertex</code>, or <code>null</code> if <code>vertex</code>
+     *  is not present
+     *  @method getNeighbors
      */
     prototype.getNeighbors = function(vertex) {};
     /**
      *  Returns the collection of edges in this graph which are connected to
      *  <code>vertex</code>.
-     *  
-     *  @method getIncidentEdges
-     *  @param vertex
-     *             the vertex whose incident edges are to be returned
+     * 
+     *  @param vertex the vertex whose incident edges are to be returned
      *  @return the collection of edges which are connected to
-     *          <code>vertex</code>, or <code>null</code> if <code>vertex</code>
-     *          is not present
+     *  <code>vertex</code>, or <code>null</code> if <code>vertex</code>
+     *  is not present
+     *  @method getIncidentEdges
      */
     prototype.getIncidentEdges = function(vertex) {};
     /**
@@ -329,13 +344,12 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  have exactly two endpoints, which may or may not be distinct).
      *  Implementations for those graph types may provide alternate methods that
      *  provide more convenient access to the vertices.
-     *  
-     *  @method getIncidentVertices
-     *  @param edge
-     *             the edge whose incident vertices are to be returned
+     * 
+     *  @param edge the edge whose incident vertices are to be returned
      *  @return the collection of vertices which are connected to
-     *          <code>edge</code>, or <code>null</code> if <code>edge</code> is
-     *          not present
+     *  <code>edge</code>, or <code>null</code> if <code>edge</code> is
+     *  not present
+     *  @method getIncidentVertices
      */
     prototype.getIncidentVertices = function(edge) {};
     /**
@@ -357,13 +371,13 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>true</code>. (<code>v1</code> and <code>v2</code> are connected by
      *  an undirected edge <code>u</code> if <code>u</code> is incident to both
      *  <code>v1</code> and <code>v2</code>.)
-     *  
-     *  @method findEdge
+     * 
      *  @param v1 between this
      *  @param v2 and that
      *  @return an edge that connects <code>v1</code> to <code>v2</code>, or
-     *          <code>null</code> if no such edge exists (or either vertex is not
-     *          present)
+     *  <code>null</code> if no such edge exists (or either vertex is not
+     *  present)
+     *  @method findEdge
      *  @see Hypergraph#findEdgeSet(Object, Object)
      */
     prototype.findEdge = function(v1, v2) {};
@@ -376,7 +390,7 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  to <code>v1</code>. <br/>
      *  Returns an empty collection if either <code>v1</code> or <code>v2</code>
      *  are not present in this graph.
-     *  
+     *  <p>
      *  <p>
      *  <b>Note</b>: for purposes of this method, <code>v1</code> is only
      *  considered to be connected to <code>v2</code> via a given <i>directed</i>
@@ -385,27 +399,25 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>true</code>. (<code>v1</code> and <code>v2</code> are connected by
      *  an undirected edge <code>u</code> if <code>u</code> is incident to both
      *  <code>v1</code> and <code>v2</code>.)
-     *  
-     *  @method findEdgeSet
+     * 
      *  @param v1 between this
      *  @param v2 and that
      *  @return a collection containing all edges that connect <code>v1</code> to
-     *          <code>v2</code>, or <code>null</code> if either vertex is not
-     *          present
+     *  <code>v2</code>, or <code>null</code> if either vertex is not
+     *  present
+     *  @method findEdgeSet
      *  @see Hypergraph#findEdge(Object, Object)
      */
     prototype.findEdgeSet = function(v1, v2) {};
     /**
      *  Adds <code>vertex</code> to this graph. Fails if <code>vertex</code> is
      *  null or already in the graph.
-     *  
-     *  @method addVertex
-     *  @param vertex
-     *             the vertex to add
+     * 
+     *  @param vertex the vertex to add
      *  @return <code>true</code> if the add is successful, and
-     *          <code>false</code> otherwise
-     *  @throws IllegalArgumentException
-     *              if <code>vertex</code> is <code>null</code>
+     *  <code>false</code> otherwise
+     *  @throws IllegalArgumentException if <code>vertex</code> is <code>null</code>
+     *  @method addVertex
      */
     prototype.addVertex = function(vertex) {};
     /**
@@ -420,17 +432,16 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <li/><code>vertices</code> are already connected by another edge in this
      *  graph, and this graph does not accept parallel edges
      *  </ul>
-     *  
-     *  @method addHyperEdge
+     * 
      *  @param edge
      *  @param vertices
      *  @return <code>true</code> if the add is successful, and
-     *          <code>false</code> otherwise
-     *  @throws IllegalArgumentException
-     *              if <code>edge</code> or <code>vertices</code> is null, or if
-     *              a different vertex set in this graph is already connected by
-     *              <code>edge</code>, or if <code>vertices</code> are not a
-     *              legal vertex set for <code>edge</code>
+     *  <code>false</code> otherwise
+     *  @throws IllegalArgumentException if <code>edge</code> or <code>vertices</code> is null, or if
+     *                                   a different vertex set in this graph is already connected by
+     *                                   <code>edge</code>, or if <code>vertices</code> are not a
+     *                                   legal vertex set for <code>edge</code>
+     *  @method addHyperEdge
      */
     prototype.addHyperEdge = function(edge, vertices) {};
     /**
@@ -440,43 +451,39 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  illegal number of vertices. (Thus, for example, incident hyperedges are
      *  not removed, but incident edges--which must be connected to a vertex at
      *  both endpoints--are removed.)
-     *  
+     *  <p>
      *  <p>
      *  Fails under the following circumstances:
      *  <ul>
      *  <li/><code>vertex</code> is not an element of this graph
      *  <li/><code>vertex</code> is <code>null</code>
      *  </ul>
-     *  
-     *  @method removeVertex
-     *  @param vertex
-     *             the vertex to remove
+     * 
+     *  @param vertex the vertex to remove
      *  @return <code>true</code> if the removal is successful,
-     *          <code>false</code> otherwise
+     *  <code>false</code> otherwise
+     *  @method removeVertex
      */
     prototype.removeVertex = function(vertex) {};
     /**
      *  Removes <code>edge</code> from this graph. Fails if <code>edge</code> is
      *  null, or is otherwise not an element of this graph.
-     *  
-     *  @method removeEdge
-     *  @param edge
-     *             the edge to remove
+     * 
+     *  @param edge the edge to remove
      *  @return <code>true</code> if the removal is successful,
-     *          <code>false</code> otherwise
+     *  <code>false</code> otherwise
+     *  @method removeEdge
      */
     prototype.removeEdge = function(edge) {};
     /**
      *  Returns <code>true</code> if <code>v1</code> and <code>v2</code> share an
      *  incident edge. Equivalent to <code>getNeighbors(v1).contains(v2)</code>.
-     *  
-     *  @method isNeighbor
-     *  @param v1
-     *             the first vertex to test
-     *  @param v2
-     *             the second vertex to test
+     * 
+     *  @param v1 the first vertex to test
+     *  @param v2 the second vertex to test
      *  @return <code>true</code> if <code>v1</code> and <code>v2</code> share an
-     *          incident edge
+     *  incident edge
+     *  @method isNeighbor
      */
     prototype.isNeighbor = function(v1, v2) {};
     /**
@@ -484,12 +491,12 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  are incident to each other. Equivalent to
      *  <code>getIncidentEdges(vertex).contains(edge)</code> and to
      *  <code>getIncidentVertices(edge).contains(vertex)</code>.
-     *  
-     *  @method isIncident
+     * 
      *  @param vertex
      *  @param edge
      *  @return <code>true</code> if <code>vertex</code> and <code>edge</code>
-     *          are incident to each other
+     *  are incident to each other
+     *  @method isIncident
      */
     prototype.isIncident = function(vertex, edge) {};
     /**
@@ -509,11 +516,10 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  </ul>
      *  <p>
      *  Equivalent to <code>getIncidentEdges(vertex).size()</code>.
-     *  
-     *  @method degree
-     *  @param vertex
-     *             the vertex whose degree is to be returned
+     * 
+     *  @param vertex the vertex whose degree is to be returned
      *  @return the degree of this node
+     *  @method degree
      *  @see Hypergraph#getNeighborCount(Object)
      */
     prototype.degree = function(vertex) {};
@@ -521,108 +527,100 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  Returns the number of vertices that are adjacent to <code>vertex</code>
      *  (that is, the number of vertices that are incident to edges in
      *  <code>vertex</code>'s incident edge set).
-     *  
+     *  <p>
      *  <p>
      *  Equivalent to <code>getNeighbors(vertex).size()</code>.
-     *  
-     *  @method getNeighborCount
-     *  @param vertex
-     *             the vertex whose neighbor count is to be returned
+     * 
+     *  @param vertex the vertex whose neighbor count is to be returned
      *  @return the number of neighboring vertices
+     *  @method getNeighborCount
      */
     prototype.getNeighborCount = function(vertex) {};
     /**
      *  Returns the number of vertices that are incident to <code>edge</code>.
      *  For hyperedges, this can be any nonnegative integer; for edges this must
      *  be 2 (or 1 if self-loops are permitted).
-     *  
+     *  <p>
      *  <p>
      *  Equivalent to <code>getIncidentVertices(edge).size()</code>.
-     *  
-     *  @method getIncidentCount
-     *  @param edge
-     *             the edge whose incident vertex count is to be returned
+     * 
+     *  @param edge the edge whose incident vertex count is to be returned
      *  @return the number of vertices that are incident to <code>edge</code>.
+     *  @method getIncidentCount
      */
     prototype.getIncidentCount = function(edge) {};
     /**
      *  Returns the edge type of <code>edge</code> in this graph.
-     *  
-     *  @method getEdgeType
+     * 
      *  @param edge
      *  @return the <code>EdgeType</code> of <code>edge</code>, or
-     *          <code>null</code> if <code>edge</code> has no defined type
+     *  <code>null</code> if <code>edge</code> has no defined type
+     *  @method getEdgeType
      */
     prototype.getEdgeType = function(edge) {};
     /**
      *  Returns the default edge type for this graph.
-     *  
-     *  @method getDefaultEdgeType
+     * 
      *  @return the default edge type for this graph
+     *  @method getDefaultEdgeType
      */
     prototype.getDefaultEdgeType = function() {};
     /**
      *  Returns the collection of edges in this graph which are of type
      *  <code>edge_type</code>.
-     *  
-     *  @method getEdgesOfType
-     *  @param edge_type
-     *             the type of edges to be returned
+     * 
+     *  @param edge_type the type of edges to be returned
      *  @return the collection of edges which are of type <code>edge_type</code>,
-     *          or <code>null</code> if the graph does not accept edges of this
-     *          type
+     *  or <code>null</code> if the graph does not accept edges of this
+     *  type
+     *  @method getEdgesOfType
      *  @see EdgeType
      */
     prototype.getEdgesOfType = function(edge_type) {};
     /**
      *  Returns the number of edges of type <code>edge_type</code> in this graph.
-     *  
-     *  @method getEdgeCountOfType
-     *  @param edge_type
-     *             the type of edge for which the count is to be returned
+     * 
+     *  @param edge_type the type of edge for which the count is to be returned
      *  @return the number of edges of type <code>edge_type</code> in this graph
+     *  @method getEdgeCountOfType
      */
     prototype.getEdgeCountOfType = function(edge_type) {};
     /**
      *  Returns a <code>Array</code> view of the incoming edges incident to
      *  <code>vertex</code> in this graph.
-     *  
-     *  @method getInEdges
-     *  @param vertex
-     *             the vertex whose incoming edges are to be returned
+     * 
+     *  @param vertex the vertex whose incoming edges are to be returned
      *  @return a <code>Array</code> view of the incoming edges incident to
-     *          <code>vertex</code> in this graph
+     *  <code>vertex</code> in this graph
+     *  @method getInEdges
      */
     prototype.getInEdges = function(vertex) {};
     /**
      *  Returns a <code>Array</code> view of the outgoing edges incident to
      *  <code>vertex</code> in this graph.
-     *  
-     *  @method getOutEdges
-     *  @param vertex
-     *             the vertex whose outgoing edges are to be returned
+     * 
+     *  @param vertex the vertex whose outgoing edges are to be returned
      *  @return a <code>Array</code> view of the outgoing edges incident to
-     *          <code>vertex</code> in this graph
+     *  <code>vertex</code> in this graph
+     *  @method getOutEdges
      */
     prototype.getOutEdges = function(vertex) {};
     /**
      *  Returns the number of incoming edges incident to <code>vertex</code>.
      *  Equivalent to <code>getInEdges(vertex).size()</code>.
-     *  
-     *  @method inDegree
-     *  @param vertex
-     *             the vertex whose indegree is to be calculated
+     * 
+     *  @param vertex the vertex whose indegree is to be calculated
      *  @return the number of incoming edges incident to <code>vertex</code>
+     *  @method inDegree
      */
     prototype.inDegree = function(vertex) {};
     /**
      *  Returns the number of outgoing edges incident to <code>vertex</code>.
      *  Equivalent to <code>getOutEdges(vertex).size()</code>.
-     *  
-     *  @method outDegree
-     *  @param vertex
-     *             the vertex whose outdegree is to be calculated
+     * 
+     *  @param vertex the vertex whose outdegree is to be calculated
      *  @return the number of outgoing edges incident to <code>vertex</code>
+     *  @method outDegree
      */
     prototype.outDegree = function(vertex) {};
     /**
@@ -631,11 +629,11 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  edge <code>d</code> is defined to be the vertex for which <code>d</code>
      *  is an outgoing edge. <code>directed_edge</code> is guaranteed to be a
      *  directed edge if its <code>EdgeType</code> is <code>DIRECTED</code>.
-     *  
-     *  @method getSource
+     * 
      *  @param directed_edge
      *  @return the source of <code>directed_edge</code> if it is a directed edge
-     *          in this graph, or <code>null</code> otherwise
+     *  in this graph, or <code>null</code> otherwise
+     *  @method getSource
      */
     prototype.getSource = function(directed_edge) {};
     /**
@@ -645,11 +643,11 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>d</code> for which <code>d</code> is an incoming edge.
      *  <code>directed_edge</code> is guaranteed to be a directed edge if its
      *  <code>EdgeType</code> is <code>DIRECTED</code>.
-     *  
-     *  @method getDest
+     * 
      *  @param directed_edge
      *  @return the destination of <code>directed_edge</code> if it is a directed
-     *          edge in this graph, or <code>null</code> otherwise
+     *  edge in this graph, or <code>null</code> otherwise
+     *  @method getDest
      */
     prototype.getDest = function(directed_edge) {};
     /**
@@ -659,12 +657,11 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an
      *  outgoing edge of <code>v</code> and an incoming edge of
      *  <code>vertex</code>.
-     *  
-     *  @method getPredecessors
-     *  @param vertex
-     *             the vertex whose predecessors are to be returned
+     * 
+     *  @param vertex the vertex whose predecessors are to be returned
      *  @return a <code>Array</code> view of the predecessors of
-     *          <code>vertex</code> in this graph
+     *  <code>vertex</code> in this graph
+     *  @method getPredecessors
      */
     prototype.getPredecessors = function(vertex) {};
     /**
@@ -674,12 +671,11 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an
      *  incoming edge of <code>v</code> and an outgoing edge of
      *  <code>vertex</code>.
-     *  
-     *  @method getSuccessors
-     *  @param vertex
-     *             the vertex whose predecessors are to be returned
+     * 
+     *  @param vertex the vertex whose predecessors are to be returned
      *  @return a <code>Array</code> view of the successors of
-     *          <code>vertex</code> in this graph
+     *  <code>vertex</code> in this graph
+     *  @method getSuccessors
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
@@ -985,9 +981,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
- *  Will iterate over all items in an array and perform 'each(item,callback)'. 
- *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls. 
- *  When all callbacks have been called, 'after(array)' is called. 
+ *  Will iterate over all items in an array and perform 'each(item,callback)'.
+ *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
+ *  When all callbacks have been called, 'after(array)' is called.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @module com.eduworks.ec
  *  @class EcAsyncHelper
@@ -997,16 +994,18 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
     constructor.scriptPath = null;
     /**
      *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     * 
      *  @property counter
      *  @type integer
      */
     prototype.counter = null;
     /**
      *  "Each" method. See class description.
-     *  @method each
-     *  @param {Array} array Array to iterate over.
+     * 
+     *  @param {Array}                   array Array to iterate over.
      *  @param {function(item,callback)} each Method that gets invoked per item in the array.
-     *  @param {function(array)} after Method invoked when all callbacks are called.
+     *  @param {function(array)}         after Method invoked when all callbacks are called.
+     *  @method each
      */
     prototype.each = function(array, each, after) {
         var me = this;
@@ -1029,6 +1028,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
     };
     /**
      *  Will prevent 'after' from being called.
+     * 
      *  @method stop
      */
     prototype.stop = function() {
@@ -1038,196 +1038,211 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
 /**
  *  A graph consisting of a set of vertices of type <code>V</code>
  *  set and a set of edges of type <code>E</code>.  Edges of this
- *  graph type have exactly two endpoints; whether these endpoints 
+ *  graph type have exactly two endpoints; whether these endpoints
  *  must be distinct depends on the implementation.
- *  <P>
- *  This interface permits, but does not enforce, any of the following 
+ *  <p>
+ *  This interface permits, but does not enforce, any of the following
  *  common variations of graphs:
  *  <ul>
  *  <li> directed and undirected edges
  *  <li> vertices and edges with attributes (for example, weighted edges)
- *  <li> vertices and edges of different types (for example, bipartite 
- *       or multimodal graphs)
+ *  <li> vertices and edges of different types (for example, bipartite
+ *  or multimodal graphs)
  *  <li> parallel edges (multiple edges which connect a single set of vertices)
  *  <li> representations as matrices or as adjacency lists or adjacency maps
- *  </ul> 
- *  Extensions or implementations of this interface 
+ *  </ul>
+ *  Extensions or implementations of this interface
  *  may enforce or disallow any or all of these variations.
- *  
+ *  <p>
  *  <p>Definitions (with respect to a given vertex <code>v</code>):
  *  <ul>
- *  <li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed 
+ *  <li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed
  *  from a neighbor of <code>v</code> to reach <code>v</code>
  *  <li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed
- *  from <code>v</code> to reach some neighbor of <code>v</code> 
+ *  from <code>v</code> to reach some neighbor of <code>v</code>
  *  <li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an
  *  incoming edge of <code>v</code>
- *  <li/><b>successor</b> of <code>v</code>: a vertex at the other end of an 
+ *  <li/><b>successor</b> of <code>v</code>: a vertex at the other end of an
  *  outgoing edge of <code>v</code>
  *  <li/>
- *  </ul> 
- *  
+ *  </ul>
+ * 
+ *  @author Joshua O'Madadhain
+ *          <p>
+ *          Ported to Javascript by:
+ *  @author Fritz Ray (fritz.ray@eduworks.com)
+ *  @author Tom Buskirk (tom.buskirk@eduworks.com)
  *  @class Graph
  *  @module com.eduworks.ec
  *  @extends Hypergraph
- *  @author Joshua O'Madadhain
- *  
- *  Ported to Javascript by:
- *  @author Fritz Ray (Eduworks)
- *  @author Tom Buskirk (Eduworks)
  */
 var Graph = function() {};
 Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) {
     /**
      *  Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>
      *  in this graph.
-     *  @method getInEdges
-     *  @param vertex    the vertex whose incoming edges are to be returned
-     *  @return  a <code>Collection</code> view of the incoming edges incident 
+     * 
+     *  @param vertex the vertex whose incoming edges are to be returned
+     *  @return a <code>Collection</code> view of the incoming edges incident
      *  to <code>vertex</code> in this graph
+     *  @method getInEdges
      */
     prototype.getInEdges = function(vertex) {};
     /**
      *  Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>
      *  in this graph.
-     *  @method getOutEdges
-     *  @param vertex    the vertex whose outgoing edges are to be returned
-     *  @return  a <code>Collection</code> view of the outgoing edges incident 
+     * 
+     *  @param vertex the vertex whose outgoing edges are to be returned
+     *  @return a <code>Collection</code> view of the outgoing edges incident
      *  to <code>vertex</code> in this graph
+     *  @method getOutEdges
      */
     prototype.getOutEdges = function(vertex) {};
     /**
-     *  Returns a <code>Collection</code> view of the predecessors of <code>vertex</code> 
-     *  in this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code> 
-     *  which is connected to 
-     *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of 
+     *  Returns a <code>Collection</code> view of the predecessors of <code>vertex</code>
+     *  in this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code>
+     *  which is connected to
+     *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of
      *  <code>v</code> and an incoming edge of <code>vertex</code>.
-     *  @method getPredecessors
-     *  @param vertex    the vertex whose predecessors are to be returned
-     *  @return  a <code>Collection</code> view of the predecessors of 
+     * 
+     *  @param vertex the vertex whose predecessors are to be returned
+     *  @return a <code>Collection</code> view of the predecessors of
      *  <code>vertex</code> in this graph
+     *  @method getPredecessors
      */
     prototype.getPredecessors = function(vertex) {};
     /**
-     *  Returns a <code>Collection</code> view of the successors of <code>vertex</code> 
-     *  in this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code> 
-     *  which is connected to 
-     *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of 
+     *  Returns a <code>Collection</code> view of the successors of <code>vertex</code>
+     *  in this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code>
+     *  which is connected to
+     *  <code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of
      *  <code>v</code> and an outgoing edge of <code>vertex</code>.
-     *  @method getSuccessors
-     *  @param vertex    the vertex whose predecessors are to be returned
-     *  @return  a <code>Collection</code> view of the successors of 
+     * 
+     *  @param vertex the vertex whose predecessors are to be returned
+     *  @return a <code>Collection</code> view of the successors of
      *  <code>vertex</code> in this graph
+     *  @method getSuccessors
      */
     prototype.getSuccessors = function(vertex) {};
     /**
      *  Returns the number of incoming edges incident to <code>vertex</code>.
      *  Equivalent to <code>getInEdges(vertex).size()</code>.
+     * 
+     *  @param vertex the vertex whose indegree is to be calculated
+     *  @return the number of incoming edges incident to <code>vertex</code>
      *  @method inDegree
-     *  @param vertex    the vertex whose indegree is to be calculated
-     *  @return  the number of incoming edges incident to <code>vertex</code>
      */
     prototype.inDegree = function(vertex) {};
     /**
      *  Returns the number of outgoing edges incident to <code>vertex</code>.
      *  Equivalent to <code>getOutEdges(vertex).size()</code>.
+     * 
+     *  @param vertex the vertex whose outdegree is to be calculated
+     *  @return the number of outgoing edges incident to <code>vertex</code>
      *  @method outDegree
-     *  @param vertex    the vertex whose outdegree is to be calculated
-     *  @return  the number of outgoing edges incident to <code>vertex</code>
      */
     prototype.outDegree = function(vertex) {};
     /**
      *  Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.
      *  Equivalent to <code>v1.getPredecessors().contains(v2)</code>.
-     *  @method isPredecessor
+     * 
      *  @param v1 the first vertex to be queried
      *  @param v2 the second vertex to be queried
      *  @return <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code>, and false otherwise.
+     *  @method isPredecessor
      */
     prototype.isPredecessor = function(v1, v2) {};
     /**
      *  Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.
      *  Equivalent to <code>v1.getSuccessors().contains(v2)</code>.
-     *  @method isSuccessor
+     * 
      *  @param v1 the first vertex to be queried
      *  @param v2 the second vertex to be queried
      *  @return <code>true</code> if <code>v1</code> is a successor of <code>v2</code>, and false otherwise.
+     *  @method isSuccessor
      */
     prototype.isSuccessor = function(v1, v2) {};
     /**
      *  Returns the number of predecessors that <code>vertex</code> has in this graph.
      *  Equivalent to <code>vertex.getPredecessors().size()</code>.
-     *  @method getPredecessorCount
+     * 
      *  @param vertex the vertex whose predecessor count is to be returned
-     *  @return  the number of predecessors that <code>vertex</code> has in this graph
+     *  @return the number of predecessors that <code>vertex</code> has in this graph
+     *  @method getPredecessorCount
      */
     prototype.getPredecessorCount = function(vertex) {};
     /**
      *  Returns the number of successors that <code>vertex</code> has in this graph.
      *  Equivalent to <code>vertex.getSuccessors().size()</code>.
-     *  @method getSuccessorCount
+     * 
      *  @param vertex the vertex whose successor count is to be returned
-     *  @return  the number of successors that <code>vertex</code> has in this graph
+     *  @return the number of successors that <code>vertex</code> has in this graph
+     *  @method getSuccessorCount
      */
     prototype.getSuccessorCount = function(vertex) {};
     /**
-     *  If <code>directed_edge</code> is a directed edge in this graph, returns the source; 
-     *  otherwise returns <code>null</code>. 
-     *  The source of a directed edge <code>d</code> is defined to be the vertex for which  
+     *  If <code>directed_edge</code> is a directed edge in this graph, returns the source;
+     *  otherwise returns <code>null</code>.
+     *  The source of a directed edge <code>d</code> is defined to be the vertex for which
      *  <code>d</code> is an outgoing edge.
-     *  <code>directed_edge</code> is guaranteed to be a directed edge if 
-     *  its <code>EdgeType</code> is <code>DIRECTED</code>. 
-     *  @method getSource
+     *  <code>directed_edge</code> is guaranteed to be a directed edge if
+     *  its <code>EdgeType</code> is <code>DIRECTED</code>.
+     * 
      *  @param directed_edge
-     *  @return  the source of <code>directed_edge</code> if it is a directed edge in this graph, or <code>null</code> otherwise
+     *  @return the source of <code>directed_edge</code> if it is a directed edge in this graph, or <code>null</code> otherwise
+     *  @method getSource
      */
     prototype.getSource = function(directed_edge) {};
     /**
-     *  If <code>directed_edge</code> is a directed edge in this graph, returns the destination; 
-     *  otherwise returns <code>null</code>. 
-     *  The destination of a directed edge <code>d</code> is defined to be the vertex 
-     *  incident to <code>d</code> for which  
+     *  If <code>directed_edge</code> is a directed edge in this graph, returns the destination;
+     *  otherwise returns <code>null</code>.
+     *  The destination of a directed edge <code>d</code> is defined to be the vertex
+     *  incident to <code>d</code> for which
      *  <code>d</code> is an incoming edge.
-     *  <code>directed_edge</code> is guaranteed to be a directed edge if 
-     *  its <code>EdgeType</code> is <code>DIRECTED</code>. 
-     *  @method getDest
+     *  <code>directed_edge</code> is guaranteed to be a directed edge if
+     *  its <code>EdgeType</code> is <code>DIRECTED</code>.
+     * 
      *  @param directed_edge
-     *  @return  the destination of <code>directed_edge</code> if it is a directed edge in this graph, or <code>null</code> otherwise
+     *  @return the destination of <code>directed_edge</code> if it is a directed edge in this graph, or <code>null</code> otherwise
+     *  @method getDest
      */
     prototype.getDest = function(directed_edge) {};
     /**
      *  Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.
      *  Equivalent to <code>getSource(edge).equals(vertex)</code>.
-     *  @method isSource
+     * 
      *  @param vertex the vertex to be queried
-     *  @param edge the edge to be queried
+     *  @param edge   the edge to be queried
      *  @return <code>true</code> iff <code>vertex</code> is the source of <code>edge</code>
+     *  @method isSource
      */
     prototype.isSource = function(vertex, edge) {};
     /**
      *  Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.
      *  Equivalent to <code>getDest(edge).equals(vertex)</code>.
+     * 
      *  @param vertex the vertex to be queried
-     *  @param edge the edge to be queried
+     *  @param edge   the edge to be queried
      *  @return <code>true</code> iff <code>vertex</code> is the destination of <code>edge</code>
      */
     prototype.isDest = function(vertex, edge) {};
     /**
-     *  Adds edge <code>e</code> to this graph such that it connects 
+     *  Adds edge <code>e</code> to this graph such that it connects
      *  vertex <code>v1</code> to <code>v2</code>.
      *  Equivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.
-     *  If this graph does not contain <code>v1</code>, <code>v2</code>, 
-     *  or both, implementations may choose to either silently add 
+     *  If this graph does not contain <code>v1</code>, <code>v2</code>,
+     *  or both, implementations may choose to either silently add
      *  the vertices to the graph or throw an <code>IllegalArgumentException</code>.
      *  If this graph assigns edge types to its edges, the edge type of
      *  <code>e</code> will be the default for this graph.
      *  See <code>Hypergraph.addEdge()</code> for a listing of possible reasons
      *  for failure.
-     *  @method addEdge
-     *  @param e the edge to be added
+     * 
+     *  @param e  the edge to be added
      *  @param v1 the first vertex to be connected
      *  @param v2 the second vertex to be connected
      *  @return <code>true</code> if the add is successful, <code>false</code> otherwise
+     *  @method addEdge
      *  @see Hypergraph#addEdge(Object, Collection)
      *  @see #addEdge(Object, Object, Object, EdgeType)
      */
@@ -1235,22 +1250,23 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
     /**
      *  Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.
      *  (That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)
-     *  @method getOpposite
+     * 
      *  @param vertex the vertex to be queried
-     *  @param edge the edge to be queried
+     *  @param edge   the edge to be queried
      *  @return the vertex at the other end of <code>edge</code> from <code>vertex</code>
+     *  @method getOpposite
      */
     prototype.getOpposite = function(vertex, edge) {};
 }, {}, {});
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
- *  @class EcDirectedGraph
- *  @module com.eduworks.ec
- *  @extends Graph
- *  @author fray
  * 
  *  @param <V>
  *  @param <E>
+ *  @author fray
+ *  @class EcDirectedGraph
+ *  @module com.eduworks.ec
+ *  @extends Graph
  */
 var EcDirectedGraph = function() {};
 EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(constructor, prototype) {

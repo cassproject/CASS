@@ -1,15 +1,27 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  credentialengine.org/CredentialingAction
  *  An action taken by an agent affecting the status of an object resource.
+ * 
  *  @author credentialengine.org
  *  @class CredentialingAction
  *  @module org.credentialengine
@@ -17,6 +29,7 @@
  */
 var CredentialingAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -28,6 +41,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -35,6 +49,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -42,6 +57,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -49,6 +65,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -56,6 +73,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -63,6 +81,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -70,6 +89,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -77,6 +97,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -84,6 +105,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -91,6 +113,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -98,6 +121,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -106,6 +130,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
 /**
  *  credentialengine.org/CredentialAlignmentObject
  *  An alignment to a credentialing framework.
+ * 
  *  @author credentialengine.org
  *  @class CredentialAlignmentObject
  *  @module org.credentialengine
@@ -113,6 +138,7 @@ CredentialingAction = stjs.extend(CredentialingAction, Action, [], function(cons
  */
 var CredentialAlignmentObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -124,6 +150,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/alignmentDate
      *  The date  the alignment was made.
+     * 
      *  @property alignmentDate
      *  @type date
      */
@@ -131,6 +158,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/alignmentType
      *  A category of alignment between the learning resource and the framework node.
+     * 
      *  @property alignmentType
      *  @type Literal
      */
@@ -138,6 +166,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -145,6 +174,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/framework
      *  The framework to which the resource being described is aligned.
+     * 
      *  @property framework
      *  @type anyURI
      */
@@ -152,6 +182,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/frameworkName
      *  The name of the framework to which the resource being described is aligned.
+     * 
      *  @property frameworkName
      *  @type Literal
      */
@@ -159,6 +190,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/targetNode
      *  The node of a framework targeted by the alignment.
+     * 
      *  @property targetNode
      *  @type anyURI
      */
@@ -166,6 +198,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/targetNodeDescription
      *  The description of a node in an established educational framework.
+     * 
      *  @property targetNodeDescription
      *  @type Literal
      */
@@ -173,6 +206,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/targetNodeName
      *  The name of a node in an established educational framework.
+     * 
      *  @property targetNodeName
      *  @type Literal
      */
@@ -180,6 +214,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
     /**
      *  http://purl.org/ctdl/terms/weight
      *  An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
+     * 
      *  @property weight
      *  @type float
      */
@@ -188,6 +223,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
 /**
  *  credentialengine.org/EarningsProfile
  *  A resource that describes earning and related statistical information for a given credential.
+ * 
  *  @author credentialengine.org
  *  @class EarningsProfile
  *  @module org.credentialengine
@@ -195,6 +231,7 @@ CredentialAlignmentObject = stjs.extend(CredentialAlignmentObject, AlignmentObje
  */
 var EarningsProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -206,6 +243,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/credentialProfiled
      *  The resource being described is a profile of the credential being referenced.
+     * 
      *  @property credentialProfiled
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -213,6 +251,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -220,6 +259,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -227,6 +267,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -234,6 +275,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/source
      *  The source of this resource's information.
+     * 
      *  @property source
      *  @type anyURI
      */
@@ -242,6 +284,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
 /**
  *  credentialengine.org/AssessmentProfile
  *  A resource that describes the key characteristics of an assessment for a credential.
+ * 
  *  @author credentialengine.org
  *  @class AssessmentProfile
  *  @module org.credentialengine
@@ -249,6 +292,7 @@ EarningsProfile = stjs.extend(EarningsProfile, CreativeWork, [], function(constr
  */
 var AssessmentProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -260,6 +304,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -267,6 +312,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -274,6 +320,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -281,6 +328,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -288,6 +336,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -295,6 +344,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -302,6 +352,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -309,6 +360,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -316,6 +368,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -323,6 +376,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -330,6 +384,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -337,6 +392,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/creditHourType
      *  Units of time corresponding to types of credits.
+     * 
      *  @property creditHourType
      *  @type Literal
      */
@@ -344,6 +400,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/creditHourValue
      *  The number of credit hours awarded for completing or attaining the resource being described.
+     * 
      *  @property creditHourValue
      *  @type float
      */
@@ -351,6 +408,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/creditUnitType
      *  The type of credit associated with degree and non-degree learning opportunities.
+     * 
      *  @property creditUnitType
      *  @type CredentialAlignmentObject
      */
@@ -358,6 +416,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/creditUnitTypeDescription
      *  A more refined, detailed description of credit unit type.
+     * 
      *  @property creditUnitTypeDescription
      *  @type Literal
      */
@@ -365,6 +424,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/creditUnitValue
      *  The number of either credit units awarded for college credit or continuing education units for completing or attaining the resource being described.
+     * 
      *  @property creditUnitValue
      *  @type float
      */
@@ -372,6 +432,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -379,6 +440,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/deliveryType
      *  The means by which the resource being described is delivered to people or interacted with by people.
+     * 
      *  @property deliveryType
      *  @type CredentialAlignmentObject
      */
@@ -386,6 +448,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/deliveryTypeDescription
      *  A more detailed, refined description of delivery type.
+     * 
      *  @property deliveryTypeDescription
      *  @type Literal
      */
@@ -393,6 +456,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -400,6 +464,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -407,6 +472,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/entryCondition
      *  The prerequisites for entry into the resource being described.
+     * 
      *  @property entryCondition
      *  @type ConditionProfile
      */
@@ -414,6 +480,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -421,6 +488,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -428,6 +496,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -435,6 +504,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -442,6 +512,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/instructionalProgramType
      *  The class identifier for instructional program context.
+     * 
      *  @property instructionalProgramType
      *  @type CredentialAlignmentObject
      */
@@ -449,6 +520,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -456,6 +528,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -463,6 +536,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -470,6 +544,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -477,6 +552,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -484,6 +560,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -491,6 +568,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -498,6 +576,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -505,6 +584,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -512,6 +592,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -519,6 +600,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -526,6 +608,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -533,6 +616,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -540,6 +624,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -547,6 +632,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -554,6 +640,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -561,6 +648,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/scoringMethodDescription
      *  The method used to score the assessment.
+     * 
      *  @property scoringMethodDescription
      *  @type Literal
      */
@@ -568,6 +656,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/scoringMethodExample
      *  A resource that is an example of the method or tool used to score the assessment.
+     * 
      *  @property scoringMethodExample
      *  @type anyURI
      */
@@ -575,6 +664,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/scoringMethodExampleDescription
      *  The text of an example of the method or tool used to score the assessment.
+     * 
      *  @property scoringMethodExampleDescription
      *  @type Literal
      */
@@ -582,6 +672,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -589,6 +680,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -596,6 +688,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/targetAssessment
      *  A resource that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for the resource being described.
+     * 
      *  @property targetAssessment
      *  @type Assessment | AssessmentProfile
      */
@@ -603,6 +696,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/targetCompetency
      *  An alignment to a competency assertion in an established framework.
+     * 
      *  @property targetCompetency
      *  @type Competency | CredentialAlignmentObject
      */
@@ -610,6 +704,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/verificationMethodDescription
      *  Description of the methods used to evaluate the resource validity and reliability.
+     * 
      *  @property verificationMethodDescription
      *  @type Literal
      */
@@ -617,6 +712,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -625,6 +721,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
 /**
  *  credentialengine.org/ProcessProfile
  *  The type, nature, and related information about a process related to a credential.
+ * 
  *  @author credentialengine.org
  *  @class ProcessProfile
  *  @module org.credentialengine
@@ -632,6 +729,7 @@ AssessmentProfile = stjs.extend(AssessmentProfile, CreativeWork, [], function(co
  */
 var ProcessProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -643,6 +741,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -650,6 +749,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -657,6 +757,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -664,6 +765,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -671,6 +773,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -678,6 +781,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -685,6 +789,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/scoringMethodDescription
      *  The method used to score the assessment.
+     * 
      *  @property scoringMethodDescription
      *  @type Literal
      */
@@ -692,6 +797,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/scoringMethodExample
      *  A resource that is an example of the method or tool used to score the assessment.
+     * 
      *  @property scoringMethodExample
      *  @type anyURI
      */
@@ -699,6 +805,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/scoringMethodExampleDescription
      *  The text of an example of the method or tool used to score the assessment.
+     * 
      *  @property scoringMethodExampleDescription
      *  @type Literal
      */
@@ -706,6 +813,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -713,6 +821,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/targetAssessment
      *  A resource that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for the resource being described.
+     * 
      *  @property targetAssessment
      *  @type Assessment | AssessmentProfile
      */
@@ -720,6 +829,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/targetCredential
      *  A credential that is a focus or target of the resource being described.
+     * 
      *  @property targetCredential
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -727,6 +837,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/targetLearningOpportunity
      *  A learning opportunity that is the focus of the resource being described.
+     * 
      *  @property targetLearningOpportunity
      *  @type LearningOpportunity | LearningOpportunityProfile
      */
@@ -734,6 +845,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/verificationMethodDescription
      *  Description of the methods used to evaluate the resource validity and reliability.
+     * 
      *  @property verificationMethodDescription
      *  @type Literal
      */
@@ -742,6 +854,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
 /**
  *  credentialengine.org/LearningResource
  *  An entity that is used as part of an Educational Activity (e.g. a textbook) or that describes (e.g. a lesson plan) or records the Educational Activity (e.g. an audio- or video-recording of a lesson).
+ * 
  *  @author credentialengine.org
  *  @class LearningResource
  *  @module org.credentialengine
@@ -749,6 +862,7 @@ ProcessProfile = stjs.extend(ProcessProfile, CreativeWork, [], function(construc
  */
 var LearningResource = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -760,6 +874,7 @@ LearningResource = stjs.extend(LearningResource, CreativeWork, [], null, {contri
 /**
  *  credentialengine.org/JurisdictionProfile
  *  Geo-political information about applicable geographic areas and their exceptions.
+ * 
  *  @author credentialengine.org
  *  @class JurisdictionProfile
  *  @module org.credentialengine
@@ -767,6 +882,7 @@ LearningResource = stjs.extend(LearningResource, CreativeWork, [], null, {contri
  */
 var JurisdictionProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -778,6 +894,7 @@ JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], functio
     /**
      *  http://purl.org/ctdl/terms/assertedBy
      *  The agent providing the information contained in the entity being described.
+     * 
      *  @property assertedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -785,6 +902,7 @@ JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], functio
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -793,6 +911,7 @@ JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], functio
 /**
  *  credentialengine.org/RevocationProfile
  *  The conditions and methods by which a credential can be removed from a holder.
+ * 
  *  @author credentialengine.org
  *  @class RevocationProfile
  *  @module org.credentialengine
@@ -800,6 +919,7 @@ JurisdictionProfile = stjs.extend(JurisdictionProfile, CreativeWork, [], functio
  */
 var RevocationProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -811,6 +931,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/credentialProfiled
      *  The resource being described is a profile of the credential being referenced.
+     * 
      *  @property credentialProfiled
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -818,6 +939,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -825,6 +947,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -832,6 +955,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -839,6 +963,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -847,6 +972,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
 /**
  *  credentialengine.org/Credential
  *  A qualification, achievement, personal or organizational quality, or aspect of an identity typically used to indicate suitability.
+ * 
  *  @author credentialengine.org
  *  @class Credential
  *  @module org.credentialengine
@@ -854,6 +980,7 @@ RevocationProfile = stjs.extend(RevocationProfile, CreativeWork, [], function(co
  */
 var Credential = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -865,6 +992,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -872,6 +1000,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -879,6 +1008,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -886,6 +1016,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -893,6 +1024,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -900,6 +1032,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -907,6 +1040,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -914,6 +1048,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -921,6 +1056,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -928,6 +1064,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -935,6 +1072,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -942,6 +1080,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -949,6 +1088,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -956,6 +1096,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -963,6 +1104,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -970,6 +1112,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -977,6 +1120,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -984,6 +1128,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -991,6 +1136,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -998,6 +1144,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -1005,6 +1152,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -1012,6 +1160,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -1019,6 +1168,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -1026,6 +1176,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -1033,6 +1184,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -1040,6 +1192,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -1047,6 +1200,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1054,6 +1208,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -1061,6 +1216,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1068,6 +1224,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -1075,6 +1232,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -1082,6 +1240,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -1089,6 +1248,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -1096,6 +1256,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1103,6 +1264,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1110,6 +1272,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1117,6 +1280,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1124,6 +1288,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1131,6 +1296,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -1138,6 +1304,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -1145,6 +1312,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1152,6 +1320,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -1159,6 +1328,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1166,6 +1336,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -1173,6 +1344,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1180,6 +1352,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -1187,6 +1360,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1194,6 +1368,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -1201,6 +1376,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1208,6 +1384,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -1215,6 +1392,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1222,6 +1400,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1229,6 +1408,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1236,6 +1416,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -1243,6 +1424,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -1250,6 +1432,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -1257,6 +1440,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1264,6 +1448,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -1271,6 +1456,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1278,6 +1464,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -1285,6 +1472,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -1292,6 +1480,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -1299,6 +1488,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -1306,6 +1496,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -1313,6 +1504,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1320,6 +1512,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -1327,6 +1520,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1334,6 +1528,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -1341,6 +1536,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1348,6 +1544,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -1355,6 +1552,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -1362,6 +1560,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -1369,6 +1568,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -1376,6 +1576,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -1384,6 +1585,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
 /**
  *  credentialengine.org/TaskProfile
  *  A profile describing the required or recommended tasks to be performed by a holder of, or applicant for, a credential assertion.
+ * 
  *  @author credentialengine.org
  *  @class TaskProfile
  *  @module org.credentialengine
@@ -1391,6 +1593,7 @@ Credential = stjs.extend(Credential, CreativeWork, [], function(constructor, pro
  */
 var TaskProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1402,6 +1605,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -1409,6 +1613,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -1416,6 +1621,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -1423,6 +1629,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -1430,6 +1637,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -1437,6 +1645,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -1444,6 +1653,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -1451,6 +1661,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -1458,6 +1669,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -1466,6 +1678,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
 /**
  *  credentialengine.org/CostProfile
  *  The type and nature of direct costs one would incur if one were to pursue attaining a credential.
+ * 
  *  @author credentialengine.org
  *  @class CostProfile
  *  @module org.credentialengine
@@ -1473,6 +1686,7 @@ TaskProfile = stjs.extend(TaskProfile, CreativeWork, [], function(constructor, p
  */
 var CostProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1484,6 +1698,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/audienceType
      *  The applicable audience.
+     * 
      *  @property audienceType
      *  @type CredentialAlignmentObject
      */
@@ -1491,6 +1706,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -1498,6 +1714,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -1505,6 +1722,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -1512,6 +1730,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -1519,6 +1738,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -1526,6 +1746,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -1534,6 +1755,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
 /**
  *  credentialengine.org/LearningOpportunityProfile
  *  A resource describing a learning opportunity.
+ * 
  *  @author credentialengine.org
  *  @class LearningOpportunityProfile
  *  @module org.credentialengine
@@ -1541,6 +1763,7 @@ CostProfile = stjs.extend(CostProfile, CreativeWork, [], function(constructor, p
  */
 var LearningOpportunityProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1552,6 +1775,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -1559,6 +1783,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -1566,6 +1791,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1573,6 +1799,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -1580,6 +1807,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -1587,6 +1815,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -1594,6 +1823,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -1601,6 +1831,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -1608,6 +1839,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -1615,6 +1847,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -1622,6 +1855,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/creditHourType
      *  Units of time corresponding to types of credits.
+     * 
      *  @property creditHourType
      *  @type Literal
      */
@@ -1629,6 +1863,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/creditHourValue
      *  The number of credit hours awarded for completing or attaining the resource being described.
+     * 
      *  @property creditHourValue
      *  @type float
      */
@@ -1636,6 +1871,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/creditUnitType
      *  The type of credit associated with degree and non-degree learning opportunities.
+     * 
      *  @property creditUnitType
      *  @type CredentialAlignmentObject
      */
@@ -1643,6 +1879,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/creditUnitTypeDescription
      *  A more refined, detailed description of credit unit type.
+     * 
      *  @property creditUnitTypeDescription
      *  @type Literal
      */
@@ -1650,6 +1887,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/creditUnitValue
      *  The number of either credit units awarded for college credit or continuing education units for completing or attaining the resource being described.
+     * 
      *  @property creditUnitValue
      *  @type float
      */
@@ -1657,6 +1895,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -1664,6 +1903,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/deliveryType
      *  The means by which the resource being described is delivered to people or interacted with by people.
+     * 
      *  @property deliveryType
      *  @type CredentialAlignmentObject
      */
@@ -1671,6 +1911,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/deliveryTypeDescription
      *  A more detailed, refined description of delivery type.
+     * 
      *  @property deliveryTypeDescription
      *  @type Literal
      */
@@ -1678,6 +1919,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -1685,6 +1927,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/entryCondition
      *  The prerequisites for entry into the resource being described.
+     * 
      *  @property entryCondition
      *  @type ConditionProfile
      */
@@ -1692,6 +1935,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -1699,6 +1943,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -1706,6 +1951,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -1713,6 +1959,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1720,6 +1967,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -1727,6 +1975,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/instructionalProgramType
      *  The class identifier for instructional program context.
+     * 
      *  @property instructionalProgramType
      *  @type CredentialAlignmentObject
      */
@@ -1734,6 +1983,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1741,6 +1991,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -1748,6 +1999,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -1755,6 +2007,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -1762,6 +2015,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1769,6 +2023,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -1776,6 +2031,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1783,6 +2039,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1790,6 +2047,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -1797,6 +2055,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1804,6 +2063,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -1811,6 +2071,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -1818,6 +2079,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -1825,6 +2087,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1832,6 +2095,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -1839,6 +2103,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -1846,6 +2111,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/targetAssessment
      *  A resource that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for the resource being described.
+     * 
      *  @property targetAssessment
      *  @type Assessment | AssessmentProfile
      */
@@ -1853,6 +2119,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/targetCompetency
      *  An alignment to a competency assertion in an established framework.
+     * 
      *  @property targetCompetency
      *  @type Competency | CredentialAlignmentObject
      */
@@ -1860,6 +2127,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/targetLearningOpportunity
      *  A learning opportunity that is the focus of the resource being described.
+     * 
      *  @property targetLearningOpportunity
      *  @type LearningOpportunity | LearningOpportunityProfile
      */
@@ -1867,6 +2135,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
     /**
      *  http://purl.org/ctdl/terms/verificationMethodDescription
      *  Description of the methods used to evaluate the resource validity and reliability.
+     * 
      *  @property verificationMethodDescription
      *  @type Literal
      */
@@ -1875,6 +2144,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
 /**
  *  credentialengine.org/ConditionProfile
  *  A resource describing a condition between a credential and other resources to which the credential is subject during its lifecycle including the requirements to attain the credential.
+ * 
  *  @author credentialengine.org
  *  @class ConditionProfile
  *  @module org.credentialengine
@@ -1882,6 +2152,7 @@ LearningOpportunityProfile = stjs.extend(LearningOpportunityProfile, CreativeWor
  */
 var ConditionProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1893,6 +2164,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/assertedBy
      *  The agent providing the information contained in the entity being described.
+     * 
      *  @property assertedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -1900,6 +2172,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -1907,6 +2180,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/audienceType
      *  The applicable audience.
+     * 
      *  @property audienceType
      *  @type CredentialAlignmentObject
      */
@@ -1914,6 +2188,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/credentialProfiled
      *  The resource being described is a profile of the credential being referenced.
+     * 
      *  @property credentialProfiled
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -1921,6 +2196,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/creditHourType
      *  Units of time corresponding to types of credits.
+     * 
      *  @property creditHourType
      *  @type Literal
      */
@@ -1928,6 +2204,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/creditHourValue
      *  The number of credit hours awarded for completing or attaining the resource being described.
+     * 
      *  @property creditHourValue
      *  @type float
      */
@@ -1935,6 +2212,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/creditUnitType
      *  The type of credit associated with degree and non-degree learning opportunities.
+     * 
      *  @property creditUnitType
      *  @type CredentialAlignmentObject
      */
@@ -1942,6 +2220,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/creditUnitTypeDescription
      *  A more refined, detailed description of credit unit type.
+     * 
      *  @property creditUnitTypeDescription
      *  @type Literal
      */
@@ -1949,6 +2228,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/creditUnitValue
      *  The number of either credit units awarded for college credit or continuing education units for completing or attaining the resource being described.
+     * 
      *  @property creditUnitValue
      *  @type float
      */
@@ -1956,6 +2236,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -1963,6 +2244,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -1970,6 +2252,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -1977,6 +2260,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -1984,6 +2268,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -1991,6 +2276,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -1998,6 +2284,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/targetAssessment
      *  A resource that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for the resource being described.
+     * 
      *  @property targetAssessment
      *  @type Assessment | AssessmentProfile
      */
@@ -2005,6 +2292,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/targetCompetency
      *  An alignment to a competency assertion in an established framework.
+     * 
      *  @property targetCompetency
      *  @type Competency | CredentialAlignmentObject
      */
@@ -2012,6 +2300,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/targetCredential
      *  A credential that is a focus or target of the resource being described.
+     * 
      *  @property targetCredential
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2019,6 +2308,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/targetLearningOpportunity
      *  A learning opportunity that is the focus of the resource being described.
+     * 
      *  @property targetLearningOpportunity
      *  @type LearningOpportunity | LearningOpportunityProfile
      */
@@ -2026,6 +2316,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
     /**
      *  http://purl.org/ctdl/terms/weight
      *  An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
+     * 
      *  @property weight
      *  @type float
      */
@@ -2034,6 +2325,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
 /**
  *  credentialengine.org/HoldersProfile
  *  The count and related statistical information of holders of a given credential.
+ * 
  *  @author credentialengine.org
  *  @class HoldersProfile
  *  @module org.credentialengine
@@ -2041,6 +2333,7 @@ ConditionProfile = stjs.extend(ConditionProfile, CreativeWork, [], function(cons
  */
 var HoldersProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2052,6 +2345,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/credentialProfiled
      *  The resource being described is a profile of the credential being referenced.
+     * 
      *  @property credentialProfiled
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2059,6 +2353,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -2066,6 +2361,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2073,6 +2369,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -2080,6 +2377,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -2087,6 +2385,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/source
      *  The source of this resource's information.
+     * 
      *  @property source
      *  @type anyURI
      */
@@ -2095,6 +2394,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
 /**
  *  credentialengine.org/IdentifierValueSet
  *  A set of identifier values.
+ * 
  *  @author credentialengine.org
  *  @class IdentifierValueSet
  *  @module org.credentialengine
@@ -2102,6 +2402,7 @@ HoldersProfile = stjs.extend(HoldersProfile, CreativeWork, [], function(construc
  */
 var IdentifierValueSet = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2113,6 +2414,7 @@ IdentifierValueSet = stjs.extend(IdentifierValueSet, CreativeWork, [], null, {co
 /**
  *  credentialengine.org/EmploymentOutcomeProfile
  *  The employment outcomes and related statistical information for a given credential.
+ * 
  *  @author credentialengine.org
  *  @class EmploymentOutcomeProfile
  *  @module org.credentialengine
@@ -2120,6 +2422,7 @@ IdentifierValueSet = stjs.extend(IdentifierValueSet, CreativeWork, [], null, {co
  */
 var EmploymentOutcomeProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2131,6 +2434,7 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
     /**
      *  http://purl.org/ctdl/terms/credentialProfiled
      *  The resource being described is a profile of the credential being referenced.
+     * 
      *  @property credentialProfiled
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2138,6 +2442,7 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -2145,6 +2450,7 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2152,6 +2458,7 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -2159,6 +2466,7 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
     /**
      *  http://purl.org/ctdl/terms/source
      *  The source of this resource's information.
+     * 
      *  @property source
      *  @type anyURI
      */
@@ -2167,12 +2475,14 @@ EmploymentOutcomeProfile = stjs.extend(EmploymentOutcomeProfile, CreativeWork, [
 /**
  *  credentialengine.org/CredentialFramework
  *  The class of all structured sets of conceptual resources intentionally designed for use as value vocabulary terms for description and classification in the credentialing context.
+ * 
  *  @author credentialengine.org
  *  @class CredentialFramework
  *  @module org.credentialengine
  */
 var CredentialFramework = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2182,12 +2492,14 @@ CredentialFramework = stjs.extend(CredentialFramework, EcRemoteLinkedData, [], n
 /**
  *  credentialengine.org/ConditionManifest
  *  A set of conditions maintained at the organizational and/or sub-organizational level.
+ * 
  *  @author credentialengine.org
  *  @class ConditionManifest
  *  @module org.credentialengine
  */
 var ConditionManifest = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2197,6 +2509,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2204,6 +2517,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -2211,6 +2525,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2218,6 +2533,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/entryCondition
      *  The prerequisites for entry into the resource being described.
+     * 
      *  @property entryCondition
      *  @type ConditionProfile
      */
@@ -2225,6 +2541,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2232,6 +2549,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2239,6 +2557,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2246,6 +2565,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2253,6 +2573,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -2260,6 +2581,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2267,6 +2589,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2274,6 +2597,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2281,6 +2605,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -2289,6 +2614,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
 /**
  *  credentialengine.org/IdentifierValue
  *  An identifier value.
+ * 
  *  @author credentialengine.org
  *  @class IdentifierValue
  *  @module org.credentialengine
@@ -2296,6 +2622,7 @@ ConditionManifest = stjs.extend(ConditionManifest, EcRemoteLinkedData, [], funct
  */
 var IdentifierValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2305,6 +2632,7 @@ IdentifierValue = stjs.extend(IdentifierValue, EcRemoteLinkedData, [], function(
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2312,6 +2640,7 @@ IdentifierValue = stjs.extend(IdentifierValue, EcRemoteLinkedData, [], function(
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -2320,12 +2649,14 @@ IdentifierValue = stjs.extend(IdentifierValue, EcRemoteLinkedData, [], function(
 /**
  *  credentialengine.org/CareerPathway
  *  An integrated collection of credentials, programs, experiences, and services intended to develop technical, academic, and employability skills in a cluster of occupations that share common skills, knowledge, and interests.
+ * 
  *  @author credentialengine.org
  *  @class CareerPathway
  *  @module org.credentialengine
  */
 var CareerPathway = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2335,12 +2666,14 @@ CareerPathway = stjs.extend(CareerPathway, EcRemoteLinkedData, [], null, {owner:
 /**
  *  credentialengine.org/DurationProfile
  *  A resource describing the temporal aspects of a resource.
+ * 
  *  @author credentialengine.org
  *  @class DurationProfile
  *  @module org.credentialengine
  */
 var DurationProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2350,6 +2683,7 @@ DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2357,6 +2691,7 @@ DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -2365,12 +2700,14 @@ DurationProfile = stjs.extend(DurationProfile, EcRemoteLinkedData, [], function(
 /**
  *  credentialengine.org/ContactPoint
  *  A means of contacting a resource or its representative(s).
+ * 
  *  @author credentialengine.org
  *  @class ContactPoint
  *  @module org.credentialengine
  */
 var ContactPoint = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2380,6 +2717,7 @@ ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/email
      *  Email address of the agent being described.
+     * 
      *  @property email
      *  @type Literal
      */
@@ -2387,6 +2725,7 @@ ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -2394,6 +2733,7 @@ ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constr
     /**
      *  http://purl.org/ctdl/terms/socialMedia
      *  A social media resource for the resource being described.
+     * 
      *  @property socialMedia
      *  @type anyURI
      */
@@ -2402,12 +2742,14 @@ ContactPoint = stjs.extend(ContactPoint, EcRemoteLinkedData, [], function(constr
 /**
  *  credentialengine.org/LearningOpportunity
  *  Structured and unstructured learning and development opportunities based in direct experience, formal and informal study, observation, and involvement in discourse and practice.
+ * 
  *  @author credentialengine.org
  *  @class LearningOpportunity
  *  @module org.credentialengine
  */
 var LearningOpportunity = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2417,12 +2759,14 @@ LearningOpportunity = stjs.extend(LearningOpportunity, EcRemoteLinkedData, [], n
 /**
  *  credentialengine.org/Assessment
  *  Direct, indirect, formative and summative evaluation or estimation of the nature, ability, or quality of a resource, performance, or outcome of an action.
+ * 
  *  @author credentialengine.org
  *  @class Assessment
  *  @module org.credentialengine
  */
 var Assessment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2432,12 +2776,14 @@ Assessment = stjs.extend(Assessment, EcRemoteLinkedData, [], null, {owner: {name
 /**
  *  credentialengine.org/Agent
  *  A resource that acts or has the power to act.
+ * 
  *  @author credentialengine.org
  *  @class Agent
  *  @module org.credentialengine
  */
 var Agent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2447,6 +2793,7 @@ Agent = stjs.extend(Agent, EcRemoteLinkedData, [], null, {owner: {name: "Array",
 /**
  *  credentialengine.org/Competency
  *  An assertion of measurable or observable knowledge, skills, and abilities necessary to successful performance of a person in a given context.
+ * 
  *  @author credentialengine.org
  *  @class Competency
  *  @module org.credentialengine
@@ -2454,6 +2801,7 @@ Agent = stjs.extend(Agent, EcRemoteLinkedData, [], null, {owner: {name: "Array",
  */
 var Competency = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2463,6 +2811,7 @@ Competency = stjs.extend(Competency, EcRemoteLinkedData, [], function(constructo
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -2471,12 +2820,14 @@ Competency = stjs.extend(Competency, EcRemoteLinkedData, [], function(constructo
 /**
  *  credentialengine.org/CredentialAssertion
  *  The class of  representations of an awarded credential, used to share information about a credential belonging to one holder.
+ * 
  *  @author credentialengine.org
  *  @class CredentialAssertion
  *  @module org.credentialengine
  */
 var CredentialAssertion = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2486,6 +2837,7 @@ CredentialAssertion = stjs.extend(CredentialAssertion, EcRemoteLinkedData, [], n
 /**
  *  credentialengine.org/VerificationServiceProfile
  *  A resource describing the means by which someone can verify whether a credential has been attained.
+ * 
  *  @author credentialengine.org
  *  @class VerificationServiceProfile
  *  @module org.credentialengine
@@ -2493,6 +2845,7 @@ CredentialAssertion = stjs.extend(CredentialAssertion, EcRemoteLinkedData, [], n
  */
 var VerificationServiceProfile = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2504,6 +2857,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -2511,6 +2865,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2518,6 +2873,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -2525,6 +2881,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -2532,6 +2889,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2539,6 +2897,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -2546,6 +2905,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -2553,6 +2913,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/targetCredential
      *  A credential that is a focus or target of the resource being described.
+     * 
      *  @property targetCredential
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2560,6 +2921,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
     /**
      *  http://purl.org/ctdl/terms/verificationMethodDescription
      *  Description of the methods used to evaluate the resource validity and reliability.
+     * 
      *  @property verificationMethodDescription
      *  @type Literal
      */
@@ -2568,6 +2930,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
 /**
  *  credentialengine.org/GeoCoordinates
  *  The geographic coordinates of a place or event.
+ * 
  *  @author credentialengine.org
  *  @class GeoCoordinates
  *  @module org.credentialengine
@@ -2575,6 +2938,7 @@ VerificationServiceProfile = stjs.extend(VerificationServiceProfile, Intangible,
  */
 var GeoCoordinates = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2586,6 +2950,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
     /**
      *  http://purl.org/ctdl/terms/address
      *  Physical address of the resource.
+     * 
      *  @property address
      *  @type PostalAddress
      */
@@ -2593,6 +2958,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -2600,6 +2966,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -2608,6 +2975,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
 /**
  *  credentialengine.org/RegulateAction
  *  An action by an independent, neutral, and authoritative agent enforcing the legal requirements of a resource.
+ * 
  *  @author credentialengine.org
  *  @class RegulateAction
  *  @module org.credentialengine
@@ -2615,6 +2983,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
  */
 var RegulateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2626,6 +2995,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2633,6 +3003,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -2640,6 +3011,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2647,6 +3019,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2654,6 +3027,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -2661,6 +3035,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -2668,6 +3043,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2675,6 +3051,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2682,6 +3059,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2689,6 +3067,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -2696,6 +3075,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -2704,6 +3084,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
 /**
  *  credentialengine.org/ApproveAction
  *  An action by an independent, neutral, and authoritative agent that pronounces a favorable judgment of a resource.
+ * 
  *  @author credentialengine.org
  *  @class ApproveAction
  *  @module org.credentialengine
@@ -2711,6 +3092,7 @@ RegulateAction = stjs.extend(RegulateAction, CredentialingAction, [], function(c
  */
 var ApproveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2722,6 +3104,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2729,6 +3112,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -2736,6 +3120,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2743,6 +3128,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2750,6 +3136,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -2757,6 +3144,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -2764,6 +3152,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2771,6 +3160,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2778,6 +3168,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2785,6 +3176,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -2792,6 +3184,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -2800,6 +3193,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
 /**
  *  credentialengine.org/RenewAction
  *  An action by an authoritative agent renewing an existing credential assertion.
+ * 
  *  @author credentialengine.org
  *  @class RenewAction
  *  @module org.credentialengine
@@ -2807,6 +3201,7 @@ ApproveAction = stjs.extend(ApproveAction, CredentialingAction, [], function(con
  */
 var RenewAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2818,6 +3213,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2825,6 +3221,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -2832,6 +3229,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2839,6 +3237,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2846,6 +3245,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -2853,6 +3253,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -2860,6 +3261,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2867,6 +3269,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2874,6 +3277,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2881,6 +3285,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -2888,6 +3293,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -2896,6 +3302,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
 /**
  *  credentialengine.org/RecognizeAction
  *  An action by an independent, neutral, and authoritative agent acknowledging the validity of a resource.
+ * 
  *  @author credentialengine.org
  *  @class RecognizeAction
  *  @module org.credentialengine
@@ -2903,6 +3310,7 @@ RenewAction = stjs.extend(RenewAction, CredentialingAction, [], function(constru
  */
 var RecognizeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2914,6 +3322,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2921,6 +3330,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -2928,6 +3338,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2935,6 +3346,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -2942,6 +3354,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -2949,6 +3362,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -2956,6 +3370,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2963,6 +3378,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -2970,6 +3386,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -2977,6 +3394,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -2984,6 +3402,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -2992,6 +3411,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
 /**
  *  credentialengine.org/RightsAction
  *  An action asserting rights by an authoritative agent to possess, defend, transfer, license, and grant conditional access to a resource.
+ * 
  *  @author credentialengine.org
  *  @class RightsAction
  *  @module org.credentialengine
@@ -2999,6 +3419,7 @@ RecognizeAction = stjs.extend(RecognizeAction, CredentialingAction, [], function
  */
 var RightsAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3010,6 +3431,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3017,6 +3439,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3024,6 +3447,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3031,6 +3455,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3038,6 +3463,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -3045,6 +3471,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -3052,6 +3479,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3059,6 +3487,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3066,6 +3495,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3073,6 +3503,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -3080,6 +3511,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -3088,6 +3520,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
 /**
  *  credentialengine.org/AccreditAction
  *  An action by an independent, neutral, and authoritative agent that certifies a resource as meeting a prescribed set of standards.
+ * 
  *  @author credentialengine.org
  *  @class AccreditAction
  *  @module org.credentialengine
@@ -3095,6 +3528,7 @@ RightsAction = stjs.extend(RightsAction, CredentialingAction, [], function(const
  */
 var AccreditAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3106,6 +3540,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3113,6 +3548,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3120,6 +3556,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3127,6 +3564,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3134,6 +3572,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -3141,6 +3580,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -3148,6 +3588,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3155,6 +3596,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3162,6 +3604,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3169,6 +3612,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -3176,6 +3620,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -3184,6 +3629,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
 /**
  *  credentialengine.org/RevokeAction
  *  An action by an authoritative agent removing a credential assertion from the credential holder based on violations.
+ * 
  *  @author credentialengine.org
  *  @class RevokeAction
  *  @module org.credentialengine
@@ -3191,6 +3637,7 @@ AccreditAction = stjs.extend(AccreditAction, CredentialingAction, [], function(c
  */
 var RevokeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3202,6 +3649,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3209,6 +3657,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3216,6 +3665,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3223,6 +3673,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3230,6 +3681,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -3237,6 +3689,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -3244,6 +3697,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3251,6 +3705,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3258,6 +3713,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3265,6 +3721,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -3272,6 +3729,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -3280,6 +3738,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
 /**
  *  credentialengine.org/AdvancedStandingAction
  *  An claim by an agent asserting that the object credential of the action provides advanced standing for a credential under the asserting agent's authority.
+ * 
  *  @author credentialengine.org
  *  @class AdvancedStandingAction
  *  @module org.credentialengine
@@ -3287,6 +3746,7 @@ RevokeAction = stjs.extend(RevokeAction, CredentialingAction, [], function(const
  */
 var AdvancedStandingAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3298,6 +3758,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3305,6 +3766,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3312,6 +3774,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3319,6 +3782,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3326,6 +3790,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -3333,6 +3798,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -3340,6 +3806,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3347,6 +3814,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3354,6 +3822,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3361,6 +3830,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -3368,6 +3838,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -3376,6 +3847,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
 /**
  *  credentialengine.org/OfferAction
  *  An action by an authoritative agent offering access to a resource.
+ * 
  *  @author credentialengine.org
  *  @class OfferAction
  *  @module org.credentialengine
@@ -3383,6 +3855,7 @@ AdvancedStandingAction = stjs.extend(AdvancedStandingAction, CredentialingAction
  */
 var OfferAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3394,6 +3867,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/actingAgent
      *  The direct performer or driver (animate or inanimate) of an action.
+     * 
      *  @property actingAgent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3401,6 +3875,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/actionStatusType
      *  Indicates the current disposition of the action.
+     * 
      *  @property actionStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3408,6 +3883,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/agent
      *  The direct performer or driver of the action (animate or inanimate).
+     * 
      *  @property agent
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3415,6 +3891,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3422,6 +3899,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/endDate
      *  The end date of something.
+     * 
      *  @property endDate
      *  @type date
      */
@@ -3429,6 +3907,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/evidenceOfAction
      *  A resource that provides evidence of the continuing validity of the action being described.
+     * 
      *  @property evidenceOfAction
      *  @type anyURI
      */
@@ -3436,6 +3915,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with a pen.
+     * 
      *  @property instrument
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3443,6 +3923,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/object
      *  The object upon [which] the action is carried out, whose state is kept intact or changed.
+     * 
      *  @property object
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Competency | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3450,6 +3931,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/participant
      *  Other co-agents that participated in the action indirectly.
+     * 
      *  @property participant
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3457,6 +3939,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/resultingAward
      *  The result produced in the action.
+     * 
      *  @property resultingAward
      *  @type CredentialAssertion
      */
@@ -3464,6 +3947,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
     /**
      *  http://purl.org/ctdl/terms/startDate
      *  The start date of something.
+     * 
      *  @property startDate
      *  @type date
      */
@@ -3472,6 +3956,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
 /**
  *  credentialengine.org/FinancialAlignmentObject
  *  An alignment to a financial framework.
+ * 
  *  @author credentialengine.org
  *  @class FinancialAlignmentObject
  *  @module org.credentialengine
@@ -3479,6 +3964,7 @@ OfferAction = stjs.extend(OfferAction, CredentialingAction, [], function(constru
  */
 var FinancialAlignmentObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3490,6 +3976,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/alignmentDate
      *  The date  the alignment was made.
+     * 
      *  @property alignmentDate
      *  @type date
      */
@@ -3497,6 +3984,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/alignmentType
      *  A category of alignment between the learning resource and the framework node.
+     * 
      *  @property alignmentType
      *  @type Literal
      */
@@ -3504,6 +3992,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -3511,6 +4000,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/framework
      *  The framework to which the resource being described is aligned.
+     * 
      *  @property framework
      *  @type anyURI
      */
@@ -3518,6 +4008,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/frameworkName
      *  The name of the framework to which the resource being described is aligned.
+     * 
      *  @property frameworkName
      *  @type Literal
      */
@@ -3525,6 +4016,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/targetNode
      *  The node of a framework targeted by the alignment.
+     * 
      *  @property targetNode
      *  @type anyURI
      */
@@ -3532,6 +4024,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/targetNodeDescription
      *  The description of a node in an established educational framework.
+     * 
      *  @property targetNodeDescription
      *  @type Literal
      */
@@ -3539,6 +4032,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/targetNodeName
      *  The name of a node in an established educational framework.
+     * 
      *  @property targetNodeName
      *  @type Literal
      */
@@ -3546,6 +4040,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
     /**
      *  http://purl.org/ctdl/terms/weight
      *  An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
+     * 
      *  @property weight
      *  @type float
      */
@@ -3554,6 +4049,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
 /**
  *  credentialengine.org/Degree
  *  An academic credential conferred upon completion of a program or course of study, typically over multiple years at postsecondary education institutions.
+ * 
  *  @author credentialengine.org
  *  @class Degree
  *  @module org.credentialengine
@@ -3561,6 +4057,7 @@ FinancialAlignmentObject = stjs.extend(FinancialAlignmentObject, CredentialAlign
  */
 var Degree = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3572,6 +4069,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -3579,6 +4077,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -3586,6 +4085,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -3593,6 +4093,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3600,6 +4101,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -3607,6 +4109,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3614,6 +4117,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -3621,6 +4125,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -3628,6 +4133,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -3635,6 +4141,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -3642,6 +4149,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -3649,6 +4157,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3656,6 +4165,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -3663,6 +4173,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -3670,6 +4181,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3677,6 +4189,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -3684,6 +4197,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -3691,6 +4205,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -3698,6 +4213,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -3705,6 +4221,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -3712,6 +4229,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/degreeConcentration
      *  A structured plan of study within a degree major.
+     * 
      *  @property degreeConcentration
      *  @type CredentialAlignmentObject
      */
@@ -3719,6 +4237,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/degreeMajor
      *  The primary field of study of a degree-seeking student.
+     * 
      *  @property degreeMajor
      *  @type CredentialAlignmentObject
      */
@@ -3726,6 +4245,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/degreeMinor
      *  An optional, secondary field of study of a degree-seeking student.
+     * 
      *  @property degreeMinor
      *  @type CredentialAlignmentObject
      */
@@ -3733,6 +4253,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -3740,6 +4261,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -3747,6 +4269,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -3754,6 +4277,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -3761,6 +4285,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -3768,6 +4293,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -3775,6 +4301,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3782,6 +4309,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -3789,6 +4317,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3796,6 +4325,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -3803,6 +4333,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -3810,6 +4341,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -3817,6 +4349,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -3824,6 +4357,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3831,6 +4365,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3838,6 +4373,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3845,6 +4381,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3852,6 +4389,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3859,6 +4397,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -3866,6 +4405,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -3873,6 +4413,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3880,6 +4421,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -3887,6 +4429,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3894,6 +4437,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -3901,6 +4445,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3908,6 +4453,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -3915,6 +4461,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3922,6 +4469,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -3929,6 +4477,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3936,6 +4485,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -3943,6 +4493,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3950,6 +4501,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3957,6 +4509,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -3964,6 +4517,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -3971,6 +4525,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -3978,6 +4533,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -3985,6 +4541,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -3992,6 +4549,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -3999,6 +4557,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4006,6 +4565,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -4013,6 +4573,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -4020,6 +4581,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -4027,6 +4589,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -4034,6 +4597,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -4041,6 +4605,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4048,6 +4613,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -4055,6 +4621,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4062,6 +4629,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -4069,6 +4637,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4076,6 +4645,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -4083,6 +4653,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -4090,6 +4661,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -4097,6 +4669,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -4104,6 +4677,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -4112,6 +4686,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
 /**
  *  credentialengine.org/Diploma
  *  A credential awarded by educational institutions for successfully completion of a course of study or its equivalent.
+ * 
  *  @author credentialengine.org
  *  @class Diploma
  *  @module org.credentialengine
@@ -4119,6 +4694,7 @@ Degree = stjs.extend(Degree, Credential, [], function(constructor, prototype) {
  */
 var Diploma = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4130,6 +4706,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -4137,6 +4714,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -4144,6 +4722,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -4151,6 +4730,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4158,6 +4738,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -4165,6 +4746,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4172,6 +4754,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -4179,6 +4762,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -4186,6 +4770,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -4193,6 +4778,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -4200,6 +4786,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -4207,6 +4794,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4214,6 +4802,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -4221,6 +4810,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -4228,6 +4818,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4235,6 +4826,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -4242,6 +4834,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -4249,6 +4842,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -4256,6 +4850,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -4263,6 +4858,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -4270,6 +4866,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -4277,6 +4874,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -4284,6 +4882,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -4291,6 +4890,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -4298,6 +4898,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -4305,6 +4906,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -4312,6 +4914,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4319,6 +4922,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -4326,6 +4930,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4333,6 +4938,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -4340,6 +4946,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -4347,6 +4954,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -4354,6 +4962,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -4361,6 +4970,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4368,6 +4978,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4375,6 +4986,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4382,6 +4994,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4389,6 +5002,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4396,6 +5010,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -4403,6 +5018,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -4410,6 +5026,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4417,6 +5034,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -4424,6 +5042,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4431,6 +5050,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -4438,6 +5058,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4445,6 +5066,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -4452,6 +5074,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4459,6 +5082,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -4466,6 +5090,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4473,6 +5098,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -4480,6 +5106,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4487,6 +5114,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4494,6 +5122,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4501,6 +5130,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -4508,6 +5138,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -4515,6 +5146,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -4522,6 +5154,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4529,6 +5162,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -4536,6 +5170,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4543,6 +5178,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -4550,6 +5186,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -4557,6 +5194,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -4564,6 +5202,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -4571,6 +5210,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -4578,6 +5218,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4585,6 +5226,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -4592,6 +5234,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4599,6 +5242,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -4606,6 +5250,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4613,6 +5258,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -4620,6 +5266,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -4627,6 +5274,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -4634,6 +5282,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -4641,6 +5290,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -4649,6 +5299,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
 /**
  *  credentialengine.org/Certificate
  *  A credential that designates requisite mastery of the knowledge and skills of an occupation, profession, or academic program.
+ * 
  *  @author credentialengine.org
  *  @class Certificate
  *  @module org.credentialengine
@@ -4656,6 +5307,7 @@ Diploma = stjs.extend(Diploma, Credential, [], function(constructor, prototype) 
  */
 var Certificate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4667,6 +5319,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -4674,6 +5327,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -4681,6 +5335,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -4688,6 +5343,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4695,6 +5351,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -4702,6 +5359,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4709,6 +5367,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -4716,6 +5375,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -4723,6 +5383,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -4730,6 +5391,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -4737,6 +5399,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -4744,6 +5407,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4751,6 +5415,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -4758,6 +5423,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -4765,6 +5431,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -4772,6 +5439,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -4779,6 +5447,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -4786,6 +5455,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -4793,6 +5463,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -4800,6 +5471,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -4807,6 +5479,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -4814,6 +5487,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -4821,6 +5495,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -4828,6 +5503,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -4835,6 +5511,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -4842,6 +5519,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -4849,6 +5527,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4856,6 +5535,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -4863,6 +5543,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4870,6 +5551,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -4877,6 +5559,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -4884,6 +5567,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -4891,6 +5575,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -4898,6 +5583,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4905,6 +5591,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4912,6 +5599,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4919,6 +5607,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4926,6 +5615,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4933,6 +5623,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -4940,6 +5631,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -4947,6 +5639,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4954,6 +5647,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -4961,6 +5655,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4968,6 +5663,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -4975,6 +5671,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4982,6 +5679,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -4989,6 +5687,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -4996,6 +5695,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -5003,6 +5703,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5010,6 +5711,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -5017,6 +5719,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5024,6 +5727,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5031,6 +5735,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5038,6 +5743,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -5045,6 +5751,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -5052,6 +5759,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -5059,6 +5767,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5066,6 +5775,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -5073,6 +5783,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5080,6 +5791,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -5087,6 +5799,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -5094,6 +5807,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -5101,6 +5815,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -5108,6 +5823,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -5115,6 +5831,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5122,6 +5839,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -5129,6 +5847,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5136,6 +5855,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -5143,6 +5863,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5150,6 +5871,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -5157,6 +5879,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -5164,6 +5887,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -5171,6 +5895,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -5178,6 +5903,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -5186,6 +5912,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
 /**
  *  credentialengine.org/QualityAssuranceCredential
  *  A credential assuring that an organization, program, or awarded credential meets prescribed requirements and may include development and administration of qualifying examinations.
+ * 
  *  @author credentialengine.org
  *  @class QualityAssuranceCredential
  *  @module org.credentialengine
@@ -5193,6 +5920,7 @@ Certificate = stjs.extend(Certificate, Credential, [], function(constructor, pro
  */
 var QualityAssuranceCredential = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5204,6 +5932,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -5211,6 +5940,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -5218,6 +5948,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -5225,6 +5956,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5232,6 +5964,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -5239,6 +5972,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5246,6 +5980,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -5253,6 +5988,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -5260,6 +5996,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -5267,6 +6004,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -5274,6 +6012,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -5281,6 +6020,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5288,6 +6028,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -5295,6 +6036,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -5302,6 +6044,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5309,6 +6052,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -5316,6 +6060,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -5323,6 +6068,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -5330,6 +6076,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -5337,6 +6084,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -5344,6 +6092,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -5351,6 +6100,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -5358,6 +6108,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -5365,6 +6116,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -5372,6 +6124,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -5379,6 +6132,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -5386,6 +6140,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5393,6 +6148,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -5400,6 +6156,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5407,6 +6164,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -5414,6 +6172,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -5421,6 +6180,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -5428,6 +6188,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -5435,6 +6196,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5442,6 +6204,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5449,6 +6212,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5456,6 +6220,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5463,6 +6228,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5470,6 +6236,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -5477,6 +6244,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -5484,6 +6252,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5491,6 +6260,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -5498,6 +6268,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5505,6 +6276,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -5512,6 +6284,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5519,6 +6292,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -5526,6 +6300,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5533,6 +6308,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -5540,6 +6316,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5547,6 +6324,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -5554,6 +6332,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5561,6 +6340,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5568,6 +6348,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5575,6 +6356,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -5582,6 +6364,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -5589,6 +6372,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -5596,6 +6380,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5603,6 +6388,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -5610,6 +6396,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5617,6 +6404,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -5624,6 +6412,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -5631,6 +6420,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -5638,6 +6428,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -5645,6 +6436,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -5652,6 +6444,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5659,6 +6452,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -5666,6 +6460,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5673,6 +6468,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -5680,6 +6476,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5687,6 +6484,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -5694,6 +6492,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -5701,6 +6500,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -5708,6 +6508,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -5715,6 +6516,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -5723,6 +6525,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
 /**
  *  credentialengine.org/License
  *  A credential awarded by a government agency that constitutes legal authority to do a specific job and/or utilize a specific item, system or infrastructure and are typically earned through some combination of degree or certificate attainment, certifications, assessments, work experience, and/or fees, and are time-limited and must be renewed periodically.
+ * 
  *  @author credentialengine.org
  *  @class License
  *  @module org.credentialengine
@@ -5730,6 +6533,7 @@ QualityAssuranceCredential = stjs.extend(QualityAssuranceCredential, Credential,
  */
 var License = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5741,6 +6545,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -5748,6 +6553,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -5755,6 +6561,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -5762,6 +6569,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5769,6 +6577,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -5776,6 +6585,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5783,6 +6593,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -5790,6 +6601,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -5797,6 +6609,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -5804,6 +6617,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -5811,6 +6625,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -5818,6 +6633,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5825,6 +6641,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -5832,6 +6649,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -5839,6 +6657,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -5846,6 +6665,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -5853,6 +6673,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -5860,6 +6681,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -5867,6 +6689,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -5874,6 +6697,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -5881,6 +6705,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -5888,6 +6713,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -5895,6 +6721,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -5902,6 +6729,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -5909,6 +6737,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -5916,6 +6745,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -5923,6 +6753,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5930,6 +6761,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -5937,6 +6769,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5944,6 +6777,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -5951,6 +6785,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -5958,6 +6793,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -5965,6 +6801,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -5972,6 +6809,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5979,6 +6817,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5986,6 +6825,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -5993,6 +6833,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6000,6 +6841,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6007,6 +6849,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -6014,6 +6857,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -6021,6 +6865,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6028,6 +6873,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -6035,6 +6881,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6042,6 +6889,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -6049,6 +6897,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6056,6 +6905,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -6063,6 +6913,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6070,6 +6921,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -6077,6 +6929,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6084,6 +6937,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -6091,6 +6945,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6098,6 +6953,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6105,6 +6961,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6112,6 +6969,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -6119,6 +6977,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -6126,6 +6985,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -6133,6 +6993,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6140,6 +7001,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -6147,6 +7009,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6154,6 +7017,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -6161,6 +7025,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -6168,6 +7033,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -6175,6 +7041,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -6182,6 +7049,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -6189,6 +7057,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6196,6 +7065,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -6203,6 +7073,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6210,6 +7081,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -6217,6 +7089,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6224,6 +7097,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -6231,6 +7105,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -6238,6 +7113,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -6245,6 +7121,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -6252,6 +7129,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -6260,6 +7138,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
 /**
  *  credentialengine.org/Certification
  *  A time-limited, renewable non-degree credential awarded by an authoritative body to an individual or organization for demonstrating the designated knowledge, skills, and abilities to perform a specific job.
+ * 
  *  @author credentialengine.org
  *  @class Certification
  *  @module org.credentialengine
@@ -6267,6 +7146,7 @@ License = stjs.extend(License, Credential, [], function(constructor, prototype) 
  */
 var Certification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6278,6 +7158,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -6285,6 +7166,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -6292,6 +7174,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -6299,6 +7182,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6306,6 +7190,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -6313,6 +7198,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6320,6 +7206,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -6327,6 +7214,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -6334,6 +7222,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -6341,6 +7230,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -6348,6 +7238,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -6355,6 +7246,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6362,6 +7254,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -6369,6 +7262,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -6376,6 +7270,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6383,6 +7278,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -6390,6 +7286,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -6397,6 +7294,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -6404,6 +7302,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -6411,6 +7310,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -6418,6 +7318,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -6425,6 +7326,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -6432,6 +7334,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -6439,6 +7342,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -6446,6 +7350,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -6453,6 +7358,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -6460,6 +7366,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6467,6 +7374,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -6474,6 +7382,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6481,6 +7390,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -6488,6 +7398,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -6495,6 +7406,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -6502,6 +7414,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -6509,6 +7422,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6516,6 +7430,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6523,6 +7438,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6530,6 +7446,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6537,6 +7454,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6544,6 +7462,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -6551,6 +7470,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -6558,6 +7478,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6565,6 +7486,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -6572,6 +7494,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6579,6 +7502,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -6586,6 +7510,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6593,6 +7518,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -6600,6 +7526,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6607,6 +7534,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -6614,6 +7542,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6621,6 +7550,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -6628,6 +7558,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6635,6 +7566,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6642,6 +7574,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6649,6 +7582,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -6656,6 +7590,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -6663,6 +7598,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -6670,6 +7606,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6677,6 +7614,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -6684,6 +7622,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6691,6 +7630,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -6698,6 +7638,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -6705,6 +7646,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -6712,6 +7654,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -6719,6 +7662,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -6726,6 +7670,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6733,6 +7678,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -6740,6 +7686,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6747,6 +7694,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -6754,6 +7702,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6761,6 +7710,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -6768,6 +7718,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -6775,6 +7726,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -6782,6 +7734,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -6789,6 +7742,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -6797,6 +7751,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
 /**
  *  credentialengine.org/Badge
  *  A recognition designed to be displayed as a marker of accomplishment, activity, achievement, skill, interest, association, or identity.
+ * 
  *  @author credentialengine.org
  *  @class Badge
  *  @module org.credentialengine
@@ -6804,6 +7759,7 @@ Certification = stjs.extend(Certification, Credential, [], function(constructor,
  */
 var Badge = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6815,6 +7771,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -6822,6 +7779,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -6829,6 +7787,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -6836,6 +7795,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6843,6 +7803,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -6850,6 +7811,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6857,6 +7819,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -6864,6 +7827,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -6871,6 +7835,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -6878,6 +7843,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -6885,6 +7851,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -6892,6 +7859,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -6899,6 +7867,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -6906,6 +7875,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -6913,6 +7883,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -6920,6 +7891,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -6927,6 +7899,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -6934,6 +7907,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -6941,6 +7915,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -6948,6 +7923,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -6955,6 +7931,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -6962,6 +7939,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -6969,6 +7947,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -6976,6 +7955,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -6983,6 +7963,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -6990,6 +7971,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -6997,6 +7979,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7004,6 +7987,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -7011,6 +7995,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7018,6 +8003,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -7025,6 +8011,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -7032,6 +8019,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -7039,6 +8027,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -7046,6 +8035,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7053,6 +8043,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7060,6 +8051,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7067,6 +8059,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7074,6 +8067,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7081,6 +8075,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -7088,6 +8083,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -7095,6 +8091,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7102,6 +8099,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -7109,6 +8107,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7116,6 +8115,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -7123,6 +8123,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7130,6 +8131,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -7137,6 +8139,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7144,6 +8147,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -7151,6 +8155,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7158,6 +8163,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -7165,6 +8171,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7172,6 +8179,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7179,6 +8187,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7186,6 +8195,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -7193,6 +8203,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -7200,6 +8211,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -7207,6 +8219,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7214,6 +8227,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -7221,6 +8235,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7228,6 +8243,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -7235,6 +8251,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -7242,6 +8259,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -7249,6 +8267,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -7256,6 +8275,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -7263,6 +8283,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7270,6 +8291,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -7277,6 +8299,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7284,6 +8307,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -7291,6 +8315,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7298,6 +8323,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -7305,6 +8331,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -7312,6 +8339,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -7319,6 +8347,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -7326,6 +8355,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -7334,6 +8364,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
 /**
  *  credentialengine.org/MicroCredential
  *  A credential that attests to achievement of a specific knowledge, skill, or competency.
+ * 
  *  @author credentialengine.org
  *  @class MicroCredential
  *  @module org.credentialengine
@@ -7341,6 +8372,7 @@ Badge = stjs.extend(Badge, Credential, [], function(constructor, prototype) {
  */
 var MicroCredential = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7352,6 +8384,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -7359,6 +8392,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -7366,6 +8400,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -7373,6 +8408,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7380,6 +8416,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -7387,6 +8424,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7394,6 +8432,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -7401,6 +8440,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -7408,6 +8448,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -7415,6 +8456,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -7422,6 +8464,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -7429,6 +8472,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7436,6 +8480,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -7443,6 +8488,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -7450,6 +8496,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7457,6 +8504,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -7464,6 +8512,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -7471,6 +8520,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -7478,6 +8528,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -7485,6 +8536,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -7492,6 +8544,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -7499,6 +8552,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -7506,6 +8560,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -7513,6 +8568,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -7520,6 +8576,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -7527,6 +8584,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -7534,6 +8592,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7541,6 +8600,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -7548,6 +8608,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7555,6 +8616,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -7562,6 +8624,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -7569,6 +8632,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -7576,6 +8640,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -7583,6 +8648,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7590,6 +8656,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7597,6 +8664,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7604,6 +8672,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7611,6 +8680,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7618,6 +8688,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -7625,6 +8696,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -7632,6 +8704,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7639,6 +8712,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -7646,6 +8720,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7653,6 +8728,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -7660,6 +8736,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7667,6 +8744,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -7674,6 +8752,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7681,6 +8760,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -7688,6 +8768,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7695,6 +8776,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -7702,6 +8784,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7709,6 +8792,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7716,6 +8800,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7723,6 +8808,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -7730,6 +8816,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -7737,6 +8824,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -7744,6 +8832,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7751,6 +8840,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -7758,6 +8848,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7765,6 +8856,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -7772,6 +8864,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -7779,6 +8872,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -7786,6 +8880,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -7793,6 +8888,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -7800,6 +8896,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7807,6 +8904,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -7814,6 +8912,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -7821,6 +8920,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -7828,6 +8928,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -7835,6 +8936,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -7842,6 +8944,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -7849,6 +8952,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -7856,6 +8960,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -7863,6 +8968,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -7871,6 +8977,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
 /**
  *  credentialengine.org/IndustryClassification
  *  The class of enumerations identifying industries.
+ * 
  *  @author credentialengine.org
  *  @class IndustryClassification
  *  @module org.credentialengine
@@ -7878,6 +8985,7 @@ MicroCredential = stjs.extend(MicroCredential, Credential, [], function(construc
  */
 var IndustryClassification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7889,6 +8997,7 @@ IndustryClassification = stjs.extend(IndustryClassification, CredentialFramework
 /**
  *  credentialengine.org/CompetencyFramework
  *  An entity comprised of a logically related set of competencies.
+ * 
  *  @author credentialengine.org
  *  @class CompetencyFramework
  *  @module org.credentialengine
@@ -7896,6 +9005,7 @@ IndustryClassification = stjs.extend(IndustryClassification, CredentialFramework
  */
 var CompetencyFramework = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7907,6 +9017,7 @@ CompetencyFramework = stjs.extend(CompetencyFramework, CredentialFramework, [], 
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -7915,6 +9026,7 @@ CompetencyFramework = stjs.extend(CompetencyFramework, CredentialFramework, [], 
 /**
  *  credentialengine.org/OccupationClassification
  *  The class of enumerations identifying occupations.
+ * 
  *  @author credentialengine.org
  *  @class OccupationClassification
  *  @module org.credentialengine
@@ -7922,6 +9034,7 @@ CompetencyFramework = stjs.extend(CompetencyFramework, CredentialFramework, [], 
  */
 var OccupationClassification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7933,6 +9046,7 @@ OccupationClassification = stjs.extend(OccupationClassification, CredentialFrame
 /**
  *  credentialengine.org/InstructionalProgramClassification
  *  The class of enumerations identifying instructional programs.
+ * 
  *  @author credentialengine.org
  *  @class InstructionalProgramClassification
  *  @module org.credentialengine
@@ -7940,6 +9054,7 @@ OccupationClassification = stjs.extend(OccupationClassification, CredentialFrame
  */
 var InstructionalProgramClassification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7951,6 +9066,7 @@ InstructionalProgramClassification = stjs.extend(InstructionalProgramClassificat
 /**
  *  credentialengine.org/PostalAddress
  *  The mailing address.
+ * 
  *  @author credentialengine.org
  *  @class PostalAddress
  *  @module org.credentialengine
@@ -7958,6 +9074,7 @@ InstructionalProgramClassification = stjs.extend(InstructionalProgramClassificat
  */
 var PostalAddress = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7969,6 +9086,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -7976,6 +9094,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  http://purl.org/ctdl/terms/targetContactPoint
      *  Options for contacting the resource being described.
+     * 
      *  @property targetContactPoint
      *  @type ContactPoint
      */
@@ -7984,6 +9103,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
 /**
  *  credentialengine.org/Course
  *  A description of an educational course which may be offered as distinct instances at different times and places, or through different media or modes of study. An educational course is a sequence of one or more educational events and/or creative works which aims to build knowledge, competence or ability of learners.
+ * 
  *  @author credentialengine.org
  *  @class Course
  *  @module org.credentialengine
@@ -7991,6 +9111,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
  */
 var Course = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8002,6 +9123,7 @@ Course = stjs.extend(Course, LearningOpportunity, [], null, {owner: {name: "Arra
 /**
  *  credentialengine.org/CredentialOrganization
  *  An organization that plays one or more key roles in the lifecycle of a credential.
+ * 
  *  @author credentialengine.org
  *  @class CredentialOrganization
  *  @module org.credentialengine
@@ -8009,6 +9131,7 @@ Course = stjs.extend(Course, LearningOpportunity, [], null, {owner: {name: "Arra
  */
 var CredentialOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8020,6 +9143,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -8027,6 +9151,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -8034,6 +9159,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/address
      *  Physical address of the resource.
+     * 
      *  @property address
      *  @type PostalAddress
      */
@@ -8041,6 +9167,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -8048,6 +9175,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/agentPurpose
      *  A resource that describes the agent's primary purpose.
+     * 
      *  @property agentPurpose
      *  @type anyURI
      */
@@ -8055,6 +9183,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/agentPurposeDescription
      *  A description of the primary purpose of the agent being referenced.
+     * 
      *  @property agentPurposeDescription
      *  @type Literal
      */
@@ -8062,6 +9191,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/agentSectorType
      *  The types of sociological, economic, or political subdivision of society served by an agent.
+     * 
      *  @property agentSectorType
      *  @type CredentialAlignmentObject
      */
@@ -8069,6 +9199,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/agentType
      *  The type of the described agent.
+     * 
      *  @property agentType
      *  @type CredentialAlignmentObject
      */
@@ -8076,6 +9207,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/alternativeIdentifier
      *  An alternative, publicly available and globally unique agent identifier issued by an authoritative entity.
+     * 
      *  @property alternativeIdentifier
      *  @type IdentifierValue
      */
@@ -8083,6 +9215,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8090,6 +9223,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -8097,6 +9231,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/approves
      *  The agent being described officially accepts or authorizes the resource being referenced.
+     * 
      *  @property approves
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8104,6 +9239,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -8111,6 +9247,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/contactPoint
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoint
      *  @type ContactPoint
      */
@@ -8118,6 +9255,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/credentialingAction
      *  Indicates a past or potential credentialing action in which the resource being described plays an 'object' role.
+     * 
      *  @property credentialingAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -8125,6 +9263,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/department
      *  The organization being referenced is a department of the organization being described.
+     * 
      *  @property department
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8132,6 +9271,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -8139,6 +9279,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -8146,6 +9287,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/duns
      *  The Dun & Bradstreet DUNS number for identifying an organization or business person.
+     * 
      *  @property duns
      *  @type Literal
      */
@@ -8153,6 +9295,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/email
      *  Email address of the agent being described.
+     * 
      *  @property email
      *  @type Literal
      */
@@ -8160,6 +9303,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/employee
      *  The referenced person is an employee of the organization being described.
+     * 
      *  @property employee
      *  @type CredentialPerson
      */
@@ -8167,6 +9311,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/fein
      *  A Federal Employer Identification Number (FEIN) for identifying organizations, persons, states, government agencies, corporations, and companies.
+     * 
      *  @property fein
      *  @type Literal
      */
@@ -8174,6 +9319,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/foundingDate
      *  The date that this organization was founded.
+     * 
      *  @property foundingDate
      *  @type Literal
      */
@@ -8181,6 +9327,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/hasConditionManifest
      *  The resource being referenced describes a set of conditions maintained by the agent being described.
+     * 
      *  @property hasConditionManifest
      *  @type ConditionManifest
      */
@@ -8188,6 +9335,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/hasVerificationService
      *  A profile of available systems provided by the described agent to verify credential holders.
+     * 
      *  @property hasVerificationService
      *  @type VerificationServiceProfile
      */
@@ -8195,6 +9343,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -8202,6 +9351,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -8209,6 +9359,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/ipedsID
      *  The unique six (6) digit identifier assigned to all institutions that have submitted data to the Integrated Postsecondary Education Data System (IPEDS).
+     * 
      *  @property ipedsID
      *  @type Literal
      */
@@ -8216,6 +9367,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -8223,6 +9375,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -8230,6 +9383,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/learningOpportunityOffered
      *  A learning opportunity offered by the agent.
+     * 
      *  @property learningOpportunityOffered
      *  @type LearningOpportunityProfile
      */
@@ -8237,6 +9391,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -8244,6 +9399,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/missionAndGoalsStatement
      *  A resource that defines or explains the mission and goals statement of the resource being described.
+     * 
      *  @property missionAndGoalsStatement
      *  @type anyURI
      */
@@ -8251,6 +9407,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/missionAndGoalsStatementDescription
      *  The mission and goals statement of the described agent.
+     * 
      *  @property missionAndGoalsStatementDescription
      *  @type Literal
      */
@@ -8258,6 +9415,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/naics
      *  The North American Industry Classification System (NAICS) code for a particular organization or business person.
+     * 
      *  @property naics
      *  @type Literal
      */
@@ -8265,6 +9423,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -8272,6 +9431,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/offers
      *  The agent being described offers or confers the resource being referenced.
+     * 
      *  @property offers
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8279,6 +9439,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/opeID
      *  OPE ID number (Office of Postsecondary Education Identification) sometimes referred to as the Federal School Code.
+     * 
      *  @property opeID
      *  @type Literal
      */
@@ -8286,6 +9447,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/owns
      *  The described agent has legal title to the referenced resource.
+     * 
      *  @property owns
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8293,6 +9455,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/parentOrganization
      *  The larger, parent organization of the organization being described.
+     * 
      *  @property parentOrganization
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8300,6 +9463,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8307,6 +9471,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -8314,6 +9479,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/recognizes
      *  The agent being described recommends, endorses, indicates preference for, or otherwise provides positive judgment of a resource.
+     * 
      *  @property recognizes
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8321,6 +9487,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -8328,6 +9495,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -8335,6 +9503,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/renews
      *  The described agent handles the renewal of an award of the referenced credential.
+     * 
      *  @property renews
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8342,6 +9511,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/revokes
      *  The described agent ends the validity or operation of the resource being referenced based on cause.
+     * 
      *  @property revokes
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8349,6 +9519,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/sameAs
      *  The resource being described is the same as the resource being referenced.
+     * 
      *  @property sameAs
      *  @type anyURI
      */
@@ -8356,6 +9527,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/serviceType
      *  The type of service offered by the agent being described.
+     * 
      *  @property serviceType
      *  @type CredentialAlignmentObject
      */
@@ -8363,6 +9535,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/socialMedia
      *  A social media resource for the resource being described.
+     * 
      *  @property socialMedia
      *  @type anyURI
      */
@@ -8370,6 +9543,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -8377,6 +9551,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/subOrganization
      *  The organization being described is the parent of the organization being referenced.
+     * 
      *  @property subOrganization
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8384,6 +9559,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
     /**
      *  http://purl.org/ctdl/terms/targetContactPoint
      *  Options for contacting the resource being described.
+     * 
      *  @property targetContactPoint
      *  @type ContactPoint
      */
@@ -8392,6 +9568,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
 /**
  *  credentialengine.org/CredentialPerson
  *  A person who plays a role as primary agent in a credentialing action.
+ * 
  *  @author credentialengine.org
  *  @class CredentialPerson
  *  @module org.credentialengine
@@ -8399,6 +9576,7 @@ CredentialOrganization = stjs.extend(CredentialOrganization, Agent, [], function
  */
 var CredentialPerson = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8410,6 +9588,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8417,6 +9596,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -8424,6 +9604,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/approves
      *  The agent being described officially accepts or authorizes the resource being referenced.
+     * 
      *  @property approves
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8431,6 +9612,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/contactPoint
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoint
      *  @type ContactPoint
      */
@@ -8438,6 +9620,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -8445,6 +9628,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/email
      *  Email address of the agent being described.
+     * 
      *  @property email
      *  @type Literal
      */
@@ -8452,6 +9636,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -8459,6 +9644,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -8466,6 +9652,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/offers
      *  The agent being described offers or confers the resource being referenced.
+     * 
      *  @property offers
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8473,6 +9660,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/owns
      *  The described agent has legal title to the referenced resource.
+     * 
      *  @property owns
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8480,6 +9668,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8487,6 +9676,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -8494,6 +9684,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/recognizes
      *  The agent being described recommends, endorses, indicates preference for, or otherwise provides positive judgment of a resource.
+     * 
      *  @property recognizes
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8501,6 +9692,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/renews
      *  The described agent handles the renewal of an award of the referenced credential.
+     * 
      *  @property renews
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8508,6 +9700,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/revokes
      *  The described agent ends the validity or operation of the resource being referenced based on cause.
+     * 
      *  @property revokes
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8515,6 +9708,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/sameAs
      *  The resource being described is the same as the resource being referenced.
+     * 
      *  @property sameAs
      *  @type anyURI
      */
@@ -8522,6 +9716,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/serviceType
      *  The type of service offered by the agent being described.
+     * 
      *  @property serviceType
      *  @type CredentialAlignmentObject
      */
@@ -8529,6 +9724,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/socialMedia
      *  A social media resource for the resource being described.
+     * 
      *  @property socialMedia
      *  @type anyURI
      */
@@ -8536,6 +9732,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -8543,6 +9740,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
     /**
      *  http://purl.org/ctdl/terms/targetContactPoint
      *  Options for contacting the resource being described.
+     * 
      *  @property targetContactPoint
      *  @type ContactPoint
      */
@@ -8551,6 +9749,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
 /**
  *  credentialengine.org/QACredentialOrganization
  *  A quality assurance organization that plays one or more key roles in the lifecycle of a resource.
+ * 
  *  @author credentialengine.org
  *  @class QACredentialOrganization
  *  @module org.credentialengine
@@ -8558,6 +9757,7 @@ CredentialPerson = stjs.extend(CredentialPerson, Agent, [], function(constructor
  */
 var QACredentialOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8569,6 +9769,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -8576,6 +9777,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -8583,6 +9785,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/address
      *  Physical address of the resource.
+     * 
      *  @property address
      *  @type PostalAddress
      */
@@ -8590,6 +9793,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -8597,6 +9801,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/agentPurpose
      *  A resource that describes the agent's primary purpose.
+     * 
      *  @property agentPurpose
      *  @type anyURI
      */
@@ -8604,6 +9809,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/agentPurposeDescription
      *  A description of the primary purpose of the agent being referenced.
+     * 
      *  @property agentPurposeDescription
      *  @type Literal
      */
@@ -8611,6 +9817,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/agentSectorType
      *  The types of sociological, economic, or political subdivision of society served by an agent.
+     * 
      *  @property agentSectorType
      *  @type CredentialAlignmentObject
      */
@@ -8618,6 +9825,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/agentType
      *  The type of the described agent.
+     * 
      *  @property agentType
      *  @type CredentialAlignmentObject
      */
@@ -8625,6 +9833,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/alternativeIdentifier
      *  An alternative, publicly available and globally unique agent identifier issued by an authoritative entity.
+     * 
      *  @property alternativeIdentifier
      *  @type IdentifierValue
      */
@@ -8632,6 +9841,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8639,6 +9849,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -8646,6 +9857,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/approves
      *  The agent being described officially accepts or authorizes the resource being referenced.
+     * 
      *  @property approves
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8653,6 +9865,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -8660,6 +9873,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/contactPoint
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoint
      *  @type ContactPoint
      */
@@ -8667,6 +9881,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/credentialingAction
      *  Indicates a past or potential credentialing action in which the resource being described plays an 'object' role.
+     * 
      *  @property credentialingAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -8674,6 +9889,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/department
      *  The organization being referenced is a department of the organization being described.
+     * 
      *  @property department
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8681,6 +9897,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -8688,6 +9905,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -8695,6 +9913,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/duns
      *  The Dun & Bradstreet DUNS number for identifying an organization or business person.
+     * 
      *  @property duns
      *  @type Literal
      */
@@ -8702,6 +9921,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/email
      *  Email address of the agent being described.
+     * 
      *  @property email
      *  @type Literal
      */
@@ -8709,6 +9929,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/employee
      *  The referenced person is an employee of the organization being described.
+     * 
      *  @property employee
      *  @type CredentialPerson
      */
@@ -8716,6 +9937,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/fein
      *  A Federal Employer Identification Number (FEIN) for identifying organizations, persons, states, government agencies, corporations, and companies.
+     * 
      *  @property fein
      *  @type Literal
      */
@@ -8723,6 +9945,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/foundingDate
      *  The date that this organization was founded.
+     * 
      *  @property foundingDate
      *  @type Literal
      */
@@ -8730,6 +9953,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/hasConditionManifest
      *  The resource being referenced describes a set of conditions maintained by the agent being described.
+     * 
      *  @property hasConditionManifest
      *  @type ConditionManifest
      */
@@ -8737,6 +9961,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/hasVerificationService
      *  A profile of available systems provided by the described agent to verify credential holders.
+     * 
      *  @property hasVerificationService
      *  @type VerificationServiceProfile
      */
@@ -8744,6 +9969,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -8751,6 +9977,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -8758,6 +9985,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/ipedsID
      *  The unique six (6) digit identifier assigned to all institutions that have submitted data to the Integrated Postsecondary Education Data System (IPEDS).
+     * 
      *  @property ipedsID
      *  @type Literal
      */
@@ -8765,6 +9993,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -8772,6 +10001,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -8779,6 +10009,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/learningOpportunityOffered
      *  A learning opportunity offered by the agent.
+     * 
      *  @property learningOpportunityOffered
      *  @type LearningOpportunityProfile
      */
@@ -8786,6 +10017,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -8793,6 +10025,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/missionAndGoalsStatement
      *  A resource that defines or explains the mission and goals statement of the resource being described.
+     * 
      *  @property missionAndGoalsStatement
      *  @type anyURI
      */
@@ -8800,6 +10033,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/missionAndGoalsStatementDescription
      *  The mission and goals statement of the described agent.
+     * 
      *  @property missionAndGoalsStatementDescription
      *  @type Literal
      */
@@ -8807,6 +10041,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/naics
      *  The North American Industry Classification System (NAICS) code for a particular organization or business person.
+     * 
      *  @property naics
      *  @type Literal
      */
@@ -8814,6 +10049,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -8821,6 +10057,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/offers
      *  The agent being described offers or confers the resource being referenced.
+     * 
      *  @property offers
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8828,6 +10065,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/opeID
      *  OPE ID number (Office of Postsecondary Education Identification) sometimes referred to as the Federal School Code.
+     * 
      *  @property opeID
      *  @type Literal
      */
@@ -8835,6 +10073,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/owns
      *  The described agent has legal title to the referenced resource.
+     * 
      *  @property owns
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8842,6 +10081,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/parentOrganization
      *  The larger, parent organization of the organization being described.
+     * 
      *  @property parentOrganization
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8849,6 +10089,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -8856,6 +10097,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -8863,6 +10105,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/recognizes
      *  The agent being described recommends, endorses, indicates preference for, or otherwise provides positive judgment of a resource.
+     * 
      *  @property recognizes
      *  @type ApprenticeshipCertificate | AssessmentProfile | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | CompetencyFramework | Credential | CredentialOrganization | CredentialPerson | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QACredentialOrganization | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8870,6 +10113,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -8877,6 +10121,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -8884,6 +10129,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/renews
      *  The described agent handles the renewal of an award of the referenced credential.
+     * 
      *  @property renews
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8891,6 +10137,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/revokes
      *  The described agent ends the validity or operation of the resource being referenced based on cause.
+     * 
      *  @property revokes
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8898,6 +10145,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/sameAs
      *  The resource being described is the same as the resource being referenced.
+     * 
      *  @property sameAs
      *  @type anyURI
      */
@@ -8905,6 +10153,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/serviceType
      *  The type of service offered by the agent being described.
+     * 
      *  @property serviceType
      *  @type CredentialAlignmentObject
      */
@@ -8912,6 +10161,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/socialMedia
      *  A social media resource for the resource being described.
+     * 
      *  @property socialMedia
      *  @type anyURI
      */
@@ -8919,6 +10169,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -8926,6 +10177,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/subOrganization
      *  The organization being described is the parent of the organization being referenced.
+     * 
      *  @property subOrganization
      *  @type CredentialOrganization | QACredentialOrganization
      */
@@ -8933,6 +10185,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
     /**
      *  http://purl.org/ctdl/terms/targetContactPoint
      *  Options for contacting the resource being described.
+     * 
      *  @property targetContactPoint
      *  @type ContactPoint
      */
@@ -8941,6 +10194,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
 /**
  *  credentialengine.org/MasterDegree
  *  An award level that requires the successful completion of a program of study of at least the full-time equivalent of 1 but not more than 2 academic years of work beyond the bachelor's degree.
+ * 
  *  @author credentialengine.org
  *  @class MasterDegree
  *  @module org.credentialengine
@@ -8948,6 +10202,7 @@ QACredentialOrganization = stjs.extend(QACredentialOrganization, Agent, [], func
  */
 var MasterDegree = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8959,6 +10214,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -8966,6 +10222,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -8973,6 +10230,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -8980,6 +10238,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -8987,6 +10246,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -8994,6 +10254,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9001,6 +10262,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -9008,6 +10270,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -9015,6 +10278,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -9022,6 +10286,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -9029,6 +10294,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -9036,6 +10302,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9043,6 +10310,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -9050,6 +10318,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -9057,6 +10326,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9064,6 +10334,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -9071,6 +10342,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -9078,6 +10350,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -9085,6 +10358,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -9092,6 +10366,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -9099,6 +10374,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/degreeConcentration
      *  A structured plan of study within a degree major.
+     * 
      *  @property degreeConcentration
      *  @type CredentialAlignmentObject
      */
@@ -9106,6 +10382,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/degreeMajor
      *  The primary field of study of a degree-seeking student.
+     * 
      *  @property degreeMajor
      *  @type CredentialAlignmentObject
      */
@@ -9113,6 +10390,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/degreeMinor
      *  An optional, secondary field of study of a degree-seeking student.
+     * 
      *  @property degreeMinor
      *  @type CredentialAlignmentObject
      */
@@ -9120,6 +10398,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -9127,6 +10406,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -9134,6 +10414,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -9141,6 +10422,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -9148,6 +10430,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -9155,6 +10438,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -9162,6 +10446,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9169,6 +10454,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -9176,6 +10462,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9183,6 +10470,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -9190,6 +10478,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -9197,6 +10486,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -9204,6 +10494,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -9211,6 +10502,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9218,6 +10510,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9225,6 +10518,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9232,6 +10526,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9239,6 +10534,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9246,6 +10542,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -9253,6 +10550,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -9260,6 +10558,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9267,6 +10566,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -9274,6 +10574,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9281,6 +10582,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -9288,6 +10590,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9295,6 +10598,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -9302,6 +10606,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9309,6 +10614,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -9316,6 +10622,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9323,6 +10630,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -9330,6 +10638,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9337,6 +10646,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9344,6 +10654,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9351,6 +10662,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -9358,6 +10670,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -9365,6 +10678,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -9372,6 +10686,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9379,6 +10694,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -9386,6 +10702,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9393,6 +10710,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -9400,6 +10718,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -9407,6 +10726,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -9414,6 +10734,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -9421,6 +10742,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -9428,6 +10750,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9435,6 +10758,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -9442,6 +10766,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9449,6 +10774,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -9456,6 +10782,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9463,6 +10790,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -9470,6 +10798,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -9477,6 +10806,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -9484,6 +10814,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -9491,6 +10822,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -9499,6 +10831,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
 /**
  *  credentialengine.org/BachelorDegree
  *  An award level that normally requires at least 4 but not more than 5 years of full-time equivalent college-level work.
+ * 
  *  @author credentialengine.org
  *  @class BachelorDegree
  *  @module org.credentialengine
@@ -9506,6 +10839,7 @@ MasterDegree = stjs.extend(MasterDegree, Degree, [], function(constructor, proto
  */
 var BachelorDegree = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9517,6 +10851,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -9524,6 +10859,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -9531,6 +10867,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -9538,6 +10875,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9545,6 +10883,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -9552,6 +10891,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9559,6 +10899,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -9566,6 +10907,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -9573,6 +10915,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -9580,6 +10923,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -9587,6 +10931,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -9594,6 +10939,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9601,6 +10947,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -9608,6 +10955,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -9615,6 +10963,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9622,6 +10971,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -9629,6 +10979,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -9636,6 +10987,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -9643,6 +10995,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -9650,6 +11003,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -9657,6 +11011,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeConcentration
      *  A structured plan of study within a degree major.
+     * 
      *  @property degreeConcentration
      *  @type CredentialAlignmentObject
      */
@@ -9664,6 +11019,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeMajor
      *  The primary field of study of a degree-seeking student.
+     * 
      *  @property degreeMajor
      *  @type CredentialAlignmentObject
      */
@@ -9671,6 +11027,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeMinor
      *  An optional, secondary field of study of a degree-seeking student.
+     * 
      *  @property degreeMinor
      *  @type CredentialAlignmentObject
      */
@@ -9678,6 +11035,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -9685,6 +11043,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -9692,6 +11051,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -9699,6 +11059,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -9706,6 +11067,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -9713,6 +11075,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -9720,6 +11083,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9727,6 +11091,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -9734,6 +11099,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9741,6 +11107,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -9748,6 +11115,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -9755,6 +11123,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -9762,6 +11131,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -9769,6 +11139,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9776,6 +11147,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9783,6 +11155,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9790,6 +11163,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9797,6 +11171,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9804,6 +11179,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -9811,6 +11187,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -9818,6 +11195,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9825,6 +11203,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -9832,6 +11211,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9839,6 +11219,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -9846,6 +11227,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9853,6 +11235,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -9860,6 +11243,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9867,6 +11251,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -9874,6 +11259,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9881,6 +11267,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -9888,6 +11275,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9895,6 +11283,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9902,6 +11291,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9909,6 +11299,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -9916,6 +11307,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -9923,6 +11315,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -9930,6 +11323,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9937,6 +11331,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -9944,6 +11339,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -9951,6 +11347,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -9958,6 +11355,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -9965,6 +11363,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -9972,6 +11371,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -9979,6 +11379,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -9986,6 +11387,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -9993,6 +11395,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -10000,6 +11403,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10007,6 +11411,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -10014,6 +11419,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10021,6 +11427,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -10028,6 +11435,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -10035,6 +11443,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -10042,6 +11451,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -10049,6 +11459,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -10057,6 +11468,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
 /**
  *  credentialengine.org/AssociateDegree
  *  An award level that normally requires at least 2 but less than 4 years of full-time equivalent college-level work.
+ * 
  *  @author credentialengine.org
  *  @class AssociateDegree
  *  @module org.credentialengine
@@ -10064,6 +11476,7 @@ BachelorDegree = stjs.extend(BachelorDegree, Degree, [], function(constructor, p
  */
 var AssociateDegree = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10075,6 +11488,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -10082,6 +11496,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -10089,6 +11504,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -10096,6 +11512,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10103,6 +11520,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -10110,6 +11528,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10117,6 +11536,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -10124,6 +11544,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -10131,6 +11552,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -10138,6 +11560,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -10145,6 +11568,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -10152,6 +11576,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10159,6 +11584,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -10166,6 +11592,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -10173,6 +11600,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10180,6 +11608,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -10187,6 +11616,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -10194,6 +11624,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -10201,6 +11632,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -10208,6 +11640,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -10215,6 +11648,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/degreeConcentration
      *  A structured plan of study within a degree major.
+     * 
      *  @property degreeConcentration
      *  @type CredentialAlignmentObject
      */
@@ -10222,6 +11656,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/degreeMajor
      *  The primary field of study of a degree-seeking student.
+     * 
      *  @property degreeMajor
      *  @type CredentialAlignmentObject
      */
@@ -10229,6 +11664,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/degreeMinor
      *  An optional, secondary field of study of a degree-seeking student.
+     * 
      *  @property degreeMinor
      *  @type CredentialAlignmentObject
      */
@@ -10236,6 +11672,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -10243,6 +11680,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -10250,6 +11688,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -10257,6 +11696,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -10264,6 +11704,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -10271,6 +11712,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -10278,6 +11720,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10285,6 +11728,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -10292,6 +11736,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10299,6 +11744,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -10306,6 +11752,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -10313,6 +11760,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -10320,6 +11768,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -10327,6 +11776,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10334,6 +11784,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10341,6 +11792,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10348,6 +11800,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10355,6 +11808,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10362,6 +11816,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -10369,6 +11824,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -10376,6 +11832,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10383,6 +11840,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -10390,6 +11848,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10397,6 +11856,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -10404,6 +11864,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10411,6 +11872,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -10418,6 +11880,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10425,6 +11888,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -10432,6 +11896,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10439,6 +11904,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -10446,6 +11912,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10453,6 +11920,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10460,6 +11928,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10467,6 +11936,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -10474,6 +11944,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -10481,6 +11952,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -10488,6 +11960,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10495,6 +11968,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -10502,6 +11976,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10509,6 +11984,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -10516,6 +11992,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -10523,6 +12000,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -10530,6 +12008,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -10537,6 +12016,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -10544,6 +12024,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10551,6 +12032,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -10558,6 +12040,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10565,6 +12048,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -10572,6 +12056,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10579,6 +12064,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -10586,6 +12072,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -10593,6 +12080,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -10600,6 +12088,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -10607,6 +12096,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -10615,6 +12105,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
 /**
  *  credentialengine.org/DoctoralDegree
  *  The highest award level to be earned for postsecondary study.
+ * 
  *  @author credentialengine.org
  *  @class DoctoralDegree
  *  @module org.credentialengine
@@ -10622,6 +12113,7 @@ AssociateDegree = stjs.extend(AssociateDegree, Degree, [], function(constructor,
  */
 var DoctoralDegree = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10633,6 +12125,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -10640,6 +12133,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -10647,6 +12141,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -10654,6 +12149,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10661,6 +12157,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -10668,6 +12165,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10675,6 +12173,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -10682,6 +12181,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -10689,6 +12189,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -10696,6 +12197,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -10703,6 +12205,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -10710,6 +12213,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10717,6 +12221,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -10724,6 +12229,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -10731,6 +12237,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10738,6 +12245,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -10745,6 +12253,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -10752,6 +12261,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -10759,6 +12269,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -10766,6 +12277,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -10773,6 +12285,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeConcentration
      *  A structured plan of study within a degree major.
+     * 
      *  @property degreeConcentration
      *  @type CredentialAlignmentObject
      */
@@ -10780,6 +12293,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeMajor
      *  The primary field of study of a degree-seeking student.
+     * 
      *  @property degreeMajor
      *  @type CredentialAlignmentObject
      */
@@ -10787,6 +12301,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/degreeMinor
      *  An optional, secondary field of study of a degree-seeking student.
+     * 
      *  @property degreeMinor
      *  @type CredentialAlignmentObject
      */
@@ -10794,6 +12309,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -10801,6 +12317,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -10808,6 +12325,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -10815,6 +12333,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -10822,6 +12341,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -10829,6 +12349,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -10836,6 +12357,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10843,6 +12365,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -10850,6 +12373,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10857,6 +12381,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -10864,6 +12389,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -10871,6 +12397,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -10878,6 +12405,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -10885,6 +12413,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10892,6 +12421,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10899,6 +12429,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10906,6 +12437,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10913,6 +12445,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10920,6 +12453,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -10927,6 +12461,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -10934,6 +12469,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10941,6 +12477,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -10948,6 +12485,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10955,6 +12493,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -10962,6 +12501,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10969,6 +12509,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -10976,6 +12517,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -10983,6 +12525,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -10990,6 +12533,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -10997,6 +12541,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -11004,6 +12549,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11011,6 +12557,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11018,6 +12565,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11025,6 +12573,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -11032,6 +12581,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -11039,6 +12589,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -11046,6 +12597,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11053,6 +12605,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -11060,6 +12613,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11067,6 +12621,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -11074,6 +12629,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -11081,6 +12637,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -11088,6 +12645,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -11095,6 +12653,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -11102,6 +12661,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11109,6 +12669,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -11116,6 +12677,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11123,6 +12685,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -11130,6 +12693,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11137,6 +12701,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -11144,6 +12709,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -11151,6 +12717,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -11158,6 +12725,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -11165,6 +12733,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -11173,6 +12742,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
 /**
  *  credentialengine.org/SecondarySchoolDiploma
  *  A diploma awarded by secondary education institutions for successful completion of a secondary school program typically lasting four years.
+ * 
  *  @author credentialengine.org
  *  @class SecondarySchoolDiploma
  *  @module org.credentialengine
@@ -11180,6 +12750,7 @@ DoctoralDegree = stjs.extend(DoctoralDegree, Degree, [], function(constructor, p
  */
 var SecondarySchoolDiploma = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11191,6 +12762,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -11198,6 +12770,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -11205,6 +12778,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -11212,6 +12786,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11219,6 +12794,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -11226,6 +12802,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11233,6 +12810,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -11240,6 +12818,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -11247,6 +12826,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -11254,6 +12834,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -11261,6 +12842,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -11268,6 +12850,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11275,6 +12858,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -11282,6 +12866,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -11289,6 +12874,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11296,6 +12882,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -11303,6 +12890,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -11310,6 +12898,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -11317,6 +12906,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -11324,6 +12914,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -11331,6 +12922,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -11338,6 +12930,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -11345,6 +12938,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -11352,6 +12946,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -11359,6 +12954,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -11366,6 +12962,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -11373,6 +12970,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11380,6 +12978,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -11387,6 +12986,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11394,6 +12994,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -11401,6 +13002,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -11408,6 +13010,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -11415,6 +13018,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -11422,6 +13026,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11429,6 +13034,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11436,6 +13042,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11443,6 +13050,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11450,6 +13058,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11457,6 +13066,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -11464,6 +13074,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -11471,6 +13082,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11478,6 +13090,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -11485,6 +13098,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11492,6 +13106,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -11499,6 +13114,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11506,6 +13122,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -11513,6 +13130,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11520,6 +13138,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -11527,6 +13146,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11534,6 +13154,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -11541,6 +13162,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11548,6 +13170,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11555,6 +13178,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11562,6 +13186,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -11569,6 +13194,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -11576,6 +13202,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -11583,6 +13210,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11590,6 +13218,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -11597,6 +13226,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11604,6 +13234,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -11611,6 +13242,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -11618,6 +13250,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -11625,6 +13258,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -11632,6 +13266,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -11639,6 +13274,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11646,6 +13282,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -11653,6 +13290,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11660,6 +13298,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -11667,6 +13306,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11674,6 +13314,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -11681,6 +13322,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -11688,6 +13330,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -11695,6 +13338,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -11702,6 +13346,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -11710,6 +13355,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
 /**
  *  credentialengine.org/GeneralEducationDevelopment
  *  A credential awarded by examination that demonstrates that an individual has acquired secondary school-level academic skills.
+ * 
  *  @author credentialengine.org
  *  @class GeneralEducationDevelopment
  *  @module org.credentialengine
@@ -11717,6 +13363,7 @@ SecondarySchoolDiploma = stjs.extend(SecondarySchoolDiploma, Diploma, [], functi
  */
 var GeneralEducationDevelopment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11728,6 +13375,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -11735,6 +13383,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -11742,6 +13391,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -11749,6 +13399,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11756,6 +13407,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -11763,6 +13415,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11770,6 +13423,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -11777,6 +13431,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -11784,6 +13439,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -11791,6 +13447,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -11798,6 +13455,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -11805,6 +13463,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11812,6 +13471,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -11819,6 +13479,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -11826,6 +13487,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -11833,6 +13495,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -11840,6 +13503,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -11847,6 +13511,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -11854,6 +13519,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -11861,6 +13527,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -11868,6 +13535,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -11875,6 +13543,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -11882,6 +13551,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -11889,6 +13559,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -11896,6 +13567,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -11903,6 +13575,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -11910,6 +13583,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11917,6 +13591,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -11924,6 +13599,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11931,6 +13607,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -11938,6 +13615,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -11945,6 +13623,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -11952,6 +13631,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -11959,6 +13639,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11966,6 +13647,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11973,6 +13655,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11980,6 +13663,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11987,6 +13671,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -11994,6 +13679,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -12001,6 +13687,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -12008,6 +13695,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12015,6 +13703,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -12022,6 +13711,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12029,6 +13719,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -12036,6 +13727,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12043,6 +13735,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -12050,6 +13743,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12057,6 +13751,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -12064,6 +13759,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12071,6 +13767,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -12078,6 +13775,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12085,6 +13783,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12092,6 +13791,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12099,6 +13799,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -12106,6 +13807,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -12113,6 +13815,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -12120,6 +13823,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12127,6 +13831,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -12134,6 +13839,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12141,6 +13847,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -12148,6 +13855,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -12155,6 +13863,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -12162,6 +13871,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -12169,6 +13879,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -12176,6 +13887,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12183,6 +13895,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -12190,6 +13903,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12197,6 +13911,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -12204,6 +13919,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12211,6 +13927,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -12218,6 +13935,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -12225,6 +13943,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -12232,6 +13951,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -12239,6 +13959,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -12247,6 +13968,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
 /**
  *  credentialengine.org/ApprenticeshipCertificate
  *  A credential earned through work-based learning and postsecondary earn-and-learn models that meet national standards and are applicable to industry trades and professions.
+ * 
  *  @author credentialengine.org
  *  @class ApprenticeshipCertificate
  *  @module org.credentialengine
@@ -12254,6 +13976,7 @@ GeneralEducationDevelopment = stjs.extend(GeneralEducationDevelopment, Diploma, 
  */
 var ApprenticeshipCertificate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12265,6 +13988,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -12272,6 +13996,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -12279,6 +14004,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -12286,6 +14012,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12293,6 +14020,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -12300,6 +14028,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12307,6 +14036,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -12314,6 +14044,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -12321,6 +14052,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -12328,6 +14060,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -12335,6 +14068,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -12342,6 +14076,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12349,6 +14084,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -12356,6 +14092,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -12363,6 +14100,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12370,6 +14108,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -12377,6 +14116,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -12384,6 +14124,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -12391,6 +14132,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -12398,6 +14140,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -12405,6 +14148,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -12412,6 +14156,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -12419,6 +14164,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -12426,6 +14172,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -12433,6 +14180,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -12440,6 +14188,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -12447,6 +14196,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12454,6 +14204,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -12461,6 +14212,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12468,6 +14220,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -12475,6 +14228,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -12482,6 +14236,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -12489,6 +14244,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -12496,6 +14252,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12503,6 +14260,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12510,6 +14268,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12517,6 +14276,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12524,6 +14284,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12531,6 +14292,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -12538,6 +14300,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -12545,6 +14308,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12552,6 +14316,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -12559,6 +14324,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12566,6 +14332,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -12573,6 +14340,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12580,6 +14348,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -12587,6 +14356,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12594,6 +14364,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -12601,6 +14372,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12608,6 +14380,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -12615,6 +14388,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12622,6 +14396,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12629,6 +14404,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12636,6 +14412,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -12643,6 +14420,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -12650,6 +14428,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -12657,6 +14436,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12664,6 +14444,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -12671,6 +14452,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12678,6 +14460,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -12685,6 +14468,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -12692,6 +14476,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -12699,6 +14484,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -12706,6 +14492,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -12713,6 +14500,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12720,6 +14508,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -12727,6 +14516,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12734,6 +14524,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -12741,6 +14532,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12748,6 +14540,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -12755,6 +14548,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -12762,6 +14556,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -12769,6 +14564,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -12776,6 +14572,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -12784,6 +14581,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
 /**
  *  credentialengine.org/DigitalBadge
  *  A badge offered in digital form.
+ * 
  *  @author credentialengine.org
  *  @class DigitalBadge
  *  @module org.credentialengine
@@ -12791,6 +14589,7 @@ ApprenticeshipCertificate = stjs.extend(ApprenticeshipCertificate, Certificate, 
  */
 var DigitalBadge = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12802,6 +14601,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -12809,6 +14609,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -12816,6 +14617,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -12823,6 +14625,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12830,6 +14633,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -12837,6 +14641,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12844,6 +14649,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -12851,6 +14657,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -12858,6 +14665,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -12865,6 +14673,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -12872,6 +14681,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -12879,6 +14689,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12886,6 +14697,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -12893,6 +14705,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -12900,6 +14713,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -12907,6 +14721,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -12914,6 +14729,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -12921,6 +14737,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -12928,6 +14745,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -12935,6 +14753,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -12942,6 +14761,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -12949,6 +14769,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -12956,6 +14777,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -12963,6 +14785,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -12970,6 +14793,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -12977,6 +14801,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -12984,6 +14809,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -12991,6 +14817,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -12998,6 +14825,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13005,6 +14833,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -13012,6 +14841,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -13019,6 +14849,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -13026,6 +14857,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -13033,6 +14865,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13040,6 +14873,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13047,6 +14881,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13054,6 +14889,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13061,6 +14897,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13068,6 +14905,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -13075,6 +14913,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -13082,6 +14921,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13089,6 +14929,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -13096,6 +14937,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13103,6 +14945,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -13110,6 +14953,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13117,6 +14961,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -13124,6 +14969,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13131,6 +14977,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -13138,6 +14985,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13145,6 +14993,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -13152,6 +15001,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13159,6 +15009,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13166,6 +15017,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13173,6 +15025,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -13180,6 +15033,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -13187,6 +15041,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -13194,6 +15049,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13201,6 +15057,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -13208,6 +15065,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13215,6 +15073,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -13222,6 +15081,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -13229,6 +15089,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -13236,6 +15097,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -13243,6 +15105,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -13250,6 +15113,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13257,6 +15121,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -13264,6 +15129,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13271,6 +15137,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -13278,6 +15145,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13285,6 +15153,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -13292,6 +15161,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -13299,6 +15169,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -13306,6 +15177,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -13313,6 +15185,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -13321,6 +15194,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
 /**
  *  credentialengine.org/OpenBadge
  *  An Open Badge is a visual symbol containing verifiable claims in accordance with the Open Badges specification and delivered digitally.
+ * 
  *  @author credentialengine.org
  *  @class OpenBadge
  *  @module org.credentialengine
@@ -13328,6 +15202,7 @@ DigitalBadge = stjs.extend(DigitalBadge, Badge, [], function(constructor, protot
  */
 var OpenBadge = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13339,6 +15214,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -13346,6 +15222,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -13353,6 +15230,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -13360,6 +15238,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13367,6 +15246,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -13374,6 +15254,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13381,6 +15262,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -13388,6 +15270,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -13395,6 +15278,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -13402,6 +15286,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -13409,6 +15294,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -13416,6 +15302,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13423,6 +15310,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -13430,6 +15318,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -13437,6 +15326,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13444,6 +15334,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -13451,6 +15342,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -13458,6 +15350,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -13465,6 +15358,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -13472,6 +15366,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -13479,6 +15374,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -13486,6 +15382,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -13493,6 +15390,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -13500,6 +15398,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -13507,6 +15406,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -13514,6 +15414,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -13521,6 +15422,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13528,6 +15430,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -13535,6 +15438,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13542,6 +15446,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -13549,6 +15454,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -13556,6 +15462,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -13563,6 +15470,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -13570,6 +15478,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13577,6 +15486,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13584,6 +15494,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13591,6 +15502,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13598,6 +15510,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13605,6 +15518,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -13612,6 +15526,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -13619,6 +15534,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13626,6 +15542,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -13633,6 +15550,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13640,6 +15558,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -13647,6 +15566,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13654,6 +15574,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -13661,6 +15582,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13668,6 +15590,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -13675,6 +15598,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13682,6 +15606,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -13689,6 +15614,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13696,6 +15622,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13703,6 +15630,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13710,6 +15638,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -13717,6 +15646,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -13724,6 +15654,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -13731,6 +15662,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13738,6 +15670,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -13745,6 +15678,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13752,6 +15686,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -13759,6 +15694,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -13766,6 +15702,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -13773,6 +15710,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -13780,6 +15718,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -13787,6 +15726,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13794,6 +15734,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -13801,6 +15742,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13808,6 +15750,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -13815,6 +15758,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13822,6 +15766,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -13829,6 +15774,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -13836,6 +15782,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -13843,6 +15790,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -13850,6 +15798,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -13858,6 +15807,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
 /**
  *  credentialengine.org/ProfessionalDoctorate
  *  A doctoral degree conferred upon completion of a program providing the knowledge and skills for the recognition, credential, or license required for professional practice.
+ * 
  *  @author credentialengine.org
  *  @class ProfessionalDoctorate
  *  @module org.credentialengine
@@ -13865,6 +15815,7 @@ OpenBadge = stjs.extend(OpenBadge, Badge, [], function(constructor, prototype) {
  */
 var ProfessionalDoctorate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13876,6 +15827,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -13883,6 +15835,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -13890,6 +15843,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -13897,6 +15851,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13904,6 +15859,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -13911,6 +15867,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13918,6 +15875,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -13925,6 +15883,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -13932,6 +15891,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -13939,6 +15899,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -13946,6 +15907,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -13953,6 +15915,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -13960,6 +15923,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -13967,6 +15931,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -13974,6 +15939,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -13981,6 +15947,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -13988,6 +15955,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -13995,6 +15963,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -14002,6 +15971,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -14009,6 +15979,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -14016,6 +15987,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -14023,6 +15995,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -14030,6 +16003,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -14037,6 +16011,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -14044,6 +16019,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -14051,6 +16027,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -14058,6 +16035,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14065,6 +16043,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -14072,6 +16051,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14079,6 +16059,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -14086,6 +16067,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -14093,6 +16075,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -14100,6 +16083,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -14107,6 +16091,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14114,6 +16099,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14121,6 +16107,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14128,6 +16115,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14135,6 +16123,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14142,6 +16131,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -14149,6 +16139,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -14156,6 +16147,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14163,6 +16155,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -14170,6 +16163,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14177,6 +16171,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -14184,6 +16179,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14191,6 +16187,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -14198,6 +16195,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14205,6 +16203,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -14212,6 +16211,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14219,6 +16219,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -14226,6 +16227,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14233,6 +16235,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14240,6 +16243,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14247,6 +16251,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -14254,6 +16259,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -14261,6 +16267,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -14268,6 +16275,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14275,6 +16283,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -14282,6 +16291,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14289,6 +16299,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -14296,6 +16307,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -14303,6 +16315,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -14310,6 +16323,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -14317,6 +16331,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -14324,6 +16339,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14331,6 +16347,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -14338,6 +16355,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14345,6 +16363,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -14352,6 +16371,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14359,6 +16379,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -14366,6 +16387,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -14373,6 +16395,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -14380,6 +16403,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -14387,6 +16411,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -14395,6 +16420,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
 /**
  *  credentialengine.org/ResearchDoctorate
  *  A doctoral degree conferred for advanced work beyond the master level, including the preparation and defense of a thesis or dissertation based on original research, or the planning and execution of an original project demonstrating substantial artistic or scholarly achievement.
+ * 
  *  @author credentialengine.org
  *  @class ResearchDoctorate
  *  @module org.credentialengine
@@ -14402,6 +16428,7 @@ ProfessionalDoctorate = stjs.extend(ProfessionalDoctorate, DoctoralDegree, [], f
  */
 var ResearchDoctorate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14413,6 +16440,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -14420,6 +16448,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -14427,6 +16456,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -14434,6 +16464,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14441,6 +16472,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -14448,6 +16480,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14455,6 +16488,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -14462,6 +16496,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -14469,6 +16504,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -14476,6 +16512,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -14483,6 +16520,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -14490,6 +16528,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14497,6 +16536,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -14504,6 +16544,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -14511,6 +16552,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14518,6 +16560,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -14525,6 +16568,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -14532,6 +16576,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -14539,6 +16584,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -14546,6 +16592,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -14553,6 +16600,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -14560,6 +16608,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -14567,6 +16616,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -14574,6 +16624,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -14581,6 +16632,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -14588,6 +16640,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -14595,6 +16648,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14602,6 +16656,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -14609,6 +16664,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14616,6 +16672,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -14623,6 +16680,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -14630,6 +16688,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -14637,6 +16696,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -14644,6 +16704,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14651,6 +16712,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14658,6 +16720,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14665,6 +16728,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14672,6 +16736,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14679,6 +16744,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -14686,6 +16752,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -14693,6 +16760,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14700,6 +16768,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -14707,6 +16776,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14714,6 +16784,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -14721,6 +16792,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14728,6 +16800,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -14735,6 +16808,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14742,6 +16816,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -14749,6 +16824,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14756,6 +16832,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -14763,6 +16840,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14770,6 +16848,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14777,6 +16856,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14784,6 +16864,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -14791,6 +16872,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -14798,6 +16880,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -14805,6 +16888,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14812,6 +16896,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -14819,6 +16904,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14826,6 +16912,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -14833,6 +16920,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -14840,6 +16928,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -14847,6 +16936,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -14854,6 +16944,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -14861,6 +16952,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14868,6 +16960,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -14875,6 +16968,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14882,6 +16976,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -14889,6 +16984,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14896,6 +16992,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -14903,6 +17000,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -14910,6 +17008,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -14917,6 +17016,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -14924,6 +17024,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -14932,6 +17033,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
 /**
  *  credentialengine.org/JourneymanCertificate
  *  A credential awarded to skilled workers on successful completion of an apprenticeship in industry trades and professions.
+ * 
  *  @author credentialengine.org
  *  @class JourneymanCertificate
  *  @module org.credentialengine
@@ -14939,6 +17041,7 @@ ResearchDoctorate = stjs.extend(ResearchDoctorate, DoctoralDegree, [], function(
  */
 var JourneymanCertificate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14950,6 +17053,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -14957,6 +17061,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -14964,6 +17069,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -14971,6 +17077,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -14978,6 +17085,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -14985,6 +17093,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -14992,6 +17101,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -14999,6 +17109,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -15006,6 +17117,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -15013,6 +17125,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -15020,6 +17133,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -15027,6 +17141,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15034,6 +17149,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -15041,6 +17157,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -15048,6 +17165,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15055,6 +17173,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -15062,6 +17181,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -15069,6 +17189,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -15076,6 +17197,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -15083,6 +17205,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -15090,6 +17213,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -15097,6 +17221,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -15104,6 +17229,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -15111,6 +17237,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -15118,6 +17245,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -15125,6 +17253,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -15132,6 +17261,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15139,6 +17269,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -15146,6 +17277,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15153,6 +17285,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -15160,6 +17293,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -15167,6 +17301,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -15174,6 +17309,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -15181,6 +17317,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15188,6 +17325,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15195,6 +17333,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15202,6 +17341,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15209,6 +17349,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15216,6 +17357,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -15223,6 +17365,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -15230,6 +17373,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15237,6 +17381,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -15244,6 +17389,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15251,6 +17397,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -15258,6 +17405,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15265,6 +17413,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -15272,6 +17421,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15279,6 +17429,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -15286,6 +17437,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15293,6 +17445,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -15300,6 +17453,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15307,6 +17461,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15314,6 +17469,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15321,6 +17477,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -15328,6 +17485,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -15335,6 +17493,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -15342,6 +17501,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15349,6 +17509,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -15356,6 +17517,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15363,6 +17525,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -15370,6 +17533,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -15377,6 +17541,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -15384,6 +17549,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -15391,6 +17557,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -15398,6 +17565,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15405,6 +17573,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -15412,6 +17581,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15419,6 +17589,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -15426,6 +17597,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15433,6 +17605,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -15440,6 +17613,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -15447,6 +17621,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -15454,6 +17629,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -15461,6 +17637,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */
@@ -15469,6 +17646,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
 /**
  *  credentialengine.org/MasterCertificate
  *  A credential awarded upon demonstration through apprenticeship of the highest level of skills and performance in industry trades and professions.
+ * 
  *  @author credentialengine.org
  *  @class MasterCertificate
  *  @module org.credentialengine
@@ -15476,6 +17654,7 @@ JourneymanCertificate = stjs.extend(JourneymanCertificate, ApprenticeshipCertifi
  */
 var MasterCertificate = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15487,6 +17666,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/accreditedBy
      *  An agent that accredits the described resource.
+     * 
      *  @property accreditedBy
      *  @type QACredentialOrganization
      */
@@ -15494,6 +17674,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/accreditedIn
      *  The resource being described is accredited in the jurisdiction being referenced.
+     * 
      *  @property accreditedIn
      *  @type JurisdictionProfile
      */
@@ -15501,6 +17682,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/administrationProcess
      *  A profile of the process by which the resource being described, or aspects of it, are administered.
+     * 
      *  @property administrationProcess
      *  @type ProcessProfile
      */
@@ -15508,6 +17690,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/advancedStandingFrom
      *  The resource being described has time or cost reduced by the resource being referenced.
+     * 
      *  @property advancedStandingFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15515,6 +17698,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Literal
      */
@@ -15522,6 +17706,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/approvedBy
      *  Pronouncement of a favorable judgment by the agent being referenced.
+     * 
      *  @property approvedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15529,6 +17714,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/approvedIn
      *  The resource being described is approved in the jurisdiction being referenced.
+     * 
      *  @property approvedIn
      *  @type JurisdictionProfile
      */
@@ -15536,6 +17722,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/audienceLevelType
      *  A point in a progression through an educational or training context, for which the described resource is intended.
+     * 
      *  @property audienceLevelType
      *  @type CredentialAlignmentObject
      */
@@ -15543,6 +17730,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/availabilityListing
      *  A resource that lists online and/or physical locations for the described resource.
+     * 
      *  @property availabilityListing
      *  @type anyURI
      */
@@ -15550,6 +17738,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/availableAt
      *  The location where the described resource is available.
+     * 
      *  @property availableAt
      *  @type GeoCoordinates
      */
@@ -15557,6 +17746,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/availableOnlineAt
      *  The online location where the described resource is available.
+     * 
      *  @property availableOnlineAt
      *  @type anyURI
      */
@@ -15564,6 +17754,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/broadAlignment
      *  The resource being referenced covers all of the relevant concepts in the resource being described as well as relevant concepts not found in the resource being described.
+     * 
      *  @property broadAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15571,6 +17762,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/codedNotation
      *  A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.
+     * 
      *  @property codedNotation
      *  @type Literal
      */
@@ -15578,6 +17770,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/commonConditions
      *  The resource being referenced describes a set of common conditions applicable to the resource being described.
+     * 
      *  @property commonConditions
      *  @type ConditionManifest
      */
@@ -15585,6 +17778,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15592,6 +17786,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/corequisite
      *  The resource being referenced must be pursued concurrently with the resource being described.
+     * 
      *  @property corequisite
      *  @type ConditionProfile
      */
@@ -15599,6 +17794,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/credentialId
      *  A globally unique identifier by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property credentialId
      *  @type Literal
      */
@@ -15606,6 +17802,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/credentialStatusType
      *  The status of the credential.
+     * 
      *  @property credentialStatusType
      *  @type CredentialAlignmentObject
      */
@@ -15613,6 +17810,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/ctid
      *  A globally unique Credential Transparency Identifier (CTID) issued by the Credential Registry Service (CRS) by which the creator/owner/provider of a credential recognizes the credential in transactions with the external environment (e.g., in verifiable claims involving the credential).
+     * 
      *  @property ctid
      *  @type Literal
      */
@@ -15620,6 +17818,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/dateEffective
      *  The effective date of the described resource content.
+     * 
      *  @property dateEffective
      *  @type date
      */
@@ -15627,6 +17826,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/description
      *  A short description of the resource being described.
+     * 
      *  @property description
      *  @type Literal
      */
@@ -15634,6 +17834,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/developmentProcess
      *  A profile of the process by which the resource being described, or aspects of it, were created.
+     * 
      *  @property developmentProcess
      *  @type ProcessProfile
      */
@@ -15641,6 +17842,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/earnings
      *  The resource being referenced is a profile of credential holder earnings data
+     * 
      *  @property earnings
      *  @type EarningsProfile
      */
@@ -15648,6 +17850,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/employmentOutcome
      *  A profile of jobs obtained with this credential by occupation and industry for a given period and area.
+     * 
      *  @property employmentOutcome
      *  @type EmploymentOutcomeProfile
      */
@@ -15655,6 +17858,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/estimatedCost
      *  The estimated cost of the described resource.
+     * 
      *  @property estimatedCost
      *  @type CostProfile
      */
@@ -15662,6 +17866,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/estimatedDuration
      *  The estimated time it will take to complete the described activity.
+     * 
      *  @property estimatedDuration
      *  @type DurationProfile
      */
@@ -15669,6 +17874,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/exactAlignment
      *  The relevant concepts in the resources being compared are coextensive.
+     * 
      *  @property exactAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15676,6 +17882,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/financialAssistance
      *  The types of financial assistance for which the resource being described qualifies.
+     * 
      *  @property financialAssistance
      *  @type FinancialAlignmentObject
      */
@@ -15683,6 +17890,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/hasPart
      *  Indicates a resource that is (in some sense) a part of the resource being described.
+     * 
      *  @property hasPart
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15690,6 +17898,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/holders
      *  A profile of the number and characteristics of credentialed individuals and their geographic locations.
+     * 
      *  @property holders
      *  @type HoldersProfile
      */
@@ -15697,6 +17906,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/image
      *  The image or icon that represents the resource.
+     * 
      *  @property image
      *  @type anyURI
      */
@@ -15704,6 +17914,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/industryType
      *  The class identifier for the industry context from an established framework.
+     * 
      *  @property industryType
      *  @type CredentialAlignmentObject
      */
@@ -15711,6 +17922,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/inLanguage
      *  The primary language used in or by the resource being described.
+     * 
      *  @property inLanguage
      *  @type language
      */
@@ -15718,6 +17930,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/isAdvancedStandingFor
      *  The resource being described reduces time or cost for the resource being referenced.
+     * 
      *  @property isAdvancedStandingFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15725,6 +17938,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/isPartOf
      *  Indicates a resource that the resource being described is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | LearningOpportunityProfile | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15732,6 +17946,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/isPreparationFor
      *  The resource being described provides preparation for the resource being referenced.
+     * 
      *  @property isPreparationFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15739,6 +17954,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/isRecommendedFor
      *  The resource being described is recommended for the resource being referenced.
+     * 
      *  @property isRecommendedFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15746,6 +17962,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/isRequiredFor
      *  The resource being described is required for the resource being referenced.
+     * 
      *  @property isRequiredFor
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15753,6 +17970,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/jurisdiction
      *  The geo-political region in which the described resource is applicable.
+     * 
      *  @property jurisdiction
      *  @type JurisdictionProfile
      */
@@ -15760,6 +17978,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/keyword
      *  Keywords or key phrases describing aspects of a resource considered useful for its discovery.
+     * 
      *  @property keyword
      *  @type Literal
      */
@@ -15767,6 +17986,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/latestVersion
      *  The latest version of the credential being described.
+     * 
      *  @property latestVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15774,6 +17994,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/maintenanceProcess
      *  The process by which the resource being described is maintained including review and updating.
+     * 
      *  @property maintenanceProcess
      *  @type ProcessProfile
      */
@@ -15781,6 +18002,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/majorAlignment
      *  There is major overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property majorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15788,6 +18010,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/maximumDuration
      *  The maximum amount of time it will take to complete the described resource.
+     * 
      *  @property maximumDuration
      *  @type duration
      */
@@ -15795,6 +18018,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/minorAlignment
      *  There is minor overlap of relevant concepts between the two resources being compared.
+     * 
      *  @property minorAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15802,6 +18026,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/name
      *  The name of the resource being described.
+     * 
      *  @property name
      *  @type Literal
      */
@@ -15809,6 +18034,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/narrowAlignment
      *  The resource being described covers all of the relevant concepts in the referenced resource as well as relevant concepts not found in the referenced resource.
+     * 
      *  @property narrowAlignment
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15816,6 +18042,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/occupationType
      *  The relevant occupation.
+     * 
      *  @property occupationType
      *  @type CredentialAlignmentObject
      */
@@ -15823,6 +18050,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/offeredBy
      *  Access to the described resource is offered by the referenced agent.
+     * 
      *  @property offeredBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15830,6 +18058,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/offeredIn
      *  The resource being described is offered in the jurisdiction being referenced.
+     * 
      *  @property offeredIn
      *  @type JurisdictionProfile
      */
@@ -15837,6 +18066,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/ownedBy
      *  An agent that has an enforceable claim or title to a resource.
+     * 
      *  @property ownedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15844,6 +18074,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/preparationFrom
      *  Preparation for the resource being described is provided by the resource being referenced.
+     * 
      *  @property preparationFrom
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15851,6 +18082,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/previousVersion
      *  The version of the credential that immediately precedes the credential being described.
+     * 
      *  @property previousVersion
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | Credential | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15858,6 +18090,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/processStandards
      *  A resource describing the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandards
      *  @type anyURI
      */
@@ -15865,6 +18098,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/processStandardsDescription
      *  A description of the criteria, standards, and/or requirements used.
+     * 
      *  @property processStandardsDescription
      *  @type Literal
      */
@@ -15872,6 +18106,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/purposeType
      *  The intended type of application of the credential by the holder.
+     * 
      *  @property purposeType
      *  @type CredentialAlignmentObject
      */
@@ -15879,6 +18114,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/recognizedBy
      *  The agent being referenced acknowledges the validity of the described resource.
+     * 
      *  @property recognizedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15886,6 +18122,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/recognizedIn
      *  The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.
+     * 
      *  @property recognizedIn
      *  @type JurisdictionProfile
      */
@@ -15893,6 +18130,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/recommends
      *  The resource being described recommends the resource being referenced.
+     * 
      *  @property recommends
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15900,6 +18138,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/region
      *  A geo-political area of the described resource.
+     * 
      *  @property region
      *  @type GeoCoordinates
      */
@@ -15907,6 +18146,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/regulatedBy
      *  The agent being referenced enforces the legal requirements of the referenced resource.
+     * 
      *  @property regulatedBy
      *  @type QACredentialOrganization
      */
@@ -15914,6 +18154,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/regulatedIn
      *  The resource being described is regulated in the jurisdiction being referenced.
+     * 
      *  @property regulatedIn
      *  @type JurisdictionProfile
      */
@@ -15921,6 +18162,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/relatedAction
      *  An action related to the described resource.
+     * 
      *  @property relatedAction
      *  @type AccreditAction | AdvancedStandingAction | ApproveAction | CredentialingAction | OfferAction | RecognizeAction | RegulateAction | RenewAction | RevokeAction | RightsAction
      */
@@ -15928,6 +18170,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/renewal
      *  Conditions necessary to maintenance and renewal of an awarded credential.
+     * 
      *  @property renewal
      *  @type ConditionProfile
      */
@@ -15935,6 +18178,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/renewedBy
      *  The agent being referenced handles the renewal of awards of the credential being described.
+     * 
      *  @property renewedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15942,6 +18186,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/renewedIn
      *  The resource being described is renewed in the jurisdiction being referenced.
+     * 
      *  @property renewedIn
      *  @type JurisdictionProfile
      */
@@ -15949,6 +18194,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/requires
      *  The resource being described requires the resource being referenced.
+     * 
      *  @property requires
      *  @type ApprenticeshipCertificate | AssociateDegree | BachelorDegree | Badge | Certificate | Certification | ConditionProfile | Credential | CredentialAlignmentObject | Degree | DigitalBadge | Diploma | DoctoralDegree | GeneralEducationDevelopment | JourneymanCertificate | License | MasterCertificate | MasterDegree | MicroCredential | OpenBadge | ProfessionalDoctorate | QualityAssuranceCredential | ResearchDoctorate | SecondarySchoolDiploma
      */
@@ -15956,6 +18202,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/revocation
      *  Processes and criteria for ending (revoking) the validity or operation of an awarded credential.
+     * 
      *  @property revocation
      *  @type RevocationProfile
      */
@@ -15963,6 +18210,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/revokedBy
      *  The referenced agent handles the revocation of an awarded credential from the credential holder due to violations.
+     * 
      *  @property revokedBy
      *  @type CredentialOrganization | CredentialPerson | QACredentialOrganization
      */
@@ -15970,6 +18218,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/revokedIn
      *  The resource being described is revoked in the jurisdiction being referenced.
+     * 
      *  @property revokedIn
      *  @type JurisdictionProfile
      */
@@ -15977,6 +18226,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/subject
      *  Words or brief phrases describing topicality of a resource.
+     * 
      *  @property subject
      *  @type CredentialAlignmentObject
      */
@@ -15984,6 +18234,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/subjectWebpage
      *  The web page where the subject of the resource being described is located.
+     * 
      *  @property subjectWebpage
      *  @type anyURI
      */
@@ -15991,6 +18242,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/url
      *  URL of the resource being described.
+     * 
      *  @property url
      *  @type anyURI
      */
@@ -15998,6 +18250,7 @@ MasterCertificate = stjs.extend(MasterCertificate, ApprenticeshipCertificate, []
     /**
      *  http://purl.org/ctdl/terms/versionIdentifier
      *  An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.
+     * 
      *  @property versionIdentifier
      *  @type IdentifierValue
      */

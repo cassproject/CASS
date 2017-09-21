@@ -1,24 +1,69 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
  *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
  *  called afterwards in any order. WARNING: The modifications of ownership and
  *  readership do not "just work".
- *  
+ * 
  *  @author fritz.ray@eduworks.com
  */
 var EcAssertion = function() {
     Assertion.call(this);
 };
 EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var assertion = new EcAssertion();
+            if (p1.isAny(assertion.getTypes())) {
+                assertion.copyFrom(p1);
+                if (success != null) 
+                    success(assertion);
+            } else {
+                var msg = "Retrieved object was not an assertion";
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = new EcAssertion().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var assertion = new EcAssertion();
+                    assertion.copyFrom(p1[i]);
+                    ret[i] = assertion;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
     prototype.getSubject = function() {
         if (this.subject == null) 
             return null;
@@ -28,6 +73,29 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return EcPk.fromPem(decryptedString);
+    };
+    /**
+     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
+     *  object should be able to see and change the encrypted value. Owners and
+     *  readers of the object should be persisted.
+     * 
+     *  @param pk
+     */
+    prototype.setSubject = function(pk) {
+        var owners = new Array();
+        var readers = this.reader;
+        if (readers == null) 
+            readers = new Array();
+        if (this.subject != null) {
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
+        }
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
     };
     prototype.getSubjectAsync = function(success, failure) {
         if (this.subject == null) {
@@ -52,6 +120,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return EcPk.fromPem(decryptedString);
+    };
+    prototype.setAgent = function(pk) {
+        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.getAgentAsync = function(success, failure) {
         if (this.agent == null) {
@@ -139,6 +210,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         return Long.parseLong(decryptedString);
     };
+    prototype.setAssertionDate = function(assertionDateMs) {
+        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
     prototype.getAssertionDateAsync = function(success, failure) {
         if (this.assertionDate == null) {
             success(null);
@@ -162,6 +236,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (decryptedString == null) 
             return null;
         return Long.parseLong(decryptedString);
+    };
+    prototype.setExpirationDate = function(expirationDateMs) {
+        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.getExpirationDateAsync = function(success, failure) {
         if (this.expirationDate == null) {
@@ -214,6 +291,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         return decryptedString;
     };
+    prototype.setDecayFunction = function(decayFunctionText) {
+        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
     prototype.getDecayFunctionAsync = function(success, failure) {
         if (this.decayFunction == null) {
             success(null);
@@ -238,6 +318,9 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             decryptedString.toLowerCase();
         return "true".equals(decryptedString);
     };
+    prototype.setNegative = function(negativeB) {
+        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
     prototype.getNegativeAsync = function(success, failure) {
         if (this.negative == null) {
             success(null);
@@ -255,32 +338,6 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             success("true".equals(decryptedString));
         }, failure);
     };
-    /**
-     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
-     *  object should be able to see and change the encrypted value. Owners and
-     *  readers of the object should be persisted.
-     *  
-     *  @param pk
-     */
-    prototype.setSubject = function(pk) {
-        var owners = new Array();
-        var readers = this.reader;
-        if (readers == null) 
-            readers = new Array();
-        if (this.subject != null) {
-            if (this.subject.owner != null) 
-                owners.concat(this.subject.owner);
-            if (this.subject.reader != null) 
-                readers.concat(this.subject.reader);
-        }
-        if (this.owner != null) 
-            owners = owners.concat(this.owner);
-        readers.push(pk.toPem());
-        this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
-    };
-    prototype.setAgent = function(pk) {
-        this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, this.subject.owner, this.subject.reader);
-    };
     prototype.setCompetency = function(competencyUrl) {
         this.competency = competencyUrl;
     };
@@ -295,18 +352,6 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         for (var i = 0; i < evidences.length; i++) 
             encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, this.subject.owner, this.subject.reader));
         this.evidence = encryptedValues;
-    };
-    prototype.setAssertionDate = function(assertionDateMs) {
-        this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
-    };
-    prototype.setExpirationDate = function(expirationDateMs) {
-        this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
-    };
-    prototype.setDecayFunction = function(decayFunctionText) {
-        this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, this.subject.owner, this.subject.reader);
-    };
-    prototype.setNegative = function(negativeB) {
-        this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, this.subject.owner, this.subject.reader);
     };
     prototype.save = function(success, failure) {
         if (this.competency == null || this.competency == "") {
@@ -421,40 +466,6 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             this.subject.removeReader(newReader);
         }
     };
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var assertion = new EcAssertion();
-            if (p1.isAny(assertion.getTypes())) {
-                assertion.copyFrom(p1);
-                if (success != null) 
-                    success(assertion);
-            } else {
-                var msg = "Retrieved object was not an assertion";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
-    };
-    constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = new EcAssertion().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var assertion = new EcAssertion();
-                    assertion.copyFrom(p1[i]);
-                    ret[i] = assertion;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
     prototype.getSearchStringByTypeAndCompetency = function(competency) {
         return "(" + this.getSearchStringByType() + " AND competency:\"" + competency.shortId() + "\")";
     };
@@ -462,95 +473,31 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
 /**
  *  Implementation of a Rollup Rule object with methods for interacting with CASS
  *  services on a server.
- *  
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  *  @module org.cassproject
  *  @class EcRollupRule
  *  @constructor
  *  @extends RollupRule
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
  */
 var EcRollupRule = function() {
     RollupRule.call(this);
 };
 EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, prototype) {
     /**
-     *  Method for setting a rollup rule name
-     *  
-     *  @memberOf EcRollupRule
-     *  @method setName
-     *  @param name
-     */
-    prototype.setName = function(name) {
-        this.name = name;
-    };
-    /**
-     *  Method for setting a rollup rule description
-     *  
-     *  @memberOf EcRollupRule
-     *  @method setDescription
-     *  @param {String} description
-     */
-    prototype.setDescription = function(description) {
-        this.description = description;
-    };
-    /**
-     *  Saves this rollup rules details on the server specified by its ID
-     *  
-     *  @memberOf EcRollupRule
-     *  @method save
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful save of rollup rule
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error saving rollup rule
-     */
-    prototype.save = function(success, failure) {
-        if (this.rule == null || this.rule == "") {
-            var msg = "RollupRule Rule cannot be empty";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.competency == null || this.competency == "") {
-            var msg = "RollupRule's Competency cannot be empty";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        EcRepository._save(this, success, failure);
-    };
-    /**
-     *  Deletes this rollup rule from the server specified by it's ID
-     *  
-     *  @memberOf EcRollupRule
-     *  @method _delete
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful deleting the rollup rle
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error deleting the rollup rule
-     */
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
-    };
-    /**
-     * 
      *  Retrieves a rollup rule from the server
-     *  
+     * 
+     *  @param {String}                  id
+     *                                   ID of the rollup rule to retrieve
+     *  @param {Callback1<EcRollupRule>} success
+     *                                   Callback triggered on successful retrieving rollup rule,
+     *                                   returns the rollup rule
+     *  @param {Callback1<String>}       failure
+     *                                   Callback triggered if error retrieving rollup rule
      *  @memberOf EcRollupRule
      *  @method get
      *  @static
-     *  @param {String} id
-     *  			ID of the rollup rule to retrieve
-     *  @param {Callback1<EcRollupRule>} success
-     *  			Callback triggered on successful retrieving rollup rule, 
-     *  			returns the rollup rule
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error retrieving rollup rule
      */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
@@ -571,22 +518,22 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
     };
     /**
      *  Searches for levels with a string query
-     *  
+     * 
+     *  @param {EcRepository}                   repo
+     *                                          Repository to search for levels
+     *  @param {String}                         query
+     *                                          query string to use in search
+     *  @param {Callback1<Array<EcRollupRule>>} success
+     *                                          Callback triggered when searches successfully
+     *  @param {Callback1<String>}              failure
+     *                                          Callback triggered if an error occurs while searching
+     *  @param {Object}                         paramObj
+     *                                          Search parameters object to pass in
+     *  @param size
+     *  @param start
      *  @memberOf EcRollupRule
      *  @method search
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for levels
-     *  @param {String} query
-     *  			query string to use in search
-     *  @param {Callback1<Array<EcRollupRule>>} success
-     *  			Callback triggered when searches successfully
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while searching
-     *  @param {Object} paramObj
-     *  			Search parameters object to pass in
-     *  		@param size
-     *  		@param start
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
@@ -617,76 +564,47 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
             }
         }, failure);
     };
-}, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Implementation of an alignment object with methods for interacting with CASS
- *  services on a server.
- *  
- *  @module org.cassproject
- *  @class EcAlignment
- *  @constructor
- *  @extends Relation
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- *  
- *  TODO: Test case where an absent relation is in the framework.
- */
-var EcAlignment = function() {
-    Relation.call(this);
-};
-EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
     /**
-     *  Setter for alignment name
-     *  
-     *  @memberOf EcAlignment
+     *  Method for setting a rollup rule name
+     * 
+     *  @param name
+     *  @memberOf EcRollupRule
      *  @method setName
-     *  @param {String} name
-     *  			name to give this alignment
      */
     prototype.setName = function(name) {
         this.name = name;
     };
     /**
-     *  Setter for alignment description
-     *  
-     *  @memberOf EcAlignment
-     *  @method setDescription
+     *  Method for setting a rollup rule description
+     * 
      *  @param {String} description
-     *  			description to give this alignment
+     *  @memberOf EcRollupRule
+     *  @method setDescription
      */
     prototype.setDescription = function(description) {
         this.description = description;
     };
     /**
-     *  Saves this alignment details on the server corresponding to its ID 
-     *  
-     *  @memberOf EcAlignment
-     *  @method save
+     *  Saves this rollup rules details on the server specified by its ID
+     * 
      *  @param {Callback1<String>} success
-     *  			Callback triggered on successfully saving the alignment
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error while saving alignment
+     *                             Callback triggered on successful save of rollup rule
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error saving rollup rule
+     *  @memberOf EcRollupRule
+     *  @method save
      */
     prototype.save = function(success, failure) {
-        if (this.source == null || this.source == "") {
-            var msg = "Source Competency cannot be missing";
+        if (this.rule == null || this.rule == "") {
+            var msg = "RollupRule Rule cannot be empty";
             if (failure != null) 
                 failure(msg);
              else 
                 console.error(msg);
             return;
         }
-        if (this.target == null || this.target == "") {
-            var msg = "Target Competency cannot be missing";
-            if (failure != null) 
-                failure(msg);
-             else 
-                console.error(msg);
-            return;
-        }
-        if (this.relationType == null || this.relationType == "") {
-            var msg = "Relation Type cannot be missing";
+        if (this.competency == null || this.competency == "") {
+            var msg = "RollupRule's Competency cannot be empty";
             if (failure != null) 
                 failure(msg);
              else 
@@ -696,31 +614,49 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         EcRepository._save(this, success, failure);
     };
     /**
-     *  Deletes the alignment from the server corresponding to its ID
-     *  
-     *  @memberOf EcAlignment
-     *  @method _delete
+     *  Deletes this rollup rule from the server specified by it's ID
+     * 
      *  @param {Callback1<String>} success
-     *  			Callback triggered on successfully deleting the alignment
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error while deleting alignment
+     *                             Callback triggered on successful deleting the rollup rle
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error deleting the rollup rule
+     *  @memberOf EcRollupRule
+     *  @method _delete
      */
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+}, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Implementation of an alignment object with methods for interacting with CASS
+ *  services on a server.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ *          <p>
+ *          TODO: Test case where an absent relation is in the framework.
+ *  @module org.cassproject
+ *  @class EcAlignment
+ *  @constructor
+ *  @extends Relation
+ */
+var EcAlignment = function() {
+    Relation.call(this);
+};
+EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
     /**
      *  Retrieves the alignment specified with the ID from the server
-     *  
+     * 
+     *  @param {String}                 id
+     *                                  ID of the alignment to retrieve
+     *  @param {Callback1<EcAlignment>} success
+     *                                  Callback triggered on successfully retrieving the alignment,
+     *                                  returns the alignment
+     *  @param {Callback1<String>}      [failure]
+     *                                  Callback triggered if error while retrieving alignment
      *  @memberOf EcAlignment
      *  @method get
      *  @static
-     *  @param {String} id
-     *  			ID of the alignment to retrieve
-     *  @param {Callback1<EcAlignment>} success
-     *  			Callback triggered on successfully retrieving the alignment,
-     *  			returns the alignment
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error while retrieving alignment
      */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
@@ -753,16 +689,16 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
         }, failure);
     };
     /**
-     *  Retrieves an alignment from it's server synchronously, the call 
+     *  Retrieves an alignment from it's server synchronously, the call
      *  blocks until it is successful or an error occurs
-     *  
+     * 
+     *  @param {String} id
+     *                  ID of the alignment to retrieve
+     *  @return EcAlignment
+     *  The alignment retrieved
      *  @memberOf EcAlignment
      *  @method getBlocking
      *  @static
-     *  @param {String} id
-     *  			ID of the alignment to retrieve
-     *  @return EcAlignment
-     *  			The alignment retrieved
      */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
@@ -790,22 +726,22 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
     /**
      *  Searches the repository using the query and optional parameters provided
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search using the query provided
+     *  @param {String}                        query
+     *                                         The query to send to the search
+     *  @param {Callback1<Array<EcAlignment>>} success
+     *                                         Callback triggered on successful search return
+     *  @param {Callback1<String>}             [failure]
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        [paramObj]
+     *                                         Parameters to include in the search
+     *  @param start
+     *  @param size
      *  @memberOf EcAlignment
      *  @method search
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search using the query provided
-     *  @param {String} query
-     *  			The query to send to the search
-     *  @param {Callback1<Array<EcAlignment>>} success
-     *  			Callback triggered on successful search return
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error searching
-     *  @param {Object} [paramObj]
-     *  			Parameters to include in the search
-     *  		@param start
-     *  		@param size
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = new EcAlignment().getSearchStringByType();
@@ -836,22 +772,22 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
     /**
      *  Searches the repository for alignments with a specific ID in the source field
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for alignments with the source specified
+     *  @param {String}                        sourceId
+     *                                         ID in the source field of the alignments to find
+     *  @param {Callback1<Array<EcAlignment>>} success
+     *                                         Callback triggered on successful search return
+     *  @param {Callback1<String>}             [failure]
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        [paramObj]
+     *                                         Parameters to include in the search
+     *  @param start
+     *  @param size
      *  @memberOf EcAlignment
      *  @method searchBySource
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for alignments with the source specified
-     *  @param {String} sourceId
-     *  			ID in the source field of the alignments to find
-     *  @param {Callback1<Array<EcAlignment>>} success
-     * 			Callback triggered on successful search return
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error searching
-     *  @param {Object} [paramObj]
-     *  			Parameters to include in the search
-     *  		@param start
-     *  		@param size
      */
     constructor.searchBySource = function(repo, sourceId, success, failure, paramObj) {
         var query = "";
@@ -888,22 +824,22 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
     /**
      *  Searches the repository for alignments with one of an array of IDs in the source field
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for alignments with the source specified
+     *  @param {String}                        sourceId
+     *                                         ID in the source field of the alignments to find
+     *  @param {Callback1<Array<EcAlignment>>} success
+     *                                         Callback triggered on successful search return
+     *  @param {Callback1<String>}             [failure]
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        [paramObj]
+     *                                         Parameters to include in the search
+     *  @param start
+     *  @param size
      *  @memberOf EcAlignment
      *  @method searchBySource
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for alignments with the source specified
-     *  @param {String} sourceId
-     *  			ID in the source field of the alignments to find
-     *  @param {Callback1<Array<EcAlignment>>} success
-     * 			Callback triggered on successful search return
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error searching
-     *  @param {Object} [paramObj]
-     *  			Parameters to include in the search
-     *  		@param start
-     *  		@param size
      */
     constructor.searchBySources = function(repo, sourceIds, success, failure, paramObj) {
         var query = "";
@@ -949,22 +885,22 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     };
     /**
      *  Searches the repository for alignments with a specific ID in the target field
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for alignments with the source specified
+     *  @param {String}                        competencyId
+     *                                         ID in the target field of the alignments to find
+     *  @param {Callback1<Array<EcAlignment>>} success
+     *                                         Callback triggered on successful search return
+     *  @param {Callback1<String>}             [failure]
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        [paramObj]
+     *                                         Parameters to include in the search
+     *  @param start
+     *  @param size
      *  @memberOf EcAlignment
      *  @method searchByCompetency
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for alignments with the source specified
-     *  @param {String} competencyId
-     *  			ID in the target field of the alignments to find
-     *  @param {Callback1<Array<EcAlignment>>} success
-     * 			Callback triggered on successful search return
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error searching
-     *  @param {Object} [paramObj]
-     *  			Parameters to include in the search
-     *  		@param start
-     *  		@param size
      */
     constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
         var query = "";
@@ -1000,90 +936,57 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
             }
         }, failure);
     };
-}, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  Implementation of a Level object with methods for interacting with CASS
- *  services on a server.
- *  
- *  @module org.cassproject
- *  @class EcLevel
- *  @constructor
- *  @extends Level
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
- */
-var EcLevel = function() {
-    Level.call(this);
-};
-EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     /**
-     *  Adds a relationship between this level and a target level to define
-     *  how they correspond to one another
-     *  
-     *  @memberOf EcLevel
-     *  @method addRelationship
-     *  @param {EcLevel} targetLevel
-     *  			Target level of the relationship
-     *  @param {String} alignmentType
-     *  			Type of relationship
-     *  @param {EcPpk} identity
-     *  			Private key that will own the new relationship
-     *  @param {String} server
-     *  			URL Prefix of the new relationship ID (Server it will be saved on)
-     */
-    prototype.addRelationship = function(targetLevel, alignmentType, identity, server) {
-        var a = new EcAlignment();
-        a.source = this.id;
-        a.target = targetLevel.id;
-        a.relationType = alignmentType;
-        a.addOwner(identity.toPk());
-        a.generateId(server);
-        a.signWith(identity);
-    };
-    /**
-     *  Method to set the name of this level
-     *  
-     *  @memberOf EcLevel
-     *  @method setName
+     *  Setter for alignment name
+     * 
      *  @param {String} name
-     *  			Name to set on the level
+     *                  name to give this alignment
+     *  @memberOf EcAlignment
+     *  @method setName
      */
     prototype.setName = function(name) {
         this.name = name;
     };
     /**
-     *  Method to set the description of the level
-     *  
-     *  @memberOf EcLevel
-     *  @method setDescription
+     *  Setter for alignment description
+     * 
      *  @param {String} description
-     *  			Description to set on the level
+     *                  description to give this alignment
+     *  @memberOf EcAlignment
+     *  @method setDescription
      */
     prototype.setDescription = function(description) {
         this.description = description;
     };
     /**
-     *  Saves this levels details to the server
-     *  
-     *  @memberOf EcLevel
-     *  @method save
+     *  Saves this alignment details on the server corresponding to its ID
+     * 
      *  @param {Callback1<String>} success
-     *  			Callback triggered on successfully saving the level to the server
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs while saving the level to the server
+     *                             Callback triggered on successfully saving the alignment
+     *  @param {Callback1<String>} [failure]
+     *                             Callback triggered if error while saving alignment
+     *  @memberOf EcAlignment
+     *  @method save
      */
     prototype.save = function(success, failure) {
-        if (this.name == null || this.name == "") {
-            var msg = "Level name cannot be empty";
+        if (this.source == null || this.source == "") {
+            var msg = "Source Competency cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
                 console.error(msg);
             return;
         }
-        if (this.competency == null || this.competency == "") {
-            var msg = "Level's Competency cannot be empty";
+        if (this.target == null || this.target == "") {
+            var msg = "Target Competency cannot be missing";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.relationType == null || this.relationType == "") {
+            var msg = "Relation Type cannot be missing";
             if (failure != null) 
                 failure(msg);
              else 
@@ -1093,31 +996,47 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
         EcRepository._save(this, success, failure);
     };
     /**
-     *  Deletes the level from it's repository
-     *  
-     *  @memberOf EcLevel
-     *  @method _delete
+     *  Deletes the alignment from the server corresponding to its ID
+     * 
      *  @param {Callback1<String>} success
-     *  			Callback triggered when the level is successfully deleted from the server
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while deleting the level
+     *                             Callback triggered on successfully deleting the alignment
+     *  @param {Callback1<String>} [failure]
+     *                             Callback triggered if error while deleting alignment
+     *  @memberOf EcAlignment
+     *  @method _delete
      */
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
+}, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+/**
+ *  Implementation of a Level object with methods for interacting with CASS
+ *  services on a server.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
+ *  @module org.cassproject
+ *  @class EcLevel
+ *  @constructor
+ *  @extends Level
+ */
+var EcLevel = function() {
+    Level.call(this);
+};
+EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     /**
      *  Retrieves a level from the server specified by its ID
-     *  
+     * 
+     *  @param {String}             id
+     *                              ID of the level to retrieve
+     *  @param {Callback1<EcLevel>} success
+     *                              Callback triggered when successfully retrieving the level,
+     *                              returns the level
+     *  @param {Callback1<String>}  failure
+     *                              Callback triggered if error occurs when retrieving the level
      *  @memberOf EcLevel
      *  @method get
      *  @static
-     *  @param {String} id
-     *  			ID of the level to retrieve
-     *  @param {Callback1<EcLevel>} success
-     *  			Callback triggered when successfully retrieving the level, 
-     *  			returns the level
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs when retrieving the level
      */
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
@@ -1143,22 +1062,22 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     };
     /**
      *  Searches for levels with a string query
-     *  
+     * 
+     *  @param {EcRepository}              repo
+     *                                     Repository to search for levels
+     *  @param {String}                    query
+     *                                     query string to use in search
+     *  @param {Callback1<Array<EcLevel>>} success
+     *                                     Callback triggered when searches successfully
+     *  @param {Callback1<String>}         failure
+     *                                     Callback triggered if an error occurs while searching
+     *  @param {Object}                    paramObj
+     *                                     Search parameters object to pass in
+     *  @param size
+     *  @param start
      *  @memberOf EcLevel
      *  @method search
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for levels
-     *  @param {String} query
-     *  			query string to use in search
-     *  @param {Callback1<Array<EcLevel>>} success
-     *  			Callback triggered when searches successfully
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while searching
-     *  @param {Object} paramObj
-     *  			Search parameters object to pass in
-     *  		@param size
-     *  		@param start
      */
     constructor.search = function(repo, query, success, failure, paramObj) {
         var queryAdd = "";
@@ -1191,22 +1110,22 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     };
     /**
      *  Searches for levels using a competency that the results must be related to
-     *  
+     * 
+     *  @param {EcRepository}              repo
+     *                                     Repository to search for levels
+     *  @param {String}                    competencyId
+     *                                     competency ID that the levels are rleated to
+     *  @param {Callback1<Array<EcLevel>>} success
+     *                                     Callback triggered when searches successfully
+     *  @param {Callback1<String>}         failure
+     *                                     Callback triggered if an error occurs while searching
+     *  @param {Object}                    paramObj
+     *                                     Search parameters object to pass in
+     *  @param size
+     *  @param start
      *  @memberOf EcLevel
      *  @method searchByCompetency
      *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for levels
-     *  @param {String} competencyId
-     *  			competency ID that the levels are rleated to
-     *  @param {Callback1<Array<EcLevel>>} success
-     *  			Callback triggered when searches successfully
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while searching
-     *  @param {Object} paramObj
-     *  			Search parameters object to pass in
-     *  		@param size
-     *  		@param start
      */
     constructor.searchByCompetency = function(repo, competencyId, success, failure, paramObj) {
         if (competencyId == null || competencyId == "") {
@@ -1243,43 +1162,257 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
             }
         }, failure);
     };
+    /**
+     *  Adds a relationship between this level and a target level to define
+     *  how they correspond to one another
+     * 
+     *  @param {EcLevel} targetLevel
+     *                   Target level of the relationship
+     *  @param {String}  alignmentType
+     *                   Type of relationship
+     *  @param {EcPpk}   identity
+     *                   Private key that will own the new relationship
+     *  @param {String}  server
+     *                   URL Prefix of the new relationship ID (Server it will be saved on)
+     *  @memberOf EcLevel
+     *  @method addRelationship
+     */
+    prototype.addRelationship = function(targetLevel, alignmentType, identity, server) {
+        var a = new EcAlignment();
+        a.source = this.id;
+        a.target = targetLevel.id;
+        a.relationType = alignmentType;
+        a.addOwner(identity.toPk());
+        a.generateId(server);
+        a.signWith(identity);
+    };
+    /**
+     *  Method to set the name of this level
+     * 
+     *  @param {String} name
+     *                  Name to set on the level
+     *  @memberOf EcLevel
+     *  @method setName
+     */
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    /**
+     *  Method to set the description of the level
+     * 
+     *  @param {String} description
+     *                  Description to set on the level
+     *  @memberOf EcLevel
+     *  @method setDescription
+     */
+    prototype.setDescription = function(description) {
+        this.description = description;
+    };
+    /**
+     *  Saves this levels details to the server
+     * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered on successfully saving the level to the server
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs while saving the level to the server
+     *  @memberOf EcLevel
+     *  @method save
+     */
+    prototype.save = function(success, failure) {
+        if (this.name == null || this.name == "") {
+            var msg = "Level name cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        if (this.competency == null || this.competency == "") {
+            var msg = "Level's Competency cannot be empty";
+            if (failure != null) 
+                failure(msg);
+             else 
+                console.error(msg);
+            return;
+        }
+        EcRepository._save(this, success, failure);
+    };
+    /**
+     *  Deletes the level from it's repository
+     * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered when the level is successfully deleted from the server
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if an error occurs while deleting the level
+     *  @memberOf EcLevel
+     *  @method _delete
+     */
+    prototype._delete = function(success, failure) {
+        EcRepository.DELETE(this, success, failure);
+    };
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Implementation of a Competency object with methods for interacting with CASS
  *  services on a server.
- *  
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  *  @module org.cassproject
  *  @class EcCompetency
  *  @constructor
  *  @extends Competency
- *  
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
  */
 var EcCompetency = function() {
     Competency.call(this);
 };
 EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, prototype) {
+    constructor.relDone = {};
+    constructor.levelDone = {};
     /**
-     *  Adds a new alignment on the server specified with this competency as its 
-     *  source and the specified target competency 
-     *  
+     *  Retrieves a competency from it's server asynchronously
+     * 
+     *  @param {String}            id
+     *                             ID of the competency to retrieve from the server
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after retrieving the competency,
+     *                             returns the competency retrieved
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error retrieving competency
+     *  @memberOf EcCompetency
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (stjs.isInstanceOf(p1.constructor, EcCompetency)) 
+                if (success != null) {
+                    success(p1);
+                    return;
+                }
+            var competency = new EcCompetency();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                EcEncryptedValue.encryptOnSave(p1.id, true);
+            }
+            if (p1.isAny(competency.getTypes())) {
+                competency.copyFrom(p1);
+                if (EcRepository.caching) {
+                    (EcRepository.cache)[competency.shortId()] = competency;
+                    (EcRepository.cache)[competency.id] = competency;
+                }
+                if (success != null) 
+                    success(competency);
+            } else {
+                var msg = "Retrieved object was not a competency";
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieves a competency from it's server synchronously, the call
+     *  blocks until it is successful or an error occurs
+     * 
+     *  @param {String} id
+     *                  ID of the competency to retrieve
+     *  @return EcCompetency
+     *  The competency retrieved
+     *  @memberOf EcCompetency
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
+        var competency = new EcCompetency();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            EcEncryptedValue.encryptOnSave(p1.id, true);
+        }
+        if (p1.isAny(competency.getTypes())) {
+            competency.copyFrom(p1);
+            return competency;
+        } else {
+            var msg = "Retrieved object was not a competency";
+            console.error(msg);
+            return null;
+        }
+    };
+    /**
+     *  Searches a repository for competencies that match the search query
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search using the query
+     *  @param {String}                        query
+     *                                         Query string to pass to the search web service
+     *  @param {Callback1<Array<EcCompetency>> success
+     *                                         Callback triggered after completing the search, returns the results
+     *  @param {Callback1<String>}             failure
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        paramObj
+     *                                         Parameter object for search
+     *  @param start
+     *  @param size
+     *  @memberOf EcCompetency
+     *  @method search
+     *  @static
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new EcCompetency().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var comp = new EcCompetency();
+                    if (p1[i].isAny(comp.getTypes())) {
+                        comp.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcCompetency.myType)) {
+                            var obj = val.decryptIntoObject();
+                            comp.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(comp.id, true);
+                        }
+                    }
+                    ret[i] = comp;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    /**
+     *  Adds a new alignment on the server specified with this competency as its
+     *  source and the specified target competency
+     * 
+     *  @param {EcCompetency}      target
+     *                             Competency to be related with
+     *  @param {String}            alignmentType
+     *                             String defining the relationship type
+     *  @param {EcPpk}             owner
+     *                             Private Key that will own the relationship created
+     *  @param {String}            server
+     *                             URL Prefix of the new relationship (Server it will be saved on)
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after successfully creating and saving the relationship
+     *  @param {Callback1<String>} [failure]
+     *                             Callback triggered if error creating and saving relationship
+     *  @return EcAlignment
+     *  Created relationship
      *  @memberOf EcCompetency
      *  @method addAlignment
-     *  @param {EcCompetency} target
-     *  			Competency to be related with
-     *  @param {String} alignmentType
-     *  			String defining the relationship type
-     *  @param {EcPpk} owner
-     *  			Private Key that will own the relationship created
-     *  @param {String} server
-     *  			URL Prefix of the new relationship (Server it will be saved on)
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after successfully creating and saving the relationship
-     *  @param {Callback1<String>} [failure]
-     *  			Callback triggered if error creating and saving relationship
-     *  @return EcAlignment
-     *  			Created relationship
      */
     prototype.addAlignment = function(target, alignmentType, owner, server, success, failure) {
         var a = new EcAlignment();
@@ -1293,35 +1426,35 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Searches the repository given for any relationships that contain this competency
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for relationships
+     *  @param {Callback1<EcAlignment>}        eachSuccess
+     *                                         Callback triggered for each relationship found
+     *  @param {Callback1<String>}             failure
+     *                                         Callback triggered if an error finding relationships
+     *  @param {Callback1<Array<EcAlignment>>} successAll
+     *                                         Callback triggered once all of the relationships have been found
      *  @memberOf EcCompetency
      *  @method relations
-     *  @param {EcRepository} repo
-     *  			Repository to search for relationships
-     *  @param {Callback1<EcAlignment>} eachSuccess
-     *  			Callback triggered for each relationship found
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error finding relationships
-     *  @param {Callback1<Array<EcAlignment>>} successAll
-     *  			Callback triggered once all of the relationships have been found
      */
     prototype.relations = function(repo, eachSuccess, failure, successAll) {
         this.relationships(repo, eachSuccess, failure, successAll);
     };
     /**
      *  Searches the repository given for any relationships that contain this competency
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for relationships
+     *  @param {Callback1<EcAlignment>}        eachSuccess
+     *                                         Callback triggered for each relationship found
+     *  @param {Callback1<String>}             failure
+     *                                         Callback triggered if an error finding relationships
+     *  @param {Callback1<Array<EcAlignment>>} successAll
+     *                                         Callback triggered once all of the relationships have been found
      *  @memberOf EcCompetency
      *  @method relations
      *  @deprecated
-     *  @param {EcRepository} repo
-     *  			Repository to search for relationships
-     *  @param {Callback1<EcAlignment>} eachSuccess
-     *  			Callback triggered for each relationship found
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error finding relationships
-     *  @param {Callback1<Array<EcAlignment>>} successAll
-     *  			Callback triggered once all of the relationships have been found
      */
     prototype.relationships = function(repo, eachSuccess, failure, successAll) {
         repo.search(new EcAlignment().getSearchStringByType() + " AND (source:\"" + this.id + "\" OR target:\"" + this.id + "\" OR source:\"" + this.shortId() + "\" OR target:\"" + this.shortId() + "\")", function(p1) {
@@ -1344,23 +1477,23 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Adds a new level on the server specified for this competency.
-     *  
+     * 
+     *  @param {String}            name
+     *                             Name of the new level to create
+     *  @param {String}            description
+     *                             Description of the new level to create
+     *  @param {String}            owner
+     *                             Private key of the owner of the new level
+     *  @param {String}            server
+     *                             URL Prefix for the new level's ID (Server saved on)
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after successfully creating and saving the level
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if an error creating and saving the level
+     *  @return EcLevel
+     *  Level created
      *  @memberOf EcCompetency
      *  @method addLevel
-     *  @param {String} name
-     *  			Name of the new level to create
-     *  @param {String} description
-     *  			Description of the new level to create
-     *  @param {String} owner
-     *  			Private key of the owner of the new level
-     *  @param {String} server
-     *  			URL Prefix for the new level's ID (Server saved on)
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after successfully creating and saving the level
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error creating and saving the level
-     *  @return EcLevel
-     *  			Level created
      */
     prototype.addLevel = function(name, description, owner, server, success, failure) {
         var l = new EcLevel();
@@ -1374,17 +1507,17 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Searches the repository given for any levels of this competency
-     *  
+     * 
+     *  @param {EcRepository}              repo
+     *                                     Repository to search for levels
+     *  @param {Callback1<EcLevel>}        success
+     *                                     Callback triggered for each level found
+     *  @param {Callback1<String>}         failure
+     *                                     Callback triggered if an error finding levels
+     *  @param {Callback1<Array<EcLevel>>} successAll
+     *                                     Callback triggered once all of the levels have been found
      *  @memberOf EcCompetency
      *  @method levels
-     *  @param {EcRepository} repo
-     *  			Repository to search for levels
-     *  @param {Callback1<EcLevel>} success
-     *  			Callback triggered for each level found
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error finding levels
-     *  @param {Callback1<Array<EcLevel>>} successAll
-     *  			Callback triggered once all of the levels have been found
      */
     prototype.levels = function(repo, success, failure, successAll) {
         var query = "(" + new EcLevel().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
@@ -1438,23 +1571,23 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Adds a new rollup rule on the server specified for this competency
-     *  
+     * 
+     *  @param {String}            name
+     *                             Name of the rollup rule to create
+     *  @param {String}            description
+     *                             Description of the rollup rule to create
+     *  @param {EcPpk}             owner
+     *                             Private key that will own the new rollup rule
+     *  @param {String}            server
+     *                             URL Prefix for the new rollup rule's ID (Server that it will be saved on)
+     *  @param {Callback1<String>} success
+     *                             Callback triggered if successfully save the rollup rule
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered fi error during save of rollup rule
+     *  @return EcRollupRule
+     *  Created rollup rule
      *  @memberOf EcCompetency
      *  @method addRollupRule
-     *  @param {String} name
-     *  			Name of the rollup rule to create
-     *  @param {String} description
-     *  			Description of the rollup rule to create
-     *  @param {EcPpk} owner
-     *  			Private key that will own the new rollup rule
-     *  @param {String} server
-     *  			URL Prefix for the new rollup rule's ID (Server that it will be saved on)
-     *  @param {Callback1<String>} success
-     *  			Callback triggered if successfully save the rollup rule
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered fi error during save of rollup rule
-     *  @return EcRollupRule
-     *  			Created rollup rule
      */
     prototype.addRollupRule = function(name, description, owner, server, success, failure) {
         var r = new EcRollupRule();
@@ -1468,17 +1601,17 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Searches the repository given for any rollup rules of this competency
-     *  
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search for levels
+     *  @param {Callback1<EcRollupRule>}       success
+     *                                         Callback triggered for each rollup rule found
+     *  @param {Callback1<String>}             failure
+     *                                         Callback triggered if an error finding rollup rule
+     *  @param {Callback1<Array<EcRollupRule>} successAll
+     *                                         Callback triggered once all of the rollup rules have been found
      *  @memberOf EcCompetency
      *  @method rollupRules
-     *  @param {EcRepository} repo
-     *  			Repository to search for levels
-     *  @param {Callback1<EcRollupRule>} success
-     *  			Callback triggered for each rollup rule found
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error finding rollup rule
-     *  @param {Callback1<Array<EcRollupRule>} successAll
-     *  			Callback triggered once all of the rollup rules have been found
      */
     prototype.rollupRules = function(repo, success, failure, successAll) {
         var query = "(" + new EcRollupRule().getSearchStringByType() + " AND ( competency:\"" + this.id + "\" OR competency:\"" + this.shortId() + "\"))";
@@ -1532,24 +1665,24 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     };
     /**
      *  Method to set competency scope
-     *  
+     * 
+     *  @param {String} scope
+     *                  Scope to set for its competency
      *  @memberOf EcCompetency
      *  @method setScope
-     *  @param {String} scope
-     *  			Scope to set for its competency
      */
     prototype.setScope = function(scope) {
         this.scope = scope;
     };
     /**
      *  Saves the competency details to the server
-     *  
+     * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered on successfully saving the competency
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error saving competency
      *  @memberOf EcCompetency
      *  @method save
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successfully saving the competency
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error saving competency
      */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
@@ -1562,21 +1695,19 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
         }
         EcRepository._save(this, success, failure);
     };
-    constructor.relDone = {};
-    constructor.levelDone = {};
     /**
      *  Deletes the competency from the server
-     *  
+     *  <p>
      *  TODO: Delete rollup rules?
-     *  
+     * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered on successful deleting the competency
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error deleting the competency
+     *  @param {EcRepository}      repo
+     *                             Repository to delete from and to check for levels or relationships to delete
      *  @memberOf EcCompetency
      *  @method _delete
-     *  @param {Callback1<String>} success
-     *  			Callback triggered on successful deleting the competency
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error deleting the competency
-     *  @param {EcRepository} repo
-     *  			Repository to delete from and to check for levels or relationships to delete
      */
     prototype._delete = function(success, failure, repo) {
         var me = this;
@@ -1628,143 +1759,17 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
-    /**
-     *  Retrieves a competency from it's server asynchronously
-     *  
-     *  @memberOf EcCompetency
-     *  @method get
-     *  @static
-     *  @param {String} id
-     *  			ID of the competency to retrieve from the server
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after retrieving the competency,
-     *  			returns the competency retrieved
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error retrieving competency
-     */
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            if (stjs.isInstanceOf(p1.constructor, EcCompetency)) 
-                if (success != null) {
-                    success(p1);
-                    return;
-                }
-            var competency = new EcCompetency();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(competency.getTypes())) {
-                competency.copyFrom(p1);
-                if (EcRepository.caching) {
-                    (EcRepository.cache)[competency.shortId()] = competency;
-                    (EcRepository.cache)[competency.id] = competency;
-                }
-                if (success != null) 
-                    success(competency);
-            } else {
-                var msg = "Retrieved object was not a competency";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, failure);
-    };
-    /**
-     *  Retrieves a competency from it's server synchronously, the call 
-     *  blocks until it is successful or an error occurs
-     *  
-     *  @memberOf EcCompetency
-     *  @method getBlocking
-     *  @static
-     *  @param {String} id
-     *  			ID of the competency to retrieve
-     *  @return EcCompetency
-     *  			The competency retrieved
-     */
-    constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var competency = new EcCompetency();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(competency.getTypes())) {
-            competency.copyFrom(p1);
-            return competency;
-        } else {
-            var msg = "Retrieved object was not a competency";
-            console.error(msg);
-            return null;
-        }
-    };
-    /**
-     *  Searches a repository for competencies that match the search query 
-     *  
-     *  @memberOf EcCompetency
-     *  @method search
-     *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search using the query
-     *  @param {String} query
-     *  			Query string to pass to the search web service
-     *  @param {Callback1<Array<EcCompetency>> success
-     *  			Callback triggered after completing the search, returns the results
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error searching
-     *  @param {Object} paramObj
-     *  			Parameter object for search
-     *  		@param start
-     *  		@param size
-     */
-    constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcCompetency().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var comp = new EcCompetency();
-                    if (p1[i].isAny(comp.getTypes())) {
-                        comp.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcCompetency.myType)) {
-                            var obj = val.decryptIntoObject();
-                            comp.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(comp.id, true);
-                        }
-                    }
-                    ret[i] = comp;
-                }
-                success(ret);
-            }
-        }, failure);
-    };
 }, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Implementation of a Framework object with methods for interacting with CASS
  *  services on a server.
  * 
+ *  @author fritz.ray@eduworks.com
+ *  @author devlin.junker@eduworks.com
  *  @module org.cassproject
  *  @class EcFramework
  *  @constructor
  *  @extends Framework
- * 
- *  @author fritz.ray@eduworks.com
- *  @author devlin.junker@eduworks.com
  */
 var EcFramework = function() {
     Framework.call(this);
@@ -1773,12 +1778,132 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     constructor.relDone = {};
     constructor.levelDone = {};
     /**
+     *  Retrieves a framework from the server, specified by the ID
+     * 
+     *  @param {String}                 id
+     *                                  ID of the framework to retrieve
+     *  @param {Callback1<EcFramework>} success
+     *                                  Callback triggered after successfully retrieving the framework,
+     *                                  returns the retrieved framework
+     *  @param {Callback1<String>}      failure
+     *                                  Callback triggered if an error occurs while retrieving the framework
+     *  @memberOf EcFramework
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var framework = new EcFramework();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                EcEncryptedValue.encryptOnSave(p1.id, true);
+            }
+            if (p1.isAny(framework.getTypes())) {
+                framework.copyFrom(p1);
+                if (success != null) 
+                    success(framework);
+            } else {
+                var msg = "Resultant object is not a framework.";
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+    /**
+     *  Retrieves a framework from the server in a blocking fashion, specified by the ID
+     * 
+     *  @param {String}                 id
+     *                                  ID of the framework to retrieve
+     *  @param {Callback1<EcFramework>} success
+     *                                  Callback triggered after successfully retrieving the framework,
+     *                                  returns the retrieved framework
+     *  @param {Callback1<String>}      failure
+     *                                  Callback triggered if an error occurs while retrieving the framework
+     *  @memberOf EcFramework
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
+        var framework = new EcFramework();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            EcEncryptedValue.encryptOnSave(p1.id, true);
+        }
+        if (p1.isAny(framework.getTypes())) {
+            framework.copyFrom(p1);
+            return framework;
+        } else {
+            return null;
+        }
+    };
+    /**
+     *  Searches the repository given for frameworks using the query passed in
+     * 
+     *  @param {EcRepository}                 repo
+     *                                        Repository to search for frameworks
+     *  @param {String}                       query
+     *                                        Query string used to search for a framework
+     *  @param {Callback1<Array<EcFramework>} success
+     *                                        Callback triggered when the search successfully returns,
+     *                                        returns search results
+     *  @param {Callback1<String>}            failure
+     *                                        Callback triggered if an error occurs while searching
+     *  @param {Object}                       paramObj
+     *                                        Parameter object for search
+     *  @param size
+     *  @param start
+     *  @memberOf EcFramework
+     *  @method search
+     *  @static
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = "";
+        queryAdd = new EcFramework().getSearchStringByType();
+        if (query == null || query == "") 
+            query = queryAdd;
+         else 
+            query = "(" + query + ") AND " + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i < p1.length; i++) {
+                    var framework = new EcFramework();
+                    if (p1[i].isAny(framework.getTypes())) {
+                        framework.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcFramework.myType)) {
+                            var obj = val.decryptIntoObject();
+                            framework.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(framework.id, true);
+                        }
+                    }
+                    ret[i] = framework;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+    /**
      *  Adds the competency ID specified to the frameworks list of competency IDs
      * 
+     *  @param {String} id
+     *                  ID of the competency to add
      *  @memberOf EcFramework
      *  @method addCompetency
-     *  @param {String} id
-     *  			ID of the competency to add
      */
     prototype.addCompetency = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1792,17 +1917,17 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Removes a competency ID from the framework's list, also removes any
      *  levels and relations associated with that competency
-     * 
+     *  <p>
      *  TODO: remove rollup rules? should we add flag to remove these extras
      * 
+     *  @param {String}            id
+     *                             ID of the competency to remove
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after succesfully removing the competency and levels and relationships
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs when removing competency and levels and relationships
      *  @memberOf EcFramework
      *  @method removeCompetency
-     *  @param {String} id
-     *  			ID of the competency to remove
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after succesfully removing the competency and levels and relationships
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs when removing competency and levels and relationships
      */
     prototype.removeCompetency = function(id, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1844,17 +1969,17 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Helper method to remove relationships associated with a competency from this framework
      * 
+     *  @param {String}            id
+     *                             ID of the competency being removed, to find relationships on
+     *  @param {int}               i
+     *                             recursive index parameter
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after all relationships in the framework have been checked
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs looking through relationships
      *  @memberOf EcFramework
      *  @method removeRelationshipsThatInclude
      *  @private
-     *  @param {String} id
-     *  			ID of the competency being removed, to find relationships on
-     *  @param {int} i
-     *  			recursive index parameter
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after all relationships in the framework have been checked
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs looking through relationships
      */
     prototype.removeRelationshipsThatInclude = function(id, i, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1878,17 +2003,17 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Helper method to remove levels associated with a competency from this framework
      * 
+     *  @param {String}            id
+     *                             ID of the competency being removed, to find levels on
+     *  @param {int}               i
+     *                             recursive index parameter
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after all levels in the framework have been checked
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs looking through levels
      *  @memberOf EcFramework
      *  @method removeLevelsThatInclude
      *  @private
-     *  @param {String} id
-     *  			ID of the competency being removed, to find levels on
-     *  @param {int} i
-     *  			recursive index parameter
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after all levels in the framework have been checked
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs looking through levels
      */
     prototype.removeLevelsThatInclude = function(id, i, success, failure) {
         var shortId = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1909,10 +2034,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Adds a relation ID to the framework's list of relations
      * 
+     *  @param {String} id
+     *                  ID to add to the framework's relation list
      *  @memberOf EcFramework
      *  @method addRelation
-     *  @param {String} id
-     *  			ID to add to the framework's relation list
      */
     prototype.addRelation = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1926,10 +2051,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Removes a relation ID from the framework's list of relations
      * 
+     *  @param {String} id
+     *                  ID to remove from the framework's relation list
      *  @memberOf EcFramework
      *  @method removeCompetency
-     *  @param {String} id
-     *  			ID to remove from the framework's relation list
      */
     prototype.removeRelation = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1942,10 +2067,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Adds a level ID to the framework's list of levels
      * 
+     *  @param {String} id
+     *                  ID of the level to add to framework's list
      *  @memberOf EcFramework
      *  @method addLevel
-     *  @param {String} id
-     *  			ID of the level to add to framework's list
      */
     prototype.addLevel = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1959,10 +2084,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Removes a level ID from the framework's list of levels
      * 
+     *  @param {String} id
+     *                  ID to remove from framework's level list
      *  @memberOf EcFramework
      *  @method removeLevel
-     *  @param {String} id
-     *  			ID to remove from framework's level list
      */
     prototype.removeLevel = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1975,10 +2100,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Adds a rollup rule ID to the framework's list of rollup rules
      * 
+     *  @param {String} id
+     *                  ID of the rollup rule to add
      *  @memberOf EcFramework
      *  @method addRollupRule
-     *  @param {String} id
-     *  			ID of the rollup rule to add
      */
     prototype.addRollupRule = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -1992,10 +2117,10 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Removes a rollup rule ID from the framework's list of rollup rules
      * 
+     *  @param {String} id
+     *                  ID to remove from rollup rule list
      *  @memberOf EcFramework
      *  @method removeRollupRule
-     *  @param {String} id
-     *  			ID to remove from rollup rule list
      */
     prototype.removeRollupRule = function(id) {
         id = EcRemoteLinkedData.trimVersionFromUrl(id);
@@ -2008,12 +2133,12 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Saves this frameworks details on the server specified by it's ID
      * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered after successfully saving the framework
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs while saving the framework
      *  @memberOf EcFramework
      *  @method save
-     *  @param {Callback1<String>} success
-     *  			Callback triggered after successfully saving the framework
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs while saving the framework
      */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
@@ -2029,12 +2154,12 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     /**
      *  Deletes this framework from the server specified by it's ID
      * 
+     *  @param {Callback1<String>} success
+     *                             Callback triggered if successfully deleted framework
+     *  @param {Callback1<String>} failure
+     *                             Callback triggered if error occurs when deleting the framework
      *  @memberOf EcFramework
      *  @method _delete
-     *  @param {Callback1<String>} success
-     *  			Callback triggered if successfully deleted framework
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if error occurs when deleting the framework
      */
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
@@ -2056,125 +2181,5 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
                 failure(p1);
             }
         });
-    };
-    /**
-     *  Retrieves a framework from the server, specified by the ID
-     * 
-     *  @memberOf EcFramework
-     *  @method get
-     *  @static
-     *  @param {String} id
-     *  			ID of the framework to retrieve
-     *  @param {Callback1<EcFramework>} success
-     *  			Callback triggered after successfully retrieving the framework,
-     *  			returns the retrieved framework
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while retrieving the framework
-     */
-    constructor.get = function(id, success, failure) {
-        EcRepository.get(id, function(p1) {
-            var framework = new EcFramework();
-            if (p1.isA(EcEncryptedValue.myType)) {
-                var encrypted = new EcEncryptedValue();
-                encrypted.copyFrom(p1);
-                p1 = encrypted.decryptIntoObject();
-                EcEncryptedValue.encryptOnSave(p1.id, true);
-            }
-            if (p1.isAny(framework.getTypes())) {
-                framework.copyFrom(p1);
-                if (success != null) 
-                    success(framework);
-            } else {
-                var msg = "Resultant object is not a framework.";
-                if (failure != null) 
-                    failure(msg);
-                 else 
-                    console.error(msg);
-            }
-        }, function(p1) {
-            if (failure != null) 
-                failure(p1);
-        });
-    };
-    /**
-     *  Retrieves a framework from the server in a blocking fashion, specified by the ID
-     * 
-     *  @memberOf EcFramework
-     *  @method getBlocking
-     *  @static
-     *  @param {String} id
-     *  			ID of the framework to retrieve
-     *  @param {Callback1<EcFramework>} success
-     *  			Callback triggered after successfully retrieving the framework,
-     *  			returns the retrieved framework
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while retrieving the framework
-     */
-    constructor.getBlocking = function(id) {
-        var p1 = EcRepository.getBlocking(id);
-        if (p1 == null) 
-            return null;
-        var framework = new EcFramework();
-        if (p1.isA(EcEncryptedValue.myType)) {
-            var encrypted = new EcEncryptedValue();
-            encrypted.copyFrom(p1);
-            p1 = encrypted.decryptIntoObject();
-            EcEncryptedValue.encryptOnSave(p1.id, true);
-        }
-        if (p1.isAny(framework.getTypes())) {
-            framework.copyFrom(p1);
-            return framework;
-        } else {
-            return null;
-        }
-    };
-    /**
-     *  Searches the repository given for frameworks using the query passed in
-     * 
-     *  @memberOf EcFramework
-     *  @method search
-     *  @static
-     *  @param {EcRepository} repo
-     *  			Repository to search for frameworks
-     *  @param {String} query
-     *  			Query string used to search for a framework
-     *  @param {Callback1<Array<EcFramework>} success
-     *  			Callback triggered when the search successfully returns,
-     *  			returns search results
-     *  @param {Callback1<String>} failure
-     *  			Callback triggered if an error occurs while searching
-     *  @param {Object} paramObj
-     *  			Parameter object for search
-     *  		@param size
-     *  		@param start
-     */
-    constructor.search = function(repo, query, success, failure, paramObj) {
-        var queryAdd = "";
-        queryAdd = new EcFramework().getSearchStringByType();
-        if (query == null || query == "") 
-            query = queryAdd;
-         else 
-            query = "(" + query + ") AND " + queryAdd;
-        repo.searchWithParams(query, paramObj, null, function(p1) {
-            if (success != null) {
-                var ret = [];
-                for (var i = 0; i < p1.length; i++) {
-                    var framework = new EcFramework();
-                    if (p1[i].isAny(framework.getTypes())) {
-                        framework.copyFrom(p1[i]);
-                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
-                        var val = new EcEncryptedValue();
-                        val.copyFrom(p1[i]);
-                        if (val.isAnEncrypted(EcFramework.myType)) {
-                            var obj = val.decryptIntoObject();
-                            framework.copyFrom(obj);
-                            EcEncryptedValue.encryptOnSave(framework.id, true);
-                        }
-                    }
-                    ret[i] = framework;
-                }
-                success(ret);
-            }
-        }, failure);
     };
 }, {relDone: {name: "Map", arguments: [null, null]}, levelDone: {name: "Map", arguments: [null, null]}, competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

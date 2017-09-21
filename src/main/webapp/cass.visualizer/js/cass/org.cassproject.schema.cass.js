@@ -1,14 +1,26 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Class used to hold namespace data.
+ * 
  *  @author fray
  *  @class Cass
  *  @module org.cassproject
@@ -23,7 +35,7 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
 }, {}, {});
 /**
  *  Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.
- *   
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class Competency
  *  @module org.cassproject
@@ -41,6 +53,7 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
     constructor.myType = Competency.TYPE_0_4;
     /**
      *  Scope in which the competency may be applied. e.g. Underwater.
+     * 
      *  @property scope
      *  @type string
      */
@@ -75,6 +88,7 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class Level
  *  @module org.cassproject
@@ -92,12 +106,14 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     constructor.myType = Level.TYPE_0_4;
     /**
      *  Specifies the URL of the competency this level relates to.
+     * 
      *  @property competency
-     *  @type string(URL) 
+     *  @type string(URL)
      */
     prototype.competency = null;
     /**
      *  The title that one who holds this performance level may assume.
+     * 
      *  @property title
      *  @type string
      */
@@ -105,6 +121,7 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     /**
      *  The performance characteristics required by this level in text form.
      *  TBD: Isn't this what description represents?
+     * 
      *  @property performance
      *  @type string
      */
@@ -135,7 +152,7 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A segment of script that defines in a domain specific language how competence is transferred from one competency to another.
- *  
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class RollupRule
  *  @module org.cassproject
@@ -148,16 +165,18 @@ var RollupRule = function() {
 RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
-    constructor.TYPE_0_4 = "http://schema.cassproject.org/0.4/RollupRule";
+    constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/RollupRule";
     constructor.myType = RollupRule.TYPE_0_4;
     /**
      *  The rollup rule encoded as source code that is understandable to the assertion processor.
+     * 
      *  @property rule
      *  @type string
      */
     prototype.rule = null;
     /**
      *  Specifies the URL of the competency that the rollup rule pertains to.
+     * 
      *  @property competency
      *  @type string
      */
@@ -181,7 +200,7 @@ RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, pro
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.
- *  
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class Framework
  *  @module org.cassproject
@@ -199,24 +218,28 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
     constructor.myType = Framework.TYPE_0_4;
     /**
      *  URLs of competencies included in this framework.
+     * 
      *  @property competency
      *  @type string[]
      */
     prototype.competency = null;
     /**
      *  URLs of relations included in this framework.
+     * 
      *  @property relation
      *  @type string[]
      */
     prototype.relation = null;
     /**
      *  URLs of levels included in this framework.
+     * 
      *  @property level
      *  @type string[]
      */
     prototype.level = null;
     /**
      *  URLs of RollupRules included in this framework.
+     * 
      *  @property rollupRule
      *  @type string[]
      */
@@ -247,6 +270,7 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
 }, {competency: {name: "Array", arguments: [null]}, relation: {name: "Array", arguments: [null]}, level: {name: "Array", arguments: [null]}, rollupRule: {name: "Array", arguments: [null]}, contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A relation between two objects.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class Relation
  *  @module org.cassproject
@@ -257,14 +281,10 @@ var Relation = function() {
     this.setContextAndType(Cass.context, Relation.myType);
 };
 Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototype) {
-    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/relation";
-    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/relation";
-    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Relation";
-    constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Relation";
-    constructor.myType = Relation.TYPE_0_4;
     /**
      *  Relation type when one object enables the capability to obtain another.
      *  Enabling relations do not imply a requirement, but makes the acquisition of the source much easier.
+     * 
      *  @property IS_ENABLED_BY
      *  @static
      *  @type string
@@ -273,6 +293,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     /**
      *  Relation type when one object requires another.
      *  Requiring relations are strict.
+     * 
      *  @property REQUIRES
      *  @static
      *  @type string
@@ -281,6 +302,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     /**
      *  Relation type when one object desires another.
      *  Desire relations improve the range of applicability or improve performance of the source.
+     * 
      *  @property DESIRES
      *  @static
      *  @type string
@@ -289,6 +311,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     /**
      *  Relation type when one object is a subset of another.
      *  Narrows relations are strict, and represent a super/sub relation.
+     * 
      *  @property NARROWS
      *  @static
      *  @type string
@@ -298,6 +321,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
      *  Relation type when one object is related to another.
      *  Related relations provide linkages that do not necessarily carry information.
      *  Related relations are bidirectional.
+     * 
      *  @property IS_RELATED_TO
      *  @static
      *  @type string
@@ -307,14 +331,21 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
      *  Relation type when one object is equivalent to another.
      *  Equivalent relations define two objects that are effectively equivalent.
      *  Equivalent relations are bidirectional.
+     * 
      *  @property IS_RELATED_TO
      *  @static
      *  @type string
      */
     constructor.IS_EQUIVALENT_TO = "isEquivalentTo";
+    constructor.TYPE_0_1 = "http://schema.eduworks.com/cass/0.1/relation";
+    constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/relation";
+    constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Relation";
+    constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Relation";
+    constructor.myType = Relation.TYPE_0_4;
     /**
      *  URL of the object at the beginning of the relation.
      *  A <relation> B, this is A.
+     * 
      *  @property source
      *  @type string(url)
      */
@@ -322,6 +353,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     /**
      *  URL of the object at the end of the relation.
      *  A <relation> B, this is B.
+     * 
      *  @property target
      *  @type string(url)
      */
@@ -329,18 +361,21 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     /**
      *  URL or controlled vocabulary of the relation.
      *  A <relation> B, this is <relation>.
+     * 
      *  @property relationType
      *  @type string | URL
      */
     prototype.relationType = null;
     /**
      *  Date time in ISO 8601 format at which the relation may be observed.
+     * 
      *  @property validFrom
      *  @type string
      */
     prototype.validFrom = null;
     /**
      *  Date time in ISO 8601 format at which the relation may no longer be observed.
+     * 
      *  @property validThrough
      *  @type string
      */
@@ -373,6 +408,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @class Assertion
  *  @module org.cassproject
@@ -390,67 +426,78 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     constructor.myType = Assertion.TYPE_0_4;
     /**
      *  URL of the competency.
+     * 
      *  @property competency
      *  @type string(URL)
      */
     prototype.competency = null;
     /**
      *  URL of the framework within which the assertion is restricted.
+     * 
      *  @property framework
      *  @type string(URL)
      */
     prototype.framework = null;
     /**
      *  URL of the level, or null if 'held with no performance expectations'.
+     * 
      *  @property level
      *  @type string
      */
     prototype.level = null;
     /**
+     *  Confidence with which the assertion was made.
+     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
+     * 
+     *  @property confidence
+     *  @type float [0,1]
+     */
+    prototype.confidence = null;
+    /**
      *  Public Key in PEM format of the recipient of the assertion.
+     * 
      *  @property subject
      *  @type EcEncryptedValue<Public Key PEM>
      */
     prototype.subject = null;
     /**
      *  Public Key in PEM format of the identity making the assertion.
+     * 
      *  @property agent
      *  @type EcEncryptedValue<Public Key PEM>
      */
     prototype.agent = null;
     /**
      *  Encrypted evidence. May be a string, URL or schema.org/Thing.
+     * 
      *  @property evidence
      *  @type EcEncryptedValue<string | URL | Thing>[]
      */
     prototype.evidence = null;
     /**
-     *  Confidence with which the assertion was made. 
-     *  Confidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.
-     *  @property confidence
-     *  @type float [0,1]
-     */
-    prototype.confidence = null;
-    /**
      *  Time that the assertion was made in milliseconds since the Unix Epoch.
+     * 
      *  @property assertionDate
      *  @type EcEncryptedValue<long>
      */
     prototype.assertionDate = null;
     /**
      *  Time that the assertion expires, specified in milliseconds since the Unix Epoch.
+     * 
      *  @property expirationDate
      *  @type EcEncryptedValue<long>
      */
     prototype.expirationDate = null;
     /**
      *  Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).
+     * 
      *  @property decayFunction
      *  @type EcEncryptedValue<string>
      */
     prototype.decayFunction = null;
     /**
      *  True if the assertion is a claim that the subject cannot demonstrate the competency.
+     * 
      *  @property negative
      *  @type EcEncryptedValue<boolean>
      */
@@ -458,11 +505,37 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     prototype.getSubject = function() {
         return EcPk.fromPem(this.subject);
     };
+    /**
+     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
+     *  object should be able to see and change the encrypted value. Owners and
+     *  readers of the object should be persisted.
+     * 
+     *  @param pk
+     */
+    prototype.setSubject = function(pk) {
+        var owners = new Array();
+        var readers = this.reader;
+        if (readers == null) 
+            readers = new Array();
+        if (this.subject != null) {
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
+        }
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        this.subject = pk.toPem();
+    };
     prototype.getSubjectAsync = function(success, failure) {
         success(EcPk.fromPem(this.subject));
     };
     prototype.getAgent = function() {
         return EcPk.fromPem(this.agent);
+    };
+    prototype.setAgent = function(pk) {
+        this.agent = pk.toPem();
     };
     prototype.getAgentAsync = function(success, failure) {
         success(EcPk.fromPem(this.agent));
@@ -532,11 +605,17 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     prototype.getAssertionDate = function() {
         return this.assertionDate;
     };
+    prototype.setAssertionDate = function(assertionDateMs) {
+        this.assertionDate = assertionDateMs;
+    };
     prototype.getAssertionDateAsync = function(success, failure) {
         success(this.assertionDate);
     };
     prototype.getExpirationDate = function() {
         return this.expirationDate;
+    };
+    prototype.setExpirationDate = function(expirationDateMs) {
+        this.expirationDate = expirationDateMs;
     };
     prototype.getExpirationDateAsync = function(success, failure) {
         success(this.expirationDate);
@@ -555,40 +634,20 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     prototype.getDecayFunction = function() {
         return this.decayFunction;
     };
+    prototype.setDecayFunction = function(decayFunctionText) {
+        this.decayFunction = decayFunctionText;
+    };
     prototype.getDecayFunctionAsync = function(success, failure) {
         success(this.decayFunction);
     };
     prototype.getNegative = function() {
         return "true".equals(this.negative);
     };
+    prototype.setNegative = function(negativeB) {
+        this.negative = negativeB;
+    };
     prototype.getNegativeAsync = function(success, failure) {
         success("true".equals(this.negative));
-    };
-    /**
-     *  Sets the subject of an assertion. Makes a few assumptions: Owners of the
-     *  object should be able to see and change the encrypted value. Owners and
-     *  readers of the object should be persisted.
-     * 
-     *  @param pk
-     */
-    prototype.setSubject = function(pk) {
-        var owners = new Array();
-        var readers = this.reader;
-        if (readers == null) 
-            readers = new Array();
-        if (this.subject != null) {
-            if (this.subject.owner != null) 
-                owners.concat(this.subject.owner);
-            if (this.subject.reader != null) 
-                readers.concat(this.subject.reader);
-        }
-        if (this.owner != null) 
-            owners = owners.concat(this.owner);
-        readers.push(pk.toPem());
-        this.subject = pk.toPem();
-    };
-    prototype.setAgent = function(pk) {
-        this.agent = pk.toPem();
     };
     prototype.setCompetency = function(competencyUrl) {
         this.competency = competencyUrl;
@@ -601,18 +660,6 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     };
     prototype.setEvidence = function(evidences) {
         this.evidence = evidences;
-    };
-    prototype.setAssertionDate = function(assertionDateMs) {
-        this.assertionDate = assertionDateMs;
-    };
-    prototype.setExpirationDate = function(expirationDateMs) {
-        this.expirationDate = expirationDateMs;
-    };
-    prototype.setDecayFunction = function(decayFunctionText) {
-        this.decayFunction = decayFunctionText;
-    };
-    prototype.setNegative = function(negativeB) {
-        this.negative = negativeB;
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);

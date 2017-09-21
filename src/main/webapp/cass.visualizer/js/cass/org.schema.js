@@ -1,21 +1,14 @@
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
-
- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Schema.org/Thing
  *  The most generic type of item.
+ * 
  *  @author schema.org
  *  @class Thing
  *  @module org.schema
  */
 var Thing = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -25,6 +18,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/name
      *  The name of the item.
+     * 
      *  @property name
      *  @type Text
      */
@@ -32,14 +26,15 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/identifier
      *  The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
-     *         
+     * 
      *  @property identifier
-     *  @type schema,URL | schema,Text | schema,PropertyValue
+     *  @type schema, URL | schema,Text | schema,PropertyValue
      */
     prototype.identifier = null;
     /**
      *  Schema.org/url
      *  URL of the item.
+     * 
      *  @property url
      *  @type URL
      */
@@ -47,13 +42,15 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/image
      *  An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
+     * 
      *  @property image
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.image = null;
     /**
      *  Schema.org/description
      *  A description of the item.
+     * 
      *  @property description
      *  @type Text
      */
@@ -61,6 +58,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/disambiguatingDescription
      *  A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
+     * 
      *  @property disambiguatingDescription
      *  @type Text
      */
@@ -68,6 +66,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/alternateName
      *  An alias for the item.
+     * 
      *  @property alternateName
      *  @type Text
      */
@@ -75,6 +74,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/sameAs
      *  URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
+     * 
      *  @property sameAs
      *  @type URL
      */
@@ -82,6 +82,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/additionalType
      *  An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
+     * 
      *  @property additionalType
      *  @type URL
      */
@@ -89,6 +90,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/potentialAction
      *  Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
+     * 
      *  @property potentialAction
      *  @type Action
      */
@@ -96,17 +98,32 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
     /**
      *  Schema.org/mainEntityOfPage
      *  Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+     * 
      *  @property mainEntityOfPage
-     *  @type schema,URL | schema,CreativeWork
+     *  @type schema, URL | schema,CreativeWork
      */
     prototype.mainEntityOfPage = null;
     /**
+     *  Returns the name of the thing
+     * 
+     *  @return {String} name of Thing
+     *  @memberOf Thing
+     *  @method getName
+     */
+    prototype.getName = function() {
+        if (this.name != null && EcObject.isObject(this.name) && (this.name).hasOwnProperty("@value")) {
+            return (this.name)["@value"];
+        } else {
+            return this.name;
+        }
+    };
+    /**
      *  Method to set Thing name
-     *  
+     * 
+     *  @param {String} name
+     *                  Name to set for this Thing
      *  @memberOf Thing
      *  @method setName
-     *  @param {String} name
-     * 			Name to set for this Thing
      */
     prototype.setName = function(name) {
         if (this.name != null && EcObject.isObject(this.name) && (this.name).hasOwnProperty("@value")) {
@@ -118,26 +135,26 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
         }
     };
     /**
-     *  Returns the name of the thing
-     *  
+     *  Returns the description of the thing
+     * 
+     *  @return {String} description of Thing
      *  @memberOf Thing
-     *  @method getName
-     *  @return {String} name of Thing
+     *  @method getDescription
      */
-    prototype.getName = function() {
-        if (this.name != null && EcObject.isObject(this.name) && (this.name).hasOwnProperty("@value")) {
-            return (this.name)["@value"];
+    prototype.getDescription = function() {
+        if (this.description != null && EcObject.isObject(this.description) && (this.description).hasOwnProperty("@value")) {
+            return (this.description)["@value"];
         } else {
-            return this.name;
+            return this.description;
         }
     };
     /**
      *  Method to set Thing description
-     *  
+     * 
+     *  @param {String} description
+     *                  Description to set for its Thing
      *  @memberOf Thing
      *  @method setDescription
-     *  @param {String} description
-     *  			Description to set for its Thing
      */
     prototype.setDescription = function(description) {
         if (this.description != null && EcObject.isObject(this.description) && (this.description).hasOwnProperty("@value")) {
@@ -148,24 +165,11 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
             this.description = description;
         }
     };
-    /**
-     *  Returns the description of the thing
-     *  
-     *  @memberOf Thing
-     *  @method getDescription
-     *  @return {String} description of Thing
-     */
-    prototype.getDescription = function() {
-        if (this.description != null && EcObject.isObject(this.description) && (this.description).hasOwnProperty("@value")) {
-            return (this.description)["@value"];
-        } else {
-            return this.description;
-        }
-    };
 }, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Place
  *  Entities that have a somewhat fixed, physical extension.
+ * 
  *  @author schema.org
  *  @class Place
  *  @module org.schema
@@ -173,6 +177,7 @@ Thing = stjs.extend(Thing, EcRemoteLinkedData, [], function(constructor, prototy
  */
 var Place = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -184,6 +189,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/reviews
      *  Review of the item.
+     * 
      *  @property reviews
      *  @type Review
      */
@@ -191,6 +197,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/amenityFeature
      *  An amenity feature (e.g. a characteristic or service) of the Accommodation. This generic property does not make a statement about whether the feature is included in an offer for the main accommodation or available at extra costs.
+     * 
      *  @property amenityFeature
      *  @type LocationFeatureSpecification
      */
@@ -198,6 +205,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -205,6 +213,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/faxNumber
      *  The fax number.
+     * 
      *  @property faxNumber
      *  @type Text
      */
@@ -220,6 +229,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isicV4
      *  The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.
+     * 
      *  @property isicV4
      *  @type Text
      */
@@ -227,6 +237,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/events
      *  Upcoming or past events associated with this place or organization.
+     * 
      *  @property events
      *  @type Event
      */
@@ -234,6 +245,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/containsPlace
      *  The basic containment relation between a place and another that it contains.
+     * 
      *  @property containsPlace
      *  @type Place
      */
@@ -241,6 +253,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/maximumAttendeeCapacity
      *  The total number of individuals that may attend an event or venue.
+     * 
      *  @property maximumAttendeeCapacity
      *  @type Integer
      */
@@ -248,6 +261,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/maps
      *  A URL to a map of the place.
+     * 
      *  @property maps
      *  @type URL
      */
@@ -255,6 +269,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/containedIn
      *  The basic containment relation between a place and one that contains it.
+     * 
      *  @property containedIn
      *  @type Place
      */
@@ -262,6 +277,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -269,6 +285,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/containedInPlace
      *  The basic containment relation between a place and one that contains it.
+     * 
      *  @property containedInPlace
      *  @type Place
      */
@@ -276,27 +293,31 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/photo
      *  A photograph of this place.
+     * 
      *  @property photo
-     *  @type schema,Photograph | schema,ImageObject
+     *  @type schema, Photograph | schema,ImageObject
      */
     prototype.photo = null;
     /**
      *  Schema.org/address
      *  Physical address of the item.
+     * 
      *  @property address
-     *  @type schema,PostalAddress | schema,Text
+     *  @type schema, PostalAddress | schema,Text
      */
     prototype.address = null;
     /**
      *  Schema.org/geo
      *  The geo coordinates of the place.
+     * 
      *  @property geo
-     *  @type schema,GeoShape | schema,GeoCoordinates
+     *  @type schema, GeoShape | schema,GeoCoordinates
      */
     prototype.geo = null;
     /**
      *  Schema.org/openingHoursSpecification
      *  The opening hours of a certain place.
+     * 
      *  @property openingHoursSpecification
      *  @type OpeningHoursSpecification
      */
@@ -304,13 +325,15 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/photos
      *  Photographs of this place.
+     * 
      *  @property photos
-     *  @type schema,Photograph | schema,ImageObject
+     *  @type schema, Photograph | schema,ImageObject
      */
     prototype.photos = null;
     /**
      *  Schema.org/map
      *  A URL to a map of the place.
+     * 
      *  @property map
      *  @type URL
      */
@@ -318,13 +341,15 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/hasMap
      *  A URL to a map of the place.
+     * 
      *  @property hasMap
-     *  @type schema,URL | schema,Map
+     *  @type schema, URL | schema,Map
      */
     prototype.hasMap = null;
     /**
      *  Schema.org/smokingAllowed
      *  Indicates whether it is allowed to smoke in the place, e.g. in the restaurant, hotel or hotel room.
+     * 
      *  @property smokingAllowed
      *  @type Boolean
      */
@@ -332,6 +357,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/telephone
      *  The telephone number.
+     * 
      *  @property telephone
      *  @type Text
      */
@@ -339,6 +365,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -346,7 +373,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/specialOpeningHoursSpecification
      *  The special opening hours of a certain place.\n\nUse this to explicitly override general opening hours brought in scope by [[openingHoursSpecification]] or [[openingHours]].
-     *       
+     * 
      *  @property specialOpeningHoursSpecification
      *  @type OpeningHoursSpecification
      */
@@ -354,7 +381,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/branchCode
      *  A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs.\n\nFor example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047 the code "3047" is a branchCode for a particular branch.
-     *       
+     * 
      *  @property branchCode
      *  @type Text
      */
@@ -362,13 +389,15 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/logo
      *  An associated logo.
+     * 
      *  @property logo
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.logo = null;
     /**
      *  Schema.org/globalLocationNumber
      *  The [Global Location Number](http://www.gs1.org/gln) (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.
+     * 
      *  @property globalLocationNumber
      *  @type Text
      */
@@ -377,6 +406,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
 /**
  *  Schema.org/Person
  *  A person (alive, dead, undead, or fictional).
+ * 
  *  @author schema.org
  *  @class Person
  *  @module org.schema
@@ -384,6 +414,7 @@ Place = stjs.extend(Place, Thing, [], function(constructor, prototype) {
  */
 var Person = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -395,6 +426,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/birthPlace
      *  The place where the person was born.
+     * 
      *  @property birthPlace
      *  @type Place
      */
@@ -402,6 +434,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/relatedTo
      *  The most generic familial relation.
+     * 
      *  @property relatedTo
      *  @type Person
      */
@@ -409,20 +442,23 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/alumniOf
      *  An organization that the person is an alumni of.
+     * 
      *  @property alumniOf
-     *  @type schema,Organization | schema,EducationalOrganization
+     *  @type schema, Organization | schema,EducationalOrganization
      */
     prototype.alumniOf = null;
     /**
      *  Schema.org/memberOf
      *  An Organization (or ProgramMembership) to which this Person or Organization belongs.
+     * 
      *  @property memberOf
-     *  @type schema,Organization | schema,ProgramMembership
+     *  @type schema, Organization | schema,ProgramMembership
      */
     prototype.memberOf = null;
     /**
      *  Schema.org/affiliation
      *  An organization that this person is affiliated with. For example, a school/university, a club, or a team.
+     * 
      *  @property affiliation
      *  @type Organization
      */
@@ -430,6 +466,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/award
      *  An award won by or for this item.
+     * 
      *  @property award
      *  @type Text
      */
@@ -437,6 +474,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/taxID
      *  The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.
+     * 
      *  @property taxID
      *  @type Text
      */
@@ -444,6 +482,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/contactPoints
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoints
      *  @type ContactPoint
      */
@@ -451,6 +490,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/faxNumber
      *  The fax number.
+     * 
      *  @property faxNumber
      *  @type Text
      */
@@ -458,6 +498,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/children
      *  A child of the person.
+     * 
      *  @property children
      *  @type Person
      */
@@ -465,13 +506,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/height
      *  The height of the item.
+     * 
      *  @property height
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.height = null;
     /**
      *  Schema.org/duns
      *  The Dun & Bradstreet DUNS number for identifying an organization or business person.
+     * 
      *  @property duns
      *  @type Text
      */
@@ -479,6 +522,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isicV4
      *  The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.
+     * 
      *  @property isicV4
      *  @type Text
      */
@@ -486,6 +530,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/additionalName
      *  An additional name for a Person, can be used for a middle name.
+     * 
      *  @property additionalName
      *  @type Text
      */
@@ -493,6 +538,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/parents
      *  A parents of the person.
+     * 
      *  @property parents
      *  @type Person
      */
@@ -500,6 +546,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/honorificSuffix
      *  An honorific suffix preceding a Person's name such as M.D. /PhD/MSCSW.
+     * 
      *  @property honorificSuffix
      *  @type Text
      */
@@ -507,6 +554,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/worksFor
      *  Organizations that the person works for.
+     * 
      *  @property worksFor
      *  @type Organization
      */
@@ -514,6 +562,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/follows
      *  The most generic uni-directional social relation.
+     * 
      *  @property follows
      *  @type Person
      */
@@ -521,6 +570,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/colleagues
      *  A colleague of the person.
+     * 
      *  @property colleagues
      *  @type Person
      */
@@ -528,13 +578,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/brand
      *  The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.
+     * 
      *  @property brand
-     *  @type schema,Organization | schema,Brand
+     *  @type schema, Organization | schema,Brand
      */
     prototype.brand = null;
     /**
      *  Schema.org/familyName
      *  Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+     * 
      *  @property familyName
      *  @type Text
      */
@@ -542,13 +594,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/homeLocation
      *  A contact location for a person's residence.
+     * 
      *  @property homeLocation
-     *  @type schema,ContactPoint | schema,Place
+     *  @type schema, ContactPoint | schema,Place
      */
     prototype.homeLocation = null;
     /**
      *  Schema.org/jobTitle
      *  The job title of the person (for example, Financial Manager).
+     * 
      *  @property jobTitle
      *  @type Text
      */
@@ -556,6 +610,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/siblings
      *  A sibling of the person.
+     * 
      *  @property siblings
      *  @type Person
      */
@@ -563,13 +618,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/address
      *  Physical address of the item.
+     * 
      *  @property address
-     *  @type schema,PostalAddress | schema,Text
+     *  @type schema, PostalAddress | schema,Text
      */
     prototype.address = null;
     /**
      *  Schema.org/deathDate
      *  Date of death.
+     * 
      *  @property deathDate
      *  @type Date
      */
@@ -577,6 +634,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/awards
      *  Awards won by or for this item.
+     * 
      *  @property awards
      *  @type Text
      */
@@ -584,6 +642,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/knows
      *  The most generic bi-directional social/work relation.
+     * 
      *  @property knows
      *  @type Person
      */
@@ -591,6 +650,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/contactPoint
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoint
      *  @type ContactPoint
      */
@@ -598,6 +658,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/performerIn
      *  Event that this person is a performer or participant in.
+     * 
      *  @property performerIn
      *  @type Event
      */
@@ -605,13 +666,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/funder
      *  A person or organization that supports (sponsors) something through some kind of financial contribution.
+     * 
      *  @property funder
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.funder = null;
     /**
      *  Schema.org/email
      *  Email address.
+     * 
      *  @property email
      *  @type Text
      */
@@ -619,6 +682,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/sibling
      *  A sibling of the person.
+     * 
      *  @property sibling
      *  @type Person
      */
@@ -626,6 +690,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/vatID
      *  The Value-added Tax ID of the organization or person.
+     * 
      *  @property vatID
      *  @type Text
      */
@@ -633,13 +698,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/gender
      *  Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.
+     * 
      *  @property gender
-     *  @type schema,GenderType | schema,Text
+     *  @type schema, GenderType | schema,Text
      */
     prototype.gender = null;
     /**
      *  Schema.org/seeks
      *  A pointer to products or services sought by the organization or person (demand).
+     * 
      *  @property seeks
      *  @type Demand
      */
@@ -647,6 +714,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/nationality
      *  Nationality of the person.
+     * 
      *  @property nationality
      *  @type Country
      */
@@ -654,13 +722,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/sponsor
      *  A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.
+     * 
      *  @property sponsor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.sponsor = null;
     /**
      *  Schema.org/weight
      *  The weight of the product or person.
+     * 
      *  @property weight
      *  @type QuantitativeValue
      */
@@ -668,6 +738,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/givenName
      *  Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+     * 
      *  @property givenName
      *  @type Text
      */
@@ -675,6 +746,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/hasPOS
      *  Points-of-Sales operated by the organization or person.
+     * 
      *  @property hasPOS
      *  @type Place
      */
@@ -682,6 +754,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/telephone
      *  The telephone number.
+     * 
      *  @property telephone
      *  @type Text
      */
@@ -689,6 +762,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/deathPlace
      *  The place where the person died.
+     * 
      *  @property deathPlace
      *  @type Place
      */
@@ -696,20 +770,23 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/colleague
      *  A colleague of the person.
+     * 
      *  @property colleague
-     *  @type schema,URL | schema,Person
+     *  @type schema, URL | schema,Person
      */
     prototype.colleague = null;
     /**
      *  Schema.org/netWorth
      *  The total financial value of the person as calculated by subtracting assets from liabilities.
+     * 
      *  @property netWorth
-     *  @type schema,PriceSpecification | schema,MonetaryAmount
+     *  @type schema, PriceSpecification | schema,MonetaryAmount
      */
     prototype.netWorth = null;
     /**
      *  Schema.org/honorificPrefix
      *  An honorific prefix preceding a Person's name such as Dr/Mrs/Mr.
+     * 
      *  @property honorificPrefix
      *  @type Text
      */
@@ -717,6 +794,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/spouse
      *  The person's spouse.
+     * 
      *  @property spouse
      *  @type Person
      */
@@ -724,13 +802,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/owns
      *  Products owned by the organization or person.
+     * 
      *  @property owns
-     *  @type schema,OwnershipInfo | schema,Product
+     *  @type schema, OwnershipInfo | schema,Product
      */
     prototype.owns = null;
     /**
      *  Schema.org/naics
      *  The North American Industry Classification System (NAICS) code for a particular organization or business person.
+     * 
      *  @property naics
      *  @type Text
      */
@@ -738,6 +818,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/birthDate
      *  Date of birth.
+     * 
      *  @property birthDate
      *  @type Date
      */
@@ -745,13 +826,15 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/workLocation
      *  A contact location for a person's place of work.
+     * 
      *  @property workLocation
-     *  @type schema,ContactPoint | schema,Place
+     *  @type schema, ContactPoint | schema,Place
      */
     prototype.workLocation = null;
     /**
      *  Schema.org/hasOfferCatalog
      *  Indicates an OfferCatalog listing for this Organization, Person, or Service.
+     * 
      *  @property hasOfferCatalog
      *  @type OfferCatalog
      */
@@ -759,6 +842,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/makesOffer
      *  A pointer to products or services offered by the organization or person.
+     * 
      *  @property makesOffer
      *  @type Offer
      */
@@ -766,6 +850,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/parent
      *  A parent of this person.
+     * 
      *  @property parent
      *  @type Person
      */
@@ -773,6 +858,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/globalLocationNumber
      *  The [Global Location Number](http://www.gs1.org/gln) (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.
+     * 
      *  @property globalLocationNumber
      *  @type Text
      */
@@ -781,6 +867,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
 /**
  *  Schema.org/Intangible
  *  A utility class that serves as the umbrella for a number of 'intangible' things such as quantities, structured values, etc.
+ * 
  *  @author schema.org
  *  @class Intangible
  *  @module org.schema
@@ -788,6 +875,7 @@ Person = stjs.extend(Person, Thing, [], function(constructor, prototype) {
  */
 var Intangible = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -799,6 +887,7 @@ Intangible = stjs.extend(Intangible, Thing, [], null, {identifier: "Object", ima
 /**
  *  Schema.org/CreativeWork
  *  The most generic kind of creative work, including books, movies, photographs, software programs, etc.
+ * 
  *  @author schema.org
  *  @class CreativeWork
  *  @module org.schema
@@ -806,6 +895,7 @@ Intangible = stjs.extend(Intangible, Thing, [], null, {identifier: "Object", ima
  */
 var CreativeWork = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -817,13 +907,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/contributor
      *  A secondary contributor to the CreativeWork or Event.
+     * 
      *  @property contributor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.contributor = null;
     /**
      *  Schema.org/reviews
      *  Review of the item.
+     * 
      *  @property reviews
      *  @type Review
      */
@@ -831,6 +923,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/keywords
      *  Keywords or tags used to describe this content. Multiple entries in a keywords list are typically delimited by commas.
+     * 
      *  @property keywords
      *  @type Text
      */
@@ -838,6 +931,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/audience
      *  An intended audience, i.e. a group for whom something was created.
+     * 
      *  @property audience
      *  @type Audience
      */
@@ -845,6 +939,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/timeRequired
      *  Approximate or typical time it takes to work with or through this learning resource for the typical intended target audience, e.g. 'P30M', 'P1H25M'.
+     * 
      *  @property timeRequired
      *  @type Duration
      */
@@ -852,6 +947,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/publication
      *  A publication event associated with the item.
+     * 
      *  @property publication
      *  @type PublicationEvent
      */
@@ -859,6 +955,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/award
      *  An award won by or for this item.
+     * 
      *  @property award
      *  @type Text
      */
@@ -866,6 +963,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/contentLocation
      *  The location depicted or described in the content. For example, the location in a photograph or painting.
+     * 
      *  @property contentLocation
      *  @type Place
      */
@@ -873,22 +971,25 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/temporalCoverage
      *  The temporalCoverage of a CreativeWork indicates the period that the content applies to, i.e. that it describes, either as a DateTime or as a textual string indicating a time period in [ISO 8601 time interval format](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals). In
-     *       the case of a Dataset it will typically indicate the relevant time period in a precise notation (e.g. for a 2011 census dataset, the year 2011 would be written "2011/2012"). Other forms of content e.g. ScholarlyArticle, Book, TVSeries or TVEpisode may indicate their temporalCoverage in broader terms - textually or via well-known URL.
-     *       Written works such as books may sometimes have precise temporal coverage too, e.g. a work set in 1939 - 1945 can be indicated in ISO 8601 interval format format via "1939/1945".
+     *  the case of a Dataset it will typically indicate the relevant time period in a precise notation (e.g. for a 2011 census dataset, the year 2011 would be written "2011/2012"). Other forms of content e.g. ScholarlyArticle, Book, TVSeries or TVEpisode may indicate their temporalCoverage in broader terms - textually or via well-known URL.
+     *  Written works such as books may sometimes have precise temporal coverage too, e.g. a work set in 1939 - 1945 can be indicated in ISO 8601 interval format format via "1939/1945".
+     * 
      *  @property temporalCoverage
-     *  @type schema,URL | schema,Text | schema,DateTime
+     *  @type schema, URL | schema,Text | schema,DateTime
      */
     prototype.temporalCoverage = null;
     /**
      *  Schema.org/isBasedOn
      *  A resource that was used in the creation of this resource. This term can be repeated for multiple sources. For example, http://example.com/great-multiplication-intro.html.
+     * 
      *  @property isBasedOn
-     *  @type schema,URL | schema,CreativeWork | schema,Product
+     *  @type schema, URL | schema,CreativeWork | schema,Product
      */
     prototype.isBasedOn = null;
     /**
      *  Schema.org/headline
      *  Headline of the article.
+     * 
      *  @property headline
      *  @type Text
      */
@@ -896,13 +997,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/fileFormat
      *  Media type, typically MIME format (see [IANA site](http://www.iana.org/assignments/media-types/media-types.xhtml)) of the content e.g. application/zip of a SoftwareApplication binary. In cases where a CreativeWork has several media type representations, 'encoding' can be used to indicate each MediaObject alongside particular fileFormat information. Unregistered or niche file formats can be indicated instead via the most appropriate URL, e.g. defining Web page or a Wikipedia entry.
+     * 
      *  @property fileFormat
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.fileFormat = null;
     /**
      *  Schema.org/interactionStatistic
      *  The number of interactions for the CreativeWork using the WebSite or SoftwareApplication. The most specific child type of InteractionCounter should be used.
+     * 
      *  @property interactionStatistic
      *  @type InteractionCounter
      */
@@ -910,6 +1013,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/recordedAt
      *  The Event where the CreativeWork was recorded. The CreativeWork may capture all or part of the event.
+     * 
      *  @property recordedAt
      *  @type Event
      */
@@ -917,6 +1021,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/isAccessibleForFree
      *  A flag to signal that the publication is accessible for free.
+     * 
      *  @property isAccessibleForFree
      *  @type Boolean
      */
@@ -924,6 +1029,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/isPartOf
      *  Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
+     * 
      *  @property isPartOf
      *  @type CreativeWork
      */
@@ -931,6 +1037,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/exampleOfWork
      *  A creative work that this work is an example/instance/realization/derivation of.
+     * 
      *  @property exampleOfWork
      *  @type CreativeWork
      */
@@ -938,6 +1045,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/accessibilityFeature
      *  Content features of the resource, such as accessible media, alternatives and supported enhancements for accessibility ([WebSchemas wiki lists possible values](http://www.w3.org/wiki/WebSchemas/Accessibility)).
+     * 
      *  @property accessibilityFeature
      *  @type Text
      */
@@ -945,13 +1053,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/dateCreated
      *  The date on which the CreativeWork was created or the item was added to a DataFeed.
+     * 
      *  @property dateCreated
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.dateCreated = null;
     /**
      *  Schema.org/releasedEvent
      *  The place and time the release was issued, expressed as a PublicationEvent.
+     * 
      *  @property releasedEvent
      *  @type PublicationEvent
      */
@@ -959,13 +1069,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/publisher
      *  The publisher of the creative work.
+     * 
      *  @property publisher
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.publisher = null;
     /**
      *  Schema.org/accessibilityControl
      *  Identifies input methods that are sufficient to fully control the described resource ([WebSchemas wiki lists possible values](http://www.w3.org/wiki/WebSchemas/Accessibility)).
+     * 
      *  @property accessibilityControl
      *  @type Text
      */
@@ -973,6 +1085,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/isFamilyFriendly
      *  Indicates whether this content is family friendly.
+     * 
      *  @property isFamilyFriendly
      *  @type Boolean
      */
@@ -980,6 +1093,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/encoding
      *  A media object that encodes this CreativeWork. This property is a synonym for associatedMedia.
+     * 
      *  @property encoding
      *  @type MediaObject
      */
@@ -987,6 +1101,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/alternativeHeadline
      *  A secondary title of the CreativeWork.
+     * 
      *  @property alternativeHeadline
      *  @type Text
      */
@@ -994,6 +1109,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/educationalUse
      *  The purpose of a work in the context of education; for example, 'assignment', 'group work'.
+     * 
      *  @property educationalUse
      *  @type Text
      */
@@ -1001,13 +1117,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/creator
      *  The creator/author of this CreativeWork. This is the same as the Author property for CreativeWork.
+     * 
      *  @property creator
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.creator = null;
     /**
      *  Schema.org/hasPart
      *  Indicates a CreativeWork that is (in some sense) a part of this CreativeWork.
+     * 
      *  @property hasPart
      *  @type CreativeWork
      */
@@ -1015,20 +1133,23 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/license
      *  A license document that applies to this content, typically indicated by URL.
+     * 
      *  @property license
-     *  @type schema,URL | schema,CreativeWork
+     *  @type schema, URL | schema,CreativeWork
      */
     prototype.license = null;
     /**
      *  Schema.org/translator
      *  Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event.
+     * 
      *  @property translator
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.translator = null;
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -1036,20 +1157,23 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/publishingPrinciples
      *  Link to page describing the editorial principles of the organization primarily responsible for the creation of the CreativeWork.
+     * 
      *  @property publishingPrinciples
      *  @type URL
      */
     prototype.publishingPrinciples = null;
     /**
      *  Schema.org/schemaVersion
-     *  Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application. 
+     *  Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application.
+     * 
      *  @property schemaVersion
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.schemaVersion = null;
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -1057,14 +1181,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/position
      *  The position of an item in a series or sequence of items.
+     * 
      *  @property position
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.position = null;
     /**
      *  Schema.org/accessMode
      *  The human sensory perceptual system or cognitive faculty through which a person may process or perceive information. Expected values include: auditory, tactile, textual, visual, colorDependent, chartOnVisual, chemOnVisual, diagramOnVisual, mathOnVisual, musicOnVisual, textOnVisual.
-     *       
+     * 
      *  @property accessMode
      *  @type Text
      */
@@ -1072,13 +1197,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/genre
      *  Genre of the creative work, broadcast channel or group.
+     * 
      *  @property genre
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.genre = null;
     /**
      *  Schema.org/character
      *  Fictional person connected with a creative work.
+     * 
      *  @property character
      *  @type Person
      */
@@ -1086,6 +1213,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/commentCount
      *  The number of comments this CreativeWork (e.g. Article, Question or Answer) has received. This is most applicable to works published in Web sites with commenting system; additional comments may exist elsewhere.
+     * 
      *  @property commentCount
      *  @type Integer
      */
@@ -1093,6 +1221,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/contentRating
      *  Official rating of a piece of content&#x2014;for example,'MPAA PG-13'.
+     * 
      *  @property contentRating
      *  @type Text
      */
@@ -1100,6 +1229,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/awards
      *  Awards won by or for this item.
+     * 
      *  @property awards
      *  @type Text
      */
@@ -1107,7 +1237,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/accessModeSufficient
      *  A list of single or combined accessModes that are sufficient to understand all the intellectual content of a resource. Expected values include:  auditory, tactile, textual, visual.
-     *       
+     * 
      *  @property accessModeSufficient
      *  @type Text
      */
@@ -1115,13 +1245,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/producer
      *  The person or organization who produced the work (e.g. music album, movie, tv/radio series etc.).
+     * 
      *  @property producer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.producer = null;
     /**
      *  Schema.org/editor
      *  Specifies the Person who edited the CreativeWork.
+     * 
      *  @property editor
      *  @type Person
      */
@@ -1129,6 +1261,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/locationCreated
      *  The location where the CreativeWork was created, which may not be the same as the location depicted in the CreativeWork.
+     * 
      *  @property locationCreated
      *  @type Place
      */
@@ -1136,6 +1269,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/about
      *  The subject matter of the content.
+     * 
      *  @property about
      *  @type Thing
      */
@@ -1143,6 +1277,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/audio
      *  An embedded audio object.
+     * 
      *  @property audio
      *  @type AudioObject
      */
@@ -1150,6 +1285,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/encodings
      *  A media object that encodes this CreativeWork.
+     * 
      *  @property encodings
      *  @type MediaObject
      */
@@ -1157,6 +1293,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/thumbnailUrl
      *  A thumbnail image relevant to the Thing.
+     * 
      *  @property thumbnailUrl
      *  @type URL
      */
@@ -1164,13 +1301,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/funder
      *  A person or organization that supports (sponsors) something through some kind of financial contribution.
+     * 
      *  @property funder
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.funder = null;
     /**
      *  Schema.org/typicalAgeRange
      *  The typical expected age range, e.g. '7-9', '11-'.
+     * 
      *  @property typicalAgeRange
      *  @type Text
      */
@@ -1178,6 +1317,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/accountablePerson
      *  Specifies the Person that is legally accountable for the CreativeWork.
+     * 
      *  @property accountablePerson
      *  @type Person
      */
@@ -1185,6 +1325,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/learningResourceType
      *  The predominant type or kind characterizing the learning resource. For example, 'presentation', 'handout'.
+     * 
      *  @property learningResourceType
      *  @type Text
      */
@@ -1192,13 +1333,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/material
      *  A material that something is made from, e.g. leather, wool, cotton, paper.
+     * 
      *  @property material
-     *  @type schema,URL | schema,Text | schema,Product
+     *  @type schema, URL | schema,Text | schema,Product
      */
     prototype.material = null;
     /**
      *  Schema.org/interactivityType
      *  The predominant mode of learning supported by the learning resource. Acceptable values are 'active', 'expositive', or 'mixed'.
+     * 
      *  @property interactivityType
      *  @type Text
      */
@@ -1206,13 +1349,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/author
      *  The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
+     * 
      *  @property author
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.author = null;
     /**
      *  Schema.org/accessibilityHazard
      *  A characteristic of the described resource that is physiologically dangerous to some users. Related to WCAG 2.0 guideline 2.3 ([WebSchemas wiki lists possible values](http://www.w3.org/wiki/WebSchemas/Accessibility)).
+     * 
      *  @property accessibilityHazard
      *  @type Text
      */
@@ -1220,6 +1365,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/sourceOrganization
      *  The Organization on whose behalf the creator was working.
+     * 
      *  @property sourceOrganization
      *  @type Organization
      */
@@ -1227,27 +1373,31 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/sponsor
      *  A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.
+     * 
      *  @property sponsor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.sponsor = null;
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/copyrightHolder
      *  The party holding the legal copyright to the CreativeWork.
+     * 
      *  @property copyrightHolder
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.copyrightHolder = null;
     /**
      *  Schema.org/accessibilityAPI
      *  Indicates that the resource is compatible with the referenced accessibility API ([WebSchemas wiki lists possible values](http://www.w3.org/wiki/WebSchemas/Accessibility)).
+     * 
      *  @property accessibilityAPI
      *  @type Text
      */
@@ -1255,6 +1405,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/text
      *  The textual content of this CreativeWork.
+     * 
      *  @property text
      *  @type Text
      */
@@ -1262,6 +1413,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/comment
      *  Comments, typically from users.
+     * 
      *  @property comment
      *  @type Comment
      */
@@ -1269,6 +1421,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/datePublished
      *  Date of first broadcast/publication.
+     * 
      *  @property datePublished
      *  @type Date
      */
@@ -1276,8 +1429,9 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/spatialCoverage
      *  The spatialCoverage of a CreativeWork indicates the place(s) which are the focus of the content. It is a subproperty of
-     *       contentLocation intended primarily for more technical and detailed materials. For example with a Dataset, it indicates
-     *       areas that the dataset describes: a dataset of New York weather would have spatialCoverage which was the place: the state of New York.
+     *  contentLocation intended primarily for more technical and detailed materials. For example with a Dataset, it indicates
+     *  areas that the dataset describes: a dataset of New York weather would have spatialCoverage which was the place: the state of New York.
+     * 
      *  @property spatialCoverage
      *  @type Place
      */
@@ -1285,6 +1439,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -1292,6 +1447,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/educationalAlignment
      *  An alignment to an established educational framework.
+     * 
      *  @property educationalAlignment
      *  @type AlignmentObject
      */
@@ -1299,6 +1455,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/video
      *  An embedded video object.
+     * 
      *  @property video
      *  @type VideoObject
      */
@@ -1306,13 +1463,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/version
      *  The version of the CreativeWork embodied by a specified resource.
+     * 
      *  @property version
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.version = null;
     /**
      *  Schema.org/mainEntity
      *  Indicates the primary entity described in some page or other CreativeWork.
+     * 
      *  @property mainEntity
      *  @type Thing
      */
@@ -1320,6 +1479,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/associatedMedia
      *  A media object that encodes this CreativeWork. This property is a synonym for encoding.
+     * 
      *  @property associatedMedia
      *  @type MediaObject
      */
@@ -1327,6 +1487,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/workExample
      *  Example/instance/realization/derivation of the concept of this creative work. eg. The paperback edition, first edition, or eBook.
+     * 
      *  @property workExample
      *  @type CreativeWork
      */
@@ -1334,6 +1495,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/copyrightYear
      *  The year during which the claimed copyright for the CreativeWork was first asserted.
+     * 
      *  @property copyrightYear
      *  @type Number
      */
@@ -1341,6 +1503,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/accessibilitySummary
      *  A human-readable summary of specific accessibility features or deficiencies, consistent with the other accessibility metadata but expressing subtleties such as "short descriptions are present but long descriptions will be needed for non-visual users" or "short descriptions are present and no long descriptions are needed."
+     * 
      *  @property accessibilitySummary
      *  @type Text
      */
@@ -1348,6 +1511,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/mentions
      *  Indicates that the CreativeWork contains a reference to, but is not necessarily about a concept.
+     * 
      *  @property mentions
      *  @type Thing
      */
@@ -1355,13 +1519,15 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/citation
      *  A citation or reference to another creative work, such as another publication, web page, scholarly article, etc.
+     * 
      *  @property citation
-     *  @type schema,Text | schema,CreativeWork
+     *  @type schema, Text | schema,CreativeWork
      */
     prototype.citation = null;
     /**
      *  Schema.org/discussionUrl
      *  A link to the page containing the comments of the CreativeWork.
+     * 
      *  @property discussionUrl
      *  @type URL
      */
@@ -1369,28 +1535,32 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
     /**
      *  Schema.org/dateModified
      *  The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.
+     * 
      *  @property dateModified
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.dateModified = null;
     /**
      *  Schema.org/inLanguage
      *  The language of the content or performance or used in an action. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[availableLanguage]].
+     * 
      *  @property inLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.inLanguage = null;
     /**
      *  Schema.org/isBasedOnUrl
      *  A resource that was used in the creation of this resource. This term can be repeated for multiple sources. For example, http://example.com/great-multiplication-intro.html.
+     * 
      *  @property isBasedOnUrl
-     *  @type schema,URL | schema,CreativeWork | schema,Product
+     *  @type schema, URL | schema,CreativeWork | schema,Product
      */
     prototype.isBasedOnUrl = null;
 }, {contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Organization
  *  An organization such as a school, NGO, corporation, club, etc.
+ * 
  *  @author schema.org
  *  @class Organization
  *  @module org.schema
@@ -1398,6 +1568,7 @@ CreativeWork = stjs.extend(CreativeWork, Thing, [], function(constructor, protot
  */
 var Organization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1409,6 +1580,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/reviews
      *  Review of the item.
+     * 
      *  @property reviews
      *  @type Review
      */
@@ -1416,6 +1588,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -1423,20 +1596,23 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/member
      *  A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
+     * 
      *  @property member
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.member = null;
     /**
      *  Schema.org/memberOf
      *  An Organization (or ProgramMembership) to which this Person or Organization belongs.
+     * 
      *  @property memberOf
-     *  @type schema,Organization | schema,ProgramMembership
+     *  @type schema, Organization | schema,ProgramMembership
      */
     prototype.memberOf = null;
     /**
      *  Schema.org/award
      *  An award won by or for this item.
+     * 
      *  @property award
      *  @type Text
      */
@@ -1444,6 +1620,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/taxID
      *  The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.
+     * 
      *  @property taxID
      *  @type Text
      */
@@ -1451,6 +1628,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/contactPoints
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoints
      *  @type ContactPoint
      */
@@ -1458,6 +1636,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/faxNumber
      *  The fax number.
+     * 
      *  @property faxNumber
      *  @type Text
      */
@@ -1465,6 +1644,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/duns
      *  The Dun & Bradstreet DUNS number for identifying an organization or business person.
+     * 
      *  @property duns
      *  @type Text
      */
@@ -1472,6 +1652,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/isicV4
      *  The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.
+     * 
      *  @property isicV4
      *  @type Text
      */
@@ -1479,6 +1660,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/events
      *  Upcoming or past events associated with this place or organization.
+     * 
      *  @property events
      *  @type Event
      */
@@ -1486,6 +1668,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/leiCode
      *  An organization identifier that uniquely identifies a legal entity as defined in ISO 17442.
+     * 
      *  @property leiCode
      *  @type Text
      */
@@ -1493,6 +1676,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -1500,6 +1684,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/numberOfEmployees
      *  The number of employees in an organization e.g. business.
+     * 
      *  @property numberOfEmployees
      *  @type QuantitativeValue
      */
@@ -1507,6 +1692,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/department
      *  A relationship between an organization and a department of that organization, also described as an organization (allowing different urls, logos, opening hours). For example: a store with a pharmacy, or a bakery with a cafe.
+     * 
      *  @property department
      *  @type Organization
      */
@@ -1514,20 +1700,23 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/brand
      *  The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.
+     * 
      *  @property brand
-     *  @type schema,Organization | schema,Brand
+     *  @type schema, Organization | schema,Brand
      */
     prototype.brand = null;
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/parentOrganization
      *  The larger organization that this organization is a [[subOrganization]] of, if any.
+     * 
      *  @property parentOrganization
      *  @type Organization
      */
@@ -1535,13 +1724,15 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/address
      *  Physical address of the item.
+     * 
      *  @property address
-     *  @type schema,PostalAddress | schema,Text
+     *  @type schema, PostalAddress | schema,Text
      */
     prototype.address = null;
     /**
      *  Schema.org/awards
      *  Awards won by or for this item.
+     * 
      *  @property awards
      *  @type Text
      */
@@ -1549,6 +1740,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/contactPoint
      *  A contact point for a person or organization.
+     * 
      *  @property contactPoint
      *  @type ContactPoint
      */
@@ -1556,13 +1748,15 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/funder
      *  A person or organization that supports (sponsors) something through some kind of financial contribution.
+     * 
      *  @property funder
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.funder = null;
     /**
      *  Schema.org/subOrganization
      *  A relationship between two organizations where the first includes the second, e.g., as a subsidiary. See also: the more specific 'department' property.
+     * 
      *  @property subOrganization
      *  @type Organization
      */
@@ -1570,6 +1764,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/foundingDate
      *  The date that this organization was founded.
+     * 
      *  @property foundingDate
      *  @type Date
      */
@@ -1577,6 +1772,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/email
      *  Email address.
+     * 
      *  @property email
      *  @type Text
      */
@@ -1584,6 +1780,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/alumni
      *  Alumni of an organization.
+     * 
      *  @property alumni
      *  @type Person
      */
@@ -1591,6 +1788,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/vatID
      *  The Value-added Tax ID of the organization or person.
+     * 
      *  @property vatID
      *  @type Text
      */
@@ -1598,6 +1796,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/seeks
      *  A pointer to products or services sought by the organization or person (demand).
+     * 
      *  @property seeks
      *  @type Demand
      */
@@ -1605,34 +1804,39 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/sponsor
      *  A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.
+     * 
      *  @property sponsor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.sponsor = null;
     /**
      *  Schema.org/members
      *  A member of this organization.
+     * 
      *  @property members
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.members = null;
     /**
      *  Schema.org/location
      *  The location of for example where the event is happening, an organization is located, or where an action takes place.
+     * 
      *  @property location
-     *  @type schema,PostalAddress | schema,Text | schema,Place
+     *  @type schema, PostalAddress | schema,Text | schema,Place
      */
     prototype.location = null;
     /**
      *  Schema.org/serviceArea
      *  The geographic area where the service is provided.
+     * 
      *  @property serviceArea
-     *  @type schema,GeoShape | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Place | schema,AdministrativeArea
      */
     prototype.serviceArea = null;
     /**
      *  Schema.org/hasPOS
      *  Points-of-Sales operated by the organization or person.
+     * 
      *  @property hasPOS
      *  @type Place
      */
@@ -1640,6 +1844,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/telephone
      *  The telephone number.
+     * 
      *  @property telephone
      *  @type Text
      */
@@ -1647,6 +1852,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -1654,6 +1860,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/founder
      *  A person who founded this organization.
+     * 
      *  @property founder
      *  @type Person
      */
@@ -1661,6 +1868,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/founders
      *  A person who founded this organization.
+     * 
      *  @property founders
      *  @type Person
      */
@@ -1668,6 +1876,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/employee
      *  Someone working for this organization.
+     * 
      *  @property employee
      *  @type Person
      */
@@ -1675,20 +1884,23 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/logo
      *  An associated logo.
+     * 
      *  @property logo
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.logo = null;
     /**
      *  Schema.org/owns
      *  Products owned by the organization or person.
+     * 
      *  @property owns
-     *  @type schema,OwnershipInfo | schema,Product
+     *  @type schema, OwnershipInfo | schema,Product
      */
     prototype.owns = null;
     /**
      *  Schema.org/legalName
      *  The official name of the organization, e.g. the registered company name.
+     * 
      *  @property legalName
      *  @type Text
      */
@@ -1696,6 +1908,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/naics
      *  The North American Industry Classification System (NAICS) code for a particular organization or business person.
+     * 
      *  @property naics
      *  @type Text
      */
@@ -1703,6 +1916,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/employees
      *  People working for this organization.
+     * 
      *  @property employees
      *  @type Person
      */
@@ -1710,6 +1924,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/dissolutionDate
      *  The date that this organization was dissolved.
+     * 
      *  @property dissolutionDate
      *  @type Date
      */
@@ -1717,6 +1932,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/foundingLocation
      *  The place where the Organization was founded.
+     * 
      *  @property foundingLocation
      *  @type Place
      */
@@ -1724,6 +1940,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/hasOfferCatalog
      *  Indicates an OfferCatalog listing for this Organization, Person, or Service.
+     * 
      *  @property hasOfferCatalog
      *  @type OfferCatalog
      */
@@ -1731,6 +1948,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/makesOffer
      *  A pointer to products or services offered by the organization or person.
+     * 
      *  @property makesOffer
      *  @type Offer
      */
@@ -1738,6 +1956,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
     /**
      *  Schema.org/globalLocationNumber
      *  The [Global Location Number](http://www.gs1.org/gln) (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.
+     * 
      *  @property globalLocationNumber
      *  @type Text
      */
@@ -1746,6 +1965,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
 /**
  *  Schema.org/Product
  *  Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an episode of a TV show streamed online.
+ * 
  *  @author schema.org
  *  @class Product
  *  @module org.schema
@@ -1753,6 +1973,7 @@ Organization = stjs.extend(Organization, Thing, [], function(constructor, protot
  */
 var Product = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -1764,6 +1985,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/reviews
      *  Review of the item.
+     * 
      *  @property reviews
      *  @type Review
      */
@@ -1771,6 +1993,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/audience
      *  An intended audience, i.e. a group for whom something was created.
+     * 
      *  @property audience
      *  @type Audience
      */
@@ -1778,6 +2001,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/award
      *  An award won by or for this item.
+     * 
      *  @property award
      *  @type Text
      */
@@ -1785,6 +2009,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isAccessoryOrSparePartFor
      *  A pointer to another product (or multiple products) for which this product is an accessory or spare part.
+     * 
      *  @property isAccessoryOrSparePartFor
      *  @type Product
      */
@@ -1792,6 +2017,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin14
      *  The [GTIN-14](http://apps.gs1.org/GDD/glossary/Pages/GTIN-14.aspx) code of the product, or the product to which the offer refers. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin14
      *  @type Text
      */
@@ -1799,6 +2025,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin13
      *  The [GTIN-13](http://apps.gs1.org/GDD/glossary/Pages/GTIN-13.aspx) code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin13
      *  @type Text
      */
@@ -1806,6 +2033,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin12
      *  The [GTIN-12](http://apps.gs1.org/GDD/glossary/Pages/GTIN-12.aspx) code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin12
      *  @type Text
      */
@@ -1813,8 +2041,9 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/height
      *  The height of the item.
+     * 
      *  @property height
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.height = null;
     /**
@@ -1828,13 +2057,15 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isRelatedTo
      *  A pointer to another, somehow related product (or multiple products).
+     * 
      *  @property isRelatedTo
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.isRelatedTo = null;
     /**
      *  Schema.org/purchaseDate
      *  The date the item e.g. vehicle was purchased by the current owner.
+     * 
      *  @property purchaseDate
      *  @type Date
      */
@@ -1842,6 +2073,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -1849,6 +2081,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -1856,6 +2089,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/mpn
      *  The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.
+     * 
      *  @property mpn
      *  @type Text
      */
@@ -1863,6 +2097,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/releaseDate
      *  The release date of a product or product model. This can be used to distinguish the exact variant of a product.
+     * 
      *  @property releaseDate
      *  @type Date
      */
@@ -1870,6 +2105,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/productionDate
      *  The date of production of the item, e.g. vehicle.
+     * 
      *  @property productionDate
      *  @type Date
      */
@@ -1877,20 +2113,23 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/brand
      *  The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.
+     * 
      *  @property brand
-     *  @type schema,Organization | schema,Brand
+     *  @type schema, Organization | schema,Brand
      */
     prototype.brand = null;
     /**
      *  Schema.org/depth
      *  The depth of the item.
+     * 
      *  @property depth
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.depth = null;
     /**
      *  Schema.org/awards
      *  Awards won by or for this item.
+     * 
      *  @property awards
      *  @type Text
      */
@@ -1898,13 +2137,15 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/model
      *  The model of the product. Use with the URL of a ProductModel or a textual representation of the model identifier. The URL of the ProductModel can be from an external source. It is recommended to additionally provide strong product identifiers via the gtin8/gtin13/gtin14 and mpn properties.
+     * 
      *  @property model
-     *  @type schema,ProductModel | schema,Text
+     *  @type schema, ProductModel | schema,Text
      */
     prototype.model = null;
     /**
      *  Schema.org/color
      *  The color of the product.
+     * 
      *  @property color
      *  @type Text
      */
@@ -1912,6 +2153,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/sku
      *  The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers.
+     * 
      *  @property sku
      *  @type Text
      */
@@ -1919,6 +2161,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin8
      *  The [GTIN-8](http://apps.gs1.org/GDD/glossary/Pages/GTIN-8.aspx) code of the product, or the product to which the offer refers. This code is also known as EAN/UCC-8 or 8-digit EAN. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin8
      *  @type Text
      */
@@ -1926,6 +2169,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/productID
      *  The product identifier, such as ISBN. For example: ``` meta itemprop="productID" content="isbn:123-456-789" ```.
+     * 
      *  @property productID
      *  @type Text
      */
@@ -1933,13 +2177,15 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/material
      *  A material that something is made from, e.g. leather, wool, cotton, paper.
+     * 
      *  @property material
-     *  @type schema,URL | schema,Text | schema,Product
+     *  @type schema, URL | schema,Text | schema,Product
      */
     prototype.material = null;
     /**
      *  Schema.org/isConsumableFor
      *  A pointer to another product (or multiple products) for which this product is a consumable.
+     * 
      *  @property isConsumableFor
      *  @type Product
      */
@@ -1947,6 +2193,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/weight
      *  The weight of the product or person.
+     * 
      *  @property weight
      *  @type QuantitativeValue
      */
@@ -1954,20 +2201,23 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isSimilarTo
      *  A pointer to another, functionally similar product (or multiple products).
+     * 
      *  @property isSimilarTo
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.isSimilarTo = null;
     /**
      *  Schema.org/width
      *  The width of the item.
+     * 
      *  @property width
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.width = null;
     /**
      *  Schema.org/itemCondition
      *  A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.
+     * 
      *  @property itemCondition
      *  @type OfferItemCondition
      */
@@ -1975,6 +2225,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -1982,6 +2233,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/manufacturer
      *  The manufacturer of the product.
+     * 
      *  @property manufacturer
      *  @type Organization
      */
@@ -1989,21 +2241,24 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/logo
      *  An associated logo.
+     * 
      *  @property logo
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.logo = null;
     /**
      *  Schema.org/category
      *  A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+     * 
      *  @property category
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.category = null;
 }, {reviews: "Review", audience: "Audience", isAccessoryOrSparePartFor: "Product", height: "Object", additionalProperty: "PropertyValue", isRelatedTo: "Object", offers: "Offer", review: "Review", brand: "Object", depth: "Object", model: "Object", material: "Object", isConsumableFor: "Product", weight: "QuantitativeValue", isSimilarTo: "Object", width: "Object", itemCondition: "OfferItemCondition", aggregateRating: "AggregateRating", manufacturer: "Organization", logo: "Object", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Action
  *  An action performed by a direct agent and indirect participants upon a direct object. Optionally happens at a location with the help of an inanimate instrument. The execution of the action may produce a result. Specific action sub-type documentation specifies the exact expectation of each argument/role.\n\nSee also [blog post](http://blog.schema.org/2014/04/announcing-schemaorg-actions.html) and [Actions overview document](http://schema.org/docs/actions.html).
+ * 
  *  @author schema.org
  *  @class Action
  *  @module org.schema
@@ -2011,6 +2266,7 @@ Product = stjs.extend(Product, Thing, [], function(constructor, prototype) {
  */
 var Action = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2022,6 +2278,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/startTime
      *  The startTime of something. For a reserved event or service (e.g. FoodEstablishmentReservation), the time that it is expected to start. For actions that span a period of time, when the action was performed. e.g. John wrote a book from *January* to December.\n\nNote that Event uses startDate/endDate instead of startTime/endTime, even when describing dates with times. This situation may be clarified in future revisions.
+     * 
      *  @property startTime
      *  @type DateTime
      */
@@ -2029,6 +2286,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/target
      *  Indicates a target EntryPoint for an Action.
+     * 
      *  @property target
      *  @type EntryPoint
      */
@@ -2036,13 +2294,15 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/participant
      *  Other co-agents that participated in the action indirectly. e.g. John wrote a book with *Steve*.
+     * 
      *  @property participant
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.participant = null;
     /**
      *  Schema.org/instrument
      *  The object that helped the agent perform the action. e.g. John wrote a book with *a pen*.
+     * 
      *  @property instrument
      *  @type Thing
      */
@@ -2050,13 +2310,15 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/agent
      *  The direct performer or driver of the action (animate or inanimate). e.g. *John* wrote a book.
+     * 
      *  @property agent
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.agent = null;
     /**
      *  Schema.org/object
      *  The object upon which the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read *a book*.
+     * 
      *  @property object
      *  @type Thing
      */
@@ -2064,6 +2326,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/actionStatus
      *  Indicates the current disposition of the Action.
+     * 
      *  @property actionStatus
      *  @type ActionStatusType
      */
@@ -2071,6 +2334,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/result
      *  The result produced in the action. e.g. John wrote *a book*.
+     * 
      *  @property result
      *  @type Thing
      */
@@ -2078,13 +2342,15 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/location
      *  The location of for example where the event is happening, an organization is located, or where an action takes place.
+     * 
      *  @property location
-     *  @type schema,PostalAddress | schema,Text | schema,Place
+     *  @type schema, PostalAddress | schema,Text | schema,Place
      */
     prototype.location = null;
     /**
      *  Schema.org/error
      *  For failed actions, more information on the cause of the failure.
+     * 
      *  @property error
      *  @type Thing
      */
@@ -2092,6 +2358,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/endTime
      *  The endTime of something. For a reserved event or service (e.g. FoodEstablishmentReservation), the time that it is expected to end. For actions that span a period of time, when the action was performed. e.g. John wrote a book from January to *December*.\n\nNote that Event uses startDate/endDate instead of startTime/endTime, even when describing dates with times. This situation may be clarified in future revisions.
+     * 
      *  @property endTime
      *  @type DateTime
      */
@@ -2100,6 +2367,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
 /**
  *  Schema.org/Event
  *  An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the [[offers]] property. Repeated events may be structured as separate Event objects.
+ * 
  *  @author schema.org
  *  @class Event
  *  @module org.schema
@@ -2107,6 +2375,7 @@ Action = stjs.extend(Action, Thing, [], function(constructor, prototype) {
  */
 var Event = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2118,41 +2387,47 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/contributor
      *  A secondary contributor to the CreativeWork or Event.
+     * 
      *  @property contributor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.contributor = null;
     /**
      *  Schema.org/attendees
      *  A person attending the event.
+     * 
      *  @property attendees
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.attendees = null;
     /**
      *  Schema.org/performers
      *  The main performer or performers of the event&#x2014;for example, a presenter, musician, or actor.
+     * 
      *  @property performers
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.performers = null;
     /**
      *  Schema.org/composer
      *  The person or organization who wrote a composition, or who is the composer of a work performed at some event.
+     * 
      *  @property composer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.composer = null;
     /**
      *  Schema.org/performer
      *  A performer at the event&#x2014;for example, a presenter, musician, musical group or actor.
+     * 
      *  @property performer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.performer = null;
     /**
      *  Schema.org/remainingAttendeeCapacity
      *  The number of attendee places for an event that remain unallocated.
+     * 
      *  @property remainingAttendeeCapacity
      *  @type Integer
      */
@@ -2160,6 +2435,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/isAccessibleForFree
      *  A flag to signal that the publication is accessible for free.
+     * 
      *  @property isAccessibleForFree
      *  @type Boolean
      */
@@ -2167,6 +2443,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -2174,6 +2451,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/eventStatus
      *  An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.
+     * 
      *  @property eventStatus
      *  @type EventStatusType
      */
@@ -2181,6 +2459,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/superEvent
      *  An event that this event is a part of. For example, a collection of individual music performances might each have a music festival as their superEvent.
+     * 
      *  @property superEvent
      *  @type Event
      */
@@ -2188,6 +2467,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/maximumAttendeeCapacity
      *  The total number of individuals that may attend an event or venue.
+     * 
      *  @property maximumAttendeeCapacity
      *  @type Integer
      */
@@ -2195,13 +2475,15 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/translator
      *  Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event.
+     * 
      *  @property translator
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.translator = null;
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -2209,6 +2491,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -2216,6 +2499,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/duration
      *  The duration of the item (movie, audio recording, event, etc.) in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property duration
      *  @type Duration
      */
@@ -2223,6 +2507,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/subEvent
      *  An Event that is part of this event. For example, a conference event includes many presentations, each of which is a subEvent of the conference.
+     * 
      *  @property subEvent
      *  @type Event
      */
@@ -2230,6 +2515,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -2237,13 +2523,15 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/attendee
      *  A person or organization attending the event.
+     * 
      *  @property attendee
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.attendee = null;
     /**
      *  Schema.org/about
      *  The subject matter of the content.
+     * 
      *  @property about
      *  @type Thing
      */
@@ -2251,13 +2539,15 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/funder
      *  A person or organization that supports (sponsors) something through some kind of financial contribution.
+     * 
      *  @property funder
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.funder = null;
     /**
      *  Schema.org/typicalAgeRange
      *  The typical expected age range, e.g. '7-9', '11-'.
+     * 
      *  @property typicalAgeRange
      *  @type Text
      */
@@ -2265,6 +2555,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/doorTime
      *  The time admission will commence.
+     * 
      *  @property doorTime
      *  @type DateTime
      */
@@ -2272,20 +2563,23 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/sponsor
      *  A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.
+     * 
      *  @property sponsor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.sponsor = null;
     /**
      *  Schema.org/location
      *  The location of for example where the event is happening, an organization is located, or where an action takes place.
+     * 
      *  @property location
-     *  @type schema,PostalAddress | schema,Text | schema,Place
+     *  @type schema, PostalAddress | schema,Text | schema,Place
      */
     prototype.location = null;
     /**
      *  Schema.org/recordedIn
      *  The CreativeWork that captured all or part of this Event.
+     * 
      *  @property recordedIn
      *  @type CreativeWork
      */
@@ -2293,13 +2587,15 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/organizer
      *  An organizer of an Event.
+     * 
      *  @property organizer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.organizer = null;
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -2307,13 +2603,15 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/startDate
      *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property startDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.startDate = null;
     /**
      *  Schema.org/previousStartDate
      *  Used in conjunction with eventStatus for rescheduled or cancelled events. This property contains the previously scheduled start date. For rescheduled events, the startDate property should be used for the newly scheduled start date. In the (rare) case of an event that has been postponed and rescheduled multiple times, this field may be repeated.
+     * 
      *  @property previousStartDate
      *  @type Date
      */
@@ -2321,7 +2619,8 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/workFeatured
      *  A work featured in some event, e.g. exhibited in an ExhibitionEvent.
-     *        Specific subproperties are available for workPerformed (e.g. a play), or a workPresented (a Movie at a ScreeningEvent).
+     *  Specific subproperties are available for workPerformed (e.g. a play), or a workPresented (a Movie at a ScreeningEvent).
+     * 
      *  @property workFeatured
      *  @type CreativeWork
      */
@@ -2329,6 +2628,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/workPerformed
      *  A work performed in some event, for example a play performed in a TheaterEvent.
+     * 
      *  @property workPerformed
      *  @type CreativeWork
      */
@@ -2336,20 +2636,23 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
     /**
      *  Schema.org/endDate
      *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property endDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.endDate = null;
     /**
      *  Schema.org/inLanguage
      *  The language of the content or performance or used in an action. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[availableLanguage]].
+     * 
      *  @property inLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.inLanguage = null;
     /**
      *  Schema.org/subEvents
      *  Events that are a part of this event. For example, a conference event includes many presentations, each subEvents of the conference.
+     * 
      *  @property subEvents
      *  @type Event
      */
@@ -2358,6 +2661,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
 /**
  *  Schema.org/Residence
  *  The place where a person lives.
+ * 
  *  @author schema.org
  *  @class Residence
  *  @module org.schema
@@ -2365,6 +2669,7 @@ Event = stjs.extend(Event, Thing, [], function(constructor, prototype) {
  */
 var Residence = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2376,9 +2681,9 @@ Residence = stjs.extend(Residence, Place, [], null, {reviews: "Review", amenityF
 /**
  *  Schema.org/Accommodation
  *  An accommodation is a place that can accommodate human beings, e.g. a hotel room, a camping pitch, or a meeting room. Many accommodations are for overnight stays, but this is not a mandatory requirement.
- * For more specific types of accommodations not defined in schema.org, one can use additionalType with external vocabularies.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  For more specific types of accommodations not defined in schema.org, one can use additionalType with external vocabularies.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Accommodation
@@ -2387,6 +2692,7 @@ Residence = stjs.extend(Residence, Place, [], null, {reviews: "Review", amenityF
  */
 var Accommodation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2398,6 +2704,7 @@ Accommodation = stjs.extend(Accommodation, Place, [], function(constructor, prot
     /**
      *  Schema.org/amenityFeature
      *  An amenity feature (e.g. a characteristic or service) of the Accommodation. This generic property does not make a statement about whether the feature is included in an offer for the main accommodation or available at extra costs.
+     * 
      *  @property amenityFeature
      *  @type LocationFeatureSpecification
      */
@@ -2405,7 +2712,8 @@ Accommodation = stjs.extend(Accommodation, Place, [], function(constructor, prot
     /**
      *  Schema.org/floorSize
      *  The size of the accommodation, e.g. in square meter or squarefoot.
-     * Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for square yard 
+     *  Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for square yard
+     * 
      *  @property floorSize
      *  @type QuantitativeValue
      */
@@ -2413,6 +2721,7 @@ Accommodation = stjs.extend(Accommodation, Place, [], function(constructor, prot
     /**
      *  Schema.org/permittedUsage
      *  Indications regarding the permitted usage of the accommodation.
+     * 
      *  @property permittedUsage
      *  @type Text
      */
@@ -2420,22 +2729,25 @@ Accommodation = stjs.extend(Accommodation, Place, [], function(constructor, prot
     /**
      *  Schema.org/petsAllowed
      *  Indicates whether pets are allowed to enter the accommodation or lodging business. More detailed information can be put in a text value.
+     * 
      *  @property petsAllowed
-     *  @type schema,Boolean | schema,Text
+     *  @type schema, Boolean | schema,Text
      */
     prototype.petsAllowed = null;
     /**
      *  Schema.org/numberOfRooms
      *  The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.
-     * Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     *  Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     * 
      *  @property numberOfRooms
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfRooms = null;
 }, {amenityFeature: "LocationFeatureSpecification", floorSize: "QuantitativeValue", petsAllowed: "Object", numberOfRooms: "Object", reviews: "Review", amenityFeature: "LocationFeatureSpecification", event: "Event", additionalProperty: "PropertyValue", events: "Event", containsPlace: "Place", containedIn: "Place", review: "Review", containedInPlace: "Place", photo: "Object", address: "Object", geo: "Object", openingHoursSpecification: "OpeningHoursSpecification", photos: "Object", hasMap: "Object", aggregateRating: "AggregateRating", specialOpeningHoursSpecification: "OpeningHoursSpecification", logo: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/LandmarksOrHistoricalBuildings
  *  An historical landmark or building.
+ * 
  *  @author schema.org
  *  @class LandmarksOrHistoricalBuildings
  *  @module org.schema
@@ -2443,6 +2755,7 @@ Accommodation = stjs.extend(Accommodation, Place, [], function(constructor, prot
  */
 var LandmarksOrHistoricalBuildings = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2454,6 +2767,7 @@ LandmarksOrHistoricalBuildings = stjs.extend(LandmarksOrHistoricalBuildings, Pla
 /**
  *  Schema.org/CivicStructure
  *  A public structure, such as a town hall or concert hall.
+ * 
  *  @author schema.org
  *  @class CivicStructure
  *  @module org.schema
@@ -2461,6 +2775,7 @@ LandmarksOrHistoricalBuildings = stjs.extend(LandmarksOrHistoricalBuildings, Pla
  */
 var CivicStructure = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2472,6 +2787,7 @@ CivicStructure = stjs.extend(CivicStructure, Place, [], function(constructor, pr
     /**
      *  Schema.org/openingHours
      *  The general opening hours for a business. Opening hours can be specified as a weekly time range, starting with days, then times per day. Multiple days can be listed with commas ',' separating each day. Day or time ranges are specified using a hyphen '-'.\n\n* Days are specified using the following two-letter combinations: ```Mo```, ```Tu```, ```We```, ```Th```, ```Fr```, ```Sa```, ```Su```.\n* Times are specified using 24:00 time. For example, 3pm is specified as ```15:00```. \n* Here is an example: <code>&lt;time itemprop="openingHours" datetime=&quot;Tu,Th 16:00-20:00&quot;&gt;Tuesdays and Thursdays 4-8pm&lt;/time&gt;</code>.\n* If a business is open 7 days a week, then it can be specified as <code>&lt;time itemprop=&quot;openingHours&quot; datetime=&quot;Mo-Su&quot;&gt;Monday through Sunday, all day&lt;/time&gt;</code>.
+     * 
      *  @property openingHours
      *  @type Text
      */
@@ -2480,6 +2796,7 @@ CivicStructure = stjs.extend(CivicStructure, Place, [], function(constructor, pr
 /**
  *  Schema.org/Landform
  *  A landform or physical feature.  Landform elements include mountains, plains, lakes, rivers, seascape and oceanic waterbody interface features such as bays, peninsulas, seas and so forth, including sub-aqueous terrain features such as submersed mountain ranges, volcanoes, and the great ocean basins.
+ * 
  *  @author schema.org
  *  @class Landform
  *  @module org.schema
@@ -2487,6 +2804,7 @@ CivicStructure = stjs.extend(CivicStructure, Place, [], function(constructor, pr
  */
 var Landform = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2498,6 +2816,7 @@ Landform = stjs.extend(Landform, Place, [], null, {reviews: "Review", amenityFea
 /**
  *  Schema.org/AdministrativeArea
  *  A geographical region, typically under the jurisdiction of a particular government.
+ * 
  *  @author schema.org
  *  @class AdministrativeArea
  *  @module org.schema
@@ -2505,6 +2824,7 @@ Landform = stjs.extend(Landform, Place, [], null, {reviews: "Review", amenityFea
  */
 var AdministrativeArea = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2516,6 +2836,7 @@ AdministrativeArea = stjs.extend(AdministrativeArea, Place, [], null, {reviews: 
 /**
  *  Schema.org/TouristAttraction
  *  A tourist attraction.
+ * 
  *  @author schema.org
  *  @class TouristAttraction
  *  @module org.schema
@@ -2523,6 +2844,7 @@ AdministrativeArea = stjs.extend(AdministrativeArea, Place, [], null, {reviews: 
  */
 var TouristAttraction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2534,6 +2856,7 @@ TouristAttraction = stjs.extend(TouristAttraction, Place, [], null, {reviews: "R
 /**
  *  Schema.org/Quantity
  *  Quantities such as distance, time, mass, weight, etc. Particular instances of say Mass are entities like '3 Kg' or '4 milligrams'.
+ * 
  *  @author schema.org
  *  @class Quantity
  *  @module org.schema
@@ -2541,6 +2864,7 @@ TouristAttraction = stjs.extend(TouristAttraction, Place, [], null, {reviews: "R
  */
 var Quantity = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2552,6 +2876,7 @@ Quantity = stjs.extend(Quantity, Intangible, [], null, {identifier: "Object", im
 /**
  *  Schema.org/OrderItem
  *  An order item is a line of an order. It includes the quantity and shipping details of a bought offer.
+ * 
  *  @author schema.org
  *  @class OrderItem
  *  @module org.schema
@@ -2559,6 +2884,7 @@ Quantity = stjs.extend(Quantity, Intangible, [], null, {identifier: "Object", im
  */
 var OrderItem = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2570,6 +2896,7 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/orderDelivery
      *  The delivery of the parcel related to this order or order item.
+     * 
      *  @property orderDelivery
      *  @type ParcelDelivery
      */
@@ -2577,6 +2904,7 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/orderQuantity
      *  The number of the item ordered. If the property is not set, assume the quantity is one.
+     * 
      *  @property orderQuantity
      *  @type Number
      */
@@ -2584,6 +2912,7 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/orderItemStatus
      *  The current status of the order item.
+     * 
      *  @property orderItemStatus
      *  @type OrderStatus
      */
@@ -2591,13 +2920,15 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/orderedItem
      *  The item ordered.
+     * 
      *  @property orderedItem
-     *  @type schema,OrderItem | schema,Product
+     *  @type schema, OrderItem | schema,Product
      */
     prototype.orderedItem = null;
     /**
      *  Schema.org/orderItemNumber
      *  The identifier of the order item.
+     * 
      *  @property orderItemNumber
      *  @type Text
      */
@@ -2606,6 +2937,7 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
 /**
  *  Schema.org/Rating
  *  A rating is an evaluation on a numeric scale, such as 1 to 5 stars.
+ * 
  *  @author schema.org
  *  @class Rating
  *  @module org.schema
@@ -2613,6 +2945,7 @@ OrderItem = stjs.extend(OrderItem, Intangible, [], function(constructor, prototy
  */
 var Rating = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2624,35 +2957,40 @@ Rating = stjs.extend(Rating, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/bestRating
      *  The highest value allowed in this rating system. If bestRating is omitted, 5 is assumed.
+     * 
      *  @property bestRating
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.bestRating = null;
     /**
      *  Schema.org/ratingValue
      *  The rating for the content.
+     * 
      *  @property ratingValue
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.ratingValue = null;
     /**
      *  Schema.org/worstRating
      *  The lowest value allowed in this rating system. If worstRating is omitted, 1 is assumed.
+     * 
      *  @property worstRating
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.worstRating = null;
     /**
      *  Schema.org/author
      *  The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
+     * 
      *  @property author
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.author = null;
 }, {bestRating: "Object", ratingValue: "Object", worstRating: "Object", author: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/ProgramMembership
  *  Used to describe membership in a loyalty programs (e.g. "StarAliance"), traveler clubs (e.g. "AAA"), purchase clubs ("Safeway Club"), etc.
+ * 
  *  @author schema.org
  *  @class ProgramMembership
  *  @module org.schema
@@ -2660,6 +2998,7 @@ Rating = stjs.extend(Rating, Intangible, [], function(constructor, prototype) {
  */
 var ProgramMembership = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2671,13 +3010,15 @@ ProgramMembership = stjs.extend(ProgramMembership, Intangible, [], function(cons
     /**
      *  Schema.org/member
      *  A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals.
+     * 
      *  @property member
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.member = null;
     /**
      *  Schema.org/programName
      *  The program providing the membership.
+     * 
      *  @property programName
      *  @type Text
      */
@@ -2685,13 +3026,15 @@ ProgramMembership = stjs.extend(ProgramMembership, Intangible, [], function(cons
     /**
      *  Schema.org/members
      *  A member of this organization.
+     * 
      *  @property members
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.members = null;
     /**
      *  Schema.org/hostingOrganization
      *  The organization (airline, travelers' club, etc.) the membership is made with.
+     * 
      *  @property hostingOrganization
      *  @type Organization
      */
@@ -2699,6 +3042,7 @@ ProgramMembership = stjs.extend(ProgramMembership, Intangible, [], function(cons
     /**
      *  Schema.org/membershipNumber
      *  A unique identifier for the membership.
+     * 
      *  @property membershipNumber
      *  @type Text
      */
@@ -2707,6 +3051,7 @@ ProgramMembership = stjs.extend(ProgramMembership, Intangible, [], function(cons
 /**
  *  Schema.org/Brand
  *  A brand is a name used by an organization or business person for labeling a product, product group, or similar.
+ * 
  *  @author schema.org
  *  @class Brand
  *  @module org.schema
@@ -2714,6 +3059,7 @@ ProgramMembership = stjs.extend(ProgramMembership, Intangible, [], function(cons
  */
 var Brand = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2725,6 +3071,7 @@ Brand = stjs.extend(Brand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -2732,6 +3079,7 @@ Brand = stjs.extend(Brand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -2739,14 +3087,16 @@ Brand = stjs.extend(Brand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/logo
      *  An associated logo.
+     * 
      *  @property logo
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.logo = null;
 }, {review: "Review", aggregateRating: "AggregateRating", logo: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Permit
  *  A permit issued by an organization, e.g. a parking pass.
+ * 
  *  @author schema.org
  *  @class Permit
  *  @module org.schema
@@ -2754,6 +3104,7 @@ Brand = stjs.extend(Brand, Intangible, [], function(constructor, prototype) {
  */
 var Permit = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2765,6 +3116,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -2772,6 +3124,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validUntil
      *  The date when the item is no longer valid.
+     * 
      *  @property validUntil
      *  @type Date
      */
@@ -2779,6 +3132,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validIn
      *  The geographic area where the permit is valid.
+     * 
      *  @property validIn
      *  @type AdministrativeArea
      */
@@ -2786,6 +3140,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/issuedBy
      *  The organization issuing the ticket or permit.
+     * 
      *  @property issuedBy
      *  @type Organization
      */
@@ -2793,6 +3148,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/issuedThrough
      *  The service through with the permit was granted.
+     * 
      *  @property issuedThrough
      *  @type Service
      */
@@ -2800,6 +3156,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/permitAudience
      *  The target audience for this permit.
+     * 
      *  @property permitAudience
      *  @type Audience
      */
@@ -2807,6 +3164,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validFor
      *  The time validity of the permit.
+     * 
      *  @property validFor
      *  @type Duration
      */
@@ -2815,6 +3173,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
 /**
  *  Schema.org/Flight
  *  An airline flight.
+ * 
  *  @author schema.org
  *  @class Flight
  *  @module org.schema
@@ -2822,6 +3181,7 @@ Permit = stjs.extend(Permit, Intangible, [], function(constructor, prototype) {
  */
 var Flight = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2833,6 +3193,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/departureTerminal
      *  Identifier of the flight's departure terminal.
+     * 
      *  @property departureTerminal
      *  @type Text
      */
@@ -2840,13 +3201,15 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/aircraft
      *  The kind of aircraft (e.g., "Boeing 747").
+     * 
      *  @property aircraft
-     *  @type schema,Text | schema,Vehicle
+     *  @type schema, Text | schema,Vehicle
      */
     prototype.aircraft = null;
     /**
      *  Schema.org/departureTime
      *  The expected departure time.
+     * 
      *  @property departureTime
      *  @type DateTime
      */
@@ -2854,6 +3217,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/arrivalTerminal
      *  Identifier of the flight's arrival terminal.
+     * 
      *  @property arrivalTerminal
      *  @type Text
      */
@@ -2861,6 +3225,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/flightNumber
      *  The unique identifier for a flight including the airline IATA code. For example, if describing United flight 110, where the IATA code for United is 'UA', the flightNumber is 'UA110'.
+     * 
      *  @property flightNumber
      *  @type Text
      */
@@ -2868,6 +3233,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/mealService
      *  Description of the meals that will be provided or available for purchase.
+     * 
      *  @property mealService
      *  @type Text
      */
@@ -2875,13 +3241,15 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/seller
      *  An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider.
+     * 
      *  @property seller
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.seller = null;
     /**
      *  Schema.org/arrivalTime
      *  The expected arrival time.
+     * 
      *  @property arrivalTime
      *  @type DateTime
      */
@@ -2889,6 +3257,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/departureGate
      *  Identifier of the flight's departure gate.
+     * 
      *  @property departureGate
      *  @type Text
      */
@@ -2896,13 +3265,15 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/estimatedFlightDuration
      *  The estimated time the flight will take.
+     * 
      *  @property estimatedFlightDuration
-     *  @type schema,Text | schema,Duration
+     *  @type schema, Text | schema,Duration
      */
     prototype.estimatedFlightDuration = null;
     /**
      *  Schema.org/departureAirport
      *  The airport where the flight originates.
+     * 
      *  @property departureAirport
      *  @type Airport
      */
@@ -2910,13 +3281,15 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/flightDistance
      *  The distance of the flight.
+     * 
      *  @property flightDistance
-     *  @type schema,Text | schema,Distance
+     *  @type schema, Text | schema,Distance
      */
     prototype.flightDistance = null;
     /**
      *  Schema.org/arrivalAirport
      *  The airport where the flight terminates.
+     * 
      *  @property arrivalAirport
      *  @type Airport
      */
@@ -2924,13 +3297,15 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/webCheckinTime
      *  The time when a passenger can check into the flight online.
+     * 
      *  @property webCheckinTime
      *  @type DateTime
      */
@@ -2938,6 +3313,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/boardingPolicy
      *  The type of boarding policy used by the airline (e.g. zone-based or group-based).
+     * 
      *  @property boardingPolicy
      *  @type BoardingPolicyType
      */
@@ -2945,6 +3321,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/arrivalGate
      *  Identifier of the flight's arrival gate.
+     * 
      *  @property arrivalGate
      *  @type Text
      */
@@ -2952,6 +3329,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/carrier
      *  'carrier' is an out-dated term indicating the 'provider' for parcel delivery and flights.
+     * 
      *  @property carrier
      *  @type Organization
      */
@@ -2960,6 +3338,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
 /**
  *  Schema.org/Language
  *  Natural languages such as Spanish, Tamil, Hindi, English, etc. Formal language code tags expressed in [BCP 47](https://en.wikipedia.org/wiki/IETF_language_tag) can be used via the [[alternateName]] property. The Language type previously also covered programming languages such as Scheme and Lisp, which are now best represented using [[ComputerLanguage]].
+ * 
  *  @author schema.org
  *  @class Language
  *  @module org.schema
@@ -2967,6 +3346,7 @@ Flight = stjs.extend(Flight, Intangible, [], function(constructor, prototype) {
  */
 var Language = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2978,6 +3358,7 @@ Language = stjs.extend(Language, Intangible, [], null, {identifier: "Object", im
 /**
  *  Schema.org/GameServer
  *  Server that provides game interaction in a multiplayer game.
+ * 
  *  @author schema.org
  *  @class GameServer
  *  @module org.schema
@@ -2985,6 +3366,7 @@ Language = stjs.extend(Language, Intangible, [], null, {identifier: "Object", im
  */
 var GameServer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -2996,6 +3378,7 @@ GameServer = stjs.extend(GameServer, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/game
      *  Video game which is played on this server.
+     * 
      *  @property game
      *  @type VideoGame
      */
@@ -3003,6 +3386,7 @@ GameServer = stjs.extend(GameServer, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/serverStatus
      *  Status of a game server.
+     * 
      *  @property serverStatus
      *  @type GameServerStatus
      */
@@ -3010,6 +3394,7 @@ GameServer = stjs.extend(GameServer, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/playersOnline
      *  Number of players on the server.
+     * 
      *  @property playersOnline
      *  @type Integer
      */
@@ -3018,6 +3403,7 @@ GameServer = stjs.extend(GameServer, Intangible, [], function(constructor, proto
 /**
  *  Schema.org/DigitalDocumentPermission
  *  A permission for a particular person or group to access a particular file.
+ * 
  *  @author schema.org
  *  @class DigitalDocumentPermission
  *  @module org.schema
@@ -3025,6 +3411,7 @@ GameServer = stjs.extend(GameServer, Intangible, [], function(constructor, proto
  */
 var DigitalDocumentPermission = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3036,6 +3423,7 @@ DigitalDocumentPermission = stjs.extend(DigitalDocumentPermission, Intangible, [
     /**
      *  Schema.org/permissionType
      *  The type of permission granted the person, organization, or audience.
+     * 
      *  @property permissionType
      *  @type DigitalDocumentPermissionType
      */
@@ -3043,14 +3431,16 @@ DigitalDocumentPermission = stjs.extend(DigitalDocumentPermission, Intangible, [
     /**
      *  Schema.org/grantee
      *  The person, organization, contact point, or audience that has been granted this permission.
+     * 
      *  @property grantee
-     *  @type schema,ContactPoint | schema,Organization | schema,Person | schema,Audience
+     *  @type schema, ContactPoint | schema,Organization | schema,Person | schema,Audience
      */
     prototype.grantee = null;
 }, {permissionType: "DigitalDocumentPermissionType", grantee: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Role
  *  Represents additional information about a relationship or property. For example a Role can be used to say that a 'member' role linking some SportsTeam to a player occurred during a particular time period. Or that a Person's 'actor' role in a Movie was for some particular characterName. Such properties can be attached to a Role entity, which is then associated with the main entities using ordinary properties like 'member' or 'actor'.\n\nSee also [blog post](http://blog.schema.org/2014/06/introducing-role.html).
+ * 
  *  @author schema.org
  *  @class Role
  *  @module org.schema
@@ -3058,6 +3448,7 @@ DigitalDocumentPermission = stjs.extend(DigitalDocumentPermission, Intangible, [
  */
 var Role = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3069,35 +3460,40 @@ Role = stjs.extend(Role, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/roleName
      *  A role played, performed or filled by a person or organization. For example, the team of creators for a comic book might fill the roles named 'inker', 'penciller', and 'letterer'; or an athlete in a SportsTeam might play in the position named 'Quarterback'.
+     * 
      *  @property roleName
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.roleName = null;
     /**
      *  Schema.org/namedPosition
      *  A position played, performed or filled by a person or organization, as part of an organization. For example, an athlete in a SportsTeam might play in the position named 'Quarterback'.
+     * 
      *  @property namedPosition
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.namedPosition = null;
     /**
      *  Schema.org/startDate
      *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property startDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.startDate = null;
     /**
      *  Schema.org/endDate
      *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property endDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.endDate = null;
 }, {roleName: "Object", namedPosition: "Object", startDate: "Object", endDate: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/AlignmentObject
  *  An intangible item that describes an alignment between a learning resource and a node in an educational framework.
+ * 
  *  @author schema.org
  *  @class AlignmentObject
  *  @module org.schema
@@ -3105,6 +3501,7 @@ Role = stjs.extend(Role, Intangible, [], function(constructor, prototype) {
  */
 var AlignmentObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3116,6 +3513,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
     /**
      *  Schema.org/educationalFramework
      *  The framework to which the resource being described is aligned.
+     * 
      *  @property educationalFramework
      *  @type Text
      */
@@ -3123,6 +3521,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
     /**
      *  Schema.org/targetName
      *  The name of a node in an established educational framework.
+     * 
      *  @property targetName
      *  @type Text
      */
@@ -3130,6 +3529,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
     /**
      *  Schema.org/alignmentType
      *  A category of alignment between the learning resource and the framework node. Recommended values include: 'assesses', 'teaches', 'requires', 'textComplexity', 'readingLevel', 'educationalSubject', and 'educationalLevel'.
+     * 
      *  @property alignmentType
      *  @type Text
      */
@@ -3137,6 +3537,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
     /**
      *  Schema.org/targetDescription
      *  The description of a node in an established educational framework.
+     * 
      *  @property targetDescription
      *  @type Text
      */
@@ -3144,6 +3545,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
     /**
      *  Schema.org/targetUrl
      *  The URL of a node in an established educational framework.
+     * 
      *  @property targetUrl
      *  @type URL
      */
@@ -3152,6 +3554,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
 /**
  *  Schema.org/JobPosting
  *  A listing that describes a job opening in a certain organization.
+ * 
  *  @author schema.org
  *  @class JobPosting
  *  @module org.schema
@@ -3159,6 +3562,7 @@ AlignmentObject = stjs.extend(AlignmentObject, Intangible, [], function(construc
  */
 var JobPosting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3170,13 +3574,15 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/baseSalary
      *  The base salary of the job or of an employee in an EmployeeRole.
+     * 
      *  @property baseSalary
-     *  @type schema,Number | schema,PriceSpecification | schema,MonetaryAmount
+     *  @type schema, Number | schema,PriceSpecification | schema,MonetaryAmount
      */
     prototype.baseSalary = null;
     /**
      *  Schema.org/benefits
      *  Description of benefits associated with the job.
+     * 
      *  @property benefits
      *  @type Text
      */
@@ -3184,6 +3590,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/jobBenefits
      *  Description of benefits associated with the job.
+     * 
      *  @property jobBenefits
      *  @type Text
      */
@@ -3191,6 +3598,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/experienceRequirements
      *  Description of skills and experience needed for the position.
+     * 
      *  @property experienceRequirements
      *  @type Text
      */
@@ -3198,6 +3606,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/hiringOrganization
      *  Organization offering the job position.
+     * 
      *  @property hiringOrganization
      *  @type Organization
      */
@@ -3205,6 +3614,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/employmentType
      *  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
+     * 
      *  @property employmentType
      *  @type Text
      */
@@ -3212,6 +3622,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/workHours
      *  The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).
+     * 
      *  @property workHours
      *  @type Text
      */
@@ -3219,6 +3630,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/responsibilities
      *  Responsibilities associated with this role.
+     * 
      *  @property responsibilities
      *  @type Text
      */
@@ -3226,6 +3638,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/skills
      *  Skills required to fulfill this role.
+     * 
      *  @property skills
      *  @type Text
      */
@@ -3233,6 +3646,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/qualifications
      *  Specific qualifications required for this role.
+     * 
      *  @property qualifications
      *  @type Text
      */
@@ -3240,6 +3654,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/occupationalCategory
      *  Category or categories describing the job. Use BLS O*NET-SOC taxonomy: http://www.onetcenter.org/taxonomy.html. Ideally includes textual label and formal code, with the property repeated for each applicable value.
+     * 
      *  @property occupationalCategory
      *  @type Text
      */
@@ -3247,6 +3662,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/incentives
      *  Description of bonus and commission compensation aspects of the job.
+     * 
      *  @property incentives
      *  @type Text
      */
@@ -3254,6 +3670,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -3261,6 +3678,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/title
      *  The title of the job.
+     * 
      *  @property title
      *  @type Text
      */
@@ -3268,6 +3686,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/educationRequirements
      *  Educational background needed for the position.
+     * 
      *  @property educationRequirements
      *  @type Text
      */
@@ -3275,6 +3694,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/specialCommitments
      *  Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.
+     * 
      *  @property specialCommitments
      *  @type Text
      */
@@ -3282,6 +3702,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/incentiveCompensation
      *  Description of bonus and commission compensation aspects of the job.
+     * 
      *  @property incentiveCompensation
      *  @type Text
      */
@@ -3289,6 +3710,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/salaryCurrency
      *  The currency (coded using [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) ) used for the main salary information in this job posting or for this employee.
+     * 
      *  @property salaryCurrency
      *  @type Text
      */
@@ -3296,6 +3718,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/jobLocation
      *  A (typically single) geographic location associated with the job position.
+     * 
      *  @property jobLocation
      *  @type Place
      */
@@ -3303,6 +3726,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/industry
      *  The industry associated with the job position.
+     * 
      *  @property industry
      *  @type Text
      */
@@ -3310,6 +3734,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/datePosted
      *  Publication date for the job posting.
+     * 
      *  @property datePosted
      *  @type Date
      */
@@ -3318,6 +3743,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
 /**
  *  Schema.org/Ticket
  *  Used to describe a ticket to an event, a flight, a bus ride, etc.
+ * 
  *  @author schema.org
  *  @class Ticket
  *  @module org.schema
@@ -3325,6 +3751,7 @@ JobPosting = stjs.extend(JobPosting, Intangible, [], function(constructor, proto
  */
 var Ticket = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3336,6 +3763,7 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/priceCurrency
      *  The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to [[PriceSpecification]] and its subtypes.
+     * 
      *  @property priceCurrency
      *  @type Text
      */
@@ -3343,13 +3771,15 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/totalPrice
      *  The total price for the reservation or ticket, including applicable taxes, shipping, etc.
+     * 
      *  @property totalPrice
-     *  @type schema,Number | schema,PriceSpecification | schema,Text
+     *  @type schema, Number | schema,PriceSpecification | schema,Text
      */
     prototype.totalPrice = null;
     /**
      *  Schema.org/dateIssued
      *  The date the ticket was issued.
+     * 
      *  @property dateIssued
      *  @type DateTime
      */
@@ -3357,13 +3787,15 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/ticketToken
      *  Reference to an asset (e.g., Barcode, QR code image or PDF) usable for entrance.
+     * 
      *  @property ticketToken
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.ticketToken = null;
     /**
      *  Schema.org/ticketNumber
      *  The unique identifier for the ticket.
+     * 
      *  @property ticketNumber
      *  @type Text
      */
@@ -3371,6 +3803,7 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/issuedBy
      *  The organization issuing the ticket or permit.
+     * 
      *  @property issuedBy
      *  @type Organization
      */
@@ -3378,6 +3811,7 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/ticketedSeat
      *  The seat associated with the ticket.
+     * 
      *  @property ticketedSeat
      *  @type Seat
      */
@@ -3385,14 +3819,16 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/underName
      *  The person or organization the reservation or ticket is for.
+     * 
      *  @property underName
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.underName = null;
 }, {totalPrice: "Object", ticketToken: "Object", issuedBy: "Organization", ticketedSeat: "Seat", underName: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Order
  *  An order is a confirmation of a transaction (a receipt), which can contain multiple line items, each represented by an Offer that has been accepted by the customer.
+ * 
  *  @author schema.org
  *  @class Order
  *  @module org.schema
@@ -3400,6 +3836,7 @@ Ticket = stjs.extend(Ticket, Intangible, [], function(constructor, prototype) {
  */
 var Order = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3411,6 +3848,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/orderDelivery
      *  The delivery of the parcel related to this order or order item.
+     * 
      *  @property orderDelivery
      *  @type ParcelDelivery
      */
@@ -3418,6 +3856,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/discountCurrency
      *  The currency (in 3-letter ISO 4217 format) of the discount.
+     * 
      *  @property discountCurrency
      *  @type Text
      */
@@ -3425,6 +3864,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/isGift
      *  Was the offer accepted as a gift for someone other than the buyer.
+     * 
      *  @property isGift
      *  @type Boolean
      */
@@ -3432,13 +3872,15 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/broker
      *  An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred.
+     * 
      *  @property broker
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.broker = null;
     /**
      *  Schema.org/discountCode
      *  Code used to redeem a discount.
+     * 
      *  @property discountCode
      *  @type Text
      */
@@ -3446,6 +3888,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/paymentMethod
      *  The name of the credit card or other method of payment for the order.
+     * 
      *  @property paymentMethod
      *  @type PaymentMethod
      */
@@ -3453,6 +3896,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/orderNumber
      *  The identifier of the transaction.
+     * 
      *  @property orderNumber
      *  @type Text
      */
@@ -3460,6 +3904,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/billingAddress
      *  The billing address for the order.
+     * 
      *  @property billingAddress
      *  @type PostalAddress
      */
@@ -3467,6 +3912,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/paymentDueDate
      *  The date that payment is due.
+     * 
      *  @property paymentDueDate
      *  @type DateTime
      */
@@ -3474,6 +3920,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/paymentMethodId
      *  An identifier for the method of payment used (e.g. the last 4 digits of the credit card).
+     * 
      *  @property paymentMethodId
      *  @type Text
      */
@@ -3481,6 +3928,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/orderStatus
      *  The current status of the order.
+     * 
      *  @property orderStatus
      *  @type OrderStatus
      */
@@ -3488,6 +3936,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/paymentUrl
      *  The URL for sending a payment.
+     * 
      *  @property paymentUrl
      *  @type URL
      */
@@ -3495,27 +3944,31 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/orderedItem
      *  The item ordered.
+     * 
      *  @property orderedItem
-     *  @type schema,OrderItem | schema,Product
+     *  @type schema, OrderItem | schema,Product
      */
     prototype.orderedItem = null;
     /**
      *  Schema.org/seller
      *  An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider.
+     * 
      *  @property seller
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.seller = null;
     /**
      *  Schema.org/customer
      *  Party placing the order or paying the invoice.
+     * 
      *  @property customer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.customer = null;
     /**
      *  Schema.org/paymentDue
      *  The date that payment is due.
+     * 
      *  @property paymentDue
      *  @type DateTime
      */
@@ -3523,6 +3976,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/acceptedOffer
      *  The offer(s) -- e.g., product, quantity and price combinations -- included in the order.
+     * 
      *  @property acceptedOffer
      *  @type Offer
      */
@@ -3530,6 +3984,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/confirmationNumber
      *  A number that confirms the given order or payment has been received.
+     * 
      *  @property confirmationNumber
      *  @type Text
      */
@@ -3537,6 +3992,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/orderDate
      *  Date order was placed.
+     * 
      *  @property orderDate
      *  @type DateTime
      */
@@ -3544,13 +4000,15 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/merchant
      *  'merchant' is an out-dated term for 'seller'.
+     * 
      *  @property merchant
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.merchant = null;
     /**
      *  Schema.org/partOfInvoice
      *  The order is being paid as part of the referenced Invoice.
+     * 
      *  @property partOfInvoice
      *  @type Invoice
      */
@@ -3558,14 +4016,16 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/discount
      *  Any discount applied (to an Order).
+     * 
      *  @property discount
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.discount = null;
 }, {orderDelivery: "ParcelDelivery", broker: "Object", paymentMethod: "PaymentMethod", billingAddress: "PostalAddress", orderStatus: "OrderStatus", orderedItem: "Object", seller: "Object", customer: "Object", acceptedOffer: "Offer", merchant: "Object", partOfInvoice: "Invoice", discount: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/BusTrip
  *  A trip on a commercial bus line.
+ * 
  *  @author schema.org
  *  @class BusTrip
  *  @module org.schema
@@ -3573,6 +4033,7 @@ Order = stjs.extend(Order, Intangible, [], function(constructor, prototype) {
  */
 var BusTrip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3584,6 +4045,7 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/departureTime
      *  The expected departure time.
+     * 
      *  @property departureTime
      *  @type DateTime
      */
@@ -3591,6 +4053,7 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/busNumber
      *  The unique identifier for the bus.
+     * 
      *  @property busNumber
      *  @type Text
      */
@@ -3598,13 +4061,15 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/departureBusStop
      *  The stop or station from which the bus departs.
+     * 
      *  @property departureBusStop
-     *  @type schema,BusStation | schema,BusStop
+     *  @type schema, BusStation | schema,BusStop
      */
     prototype.departureBusStop = null;
     /**
      *  Schema.org/arrivalTime
      *  The expected arrival time.
+     * 
      *  @property arrivalTime
      *  @type DateTime
      */
@@ -3612,20 +4077,23 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/arrivalBusStop
      *  The stop or station from which the bus arrives.
+     * 
      *  @property arrivalBusStop
-     *  @type schema,BusStation | schema,BusStop
+     *  @type schema, BusStation | schema,BusStop
      */
     prototype.arrivalBusStop = null;
     /**
      *  Schema.org/busName
      *  The name of the bus (e.g. Bolt Express).
+     * 
      *  @property busName
      *  @type Text
      */
@@ -3634,6 +4102,7 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
 /**
  *  Schema.org/Audience
  *  Intended audience for an item, i.e. the group for whom the item was created.
+ * 
  *  @author schema.org
  *  @class Audience
  *  @module org.schema
@@ -3641,6 +4110,7 @@ BusTrip = stjs.extend(BusTrip, Intangible, [], function(constructor, prototype) 
  */
 var Audience = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3652,6 +4122,7 @@ Audience = stjs.extend(Audience, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/audienceType
      *  The target group associated with a given audience (e.g. veterans, car owners, musicians, etc.).
+     * 
      *  @property audienceType
      *  @type Text
      */
@@ -3659,6 +4130,7 @@ Audience = stjs.extend(Audience, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/geographicArea
      *  The geographic area associated with the audience.
+     * 
      *  @property geographicArea
      *  @type AdministrativeArea
      */
@@ -3667,6 +4139,7 @@ Audience = stjs.extend(Audience, Intangible, [], function(constructor, prototype
 /**
  *  Schema.org/Service
  *  A service provided by an organization, e.g. delivery service, print services, etc.
+ * 
  *  @author schema.org
  *  @class Service
  *  @module org.schema
@@ -3674,6 +4147,7 @@ Audience = stjs.extend(Audience, Intangible, [], function(constructor, prototype
  */
 var Service = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3685,6 +4159,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/audience
      *  An intended audience, i.e. a group for whom something was created.
+     * 
      *  @property audience
      *  @type Audience
      */
@@ -3692,6 +4167,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/award
      *  An award won by or for this item.
+     * 
      *  @property award
      *  @type Text
      */
@@ -3699,20 +4175,23 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/broker
      *  An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred.
+     * 
      *  @property broker
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.broker = null;
     /**
      *  Schema.org/isRelatedTo
      *  A pointer to another, somehow related product (or multiple products).
+     * 
      *  @property isRelatedTo
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.isRelatedTo = null;
     /**
      *  Schema.org/providerMobility
      *  Indicates the mobility of a provided service (e.g. 'static', 'dynamic').
+     * 
      *  @property providerMobility
      *  @type Text
      */
@@ -3720,6 +4199,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -3727,6 +4207,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -3734,20 +4215,23 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/brand
      *  The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.
+     * 
      *  @property brand
-     *  @type schema,Organization | schema,Brand
+     *  @type schema, Organization | schema,Brand
      */
     prototype.brand = null;
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/hoursAvailable
      *  The hours during which this service or contact is available.
+     * 
      *  @property hoursAvailable
      *  @type OpeningHoursSpecification
      */
@@ -3755,6 +4239,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/produces
      *  The tangible thing generated by the service, e.g. a passport, permit, etc.
+     * 
      *  @property produces
      *  @type Thing
      */
@@ -3762,6 +4247,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/availableChannel
      *  A means of accessing the service (e.g. a phone bank, a web site, a location, etc.).
+     * 
      *  @property availableChannel
      *  @type ServiceChannel
      */
@@ -3769,27 +4255,31 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/isSimilarTo
      *  A pointer to another, functionally similar product (or multiple products).
+     * 
      *  @property isSimilarTo
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.isSimilarTo = null;
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/serviceArea
      *  The geographic area where the service is provided.
+     * 
      *  @property serviceArea
-     *  @type schema,GeoShape | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Place | schema,AdministrativeArea
      */
     prototype.serviceArea = null;
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -3797,6 +4287,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/serviceOutput
      *  The tangible thing generated by the service, e.g. a passport, permit, etc.
+     * 
      *  @property serviceOutput
      *  @type Thing
      */
@@ -3804,13 +4295,15 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/logo
      *  An associated logo.
+     * 
      *  @property logo
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.logo = null;
     /**
      *  Schema.org/hasOfferCatalog
      *  Indicates an OfferCatalog listing for this Organization, Person, or Service.
+     * 
      *  @property hasOfferCatalog
      *  @type OfferCatalog
      */
@@ -3818,6 +4311,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/serviceAudience
      *  The audience eligible for this service.
+     * 
      *  @property serviceAudience
      *  @type Audience
      */
@@ -3825,6 +4319,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/serviceType
      *  The type of service being offered, e.g. veterans' benefits, emergency relief, etc.
+     * 
      *  @property serviceType
      *  @type Text
      */
@@ -3832,14 +4327,16 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/category
      *  A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+     * 
      *  @property category
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.category = null;
 }, {audience: "Audience", broker: "Object", isRelatedTo: "Object", offers: "Offer", review: "Review", brand: "Object", areaServed: "Object", hoursAvailable: "OpeningHoursSpecification", produces: "Thing", availableChannel: "ServiceChannel", isSimilarTo: "Object", provider: "Object", serviceArea: "Object", aggregateRating: "AggregateRating", serviceOutput: "Thing", logo: "Object", hasOfferCatalog: "OfferCatalog", serviceAudience: "Audience", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/StructuredValue
  *  Structured values are used when the value of a property has a more complex structure than simply being a textual value or a reference to another thing.
+ * 
  *  @author schema.org
  *  @class StructuredValue
  *  @module org.schema
@@ -3847,6 +4344,7 @@ Service = stjs.extend(Service, Intangible, [], function(constructor, prototype) 
  */
 var StructuredValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3858,6 +4356,7 @@ StructuredValue = stjs.extend(StructuredValue, Intangible, [], null, {identifier
 /**
  *  Schema.org/Invoice
  *  A statement of the money due for goods or services; a bill.
+ * 
  *  @author schema.org
  *  @class Invoice
  *  @module org.schema
@@ -3865,6 +4364,7 @@ StructuredValue = stjs.extend(StructuredValue, Intangible, [], null, {identifier
  */
 var Invoice = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -3876,6 +4376,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/referencesOrder
      *  The Order(s) related to this Invoice. One or more Orders may be combined into a single Invoice.
+     * 
      *  @property referencesOrder
      *  @type Order
      */
@@ -3883,20 +4384,23 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/broker
      *  An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred.
+     * 
      *  @property broker
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.broker = null;
     /**
      *  Schema.org/minimumPaymentDue
      *  The minimum payment required at this time.
+     * 
      *  @property minimumPaymentDue
-     *  @type schema,PriceSpecification | schema,MonetaryAmount
+     *  @type schema, PriceSpecification | schema,MonetaryAmount
      */
     prototype.minimumPaymentDue = null;
     /**
      *  Schema.org/scheduledPaymentDate
      *  The date the invoice is scheduled to be paid.
+     * 
      *  @property scheduledPaymentDate
      *  @type Date
      */
@@ -3904,6 +4408,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/paymentMethod
      *  The name of the credit card or other method of payment for the order.
+     * 
      *  @property paymentMethod
      *  @type PaymentMethod
      */
@@ -3911,6 +4416,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/paymentDueDate
      *  The date that payment is due.
+     * 
      *  @property paymentDueDate
      *  @type DateTime
      */
@@ -3918,6 +4424,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/paymentMethodId
      *  An identifier for the method of payment used (e.g. the last 4 digits of the credit card).
+     * 
      *  @property paymentMethodId
      *  @type Text
      */
@@ -3925,20 +4432,23 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/totalPaymentDue
      *  The total amount due.
+     * 
      *  @property totalPaymentDue
-     *  @type schema,PriceSpecification | schema,MonetaryAmount
+     *  @type schema, PriceSpecification | schema,MonetaryAmount
      */
     prototype.totalPaymentDue = null;
     /**
      *  Schema.org/customer
      *  Party placing the order or paying the invoice.
+     * 
      *  @property customer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.customer = null;
     /**
      *  Schema.org/paymentDue
      *  The date that payment is due.
+     * 
      *  @property paymentDue
      *  @type DateTime
      */
@@ -3946,13 +4456,15 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/paymentStatus
      *  The status of payment; whether the invoice has been paid or not.
+     * 
      *  @property paymentStatus
-     *  @type schema,Text | schema,PaymentStatusType
+     *  @type schema, Text | schema,PaymentStatusType
      */
     prototype.paymentStatus = null;
     /**
      *  Schema.org/accountId
      *  The identifier for the account the payment will be applied to.
+     * 
      *  @property accountId
      *  @type Text
      */
@@ -3960,13 +4472,15 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/confirmationNumber
      *  A number that confirms the given order or payment has been received.
+     * 
      *  @property confirmationNumber
      *  @type Text
      */
@@ -3974,6 +4488,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/billingPeriod
      *  The time interval used to compute the invoice.
+     * 
      *  @property billingPeriod
      *  @type Duration
      */
@@ -3981,14 +4496,16 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
     /**
      *  Schema.org/category
      *  A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+     * 
      *  @property category
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.category = null;
 }, {referencesOrder: "Order", broker: "Object", minimumPaymentDue: "Object", paymentMethod: "PaymentMethod", totalPaymentDue: "Object", customer: "Object", paymentStatus: "Object", provider: "Object", billingPeriod: "Duration", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/PropertyValueSpecification
  *  A Property value specification.
+ * 
  *  @author schema.org
  *  @class PropertyValueSpecification
  *  @module org.schema
@@ -3996,6 +4513,7 @@ Invoice = stjs.extend(Invoice, Intangible, [], function(constructor, prototype) 
  */
 var PropertyValueSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4007,6 +4525,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/valueMinLength
      *  Specifies the minimum allowed range for number of characters in a literal value.
+     * 
      *  @property valueMinLength
      *  @type Number
      */
@@ -4014,6 +4533,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/valuePattern
      *  Specifies a regular expression for testing literal values according to the HTML spec.
+     * 
      *  @property valuePattern
      *  @type Text
      */
@@ -4021,6 +4541,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/readonlyValue
      *  Whether or not a property is mutable.  Default is false. Specifying this for a property that also has a value makes it act similar to a "hidden" input in an HTML form.
+     * 
      *  @property readonlyValue
      *  @type Boolean
      */
@@ -4028,6 +4549,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/minValue
      *  The lower value of some characteristic or property.
+     * 
      *  @property minValue
      *  @type Number
      */
@@ -4035,6 +4557,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/stepValue
      *  The stepValue attribute indicates the granularity that is expected (and required) of the value in a PropertyValueSpecification.
+     * 
      *  @property stepValue
      *  @type Number
      */
@@ -4042,6 +4565,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/valueName
      *  Indicates the name of the PropertyValueSpecification to be used in URL templates and form encoding in a manner analogous to HTML's input@name.
+     * 
      *  @property valueName
      *  @type Text
      */
@@ -4049,6 +4573,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/maxValue
      *  The upper value of some characteristic or property.
+     * 
      *  @property maxValue
      *  @type Number
      */
@@ -4056,6 +4581,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/valueRequired
      *  Whether the property must be filled in to complete the action.  Default is false.
+     * 
      *  @property valueRequired
      *  @type Boolean
      */
@@ -4063,6 +4589,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/multipleValues
      *  Whether multiple values are allowed for the property.  Default is false.
+     * 
      *  @property multipleValues
      *  @type Boolean
      */
@@ -4070,13 +4597,15 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
     /**
      *  Schema.org/defaultValue
      *  The default value of the input.  For properties that expect a literal, the default is a literal value, for properties that expect an object, it's an ID reference to one of the current values.
+     * 
      *  @property defaultValue
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.defaultValue = null;
     /**
      *  Schema.org/valueMaxLength
      *  Specifies the allowed range for number of characters in a literal value.
+     * 
      *  @property valueMaxLength
      *  @type Number
      */
@@ -4085,6 +4614,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
 /**
  *  Schema.org/DataFeedItem
  *  A single item within a larger data feed.
+ * 
  *  @author schema.org
  *  @class DataFeedItem
  *  @module org.schema
@@ -4092,6 +4622,7 @@ PropertyValueSpecification = stjs.extend(PropertyValueSpecification, Intangible,
  */
 var DataFeedItem = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4103,6 +4634,7 @@ DataFeedItem = stjs.extend(DataFeedItem, Intangible, [], function(constructor, p
     /**
      *  Schema.org/dateDeleted
      *  The datetime the item was removed from the DataFeed.
+     * 
      *  @property dateDeleted
      *  @type DateTime
      */
@@ -4110,13 +4642,15 @@ DataFeedItem = stjs.extend(DataFeedItem, Intangible, [], function(constructor, p
     /**
      *  Schema.org/dateCreated
      *  The date on which the CreativeWork was created or the item was added to a DataFeed.
+     * 
      *  @property dateCreated
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.dateCreated = null;
     /**
      *  Schema.org/item
      *  An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')’.
+     * 
      *  @property item
      *  @type Thing
      */
@@ -4124,14 +4658,16 @@ DataFeedItem = stjs.extend(DataFeedItem, Intangible, [], function(constructor, p
     /**
      *  Schema.org/dateModified
      *  The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.
+     * 
      *  @property dateModified
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.dateModified = null;
 }, {dateCreated: "Object", item: "Thing", dateModified: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/EntryPoint
  *  An entry point, within some Web-based protocol.
+ * 
  *  @author schema.org
  *  @class EntryPoint
  *  @module org.schema
@@ -4139,6 +4675,7 @@ DataFeedItem = stjs.extend(DataFeedItem, Intangible, [], function(constructor, p
  */
 var EntryPoint = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4150,6 +4687,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/contentType
      *  The supported content type(s) for an EntryPoint response.
+     * 
      *  @property contentType
      *  @type Text
      */
@@ -4157,6 +4695,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/actionApplication
      *  An application that can complete the request.
+     * 
      *  @property actionApplication
      *  @type SoftwareApplication
      */
@@ -4164,6 +4703,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/urlTemplate
      *  An url template (RFC6570) that will be used to construct the target of the execution of the action.
+     * 
      *  @property urlTemplate
      *  @type Text
      */
@@ -4171,13 +4711,15 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/actionPlatform
      *  The high level platform(s) where the Action can be performed for the given URL. To specify a specific application or operating system instance, use actionApplication.
+     * 
      *  @property actionPlatform
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.actionPlatform = null;
     /**
      *  Schema.org/httpMethod
      *  An HTTP method that specifies the appropriate HTTP method for a request to an HTTP EntryPoint. Values are capitalized strings as used in HTTP.
+     * 
      *  @property httpMethod
      *  @type Text
      */
@@ -4185,6 +4727,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/encodingType
      *  The supported encoding type(s) for an EntryPoint request.
+     * 
      *  @property encodingType
      *  @type Text
      */
@@ -4192,6 +4735,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/application
      *  An application that can complete the request.
+     * 
      *  @property application
      *  @type SoftwareApplication
      */
@@ -4200,6 +4744,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
 /**
  *  Schema.org/Enumeration
  *  Lists or enumerations—for example, a list of cuisines or music genres, etc.
+ * 
  *  @author schema.org
  *  @class Enumeration
  *  @module org.schema
@@ -4207,6 +4752,7 @@ EntryPoint = stjs.extend(EntryPoint, Intangible, [], function(constructor, proto
  */
 var Enumeration = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4218,6 +4764,7 @@ Enumeration = stjs.extend(Enumeration, Intangible, [], null, {identifier: "Objec
 /**
  *  Schema.org/ListItem
  *  An list item, e.g. a step in a checklist or how-to description.
+ * 
  *  @author schema.org
  *  @class ListItem
  *  @module org.schema
@@ -4225,6 +4772,7 @@ Enumeration = stjs.extend(Enumeration, Intangible, [], null, {identifier: "Objec
  */
 var ListItem = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4236,13 +4784,15 @@ ListItem = stjs.extend(ListItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/position
      *  The position of an item in a series or sequence of items.
+     * 
      *  @property position
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.position = null;
     /**
      *  Schema.org/previousItem
      *  A link to the ListItem that preceeds the current one.
+     * 
      *  @property previousItem
      *  @type ListItem
      */
@@ -4250,6 +4800,7 @@ ListItem = stjs.extend(ListItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/nextItem
      *  A link to the ListItem that follows the current one.
+     * 
      *  @property nextItem
      *  @type ListItem
      */
@@ -4257,6 +4808,7 @@ ListItem = stjs.extend(ListItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/item
      *  An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')’.
+     * 
      *  @property item
      *  @type Thing
      */
@@ -4265,6 +4817,7 @@ ListItem = stjs.extend(ListItem, Intangible, [], function(constructor, prototype
 /**
  *  Schema.org/MenuItem
  *  A food or drink item listed in a menu or menu section.
+ * 
  *  @author schema.org
  *  @class MenuItem
  *  @module org.schema
@@ -4272,6 +4825,7 @@ ListItem = stjs.extend(ListItem, Intangible, [], function(constructor, prototype
  */
 var MenuItem = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4283,6 +4837,7 @@ MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/suitableForDiet
      *  Indicates a dietary restriction or guideline for which this recipe or menu item is suitable, e.g. diabetic, halal etc.
+     * 
      *  @property suitableForDiet
      *  @type RestrictedDiet
      */
@@ -4290,6 +4845,7 @@ MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -4297,6 +4853,7 @@ MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/nutrition
      *  Nutrition information about the recipe or menu item.
+     * 
      *  @property nutrition
      *  @type NutritionInformation
      */
@@ -4305,6 +4862,7 @@ MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype
 /**
  *  Schema.org/ParcelDelivery
  *  The delivery of a parcel either via the postal service or a commercial service.
+ * 
  *  @author schema.org
  *  @class ParcelDelivery
  *  @module org.schema
@@ -4312,6 +4870,7 @@ MenuItem = stjs.extend(MenuItem, Intangible, [], function(constructor, prototype
  */
 var ParcelDelivery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4323,6 +4882,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/partOfOrder
      *  The overall order the items in this delivery were included in.
+     * 
      *  @property partOfOrder
      *  @type Order
      */
@@ -4330,13 +4890,36 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/expectedArrivalFrom
      *  The earliest date the package may arrive.
+     * 
      *  @property expectedArrivalFrom
      *  @type DateTime
      */
     prototype.expectedArrivalFrom = null;
-    /**
+
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
+
+   /**
      *  Schema.org/trackingUrl
      *  Tracking url for the parcel delivery.
+     * 
      *  @property trackingUrl
      *  @type URL
      */
@@ -4344,6 +4927,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/originAddress
      *  Shipper's address.
+     * 
      *  @property originAddress
      *  @type PostalAddress
      */
@@ -4351,6 +4935,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/itemShipped
      *  Item(s) being shipped.
+     * 
      *  @property itemShipped
      *  @type Product
      */
@@ -4358,6 +4943,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/deliveryAddress
      *  Destination address.
+     * 
      *  @property deliveryAddress
      *  @type PostalAddress
      */
@@ -4365,6 +4951,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/deliveryStatus
      *  New entry added as the package passes through each leg of its journey (from shipment to final delivery).
+     * 
      *  @property deliveryStatus
      *  @type DeliveryEvent
      */
@@ -4372,6 +4959,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/expectedArrivalUntil
      *  The latest date the package may arrive.
+     * 
      *  @property expectedArrivalUntil
      *  @type DateTime
      */
@@ -4379,13 +4967,15 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/trackingNumber
      *  Shipper tracking number.
+     * 
      *  @property trackingNumber
      *  @type Text
      */
@@ -4393,6 +4983,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/hasDeliveryMethod
      *  Method used for delivery or shipping.
+     * 
      *  @property hasDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -4400,6 +4991,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
     /**
      *  Schema.org/carrier
      *  'carrier' is an out-dated term indicating the 'provider' for parcel delivery and flights.
+     * 
      *  @property carrier
      *  @type Organization
      */
@@ -4408,6 +5000,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
 /**
  *  Schema.org/ItemList
  *  A list of items of any sort&#x2014;for example, Top 10 Movies About Weathermen, or Top 100 Party Songs. Not to be confused with HTML lists, which are often used only for formatting.
+ * 
  *  @author schema.org
  *  @class ItemList
  *  @module org.schema
@@ -4415,6 +5008,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
  */
 var ItemList = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4426,6 +5020,7 @@ ItemList = stjs.extend(ItemList, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/numberOfItems
      *  The number of items in an ItemList. Note that some descriptions might not fully describe all items in a list (e.g., multi-page pagination); in such cases, the numberOfItems would be for the entire list.
+     * 
      *  @property numberOfItems
      *  @type Integer
      */
@@ -4433,21 +5028,24 @@ ItemList = stjs.extend(ItemList, Intangible, [], function(constructor, prototype
     /**
      *  Schema.org/itemListOrder
      *  Type of ordering (e.g. Ascending, Descending, Unordered).
+     * 
      *  @property itemListOrder
-     *  @type schema,ItemListOrderType | schema,Text
+     *  @type schema, ItemListOrderType | schema,Text
      */
     prototype.itemListOrder = null;
     /**
      *  Schema.org/itemListElement
      *  For itemListElement values, you can use simple strings (e.g. "Peter", "Paul", "Mary"), existing entities, or use ListItem.\n\nText values are best if the elements in the list are plain strings. Existing entities are best for a simple, unordered list of existing things in your data. ListItem is used with ordered lists when you want to provide additional context about the element in that list or when the same item might be in different places in different lists.\n\nNote: The order of elements in your mark-up is not sufficient for indicating the order or elements.  Use ListItem with a 'position' property in such cases.
+     * 
      *  @property itemListElement
-     *  @type schema,Text | schema,Thing | schema,ListItem
+     *  @type schema, Text | schema,Thing | schema,ListItem
      */
     prototype.itemListElement = null;
 }, {itemListOrder: "Object", itemListElement: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Offer
  *  An offer to transfer some rights to an item or to provide a service — for example, an offer to sell tickets to an event, to rent the DVD of a movie, to stream a TV show over the internet, to repair a motorcycle, or to loan a book.\n\nFor [GTIN](http://www.gs1.org/barcodes/technical/idkeys/gtin)-related fields, see [Check Digit calculator](http://www.gs1.org/barcodes/support/check_digit_calculator) and [validation guide](http://www.gs1us.org/resources/standards/gtin-validation-guide) from [GS1](http://www.gs1.org/).
+ * 
  *  @author schema.org
  *  @class Offer
  *  @module org.schema
@@ -4455,6 +5053,7 @@ ItemList = stjs.extend(ItemList, Intangible, [], function(constructor, prototype
  */
 var Offer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4466,6 +5065,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/advanceBookingRequirement
      *  The amount of time that is required between accepting the offer and the actual usage of the resource or service.
+     * 
      *  @property advanceBookingRequirement
      *  @type QuantitativeValue
      */
@@ -4473,6 +5073,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/reviews
      *  Review of the item.
+     * 
      *  @property reviews
      *  @type Review
      */
@@ -4480,6 +5081,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/priceCurrency
      *  The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to [[PriceSpecification]] and its subtypes.
+     * 
      *  @property priceCurrency
      *  @type Text
      */
@@ -4487,6 +5089,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availableDeliveryMethod
      *  The delivery method(s) available for this offer.
+     * 
      *  @property availableDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -4494,6 +5097,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/priceSpecification
      *  One or more detailed price specifications, indicating the unit price and delivery or payment charges.
+     * 
      *  @property priceSpecification
      *  @type PriceSpecification
      */
@@ -4501,6 +5105,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -4508,15 +5113,16 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/price
      *  The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.\n\nUsage guidelines:\n\n* Use the [[priceCurrency]] property (with [ISO 4217 codes](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) e.g. "USD") instead of
-     *       including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
-     *       
+     *  including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
+     * 
      *  @property price
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.price = null;
     /**
      *  Schema.org/businessFunction
      *  The business function (e.g. sell, lease, repair, dispose) of the offer or component of a bundle (TypeAndQuantityNode). The default is http://purl.org/goodrelations/v1#Sell.
+     * 
      *  @property businessFunction
      *  @type BusinessFunction
      */
@@ -4524,13 +5130,15 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/itemOffered
      *  The item being offered.
+     * 
      *  @property itemOffered
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.itemOffered = null;
     /**
      *  Schema.org/includesObject
      *  This links to a node or nodes indicating the exact quantity of the products included in the offer.
+     * 
      *  @property includesObject
      *  @type TypeAndQuantityNode
      */
@@ -4538,6 +5146,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin14
      *  The [GTIN-14](http://apps.gs1.org/GDD/glossary/Pages/GTIN-14.aspx) code of the product, or the product to which the offer refers. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin14
      *  @type Text
      */
@@ -4545,6 +5154,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin13
      *  The [GTIN-13](http://apps.gs1.org/GDD/glossary/Pages/GTIN-13.aspx) code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin13
      *  @type Text
      */
@@ -4552,6 +5162,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin12
      *  The [GTIN-12](http://apps.gs1.org/GDD/glossary/Pages/GTIN-12.aspx) code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin12
      *  @type Text
      */
@@ -4559,6 +5170,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availableAtOrFrom
      *  The place(s) from which the offer can be obtained (e.g. store locations).
+     * 
      *  @property availableAtOrFrom
      *  @type Place
      */
@@ -4566,6 +5178,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/warranty
      *  The warranty promise(s) included in the offer.
+     * 
      *  @property warranty
      *  @type WarrantyPromise
      */
@@ -4573,6 +5186,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/serialNumber
      *  The serial number or any alphanumeric identifier of a particular product. When attached to an offer, it is a shortcut for the serial number of the product included in the offer.
+     * 
      *  @property serialNumber
      *  @type Text
      */
@@ -4580,6 +5194,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/inventoryLevel
      *  The current approximate inventory level for the item or items.
+     * 
      *  @property inventoryLevel
      *  @type QuantitativeValue
      */
@@ -4587,13 +5202,15 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/offeredBy
      *  A pointer to the organization or person making the offer.
+     * 
      *  @property offeredBy
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.offeredBy = null;
     /**
      *  Schema.org/availabilityStarts
      *  The beginning of the availability of the product or service included in the offer.
+     * 
      *  @property availabilityStarts
      *  @type DateTime
      */
@@ -4601,6 +5218,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleDuration
      *  The duration for which the given offer is valid.
+     * 
      *  @property eligibleDuration
      *  @type QuantitativeValue
      */
@@ -4608,6 +5226,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/review
      *  A review of the item.
+     * 
      *  @property review
      *  @type Review
      */
@@ -4615,6 +5234,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleTransactionVolume
      *  The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.
+     * 
      *  @property eligibleTransactionVolume
      *  @type PriceSpecification
      */
@@ -4622,6 +5242,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/mpn
      *  The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.
+     * 
      *  @property mpn
      *  @type Text
      */
@@ -4629,27 +5250,31 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/seller
      *  An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider.
+     * 
      *  @property seller
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.seller = null;
     /**
      *  Schema.org/acceptedPaymentMethod
      *  The payment method(s) accepted by seller for this offer.
+     * 
      *  @property acceptedPaymentMethod
-     *  @type schema,LoanOrCredit | schema,PaymentMethod
+     *  @type schema, LoanOrCredit | schema,PaymentMethod
      */
     prototype.acceptedPaymentMethod = null;
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -4657,6 +5282,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availability
      *  The availability of this item&#x2014;for example In stock, Out of stock, Pre-order, etc.
+     * 
      *  @property availability
      *  @type ItemAvailability
      */
@@ -4664,6 +5290,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/sku
      *  The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers.
+     * 
      *  @property sku
      *  @type Text
      */
@@ -4671,14 +5298,15 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/ineligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.\n\nSee also [[eligibleRegion]].
-     *       
+     * 
      *  @property ineligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.ineligibleRegion = null;
     /**
      *  Schema.org/gtin8
      *  The [GTIN-8](http://apps.gs1.org/GDD/glossary/Pages/GTIN-8.aspx) code of the product, or the product to which the offer refers. This code is also known as EAN/UCC-8 or 8-digit EAN. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin8
      *  @type Text
      */
@@ -4686,6 +5314,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/priceValidUntil
      *  The date after which the price is no longer available.
+     * 
      *  @property priceValidUntil
      *  @type Date
      */
@@ -4693,6 +5322,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/deliveryLeadTime
      *  The typical delay between the receipt of the order and the goods either leaving the warehouse or being prepared for pickup, in case the delivery method is on site pickup.
+     * 
      *  @property deliveryLeadTime
      *  @type QuantitativeValue
      */
@@ -4700,6 +5330,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleQuantity
      *  The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.
+     * 
      *  @property eligibleQuantity
      *  @type QuantitativeValue
      */
@@ -4707,6 +5338,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/addOn
      *  An additional offer that can only be obtained in combination with the first base offer (e.g. supplements and extensions that are available for a surcharge).
+     * 
      *  @property addOn
      *  @type Offer
      */
@@ -4714,6 +5346,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/itemCondition
      *  A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.
+     * 
      *  @property itemCondition
      *  @type OfferItemCondition
      */
@@ -4721,14 +5354,15 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.\n\nSee also [[ineligibleRegion]].
-     *     
+     * 
      *  @property eligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.eligibleRegion = null;
     /**
      *  Schema.org/aggregateRating
      *  The overall rating, based on a collection of reviews or ratings, of the item.
+     * 
      *  @property aggregateRating
      *  @type AggregateRating
      */
@@ -4736,6 +5370,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleCustomerType
      *  The type(s) of customers for which the given offer is valid.
+     * 
      *  @property eligibleCustomerType
      *  @type BusinessEntityType
      */
@@ -4743,6 +5378,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availabilityEnds
      *  The end of the availability of the product or service included in the offer.
+     * 
      *  @property availabilityEnds
      *  @type DateTime
      */
@@ -4750,14 +5386,16 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/category
      *  A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+     * 
      *  @property category
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.category = null;
 }, {advanceBookingRequirement: "QuantitativeValue", reviews: "Review", availableDeliveryMethod: "DeliveryMethod", priceSpecification: "PriceSpecification", price: "Object", businessFunction: "BusinessFunction", itemOffered: "Object", includesObject: "TypeAndQuantityNode", availableAtOrFrom: "Place", warranty: "WarrantyPromise", inventoryLevel: "QuantitativeValue", offeredBy: "Object", eligibleDuration: "QuantitativeValue", review: "Review", eligibleTransactionVolume: "PriceSpecification", areaServed: "Object", seller: "Object", acceptedPaymentMethod: "Object", availability: "ItemAvailability", ineligibleRegion: "Object", deliveryLeadTime: "QuantitativeValue", eligibleQuantity: "QuantitativeValue", addOn: "Offer", itemCondition: "OfferItemCondition", eligibleRegion: "Object", aggregateRating: "AggregateRating", eligibleCustomerType: "BusinessEntityType", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/BroadcastChannel
  *  A unique instance of a BroadcastService on a CableOrSatelliteService lineup.
+ * 
  *  @author schema.org
  *  @class BroadcastChannel
  *  @module org.schema
@@ -4765,6 +5403,7 @@ Offer = stjs.extend(Offer, Intangible, [], function(constructor, prototype) {
  */
 var BroadcastChannel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4776,6 +5415,7 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
     /**
      *  Schema.org/providesBroadcastService
      *  The BroadcastService offered on this channel.
+     * 
      *  @property providesBroadcastService
      *  @type BroadcastService
      */
@@ -4783,13 +5423,15 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
     /**
      *  Schema.org/genre
      *  Genre of the creative work, broadcast channel or group.
+     * 
      *  @property genre
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.genre = null;
     /**
      *  Schema.org/broadcastChannelId
      *  The unique address by which the BroadcastService can be identified in a provider lineup. In US, this is typically a number.
+     * 
      *  @property broadcastChannelId
      *  @type Text
      */
@@ -4797,6 +5439,7 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
     /**
      *  Schema.org/inBroadcastLineup
      *  The CableOrSatelliteService offering the channel.
+     * 
      *  @property inBroadcastLineup
      *  @type CableOrSatelliteService
      */
@@ -4804,6 +5447,7 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
     /**
      *  Schema.org/broadcastServiceTier
      *  The type of service required to have access to the channel (e.g. Standard or Premium).
+     * 
      *  @property broadcastServiceTier
      *  @type Text
      */
@@ -4812,6 +5456,7 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
 /**
  *  Schema.org/TrainTrip
  *  A trip on a commercial train line.
+ * 
  *  @author schema.org
  *  @class TrainTrip
  *  @module org.schema
@@ -4819,6 +5464,7 @@ BroadcastChannel = stjs.extend(BroadcastChannel, Intangible, [], function(constr
  */
 var TrainTrip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4830,6 +5476,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/departureTime
      *  The expected departure time.
+     * 
      *  @property departureTime
      *  @type DateTime
      */
@@ -4837,6 +5484,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/departureStation
      *  The station from which the train departs.
+     * 
      *  @property departureStation
      *  @type TrainStation
      */
@@ -4844,6 +5492,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/arrivalStation
      *  The station where the train trip ends.
+     * 
      *  @property arrivalStation
      *  @type TrainStation
      */
@@ -4851,6 +5500,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/arrivalTime
      *  The expected arrival time.
+     * 
      *  @property arrivalTime
      *  @type DateTime
      */
@@ -4858,6 +5508,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/trainName
      *  The name of the train (e.g. The Orient Express).
+     * 
      *  @property trainName
      *  @type Text
      */
@@ -4865,6 +5516,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/departurePlatform
      *  The platform from which the train departs.
+     * 
      *  @property departurePlatform
      *  @type Text
      */
@@ -4872,13 +5524,15 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/arrivalPlatform
      *  The platform where the train arrives.
+     * 
      *  @property arrivalPlatform
      *  @type Text
      */
@@ -4886,6 +5540,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
     /**
      *  Schema.org/trainNumber
      *  The unique identifier for the train.
+     * 
      *  @property trainNumber
      *  @type Text
      */
@@ -4894,6 +5549,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
 /**
  *  Schema.org/BedDetails
  *  An entity holding detailed information about the available bed types, e.g. the quantity of twin beds for a hotel room. For the single case of just one bed of a certain type, you can use bed directly with a text. See also [[BedType]] (under development).
+ * 
  *  @author schema.org
  *  @class BedDetails
  *  @module org.schema
@@ -4901,6 +5557,7 @@ TrainTrip = stjs.extend(TrainTrip, Intangible, [], function(constructor, prototy
  */
 var BedDetails = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4912,6 +5569,7 @@ BedDetails = stjs.extend(BedDetails, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/numberOfBeds
      *  The quantity of the given bed type available in the HotelRoom, Suite, House, or Apartment.
+     * 
      *  @property numberOfBeds
      *  @type Number
      */
@@ -4919,6 +5577,7 @@ BedDetails = stjs.extend(BedDetails, Intangible, [], function(constructor, proto
     /**
      *  Schema.org/typeOfBed
      *  The type of bed to which the BedDetail refers, i.e. the type of bed available in the quantity indicated by quantity.
+     * 
      *  @property typeOfBed
      *  @type Text
      */
@@ -4927,6 +5586,7 @@ BedDetails = stjs.extend(BedDetails, Intangible, [], function(constructor, proto
 /**
  *  Schema.org/Reservation
  *  Describes a reservation for travel, dining or an event. Some reservations require tickets. \n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, restaurant reservations, flights, or rental cars, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class Reservation
  *  @module org.schema
@@ -4934,6 +5594,7 @@ BedDetails = stjs.extend(BedDetails, Intangible, [], function(constructor, proto
  */
 var Reservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -4945,13 +5606,15 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/bookingAgent
      *  'bookingAgent' is an out-dated term indicating a 'broker' that serves as a booking agent.
+     * 
      *  @property bookingAgent
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.bookingAgent = null;
     /**
      *  Schema.org/priceCurrency
      *  The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to [[PriceSpecification]] and its subtypes.
+     * 
      *  @property priceCurrency
      *  @type Text
      */
@@ -4959,6 +5622,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/bookingTime
      *  The date and time the reservation was booked.
+     * 
      *  @property bookingTime
      *  @type DateTime
      */
@@ -4966,20 +5630,23 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/totalPrice
      *  The total price for the reservation or ticket, including applicable taxes, shipping, etc.
+     * 
      *  @property totalPrice
-     *  @type schema,Number | schema,PriceSpecification | schema,Text
+     *  @type schema, Number | schema,PriceSpecification | schema,Text
      */
     prototype.totalPrice = null;
     /**
      *  Schema.org/broker
      *  An entity that arranges for an exchange between a buyer and a seller.  In most cases a broker never acquires or releases ownership of a product or service involved in an exchange.  If it is not clear whether an entity is a broker, seller, or buyer, the latter two terms are preferred.
+     * 
      *  @property broker
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.broker = null;
     /**
      *  Schema.org/modifiedTime
      *  The date and time the reservation was modified.
+     * 
      *  @property modifiedTime
      *  @type DateTime
      */
@@ -4987,6 +5654,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/reservationId
      *  A unique identifier for the reservation.
+     * 
      *  @property reservationId
      *  @type Text
      */
@@ -4994,6 +5662,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/reservationStatus
      *  The current status of the reservation.
+     * 
      *  @property reservationStatus
      *  @type ReservationStatusType
      */
@@ -5001,6 +5670,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/programMembershipUsed
      *  Any membership in a frequent flyer, hotel loyalty program, etc. being applied to the reservation.
+     * 
      *  @property programMembershipUsed
      *  @type ProgramMembership
      */
@@ -5008,13 +5678,15 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/provider
      *  The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller.
+     * 
      *  @property provider
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.provider = null;
     /**
      *  Schema.org/reservationFor
      *  The thing -- flight, event, restaurant,etc. being reserved.
+     * 
      *  @property reservationFor
      *  @type Thing
      */
@@ -5022,6 +5694,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/reservedTicket
      *  A ticket associated with the reservation.
+     * 
      *  @property reservedTicket
      *  @type Ticket
      */
@@ -5029,14 +5702,16 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
     /**
      *  Schema.org/underName
      *  The person or organization the reservation or ticket is for.
+     * 
      *  @property underName
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.underName = null;
 }, {bookingAgent: "Object", totalPrice: "Object", broker: "Object", reservationStatus: "ReservationStatusType", programMembershipUsed: "ProgramMembership", provider: "Object", reservationFor: "Thing", reservedTicket: "Ticket", underName: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/ComputerLanguage
  *  This type covers computer programming languages such as Scheme and Lisp, as well as other language-like computer representations. Natural languages are best represented with the [[Language]] type.
+ * 
  *  @author schema.org
  *  @class ComputerLanguage
  *  @module org.schema
@@ -5044,6 +5719,7 @@ Reservation = stjs.extend(Reservation, Intangible, [], function(constructor, pro
  */
 var ComputerLanguage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5055,6 +5731,7 @@ ComputerLanguage = stjs.extend(ComputerLanguage, Intangible, [], null, {identifi
 /**
  *  Schema.org/Demand
  *  A demand entity represents the public, not necessarily binding, not necessarily exclusive, announcement by an organization or person to seek a certain type of goods or services. For describing demand using this type, the very same properties used for Offer apply.
+ * 
  *  @author schema.org
  *  @class Demand
  *  @module org.schema
@@ -5062,6 +5739,7 @@ ComputerLanguage = stjs.extend(ComputerLanguage, Intangible, [], null, {identifi
  */
 var Demand = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5073,6 +5751,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/advanceBookingRequirement
      *  The amount of time that is required between accepting the offer and the actual usage of the resource or service.
+     * 
      *  @property advanceBookingRequirement
      *  @type QuantitativeValue
      */
@@ -5080,6 +5759,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availableDeliveryMethod
      *  The delivery method(s) available for this offer.
+     * 
      *  @property availableDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -5087,6 +5767,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/priceSpecification
      *  One or more detailed price specifications, indicating the unit price and delivery or payment charges.
+     * 
      *  @property priceSpecification
      *  @type PriceSpecification
      */
@@ -5094,6 +5775,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -5101,6 +5783,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/businessFunction
      *  The business function (e.g. sell, lease, repair, dispose) of the offer or component of a bundle (TypeAndQuantityNode). The default is http://purl.org/goodrelations/v1#Sell.
+     * 
      *  @property businessFunction
      *  @type BusinessFunction
      */
@@ -5108,13 +5791,15 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/itemOffered
      *  The item being offered.
+     * 
      *  @property itemOffered
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.itemOffered = null;
     /**
      *  Schema.org/includesObject
      *  This links to a node or nodes indicating the exact quantity of the products included in the offer.
+     * 
      *  @property includesObject
      *  @type TypeAndQuantityNode
      */
@@ -5122,6 +5807,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin14
      *  The [GTIN-14](http://apps.gs1.org/GDD/glossary/Pages/GTIN-14.aspx) code of the product, or the product to which the offer refers. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin14
      *  @type Text
      */
@@ -5129,6 +5815,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin13
      *  The [GTIN-13](http://apps.gs1.org/GDD/glossary/Pages/GTIN-13.aspx) code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin13
      *  @type Text
      */
@@ -5136,6 +5823,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/gtin12
      *  The [GTIN-12](http://apps.gs1.org/GDD/glossary/Pages/GTIN-12.aspx) code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin12
      *  @type Text
      */
@@ -5143,6 +5831,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availableAtOrFrom
      *  The place(s) from which the offer can be obtained (e.g. store locations).
+     * 
      *  @property availableAtOrFrom
      *  @type Place
      */
@@ -5150,6 +5839,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/warranty
      *  The warranty promise(s) included in the offer.
+     * 
      *  @property warranty
      *  @type WarrantyPromise
      */
@@ -5157,6 +5847,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/serialNumber
      *  The serial number or any alphanumeric identifier of a particular product. When attached to an offer, it is a shortcut for the serial number of the product included in the offer.
+     * 
      *  @property serialNumber
      *  @type Text
      */
@@ -5164,6 +5855,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/inventoryLevel
      *  The current approximate inventory level for the item or items.
+     * 
      *  @property inventoryLevel
      *  @type QuantitativeValue
      */
@@ -5171,6 +5863,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availabilityStarts
      *  The beginning of the availability of the product or service included in the offer.
+     * 
      *  @property availabilityStarts
      *  @type DateTime
      */
@@ -5178,6 +5871,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleDuration
      *  The duration for which the given offer is valid.
+     * 
      *  @property eligibleDuration
      *  @type QuantitativeValue
      */
@@ -5185,6 +5879,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleTransactionVolume
      *  The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.
+     * 
      *  @property eligibleTransactionVolume
      *  @type PriceSpecification
      */
@@ -5192,6 +5887,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/mpn
      *  The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.
+     * 
      *  @property mpn
      *  @type Text
      */
@@ -5199,27 +5895,31 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/seller
      *  An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider.
+     * 
      *  @property seller
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.seller = null;
     /**
      *  Schema.org/acceptedPaymentMethod
      *  The payment method(s) accepted by seller for this offer.
+     * 
      *  @property acceptedPaymentMethod
-     *  @type schema,LoanOrCredit | schema,PaymentMethod
+     *  @type schema, LoanOrCredit | schema,PaymentMethod
      */
     prototype.acceptedPaymentMethod = null;
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -5227,6 +5927,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availability
      *  The availability of this item&#x2014;for example In stock, Out of stock, Pre-order, etc.
+     * 
      *  @property availability
      *  @type ItemAvailability
      */
@@ -5234,6 +5935,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/sku
      *  The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers.
+     * 
      *  @property sku
      *  @type Text
      */
@@ -5241,14 +5943,15 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/ineligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.\n\nSee also [[eligibleRegion]].
-     *       
+     * 
      *  @property ineligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.ineligibleRegion = null;
     /**
      *  Schema.org/gtin8
      *  The [GTIN-8](http://apps.gs1.org/GDD/glossary/Pages/GTIN-8.aspx) code of the product, or the product to which the offer refers. This code is also known as EAN/UCC-8 or 8-digit EAN. See [GS1 GTIN Summary](http://www.gs1.org/barcodes/technical/idkeys/gtin) for more details.
+     * 
      *  @property gtin8
      *  @type Text
      */
@@ -5256,6 +5959,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/deliveryLeadTime
      *  The typical delay between the receipt of the order and the goods either leaving the warehouse or being prepared for pickup, in case the delivery method is on site pickup.
+     * 
      *  @property deliveryLeadTime
      *  @type QuantitativeValue
      */
@@ -5263,6 +5967,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleQuantity
      *  The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.
+     * 
      *  @property eligibleQuantity
      *  @type QuantitativeValue
      */
@@ -5270,6 +5975,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/itemCondition
      *  A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.
+     * 
      *  @property itemCondition
      *  @type OfferItemCondition
      */
@@ -5277,14 +5983,15 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/eligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.\n\nSee also [[ineligibleRegion]].
-     *     
+     * 
      *  @property eligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.eligibleRegion = null;
     /**
      *  Schema.org/eligibleCustomerType
      *  The type(s) of customers for which the given offer is valid.
+     * 
      *  @property eligibleCustomerType
      *  @type BusinessEntityType
      */
@@ -5292,6 +5999,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/availabilityEnds
      *  The end of the availability of the product or service included in the offer.
+     * 
      *  @property availabilityEnds
      *  @type DateTime
      */
@@ -5300,6 +6008,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
 /**
  *  Schema.org/Seat
  *  Used to describe a seat, such as a reserved seat in an event reservation.
+ * 
  *  @author schema.org
  *  @class Seat
  *  @module org.schema
@@ -5307,6 +6016,7 @@ Demand = stjs.extend(Demand, Intangible, [], function(constructor, prototype) {
  */
 var Seat = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5318,13 +6028,15 @@ Seat = stjs.extend(Seat, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/seatingType
      *  The type/class of the seat.
+     * 
      *  @property seatingType
-     *  @type schema,Text | schema,QualitativeValue
+     *  @type schema, Text | schema,QualitativeValue
      */
     prototype.seatingType = null;
     /**
      *  Schema.org/seatSection
      *  The section location of the reserved seat (e.g. Orchestra).
+     * 
      *  @property seatSection
      *  @type Text
      */
@@ -5332,6 +6044,7 @@ Seat = stjs.extend(Seat, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/seatNumber
      *  The location of the reserved seat (e.g., 27).
+     * 
      *  @property seatNumber
      *  @type Text
      */
@@ -5339,6 +6052,7 @@ Seat = stjs.extend(Seat, Intangible, [], function(constructor, prototype) {
     /**
      *  Schema.org/seatRow
      *  The row location of the reserved seat (e.g., B).
+     * 
      *  @property seatRow
      *  @type Text
      */
@@ -5347,6 +6061,7 @@ Seat = stjs.extend(Seat, Intangible, [], function(constructor, prototype) {
 /**
  *  Schema.org/ServiceChannel
  *  A means for accessing a service, e.g. a government office location, web site, or phone number.
+ * 
  *  @author schema.org
  *  @class ServiceChannel
  *  @module org.schema
@@ -5354,6 +6069,7 @@ Seat = stjs.extend(Seat, Intangible, [], function(constructor, prototype) {
  */
 var ServiceChannel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5365,6 +6081,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/providesService
      *  The service provided by this channel.
+     * 
      *  @property providesService
      *  @type Service
      */
@@ -5372,13 +6089,15 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/availableLanguage
      *  A language someone may use with the item. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[inLanguage]]
+     * 
      *  @property availableLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.availableLanguage = null;
     /**
      *  Schema.org/serviceUrl
      *  The website to access the service.
+     * 
      *  @property serviceUrl
      *  @type URL
      */
@@ -5386,6 +6105,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/servicePhone
      *  The phone number to use to access the service.
+     * 
      *  @property servicePhone
      *  @type ContactPoint
      */
@@ -5393,6 +6113,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/processingTime
      *  Estimated processing time for the service using this channel.
+     * 
      *  @property processingTime
      *  @type Duration
      */
@@ -5400,6 +6121,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/servicePostalAddress
      *  The address for accessing the service by mail.
+     * 
      *  @property servicePostalAddress
      *  @type PostalAddress
      */
@@ -5407,6 +6129,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/serviceSmsNumber
      *  The number to access the service by text message.
+     * 
      *  @property serviceSmsNumber
      *  @type ContactPoint
      */
@@ -5414,6 +6137,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
     /**
      *  Schema.org/serviceLocation
      *  The location (e.g. civic structure, local business, etc.) where a person can go to access the service.
+     * 
      *  @property serviceLocation
      *  @type Place
      */
@@ -5422,6 +6146,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
 /**
  *  Schema.org/Sculpture
  *  A piece of sculpture.
+ * 
  *  @author schema.org
  *  @class Sculpture
  *  @module org.schema
@@ -5429,6 +6154,7 @@ ServiceChannel = stjs.extend(ServiceChannel, Intangible, [], function(constructo
  */
 var Sculpture = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5440,6 +6166,7 @@ Sculpture = stjs.extend(Sculpture, CreativeWork, [], null, {contributor: "Object
 /**
  *  Schema.org/MenuSection
  *  A sub-grouping of food or drink items in a menu. E.g. courses (such as 'Dinner', 'Breakfast', etc.), specific type of dishes (such as 'Meat', 'Vegan', 'Drinks', etc.), or some other classification made by the menu provider.
+ * 
  *  @author schema.org
  *  @class MenuSection
  *  @module org.schema
@@ -5447,6 +6174,7 @@ Sculpture = stjs.extend(Sculpture, CreativeWork, [], null, {contributor: "Object
  */
 var MenuSection = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5458,6 +6186,7 @@ MenuSection = stjs.extend(MenuSection, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/hasMenuSection
      *  A subgrouping of the menu (by dishes, course, serving time period, etc.).
+     * 
      *  @property hasMenuSection
      *  @type MenuSection
      */
@@ -5465,6 +6194,7 @@ MenuSection = stjs.extend(MenuSection, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/hasMenuItem
      *  A food or drink item contained in a menu or menu section.
+     * 
      *  @property hasMenuItem
      *  @type MenuItem
      */
@@ -5473,6 +6203,7 @@ MenuSection = stjs.extend(MenuSection, CreativeWork, [], function(constructor, p
 /**
  *  Schema.org/Question
  *  A specific question - e.g. from a user seeking answers online, or collected in a Frequently Asked Questions (FAQ) document.
+ * 
  *  @author schema.org
  *  @class Question
  *  @module org.schema
@@ -5480,6 +6211,7 @@ MenuSection = stjs.extend(MenuSection, CreativeWork, [], function(constructor, p
  */
 var Question = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5491,6 +6223,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     /**
      *  Schema.org/acceptedAnswer
      *  The answer that has been accepted as best, typically on a Question/Answer site. Sites vary in their selection mechanisms, e.g. drawing on community opinion and/or the view of the Question author.
+     * 
      *  @property acceptedAnswer
      *  @type Answer
      */
@@ -5498,6 +6231,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     /**
      *  Schema.org/upvoteCount
      *  The number of upvotes this question, answer or comment has received from the community.
+     * 
      *  @property upvoteCount
      *  @type Integer
      */
@@ -5505,6 +6239,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     /**
      *  Schema.org/answerCount
      *  The number of answers this question has received.
+     * 
      *  @property answerCount
      *  @type Integer
      */
@@ -5512,6 +6247,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     /**
      *  Schema.org/suggestedAnswer
      *  An answer (possibly one of several, possibly incorrect) to a Question, e.g. on a Question/Answer site.
+     * 
      *  @property suggestedAnswer
      *  @type Answer
      */
@@ -5519,6 +6255,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
     /**
      *  Schema.org/downvoteCount
      *  The number of downvotes this question, answer or comment has received from the community.
+     * 
      *  @property downvoteCount
      *  @type Integer
      */
@@ -5527,6 +6264,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
 /**
  *  Schema.org/Blog
  *  A blog.
+ * 
  *  @author schema.org
  *  @class Blog
  *  @module org.schema
@@ -5534,6 +6272,7 @@ Question = stjs.extend(Question, CreativeWork, [], function(constructor, prototy
  */
 var Blog = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5545,6 +6284,7 @@ Blog = stjs.extend(Blog, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/blogPost
      *  A posting that is part of this blog.
+     * 
      *  @property blogPost
      *  @type BlogPosting
      */
@@ -5552,6 +6292,7 @@ Blog = stjs.extend(Blog, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/blogPosts
      *  The postings that are part of this blog.
+     * 
      *  @property blogPosts
      *  @type BlogPosting
      */
@@ -5560,6 +6301,7 @@ Blog = stjs.extend(Blog, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/Episode
  *  A media episode (e.g. TV, radio, video game) which can be part of a series or season.
+ * 
  *  @author schema.org
  *  @class Episode
  *  @module org.schema
@@ -5567,6 +6309,7 @@ Blog = stjs.extend(Blog, CreativeWork, [], function(constructor, prototype) {
  */
 var Episode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5578,6 +6321,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -5585,6 +6329,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/partOfSeason
      *  The season to which this episode belongs.
+     * 
      *  @property partOfSeason
      *  @type CreativeWorkSeason
      */
@@ -5592,6 +6337,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -5599,20 +6345,23 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/episodeNumber
      *  Position of the episode within an ordered group of episodes.
+     * 
      *  @property episodeNumber
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.episodeNumber = null;
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -5620,6 +6369,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -5627,6 +6377,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -5634,6 +6385,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -5641,6 +6393,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/partOfSeries
      *  The series to which this episode or season belongs.
+     * 
      *  @property partOfSeries
      *  @type CreativeWorkSeries
      */
@@ -5649,7 +6402,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
 /**
  *  Schema.org/CreativeWorkSeries
  *  A CreativeWorkSeries in schema.org is a group of related items, typically but not necessarily of the same kind. CreativeWorkSeries are usually organized into some order, often chronological. Unlike [[ItemList]] which is a general purpose data structure for lists of things, the emphasis with CreativeWorkSeries is on published materials (written e.g. books and periodicals, or media such as tv, radio and games).\n\nSpecific subtypes are available for describing [[TVSeries]], [[RadioSeries]], [[MovieSeries]], [[BookSeries]], [[Periodical]] and [[VideoGameSeries]]. In each case, the [[hasPart]] / [[isPartOf]] properties can be used to relate the CreativeWorkSeries to its parts. The general CreativeWorkSeries type serves largely just to organize these more specific and practical subtypes.\n\nIt is common for properties applicable to an item from the series to be usefully applied to the containing group. Schema.org attempts to anticipate some of these cases, but publishers should be free to apply properties of the series parts to the series as a whole wherever they seem appropriate.
- * 	  
+ * 
  *  @author schema.org
  *  @class CreativeWorkSeries
  *  @module org.schema
@@ -5657,6 +6410,7 @@ Episode = stjs.extend(Episode, CreativeWork, [], function(constructor, prototype
  */
 var CreativeWorkSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5668,21 +6422,24 @@ CreativeWorkSeries = stjs.extend(CreativeWorkSeries, CreativeWork, [], function(
     /**
      *  Schema.org/startDate
      *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property startDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.startDate = null;
     /**
      *  Schema.org/endDate
      *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property endDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.endDate = null;
 }, {startDate: "Object", endDate: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Review
  *  A review of an item - for example, of a restaurant, movie, or store.
+ * 
  *  @author schema.org
  *  @class Review
  *  @module org.schema
@@ -5690,6 +6447,7 @@ CreativeWorkSeries = stjs.extend(CreativeWorkSeries, CreativeWork, [], function(
  */
 var Review = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5701,6 +6459,7 @@ Review = stjs.extend(Review, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/reviewBody
      *  The actual body of the review.
+     * 
      *  @property reviewBody
      *  @type Text
      */
@@ -5708,6 +6467,7 @@ Review = stjs.extend(Review, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/reviewRating
      *  The rating given in this review. Note that reviews can themselves be rated. The ```reviewRating``` applies to rating given by the review. The [[aggregateRating]] property applies to the review itself, as a creative work.
+     * 
      *  @property reviewRating
      *  @type Rating
      */
@@ -5715,6 +6475,7 @@ Review = stjs.extend(Review, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/itemReviewed
      *  The item that is being reviewed/rated.
+     * 
      *  @property itemReviewed
      *  @type Thing
      */
@@ -5723,6 +6484,7 @@ Review = stjs.extend(Review, CreativeWork, [], function(constructor, prototype) 
 /**
  *  Schema.org/SoftwareSourceCode
  *  Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates.
+ * 
  *  @author schema.org
  *  @class SoftwareSourceCode
  *  @module org.schema
@@ -5730,6 +6492,7 @@ Review = stjs.extend(Review, CreativeWork, [], function(constructor, prototype) 
  */
 var SoftwareSourceCode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5741,6 +6504,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/runtimePlatform
      *  Runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).
+     * 
      *  @property runtimePlatform
      *  @type Text
      */
@@ -5748,6 +6512,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/sampleType
      *  What type of code sample: full (compile ready) solution, code snippet, inline code, scripts, template.
+     * 
      *  @property sampleType
      *  @type Text
      */
@@ -5755,6 +6520,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/codeRepository
      *  Link to the repository where the un-compiled, human readable code and related code is located (SVN, github, CodePlex).
+     * 
      *  @property codeRepository
      *  @type URL
      */
@@ -5762,6 +6528,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/targetProduct
      *  Target Operating System / Product to which the code applies.  If applies to several versions, just the product name can be used.
+     * 
      *  @property targetProduct
      *  @type SoftwareApplication
      */
@@ -5769,6 +6536,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/codeSampleType
      *  What type of code sample: full (compile ready) solution, code snippet, inline code, scripts, template.
+     * 
      *  @property codeSampleType
      *  @type Text
      */
@@ -5776,6 +6544,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/runtime
      *  Runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).
+     * 
      *  @property runtime
      *  @type Text
      */
@@ -5783,14 +6552,16 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
     /**
      *  Schema.org/programmingLanguage
      *  The computer programming language.
+     * 
      *  @property programmingLanguage
-     *  @type schema,Text | schema,ComputerLanguage
+     *  @type schema, Text | schema,ComputerLanguage
      */
     prototype.programmingLanguage = null;
 }, {targetProduct: "SoftwareApplication", programmingLanguage: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Painting
  *  A painting.
+ * 
  *  @author schema.org
  *  @class Painting
  *  @module org.schema
@@ -5798,6 +6569,7 @@ SoftwareSourceCode = stjs.extend(SoftwareSourceCode, CreativeWork, [], function(
  */
 var Painting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5809,6 +6581,7 @@ Painting = stjs.extend(Painting, CreativeWork, [], null, {contributor: "Object",
 /**
  *  Schema.org/Conversation
  *  One or more messages between organizations or people on a particular topic. Individual messages can be linked to the conversation with isPartOf or hasPart properties.
+ * 
  *  @author schema.org
  *  @class Conversation
  *  @module org.schema
@@ -5816,6 +6589,7 @@ Painting = stjs.extend(Painting, CreativeWork, [], null, {contributor: "Object",
  */
 var Conversation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5827,6 +6601,7 @@ Conversation = stjs.extend(Conversation, CreativeWork, [], null, {contributor: "
 /**
  *  Schema.org/Code
  *  Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates.
+ * 
  *  @author schema.org
  *  @class Code
  *  @module org.schema
@@ -5834,6 +6609,7 @@ Conversation = stjs.extend(Conversation, CreativeWork, [], null, {contributor: "
  */
 var Code = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5845,6 +6621,7 @@ Code = stjs.extend(Code, CreativeWork, [], null, {contributor: "Object", reviews
 /**
  *  Schema.org/WebPageElement
  *  A web page element, like a table or an image.
+ * 
  *  @author schema.org
  *  @class WebPageElement
  *  @module org.schema
@@ -5852,6 +6629,7 @@ Code = stjs.extend(Code, CreativeWork, [], null, {contributor: "Object", reviews
  */
 var WebPageElement = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5863,6 +6641,7 @@ WebPageElement = stjs.extend(WebPageElement, CreativeWork, [], null, {contributo
 /**
  *  Schema.org/Clip
  *  A short TV or radio program or a segment/part of a program.
+ * 
  *  @author schema.org
  *  @class Clip
  *  @module org.schema
@@ -5870,6 +6649,7 @@ WebPageElement = stjs.extend(WebPageElement, CreativeWork, [], null, {contributo
  */
 var Clip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5881,13 +6661,15 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/clipNumber
      *  Position of the clip within an ordered group of clips.
+     * 
      *  @property clipNumber
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.clipNumber = null;
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -5895,6 +6677,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/partOfEpisode
      *  The episode to which this clip belongs.
+     * 
      *  @property partOfEpisode
      *  @type Episode
      */
@@ -5902,6 +6685,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/partOfSeason
      *  The season to which this episode belongs.
+     * 
      *  @property partOfSeason
      *  @type CreativeWorkSeason
      */
@@ -5909,6 +6693,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -5916,13 +6701,15 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -5930,6 +6717,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -5937,6 +6725,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/partOfSeries
      *  The series to which this episode or season belongs.
+     * 
      *  @property partOfSeries
      *  @type CreativeWorkSeries
      */
@@ -5945,6 +6734,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/Movie
  *  A movie.
+ * 
  *  @author schema.org
  *  @class Movie
  *  @module org.schema
@@ -5952,6 +6742,7 @@ Clip = stjs.extend(Clip, CreativeWork, [], function(constructor, prototype) {
  */
 var Movie = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -5963,6 +6754,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -5970,13 +6762,15 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/subtitleLanguage
      *  Languages in which subtitles/captions are available, in [IETF BCP 47 standard format](http://tools.ietf.org/html/bcp47).
+     * 
      *  @property subtitleLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.subtitleLanguage = null;
     /**
      *  Schema.org/countryOfOrigin
      *  The country of the principal offices of the production company or individual responsible for the movie or program.
+     * 
      *  @property countryOfOrigin
      *  @type Country
      */
@@ -5984,6 +6778,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/duration
      *  The duration of the item (movie, audio recording, event, etc.) in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property duration
      *  @type Duration
      */
@@ -5991,6 +6786,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -5998,13 +6794,15 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -6012,6 +6810,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -6019,6 +6818,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -6026,6 +6826,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -6034,6 +6835,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/Comment
  *  A comment on an item - for example, a comment on a blog post. The comment's content is expressed via the [[text]] property, and its topic via [[about]], properties shared with all CreativeWorks.
+ * 
  *  @author schema.org
  *  @class Comment
  *  @module org.schema
@@ -6041,6 +6843,7 @@ Movie = stjs.extend(Movie, CreativeWork, [], function(constructor, prototype) {
  */
 var Comment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6052,6 +6855,7 @@ Comment = stjs.extend(Comment, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/upvoteCount
      *  The number of upvotes this question, answer or comment has received from the community.
+     * 
      *  @property upvoteCount
      *  @type Integer
      */
@@ -6059,6 +6863,7 @@ Comment = stjs.extend(Comment, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/downvoteCount
      *  The number of downvotes this question, answer or comment has received from the community.
+     * 
      *  @property downvoteCount
      *  @type Integer
      */
@@ -6066,6 +6871,7 @@ Comment = stjs.extend(Comment, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/parentItem
      *  The parent of a question, answer or item in general.
+     * 
      *  @property parentItem
      *  @type Question
      */
@@ -6074,6 +6880,7 @@ Comment = stjs.extend(Comment, CreativeWork, [], function(constructor, prototype
 /**
  *  Schema.org/MusicRecording
  *  A music recording (track), usually a single song.
+ * 
  *  @author schema.org
  *  @class MusicRecording
  *  @module org.schema
@@ -6081,6 +6888,7 @@ Comment = stjs.extend(Comment, CreativeWork, [], function(constructor, prototype
  */
 var MusicRecording = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6092,6 +6900,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/isrcCode
      *  The International Standard Recording Code for the recording.
+     * 
      *  @property isrcCode
      *  @type Text
      */
@@ -6099,6 +6908,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/inAlbum
      *  The album to which this recording belongs.
+     * 
      *  @property inAlbum
      *  @type MusicAlbum
      */
@@ -6106,6 +6916,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/recordingOf
      *  The composition this track is a recording of.
+     * 
      *  @property recordingOf
      *  @type MusicComposition
      */
@@ -6113,6 +6924,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/inPlaylist
      *  The playlist to which this recording belongs.
+     * 
      *  @property inPlaylist
      *  @type MusicPlaylist
      */
@@ -6120,6 +6932,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/duration
      *  The duration of the item (movie, audio recording, event, etc.) in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property duration
      *  @type Duration
      */
@@ -6127,6 +6940,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
     /**
      *  Schema.org/byArtist
      *  The artist that performed this album or recording.
+     * 
      *  @property byArtist
      *  @type MusicGroup
      */
@@ -6135,6 +6949,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
 /**
  *  Schema.org/Menu
  *  A structured representation of food or drink items available from a FoodEstablishment.
+ * 
  *  @author schema.org
  *  @class Menu
  *  @module org.schema
@@ -6142,6 +6957,7 @@ MusicRecording = stjs.extend(MusicRecording, CreativeWork, [], function(construc
  */
 var Menu = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6153,6 +6969,7 @@ Menu = stjs.extend(Menu, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/hasMenuSection
      *  A subgrouping of the menu (by dishes, course, serving time period, etc.).
+     * 
      *  @property hasMenuSection
      *  @type MenuSection
      */
@@ -6160,6 +6977,7 @@ Menu = stjs.extend(Menu, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/hasMenuItem
      *  A food or drink item contained in a menu or menu section.
+     * 
      *  @property hasMenuItem
      *  @type MenuItem
      */
@@ -6168,6 +6986,7 @@ Menu = stjs.extend(Menu, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/PublicationIssue
  *  A part of a successively published publication such as a periodical or publication volume, often numbered, usually containing a grouping of works such as articles.\n\n[blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).
+ * 
  *  @author schema.org
  *  @class PublicationIssue
  *  @module org.schema
@@ -6175,6 +6994,7 @@ Menu = stjs.extend(Menu, CreativeWork, [], function(constructor, prototype) {
  */
 var PublicationIssue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6186,20 +7006,23 @@ PublicationIssue = stjs.extend(PublicationIssue, CreativeWork, [], function(cons
     /**
      *  Schema.org/pageStart
      *  The page on which the work starts; for example "135" or "xiii".
+     * 
      *  @property pageStart
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageStart = null;
     /**
      *  Schema.org/pageEnd
      *  The page on which the work ends; for example "138" or "xvi".
+     * 
      *  @property pageEnd
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageEnd = null;
     /**
      *  Schema.org/pagination
      *  Any description of pages that is not separated into pageStart and pageEnd; for example, "1-6, 9, 55" or "10-12, 46-49".
+     * 
      *  @property pagination
      *  @type Text
      */
@@ -6207,14 +7030,16 @@ PublicationIssue = stjs.extend(PublicationIssue, CreativeWork, [], function(cons
     /**
      *  Schema.org/issueNumber
      *  Identifies the issue of publication; for example, "iii" or "2".
+     * 
      *  @property issueNumber
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.issueNumber = null;
 }, {pageStart: "Object", pageEnd: "Object", issueNumber: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/CreativeWorkSeason
  *  A media season e.g. tv, radio, video game etc.
+ * 
  *  @author schema.org
  *  @class CreativeWorkSeason
  *  @module org.schema
@@ -6222,6 +7047,7 @@ PublicationIssue = stjs.extend(PublicationIssue, CreativeWork, [], function(cons
  */
 var CreativeWorkSeason = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6233,6 +7059,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/episodes
      *  An episode of a TV/radio series or season.
+     * 
      *  @property episodes
      *  @type Episode
      */
@@ -6240,6 +7067,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -6247,13 +7075,15 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/seasonNumber
      *  Position of the season within an ordered group of seasons.
+     * 
      *  @property seasonNumber
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.seasonNumber = null;
     /**
      *  Schema.org/episode
      *  An episode of a tv, radio or game media within a series or season.
+     * 
      *  @property episode
      *  @type Episode
      */
@@ -6261,6 +7091,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -6268,6 +7099,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -6275,13 +7107,15 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/startDate
      *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property startDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.startDate = null;
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -6289,6 +7123,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/numberOfEpisodes
      *  The number of episodes in this season or series.
+     * 
      *  @property numberOfEpisodes
      *  @type Integer
      */
@@ -6296,6 +7131,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/partOfSeries
      *  The series to which this episode or season belongs.
+     * 
      *  @property partOfSeries
      *  @type CreativeWorkSeries
      */
@@ -6303,16 +7139,18 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
     /**
      *  Schema.org/endDate
      *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property endDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.endDate = null;
 }, {episodes: "Episode", director: "Person", seasonNumber: "Object", episode: "Episode", actor: "Person", trailer: "VideoObject", startDate: "Object", productionCompany: "Organization", partOfSeries: "CreativeWorkSeries", endDate: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/PublicationVolume
  *  A part of a successively published publication such as a periodical or multi-volume work, often numbered. It may represent a time span, such as a year.
+ *  <p>
+ *  <br/><br/>See also <a href="http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html">blog post</a>.
  * 
- *       <br/><br/>See also <a href="http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html">blog post</a>.
  *  @author schema.org
  *  @class PublicationVolume
  *  @module org.schema
@@ -6320,6 +7158,7 @@ CreativeWorkSeason = stjs.extend(CreativeWorkSeason, CreativeWork, [], function(
  */
 var PublicationVolume = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6331,27 +7170,31 @@ PublicationVolume = stjs.extend(PublicationVolume, CreativeWork, [], function(co
     /**
      *  Schema.org/pageStart
      *  The page on which the work starts; for example "135" or "xiii".
+     * 
      *  @property pageStart
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageStart = null;
     /**
      *  Schema.org/pageEnd
      *  The page on which the work ends; for example "138" or "xvi".
+     * 
      *  @property pageEnd
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageEnd = null;
     /**
      *  Schema.org/volumeNumber
      *  Identifies the volume of publication or multi-part work; for example, "iii" or "2".
+     * 
      *  @property volumeNumber
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.volumeNumber = null;
     /**
      *  Schema.org/pagination
      *  Any description of pages that is not separated into pageStart and pageEnd; for example, "1-6, 9, 55" or "10-12, 46-49".
+     * 
      *  @property pagination
      *  @type Text
      */
@@ -6360,6 +7203,7 @@ PublicationVolume = stjs.extend(PublicationVolume, CreativeWork, [], function(co
 /**
  *  Schema.org/Photograph
  *  A photograph.
+ * 
  *  @author schema.org
  *  @class Photograph
  *  @module org.schema
@@ -6367,6 +7211,7 @@ PublicationVolume = stjs.extend(PublicationVolume, CreativeWork, [], function(co
  */
 var Photograph = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6378,6 +7223,7 @@ Photograph = stjs.extend(Photograph, CreativeWork, [], null, {contributor: "Obje
 /**
  *  Schema.org/MusicComposition
  *  A musical composition.
+ * 
  *  @author schema.org
  *  @class MusicComposition
  *  @module org.schema
@@ -6385,6 +7231,7 @@ Photograph = stjs.extend(Photograph, CreativeWork, [], null, {contributor: "Obje
  */
 var MusicComposition = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6396,6 +7243,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/musicArrangement
      *  An arrangement derived from the composition.
+     * 
      *  @property musicArrangement
      *  @type MusicComposition
      */
@@ -6403,13 +7251,15 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/composer
      *  The person or organization who wrote a composition, or who is the composer of a work performed at some event.
+     * 
      *  @property composer
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.composer = null;
     /**
      *  Schema.org/recordedAs
      *  An audio recording of the work.
+     * 
      *  @property recordedAs
      *  @type MusicRecording
      */
@@ -6417,6 +7267,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/lyricist
      *  The person who wrote the words.
+     * 
      *  @property lyricist
      *  @type Person
      */
@@ -6424,6 +7275,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/musicCompositionForm
      *  The type of composition (e.g. overture, sonata, symphony, etc.).
+     * 
      *  @property musicCompositionForm
      *  @type Text
      */
@@ -6431,6 +7283,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/musicalKey
      *  The key, mode, or scale this composition uses.
+     * 
      *  @property musicalKey
      *  @type Text
      */
@@ -6438,6 +7291,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/iswcCode
      *  The International Standard Musical Work Code for the composition.
+     * 
      *  @property iswcCode
      *  @type Text
      */
@@ -6445,6 +7299,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/includedComposition
      *  Smaller compositions included in this work (e.g. a movement in a symphony).
+     * 
      *  @property includedComposition
      *  @type MusicComposition
      */
@@ -6452,6 +7307,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/lyrics
      *  The words in the song.
+     * 
      *  @property lyrics
      *  @type CreativeWork
      */
@@ -6459,6 +7315,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
     /**
      *  Schema.org/firstPerformance
      *  The date and place the work was first performed.
+     * 
      *  @property firstPerformance
      *  @type Event
      */
@@ -6467,6 +7324,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
 /**
  *  Schema.org/Message
  *  A single message from a sender to one or more organizations or people.
+ * 
  *  @author schema.org
  *  @class Message
  *  @module org.schema
@@ -6474,6 +7332,7 @@ MusicComposition = stjs.extend(MusicComposition, CreativeWork, [], function(cons
  */
 var Message = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6485,13 +7344,15 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/sender
      *  A sub property of participant. The participant who is at the sending end of the action.
+     * 
      *  @property sender
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.sender = null;
     /**
      *  Schema.org/dateReceived
      *  The date/time the message was received if a single recipient exists.
+     * 
      *  @property dateReceived
      *  @type DateTime
      */
@@ -6499,6 +7360,7 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/dateRead
      *  The date/time at which the message has been read by the recipient if a single recipient exists.
+     * 
      *  @property dateRead
      *  @type DateTime
      */
@@ -6506,6 +7368,7 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/dateSent
      *  The date/time at which the message was sent.
+     * 
      *  @property dateSent
      *  @type DateTime
      */
@@ -6513,6 +7376,7 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/messageAttachment
      *  A CreativeWork attached to the message.
+     * 
      *  @property messageAttachment
      *  @type CreativeWork
      */
@@ -6520,14 +7384,16 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {sender: "Object", messageAttachment: "CreativeWork", recipient: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Recipe
  *  A recipe. For dietary restrictions covered by the recipe, a few common restrictions are enumerated via [[suitableForDiet]]. The [[keywords]] property can also be used to add more detail.
+ * 
  *  @author schema.org
  *  @class Recipe
  *  @module org.schema
@@ -6535,6 +7401,7 @@ Message = stjs.extend(Message, CreativeWork, [], function(constructor, prototype
  */
 var Recipe = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6546,6 +7413,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/cookingMethod
      *  The method of cooking, such as Frying, Steaming, ...
+     * 
      *  @property cookingMethod
      *  @type Text
      */
@@ -6553,6 +7421,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/recipeCuisine
      *  The cuisine of the recipe (for example, French or Ethiopian).
+     * 
      *  @property recipeCuisine
      *  @type Text
      */
@@ -6560,6 +7429,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/suitableForDiet
      *  Indicates a dietary restriction or guideline for which this recipe or menu item is suitable, e.g. diabetic, halal etc.
+     * 
      *  @property suitableForDiet
      *  @type RestrictedDiet
      */
@@ -6567,13 +7437,15 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/recipeInstructions
      *  A step or instruction involved in making the recipe.
+     * 
      *  @property recipeInstructions
-     *  @type schema,Text | schema,ItemList
+     *  @type schema, Text | schema,ItemList
      */
     prototype.recipeInstructions = null;
     /**
      *  Schema.org/cookTime
      *  The time it takes to actually cook the dish, in [ISO 8601 duration format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property cookTime
      *  @type Duration
      */
@@ -6581,6 +7453,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/recipeYield
      *  The quantity produced by the recipe (for example, number of people served, number of servings, etc).
+     * 
      *  @property recipeYield
      *  @type Text
      */
@@ -6588,6 +7461,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/prepTime
      *  The length of time it takes to prepare the recipe, in [ISO 8601 duration format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property prepTime
      *  @type Duration
      */
@@ -6595,6 +7469,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/totalTime
      *  The total time it takes to prepare and cook the recipe, in [ISO 8601 duration format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property totalTime
      *  @type Duration
      */
@@ -6602,6 +7477,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/nutrition
      *  Nutrition information about the recipe or menu item.
+     * 
      *  @property nutrition
      *  @type NutritionInformation
      */
@@ -6609,6 +7485,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/recipeCategory
      *  The category of the recipe—for example, appetizer, entree, etc.
+     * 
      *  @property recipeCategory
      *  @type Text
      */
@@ -6616,6 +7493,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/recipeIngredient
      *  A single ingredient used in the recipe, e.g. sugar, flour or garlic.
+     * 
      *  @property recipeIngredient
      *  @type Text
      */
@@ -6623,6 +7501,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/ingredients
      *  A single ingredient used in the recipe, e.g. sugar, flour or garlic.
+     * 
      *  @property ingredients
      *  @type Text
      */
@@ -6631,6 +7510,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
 /**
  *  Schema.org/Book
  *  A book.
+ * 
  *  @author schema.org
  *  @class Book
  *  @module org.schema
@@ -6638,6 +7518,7 @@ Recipe = stjs.extend(Recipe, CreativeWork, [], function(constructor, prototype) 
  */
 var Book = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6649,6 +7530,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/illustrator
      *  The illustrator of the book.
+     * 
      *  @property illustrator
      *  @type Person
      */
@@ -6656,6 +7538,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/bookEdition
      *  The edition of the book.
+     * 
      *  @property bookEdition
      *  @type Text
      */
@@ -6663,6 +7546,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/bookFormat
      *  The format of the book.
+     * 
      *  @property bookFormat
      *  @type BookFormatType
      */
@@ -6670,6 +7554,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/isbn
      *  The ISBN of the book.
+     * 
      *  @property isbn
      *  @type Text
      */
@@ -6677,6 +7562,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfPages
      *  The number of pages in the book.
+     * 
      *  @property numberOfPages
      *  @type Integer
      */
@@ -6685,6 +7571,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/DigitalDocument
  *  An electronic file or document.
+ * 
  *  @author schema.org
  *  @class DigitalDocument
  *  @module org.schema
@@ -6692,6 +7579,7 @@ Book = stjs.extend(Book, CreativeWork, [], function(constructor, prototype) {
  */
 var DigitalDocument = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6703,6 +7591,7 @@ DigitalDocument = stjs.extend(DigitalDocument, CreativeWork, [], function(constr
     /**
      *  Schema.org/hasDigitalDocumentPermission
      *  A permission related to the access to this document (e.g. permission to read or write an electronic document). For a public document, specify a grantee with an Audience with audienceType equal to "public".
+     * 
      *  @property hasDigitalDocumentPermission
      *  @type DigitalDocumentPermission
      */
@@ -6711,6 +7600,7 @@ DigitalDocument = stjs.extend(DigitalDocument, CreativeWork, [], function(constr
 /**
  *  Schema.org/VisualArtwork
  *  A work of art that is primarily visual in character.
+ * 
  *  @author schema.org
  *  @class VisualArtwork
  *  @module org.schema
@@ -6718,6 +7608,7 @@ DigitalDocument = stjs.extend(DigitalDocument, CreativeWork, [], function(constr
  */
 var VisualArtwork = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6729,63 +7620,72 @@ VisualArtwork = stjs.extend(VisualArtwork, CreativeWork, [], function(constructo
     /**
      *  Schema.org/artMedium
      *  The material used. (e.g. Oil, Watercolour, Acrylic, Linoprint, Marble, Cyanotype, Digital, Lithograph, DryPoint, Intaglio, Pastel, Woodcut, Pencil, Mixed Media, etc.)
+     * 
      *  @property artMedium
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.artMedium = null;
     /**
      *  Schema.org/height
      *  The height of the item.
+     * 
      *  @property height
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.height = null;
     /**
      *  Schema.org/artform
      *  e.g. Painting, Drawing, Sculpture, Print, Photograph, Assemblage, Collage, etc.
+     * 
      *  @property artform
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.artform = null;
     /**
      *  Schema.org/depth
      *  The depth of the item.
+     * 
      *  @property depth
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.depth = null;
     /**
      *  Schema.org/surface
      *  A material used as a surface in some artwork, e.g. Canvas, Paper, Wood, Board, etc.
+     * 
      *  @property surface
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.surface = null;
     /**
      *  Schema.org/width
      *  The width of the item.
+     * 
      *  @property width
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.width = null;
     /**
      *  Schema.org/artEdition
      *  The number of copies when multiple copies of a piece of artwork are produced - e.g. for a limited edition of 20 prints, 'artEdition' refers to the total number of copies (in this example "20").
+     * 
      *  @property artEdition
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.artEdition = null;
     /**
      *  Schema.org/artworkSurface
      *  The supporting materials for the artwork, e.g. Canvas, Paper, Wood, Board, etc.
+     * 
      *  @property artworkSurface
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.artworkSurface = null;
 }, {artMedium: "Object", height: "Object", artform: "Object", depth: "Object", surface: "Object", width: "Object", artEdition: "Object", artworkSurface: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/DataCatalog
  *  A collection of datasets.
+ * 
  *  @author schema.org
  *  @class DataCatalog
  *  @module org.schema
@@ -6793,6 +7693,7 @@ VisualArtwork = stjs.extend(VisualArtwork, CreativeWork, [], function(constructo
  */
 var DataCatalog = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6804,6 +7705,7 @@ DataCatalog = stjs.extend(DataCatalog, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/dataset
      *  A dataset contained in this catalog.
+     * 
      *  @property dataset
      *  @type Dataset
      */
@@ -6812,6 +7714,7 @@ DataCatalog = stjs.extend(DataCatalog, CreativeWork, [], function(constructor, p
 /**
  *  Schema.org/Article
  *  An article, such as a news article or piece of investigative report. Newspapers and magazines have articles of many different types and this is intended to cover them all.\n\nSee also [blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).
+ * 
  *  @author schema.org
  *  @class Article
  *  @module org.schema
@@ -6819,6 +7722,7 @@ DataCatalog = stjs.extend(DataCatalog, CreativeWork, [], function(constructor, p
  */
 var Article = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6830,20 +7734,23 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/pageStart
      *  The page on which the work starts; for example "135" or "xiii".
+     * 
      *  @property pageStart
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageStart = null;
     /**
      *  Schema.org/pageEnd
      *  The page on which the work ends; for example "138" or "xvi".
+     * 
      *  @property pageEnd
-     *  @type schema,Integer | schema,Text
+     *  @type schema, Integer | schema,Text
      */
     prototype.pageEnd = null;
     /**
      *  Schema.org/articleSection
      *  Articles may belong to one or more 'sections' in a magazine or newspaper, such as Sports, Lifestyle, etc.
+     * 
      *  @property articleSection
      *  @type Text
      */
@@ -6851,6 +7758,7 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/articleBody
      *  The actual body of the article.
+     * 
      *  @property articleBody
      *  @type Text
      */
@@ -6858,6 +7766,7 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/wordCount
      *  The number of words in the text of the Article.
+     * 
      *  @property wordCount
      *  @type Integer
      */
@@ -6865,6 +7774,7 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/pagination
      *  Any description of pages that is not separated into pageStart and pageEnd; for example, "1-6, 9, 55" or "10-12, 46-49".
+     * 
      *  @property pagination
      *  @type Text
      */
@@ -6873,6 +7783,7 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
 /**
  *  Schema.org/WebSite
  *  A WebSite is a set of related web pages and other items typically served from a single web domain and accessible via URLs.
+ * 
  *  @author schema.org
  *  @class WebSite
  *  @module org.schema
@@ -6880,6 +7791,7 @@ Article = stjs.extend(Article, CreativeWork, [], function(constructor, prototype
  */
 var WebSite = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6891,6 +7803,7 @@ WebSite = stjs.extend(WebSite, CreativeWork, [], null, {contributor: "Object", r
 /**
  *  Schema.org/MusicPlaylist
  *  A collection of music tracks in playlist form.
+ * 
  *  @author schema.org
  *  @class MusicPlaylist
  *  @module org.schema
@@ -6898,6 +7811,7 @@ WebSite = stjs.extend(WebSite, CreativeWork, [], null, {contributor: "Object", r
  */
 var MusicPlaylist = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6909,6 +7823,7 @@ MusicPlaylist = stjs.extend(MusicPlaylist, CreativeWork, [], function(constructo
     /**
      *  Schema.org/numTracks
      *  The number of tracks in this album or playlist.
+     * 
      *  @property numTracks
      *  @type Integer
      */
@@ -6916,6 +7831,7 @@ MusicPlaylist = stjs.extend(MusicPlaylist, CreativeWork, [], function(constructo
     /**
      *  Schema.org/tracks
      *  A music recording (track)&#x2014;usually a single song.
+     * 
      *  @property tracks
      *  @type MusicRecording
      */
@@ -6923,14 +7839,16 @@ MusicPlaylist = stjs.extend(MusicPlaylist, CreativeWork, [], function(constructo
     /**
      *  Schema.org/track
      *  A music recording (track)&#x2014;usually a single song. If an ItemList is given, the list should contain items of type MusicRecording.
+     * 
      *  @property track
-     *  @type schema,MusicRecording | schema,ItemList
+     *  @type schema, MusicRecording | schema,ItemList
      */
     prototype.track = null;
 }, {tracks: "MusicRecording", track: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/SoftwareApplication
  *  A software application.
+ * 
  *  @author schema.org
  *  @class SoftwareApplication
  *  @module org.schema
@@ -6938,6 +7856,7 @@ MusicPlaylist = stjs.extend(MusicPlaylist, CreativeWork, [], function(constructo
  */
 var SoftwareApplication = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -6949,13 +7868,15 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/storageRequirements
      *  Storage requirements (free space required).
+     * 
      *  @property storageRequirements
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.storageRequirements = null;
     /**
      *  Schema.org/device
      *  Device required to run the application. Used in cases where a specific make/model is required to run the application.
+     * 
      *  @property device
      *  @type Text
      */
@@ -6963,6 +7884,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/installUrl
      *  URL at which the app may be installed, if different from the URL of the item.
+     * 
      *  @property installUrl
      *  @type URL
      */
@@ -6970,6 +7892,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/countriesSupported
      *  Countries for which the application is supported. You can also provide the two-letter ISO 3166-1 alpha-2 country code.
+     * 
      *  @property countriesSupported
      *  @type Text
      */
@@ -6977,6 +7900,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/softwareVersion
      *  Version of the software instance.
+     * 
      *  @property softwareVersion
      *  @type Text
      */
@@ -6984,6 +7908,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/softwareAddOn
      *  Additional content for a software application.
+     * 
      *  @property softwareAddOn
      *  @type SoftwareApplication
      */
@@ -6991,6 +7916,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/supportingData
      *  Supporting data for a SoftwareApplication.
+     * 
      *  @property supportingData
      *  @type DataFeed
      */
@@ -6998,27 +7924,31 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/memoryRequirements
      *  Minimum memory requirements.
+     * 
      *  @property memoryRequirements
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.memoryRequirements = null;
     /**
      *  Schema.org/applicationSubCategory
      *  Subcategory of the application, e.g. 'Arcade Game'.
+     * 
      *  @property applicationSubCategory
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.applicationSubCategory = null;
     /**
      *  Schema.org/featureList
      *  Features or modules provided by this application (and possibly required by other applications).
+     * 
      *  @property featureList
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.featureList = null;
     /**
      *  Schema.org/softwareHelp
      *  Software application help.
+     * 
      *  @property softwareHelp
      *  @type CreativeWork
      */
@@ -7026,13 +7956,15 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/screenshot
      *  A link to a screenshot image of the app.
+     * 
      *  @property screenshot
-     *  @type schema,URL | schema,ImageObject
+     *  @type schema, URL | schema,ImageObject
      */
     prototype.screenshot = null;
     /**
      *  Schema.org/permissions
      *  Permission(s) required to run the app (for example, a mobile app may require full internet access or may run only on wifi).
+     * 
      *  @property permissions
      *  @type Text
      */
@@ -7040,27 +7972,31 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/requirements
      *  Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application (Examples: DirectX, Java or .NET runtime).
+     * 
      *  @property requirements
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.requirements = null;
     /**
      *  Schema.org/applicationCategory
      *  Type of software application, e.g. 'Game, Multimedia'.
+     * 
      *  @property applicationCategory
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.applicationCategory = null;
     /**
      *  Schema.org/releaseNotes
      *  Description of what changed in this version.
+     * 
      *  @property releaseNotes
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.releaseNotes = null;
     /**
      *  Schema.org/operatingSystem
      *  Operating systems supported (Windows 7, OSX 10.6, Android 1.6).
+     * 
      *  @property operatingSystem
      *  @type Text
      */
@@ -7068,6 +8004,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/processorRequirements
      *  Processor architecture required to run the application (e.g. IA64).
+     * 
      *  @property processorRequirements
      *  @type Text
      */
@@ -7075,6 +8012,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/countriesNotSupported
      *  Countries for which the application is not supported. You can also provide the two-letter ISO 3166-1 alpha-2 country code.
+     * 
      *  @property countriesNotSupported
      *  @type Text
      */
@@ -7082,6 +8020,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/availableOnDevice
      *  Device required to run the application. Used in cases where a specific make/model is required to run the application.
+     * 
      *  @property availableOnDevice
      *  @type Text
      */
@@ -7089,13 +8028,15 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/softwareRequirements
      *  Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application (Examples: DirectX, Java or .NET runtime).
+     * 
      *  @property softwareRequirements
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.softwareRequirements = null;
     /**
      *  Schema.org/fileSize
      *  Size of the application / package (e.g. 18MB). In the absence of a unit (MB, KB etc.), KB will be assumed.
+     * 
      *  @property fileSize
      *  @type Text
      */
@@ -7103,6 +8044,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/applicationSuite
      *  The name of the application suite to which the application belongs (e.g. Excel belongs to Office).
+     * 
      *  @property applicationSuite
      *  @type Text
      */
@@ -7110,6 +8052,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
     /**
      *  Schema.org/downloadUrl
      *  If the file can be downloaded, URL to download the binary.
+     * 
      *  @property downloadUrl
      *  @type URL
      */
@@ -7118,6 +8061,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
 /**
  *  Schema.org/WebPage
  *  A web page. Every web page is implicitly assumed to be declared to be of type WebPage, so the various properties about that webpage, such as <code>breadcrumb</code> may be used. We recommend explicit declaration if these properties are specified, but if they are found outside of an itemscope, they will be assumed to be about the page.
+ * 
  *  @author schema.org
  *  @class WebPage
  *  @module org.schema
@@ -7125,6 +8069,7 @@ SoftwareApplication = stjs.extend(SoftwareApplication, CreativeWork, [], functio
  */
 var WebPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7136,6 +8081,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/specialty
      *  One of the domain specialities to which this web page's content applies.
+     * 
      *  @property specialty
      *  @type Specialty
      */
@@ -7143,13 +8089,15 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/breadcrumb
      *  A set of links that can help a user understand and navigate a website hierarchy.
+     * 
      *  @property breadcrumb
-     *  @type schema,Text | schema,BreadcrumbList
+     *  @type schema, Text | schema,BreadcrumbList
      */
     prototype.breadcrumb = null;
     /**
      *  Schema.org/relatedLink
      *  A link related to this web page, for example to other related web pages.
+     * 
      *  @property relatedLink
      *  @type URL
      */
@@ -7157,6 +8105,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/primaryImageOfPage
      *  Indicates the main image on the page.
+     * 
      *  @property primaryImageOfPage
      *  @type ImageObject
      */
@@ -7164,6 +8113,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/significantLink
      *  One of the more significant URLs on the page. Typically, these are the non-navigation links that are clicked on the most.
+     * 
      *  @property significantLink
      *  @type URL
      */
@@ -7171,6 +8121,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/mainContentOfPage
      *  Indicates if this web page element is the main subject of the page.
+     * 
      *  @property mainContentOfPage
      *  @type WebPageElement
      */
@@ -7178,6 +8129,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/significantLinks
      *  The most significant URLs on the page. Typically, these are the non-navigation links that are clicked on the most.
+     * 
      *  @property significantLinks
      *  @type URL
      */
@@ -7185,6 +8137,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/lastReviewed
      *  Date on which the content on this web page was last reviewed for accuracy and/or completeness.
+     * 
      *  @property lastReviewed
      *  @type Date
      */
@@ -7192,14 +8145,16 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/reviewedBy
      *  People or organizations that have reviewed the content on this web page for accuracy and/or completeness.
+     * 
      *  @property reviewedBy
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.reviewedBy = null;
 }, {specialty: "Specialty", breadcrumb: "Object", primaryImageOfPage: "ImageObject", mainContentOfPage: "WebPageElement", reviewedBy: "Object", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Season
  *  A media season e.g. tv, radio, video game etc.
+ * 
  *  @author schema.org
  *  @class Season
  *  @module org.schema
@@ -7207,6 +8162,7 @@ WebPage = stjs.extend(WebPage, CreativeWork, [], function(constructor, prototype
  */
 var Season = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7218,6 +8174,7 @@ Season = stjs.extend(Season, CreativeWork, [], null, {contributor: "Object", rev
 /**
  *  Schema.org/Map
  *  A map.
+ * 
  *  @author schema.org
  *  @class Map
  *  @module org.schema
@@ -7225,6 +8182,7 @@ Season = stjs.extend(Season, CreativeWork, [], null, {contributor: "Object", rev
  */
 var Map = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7236,6 +8194,7 @@ Map = stjs.extend(Map, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/mapType
      *  Indicates the kind of Map, from the MapCategoryType Enumeration.
+     * 
      *  @property mapType
      *  @type MapCategoryType
      */
@@ -7244,6 +8203,7 @@ Map = stjs.extend(Map, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/Dataset
  *  A body of structured information describing some topic(s) of interest.
+ * 
  *  @author schema.org
  *  @class Dataset
  *  @module org.schema
@@ -7251,6 +8211,7 @@ Map = stjs.extend(Map, CreativeWork, [], function(constructor, prototype) {
  */
 var Dataset = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7262,6 +8223,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/spatial
      *  The range of spatial applicability of a dataset, e.g. for a dataset of New York weather, the state of New York.
+     * 
      *  @property spatial
      *  @type Place
      */
@@ -7269,6 +8231,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/includedDataCatalog
      *  A data catalog which contains this dataset (this property was previously 'catalog', preferred name is now 'includedInDataCatalog').
+     * 
      *  @property includedDataCatalog
      *  @type DataCatalog
      */
@@ -7276,6 +8239,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/includedInDataCatalog
      *  A data catalog which contains this dataset.
+     * 
      *  @property includedInDataCatalog
      *  @type DataCatalog
      */
@@ -7283,6 +8247,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/temporal
      *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
+     * 
      *  @property temporal
      *  @type DateTime
      */
@@ -7290,6 +8255,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/datasetTimeInterval
      *  The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).
+     * 
      *  @property datasetTimeInterval
      *  @type DateTime
      */
@@ -7297,6 +8263,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/distribution
      *  A downloadable form of this dataset, at a specific location, in a specific format.
+     * 
      *  @property distribution
      *  @type DataDownload
      */
@@ -7304,6 +8271,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
     /**
      *  Schema.org/catalog
      *  A data catalog which contains this dataset.
+     * 
      *  @property catalog
      *  @type DataCatalog
      */
@@ -7312,6 +8280,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
 /**
  *  Schema.org/Game
  *  The Game type represents things which are games. These are typically rule-governed recreational activities, e.g. role-playing games in which players assume the role of characters in a fictional setting.
+ * 
  *  @author schema.org
  *  @class Game
  *  @module org.schema
@@ -7319,6 +8288,7 @@ Dataset = stjs.extend(Dataset, CreativeWork, [], function(constructor, prototype
  */
 var Game = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7330,13 +8300,15 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/gameLocation
      *  Real or fictional location of the game (or part of game).
+     * 
      *  @property gameLocation
-     *  @type schema,PostalAddress | schema,Place | schema,URL
+     *  @type schema, PostalAddress | schema,Place | schema,URL
      */
     prototype.gameLocation = null;
     /**
      *  Schema.org/quest
      *  The task that a player-controlled character, or group of characters may complete in order to gain a reward.
+     * 
      *  @property quest
      *  @type Thing
      */
@@ -7344,6 +8316,7 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/gameItem
      *  An item is an object within the game world that can be collected by a player or, occasionally, a non-player character.
+     * 
      *  @property gameItem
      *  @type Thing
      */
@@ -7351,6 +8324,7 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfPlayers
      *  Indicate how many people can play this game (minimum, maximum, or range).
+     * 
      *  @property numberOfPlayers
      *  @type QuantitativeValue
      */
@@ -7358,6 +8332,7 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
     /**
      *  Schema.org/characterAttribute
      *  A piece of data that represents a particular aspect of a fictional character (skill, power, character points, advantage, disadvantage).
+     * 
      *  @property characterAttribute
      *  @type Thing
      */
@@ -7366,6 +8341,7 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
 /**
  *  Schema.org/MediaObject
  *  A media object, such as an image, video, or audio object embedded in a web page or a downloadable dataset i.e. DataDownload. Note that a creative work may have many media objects associated with it on the same web page. For example, a page about a single song (MusicRecording) may have a music video (VideoObject), and a high and low bandwidth audio stream (2 AudioObject's).
+ * 
  *  @author schema.org
  *  @class MediaObject
  *  @module org.schema
@@ -7373,6 +8349,7 @@ Game = stjs.extend(Game, CreativeWork, [], function(constructor, prototype) {
  */
 var MediaObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7384,6 +8361,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/expires
      *  Date the content expires and is no longer useful or available. Useful for videos.
+     * 
      *  @property expires
      *  @type Date
      */
@@ -7391,6 +8369,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/regionsAllowed
      *  The regions where the media is allowed. If not specified, then it's assumed to be allowed everywhere. Specify the countries in [ISO 3166 format](http://en.wikipedia.org/wiki/ISO_3166).
+     * 
      *  @property regionsAllowed
      *  @type Place
      */
@@ -7398,6 +8377,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/encodingFormat
      *  mp3, mpeg4, etc.
+     * 
      *  @property encodingFormat
      *  @type Text
      */
@@ -7405,6 +8385,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/embedUrl
      *  A URL pointing to a player for a specific video. In general, this is the information in the ```src``` element of an ```embed``` tag and should not be the same as the content of the ```loc``` tag.
+     * 
      *  @property embedUrl
      *  @type URL
      */
@@ -7412,13 +8393,15 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/height
      *  The height of the item.
+     * 
      *  @property height
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.height = null;
     /**
      *  Schema.org/requiresSubscription
      *  Indicates if use of the media require a subscription  (either paid or free). Allowed values are ```true``` or ```false``` (note that an earlier version had 'yes', 'no').
+     * 
      *  @property requiresSubscription
      *  @type Boolean
      */
@@ -7426,6 +8409,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/playerType
      *  Player type required&#x2014;for example, Flash or Silverlight.
+     * 
      *  @property playerType
      *  @type Text
      */
@@ -7433,6 +8417,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/duration
      *  The duration of the item (movie, audio recording, event, etc.) in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property duration
      *  @type Duration
      */
@@ -7440,6 +8425,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/contentUrl
      *  Actual bytes of the media object, for example the image file or video file.
+     * 
      *  @property contentUrl
      *  @type URL
      */
@@ -7447,13 +8433,15 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/width
      *  The width of the item.
+     * 
      *  @property width
-     *  @type schema,Distance | schema,QuantitativeValue
+     *  @type schema, Distance | schema,QuantitativeValue
      */
     prototype.width = null;
     /**
      *  Schema.org/associatedArticle
      *  A NewsArticle associated with the Media Object.
+     * 
      *  @property associatedArticle
      *  @type NewsArticle
      */
@@ -7461,6 +8449,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -7468,6 +8457,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/uploadDate
      *  Date when this media object was uploaded to this site.
+     * 
      *  @property uploadDate
      *  @type Date
      */
@@ -7475,6 +8465,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/bitrate
      *  The bitrate of the media object.
+     * 
      *  @property bitrate
      *  @type Text
      */
@@ -7482,6 +8473,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/encodesCreativeWork
      *  The CreativeWork encoded by this media object.
+     * 
      *  @property encodesCreativeWork
      *  @type CreativeWork
      */
@@ -7489,6 +8481,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
     /**
      *  Schema.org/contentSize
      *  File size in (mega/kilo) bytes.
+     * 
      *  @property contentSize
      *  @type Text
      */
@@ -7496,8 +8489,9 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
 }, {regionsAllowed: "Place", height: "Object", duration: "Duration", width: "Object", associatedArticle: "NewsArticle", productionCompany: "Organization", encodesCreativeWork: "CreativeWork", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Series
- *  
- *           A Series in schema.org is a group of related items, typically but not necessarily of the same kind. 
+ *  <p>
+ *  A Series in schema.org is a group of related items, typically but not necessarily of the same kind.
+ * 
  *  @author schema.org
  *  @class Series
  *  @module org.schema
@@ -7505,6 +8499,7 @@ MediaObject = stjs.extend(MediaObject, CreativeWork, [], function(constructor, p
  */
 var Series = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7516,6 +8511,7 @@ Series = stjs.extend(Series, CreativeWork, [], null, {contributor: "Object", rev
 /**
  *  Schema.org/Course
  *  A description of an educational course which may be offered as distinct instances at which take place at different times or take place at different locations, or be offered through different media or modes of study. An educational course is a sequence of one or more educational events and/or creative works which aims to build knowledge, competence or ability of learners.
+ * 
  *  @author schema.org
  *  @class Course
  *  @module org.schema
@@ -7523,6 +8519,7 @@ Series = stjs.extend(Series, CreativeWork, [], null, {contributor: "Object", rev
  */
 var Course = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7534,6 +8531,7 @@ Course = stjs.extend(Course, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/hasCourseInstance
      *  An offering of the course at a specific time and place or through specific media or mode of study or to a specific section of students.
+     * 
      *  @property hasCourseInstance
      *  @type CourseInstance
      */
@@ -7541,13 +8539,15 @@ Course = stjs.extend(Course, CreativeWork, [], function(constructor, prototype) 
     /**
      *  Schema.org/coursePrerequisites
      *  Requirements for taking the Course. May be completion of another [[Course]] or a textual description like "permission of instructor". Requirements may be a pre-requisite competency, referenced using [[AlignmentObject]].
+     * 
      *  @property coursePrerequisites
-     *  @type schema,AlignmentObject | schema,Text | schema,Course
+     *  @type schema, AlignmentObject | schema,Text | schema,Course
      */
     prototype.coursePrerequisites = null;
     /**
      *  Schema.org/courseCode
      *  The identifier for the [[Course]] used by the course [[provider]] (e.g. CS101 or 6.001).
+     * 
      *  @property courseCode
      *  @type Text
      */
@@ -7556,6 +8556,7 @@ Course = stjs.extend(Course, CreativeWork, [], function(constructor, prototype) 
 /**
  *  Schema.org/PerformingGroup
  *  A performance group, such as a band, an orchestra, or a circus.
+ * 
  *  @author schema.org
  *  @class PerformingGroup
  *  @module org.schema
@@ -7563,6 +8564,7 @@ Course = stjs.extend(Course, CreativeWork, [], function(constructor, prototype) 
  */
 var PerformingGroup = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7574,6 +8576,7 @@ PerformingGroup = stjs.extend(PerformingGroup, Organization, [], null, {reviews:
 /**
  *  Schema.org/EducationalOrganization
  *  An educational organization.
+ * 
  *  @author schema.org
  *  @class EducationalOrganization
  *  @module org.schema
@@ -7581,6 +8584,7 @@ PerformingGroup = stjs.extend(PerformingGroup, Organization, [], null, {reviews:
  */
 var EducationalOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7592,6 +8596,7 @@ EducationalOrganization = stjs.extend(EducationalOrganization, Organization, [],
     /**
      *  Schema.org/alumni
      *  Alumni of an organization.
+     * 
      *  @property alumni
      *  @type Person
      */
@@ -7600,6 +8605,7 @@ EducationalOrganization = stjs.extend(EducationalOrganization, Organization, [],
 /**
  *  Schema.org/Airline
  *  An organization that provides flights for passengers.
+ * 
  *  @author schema.org
  *  @class Airline
  *  @module org.schema
@@ -7607,6 +8613,7 @@ EducationalOrganization = stjs.extend(EducationalOrganization, Organization, [],
  */
 var Airline = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7618,6 +8625,7 @@ Airline = stjs.extend(Airline, Organization, [], function(constructor, prototype
     /**
      *  Schema.org/iataCode
      *  IATA identifier for an airline or airport.
+     * 
      *  @property iataCode
      *  @type Text
      */
@@ -7625,6 +8633,7 @@ Airline = stjs.extend(Airline, Organization, [], function(constructor, prototype
     /**
      *  Schema.org/boardingPolicy
      *  The type of boarding policy used by the airline (e.g. zone-based or group-based).
+     * 
      *  @property boardingPolicy
      *  @type BoardingPolicyType
      */
@@ -7633,6 +8642,7 @@ Airline = stjs.extend(Airline, Organization, [], function(constructor, prototype
 /**
  *  Schema.org/GovernmentOrganization
  *  A governmental organization or agency.
+ * 
  *  @author schema.org
  *  @class GovernmentOrganization
  *  @module org.schema
@@ -7640,6 +8650,7 @@ Airline = stjs.extend(Airline, Organization, [], function(constructor, prototype
  */
 var GovernmentOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7651,6 +8662,7 @@ GovernmentOrganization = stjs.extend(GovernmentOrganization, Organization, [], n
 /**
  *  Schema.org/MedicalOrganization
  *  A medical organization (physical or not), such as hospital, institution or clinic.
+ * 
  *  @author schema.org
  *  @class MedicalOrganization
  *  @module org.schema
@@ -7658,6 +8670,7 @@ GovernmentOrganization = stjs.extend(GovernmentOrganization, Organization, [], n
  */
 var MedicalOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7669,6 +8682,7 @@ MedicalOrganization = stjs.extend(MedicalOrganization, Organization, [], null, {
 /**
  *  Schema.org/Corporation
  *  Organization: A business corporation.
+ * 
  *  @author schema.org
  *  @class Corporation
  *  @module org.schema
@@ -7676,6 +8690,7 @@ MedicalOrganization = stjs.extend(MedicalOrganization, Organization, [], null, {
  */
 var Corporation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7687,6 +8702,7 @@ Corporation = stjs.extend(Corporation, Organization, [], function(constructor, p
     /**
      *  Schema.org/tickerSymbol
      *  The exchange traded instrument associated with a Corporation object. The tickerSymbol is expressed as an exchange and an instrument name separated by a space character. For the exchange component of the tickerSymbol attribute, we reccommend using the controlled vocaulary of Market Identifier Codes (MIC) specified in ISO15022.
+     * 
      *  @property tickerSymbol
      *  @type Text
      */
@@ -7695,6 +8711,7 @@ Corporation = stjs.extend(Corporation, Organization, [], function(constructor, p
 /**
  *  Schema.org/LocalBusiness
  *  A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc.
+ * 
  *  @author schema.org
  *  @class LocalBusiness
  *  @module org.schema
@@ -7702,6 +8719,7 @@ Corporation = stjs.extend(Corporation, Organization, [], function(constructor, p
  */
 var LocalBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7713,6 +8731,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
     /**
      *  Schema.org/openingHours
      *  The general opening hours for a business. Opening hours can be specified as a weekly time range, starting with days, then times per day. Multiple days can be listed with commas ',' separating each day. Day or time ranges are specified using a hyphen '-'.\n\n* Days are specified using the following two-letter combinations: ```Mo```, ```Tu```, ```We```, ```Th```, ```Fr```, ```Sa```, ```Su```.\n* Times are specified using 24:00 time. For example, 3pm is specified as ```15:00```. \n* Here is an example: <code>&lt;time itemprop="openingHours" datetime=&quot;Tu,Th 16:00-20:00&quot;&gt;Tuesdays and Thursdays 4-8pm&lt;/time&gt;</code>.\n* If a business is open 7 days a week, then it can be specified as <code>&lt;time itemprop=&quot;openingHours&quot; datetime=&quot;Mo-Su&quot;&gt;Monday through Sunday, all day&lt;/time&gt;</code>.
+     * 
      *  @property openingHours
      *  @type Text
      */
@@ -7720,6 +8739,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
     /**
      *  Schema.org/paymentAccepted
      *  Cash, credit card, etc.
+     * 
      *  @property paymentAccepted
      *  @type Text
      */
@@ -7727,6 +8747,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
     /**
      *  Schema.org/priceRange
      *  The price range of the business, for example ```$$$```.
+     * 
      *  @property priceRange
      *  @type Text
      */
@@ -7734,6 +8755,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
     /**
      *  Schema.org/currenciesAccepted
      *  The currency accepted (in [ISO 4217 currency format](http://en.wikipedia.org/wiki/ISO_4217)).
+     * 
      *  @property currenciesAccepted
      *  @type Text
      */
@@ -7741,6 +8763,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
     /**
      *  Schema.org/branchOf
      *  The larger organization that this local business is a branch of, if any. Not to be confused with (anatomical)[[branch]].
+     * 
      *  @property branchOf
      *  @type Organization
      */
@@ -7749,6 +8772,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
 /**
  *  Schema.org/SportsOrganization
  *  Represents the collection of all sports organizations, including sports teams, governing bodies, and sports associations.
+ * 
  *  @author schema.org
  *  @class SportsOrganization
  *  @module org.schema
@@ -7756,6 +8780,7 @@ LocalBusiness = stjs.extend(LocalBusiness, Organization, [], function(constructo
  */
 var SportsOrganization = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7767,14 +8792,16 @@ SportsOrganization = stjs.extend(SportsOrganization, Organization, [], function(
     /**
      *  Schema.org/sport
      *  A type of sport (e.g. Baseball).
+     * 
      *  @property sport
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.sport = null;
 }, {sport: "Object", reviews: "Review", event: "Event", member: "Object", memberOf: "Object", contactPoints: "ContactPoint", events: "Event", review: "Review", numberOfEmployees: "QuantitativeValue", department: "Organization", brand: "Object", areaServed: "Object", parentOrganization: "Organization", address: "Object", contactPoint: "ContactPoint", funder: "Object", subOrganization: "Organization", alumni: "Person", seeks: "Demand", sponsor: "Object", members: "Object", location: "Object", serviceArea: "Object", hasPOS: "Place", aggregateRating: "AggregateRating", founder: "Person", founders: "Person", employee: "Person", logo: "Object", owns: "Object", employees: "Person", foundingLocation: "Place", hasOfferCatalog: "OfferCatalog", makesOffer: "Offer", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/NGO
  *  Organization: Non-governmental Organization.
+ * 
  *  @author schema.org
  *  @class NGO
  *  @module org.schema
@@ -7782,6 +8809,7 @@ SportsOrganization = stjs.extend(SportsOrganization, Organization, [], function(
  */
 var NGO = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7793,6 +8821,7 @@ NGO = stjs.extend(NGO, Organization, [], null, {reviews: "Review", event: "Event
 /**
  *  Schema.org/ProductModel
  *  A datasheet or vendor specification of a product (in the sense of a prototypical description).
+ * 
  *  @author schema.org
  *  @class ProductModel
  *  @module org.schema
@@ -7800,6 +8829,7 @@ NGO = stjs.extend(NGO, Organization, [], null, {reviews: "Review", event: "Event
  */
 var ProductModel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7811,6 +8841,7 @@ ProductModel = stjs.extend(ProductModel, Product, [], function(constructor, prot
     /**
      *  Schema.org/successorOf
      *  A pointer from a newer variant of a product  to its previous, often discontinued predecessor.
+     * 
      *  @property successorOf
      *  @type ProductModel
      */
@@ -7818,6 +8849,7 @@ ProductModel = stjs.extend(ProductModel, Product, [], function(constructor, prot
     /**
      *  Schema.org/isVariantOf
      *  A pointer to a base product from which this product is a variant. It is safe to infer that the variant inherits all product features from the base model, unless defined locally. This is not transitive.
+     * 
      *  @property isVariantOf
      *  @type ProductModel
      */
@@ -7825,6 +8857,7 @@ ProductModel = stjs.extend(ProductModel, Product, [], function(constructor, prot
     /**
      *  Schema.org/predecessorOf
      *  A pointer from a previous, often discontinued variant of the product to its newer variant.
+     * 
      *  @property predecessorOf
      *  @type ProductModel
      */
@@ -7833,6 +8866,7 @@ ProductModel = stjs.extend(ProductModel, Product, [], function(constructor, prot
 /**
  *  Schema.org/SomeProducts
  *  A placeholder for multiple similar products of the same kind.
+ * 
  *  @author schema.org
  *  @class SomeProducts
  *  @module org.schema
@@ -7840,6 +8874,7 @@ ProductModel = stjs.extend(ProductModel, Product, [], function(constructor, prot
  */
 var SomeProducts = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7851,6 +8886,7 @@ SomeProducts = stjs.extend(SomeProducts, Product, [], function(constructor, prot
     /**
      *  Schema.org/inventoryLevel
      *  The current approximate inventory level for the item or items.
+     * 
      *  @property inventoryLevel
      *  @type QuantitativeValue
      */
@@ -7859,6 +8895,7 @@ SomeProducts = stjs.extend(SomeProducts, Product, [], function(constructor, prot
 /**
  *  Schema.org/Vehicle
  *  A vehicle is a device that is designed or used to transport people or cargo over land, water, air, or through space.
+ * 
  *  @author schema.org
  *  @class Vehicle
  *  @module org.schema
@@ -7866,6 +8903,7 @@ SomeProducts = stjs.extend(SomeProducts, Product, [], function(constructor, prot
  */
 var Vehicle = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -7877,13 +8915,15 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/driveWheelConfiguration
      *  The drive wheel configuration, i.e. which roadwheels will receive torque from the vehicle's engine via the drivetrain.
+     * 
      *  @property driveWheelConfiguration
-     *  @type schema,Text | schema,DriveWheelConfigurationValue
+     *  @type schema, Text | schema,DriveWheelConfigurationValue
      */
     prototype.driveWheelConfiguration = null;
     /**
      *  Schema.org/vehicleInteriorColor
      *  The color or color combination of the interior of the vehicle.
+     * 
      *  @property vehicleInteriorColor
      *  @type Text
      */
@@ -7891,13 +8931,15 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfDoors
      *  The number of doors.\n\nTypical unit code(s): C62
+     * 
      *  @property numberOfDoors
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfDoors = null;
     /**
      *  Schema.org/vehicleInteriorType
      *  The type or material of the interior of the vehicle (e.g. synthetic fabric, leather, wood, etc.). While most interior types are characterized by the material used, an interior type can also be based on vehicle usage or target audience.
+     * 
      *  @property vehicleInteriorType
      *  @type Text
      */
@@ -7905,20 +8947,23 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/vehicleTransmission
      *  The type of component used for transmitting the power from a rotating power source to the wheels or other relevant component(s) ("gearbox" for cars).
+     * 
      *  @property vehicleTransmission
-     *  @type schema,URL | schema,Text | schema,QualitativeValue
+     *  @type schema, URL | schema,Text | schema,QualitativeValue
      */
     prototype.vehicleTransmission = null;
     /**
      *  Schema.org/vehicleSeatingCapacity
      *  The number of passengers that can be seated in the vehicle, both in terms of the physical space available, and in terms of limitations set by law.\n\nTypical unit code(s): C62 for persons.
+     * 
      *  @property vehicleSeatingCapacity
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.vehicleSeatingCapacity = null;
     /**
      *  Schema.org/cargoVolume
      *  The available volume for cargo or luggage. For automobiles, this is usually the trunk volume.\n\nTypical unit code(s): LTR for liters, FTQ for cubic foot/feet\n\nNote: You can use [[minValue]] and [[maxValue]] to indicate ranges.
+     * 
      *  @property cargoVolume
      *  @type QuantitativeValue
      */
@@ -7926,6 +8971,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/knownVehicleDamages
      *  A textual description of known damages, both repaired and unrepaired.
+     * 
      *  @property knownVehicleDamages
      *  @type Text
      */
@@ -7933,6 +8979,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/vehicleEngine
      *  Information about the engine or engines of the vehicle.
+     * 
      *  @property vehicleEngine
      *  @type EngineSpecification
      */
@@ -7940,6 +8987,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/purchaseDate
      *  The date the item e.g. vehicle was purchased by the current owner.
+     * 
      *  @property purchaseDate
      *  @type Date
      */
@@ -7947,6 +8995,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/vehicleConfiguration
      *  A short text indicating the configuration of the vehicle, e.g. '5dr hatchback ST 2.5 MT 225 hp' or 'limited edition'.
+     * 
      *  @property vehicleConfiguration
      *  @type Text
      */
@@ -7954,6 +9003,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/vehicleIdentificationNumber
      *  The Vehicle Identification Number (VIN) is a unique serial number used by the automotive industry to identify individual motor vehicles.
+     * 
      *  @property vehicleIdentificationNumber
      *  @type Text
      */
@@ -7961,6 +9011,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/productionDate
      *  The date of production of the item, e.g. vehicle.
+     * 
      *  @property productionDate
      *  @type Date
      */
@@ -7968,6 +9019,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/vehicleModelDate
      *  The release date of a vehicle model (often used to differentiate versions of the same make and model).
+     * 
      *  @property vehicleModelDate
      *  @type Date
      */
@@ -7975,6 +9027,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/fuelConsumption
      *  The amount of fuel consumed for traveling a particular distance or temporal duration with the given vehicle (e.g. liters per 100 km).\n\n* Note 1: There are unfortunately no standard unit codes for liters per 100 km.  Use [[unitText]] to indicate the unit of measurement, e.g. L/100 km.\n* Note 2: There are two ways of indicating the fuel consumption, [[fuelConsumption]] (e.g. 8 liters per 100 km) and [[fuelEfficiency]] (e.g. 30 miles per gallon). They are reciprocal.\n* Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use [[valueReference]] to link the value for the fuel consumption to another value.
+     * 
      *  @property fuelConsumption
      *  @type QuantitativeValue
      */
@@ -7982,27 +9035,31 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfAirbags
      *  The number or type of airbags in the vehicle.
+     * 
      *  @property numberOfAirbags
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.numberOfAirbags = null;
     /**
      *  Schema.org/numberOfPreviousOwners
      *  The number of owners of the vehicle, including the current one.\n\nTypical unit code(s): C62
+     * 
      *  @property numberOfPreviousOwners
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfPreviousOwners = null;
     /**
      *  Schema.org/numberOfForwardGears
      *  The total number of forward gears available for the transmission system of the vehicle.\n\nTypical unit code(s): C62
+     * 
      *  @property numberOfForwardGears
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfForwardGears = null;
     /**
      *  Schema.org/dateVehicleFirstRegistered
      *  The date of the first registration of the vehicle with the respective public authorities.
+     * 
      *  @property dateVehicleFirstRegistered
      *  @type Date
      */
@@ -8010,6 +9067,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/mileageFromOdometer
      *  The total distance travelled by the particular vehicle since its initial production, as read from its odometer.\n\nTypical unit code(s): KMT for kilometers, SMI for statute miles
+     * 
      *  @property mileageFromOdometer
      *  @type QuantitativeValue
      */
@@ -8017,6 +9075,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/fuelEfficiency
      *  The distance traveled per unit of fuel used; most commonly miles per gallon (mpg) or kilometers per liter (km/L).\n\n* Note 1: There are unfortunately no standard unit codes for miles per gallon or kilometers per liter. Use [[unitText]] to indicate the unit of measurement, e.g. mpg or km/L.\n* Note 2: There are two ways of indicating the fuel consumption, [[fuelConsumption]] (e.g. 8 liters per 100 km) and [[fuelEfficiency]] (e.g. 30 miles per gallon). They are reciprocal.\n* Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use [[valueReference]] to link the value for the fuel economy to another value.
+     * 
      *  @property fuelEfficiency
      *  @type QuantitativeValue
      */
@@ -8024,13 +9083,15 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/fuelType
      *  The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.
+     * 
      *  @property fuelType
-     *  @type schema,URL | schema,Text | schema,QualitativeValue
+     *  @type schema, URL | schema,Text | schema,QualitativeValue
      */
     prototype.fuelType = null;
     /**
      *  Schema.org/steeringPosition
      *  The position of the steering wheel or similar device (mostly for cars).
+     * 
      *  @property steeringPosition
      *  @type SteeringPositionValue
      */
@@ -8038,13 +9099,15 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfAxles
      *  The number of axles.\n\nTypical unit code(s): C62
+     * 
      *  @property numberOfAxles
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfAxles = null;
     /**
      *  Schema.org/vehicleSpecialUsage
      *  Indicates whether the vehicle has been used for special purposes, like commercial rental, driving school, or as a taxi. The legislation in many countries requires this information to be revealed when offering a car for sale.
+     * 
      *  @property vehicleSpecialUsage
      *  @type Text
      */
@@ -8053,6 +9116,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
 /**
  *  Schema.org/IndividualProduct
  *  A single, identifiable product instance (e.g. a laptop with a particular serial number).
+ * 
  *  @author schema.org
  *  @class IndividualProduct
  *  @module org.schema
@@ -8060,6 +9124,7 @@ Vehicle = stjs.extend(Vehicle, Product, [], function(constructor, prototype) {
  */
 var IndividualProduct = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8071,6 +9136,7 @@ IndividualProduct = stjs.extend(IndividualProduct, Product, [], function(constru
     /**
      *  Schema.org/serialNumber
      *  The serial number or any alphanumeric identifier of a particular product. When attached to an offer, it is a shortcut for the serial number of the product included in the offer.
+     * 
      *  @property serialNumber
      *  @type Text
      */
@@ -8079,6 +9145,7 @@ IndividualProduct = stjs.extend(IndividualProduct, Product, [], function(constru
 /**
  *  Schema.org/MoveAction
  *  The act of an agent relocating to a place.\n\nRelated actions:\n\n* [[TransferAction]]: Unlike TransferAction, the subject of the move is a living Person or Organization rather than an inanimate object.
+ * 
  *  @author schema.org
  *  @class MoveAction
  *  @module org.schema
@@ -8086,6 +9153,7 @@ IndividualProduct = stjs.extend(IndividualProduct, Product, [], function(constru
  */
 var MoveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8097,6 +9165,7 @@ MoveAction = stjs.extend(MoveAction, Action, [], function(constructor, prototype
     /**
      *  Schema.org/fromLocation
      *  A sub property of location. The original location of the object or the agent before the action.
+     * 
      *  @property fromLocation
      *  @type Place
      */
@@ -8104,6 +9173,7 @@ MoveAction = stjs.extend(MoveAction, Action, [], function(constructor, prototype
     /**
      *  Schema.org/toLocation
      *  A sub property of location. The final location of the object or the agent after the action.
+     * 
      *  @property toLocation
      *  @type Place
      */
@@ -8112,6 +9182,7 @@ MoveAction = stjs.extend(MoveAction, Action, [], function(constructor, prototype
 /**
  *  Schema.org/ConsumeAction
  *  The act of ingesting information/resources/food.
+ * 
  *  @author schema.org
  *  @class ConsumeAction
  *  @module org.schema
@@ -8119,6 +9190,7 @@ MoveAction = stjs.extend(MoveAction, Action, [], function(constructor, prototype
  */
 var ConsumeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8130,6 +9202,7 @@ ConsumeAction = stjs.extend(ConsumeAction, Action, [], function(constructor, pro
     /**
      *  Schema.org/expectsAcceptanceOf
      *  An Offer which must be accepted before the user can perform the Action. For example, the user may need to buy a movie before being able to watch it.
+     * 
      *  @property expectsAcceptanceOf
      *  @type Offer
      */
@@ -8138,6 +9211,7 @@ ConsumeAction = stjs.extend(ConsumeAction, Action, [], function(constructor, pro
 /**
  *  Schema.org/UpdateAction
  *  The act of managing by changing/editing the state of the object.
+ * 
  *  @author schema.org
  *  @class UpdateAction
  *  @module org.schema
@@ -8145,6 +9219,7 @@ ConsumeAction = stjs.extend(ConsumeAction, Action, [], function(constructor, pro
  */
 var UpdateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8156,6 +9231,7 @@ UpdateAction = stjs.extend(UpdateAction, Action, [], function(constructor, proto
     /**
      *  Schema.org/targetCollection
      *  A sub property of object. The collection target of the action.
+     * 
      *  @property targetCollection
      *  @type Thing
      */
@@ -8163,6 +9239,7 @@ UpdateAction = stjs.extend(UpdateAction, Action, [], function(constructor, proto
     /**
      *  Schema.org/collection
      *  A sub property of object. The collection target of the action.
+     * 
      *  @property collection
      *  @type Thing
      */
@@ -8171,6 +9248,7 @@ UpdateAction = stjs.extend(UpdateAction, Action, [], function(constructor, proto
 /**
  *  Schema.org/TransferAction
  *  The act of transferring/moving (abstract or concrete) animate or inanimate objects from one place to another.
+ * 
  *  @author schema.org
  *  @class TransferAction
  *  @module org.schema
@@ -8178,6 +9256,7 @@ UpdateAction = stjs.extend(UpdateAction, Action, [], function(constructor, proto
  */
 var TransferAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8189,6 +9268,7 @@ TransferAction = stjs.extend(TransferAction, Action, [], function(constructor, p
     /**
      *  Schema.org/fromLocation
      *  A sub property of location. The original location of the object or the agent before the action.
+     * 
      *  @property fromLocation
      *  @type Place
      */
@@ -8196,6 +9276,7 @@ TransferAction = stjs.extend(TransferAction, Action, [], function(constructor, p
     /**
      *  Schema.org/toLocation
      *  A sub property of location. The final location of the object or the agent after the action.
+     * 
      *  @property toLocation
      *  @type Place
      */
@@ -8204,6 +9285,7 @@ TransferAction = stjs.extend(TransferAction, Action, [], function(constructor, p
 /**
  *  Schema.org/FindAction
  *  The act of finding an object.\n\nRelated actions:\n\n* [[SearchAction]]: FindAction is generally lead by a SearchAction, but not necessarily.
+ * 
  *  @author schema.org
  *  @class FindAction
  *  @module org.schema
@@ -8211,6 +9293,7 @@ TransferAction = stjs.extend(TransferAction, Action, [], function(constructor, p
  */
 var FindAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8222,6 +9305,7 @@ FindAction = stjs.extend(FindAction, Action, [], null, {target: "EntryPoint", pa
 /**
  *  Schema.org/OrganizeAction
  *  The act of manipulating/administering/supervising/controlling one or more objects.
+ * 
  *  @author schema.org
  *  @class OrganizeAction
  *  @module org.schema
@@ -8229,6 +9313,7 @@ FindAction = stjs.extend(FindAction, Action, [], null, {target: "EntryPoint", pa
  */
 var OrganizeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8240,6 +9325,7 @@ OrganizeAction = stjs.extend(OrganizeAction, Action, [], null, {target: "EntryPo
 /**
  *  Schema.org/AchieveAction
  *  The act of accomplishing something via previous efforts. It is an instantaneous action rather than an ongoing process.
+ * 
  *  @author schema.org
  *  @class AchieveAction
  *  @module org.schema
@@ -8247,6 +9333,7 @@ OrganizeAction = stjs.extend(OrganizeAction, Action, [], null, {target: "EntryPo
  */
 var AchieveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8258,6 +9345,7 @@ AchieveAction = stjs.extend(AchieveAction, Action, [], null, {target: "EntryPoin
 /**
  *  Schema.org/AssessAction
  *  The act of forming one's opinion, reaction or sentiment.
+ * 
  *  @author schema.org
  *  @class AssessAction
  *  @module org.schema
@@ -8265,6 +9353,7 @@ AchieveAction = stjs.extend(AchieveAction, Action, [], null, {target: "EntryPoin
  */
 var AssessAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8276,6 +9365,7 @@ AssessAction = stjs.extend(AssessAction, Action, [], null, {target: "EntryPoint"
 /**
  *  Schema.org/InteractAction
  *  The act of interacting with another person or organization.
+ * 
  *  @author schema.org
  *  @class InteractAction
  *  @module org.schema
@@ -8283,6 +9373,7 @@ AssessAction = stjs.extend(AssessAction, Action, [], null, {target: "EntryPoint"
  */
 var InteractAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8294,6 +9385,7 @@ InteractAction = stjs.extend(InteractAction, Action, [], null, {target: "EntryPo
 /**
  *  Schema.org/PlayAction
  *  The act of playing/exercising/training/performing for enjoyment, leisure, recreation, Competition or exercise.\n\nRelated actions:\n\n* [[ListenAction]]: Unlike ListenAction (which is under ConsumeAction), PlayAction refers to performing for an audience or at an event, rather than consuming music.\n* [[WatchAction]]: Unlike WatchAction (which is under ConsumeAction), PlayAction refers to showing/displaying for an audience or at an event, rather than consuming visual content.
+ * 
  *  @author schema.org
  *  @class PlayAction
  *  @module org.schema
@@ -8301,6 +9393,7 @@ InteractAction = stjs.extend(InteractAction, Action, [], null, {target: "EntryPo
  */
 var PlayAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8312,6 +9405,7 @@ PlayAction = stjs.extend(PlayAction, Action, [], function(constructor, prototype
     /**
      *  Schema.org/audience
      *  An intended audience, i.e. a group for whom something was created.
+     * 
      *  @property audience
      *  @type Audience
      */
@@ -8319,6 +9413,7 @@ PlayAction = stjs.extend(PlayAction, Action, [], function(constructor, prototype
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -8327,6 +9422,7 @@ PlayAction = stjs.extend(PlayAction, Action, [], function(constructor, prototype
 /**
  *  Schema.org/TradeAction
  *  The act of participating in an exchange of goods and services for monetary compensation. An agent trades an object, product or service with a participant in exchange for a one time or periodic payment.
+ * 
  *  @author schema.org
  *  @class TradeAction
  *  @module org.schema
@@ -8334,6 +9430,7 @@ PlayAction = stjs.extend(PlayAction, Action, [], function(constructor, prototype
  */
 var TradeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8345,6 +9442,7 @@ TradeAction = stjs.extend(TradeAction, Action, [], function(constructor, prototy
     /**
      *  Schema.org/priceSpecification
      *  One or more detailed price specifications, indicating the unit price and delivery or payment charges.
+     * 
      *  @property priceSpecification
      *  @type PriceSpecification
      */
@@ -8352,16 +9450,17 @@ TradeAction = stjs.extend(TradeAction, Action, [], function(constructor, prototy
     /**
      *  Schema.org/price
      *  The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.\n\nUsage guidelines:\n\n* Use the [[priceCurrency]] property (with [ISO 4217 codes](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) e.g. "USD") instead of
-     *       including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
-     *       
+     *  including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
+     * 
      *  @property price
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.price = null;
 }, {priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/SearchAction
  *  The act of searching for an object.\n\nRelated actions:\n\n* [[FindAction]]: SearchAction generally leads to a FindAction, but not necessarily.
+ * 
  *  @author schema.org
  *  @class SearchAction
  *  @module org.schema
@@ -8369,6 +9468,7 @@ TradeAction = stjs.extend(TradeAction, Action, [], function(constructor, prototy
  */
 var SearchAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8380,6 +9480,7 @@ SearchAction = stjs.extend(SearchAction, Action, [], function(constructor, proto
     /**
      *  Schema.org/query
      *  A sub property of instrument. The query used on this action.
+     * 
      *  @property query
      *  @type Text
      */
@@ -8388,6 +9489,7 @@ SearchAction = stjs.extend(SearchAction, Action, [], function(constructor, proto
 /**
  *  Schema.org/ControlAction
  *  An agent controls a device or application.
+ * 
  *  @author schema.org
  *  @class ControlAction
  *  @module org.schema
@@ -8395,6 +9497,7 @@ SearchAction = stjs.extend(SearchAction, Action, [], function(constructor, proto
  */
 var ControlAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8406,6 +9509,7 @@ ControlAction = stjs.extend(ControlAction, Action, [], null, {target: "EntryPoin
 /**
  *  Schema.org/CreateAction
  *  The act of deliberately creating/producing/generating/building a result out of the agent.
+ * 
  *  @author schema.org
  *  @class CreateAction
  *  @module org.schema
@@ -8413,6 +9517,7 @@ ControlAction = stjs.extend(ControlAction, Action, [], null, {target: "EntryPoin
  */
 var CreateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8424,6 +9529,7 @@ CreateAction = stjs.extend(CreateAction, Action, [], null, {target: "EntryPoint"
 /**
  *  Schema.org/SportsEvent
  *  Event type: Sports event.
+ * 
  *  @author schema.org
  *  @class SportsEvent
  *  @module org.schema
@@ -8431,6 +9537,7 @@ CreateAction = stjs.extend(CreateAction, Action, [], null, {target: "EntryPoint"
  */
 var SportsEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8442,28 +9549,32 @@ SportsEvent = stjs.extend(SportsEvent, Event, [], function(constructor, prototyp
     /**
      *  Schema.org/awayTeam
      *  The away team in a sports event.
+     * 
      *  @property awayTeam
-     *  @type schema,Person | schema,SportsTeam
+     *  @type schema, Person | schema,SportsTeam
      */
     prototype.awayTeam = null;
     /**
      *  Schema.org/competitor
      *  A competitor in a sports event.
+     * 
      *  @property competitor
-     *  @type schema,Person | schema,SportsTeam
+     *  @type schema, Person | schema,SportsTeam
      */
     prototype.competitor = null;
     /**
      *  Schema.org/homeTeam
      *  The home team in a sports event.
+     * 
      *  @property homeTeam
-     *  @type schema,Person | schema,SportsTeam
+     *  @type schema, Person | schema,SportsTeam
      */
     prototype.homeTeam = null;
 }, {awayTeam: "Object", competitor: "Object", homeTeam: "Object", contributor: "Object", attendees: "Object", performers: "Object", composer: "Object", performer: "Object", director: "Person", eventStatus: "EventStatusType", superEvent: "Event", translator: "Object", offers: "Offer", review: "Review", duration: "Duration", subEvent: "Event", actor: "Person", attendee: "Object", about: "Thing", funder: "Object", sponsor: "Object", location: "Object", recordedIn: "CreativeWork", organizer: "Object", aggregateRating: "AggregateRating", startDate: "Object", workFeatured: "CreativeWork", workPerformed: "CreativeWork", endDate: "Object", inLanguage: "Object", subEvents: "Event", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/SaleEvent
  *  Event type: Sales event.
+ * 
  *  @author schema.org
  *  @class SaleEvent
  *  @module org.schema
@@ -8471,6 +9582,7 @@ SportsEvent = stjs.extend(SportsEvent, Event, [], function(constructor, prototyp
  */
 var SaleEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8482,6 +9594,7 @@ SaleEvent = stjs.extend(SaleEvent, Event, [], null, {contributor: "Object", atte
 /**
  *  Schema.org/FoodEvent
  *  Event type: Food event.
+ * 
  *  @author schema.org
  *  @class FoodEvent
  *  @module org.schema
@@ -8489,6 +9602,7 @@ SaleEvent = stjs.extend(SaleEvent, Event, [], null, {contributor: "Object", atte
  */
 var FoodEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8500,6 +9614,7 @@ FoodEvent = stjs.extend(FoodEvent, Event, [], null, {contributor: "Object", atte
 /**
  *  Schema.org/ExhibitionEvent
  *  Event type: Exhibition event, e.g. at a museum, library, archive, tradeshow, ...
+ * 
  *  @author schema.org
  *  @class ExhibitionEvent
  *  @module org.schema
@@ -8507,6 +9622,7 @@ FoodEvent = stjs.extend(FoodEvent, Event, [], null, {contributor: "Object", atte
  */
 var ExhibitionEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8518,6 +9634,7 @@ ExhibitionEvent = stjs.extend(ExhibitionEvent, Event, [], null, {contributor: "O
 /**
  *  Schema.org/DeliveryEvent
  *  An event involving the delivery of an item.
+ * 
  *  @author schema.org
  *  @class DeliveryEvent
  *  @module org.schema
@@ -8525,6 +9642,7 @@ ExhibitionEvent = stjs.extend(ExhibitionEvent, Event, [], null, {contributor: "O
  */
 var DeliveryEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8536,6 +9654,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
     /**
      *  Schema.org/accessCode
      *  Password, PIN, or access code needed for delivery (e.g. from a locker).
+     * 
      *  @property accessCode
      *  @type Text
      */
@@ -8543,6 +9662,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
     /**
      *  Schema.org/availableFrom
      *  When the item is available for pickup from the store, locker, etc.
+     * 
      *  @property availableFrom
      *  @type DateTime
      */
@@ -8550,6 +9670,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
     /**
      *  Schema.org/availableThrough
      *  After this date, the item will no longer be available for pickup.
+     * 
      *  @property availableThrough
      *  @type DateTime
      */
@@ -8557,6 +9678,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
     /**
      *  Schema.org/hasDeliveryMethod
      *  Method used for delivery or shipping.
+     * 
      *  @property hasDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -8565,6 +9687,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
 /**
  *  Schema.org/SocialEvent
  *  Event type: Social event.
+ * 
  *  @author schema.org
  *  @class SocialEvent
  *  @module org.schema
@@ -8572,6 +9695,7 @@ DeliveryEvent = stjs.extend(DeliveryEvent, Event, [], function(constructor, prot
  */
 var SocialEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8583,6 +9707,7 @@ SocialEvent = stjs.extend(SocialEvent, Event, [], null, {contributor: "Object", 
 /**
  *  Schema.org/Festival
  *  Event type: Festival.
+ * 
  *  @author schema.org
  *  @class Festival
  *  @module org.schema
@@ -8590,6 +9715,7 @@ SocialEvent = stjs.extend(SocialEvent, Event, [], null, {contributor: "Object", 
  */
 var Festival = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8601,6 +9727,7 @@ Festival = stjs.extend(Festival, Event, [], null, {contributor: "Object", attend
 /**
  *  Schema.org/MusicEvent
  *  Event type: Music event.
+ * 
  *  @author schema.org
  *  @class MusicEvent
  *  @module org.schema
@@ -8608,6 +9735,7 @@ Festival = stjs.extend(Festival, Event, [], null, {contributor: "Object", attend
  */
 var MusicEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8619,6 +9747,7 @@ MusicEvent = stjs.extend(MusicEvent, Event, [], null, {contributor: "Object", at
 /**
  *  Schema.org/TheaterEvent
  *  Event type: Theater performance.
+ * 
  *  @author schema.org
  *  @class TheaterEvent
  *  @module org.schema
@@ -8626,6 +9755,7 @@ MusicEvent = stjs.extend(MusicEvent, Event, [], null, {contributor: "Object", at
  */
 var TheaterEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8637,6 +9767,7 @@ TheaterEvent = stjs.extend(TheaterEvent, Event, [], null, {contributor: "Object"
 /**
  *  Schema.org/ChildrensEvent
  *  Event type: Children's event.
+ * 
  *  @author schema.org
  *  @class ChildrensEvent
  *  @module org.schema
@@ -8644,6 +9775,7 @@ TheaterEvent = stjs.extend(TheaterEvent, Event, [], null, {contributor: "Object"
  */
 var ChildrensEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8655,6 +9787,7 @@ ChildrensEvent = stjs.extend(ChildrensEvent, Event, [], null, {contributor: "Obj
 /**
  *  Schema.org/DanceEvent
  *  Event type: A social dance.
+ * 
  *  @author schema.org
  *  @class DanceEvent
  *  @module org.schema
@@ -8662,6 +9795,7 @@ ChildrensEvent = stjs.extend(ChildrensEvent, Event, [], null, {contributor: "Obj
  */
 var DanceEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8673,6 +9807,7 @@ DanceEvent = stjs.extend(DanceEvent, Event, [], null, {contributor: "Object", at
 /**
  *  Schema.org/LiteraryEvent
  *  Event type: Literary event.
+ * 
  *  @author schema.org
  *  @class LiteraryEvent
  *  @module org.schema
@@ -8680,6 +9815,7 @@ DanceEvent = stjs.extend(DanceEvent, Event, [], null, {contributor: "Object", at
  */
 var LiteraryEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8691,6 +9827,7 @@ LiteraryEvent = stjs.extend(LiteraryEvent, Event, [], null, {contributor: "Objec
 /**
  *  Schema.org/UserInteraction
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserInteraction
  *  @module org.schema
@@ -8698,6 +9835,7 @@ LiteraryEvent = stjs.extend(LiteraryEvent, Event, [], null, {contributor: "Objec
  */
 var UserInteraction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8709,6 +9847,7 @@ UserInteraction = stjs.extend(UserInteraction, Event, [], null, {contributor: "O
 /**
  *  Schema.org/CourseInstance
  *  An instance of a [[Course]] which is distinct from other instances because it is offered at a different time or location or through different media or modes of study or to a specific section of students.
+ * 
  *  @author schema.org
  *  @class CourseInstance
  *  @module org.schema
@@ -8716,6 +9855,7 @@ UserInteraction = stjs.extend(UserInteraction, Event, [], null, {contributor: "O
  */
 var CourseInstance = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8727,13 +9867,15 @@ CourseInstance = stjs.extend(CourseInstance, Event, [], function(constructor, pr
     /**
      *  Schema.org/courseMode
      *  The medium or means of delivery of the course instance or the mode of study, either as a text label (e.g. "online", "onsite" or "blended"; "synchronous" or "asynchronous"; "full-time" or "part-time") or as a URL reference to a term from a controlled vocabulary (e.g. https://ceds.ed.gov/element/001311#Asynchronous ).
+     * 
      *  @property courseMode
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.courseMode = null;
     /**
      *  Schema.org/instructor
      *  A person assigned to instruct or provide instructional assistance for the [[CourseInstance]].
+     * 
      *  @property instructor
      *  @type Person
      */
@@ -8742,6 +9884,7 @@ CourseInstance = stjs.extend(CourseInstance, Event, [], function(constructor, pr
 /**
  *  Schema.org/PublicationEvent
  *  A PublicationEvent corresponds indifferently to the event of publication for a CreativeWork of any type e.g. a broadcast event, an on-demand event, a book/journal publication via a variety of delivery media.
+ * 
  *  @author schema.org
  *  @class PublicationEvent
  *  @module org.schema
@@ -8749,6 +9892,7 @@ CourseInstance = stjs.extend(CourseInstance, Event, [], function(constructor, pr
  */
 var PublicationEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8760,6 +9904,7 @@ PublicationEvent = stjs.extend(PublicationEvent, Event, [], function(constructor
     /**
      *  Schema.org/isAccessibleForFree
      *  A flag to signal that the publication is accessible for free.
+     * 
      *  @property isAccessibleForFree
      *  @type Boolean
      */
@@ -8767,6 +9912,7 @@ PublicationEvent = stjs.extend(PublicationEvent, Event, [], function(constructor
     /**
      *  Schema.org/publishedOn
      *  A broadcast service associated with the publication event.
+     * 
      *  @property publishedOn
      *  @type BroadcastService
      */
@@ -8774,6 +9920,7 @@ PublicationEvent = stjs.extend(PublicationEvent, Event, [], function(constructor
     /**
      *  Schema.org/free
      *  A flag to signal that the publication or event is accessible for free.
+     * 
      *  @property free
      *  @type Boolean
      */
@@ -8782,6 +9929,7 @@ PublicationEvent = stjs.extend(PublicationEvent, Event, [], function(constructor
 /**
  *  Schema.org/BusinessEvent
  *  Event type: Business event.
+ * 
  *  @author schema.org
  *  @class BusinessEvent
  *  @module org.schema
@@ -8789,6 +9937,7 @@ PublicationEvent = stjs.extend(PublicationEvent, Event, [], function(constructor
  */
 var BusinessEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8800,6 +9949,7 @@ BusinessEvent = stjs.extend(BusinessEvent, Event, [], null, {contributor: "Objec
 /**
  *  Schema.org/EducationEvent
  *  Event type: Education event.
+ * 
  *  @author schema.org
  *  @class EducationEvent
  *  @module org.schema
@@ -8807,6 +9957,7 @@ BusinessEvent = stjs.extend(BusinessEvent, Event, [], null, {contributor: "Objec
  */
 var EducationEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8818,6 +9969,7 @@ EducationEvent = stjs.extend(EducationEvent, Event, [], null, {contributor: "Obj
 /**
  *  Schema.org/ScreeningEvent
  *  A screening of a movie or other video.
+ * 
  *  @author schema.org
  *  @class ScreeningEvent
  *  @module org.schema
@@ -8825,6 +9977,7 @@ EducationEvent = stjs.extend(EducationEvent, Event, [], null, {contributor: "Obj
  */
 var ScreeningEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8836,13 +9989,15 @@ ScreeningEvent = stjs.extend(ScreeningEvent, Event, [], function(constructor, pr
     /**
      *  Schema.org/subtitleLanguage
      *  Languages in which subtitles/captions are available, in [IETF BCP 47 standard format](http://tools.ietf.org/html/bcp47).
+     * 
      *  @property subtitleLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.subtitleLanguage = null;
     /**
      *  Schema.org/videoFormat
      *  The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).
+     * 
      *  @property videoFormat
      *  @type Text
      */
@@ -8850,6 +10005,7 @@ ScreeningEvent = stjs.extend(ScreeningEvent, Event, [], function(constructor, pr
     /**
      *  Schema.org/workPresented
      *  The movie presented during this event.
+     * 
      *  @property workPresented
      *  @type Movie
      */
@@ -8858,6 +10014,7 @@ ScreeningEvent = stjs.extend(ScreeningEvent, Event, [], function(constructor, pr
 /**
  *  Schema.org/VisualArtsEvent
  *  Event type: Visual arts event.
+ * 
  *  @author schema.org
  *  @class VisualArtsEvent
  *  @module org.schema
@@ -8865,6 +10022,7 @@ ScreeningEvent = stjs.extend(ScreeningEvent, Event, [], function(constructor, pr
  */
 var VisualArtsEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8876,6 +10034,7 @@ VisualArtsEvent = stjs.extend(VisualArtsEvent, Event, [], null, {contributor: "O
 /**
  *  Schema.org/ComedyEvent
  *  Event type: Comedy event.
+ * 
  *  @author schema.org
  *  @class ComedyEvent
  *  @module org.schema
@@ -8883,6 +10042,7 @@ VisualArtsEvent = stjs.extend(VisualArtsEvent, Event, [], null, {contributor: "O
  */
 var ComedyEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8894,6 +10054,7 @@ ComedyEvent = stjs.extend(ComedyEvent, Event, [], null, {contributor: "Object", 
 /**
  *  Schema.org/GatedResidenceCommunity
  *  Residence type: Gated community.
+ * 
  *  @author schema.org
  *  @class GatedResidenceCommunity
  *  @module org.schema
@@ -8901,6 +10062,7 @@ ComedyEvent = stjs.extend(ComedyEvent, Event, [], null, {contributor: "Object", 
  */
 var GatedResidenceCommunity = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8912,6 +10074,7 @@ GatedResidenceCommunity = stjs.extend(GatedResidenceCommunity, Residence, [], nu
 /**
  *  Schema.org/ApartmentComplex
  *  Residence type: Apartment complex.
+ * 
  *  @author schema.org
  *  @class ApartmentComplex
  *  @module org.schema
@@ -8919,6 +10082,7 @@ GatedResidenceCommunity = stjs.extend(GatedResidenceCommunity, Residence, [], nu
  */
 var ApartmentComplex = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8930,8 +10094,8 @@ ApartmentComplex = stjs.extend(ApartmentComplex, Residence, [], null, {reviews: 
 /**
  *  Schema.org/CampingPitch
  *  A camping pitch is an individual place for overnight stay in the outdoors, typically being part of a larger camping site.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class CampingPitch
@@ -8940,6 +10104,7 @@ ApartmentComplex = stjs.extend(ApartmentComplex, Residence, [], null, {reviews: 
  */
 var CampingPitch = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8951,8 +10116,8 @@ CampingPitch = stjs.extend(CampingPitch, Accommodation, [], null, {amenityFeatur
 /**
  *  Schema.org/Suite
  *  A suite in a hotel or other public accommodation, denotes a class of luxury accommodations, the key feature of which is multiple rooms (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Suite_(hotel)">http://en.wikipedia.org/wiki/Suite_(hotel)</a>).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Suite
@@ -8961,6 +10126,7 @@ CampingPitch = stjs.extend(CampingPitch, Accommodation, [], null, {amenityFeatur
  */
 var Suite = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -8972,23 +10138,26 @@ Suite = stjs.extend(Suite, Accommodation, [], function(constructor, prototype) {
     /**
      *  Schema.org/bed
      *  The type of bed or beds included in the accommodation. For the single case of just one bed of a certain type, you use bed directly with a text.
-     *       If you want to indicate the quantity of a certain kind of bed, use an instance of BedDetails. For more detailed information, use the amenityFeature property.
+     *  If you want to indicate the quantity of a certain kind of bed, use an instance of BedDetails. For more detailed information, use the amenityFeature property.
+     * 
      *  @property bed
-     *  @type schema,Text | schema,BedDetails
+     *  @type schema, Text | schema,BedDetails
      */
     prototype.bed = null;
     /**
      *  Schema.org/numberOfRooms
      *  The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.
-     * Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     *  Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     * 
      *  @property numberOfRooms
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfRooms = null;
     /**
      *  Schema.org/occupancy
      *  The allowed total occupancy for the accommodation in persons (including infants etc). For individual accommodations, this is not necessarily the legal maximum but defines the permitted usage as per the contractual agreement (e.g. a double room used by a single person).
-     * Typical unit code(s): C62 for person
+     *  Typical unit code(s): C62 for person
+     * 
      *  @property occupancy
      *  @type QuantitativeValue
      */
@@ -8997,6 +10166,7 @@ Suite = stjs.extend(Suite, Accommodation, [], function(constructor, prototype) {
 /**
  *  Schema.org/House
  *  A house is a building or structure that has the ability to be occupied for habitation by humans or other creatures (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/House">http://en.wikipedia.org/wiki/House</a>).
+ * 
  *  @author schema.org
  *  @class House
  *  @module org.schema
@@ -9004,6 +10174,7 @@ Suite = stjs.extend(Suite, Accommodation, [], function(constructor, prototype) {
  */
 var House = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9015,17 +10186,18 @@ House = stjs.extend(House, Accommodation, [], function(constructor, prototype) {
     /**
      *  Schema.org/numberOfRooms
      *  The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.
-     * Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     *  Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     * 
      *  @property numberOfRooms
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfRooms = null;
 }, {numberOfRooms: "Object", amenityFeature: "LocationFeatureSpecification", floorSize: "QuantitativeValue", petsAllowed: "Object", numberOfRooms: "Object", reviews: "Review", amenityFeature: "LocationFeatureSpecification", event: "Event", additionalProperty: "PropertyValue", events: "Event", containsPlace: "Place", containedIn: "Place", review: "Review", containedInPlace: "Place", photo: "Object", address: "Object", geo: "Object", openingHoursSpecification: "OpeningHoursSpecification", photos: "Object", hasMap: "Object", aggregateRating: "AggregateRating", specialOpeningHoursSpecification: "OpeningHoursSpecification", logo: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/Room
  *  A room is a distinguishable space within a structure, usually separated from other spaces by interior walls. (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Room">http://en.wikipedia.org/wiki/Room</a>).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Room
@@ -9034,6 +10206,7 @@ House = stjs.extend(House, Accommodation, [], function(constructor, prototype) {
  */
 var Room = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9045,6 +10218,7 @@ Room = stjs.extend(Room, Accommodation, [], null, {amenityFeature: "LocationFeat
 /**
  *  Schema.org/Apartment
  *  An apartment (in American English) or flat (in British English) is a self-contained housing unit (a type of residential real estate) that occupies only part of a building (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Apartment">http://en.wikipedia.org/wiki/Apartment</a>).
+ * 
  *  @author schema.org
  *  @class Apartment
  *  @module org.schema
@@ -9052,6 +10226,7 @@ Room = stjs.extend(Room, Accommodation, [], null, {amenityFeature: "LocationFeat
  */
 var Apartment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9063,15 +10238,17 @@ Apartment = stjs.extend(Apartment, Accommodation, [], function(constructor, prot
     /**
      *  Schema.org/numberOfRooms
      *  The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.
-     * Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     *  Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     * 
      *  @property numberOfRooms
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfRooms = null;
     /**
      *  Schema.org/occupancy
      *  The allowed total occupancy for the accommodation in persons (including infants etc). For individual accommodations, this is not necessarily the legal maximum but defines the permitted usage as per the contractual agreement (e.g. a double room used by a single person).
-     * Typical unit code(s): C62 for person
+     *  Typical unit code(s): C62 for person
+     * 
      *  @property occupancy
      *  @type QuantitativeValue
      */
@@ -9080,6 +10257,7 @@ Apartment = stjs.extend(Apartment, Accommodation, [], function(constructor, prot
 /**
  *  Schema.org/PoliceStation
  *  A police station.
+ * 
  *  @author schema.org
  *  @class PoliceStation
  *  @module org.schema
@@ -9087,6 +10265,7 @@ Apartment = stjs.extend(Apartment, Accommodation, [], function(constructor, prot
  */
 var PoliceStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9098,6 +10277,7 @@ PoliceStation = stjs.extend(PoliceStation, CivicStructure, [], null, {reviews: "
 /**
  *  Schema.org/Bridge
  *  A bridge.
+ * 
  *  @author schema.org
  *  @class Bridge
  *  @module org.schema
@@ -9105,6 +10285,7 @@ PoliceStation = stjs.extend(PoliceStation, CivicStructure, [], null, {reviews: "
  */
 var Bridge = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9116,6 +10297,7 @@ Bridge = stjs.extend(Bridge, CivicStructure, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/SubwayStation
  *  A subway station.
+ * 
  *  @author schema.org
  *  @class SubwayStation
  *  @module org.schema
@@ -9123,6 +10305,7 @@ Bridge = stjs.extend(Bridge, CivicStructure, [], null, {reviews: "Review", ameni
  */
 var SubwayStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9134,6 +10317,7 @@ SubwayStation = stjs.extend(SubwayStation, CivicStructure, [], null, {reviews: "
 /**
  *  Schema.org/BusStation
  *  A bus station.
+ * 
  *  @author schema.org
  *  @class BusStation
  *  @module org.schema
@@ -9141,6 +10325,7 @@ SubwayStation = stjs.extend(SubwayStation, CivicStructure, [], null, {reviews: "
  */
 var BusStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9152,6 +10337,7 @@ BusStation = stjs.extend(BusStation, CivicStructure, [], null, {reviews: "Review
 /**
  *  Schema.org/GovernmentBuilding
  *  A government building.
+ * 
  *  @author schema.org
  *  @class GovernmentBuilding
  *  @module org.schema
@@ -9159,6 +10345,7 @@ BusStation = stjs.extend(BusStation, CivicStructure, [], null, {reviews: "Review
  */
 var GovernmentBuilding = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9170,6 +10357,7 @@ GovernmentBuilding = stjs.extend(GovernmentBuilding, CivicStructure, [], null, {
 /**
  *  Schema.org/BusStop
  *  A bus stop.
+ * 
  *  @author schema.org
  *  @class BusStop
  *  @module org.schema
@@ -9177,6 +10365,7 @@ GovernmentBuilding = stjs.extend(GovernmentBuilding, CivicStructure, [], null, {
  */
 var BusStop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9188,6 +10377,7 @@ BusStop = stjs.extend(BusStop, CivicStructure, [], null, {reviews: "Review", ame
 /**
  *  Schema.org/Beach
  *  Beach.
+ * 
  *  @author schema.org
  *  @class Beach
  *  @module org.schema
@@ -9195,6 +10385,7 @@ BusStop = stjs.extend(BusStop, CivicStructure, [], null, {reviews: "Review", ame
  */
 var Beach = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9206,6 +10397,7 @@ Beach = stjs.extend(Beach, CivicStructure, [], null, {reviews: "Review", amenity
 /**
  *  Schema.org/TaxiStand
  *  A taxi stand.
+ * 
  *  @author schema.org
  *  @class TaxiStand
  *  @module org.schema
@@ -9213,6 +10405,7 @@ Beach = stjs.extend(Beach, CivicStructure, [], null, {reviews: "Review", amenity
  */
 var TaxiStand = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9224,8 +10417,8 @@ TaxiStand = stjs.extend(TaxiStand, CivicStructure, [], null, {reviews: "Review",
 /**
  *  Schema.org/Campground
  *  A camping site, campsite, or campground is a place used for overnight stay in the outdoors. In British English a campsite is an area, usually divided into a number of pitches, where people can camp overnight using tents or camper vans or caravans; this British English use of the word is synonymous with the American English expression campground. In American English the term campsite generally means an area where an individual, family, group, or military unit can pitch a tent or parks a camper; a campground may contain many campsites (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Campsite">http://en.wikipedia.org/wiki/Campsite</a>).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Campground
@@ -9234,6 +10427,7 @@ TaxiStand = stjs.extend(TaxiStand, CivicStructure, [], null, {reviews: "Review",
  */
 var Campground = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9245,6 +10439,7 @@ Campground = stjs.extend(Campground, CivicStructure, [], null, {reviews: "Review
 /**
  *  Schema.org/Park
  *  A park.
+ * 
  *  @author schema.org
  *  @class Park
  *  @module org.schema
@@ -9252,6 +10447,7 @@ Campground = stjs.extend(Campground, CivicStructure, [], null, {reviews: "Review
  */
 var Park = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9263,6 +10459,7 @@ Park = stjs.extend(Park, CivicStructure, [], null, {reviews: "Review", amenityFe
 /**
  *  Schema.org/Cemetery
  *  A graveyard.
+ * 
  *  @author schema.org
  *  @class Cemetery
  *  @module org.schema
@@ -9270,6 +10467,7 @@ Park = stjs.extend(Park, CivicStructure, [], null, {reviews: "Review", amenityFe
  */
 var Cemetery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9281,6 +10479,7 @@ Cemetery = stjs.extend(Cemetery, CivicStructure, [], null, {reviews: "Review", a
 /**
  *  Schema.org/TrainStation
  *  A train station.
+ * 
  *  @author schema.org
  *  @class TrainStation
  *  @module org.schema
@@ -9288,6 +10487,7 @@ Cemetery = stjs.extend(Cemetery, CivicStructure, [], null, {reviews: "Review", a
  */
 var TrainStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9299,6 +10499,7 @@ TrainStation = stjs.extend(TrainStation, CivicStructure, [], null, {reviews: "Re
 /**
  *  Schema.org/Hospital
  *  A hospital.
+ * 
  *  @author schema.org
  *  @class Hospital
  *  @module org.schema
@@ -9306,6 +10507,7 @@ TrainStation = stjs.extend(TrainStation, CivicStructure, [], null, {reviews: "Re
  */
 var Hospital = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9317,6 +10519,7 @@ Hospital = stjs.extend(Hospital, CivicStructure, [], null, {reviews: "Review", a
 /**
  *  Schema.org/PerformingArtsTheater
  *  A theater or other performing art center.
+ * 
  *  @author schema.org
  *  @class PerformingArtsTheater
  *  @module org.schema
@@ -9324,6 +10527,7 @@ Hospital = stjs.extend(Hospital, CivicStructure, [], null, {reviews: "Review", a
  */
 var PerformingArtsTheater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9335,6 +10539,7 @@ PerformingArtsTheater = stjs.extend(PerformingArtsTheater, CivicStructure, [], n
 /**
  *  Schema.org/Airport
  *  An airport.
+ * 
  *  @author schema.org
  *  @class Airport
  *  @module org.schema
@@ -9342,6 +10547,7 @@ PerformingArtsTheater = stjs.extend(PerformingArtsTheater, CivicStructure, [], n
  */
 var Airport = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9353,6 +10559,7 @@ Airport = stjs.extend(Airport, CivicStructure, [], function(constructor, prototy
     /**
      *  Schema.org/iataCode
      *  IATA identifier for an airline or airport.
+     * 
      *  @property iataCode
      *  @type Text
      */
@@ -9360,6 +10567,7 @@ Airport = stjs.extend(Airport, CivicStructure, [], function(constructor, prototy
     /**
      *  Schema.org/icaoCode
      *  ICAO identifier for an airport.
+     * 
      *  @property icaoCode
      *  @type Text
      */
@@ -9368,6 +10576,7 @@ Airport = stjs.extend(Airport, CivicStructure, [], function(constructor, prototy
 /**
  *  Schema.org/FireStation
  *  A fire station. With firemen.
+ * 
  *  @author schema.org
  *  @class FireStation
  *  @module org.schema
@@ -9375,6 +10584,7 @@ Airport = stjs.extend(Airport, CivicStructure, [], function(constructor, prototy
  */
 var FireStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9386,6 +10596,7 @@ FireStation = stjs.extend(FireStation, CivicStructure, [], null, {reviews: "Revi
 /**
  *  Schema.org/EventVenue
  *  An event venue.
+ * 
  *  @author schema.org
  *  @class EventVenue
  *  @module org.schema
@@ -9393,6 +10604,7 @@ FireStation = stjs.extend(FireStation, CivicStructure, [], null, {reviews: "Revi
  */
 var EventVenue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9404,6 +10616,7 @@ EventVenue = stjs.extend(EventVenue, CivicStructure, [], null, {reviews: "Review
 /**
  *  Schema.org/PlaceOfWorship
  *  Place of worship, such as a church, synagogue, or mosque.
+ * 
  *  @author schema.org
  *  @class PlaceOfWorship
  *  @module org.schema
@@ -9411,6 +10624,7 @@ EventVenue = stjs.extend(EventVenue, CivicStructure, [], null, {reviews: "Review
  */
 var PlaceOfWorship = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9422,6 +10636,7 @@ PlaceOfWorship = stjs.extend(PlaceOfWorship, CivicStructure, [], null, {reviews:
 /**
  *  Schema.org/MusicVenue
  *  A music venue.
+ * 
  *  @author schema.org
  *  @class MusicVenue
  *  @module org.schema
@@ -9429,6 +10644,7 @@ PlaceOfWorship = stjs.extend(PlaceOfWorship, CivicStructure, [], null, {reviews:
  */
 var MusicVenue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9440,6 +10656,7 @@ MusicVenue = stjs.extend(MusicVenue, CivicStructure, [], null, {reviews: "Review
 /**
  *  Schema.org/Museum
  *  A museum.
+ * 
  *  @author schema.org
  *  @class Museum
  *  @module org.schema
@@ -9447,6 +10664,7 @@ MusicVenue = stjs.extend(MusicVenue, CivicStructure, [], null, {reviews: "Review
  */
 var Museum = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9458,6 +10676,7 @@ Museum = stjs.extend(Museum, CivicStructure, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/Crematorium
  *  A crematorium.
+ * 
  *  @author schema.org
  *  @class Crematorium
  *  @module org.schema
@@ -9465,6 +10684,7 @@ Museum = stjs.extend(Museum, CivicStructure, [], null, {reviews: "Review", ameni
  */
 var Crematorium = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9476,6 +10696,7 @@ Crematorium = stjs.extend(Crematorium, CivicStructure, [], null, {reviews: "Revi
 /**
  *  Schema.org/Playground
  *  A playground.
+ * 
  *  @author schema.org
  *  @class Playground
  *  @module org.schema
@@ -9483,6 +10704,7 @@ Crematorium = stjs.extend(Crematorium, CivicStructure, [], null, {reviews: "Revi
  */
 var Playground = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9494,6 +10716,7 @@ Playground = stjs.extend(Playground, CivicStructure, [], null, {reviews: "Review
 /**
  *  Schema.org/Zoo
  *  A zoo.
+ * 
  *  @author schema.org
  *  @class Zoo
  *  @module org.schema
@@ -9501,6 +10724,7 @@ Playground = stjs.extend(Playground, CivicStructure, [], null, {reviews: "Review
  */
 var Zoo = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9512,6 +10736,7 @@ Zoo = stjs.extend(Zoo, CivicStructure, [], null, {reviews: "Review", amenityFeat
 /**
  *  Schema.org/RVPark
  *  A place offering space for "Recreational Vehicles", Caravans, mobile homes and the like.
+ * 
  *  @author schema.org
  *  @class RVPark
  *  @module org.schema
@@ -9519,6 +10744,7 @@ Zoo = stjs.extend(Zoo, CivicStructure, [], null, {reviews: "Review", amenityFeat
  */
 var RVPark = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9530,6 +10756,7 @@ RVPark = stjs.extend(RVPark, CivicStructure, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/ParkingFacility
  *  A parking lot or other parking facility.
+ * 
  *  @author schema.org
  *  @class ParkingFacility
  *  @module org.schema
@@ -9537,6 +10764,7 @@ RVPark = stjs.extend(RVPark, CivicStructure, [], null, {reviews: "Review", ameni
  */
 var ParkingFacility = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9548,6 +10776,7 @@ ParkingFacility = stjs.extend(ParkingFacility, CivicStructure, [], null, {review
 /**
  *  Schema.org/Aquarium
  *  Aquarium.
+ * 
  *  @author schema.org
  *  @class Aquarium
  *  @module org.schema
@@ -9555,6 +10784,7 @@ ParkingFacility = stjs.extend(ParkingFacility, CivicStructure, [], null, {review
  */
 var Aquarium = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9566,6 +10796,7 @@ Aquarium = stjs.extend(Aquarium, CivicStructure, [], null, {reviews: "Review", a
 /**
  *  Schema.org/Continent
  *  One of the continents (for example, Europe or Africa).
+ * 
  *  @author schema.org
  *  @class Continent
  *  @module org.schema
@@ -9573,6 +10804,7 @@ Aquarium = stjs.extend(Aquarium, CivicStructure, [], null, {reviews: "Review", a
  */
 var Continent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9584,6 +10816,7 @@ Continent = stjs.extend(Continent, Landform, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/Volcano
  *  A volcano, like Fuji san.
+ * 
  *  @author schema.org
  *  @class Volcano
  *  @module org.schema
@@ -9591,6 +10824,7 @@ Continent = stjs.extend(Continent, Landform, [], null, {reviews: "Review", ameni
  */
 var Volcano = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9602,6 +10836,7 @@ Volcano = stjs.extend(Volcano, Landform, [], null, {reviews: "Review", amenityFe
 /**
  *  Schema.org/BodyOfWater
  *  A body of water, such as a sea, ocean, or lake.
+ * 
  *  @author schema.org
  *  @class BodyOfWater
  *  @module org.schema
@@ -9609,6 +10844,7 @@ Volcano = stjs.extend(Volcano, Landform, [], null, {reviews: "Review", amenityFe
  */
 var BodyOfWater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9620,6 +10856,7 @@ BodyOfWater = stjs.extend(BodyOfWater, Landform, [], null, {reviews: "Review", a
 /**
  *  Schema.org/Mountain
  *  A mountain, like Mount Whitney or Mount Everest.
+ * 
  *  @author schema.org
  *  @class Mountain
  *  @module org.schema
@@ -9627,6 +10864,7 @@ BodyOfWater = stjs.extend(BodyOfWater, Landform, [], null, {reviews: "Review", a
  */
 var Mountain = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9638,6 +10876,7 @@ Mountain = stjs.extend(Mountain, Landform, [], null, {reviews: "Review", amenity
 /**
  *  Schema.org/City
  *  A city or town.
+ * 
  *  @author schema.org
  *  @class City
  *  @module org.schema
@@ -9645,6 +10884,7 @@ Mountain = stjs.extend(Mountain, Landform, [], null, {reviews: "Review", amenity
  */
 var City = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9656,6 +10896,7 @@ City = stjs.extend(City, AdministrativeArea, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/Country
  *  A country.
+ * 
  *  @author schema.org
  *  @class Country
  *  @module org.schema
@@ -9663,6 +10904,7 @@ City = stjs.extend(City, AdministrativeArea, [], null, {reviews: "Review", ameni
  */
 var Country = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9674,6 +10916,7 @@ Country = stjs.extend(Country, AdministrativeArea, [], null, {reviews: "Review",
 /**
  *  Schema.org/State
  *  A state or province of a country.
+ * 
  *  @author schema.org
  *  @class State
  *  @module org.schema
@@ -9681,6 +10924,7 @@ Country = stjs.extend(Country, AdministrativeArea, [], null, {reviews: "Review",
  */
 var State = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9692,6 +10936,7 @@ State = stjs.extend(State, AdministrativeArea, [], null, {reviews: "Review", ame
 /**
  *  Schema.org/Mass
  *  Properties that take Mass as values are of the form '&lt;Number&gt; &lt;Mass unit of measure&gt;'. E.g., '7 kg'.
+ * 
  *  @author schema.org
  *  @class Mass
  *  @module org.schema
@@ -9699,6 +10944,7 @@ State = stjs.extend(State, AdministrativeArea, [], null, {reviews: "Review", ame
  */
 var Mass = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9710,6 +10956,7 @@ Mass = stjs.extend(Mass, Quantity, [], null, {identifier: "Object", image: "Obje
 /**
  *  Schema.org/Energy
  *  Properties that take Energy as values are of the form '&lt;Number&gt; &lt;Energy unit of measure&gt;'.
+ * 
  *  @author schema.org
  *  @class Energy
  *  @module org.schema
@@ -9717,6 +10964,7 @@ Mass = stjs.extend(Mass, Quantity, [], null, {identifier: "Object", image: "Obje
  */
 var Energy = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9728,6 +10976,7 @@ Energy = stjs.extend(Energy, Quantity, [], null, {identifier: "Object", image: "
 /**
  *  Schema.org/Duration
  *  Quantity: Duration (use [ISO 8601 duration format](http://en.wikipedia.org/wiki/ISO_8601)).
+ * 
  *  @author schema.org
  *  @class Duration
  *  @module org.schema
@@ -9735,6 +10984,7 @@ Energy = stjs.extend(Energy, Quantity, [], null, {identifier: "Object", image: "
  */
 var Duration = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9746,6 +10996,7 @@ Duration = stjs.extend(Duration, Quantity, [], null, {identifier: "Object", imag
 /**
  *  Schema.org/Distance
  *  Properties that take Distances as values are of the form '&lt;Number&gt; &lt;Length unit of measure&gt;'. E.g., '7 ft'.
+ * 
  *  @author schema.org
  *  @class Distance
  *  @module org.schema
@@ -9753,6 +11004,7 @@ Duration = stjs.extend(Duration, Quantity, [], null, {identifier: "Object", imag
  */
 var Distance = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9764,6 +11016,7 @@ Distance = stjs.extend(Distance, Quantity, [], null, {identifier: "Object", imag
 /**
  *  Schema.org/AggregateRating
  *  The average rating based on multiple ratings or reviews.
+ * 
  *  @author schema.org
  *  @class AggregateRating
  *  @module org.schema
@@ -9771,6 +11024,7 @@ Distance = stjs.extend(Distance, Quantity, [], null, {identifier: "Object", imag
  */
 var AggregateRating = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9782,6 +11036,7 @@ AggregateRating = stjs.extend(AggregateRating, Rating, [], function(constructor,
     /**
      *  Schema.org/reviewCount
      *  The count of total number of reviews.
+     * 
      *  @property reviewCount
      *  @type Integer
      */
@@ -9789,6 +11044,7 @@ AggregateRating = stjs.extend(AggregateRating, Rating, [], function(constructor,
     /**
      *  Schema.org/itemReviewed
      *  The item that is being reviewed/rated.
+     * 
      *  @property itemReviewed
      *  @type Thing
      */
@@ -9796,6 +11052,7 @@ AggregateRating = stjs.extend(AggregateRating, Rating, [], function(constructor,
     /**
      *  Schema.org/ratingCount
      *  The count of total number of ratings.
+     * 
      *  @property ratingCount
      *  @type Integer
      */
@@ -9804,6 +11061,7 @@ AggregateRating = stjs.extend(AggregateRating, Rating, [], function(constructor,
 /**
  *  Schema.org/GovernmentPermit
  *  A permit issued by a government agency.
+ * 
  *  @author schema.org
  *  @class GovernmentPermit
  *  @module org.schema
@@ -9811,6 +11069,7 @@ AggregateRating = stjs.extend(AggregateRating, Rating, [], function(constructor,
  */
 var GovernmentPermit = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9822,6 +11081,7 @@ GovernmentPermit = stjs.extend(GovernmentPermit, Permit, [], null, {validIn: "Ad
 /**
  *  Schema.org/PerformanceRole
  *  A PerformanceRole is a Role that some entity places with regard to a theatrical performance, e.g. in a Movie, TVSeries etc.
+ * 
  *  @author schema.org
  *  @class PerformanceRole
  *  @module org.schema
@@ -9829,6 +11089,7 @@ GovernmentPermit = stjs.extend(GovernmentPermit, Permit, [], null, {validIn: "Ad
  */
 var PerformanceRole = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9840,6 +11101,7 @@ PerformanceRole = stjs.extend(PerformanceRole, Role, [], function(constructor, p
     /**
      *  Schema.org/characterName
      *  The name of a character played in some acting or performing role, i.e. in a PerformanceRole.
+     * 
      *  @property characterName
      *  @type Text
      */
@@ -9848,6 +11110,7 @@ PerformanceRole = stjs.extend(PerformanceRole, Role, [], function(constructor, p
 /**
  *  Schema.org/OrganizationRole
  *  A subclass of Role used to describe roles within organizations.
+ * 
  *  @author schema.org
  *  @class OrganizationRole
  *  @module org.schema
@@ -9855,6 +11118,7 @@ PerformanceRole = stjs.extend(PerformanceRole, Role, [], function(constructor, p
  */
 var OrganizationRole = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9866,6 +11130,7 @@ OrganizationRole = stjs.extend(OrganizationRole, Role, [], function(constructor,
     /**
      *  Schema.org/numberedPosition
      *  A number associated with a role in an organization, for example, the number on an athlete's jersey.
+     * 
      *  @property numberedPosition
      *  @type Number
      */
@@ -9874,6 +11139,7 @@ OrganizationRole = stjs.extend(OrganizationRole, Role, [], function(constructor,
 /**
  *  Schema.org/EducationalAudience
  *  An EducationalAudience.
+ * 
  *  @author schema.org
  *  @class EducationalAudience
  *  @module org.schema
@@ -9881,6 +11147,7 @@ OrganizationRole = stjs.extend(OrganizationRole, Role, [], function(constructor,
  */
 var EducationalAudience = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9892,6 +11159,7 @@ EducationalAudience = stjs.extend(EducationalAudience, Audience, [], function(co
     /**
      *  Schema.org/educationalRole
      *  An educationalRole of an EducationalAudience.
+     * 
      *  @property educationalRole
      *  @type Text
      */
@@ -9900,6 +11168,7 @@ EducationalAudience = stjs.extend(EducationalAudience, Audience, [], function(co
 /**
  *  Schema.org/BusinessAudience
  *  A set of characteristics belonging to businesses, e.g. who compose an item's target audience.
+ * 
  *  @author schema.org
  *  @class BusinessAudience
  *  @module org.schema
@@ -9907,6 +11176,7 @@ EducationalAudience = stjs.extend(EducationalAudience, Audience, [], function(co
  */
 var BusinessAudience = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9918,6 +11188,7 @@ BusinessAudience = stjs.extend(BusinessAudience, Audience, [], function(construc
     /**
      *  Schema.org/yearlyRevenue
      *  The size of the business in annual revenue.
+     * 
      *  @property yearlyRevenue
      *  @type QuantitativeValue
      */
@@ -9925,6 +11196,7 @@ BusinessAudience = stjs.extend(BusinessAudience, Audience, [], function(construc
     /**
      *  Schema.org/numberOfEmployees
      *  The number of employees in an organization e.g. business.
+     * 
      *  @property numberOfEmployees
      *  @type QuantitativeValue
      */
@@ -9932,6 +11204,7 @@ BusinessAudience = stjs.extend(BusinessAudience, Audience, [], function(construc
     /**
      *  Schema.org/yearsInOperation
      *  The age of the business.
+     * 
      *  @property yearsInOperation
      *  @type QuantitativeValue
      */
@@ -9940,6 +11213,7 @@ BusinessAudience = stjs.extend(BusinessAudience, Audience, [], function(construc
 /**
  *  Schema.org/PeopleAudience
  *  A set of characteristics belonging to people, e.g. who compose an item's target audience.
+ * 
  *  @author schema.org
  *  @class PeopleAudience
  *  @module org.schema
@@ -9947,6 +11221,7 @@ BusinessAudience = stjs.extend(BusinessAudience, Audience, [], function(construc
  */
 var PeopleAudience = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -9958,6 +11233,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/suggestedMaxAge
      *  Maximal age recommended for viewing content.
+     * 
      *  @property suggestedMaxAge
      *  @type Number
      */
@@ -9965,6 +11241,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/requiredMinAge
      *  Audiences defined by a person's minimum age.
+     * 
      *  @property requiredMinAge
      *  @type Integer
      */
@@ -9972,6 +11249,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/suggestedMinAge
      *  Minimal age recommended for viewing content.
+     * 
      *  @property suggestedMinAge
      *  @type Number
      */
@@ -9979,6 +11257,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/requiredMaxAge
      *  Audiences defined by a person's maximum age.
+     * 
      *  @property requiredMaxAge
      *  @type Integer
      */
@@ -9986,6 +11265,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/suggestedGender
      *  The gender of the person or audience.
+     * 
      *  @property suggestedGender
      *  @type Text
      */
@@ -9993,6 +11273,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
     /**
      *  Schema.org/requiredGender
      *  Audiences defined by a person's gender.
+     * 
      *  @property requiredGender
      *  @type Text
      */
@@ -10001,6 +11282,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
 /**
  *  Schema.org/CableOrSatelliteService
  *  A service which provides access to media programming like TV or radio. Access may be via cable or satellite.
+ * 
  *  @author schema.org
  *  @class CableOrSatelliteService
  *  @module org.schema
@@ -10008,6 +11290,7 @@ PeopleAudience = stjs.extend(PeopleAudience, Audience, [], function(constructor,
  */
 var CableOrSatelliteService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10019,6 +11302,7 @@ CableOrSatelliteService = stjs.extend(CableOrSatelliteService, Service, [], null
 /**
  *  Schema.org/Taxi
  *  A taxi.
+ * 
  *  @author schema.org
  *  @class Taxi
  *  @module org.schema
@@ -10026,6 +11310,7 @@ CableOrSatelliteService = stjs.extend(CableOrSatelliteService, Service, [], null
  */
 var Taxi = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10037,6 +11322,7 @@ Taxi = stjs.extend(Taxi, Service, [], null, {audience: "Audience", broker: "Obje
 /**
  *  Schema.org/TaxiService
  *  A service for a vehicle for hire with a driver for local travel. Fares are usually calculated based on distance traveled.
+ * 
  *  @author schema.org
  *  @class TaxiService
  *  @module org.schema
@@ -10044,6 +11330,7 @@ Taxi = stjs.extend(Taxi, Service, [], null, {audience: "Audience", broker: "Obje
  */
 var TaxiService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10055,6 +11342,7 @@ TaxiService = stjs.extend(TaxiService, Service, [], null, {audience: "Audience",
 /**
  *  Schema.org/FoodService
  *  A food service, like breakfast, lunch, or dinner.
+ * 
  *  @author schema.org
  *  @class FoodService
  *  @module org.schema
@@ -10062,6 +11350,7 @@ TaxiService = stjs.extend(TaxiService, Service, [], null, {audience: "Audience",
  */
 var FoodService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10073,6 +11362,7 @@ FoodService = stjs.extend(FoodService, Service, [], null, {audience: "Audience",
 /**
  *  Schema.org/FinancialProduct
  *  A product provided to consumers and businesses by financial institutions such as banks, insurance companies, brokerage firms, consumer finance companies, and investment companies which comprise the financial services industry.
+ * 
  *  @author schema.org
  *  @class FinancialProduct
  *  @module org.schema
@@ -10080,6 +11370,7 @@ FoodService = stjs.extend(FoodService, Service, [], null, {audience: "Audience",
  */
 var FinancialProduct = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10091,28 +11382,32 @@ FinancialProduct = stjs.extend(FinancialProduct, Service, [], function(construct
     /**
      *  Schema.org/feesAndCommissionsSpecification
      *  Description of fees, commissions, and other terms applied either to a class of financial product, or by a financial service organization.
+     * 
      *  @property feesAndCommissionsSpecification
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.feesAndCommissionsSpecification = null;
     /**
      *  Schema.org/annualPercentageRate
      *  The annual rate that is charged for borrowing (or made by investing), expressed as a single percentage number that represents the actual yearly cost of funds over the term of a loan. This includes any fees or additional costs associated with the transaction.
+     * 
      *  @property annualPercentageRate
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.annualPercentageRate = null;
     /**
      *  Schema.org/interestRate
      *  The interest rate, charged or paid, applicable to the financial product. Note: This is different from the calculated annualPercentageRate.
+     * 
      *  @property interestRate
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.interestRate = null;
 }, {feesAndCommissionsSpecification: "Object", annualPercentageRate: "Object", interestRate: "Object", audience: "Audience", broker: "Object", isRelatedTo: "Object", offers: "Offer", review: "Review", brand: "Object", areaServed: "Object", hoursAvailable: "OpeningHoursSpecification", produces: "Thing", availableChannel: "ServiceChannel", isSimilarTo: "Object", provider: "Object", serviceArea: "Object", aggregateRating: "AggregateRating", serviceOutput: "Thing", logo: "Object", hasOfferCatalog: "OfferCatalog", serviceAudience: "Audience", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/GovernmentService
  *  A service provided by a government organization, e.g. food stamps, veterans benefits, etc.
+ * 
  *  @author schema.org
  *  @class GovernmentService
  *  @module org.schema
@@ -10120,6 +11415,7 @@ FinancialProduct = stjs.extend(FinancialProduct, Service, [], function(construct
  */
 var GovernmentService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10131,6 +11427,7 @@ GovernmentService = stjs.extend(GovernmentService, Service, [], function(constru
     /**
      *  Schema.org/serviceOperator
      *  The operating organization, if different from the provider.  This enables the representation of services that are provided by an organization, but operated by another organization like a subcontractor.
+     * 
      *  @property serviceOperator
      *  @type Organization
      */
@@ -10139,6 +11436,7 @@ GovernmentService = stjs.extend(GovernmentService, Service, [], function(constru
 /**
  *  Schema.org/BroadcastService
  *  A delivery service through which content is provided via broadcast over the air or online.
+ * 
  *  @author schema.org
  *  @class BroadcastService
  *  @module org.schema
@@ -10146,6 +11444,7 @@ GovernmentService = stjs.extend(GovernmentService, Service, [], function(constru
  */
 var BroadcastService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10157,6 +11456,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/broadcastTimezone
      *  The timezone in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601) for which the service bases its broadcasts
+     * 
      *  @property broadcastTimezone
      *  @type Text
      */
@@ -10164,6 +11464,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/area
      *  The area within which users can expect to reach the broadcast service.
+     * 
      *  @property area
      *  @type Place
      */
@@ -10171,6 +11472,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/videoFormat
      *  The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).
+     * 
      *  @property videoFormat
      *  @type Text
      */
@@ -10178,6 +11480,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/broadcastDisplayName
      *  The name displayed in the channel guide. For many US affiliates, it is the network name.
+     * 
      *  @property broadcastDisplayName
      *  @type Text
      */
@@ -10185,6 +11488,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/broadcastAffiliateOf
      *  The media network(s) whose content is broadcast on this station.
+     * 
      *  @property broadcastAffiliateOf
      *  @type Organization
      */
@@ -10192,6 +11496,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/parentService
      *  A broadcast service to which the broadcast service may belong to such as regional variations of a national channel.
+     * 
      *  @property parentService
      *  @type BroadcastService
      */
@@ -10199,6 +11504,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
     /**
      *  Schema.org/broadcaster
      *  The organization owning or operating the broadcast service.
+     * 
      *  @property broadcaster
      *  @type Organization
      */
@@ -10207,6 +11513,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
 /**
  *  Schema.org/InteractionCounter
  *  A summary of how users have interacted with this CreativeWork. In most cases, authors will use a subtype to specify the specific type of interaction.
+ * 
  *  @author schema.org
  *  @class InteractionCounter
  *  @module org.schema
@@ -10214,6 +11521,7 @@ BroadcastService = stjs.extend(BroadcastService, Service, [], function(construct
  */
 var InteractionCounter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10225,13 +11533,15 @@ InteractionCounter = stjs.extend(InteractionCounter, StructuredValue, [], functi
     /**
      *  Schema.org/interactionService
      *  The WebSite or SoftwareApplication where the interactions took place.
+     * 
      *  @property interactionService
-     *  @type schema,SoftwareApplication | schema,WebSite
+     *  @type schema, SoftwareApplication | schema,WebSite
      */
     prototype.interactionService = null;
     /**
      *  Schema.org/userInteractionCount
      *  The number of interactions for the CreativeWork using the WebSite or SoftwareApplication.
+     * 
      *  @property userInteractionCount
      *  @type Integer
      */
@@ -10239,6 +11549,7 @@ InteractionCounter = stjs.extend(InteractionCounter, StructuredValue, [], functi
     /**
      *  Schema.org/interactionType
      *  The Action representing the type of interaction. For up votes, +1s, etc. use [[LikeAction]]. For down votes use [[DislikeAction]]. Otherwise, use the most specific Action.
+     * 
      *  @property interactionType
      *  @type Action
      */
@@ -10247,6 +11558,7 @@ InteractionCounter = stjs.extend(InteractionCounter, StructuredValue, [], functi
 /**
  *  Schema.org/GeoCoordinates
  *  The geographic coordinates of a place or event.
+ * 
  *  @author schema.org
  *  @class GeoCoordinates
  *  @module org.schema
@@ -10254,6 +11566,7 @@ InteractionCounter = stjs.extend(InteractionCounter, StructuredValue, [], functi
  */
 var GeoCoordinates = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10265,6 +11578,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
     /**
      *  Schema.org/postalCode
      *  The postal code. For example, 94043.
+     * 
      *  @property postalCode
      *  @type Text
      */
@@ -10272,44 +11586,49 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
     /**
      *  Schema.org/latitude
      *  The latitude of a location. For example ```37.42242``` ([WGS 84](https://en.wikipedia.org/wiki/World_Geodetic_System)).
+     * 
      *  @property latitude
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.latitude = null;
     /**
      *  Schema.org/elevation
      *  The elevation of a location ([WGS 84](https://en.wikipedia.org/wiki/World_Geodetic_System)).
+     * 
      *  @property elevation
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.elevation = null;
     /**
      *  Schema.org/longitude
      *  The longitude of a location. For example ```-122.08585``` ([WGS 84](https://en.wikipedia.org/wiki/World_Geodetic_System)).
+     * 
      *  @property longitude
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.longitude = null;
     /**
      *  Schema.org/addressCountry
      *  The country. For example, USA. You can also provide the two-letter [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1).
+     * 
      *  @property addressCountry
-     *  @type schema,Text | schema,Country
+     *  @type schema, Text | schema,Country
      */
     prototype.addressCountry = null;
     /**
      *  Schema.org/address
      *  Physical address of the item.
+     * 
      *  @property address
-     *  @type schema,PostalAddress | schema,Text
+     *  @type schema, PostalAddress | schema,Text
      */
     prototype.address = null;
 }, {latitude: "Object", elevation: "Object", longitude: "Object", addressCountry: "Object", address: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/OpeningHoursSpecification
  *  A structured value providing information about the opening hours of a place or a certain service inside a place.\n\n
- * The place is __open__ if the [[opens]] property is specified, and __closed__ otherwise.\n\nIf the value for the [[closes]] property is less than the value for the [[opens]] property then the hour range is assumed to span over the next day.
- *       
+ *  The place is __open__ if the [[opens]] property is specified, and __closed__ otherwise.\n\nIf the value for the [[closes]] property is less than the value for the [[opens]] property then the hour range is assumed to span over the next day.
+ * 
  *  @author schema.org
  *  @class OpeningHoursSpecification
  *  @module org.schema
@@ -10317,6 +11636,7 @@ GeoCoordinates = stjs.extend(GeoCoordinates, StructuredValue, [], function(const
  */
 var OpeningHoursSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10328,6 +11648,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
     /**
      *  Schema.org/opens
      *  The opening hour of the place or service on the given day(s) of the week.
+     * 
      *  @property opens
      *  @type Time
      */
@@ -10335,6 +11656,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
     /**
      *  Schema.org/dayOfWeek
      *  The day of the week for which these opening hours are valid.
+     * 
      *  @property dayOfWeek
      *  @type DayOfWeek
      */
@@ -10342,6 +11664,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -10349,6 +11672,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
     /**
      *  Schema.org/closes
      *  The closing hour of the place or service on the given day(s) of the week.
+     * 
      *  @property closes
      *  @type Time
      */
@@ -10356,6 +11680,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -10364,6 +11689,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
 /**
  *  Schema.org/PriceSpecification
  *  A structured value representing a price or price range. Typically, only the subclasses of this type are used for markup. It is recommended to use [[MonetaryAmount]] to describe independent amounts of money such as a salary, credit card limits, etc.
+ * 
  *  @author schema.org
  *  @class PriceSpecification
  *  @module org.schema
@@ -10371,6 +11697,7 @@ OpeningHoursSpecification = stjs.extend(OpeningHoursSpecification, StructuredVal
  */
 var PriceSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10382,6 +11709,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/priceCurrency
      *  The currency (in 3-letter ISO 4217 format) of the price or a price component, when attached to [[PriceSpecification]] and its subtypes.
+     * 
      *  @property priceCurrency
      *  @type Text
      */
@@ -10389,6 +11717,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -10396,15 +11725,16 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/price
      *  The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.\n\nUsage guidelines:\n\n* Use the [[priceCurrency]] property (with [ISO 4217 codes](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) e.g. "USD") instead of
-     *       including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
-     *       
+     *  including [ambiguous symbols](http://en.wikipedia.org/wiki/Dollar_sign#Currencies_that_use_the_dollar_or_peso_sign) such as '$' in the value.\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.\n* Note that both [RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/#using-the-content-attribute) and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values alongside more human-friendly formatting.\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.
+     * 
      *  @property price
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.price = null;
     /**
      *  Schema.org/minPrice
      *  The lowest price if the price is a range.
+     * 
      *  @property minPrice
      *  @type Number
      */
@@ -10412,6 +11742,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/eligibleTransactionVolume
      *  The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.
+     * 
      *  @property eligibleTransactionVolume
      *  @type PriceSpecification
      */
@@ -10419,6 +11750,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -10426,6 +11758,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/valueAddedTaxIncluded
      *  Specifies whether the applicable value-added tax (VAT) is included in the price specification or not.
+     * 
      *  @property valueAddedTaxIncluded
      *  @type Boolean
      */
@@ -10433,6 +11766,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/eligibleQuantity
      *  The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.
+     * 
      *  @property eligibleQuantity
      *  @type QuantitativeValue
      */
@@ -10440,6 +11774,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
     /**
      *  Schema.org/maxPrice
      *  The highest price if the price is a range.
+     * 
      *  @property maxPrice
      *  @type Number
      */
@@ -10448,6 +11783,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
 /**
  *  Schema.org/OwnershipInfo
  *  A structured value providing information about when a certain organization or person owned a certain product.
+ * 
  *  @author schema.org
  *  @class OwnershipInfo
  *  @module org.schema
@@ -10455,6 +11791,7 @@ PriceSpecification = stjs.extend(PriceSpecification, StructuredValue, [], functi
  */
 var OwnershipInfo = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10466,6 +11803,7 @@ OwnershipInfo = stjs.extend(OwnershipInfo, StructuredValue, [], function(constru
     /**
      *  Schema.org/ownedThrough
      *  The date and time of giving up ownership on the product.
+     * 
      *  @property ownedThrough
      *  @type DateTime
      */
@@ -10473,20 +11811,23 @@ OwnershipInfo = stjs.extend(OwnershipInfo, StructuredValue, [], function(constru
     /**
      *  Schema.org/acquiredFrom
      *  The organization or person from which the product was acquired.
+     * 
      *  @property acquiredFrom
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.acquiredFrom = null;
     /**
      *  Schema.org/typeOfGood
      *  The product that this structured value is referring to.
+     * 
      *  @property typeOfGood
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.typeOfGood = null;
     /**
      *  Schema.org/ownedFrom
      *  The date and time of obtaining the product.
+     * 
      *  @property ownedFrom
      *  @type DateTime
      */
@@ -10495,6 +11836,7 @@ OwnershipInfo = stjs.extend(OwnershipInfo, StructuredValue, [], function(constru
 /**
  *  Schema.org/NutritionInformation
  *  Nutritional information about the recipe.
+ * 
  *  @author schema.org
  *  @class NutritionInformation
  *  @module org.schema
@@ -10502,6 +11844,7 @@ OwnershipInfo = stjs.extend(OwnershipInfo, StructuredValue, [], function(constru
  */
 var NutritionInformation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10513,6 +11856,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/calories
      *  The number of calories.
+     * 
      *  @property calories
      *  @type Energy
      */
@@ -10520,6 +11864,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/fiberContent
      *  The number of grams of fiber.
+     * 
      *  @property fiberContent
      *  @type Mass
      */
@@ -10527,6 +11872,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/sugarContent
      *  The number of grams of sugar.
+     * 
      *  @property sugarContent
      *  @type Mass
      */
@@ -10534,6 +11880,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/cholesterolContent
      *  The number of milligrams of cholesterol.
+     * 
      *  @property cholesterolContent
      *  @type Mass
      */
@@ -10541,6 +11888,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/proteinContent
      *  The number of grams of protein.
+     * 
      *  @property proteinContent
      *  @type Mass
      */
@@ -10548,6 +11896,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/fatContent
      *  The number of grams of fat.
+     * 
      *  @property fatContent
      *  @type Mass
      */
@@ -10555,6 +11904,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/transFatContent
      *  The number of grams of trans fat.
+     * 
      *  @property transFatContent
      *  @type Mass
      */
@@ -10562,6 +11912,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/carbohydrateContent
      *  The number of grams of carbohydrates.
+     * 
      *  @property carbohydrateContent
      *  @type Mass
      */
@@ -10569,6 +11920,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/unsaturatedFatContent
      *  The number of grams of unsaturated fat.
+     * 
      *  @property unsaturatedFatContent
      *  @type Mass
      */
@@ -10576,6 +11928,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/saturatedFatContent
      *  The number of grams of saturated fat.
+     * 
      *  @property saturatedFatContent
      *  @type Mass
      */
@@ -10583,6 +11936,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/sodiumContent
      *  The number of milligrams of sodium.
+     * 
      *  @property sodiumContent
      *  @type Mass
      */
@@ -10590,6 +11944,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
     /**
      *  Schema.org/servingSize
      *  The serving size, in terms of the number of volume or mass.
+     * 
      *  @property servingSize
      *  @type Text
      */
@@ -10598,6 +11953,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
 /**
  *  Schema.org/GeoShape
  *  The geographic shape of a place. A GeoShape can be described using several properties whose values are based on latitude/longitude pairs. Either whitespace or commas can be used to separate latitude and longitude; whitespace should be used when writing a list of several such points.
+ * 
  *  @author schema.org
  *  @class GeoShape
  *  @module org.schema
@@ -10605,6 +11961,7 @@ NutritionInformation = stjs.extend(NutritionInformation, StructuredValue, [], fu
  */
 var GeoShape = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10616,6 +11973,7 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
     /**
      *  Schema.org/postalCode
      *  The postal code. For example, 94043.
+     * 
      *  @property postalCode
      *  @type Text
      */
@@ -10623,13 +11981,15 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
     /**
      *  Schema.org/elevation
      *  The elevation of a location ([WGS 84](https://en.wikipedia.org/wiki/World_Geodetic_System)).
+     * 
      *  @property elevation
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.elevation = null;
     /**
      *  Schema.org/line
      *  A line is a point-to-point path consisting of two or more points. A line is expressed as a series of two or more point objects separated by space.
+     * 
      *  @property line
      *  @type Text
      */
@@ -10637,20 +11997,23 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
     /**
      *  Schema.org/addressCountry
      *  The country. For example, USA. You can also provide the two-letter [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1).
+     * 
      *  @property addressCountry
-     *  @type schema,Text | schema,Country
+     *  @type schema, Text | schema,Country
      */
     prototype.addressCountry = null;
     /**
      *  Schema.org/address
      *  Physical address of the item.
+     * 
      *  @property address
-     *  @type schema,PostalAddress | schema,Text
+     *  @type schema, PostalAddress | schema,Text
      */
     prototype.address = null;
     /**
      *  Schema.org/polygon
      *  A polygon is the area enclosed by a point-to-point path for which the starting and ending points are the same. A polygon is expressed as a series of four or more space delimited points where the first and final points are identical.
+     * 
      *  @property polygon
      *  @type Text
      */
@@ -10658,6 +12021,7 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
     /**
      *  Schema.org/box
      *  A box is the area enclosed by the rectangle formed by two points. The first point is the lower corner, the second point is the upper corner. A box is expressed as two points separated by a space character.
+     * 
      *  @property box
      *  @type Text
      */
@@ -10665,6 +12029,7 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
     /**
      *  Schema.org/circle
      *  A circle is the circular region of a specified radius centered at a specified latitude and longitude. A circle is expressed as a pair followed by a radius in meters.
+     * 
      *  @property circle
      *  @type Text
      */
@@ -10673,7 +12038,7 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
 /**
  *  Schema.org/PropertyValue
  *  A property-value pair, e.g. representing a feature of a product or place. Use the 'name' property for the name of the property. If there is an additional human-readable version of the value, put that into the 'description' property.\n\n Always use specific schema.org properties when a) they exist and b) you can populate them. Using PropertyValue as a substitute will typically not trigger the same effect as using the original, specific property.
- *     
+ * 
  *  @author schema.org
  *  @class PropertyValue
  *  @module org.schema
@@ -10681,6 +12046,7 @@ GeoShape = stjs.extend(GeoShape, StructuredValue, [], function(constructor, prot
  */
 var PropertyValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10692,13 +12058,15 @@ PropertyValue = stjs.extend(PropertyValue, StructuredValue, [], function(constru
     /**
      *  Schema.org/unitCode
      *  The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.
+     * 
      *  @property unitCode
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.unitCode = null;
     /**
      *  Schema.org/minValue
      *  The lower value of some characteristic or property.
+     * 
      *  @property minValue
      *  @type Number
      */
@@ -10706,7 +12074,8 @@ PropertyValue = stjs.extend(PropertyValue, StructuredValue, [], function(constru
     /**
      *  Schema.org/unitText
      *  A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code for
-     * <a href='unitCode'>unitCode</a>.
+     *  <a href='unitCode'>unitCode</a>.
+     * 
      *  @property unitText
      *  @type Text
      */
@@ -10714,30 +12083,34 @@ PropertyValue = stjs.extend(PropertyValue, StructuredValue, [], function(constru
     /**
      *  Schema.org/valueReference
      *  A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.
+     * 
      *  @property valueReference
-     *  @type schema,StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
+     *  @type schema, StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
      */
     prototype.valueReference = null;
     /**
      *  Schema.org/propertyID
      *  A commonly used identifier for the characteristic represented by the property, e.g. a manufacturer or a standard code for a property. propertyID can be
-     * (1) a prefixed string, mainly meant to be used with standards for product properties; (2) a site-specific, non-prefixed string (e.g. the primary key of the property or the vendor-specific id of the property), or (3)
-     * a URL indicating the type of the property, either pointing to an external vocabulary, or a Web resource that describes the property (e.g. a glossary entry).
-     * Standards bodies should promote a standard prefix for the identifiers of properties from their standards.
+     *  (1) a prefixed string, mainly meant to be used with standards for product properties; (2) a site-specific, non-prefixed string (e.g. the primary key of the property or the vendor-specific id of the property), or (3)
+     *  a URL indicating the type of the property, either pointing to an external vocabulary, or a Web resource that describes the property (e.g. a glossary entry).
+     *  Standards bodies should promote a standard prefix for the identifiers of properties from their standards.
+     * 
      *  @property propertyID
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.propertyID = null;
     /**
      *  Schema.org/value
      *  The value of the quantitative value or property value node.\n\n* For [[QuantitativeValue]] and [[MonetaryAmount]], the recommended type for values is 'Number'.\n* For [[PropertyValue]], it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.
+     * 
      *  @property value
-     *  @type schema,Number | schema,Boolean | schema,Text | schema,StructuredValue
+     *  @type schema, Number | schema,Boolean | schema,Text | schema,StructuredValue
      */
     prototype.value = null;
     /**
      *  Schema.org/maxValue
      *  The upper value of some characteristic or property.
+     * 
      *  @property maxValue
      *  @type Number
      */
@@ -10746,6 +12119,7 @@ PropertyValue = stjs.extend(PropertyValue, StructuredValue, [], function(constru
 /**
  *  Schema.org/WarrantyPromise
  *  A structured value representing the duration and scope of services that will be provided to a customer free of charge in case of a defect or malfunction of a product.
+ * 
  *  @author schema.org
  *  @class WarrantyPromise
  *  @module org.schema
@@ -10753,6 +12127,7 @@ PropertyValue = stjs.extend(PropertyValue, StructuredValue, [], function(constru
  */
 var WarrantyPromise = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10764,6 +12139,7 @@ WarrantyPromise = stjs.extend(WarrantyPromise, StructuredValue, [], function(con
     /**
      *  Schema.org/durationOfWarranty
      *  The duration of the warranty promise. Common unitCode values are ANN for year, MON for months, or DAY for days.
+     * 
      *  @property durationOfWarranty
      *  @type QuantitativeValue
      */
@@ -10771,6 +12147,7 @@ WarrantyPromise = stjs.extend(WarrantyPromise, StructuredValue, [], function(con
     /**
      *  Schema.org/warrantyScope
      *  The scope of the warranty promise.
+     * 
      *  @property warrantyScope
      *  @type WarrantyScope
      */
@@ -10779,6 +12156,7 @@ WarrantyPromise = stjs.extend(WarrantyPromise, StructuredValue, [], function(con
 /**
  *  Schema.org/ContactPoint
  *  A contact point&#x2014;for example, a Customer Complaints department.
+ * 
  *  @author schema.org
  *  @class ContactPoint
  *  @module org.schema
@@ -10786,6 +12164,7 @@ WarrantyPromise = stjs.extend(WarrantyPromise, StructuredValue, [], function(con
  */
 var ContactPoint = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10797,6 +12176,7 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/contactType
      *  A person or organization can have different contact points, for different purposes. For example, a sales contact point, a PR contact point and so on. This property is used to specify the kind of contact point.
+     * 
      *  @property contactType
      *  @type Text
      */
@@ -10804,6 +12184,7 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/faxNumber
      *  The fax number.
+     * 
      *  @property faxNumber
      *  @type Text
      */
@@ -10811,27 +12192,31 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/productSupported
      *  The product or service this support contact point is related to (such as product support for a particular product line). This can be a specific product or product line (e.g. "iPhone") or a general category of products or services (e.g. "smartphones").
+     * 
      *  @property productSupported
-     *  @type schema,Text | schema,Product
+     *  @type schema, Text | schema,Product
      */
     prototype.productSupported = null;
     /**
      *  Schema.org/availableLanguage
      *  A language someone may use with the item. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[inLanguage]]
+     * 
      *  @property availableLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.availableLanguage = null;
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/hoursAvailable
      *  The hours during which this service or contact is available.
+     * 
      *  @property hoursAvailable
      *  @type OpeningHoursSpecification
      */
@@ -10839,6 +12224,7 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/email
      *  Email address.
+     * 
      *  @property email
      *  @type Text
      */
@@ -10846,13 +12232,15 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/serviceArea
      *  The geographic area where the service is provided.
+     * 
      *  @property serviceArea
-     *  @type schema,GeoShape | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Place | schema,AdministrativeArea
      */
     prototype.serviceArea = null;
     /**
      *  Schema.org/telephone
      *  The telephone number.
+     * 
      *  @property telephone
      *  @type Text
      */
@@ -10860,6 +12248,7 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
     /**
      *  Schema.org/contactOption
      *  An option available on this contact point (e.g. a toll-free number or support for hearing-impaired callers).
+     * 
      *  @property contactOption
      *  @type ContactPointOption
      */
@@ -10867,7 +12256,8 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
 }, {productSupported: "Object", availableLanguage: "Object", areaServed: "Object", hoursAvailable: "OpeningHoursSpecification", serviceArea: "Object", contactOption: "ContactPointOption", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/QuantitativeValue
- *   A point value or interval for product characteristics and other purposes.
+ *  A point value or interval for product characteristics and other purposes.
+ * 
  *  @author schema.org
  *  @class QuantitativeValue
  *  @module org.schema
@@ -10875,6 +12265,7 @@ ContactPoint = stjs.extend(ContactPoint, StructuredValue, [], function(construct
  */
 var QuantitativeValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10894,13 +12285,15 @@ QuantitativeValue = stjs.extend(QuantitativeValue, StructuredValue, [], function
     /**
      *  Schema.org/unitCode
      *  The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.
+     * 
      *  @property unitCode
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.unitCode = null;
     /**
      *  Schema.org/minValue
      *  The lower value of some characteristic or property.
+     * 
      *  @property minValue
      *  @type Number
      */
@@ -10908,7 +12301,8 @@ QuantitativeValue = stjs.extend(QuantitativeValue, StructuredValue, [], function
     /**
      *  Schema.org/unitText
      *  A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code for
-     * <a href='unitCode'>unitCode</a>.
+     *  <a href='unitCode'>unitCode</a>.
+     * 
      *  @property unitText
      *  @type Text
      */
@@ -10916,20 +12310,23 @@ QuantitativeValue = stjs.extend(QuantitativeValue, StructuredValue, [], function
     /**
      *  Schema.org/valueReference
      *  A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.
+     * 
      *  @property valueReference
-     *  @type schema,StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
+     *  @type schema, StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
      */
     prototype.valueReference = null;
     /**
      *  Schema.org/value
      *  The value of the quantitative value or property value node.\n\n* For [[QuantitativeValue]] and [[MonetaryAmount]], the recommended type for values is 'Number'.\n* For [[PropertyValue]], it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.
+     * 
      *  @property value
-     *  @type schema,Number | schema,Boolean | schema,Text | schema,StructuredValue
+     *  @type schema, Number | schema,Boolean | schema,Text | schema,StructuredValue
      */
     prototype.value = null;
     /**
      *  Schema.org/maxValue
      *  The upper value of some characteristic or property.
+     * 
      *  @property maxValue
      *  @type Number
      */
@@ -10938,6 +12335,7 @@ QuantitativeValue = stjs.extend(QuantitativeValue, StructuredValue, [], function
 /**
  *  Schema.org/DatedMoneySpecification
  *  A DatedMoneySpecification represents monetary values with optional start and end dates. For example, this could represent an employee's salary over a specific period of time. __Note:__ This type has been superseded by [[MonetaryAmount]] use of that type is recommended
+ * 
  *  @author schema.org
  *  @class DatedMoneySpecification
  *  @module org.schema
@@ -10945,6 +12343,7 @@ QuantitativeValue = stjs.extend(QuantitativeValue, StructuredValue, [], function
  */
 var DatedMoneySpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -10956,13 +12355,15 @@ DatedMoneySpecification = stjs.extend(DatedMoneySpecification, StructuredValue, 
     /**
      *  Schema.org/amount
      *  The amount of money.
+     * 
      *  @property amount
-     *  @type schema,Number | schema,MonetaryAmount
+     *  @type schema, Number | schema,MonetaryAmount
      */
     prototype.amount = null;
     /**
      *  Schema.org/currency
      *  The currency in which the monetary amount is expressed (in 3-letter [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) format).
+     * 
      *  @property currency
      *  @type Text
      */
@@ -10970,21 +12371,24 @@ DatedMoneySpecification = stjs.extend(DatedMoneySpecification, StructuredValue, 
     /**
      *  Schema.org/startDate
      *  The start date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property startDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.startDate = null;
     /**
      *  Schema.org/endDate
      *  The end date and time of the item (in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)).
+     * 
      *  @property endDate
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.endDate = null;
 }, {amount: "Object", startDate: "Object", endDate: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/EngineSpecification
  *  Information about the engine of the vehicle. A vehicle can have multiple engines represented by multiple engine specification entities.
+ * 
  *  @author schema.org
  *  @class EngineSpecification
  *  @module org.schema
@@ -10992,6 +12396,7 @@ DatedMoneySpecification = stjs.extend(DatedMoneySpecification, StructuredValue, 
  */
 var EngineSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11003,14 +12408,16 @@ EngineSpecification = stjs.extend(EngineSpecification, StructuredValue, [], func
     /**
      *  Schema.org/fuelType
      *  The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.
+     * 
      *  @property fuelType
-     *  @type schema,URL | schema,Text | schema,QualitativeValue
+     *  @type schema, URL | schema,Text | schema,QualitativeValue
      */
     prototype.fuelType = null;
 }, {fuelType: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/MonetaryAmount
  *  A monetary value or range. This type can be used to describe an amount of money such as $50 USD, or a range as in describing a bank account being suitable for a balance between £1,000 and £1,000,000 GBP, or the value of a salary, etc. It is recommended to use [[PriceSpecification]] Types to describe the price of an Offer, Invoice, etc.
+ * 
  *  @author schema.org
  *  @class MonetaryAmount
  *  @module org.schema
@@ -11018,6 +12425,7 @@ EngineSpecification = stjs.extend(EngineSpecification, StructuredValue, [], func
  */
 var MonetaryAmount = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11029,6 +12437,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -11036,6 +12445,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
     /**
      *  Schema.org/minValue
      *  The lower value of some characteristic or property.
+     * 
      *  @property minValue
      *  @type Number
      */
@@ -11043,6 +12453,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -11050,6 +12461,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
     /**
      *  Schema.org/currency
      *  The currency in which the monetary amount is expressed (in 3-letter [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) format).
+     * 
      *  @property currency
      *  @type Text
      */
@@ -11057,13 +12469,15 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
     /**
      *  Schema.org/value
      *  The value of the quantitative value or property value node.\n\n* For [[QuantitativeValue]] and [[MonetaryAmount]], the recommended type for values is 'Number'.\n* For [[PropertyValue]], it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.
+     * 
      *  @property value
-     *  @type schema,Number | schema,Boolean | schema,Text | schema,StructuredValue
+     *  @type schema, Number | schema,Boolean | schema,Text | schema,StructuredValue
      */
     prototype.value = null;
     /**
      *  Schema.org/maxValue
      *  The upper value of some characteristic or property.
+     * 
      *  @property maxValue
      *  @type Number
      */
@@ -11072,6 +12486,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
 /**
  *  Schema.org/TypeAndQuantityNode
  *  A structured value indicating the quantity, unit of measurement, and business function of goods included in a bundle offer.
+ * 
  *  @author schema.org
  *  @class TypeAndQuantityNode
  *  @module org.schema
@@ -11079,6 +12494,7 @@ MonetaryAmount = stjs.extend(MonetaryAmount, StructuredValue, [], function(const
  */
 var TypeAndQuantityNode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11090,6 +12506,7 @@ TypeAndQuantityNode = stjs.extend(TypeAndQuantityNode, StructuredValue, [], func
     /**
      *  Schema.org/businessFunction
      *  The business function (e.g. sell, lease, repair, dispose) of the offer or component of a bundle (TypeAndQuantityNode). The default is http://purl.org/goodrelations/v1#Sell.
+     * 
      *  @property businessFunction
      *  @type BusinessFunction
      */
@@ -11097,14 +12514,16 @@ TypeAndQuantityNode = stjs.extend(TypeAndQuantityNode, StructuredValue, [], func
     /**
      *  Schema.org/unitCode
      *  The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.
+     * 
      *  @property unitCode
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.unitCode = null;
     /**
      *  Schema.org/unitText
      *  A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code for
-     * <a href='unitCode'>unitCode</a>.
+     *  <a href='unitCode'>unitCode</a>.
+     * 
      *  @property unitText
      *  @type Text
      */
@@ -11112,13 +12531,15 @@ TypeAndQuantityNode = stjs.extend(TypeAndQuantityNode, StructuredValue, [], func
     /**
      *  Schema.org/typeOfGood
      *  The product that this structured value is referring to.
+     * 
      *  @property typeOfGood
-     *  @type schema,Service | schema,Product
+     *  @type schema, Service | schema,Product
      */
     prototype.typeOfGood = null;
     /**
      *  Schema.org/amountOfThisGood
      *  The quantity of the goods included in the offer.
+     * 
      *  @property amountOfThisGood
      *  @type Number
      */
@@ -11127,6 +12548,7 @@ TypeAndQuantityNode = stjs.extend(TypeAndQuantityNode, StructuredValue, [], func
 /**
  *  Schema.org/ReservationStatusType
  *  Enumerated status values for Reservation.
+ * 
  *  @author schema.org
  *  @class ReservationStatusType
  *  @module org.schema
@@ -11134,6 +12556,7 @@ TypeAndQuantityNode = stjs.extend(TypeAndQuantityNode, StructuredValue, [], func
  */
 var ReservationStatusType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11145,6 +12568,7 @@ ReservationStatusType = stjs.extend(ReservationStatusType, Enumeration, [], null
 /**
  *  Schema.org/MusicAlbumProductionType
  *  Classification of the album by it's type of content: soundtrack, live album, studio album, etc.
+ * 
  *  @author schema.org
  *  @class MusicAlbumProductionType
  *  @module org.schema
@@ -11152,6 +12576,7 @@ ReservationStatusType = stjs.extend(ReservationStatusType, Enumeration, [], null
  */
 var MusicAlbumProductionType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11163,6 +12588,7 @@ MusicAlbumProductionType = stjs.extend(MusicAlbumProductionType, Enumeration, []
 /**
  *  Schema.org/ActionStatusType
  *  The status of an Action.
+ * 
  *  @author schema.org
  *  @class ActionStatusType
  *  @module org.schema
@@ -11170,6 +12596,7 @@ MusicAlbumProductionType = stjs.extend(MusicAlbumProductionType, Enumeration, []
  */
 var ActionStatusType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11181,6 +12608,7 @@ ActionStatusType = stjs.extend(ActionStatusType, Enumeration, [], null, {identif
 /**
  *  Schema.org/QualitativeValue
  *  A predefined value for a product characteristic, e.g. the power cord plug type 'US' or the garment sizes 'S', 'M', 'L', and 'XL'.
+ * 
  *  @author schema.org
  *  @class QualitativeValue
  *  @module org.schema
@@ -11188,6 +12616,7 @@ ActionStatusType = stjs.extend(ActionStatusType, Enumeration, [], null, {identif
  */
 var QualitativeValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11199,6 +12628,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/greaterOrEqual
      *  This ordering relation for qualitative values indicates that the subject is greater than or equal to the object.
+     * 
      *  @property greaterOrEqual
      *  @type QualitativeValue
      */
@@ -11214,6 +12644,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/nonEqual
      *  This ordering relation for qualitative values indicates that the subject is not equal to the object.
+     * 
      *  @property nonEqual
      *  @type QualitativeValue
      */
@@ -11221,6 +12652,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/lesser
      *  This ordering relation for qualitative values indicates that the subject is lesser than the object.
+     * 
      *  @property lesser
      *  @type QualitativeValue
      */
@@ -11228,6 +12660,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/lesserOrEqual
      *  This ordering relation for qualitative values indicates that the subject is lesser than or equal to the object.
+     * 
      *  @property lesserOrEqual
      *  @type QualitativeValue
      */
@@ -11235,6 +12668,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/equal
      *  This ordering relation for qualitative values indicates that the subject is equal to the object.
+     * 
      *  @property equal
      *  @type QualitativeValue
      */
@@ -11242,6 +12676,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/greater
      *  This ordering relation for qualitative values indicates that the subject is greater than the object.
+     * 
      *  @property greater
      *  @type QualitativeValue
      */
@@ -11249,15 +12684,16 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
     /**
      *  Schema.org/valueReference
      *  A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.
+     * 
      *  @property valueReference
-     *  @type schema,StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
+     *  @type schema, StructuredValue | schema,QualitativeValue | schema,Enumeration | schema,QuantitativeValue | schema,PropertyValue
      */
     prototype.valueReference = null;
 }, {greaterOrEqual: "QualitativeValue", additionalProperty: "PropertyValue", nonEqual: "QualitativeValue", lesser: "QualitativeValue", lesserOrEqual: "QualitativeValue", equal: "QualitativeValue", greater: "QualitativeValue", valueReference: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/BusinessEntityType
  *  A business entity type is a conceptual entity representing the legal form, the size, the main line of business, the position in the value chain, or any combination thereof, of an organization or business person.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#Business\n* http://purl.org/goodrelations/v1#Enduser\n* http://purl.org/goodrelations/v1#PublicInstitution\n* http://purl.org/goodrelations/v1#Reseller
- * 	  
+ * 
  *  @author schema.org
  *  @class BusinessEntityType
  *  @module org.schema
@@ -11265,6 +12701,7 @@ QualitativeValue = stjs.extend(QualitativeValue, Enumeration, [], function(const
  */
 var BusinessEntityType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11276,7 +12713,7 @@ BusinessEntityType = stjs.extend(BusinessEntityType, Enumeration, [], null, {ide
 /**
  *  Schema.org/BusinessFunction
  *  The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the organization or business person through the offer. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation. Proprietary specifications of access rights are also instances of this class.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#ConstructionInstallation\n* http://purl.org/goodrelations/v1#Dispose\n* http://purl.org/goodrelations/v1#LeaseOut\n* http://purl.org/goodrelations/v1#Maintain\n* http://purl.org/goodrelations/v1#ProvideService\n* http://purl.org/goodrelations/v1#Repair\n* http://purl.org/goodrelations/v1#Sell\n* http://purl.org/goodrelations/v1#Buy
- *         
+ * 
  *  @author schema.org
  *  @class BusinessFunction
  *  @module org.schema
@@ -11284,6 +12721,7 @@ BusinessEntityType = stjs.extend(BusinessEntityType, Enumeration, [], null, {ide
  */
 var BusinessFunction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11295,9 +12733,9 @@ BusinessFunction = stjs.extend(BusinessFunction, Enumeration, [], null, {identif
 /**
  *  Schema.org/DayOfWeek
  *  The day of the week, e.g. used to specify to which day the opening hours of an OpeningHoursSpecification refer.
+ *  <p>
+ *  Originally, URLs from [GoodRelations](http://purl.org/goodrelations/v1) were used (for [[Monday]], [[Tuesday]], [[Wednesday]], [[Thursday]], [[Friday]], [[Saturday]], [[Sunday]] plus a special entry for [[PublicHolidays]]); these have now been integrated directly into schema.org.
  * 
- * Originally, URLs from [GoodRelations](http://purl.org/goodrelations/v1) were used (for [[Monday]], [[Tuesday]], [[Wednesday]], [[Thursday]], [[Friday]], [[Saturday]], [[Sunday]] plus a special entry for [[PublicHolidays]]); these have now been integrated directly into schema.org.
- *       
  *  @author schema.org
  *  @class DayOfWeek
  *  @module org.schema
@@ -11305,6 +12743,7 @@ BusinessFunction = stjs.extend(BusinessFunction, Enumeration, [], null, {identif
  */
 var DayOfWeek = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11316,6 +12755,7 @@ DayOfWeek = stjs.extend(DayOfWeek, Enumeration, [], null, {identifier: "Object",
 /**
  *  Schema.org/MusicAlbumReleaseType
  *  The kind of release which this album is: single, EP or album.
+ * 
  *  @author schema.org
  *  @class MusicAlbumReleaseType
  *  @module org.schema
@@ -11323,6 +12763,7 @@ DayOfWeek = stjs.extend(DayOfWeek, Enumeration, [], null, {identifier: "Object",
  */
 var MusicAlbumReleaseType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11333,7 +12774,8 @@ function() {
 MusicAlbumReleaseType = stjs.extend(MusicAlbumReleaseType, Enumeration, [], null, {identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/RestrictedDiet
- *  A diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons. 
+ *  A diet restricted to certain foods or preparations for cultural, religious, health or lifestyle reasons.
+ * 
  *  @author schema.org
  *  @class RestrictedDiet
  *  @module org.schema
@@ -11341,6 +12783,7 @@ MusicAlbumReleaseType = stjs.extend(MusicAlbumReleaseType, Enumeration, [], null
  */
 var RestrictedDiet = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11352,6 +12795,7 @@ RestrictedDiet = stjs.extend(RestrictedDiet, Enumeration, [], null, {identifier:
 /**
  *  Schema.org/PaymentStatusType
  *  A specific payment status. For example, PaymentDue, PaymentComplete, etc.
+ * 
  *  @author schema.org
  *  @class PaymentStatusType
  *  @module org.schema
@@ -11359,6 +12803,7 @@ RestrictedDiet = stjs.extend(RestrictedDiet, Enumeration, [], null, {identifier:
  */
 var PaymentStatusType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11370,6 +12815,7 @@ PaymentStatusType = stjs.extend(PaymentStatusType, Enumeration, [], null, {ident
 /**
  *  Schema.org/MusicReleaseFormatType
  *  Format of this release (the type of recording media used, ie. compact disc, digital media, LP, etc.).
+ * 
  *  @author schema.org
  *  @class MusicReleaseFormatType
  *  @module org.schema
@@ -11377,6 +12823,7 @@ PaymentStatusType = stjs.extend(PaymentStatusType, Enumeration, [], null, {ident
  */
 var MusicReleaseFormatType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11388,6 +12835,7 @@ MusicReleaseFormatType = stjs.extend(MusicReleaseFormatType, Enumeration, [], nu
 /**
  *  Schema.org/OfferItemCondition
  *  A list of possible conditions for the item.
+ * 
  *  @author schema.org
  *  @class OfferItemCondition
  *  @module org.schema
@@ -11395,6 +12843,7 @@ MusicReleaseFormatType = stjs.extend(MusicReleaseFormatType, Enumeration, [], nu
  */
 var OfferItemCondition = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11406,6 +12855,7 @@ OfferItemCondition = stjs.extend(OfferItemCondition, Enumeration, [], null, {ide
 /**
  *  Schema.org/MapCategoryType
  *  An enumeration of several kinds of Map.
+ * 
  *  @author schema.org
  *  @class MapCategoryType
  *  @module org.schema
@@ -11413,6 +12863,7 @@ OfferItemCondition = stjs.extend(OfferItemCondition, Enumeration, [], null, {ide
  */
 var MapCategoryType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11424,6 +12875,7 @@ MapCategoryType = stjs.extend(MapCategoryType, Enumeration, [], null, {identifie
 /**
  *  Schema.org/OrderStatus
  *  Enumerated status values for Order.
+ * 
  *  @author schema.org
  *  @class OrderStatus
  *  @module org.schema
@@ -11431,6 +12883,7 @@ MapCategoryType = stjs.extend(MapCategoryType, Enumeration, [], null, {identifie
  */
 var OrderStatus = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11442,6 +12895,7 @@ OrderStatus = stjs.extend(OrderStatus, Enumeration, [], null, {identifier: "Obje
 /**
  *  Schema.org/BookFormatType
  *  The publication format of the book.
+ * 
  *  @author schema.org
  *  @class BookFormatType
  *  @module org.schema
@@ -11449,6 +12903,7 @@ OrderStatus = stjs.extend(OrderStatus, Enumeration, [], null, {identifier: "Obje
  */
 var BookFormatType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11460,7 +12915,7 @@ BookFormatType = stjs.extend(BookFormatType, Enumeration, [], null, {identifier:
 /**
  *  Schema.org/DeliveryMethod
  *  A delivery method is a standardized procedure for transferring the product or service to the destination of fulfillment chosen by the customer. Delivery methods are characterized by the means of transportation used, and by the organization or group that is the contracting party for the sending organization or person.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#DeliveryModeDirectDownload\n* http://purl.org/goodrelations/v1#DeliveryModeFreight\n* http://purl.org/goodrelations/v1#DeliveryModeMail\n* http://purl.org/goodrelations/v1#DeliveryModeOwnFleet\n* http://purl.org/goodrelations/v1#DeliveryModePickUp\n* http://purl.org/goodrelations/v1#DHL\n* http://purl.org/goodrelations/v1#FederalExpress\n* http://purl.org/goodrelations/v1#UPS
- *         
+ * 
  *  @author schema.org
  *  @class DeliveryMethod
  *  @module org.schema
@@ -11468,6 +12923,7 @@ BookFormatType = stjs.extend(BookFormatType, Enumeration, [], null, {identifier:
  */
 var DeliveryMethod = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11479,6 +12935,7 @@ DeliveryMethod = stjs.extend(DeliveryMethod, Enumeration, [], null, {identifier:
 /**
  *  Schema.org/ItemListOrderType
  *  Enumerated for values for itemListOrder for indicating how an ordered ItemList is organized.
+ * 
  *  @author schema.org
  *  @class ItemListOrderType
  *  @module org.schema
@@ -11486,6 +12943,7 @@ DeliveryMethod = stjs.extend(DeliveryMethod, Enumeration, [], null, {identifier:
  */
 var ItemListOrderType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11497,6 +12955,7 @@ ItemListOrderType = stjs.extend(ItemListOrderType, Enumeration, [], null, {ident
 /**
  *  Schema.org/GenderType
  *  An enumeration of genders.
+ * 
  *  @author schema.org
  *  @class GenderType
  *  @module org.schema
@@ -11504,6 +12963,7 @@ ItemListOrderType = stjs.extend(ItemListOrderType, Enumeration, [], null, {ident
  */
 var GenderType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11515,6 +12975,7 @@ GenderType = stjs.extend(GenderType, Enumeration, [], null, {identifier: "Object
 /**
  *  Schema.org/GamePlayMode
  *  Indicates whether this game is multi-player, co-op or single-player.
+ * 
  *  @author schema.org
  *  @class GamePlayMode
  *  @module org.schema
@@ -11522,6 +12983,7 @@ GenderType = stjs.extend(GenderType, Enumeration, [], null, {identifier: "Object
  */
 var GamePlayMode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11533,6 +12995,7 @@ GamePlayMode = stjs.extend(GamePlayMode, Enumeration, [], null, {identifier: "Ob
 /**
  *  Schema.org/GameServerStatus
  *  Status of a game server.
+ * 
  *  @author schema.org
  *  @class GameServerStatus
  *  @module org.schema
@@ -11540,6 +13003,7 @@ GamePlayMode = stjs.extend(GamePlayMode, Enumeration, [], null, {identifier: "Ob
  */
 var GameServerStatus = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11551,6 +13015,7 @@ GameServerStatus = stjs.extend(GameServerStatus, Enumeration, [], null, {identif
 /**
  *  Schema.org/ContactPointOption
  *  Enumerated options related to a ContactPoint.
+ * 
  *  @author schema.org
  *  @class ContactPointOption
  *  @module org.schema
@@ -11558,6 +13023,7 @@ GameServerStatus = stjs.extend(GameServerStatus, Enumeration, [], null, {identif
  */
 var ContactPointOption = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11569,6 +13035,7 @@ ContactPointOption = stjs.extend(ContactPointOption, Enumeration, [], null, {ide
 /**
  *  Schema.org/ItemAvailability
  *  A list of possible product availability options.
+ * 
  *  @author schema.org
  *  @class ItemAvailability
  *  @module org.schema
@@ -11576,6 +13043,7 @@ ContactPointOption = stjs.extend(ContactPointOption, Enumeration, [], null, {ide
  */
 var ItemAvailability = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11587,6 +13055,7 @@ ItemAvailability = stjs.extend(ItemAvailability, Enumeration, [], null, {identif
 /**
  *  Schema.org/BoardingPolicyType
  *  A type of boarding policy used by an airline.
+ * 
  *  @author schema.org
  *  @class BoardingPolicyType
  *  @module org.schema
@@ -11594,6 +13063,7 @@ ItemAvailability = stjs.extend(ItemAvailability, Enumeration, [], null, {identif
  */
 var BoardingPolicyType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11605,6 +13075,7 @@ BoardingPolicyType = stjs.extend(BoardingPolicyType, Enumeration, [], null, {ide
 /**
  *  Schema.org/RsvpResponseType
  *  RsvpResponseType is an enumeration type whose instances represent responding to an RSVP request.
+ * 
  *  @author schema.org
  *  @class RsvpResponseType
  *  @module org.schema
@@ -11612,6 +13083,7 @@ BoardingPolicyType = stjs.extend(BoardingPolicyType, Enumeration, [], null, {ide
  */
 var RsvpResponseType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11623,6 +13095,7 @@ RsvpResponseType = stjs.extend(RsvpResponseType, Enumeration, [], null, {identif
 /**
  *  Schema.org/EventStatusType
  *  EventStatusType is an enumeration type whose instances represent several states that an Event may be in.
+ * 
  *  @author schema.org
  *  @class EventStatusType
  *  @module org.schema
@@ -11630,6 +13103,7 @@ RsvpResponseType = stjs.extend(RsvpResponseType, Enumeration, [], null, {identif
  */
 var EventStatusType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11641,6 +13115,7 @@ EventStatusType = stjs.extend(EventStatusType, Enumeration, [], null, {identifie
 /**
  *  Schema.org/Specialty
  *  Any branch of a field in which people typically develop specific expertise, usually after significant study, time, and effort.
+ * 
  *  @author schema.org
  *  @class Specialty
  *  @module org.schema
@@ -11648,6 +13123,7 @@ EventStatusType = stjs.extend(EventStatusType, Enumeration, [], null, {identifie
  */
 var Specialty = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11659,6 +13135,7 @@ Specialty = stjs.extend(Specialty, Enumeration, [], null, {identifier: "Object",
 /**
  *  Schema.org/DigitalDocumentPermissionType
  *  A type of permission which can be granted for accessing a digital document.
+ * 
  *  @author schema.org
  *  @class DigitalDocumentPermissionType
  *  @module org.schema
@@ -11666,6 +13143,7 @@ Specialty = stjs.extend(Specialty, Enumeration, [], null, {identifier: "Object",
  */
 var DigitalDocumentPermissionType = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11677,7 +13155,7 @@ DigitalDocumentPermissionType = stjs.extend(DigitalDocumentPermissionType, Enume
 /**
  *  Schema.org/WarrantyScope
  *  A range of of services that will be provided to a customer free of charge in case of a defect or malfunction of a product.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#Labor-BringIn\n* http://purl.org/goodrelations/v1#PartsAndLabor-BringIn\n* http://purl.org/goodrelations/v1#PartsAndLabor-PickUp
- *       
+ * 
  *  @author schema.org
  *  @class WarrantyScope
  *  @module org.schema
@@ -11685,6 +13163,7 @@ DigitalDocumentPermissionType = stjs.extend(DigitalDocumentPermissionType, Enume
  */
 var WarrantyScope = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11696,7 +13175,7 @@ WarrantyScope = stjs.extend(WarrantyScope, Enumeration, [], null, {identifier: "
 /**
  *  Schema.org/PaymentMethod
  *  A payment method is a standardized procedure for transferring the monetary amount for a purchase. Payment methods are characterized by the legal and technical structures used, and by the organization or group carrying out the transaction.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#ByBankTransferInAdvance\n* http://purl.org/goodrelations/v1#ByInvoice\n* http://purl.org/goodrelations/v1#Cash\n* http://purl.org/goodrelations/v1#CheckInAdvance\n* http://purl.org/goodrelations/v1#COD\n* http://purl.org/goodrelations/v1#DirectDebit\n* http://purl.org/goodrelations/v1#GoogleCheckout\n* http://purl.org/goodrelations/v1#PayPal\n* http://purl.org/goodrelations/v1#PaySwarm
- *         
+ * 
  *  @author schema.org
  *  @class PaymentMethod
  *  @module org.schema
@@ -11704,6 +13183,7 @@ WarrantyScope = stjs.extend(WarrantyScope, Enumeration, [], null, {identifier: "
  */
 var PaymentMethod = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11715,7 +13195,7 @@ PaymentMethod = stjs.extend(PaymentMethod, Enumeration, [], null, {identifier: "
 /**
  *  Schema.org/BreadcrumbList
  *  A BreadcrumbList is an ItemList consisting of a chain of linked Web pages, typically described using at least their URL and their name, and typically ending with the current page.\n\nThe [[position]] property is used to reconstruct the order of the items in a BreadcrumbList The convention is that a breadcrumb list has an [[itemListOrder]] of [[ItemListOrderAscending]] (lower values listed first), and that the first items in this list correspond to the "top" or beginning of the breadcrumb trail, e.g. with a site or section homepage. The specific values of 'position' are not assigned meaning for a BreadcrumbList, but they should be integers, e.g. beginning with '1' for the first item in the list.
- *       
+ * 
  *  @author schema.org
  *  @class BreadcrumbList
  *  @module org.schema
@@ -11723,6 +13203,7 @@ PaymentMethod = stjs.extend(PaymentMethod, Enumeration, [], null, {identifier: "
  */
 var BreadcrumbList = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11734,6 +13215,7 @@ BreadcrumbList = stjs.extend(BreadcrumbList, ItemList, [], null, {itemListOrder:
 /**
  *  Schema.org/OfferCatalog
  *  An OfferCatalog is an ItemList that contains related Offers and/or further OfferCatalogs that are offeredBy the same provider.
+ * 
  *  @author schema.org
  *  @class OfferCatalog
  *  @module org.schema
@@ -11741,6 +13223,7 @@ BreadcrumbList = stjs.extend(BreadcrumbList, ItemList, [], null, {itemListOrder:
  */
 var OfferCatalog = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11752,6 +13235,7 @@ OfferCatalog = stjs.extend(OfferCatalog, ItemList, [], null, {itemListOrder: "Ob
 /**
  *  Schema.org/AggregateOffer
  *  When a single product is associated with multiple offers (for example, the same pair of shoes is offered by different merchants), then AggregateOffer can be used.
+ * 
  *  @author schema.org
  *  @class AggregateOffer
  *  @module org.schema
@@ -11759,6 +13243,7 @@ OfferCatalog = stjs.extend(OfferCatalog, ItemList, [], null, {itemListOrder: "Ob
  */
 var AggregateOffer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11770,6 +13255,7 @@ AggregateOffer = stjs.extend(AggregateOffer, Offer, [], function(constructor, pr
     /**
      *  Schema.org/offers
      *  An offer to provide this item&#x2014;for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.
+     * 
      *  @property offers
      *  @type Offer
      */
@@ -11777,20 +13263,23 @@ AggregateOffer = stjs.extend(AggregateOffer, Offer, [], function(constructor, pr
     /**
      *  Schema.org/highPrice
      *  The highest price of all offers available.
+     * 
      *  @property highPrice
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.highPrice = null;
     /**
      *  Schema.org/lowPrice
      *  The lowest price of all offers available.
+     * 
      *  @property lowPrice
-     *  @type schema,Number | schema,Text
+     *  @type schema, Number | schema,Text
      */
     prototype.lowPrice = null;
     /**
      *  Schema.org/offerCount
      *  The number of offers for the product.
+     * 
      *  @property offerCount
      *  @type Integer
      */
@@ -11799,6 +13288,7 @@ AggregateOffer = stjs.extend(AggregateOffer, Offer, [], function(constructor, pr
 /**
  *  Schema.org/TelevisionChannel
  *  A unique instance of a television BroadcastService on a CableOrSatelliteService lineup.
+ * 
  *  @author schema.org
  *  @class TelevisionChannel
  *  @module org.schema
@@ -11806,6 +13296,7 @@ AggregateOffer = stjs.extend(AggregateOffer, Offer, [], function(constructor, pr
  */
 var TelevisionChannel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11817,6 +13308,7 @@ TelevisionChannel = stjs.extend(TelevisionChannel, BroadcastChannel, [], null, {
 /**
  *  Schema.org/RadioChannel
  *  A unique instance of a radio BroadcastService on a CableOrSatelliteService lineup.
+ * 
  *  @author schema.org
  *  @class RadioChannel
  *  @module org.schema
@@ -11824,6 +13316,7 @@ TelevisionChannel = stjs.extend(TelevisionChannel, BroadcastChannel, [], null, {
  */
 var RadioChannel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11835,6 +13328,7 @@ RadioChannel = stjs.extend(RadioChannel, BroadcastChannel, [], null, {providesBr
 /**
  *  Schema.org/RentalCarReservation
  *  A reservation for a rental car.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations.
+ * 
  *  @author schema.org
  *  @class RentalCarReservation
  *  @module org.schema
@@ -11842,6 +13336,7 @@ RadioChannel = stjs.extend(RadioChannel, BroadcastChannel, [], null, {providesBr
  */
 var RentalCarReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11853,6 +13348,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
     /**
      *  Schema.org/dropoffLocation
      *  Where a rental car can be dropped off.
+     * 
      *  @property dropoffLocation
      *  @type Place
      */
@@ -11860,6 +13356,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
     /**
      *  Schema.org/pickupLocation
      *  Where a taxi will pick up a passenger or a rental car can be picked up.
+     * 
      *  @property pickupLocation
      *  @type Place
      */
@@ -11867,6 +13364,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
     /**
      *  Schema.org/pickupTime
      *  When a taxi will pickup a passenger or a rental car can be picked up.
+     * 
      *  @property pickupTime
      *  @type DateTime
      */
@@ -11874,6 +13372,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
     /**
      *  Schema.org/dropoffTime
      *  When a rental car can be dropped off.
+     * 
      *  @property dropoffTime
      *  @type DateTime
      */
@@ -11882,6 +13381,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
 /**
  *  Schema.org/LodgingReservation
  *  A reservation for lodging at a hotel, motel, inn, etc.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations.
+ * 
  *  @author schema.org
  *  @class LodgingReservation
  *  @module org.schema
@@ -11889,6 +13389,7 @@ RentalCarReservation = stjs.extend(RentalCarReservation, Reservation, [], functi
  */
 var LodgingReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11900,27 +13401,31 @@ LodgingReservation = stjs.extend(LodgingReservation, Reservation, [], function(c
     /**
      *  Schema.org/numChildren
      *  The number of children staying in the unit.
+     * 
      *  @property numChildren
-     *  @type schema,Integer | schema,QuantitativeValue
+     *  @type schema, Integer | schema,QuantitativeValue
      */
     prototype.numChildren = null;
     /**
      *  Schema.org/lodgingUnitType
      *  Textual description of the unit type (including suite vs. room, size of bed, etc.).
+     * 
      *  @property lodgingUnitType
-     *  @type schema,Text | schema,QualitativeValue
+     *  @type schema, Text | schema,QualitativeValue
      */
     prototype.lodgingUnitType = null;
     /**
      *  Schema.org/numAdults
      *  The number of adults staying in the unit.
+     * 
      *  @property numAdults
-     *  @type schema,Integer | schema,QuantitativeValue
+     *  @type schema, Integer | schema,QuantitativeValue
      */
     prototype.numAdults = null;
     /**
      *  Schema.org/lodgingUnitDescription
      *  A full description of the lodging unit.
+     * 
      *  @property lodgingUnitDescription
      *  @type Text
      */
@@ -11928,6 +13433,7 @@ LodgingReservation = stjs.extend(LodgingReservation, Reservation, [], function(c
     /**
      *  Schema.org/checkoutTime
      *  The latest someone may check out of a lodging establishment.
+     * 
      *  @property checkoutTime
      *  @type DateTime
      */
@@ -11935,6 +13441,7 @@ LodgingReservation = stjs.extend(LodgingReservation, Reservation, [], function(c
     /**
      *  Schema.org/checkinTime
      *  The earliest someone may check into a lodging establishment.
+     * 
      *  @property checkinTime
      *  @type DateTime
      */
@@ -11943,6 +13450,7 @@ LodgingReservation = stjs.extend(LodgingReservation, Reservation, [], function(c
 /**
  *  Schema.org/BusReservation
  *  A reservation for bus travel. \n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class BusReservation
  *  @module org.schema
@@ -11950,6 +13458,7 @@ LodgingReservation = stjs.extend(LodgingReservation, Reservation, [], function(c
  */
 var BusReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11961,6 +13470,7 @@ BusReservation = stjs.extend(BusReservation, Reservation, [], null, {bookingAgen
 /**
  *  Schema.org/EventReservation
  *  A reservation for an event like a concert, sporting event, or lecture.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class EventReservation
  *  @module org.schema
@@ -11968,6 +13478,7 @@ BusReservation = stjs.extend(BusReservation, Reservation, [], null, {bookingAgen
  */
 var EventReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11979,6 +13490,7 @@ EventReservation = stjs.extend(EventReservation, Reservation, [], null, {booking
 /**
  *  Schema.org/TrainReservation
  *  A reservation for train travel.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class TrainReservation
  *  @module org.schema
@@ -11986,6 +13498,7 @@ EventReservation = stjs.extend(EventReservation, Reservation, [], null, {booking
  */
 var TrainReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -11997,6 +13510,7 @@ TrainReservation = stjs.extend(TrainReservation, Reservation, [], null, {booking
 /**
  *  Schema.org/TaxiReservation
  *  A reservation for a taxi.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class TaxiReservation
  *  @module org.schema
@@ -12004,6 +13518,7 @@ TrainReservation = stjs.extend(TrainReservation, Reservation, [], null, {booking
  */
 var TaxiReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12015,6 +13530,7 @@ TaxiReservation = stjs.extend(TaxiReservation, Reservation, [], function(constru
     /**
      *  Schema.org/pickupLocation
      *  Where a taxi will pick up a passenger or a rental car can be picked up.
+     * 
      *  @property pickupLocation
      *  @type Place
      */
@@ -12022,6 +13538,7 @@ TaxiReservation = stjs.extend(TaxiReservation, Reservation, [], function(constru
     /**
      *  Schema.org/pickupTime
      *  When a taxi will pickup a passenger or a rental car can be picked up.
+     * 
      *  @property pickupTime
      *  @type DateTime
      */
@@ -12029,14 +13546,16 @@ TaxiReservation = stjs.extend(TaxiReservation, Reservation, [], function(constru
     /**
      *  Schema.org/partySize
      *  Number of people the reservation should accommodate.
+     * 
      *  @property partySize
-     *  @type schema,Integer | schema,QuantitativeValue
+     *  @type schema, Integer | schema,QuantitativeValue
      */
     prototype.partySize = null;
 }, {pickupLocation: "Place", partySize: "Object", bookingAgent: "Object", totalPrice: "Object", broker: "Object", reservationStatus: "ReservationStatusType", programMembershipUsed: "ProgramMembership", provider: "Object", reservationFor: "Thing", reservedTicket: "Ticket", underName: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/ReservationPackage
  *  A group of multiple reservations with common values for all sub-reservations.
+ * 
  *  @author schema.org
  *  @class ReservationPackage
  *  @module org.schema
@@ -12044,6 +13563,7 @@ TaxiReservation = stjs.extend(TaxiReservation, Reservation, [], function(constru
  */
 var ReservationPackage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12055,6 +13575,7 @@ ReservationPackage = stjs.extend(ReservationPackage, Reservation, [], function(c
     /**
      *  Schema.org/subReservation
      *  The individual reservations included in the package. Typically a repeated property.
+     * 
      *  @property subReservation
      *  @type Reservation
      */
@@ -12063,6 +13584,7 @@ ReservationPackage = stjs.extend(ReservationPackage, Reservation, [], function(c
 /**
  *  Schema.org/FlightReservation
  *  A reservation for air travel.\n\nNote: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use [[Offer]].
+ * 
  *  @author schema.org
  *  @class FlightReservation
  *  @module org.schema
@@ -12070,6 +13592,7 @@ ReservationPackage = stjs.extend(ReservationPackage, Reservation, [], function(c
  */
 var FlightReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12081,6 +13604,7 @@ FlightReservation = stjs.extend(FlightReservation, Reservation, [], function(con
     /**
      *  Schema.org/boardingGroup
      *  The airline-specific indicator of boarding order / preference.
+     * 
      *  @property boardingGroup
      *  @type Text
      */
@@ -12088,6 +13612,7 @@ FlightReservation = stjs.extend(FlightReservation, Reservation, [], function(con
     /**
      *  Schema.org/securityScreening
      *  The type of security screening the passenger is subject to.
+     * 
      *  @property securityScreening
      *  @type Text
      */
@@ -12095,13 +13620,15 @@ FlightReservation = stjs.extend(FlightReservation, Reservation, [], function(con
     /**
      *  Schema.org/passengerPriorityStatus
      *  The priority status assigned to a passenger for security or boarding (e.g. FastTrack or Priority).
+     * 
      *  @property passengerPriorityStatus
-     *  @type schema,Text | schema,QualitativeValue
+     *  @type schema, Text | schema,QualitativeValue
      */
     prototype.passengerPriorityStatus = null;
     /**
      *  Schema.org/passengerSequenceNumber
      *  The passenger's sequence number as assigned by the airline.
+     * 
      *  @property passengerSequenceNumber
      *  @type Text
      */
@@ -12110,6 +13637,7 @@ FlightReservation = stjs.extend(FlightReservation, Reservation, [], function(con
 /**
  *  Schema.org/FoodEstablishmentReservation
  *  A reservation to dine at a food-related business.Note: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations.
+ * 
  *  @author schema.org
  *  @class FoodEstablishmentReservation
  *  @module org.schema
@@ -12117,6 +13645,7 @@ FlightReservation = stjs.extend(FlightReservation, Reservation, [], function(con
  */
 var FoodEstablishmentReservation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12128,6 +13657,7 @@ FoodEstablishmentReservation = stjs.extend(FoodEstablishmentReservation, Reserva
     /**
      *  Schema.org/startTime
      *  The startTime of something. For a reserved event or service (e.g. FoodEstablishmentReservation), the time that it is expected to start. For actions that span a period of time, when the action was performed. e.g. John wrote a book from *January* to December.\n\nNote that Event uses startDate/endDate instead of startTime/endTime, even when describing dates with times. This situation may be clarified in future revisions.
+     * 
      *  @property startTime
      *  @type DateTime
      */
@@ -12135,13 +13665,15 @@ FoodEstablishmentReservation = stjs.extend(FoodEstablishmentReservation, Reserva
     /**
      *  Schema.org/partySize
      *  Number of people the reservation should accommodate.
+     * 
      *  @property partySize
-     *  @type schema,Integer | schema,QuantitativeValue
+     *  @type schema, Integer | schema,QuantitativeValue
      */
     prototype.partySize = null;
     /**
      *  Schema.org/endTime
      *  The endTime of something. For a reserved event or service (e.g. FoodEstablishmentReservation), the time that it is expected to end. For actions that span a period of time, when the action was performed. e.g. John wrote a book from January to *December*.\n\nNote that Event uses startDate/endDate instead of startTime/endTime, even when describing dates with times. This situation may be clarified in future revisions.
+     * 
      *  @property endTime
      *  @type DateTime
      */
@@ -12150,6 +13682,7 @@ FoodEstablishmentReservation = stjs.extend(FoodEstablishmentReservation, Reserva
 /**
  *  Schema.org/RadioEpisode
  *  A radio episode which can be part of a series or season.
+ * 
  *  @author schema.org
  *  @class RadioEpisode
  *  @module org.schema
@@ -12157,6 +13690,7 @@ FoodEstablishmentReservation = stjs.extend(FoodEstablishmentReservation, Reserva
  */
 var RadioEpisode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12168,6 +13702,7 @@ RadioEpisode = stjs.extend(RadioEpisode, Episode, [], null, {director: "Person",
 /**
  *  Schema.org/TVEpisode
  *  A TV episode which can be part of a series or season.
+ * 
  *  @author schema.org
  *  @class TVEpisode
  *  @module org.schema
@@ -12175,6 +13710,7 @@ RadioEpisode = stjs.extend(RadioEpisode, Episode, [], null, {director: "Person",
  */
 var TVEpisode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12186,13 +13722,15 @@ TVEpisode = stjs.extend(TVEpisode, Episode, [], function(constructor, prototype)
     /**
      *  Schema.org/subtitleLanguage
      *  Languages in which subtitles/captions are available, in [IETF BCP 47 standard format](http://tools.ietf.org/html/bcp47).
+     * 
      *  @property subtitleLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.subtitleLanguage = null;
     /**
      *  Schema.org/countryOfOrigin
      *  The country of the principal offices of the production company or individual responsible for the movie or program.
+     * 
      *  @property countryOfOrigin
      *  @type Country
      */
@@ -12200,6 +13738,7 @@ TVEpisode = stjs.extend(TVEpisode, Episode, [], function(constructor, prototype)
     /**
      *  Schema.org/partOfTVSeries
      *  The TV series to which this episode or season belongs.
+     * 
      *  @property partOfTVSeries
      *  @type TVSeries
      */
@@ -12208,6 +13747,7 @@ TVEpisode = stjs.extend(TVEpisode, Episode, [], function(constructor, prototype)
 /**
  *  Schema.org/TVSeries
  *  CreativeWorkSeries dedicated to TV broadcast and associated online delivery.
+ * 
  *  @author schema.org
  *  @class TVSeries
  *  @module org.schema
@@ -12215,6 +13755,7 @@ TVEpisode = stjs.extend(TVEpisode, Episode, [], function(constructor, prototype)
  */
 var TVSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12226,6 +13767,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/episodes
      *  An episode of a TV/radio series or season.
+     * 
      *  @property episodes
      *  @type Episode
      */
@@ -12233,6 +13775,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -12240,6 +13783,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/countryOfOrigin
      *  The country of the principal offices of the production company or individual responsible for the movie or program.
+     * 
      *  @property countryOfOrigin
      *  @type Country
      */
@@ -12247,6 +13791,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/episode
      *  An episode of a tv, radio or game media within a series or season.
+     * 
      *  @property episode
      *  @type Episode
      */
@@ -12254,6 +13799,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -12261,6 +13807,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/containsSeason
      *  A season that is part of the media series.
+     * 
      *  @property containsSeason
      *  @type CreativeWorkSeason
      */
@@ -12268,13 +13815,15 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -12282,6 +13831,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/seasons
      *  A season in a media series.
+     * 
      *  @property seasons
      *  @type CreativeWorkSeason
      */
@@ -12289,6 +13839,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -12296,6 +13847,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/numberOfSeasons
      *  The number of seasons in this series.
+     * 
      *  @property numberOfSeasons
      *  @type Integer
      */
@@ -12303,6 +13855,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/season
      *  A season in a media series.
+     * 
      *  @property season
      *  @type CreativeWorkSeason
      */
@@ -12310,6 +13863,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -12317,6 +13871,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/numberOfEpisodes
      *  The number of episodes in this season or series.
+     * 
      *  @property numberOfEpisodes
      *  @type Integer
      */
@@ -12324,6 +13879,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -12332,6 +13888,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
 /**
  *  Schema.org/RadioSeries
  *  CreativeWorkSeries dedicated to radio broadcast and associated online delivery.
+ * 
  *  @author schema.org
  *  @class RadioSeries
  *  @module org.schema
@@ -12339,6 +13896,7 @@ TVSeries = stjs.extend(TVSeries, CreativeWorkSeries, [], function(constructor, p
  */
 var RadioSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12350,6 +13908,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/episodes
      *  An episode of a TV/radio series or season.
+     * 
      *  @property episodes
      *  @type Episode
      */
@@ -12357,6 +13916,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -12364,6 +13924,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/episode
      *  An episode of a tv, radio or game media within a series or season.
+     * 
      *  @property episode
      *  @type Episode
      */
@@ -12371,6 +13932,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -12378,6 +13940,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/containsSeason
      *  A season that is part of the media series.
+     * 
      *  @property containsSeason
      *  @type CreativeWorkSeason
      */
@@ -12385,13 +13948,15 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -12399,6 +13964,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/seasons
      *  A season in a media series.
+     * 
      *  @property seasons
      *  @type CreativeWorkSeason
      */
@@ -12406,6 +13972,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -12413,6 +13980,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/numberOfSeasons
      *  The number of seasons in this series.
+     * 
      *  @property numberOfSeasons
      *  @type Integer
      */
@@ -12420,6 +13988,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/season
      *  A season in a media series.
+     * 
      *  @property season
      *  @type CreativeWorkSeason
      */
@@ -12427,6 +13996,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -12434,6 +14004,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/numberOfEpisodes
      *  The number of episodes in this season or series.
+     * 
      *  @property numberOfEpisodes
      *  @type Integer
      */
@@ -12441,6 +14012,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -12449,6 +14021,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
 /**
  *  Schema.org/Periodical
  *  A publication in any medium issued in successive parts bearing numerical or chronological designations and intended, such as a magazine, scholarly journal, or newspaper to continue indefinitely.\n\nSee also [blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).
+ * 
  *  @author schema.org
  *  @class Periodical
  *  @module org.schema
@@ -12456,6 +14029,7 @@ RadioSeries = stjs.extend(RadioSeries, CreativeWorkSeries, [], function(construc
  */
 var Periodical = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12467,6 +14041,7 @@ Periodical = stjs.extend(Periodical, CreativeWorkSeries, [], function(constructo
     /**
      *  Schema.org/issn
      *  The International Standard Serial Number (ISSN) that identifies this periodical. You can repeat this property to (for example) identify different formats of this periodical.
+     * 
      *  @property issn
      *  @type Text
      */
@@ -12475,6 +14050,7 @@ Periodical = stjs.extend(Periodical, CreativeWorkSeries, [], function(constructo
 /**
  *  Schema.org/MovieSeries
  *  A series of movies. Included movies can be indicated with the hasPart property.
+ * 
  *  @author schema.org
  *  @class MovieSeries
  *  @module org.schema
@@ -12482,6 +14058,7 @@ Periodical = stjs.extend(Periodical, CreativeWorkSeries, [], function(constructo
  */
 var MovieSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12493,6 +14070,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -12500,6 +14078,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -12507,13 +14086,15 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -12521,6 +14102,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -12528,6 +14110,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -12535,6 +14118,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -12543,6 +14127,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
 /**
  *  Schema.org/VideoGameSeries
  *  A video game series.
+ * 
  *  @author schema.org
  *  @class VideoGameSeries
  *  @module org.schema
@@ -12550,6 +14135,7 @@ MovieSeries = stjs.extend(MovieSeries, CreativeWorkSeries, [], function(construc
  */
 var VideoGameSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12561,13 +14147,15 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/gameLocation
      *  Real or fictional location of the game (or part of game).
+     * 
      *  @property gameLocation
-     *  @type schema,PostalAddress | schema,Place | schema,URL
+     *  @type schema, PostalAddress | schema,Place | schema,URL
      */
     prototype.gameLocation = null;
     /**
      *  Schema.org/episodes
      *  An episode of a TV/radio series or season.
+     * 
      *  @property episodes
      *  @type Episode
      */
@@ -12575,6 +14163,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -12582,6 +14171,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/cheatCode
      *  Cheat codes to the game.
+     * 
      *  @property cheatCode
      *  @type CreativeWork
      */
@@ -12589,6 +14179,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/episode
      *  An episode of a tv, radio or game media within a series or season.
+     * 
      *  @property episode
      *  @type Episode
      */
@@ -12596,13 +14187,15 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/gamePlatform
      *  The electronic systems used to play <a href="http://en.wikipedia.org/wiki/Category:Video_game_platforms">video games</a>.
+     * 
      *  @property gamePlatform
-     *  @type schema,URL | schema,Text | schema,Thing
+     *  @type schema, URL | schema,Text | schema,Thing
      */
     prototype.gamePlatform = null;
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -12610,6 +14203,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/containsSeason
      *  A season that is part of the media series.
+     * 
      *  @property containsSeason
      *  @type CreativeWorkSeason
      */
@@ -12617,13 +14211,15 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -12631,6 +14227,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/seasons
      *  A season in a media series.
+     * 
      *  @property seasons
      *  @type CreativeWorkSeason
      */
@@ -12638,6 +14235,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -12645,6 +14243,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/playMode
      *  Indicates whether this game is multi-player, co-op or single-player.  The game can be marked as multi-player, co-op and single-player at the same time.
+     * 
      *  @property playMode
      *  @type GamePlayMode
      */
@@ -12652,6 +14251,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/quest
      *  The task that a player-controlled character, or group of characters may complete in order to gain a reward.
+     * 
      *  @property quest
      *  @type Thing
      */
@@ -12659,6 +14259,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/numberOfSeasons
      *  The number of seasons in this series.
+     * 
      *  @property numberOfSeasons
      *  @type Integer
      */
@@ -12666,6 +14267,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/season
      *  A season in a media series.
+     * 
      *  @property season
      *  @type CreativeWorkSeason
      */
@@ -12673,6 +14275,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/gameItem
      *  An item is an object within the game world that can be collected by a player or, occasionally, a non-player character.
+     * 
      *  @property gameItem
      *  @type Thing
      */
@@ -12680,6 +14283,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/numberOfPlayers
      *  Indicate how many people can play this game (minimum, maximum, or range).
+     * 
      *  @property numberOfPlayers
      *  @type QuantitativeValue
      */
@@ -12687,6 +14291,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/productionCompany
      *  The production company or studio responsible for the item e.g. series, video game, episode etc.
+     * 
      *  @property productionCompany
      *  @type Organization
      */
@@ -12694,6 +14299,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/numberOfEpisodes
      *  The number of episodes in this season or series.
+     * 
      *  @property numberOfEpisodes
      *  @type Integer
      */
@@ -12701,6 +14307,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -12708,6 +14315,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
     /**
      *  Schema.org/characterAttribute
      *  A piece of data that represents a particular aspect of a fictional character (skill, power, character points, advantage, disadvantage).
+     * 
      *  @property characterAttribute
      *  @type Thing
      */
@@ -12716,6 +14324,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
 /**
  *  Schema.org/BookSeries
  *  A series of books. Included books can be indicated with the hasPart property.
+ * 
  *  @author schema.org
  *  @class BookSeries
  *  @module org.schema
@@ -12723,6 +14332,7 @@ VideoGameSeries = stjs.extend(VideoGameSeries, CreativeWorkSeries, [], function(
  */
 var BookSeries = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12734,6 +14344,7 @@ BookSeries = stjs.extend(BookSeries, CreativeWorkSeries, [], null, {startDate: "
 /**
  *  Schema.org/ClaimReview
  *  A fact-checking review of claims made (or reported) in some creative work (referenced via itemReviewed).
+ * 
  *  @author schema.org
  *  @class ClaimReview
  *  @module org.schema
@@ -12741,6 +14352,7 @@ BookSeries = stjs.extend(BookSeries, CreativeWorkSeries, [], null, {startDate: "
  */
 var ClaimReview = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12752,6 +14364,7 @@ ClaimReview = stjs.extend(ClaimReview, Review, [], function(constructor, prototy
     /**
      *  Schema.org/claimReviewed
      *  A short summary of the specific claims reviewed in a ClaimReview.
+     * 
      *  @property claimReviewed
      *  @type Text
      */
@@ -12760,6 +14373,7 @@ ClaimReview = stjs.extend(ClaimReview, Review, [], function(constructor, prototy
 /**
  *  Schema.org/WPHeader
  *  The header section of the page.
+ * 
  *  @author schema.org
  *  @class WPHeader
  *  @module org.schema
@@ -12767,6 +14381,7 @@ ClaimReview = stjs.extend(ClaimReview, Review, [], function(constructor, prototy
  */
 var WPHeader = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12778,6 +14393,7 @@ WPHeader = stjs.extend(WPHeader, WebPageElement, [], null, {contributor: "Object
 /**
  *  Schema.org/SiteNavigationElement
  *  A navigation element of the page.
+ * 
  *  @author schema.org
  *  @class SiteNavigationElement
  *  @module org.schema
@@ -12785,6 +14401,7 @@ WPHeader = stjs.extend(WPHeader, WebPageElement, [], null, {contributor: "Object
  */
 var SiteNavigationElement = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12796,6 +14413,7 @@ SiteNavigationElement = stjs.extend(SiteNavigationElement, WebPageElement, [], n
 /**
  *  Schema.org/WPFooter
  *  The footer section of the page.
+ * 
  *  @author schema.org
  *  @class WPFooter
  *  @module org.schema
@@ -12803,6 +14421,7 @@ SiteNavigationElement = stjs.extend(SiteNavigationElement, WebPageElement, [], n
  */
 var WPFooter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12814,6 +14433,7 @@ WPFooter = stjs.extend(WPFooter, WebPageElement, [], null, {contributor: "Object
 /**
  *  Schema.org/WPAdBlock
  *  An advertising section of the page.
+ * 
  *  @author schema.org
  *  @class WPAdBlock
  *  @module org.schema
@@ -12821,6 +14441,7 @@ WPFooter = stjs.extend(WPFooter, WebPageElement, [], null, {contributor: "Object
  */
 var WPAdBlock = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12832,6 +14453,7 @@ WPAdBlock = stjs.extend(WPAdBlock, WebPageElement, [], null, {contributor: "Obje
 /**
  *  Schema.org/Table
  *  A table on a Web page.
+ * 
  *  @author schema.org
  *  @class Table
  *  @module org.schema
@@ -12839,6 +14461,7 @@ WPAdBlock = stjs.extend(WPAdBlock, WebPageElement, [], null, {contributor: "Obje
  */
 var Table = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12850,6 +14473,7 @@ Table = stjs.extend(Table, WebPageElement, [], null, {contributor: "Object", rev
 /**
  *  Schema.org/WPSideBar
  *  A sidebar section of the page.
+ * 
  *  @author schema.org
  *  @class WPSideBar
  *  @module org.schema
@@ -12857,6 +14481,7 @@ Table = stjs.extend(Table, WebPageElement, [], null, {contributor: "Object", rev
  */
 var WPSideBar = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12868,6 +14493,7 @@ WPSideBar = stjs.extend(WPSideBar, WebPageElement, [], null, {contributor: "Obje
 /**
  *  Schema.org/VideoGameClip
  *  A short segment/part of a video game.
+ * 
  *  @author schema.org
  *  @class VideoGameClip
  *  @module org.schema
@@ -12875,6 +14501,7 @@ WPSideBar = stjs.extend(WPSideBar, WebPageElement, [], null, {contributor: "Obje
  */
 var VideoGameClip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12886,6 +14513,7 @@ VideoGameClip = stjs.extend(VideoGameClip, Clip, [], null, {clipNumber: "Object"
 /**
  *  Schema.org/TVClip
  *  A short TV program or a segment/part of a TV program.
+ * 
  *  @author schema.org
  *  @class TVClip
  *  @module org.schema
@@ -12893,6 +14521,7 @@ VideoGameClip = stjs.extend(VideoGameClip, Clip, [], null, {clipNumber: "Object"
  */
 var TVClip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12904,6 +14533,7 @@ TVClip = stjs.extend(TVClip, Clip, [], function(constructor, prototype) {
     /**
      *  Schema.org/partOfTVSeries
      *  The TV series to which this episode or season belongs.
+     * 
      *  @property partOfTVSeries
      *  @type TVSeries
      */
@@ -12912,6 +14542,7 @@ TVClip = stjs.extend(TVClip, Clip, [], function(constructor, prototype) {
 /**
  *  Schema.org/RadioClip
  *  A short radio program or a segment/part of a radio program.
+ * 
  *  @author schema.org
  *  @class RadioClip
  *  @module org.schema
@@ -12919,6 +14550,7 @@ TVClip = stjs.extend(TVClip, Clip, [], function(constructor, prototype) {
  */
 var RadioClip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12930,6 +14562,7 @@ RadioClip = stjs.extend(RadioClip, Clip, [], null, {clipNumber: "Object", direct
 /**
  *  Schema.org/MovieClip
  *  A short segment/part of a movie.
+ * 
  *  @author schema.org
  *  @class MovieClip
  *  @module org.schema
@@ -12937,6 +14570,7 @@ RadioClip = stjs.extend(RadioClip, Clip, [], null, {clipNumber: "Object", direct
  */
 var MovieClip = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12948,6 +14582,7 @@ MovieClip = stjs.extend(MovieClip, Clip, [], null, {clipNumber: "Object", direct
 /**
  *  Schema.org/Answer
  *  An answer offered to a question; perhaps correct, perhaps opinionated or wrong.
+ * 
  *  @author schema.org
  *  @class Answer
  *  @module org.schema
@@ -12955,6 +14590,7 @@ MovieClip = stjs.extend(MovieClip, Clip, [], null, {clipNumber: "Object", direct
  */
 var Answer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12966,6 +14602,7 @@ Answer = stjs.extend(Answer, Comment, [], null, {parentItem: "Question", contrib
 /**
  *  Schema.org/RadioSeason
  *  Season dedicated to radio broadcast and associated online delivery.
+ * 
  *  @author schema.org
  *  @class RadioSeason
  *  @module org.schema
@@ -12973,6 +14610,7 @@ Answer = stjs.extend(Answer, Comment, [], null, {parentItem: "Question", contrib
  */
 var RadioSeason = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -12984,6 +14622,7 @@ RadioSeason = stjs.extend(RadioSeason, CreativeWorkSeason, [], null, {episodes: 
 /**
  *  Schema.org/TVSeason
  *  Season dedicated to TV broadcast and associated online delivery.
+ * 
  *  @author schema.org
  *  @class TVSeason
  *  @module org.schema
@@ -12991,6 +14630,7 @@ RadioSeason = stjs.extend(RadioSeason, CreativeWorkSeason, [], null, {episodes: 
  */
 var TVSeason = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13002,6 +14642,7 @@ TVSeason = stjs.extend(TVSeason, CreativeWorkSeason, [], function(constructor, p
     /**
      *  Schema.org/countryOfOrigin
      *  The country of the principal offices of the production company or individual responsible for the movie or program.
+     * 
      *  @property countryOfOrigin
      *  @type Country
      */
@@ -13009,6 +14650,7 @@ TVSeason = stjs.extend(TVSeason, CreativeWorkSeason, [], function(constructor, p
     /**
      *  Schema.org/partOfTVSeries
      *  The TV series to which this episode or season belongs.
+     * 
      *  @property partOfTVSeries
      *  @type TVSeries
      */
@@ -13017,6 +14659,7 @@ TVSeason = stjs.extend(TVSeason, CreativeWorkSeason, [], function(constructor, p
 /**
  *  Schema.org/EmailMessage
  *  An email message.
+ * 
  *  @author schema.org
  *  @class EmailMessage
  *  @module org.schema
@@ -13024,6 +14667,7 @@ TVSeason = stjs.extend(TVSeason, CreativeWorkSeason, [], function(constructor, p
  */
 var EmailMessage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13035,6 +14679,7 @@ EmailMessage = stjs.extend(EmailMessage, Message, [], null, {sender: "Object", m
 /**
  *  Schema.org/NoteDigitalDocument
  *  A file containing a note, primarily for the author.
+ * 
  *  @author schema.org
  *  @class NoteDigitalDocument
  *  @module org.schema
@@ -13042,6 +14687,7 @@ EmailMessage = stjs.extend(EmailMessage, Message, [], null, {sender: "Object", m
  */
 var NoteDigitalDocument = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13053,6 +14699,7 @@ NoteDigitalDocument = stjs.extend(NoteDigitalDocument, DigitalDocument, [], null
 /**
  *  Schema.org/SpreadsheetDigitalDocument
  *  A spreadsheet file.
+ * 
  *  @author schema.org
  *  @class SpreadsheetDigitalDocument
  *  @module org.schema
@@ -13060,6 +14707,7 @@ NoteDigitalDocument = stjs.extend(NoteDigitalDocument, DigitalDocument, [], null
  */
 var SpreadsheetDigitalDocument = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13071,6 +14719,7 @@ SpreadsheetDigitalDocument = stjs.extend(SpreadsheetDigitalDocument, DigitalDocu
 /**
  *  Schema.org/PresentationDigitalDocument
  *  A file containing slides or used for a presentation.
+ * 
  *  @author schema.org
  *  @class PresentationDigitalDocument
  *  @module org.schema
@@ -13078,6 +14727,7 @@ SpreadsheetDigitalDocument = stjs.extend(SpreadsheetDigitalDocument, DigitalDocu
  */
 var PresentationDigitalDocument = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13089,6 +14739,7 @@ PresentationDigitalDocument = stjs.extend(PresentationDigitalDocument, DigitalDo
 /**
  *  Schema.org/TextDigitalDocument
  *  A file composed primarily of text.
+ * 
  *  @author schema.org
  *  @class TextDigitalDocument
  *  @module org.schema
@@ -13096,6 +14747,7 @@ PresentationDigitalDocument = stjs.extend(PresentationDigitalDocument, DigitalDo
  */
 var TextDigitalDocument = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13107,6 +14759,7 @@ TextDigitalDocument = stjs.extend(TextDigitalDocument, DigitalDocument, [], null
 /**
  *  Schema.org/NewsArticle
  *  A news article.
+ * 
  *  @author schema.org
  *  @class NewsArticle
  *  @module org.schema
@@ -13114,6 +14767,7 @@ TextDigitalDocument = stjs.extend(TextDigitalDocument, DigitalDocument, [], null
  */
 var NewsArticle = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13125,6 +14779,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/printPage
      *  If this NewsArticle appears in print, this field indicates the name of the page on which the article is found. Please note that this field is intended for the exact page name (e.g. A5, B18).
+     * 
      *  @property printPage
      *  @type Text
      */
@@ -13132,6 +14787,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/dateline
      *  The location where the NewsArticle was produced.
+     * 
      *  @property dateline
      *  @type Text
      */
@@ -13139,6 +14795,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/printEdition
      *  The edition of the print product in which the NewsArticle appears.
+     * 
      *  @property printEdition
      *  @type Text
      */
@@ -13146,6 +14803,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/printSection
      *  If this NewsArticle appears in print, this field indicates the print section in which the article appeared.
+     * 
      *  @property printSection
      *  @type Text
      */
@@ -13153,6 +14811,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/printColumn
      *  The number of the column in which the NewsArticle appears in the print edition.
+     * 
      *  @property printColumn
      *  @type Text
      */
@@ -13161,6 +14820,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
 /**
  *  Schema.org/SocialMediaPosting
  *  A post to a social media platform, including blog posts, tweets, Facebook posts, etc.
+ * 
  *  @author schema.org
  *  @class SocialMediaPosting
  *  @module org.schema
@@ -13168,6 +14828,7 @@ NewsArticle = stjs.extend(NewsArticle, Article, [], function(constructor, protot
  */
 var SocialMediaPosting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13179,6 +14840,7 @@ SocialMediaPosting = stjs.extend(SocialMediaPosting, Article, [], function(const
     /**
      *  Schema.org/sharedContent
      *  A CreativeWork such as an image, video, or audio clip shared as part of this posting.
+     * 
      *  @property sharedContent
      *  @type CreativeWork
      */
@@ -13187,6 +14849,7 @@ SocialMediaPosting = stjs.extend(SocialMediaPosting, Article, [], function(const
 /**
  *  Schema.org/TechArticle
  *  A technical article - Example: How-to (task) topics, step-by-step, procedural troubleshooting, specifications, etc.
+ * 
  *  @author schema.org
  *  @class TechArticle
  *  @module org.schema
@@ -13194,6 +14857,7 @@ SocialMediaPosting = stjs.extend(SocialMediaPosting, Article, [], function(const
  */
 var TechArticle = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13205,6 +14869,7 @@ TechArticle = stjs.extend(TechArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/dependencies
      *  Prerequisites needed to fulfill steps in article.
+     * 
      *  @property dependencies
      *  @type Text
      */
@@ -13212,6 +14877,7 @@ TechArticle = stjs.extend(TechArticle, Article, [], function(constructor, protot
     /**
      *  Schema.org/proficiencyLevel
      *  Proficiency needed for this content; expected values: 'Beginner', 'Expert'.
+     * 
      *  @property proficiencyLevel
      *  @type Text
      */
@@ -13220,6 +14886,7 @@ TechArticle = stjs.extend(TechArticle, Article, [], function(constructor, protot
 /**
  *  Schema.org/ScholarlyArticle
  *  A scholarly article.
+ * 
  *  @author schema.org
  *  @class ScholarlyArticle
  *  @module org.schema
@@ -13227,6 +14894,7 @@ TechArticle = stjs.extend(TechArticle, Article, [], function(constructor, protot
  */
 var ScholarlyArticle = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13238,6 +14906,7 @@ ScholarlyArticle = stjs.extend(ScholarlyArticle, Article, [], null, {pageStart: 
 /**
  *  Schema.org/Report
  *  A Report generated by governmental or non-governmental organization.
+ * 
  *  @author schema.org
  *  @class Report
  *  @module org.schema
@@ -13245,6 +14914,7 @@ ScholarlyArticle = stjs.extend(ScholarlyArticle, Article, [], null, {pageStart: 
  */
 var Report = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13256,6 +14926,7 @@ Report = stjs.extend(Report, Article, [], function(constructor, prototype) {
     /**
      *  Schema.org/reportNumber
      *  The number or other unique designator assigned to a Report by the publishing organization.
+     * 
      *  @property reportNumber
      *  @type Text
      */
@@ -13264,6 +14935,7 @@ Report = stjs.extend(Report, Article, [], function(constructor, prototype) {
 /**
  *  Schema.org/MusicRelease
  *  A MusicRelease is a specific release of a music album.
+ * 
  *  @author schema.org
  *  @class MusicRelease
  *  @module org.schema
@@ -13271,6 +14943,7 @@ Report = stjs.extend(Report, Article, [], function(constructor, prototype) {
  */
 var MusicRelease = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13282,13 +14955,15 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
     /**
      *  Schema.org/creditedTo
      *  The group the release is credited to if different than the byArtist. For example, Red and Blue is credited to "Stefani Germanotta Band", but by Lady Gaga.
+     * 
      *  @property creditedTo
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.creditedTo = null;
     /**
      *  Schema.org/recordLabel
      *  The label that issued the release.
+     * 
      *  @property recordLabel
      *  @type Organization
      */
@@ -13296,6 +14971,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
     /**
      *  Schema.org/musicReleaseFormat
      *  Format of this release (the type of recording media used, ie. compact disc, digital media, LP, etc.).
+     * 
      *  @property musicReleaseFormat
      *  @type MusicReleaseFormatType
      */
@@ -13303,6 +14979,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
     /**
      *  Schema.org/catalogNumber
      *  The catalog number for the release.
+     * 
      *  @property catalogNumber
      *  @type Text
      */
@@ -13310,6 +14987,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
     /**
      *  Schema.org/duration
      *  The duration of the item (movie, audio recording, event, etc.) in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601).
+     * 
      *  @property duration
      *  @type Duration
      */
@@ -13317,6 +14995,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
     /**
      *  Schema.org/releaseOf
      *  The album this is a release of.
+     * 
      *  @property releaseOf
      *  @type MusicAlbum
      */
@@ -13325,6 +15004,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
 /**
  *  Schema.org/MusicAlbum
  *  A collection of music tracks.
+ * 
  *  @author schema.org
  *  @class MusicAlbum
  *  @module org.schema
@@ -13332,6 +15012,7 @@ MusicRelease = stjs.extend(MusicRelease, MusicPlaylist, [], function(constructor
  */
 var MusicAlbum = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13343,6 +15024,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
     /**
      *  Schema.org/albumReleaseType
      *  The kind of release which this album is: single, EP or album.
+     * 
      *  @property albumReleaseType
      *  @type MusicAlbumReleaseType
      */
@@ -13350,6 +15032,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
     /**
      *  Schema.org/albumProductionType
      *  Classification of the album by it's type of content: soundtrack, live album, studio album, etc.
+     * 
      *  @property albumProductionType
      *  @type MusicAlbumProductionType
      */
@@ -13357,6 +15040,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
     /**
      *  Schema.org/albumRelease
      *  A release of this album.
+     * 
      *  @property albumRelease
      *  @type MusicRelease
      */
@@ -13364,6 +15048,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
     /**
      *  Schema.org/byArtist
      *  The artist that performed this album or recording.
+     * 
      *  @property byArtist
      *  @type MusicGroup
      */
@@ -13372,6 +15057,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
 /**
  *  Schema.org/MobileApplication
  *  A software application designed specifically to work well on a mobile device such as a telephone.
+ * 
  *  @author schema.org
  *  @class MobileApplication
  *  @module org.schema
@@ -13379,6 +15065,7 @@ MusicAlbum = stjs.extend(MusicAlbum, MusicPlaylist, [], function(constructor, pr
  */
 var MobileApplication = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13390,6 +15077,7 @@ MobileApplication = stjs.extend(MobileApplication, SoftwareApplication, [], func
     /**
      *  Schema.org/carrierRequirements
      *  Specifies specific carrier(s) requirements for the application (e.g. an application may only work on a specific carrier network).
+     * 
      *  @property carrierRequirements
      *  @type Text
      */
@@ -13398,6 +15086,7 @@ MobileApplication = stjs.extend(MobileApplication, SoftwareApplication, [], func
 /**
  *  Schema.org/WebApplication
  *  Web applications.
+ * 
  *  @author schema.org
  *  @class WebApplication
  *  @module org.schema
@@ -13405,6 +15094,7 @@ MobileApplication = stjs.extend(MobileApplication, SoftwareApplication, [], func
  */
 var WebApplication = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13416,6 +15106,7 @@ WebApplication = stjs.extend(WebApplication, SoftwareApplication, [], function(c
     /**
      *  Schema.org/browserRequirements
      *  Specifies browser requirements in human-readable text. For example, 'requires HTML5 support'.
+     * 
      *  @property browserRequirements
      *  @type Text
      */
@@ -13424,6 +15115,7 @@ WebApplication = stjs.extend(WebApplication, SoftwareApplication, [], function(c
 /**
  *  Schema.org/CheckoutPage
  *  Web page type: Checkout page.
+ * 
  *  @author schema.org
  *  @class CheckoutPage
  *  @module org.schema
@@ -13431,6 +15123,7 @@ WebApplication = stjs.extend(WebApplication, SoftwareApplication, [], function(c
  */
 var CheckoutPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13442,6 +15135,7 @@ CheckoutPage = stjs.extend(CheckoutPage, WebPage, [], null, {specialty: "Special
 /**
  *  Schema.org/ItemPage
  *  A page devoted to a single item, such as a particular product or hotel.
+ * 
  *  @author schema.org
  *  @class ItemPage
  *  @module org.schema
@@ -13449,6 +15143,7 @@ CheckoutPage = stjs.extend(CheckoutPage, WebPage, [], null, {specialty: "Special
  */
 var ItemPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13460,6 +15155,7 @@ ItemPage = stjs.extend(ItemPage, WebPage, [], null, {specialty: "Specialty", bre
 /**
  *  Schema.org/ContactPage
  *  Web page type: Contact page.
+ * 
  *  @author schema.org
  *  @class ContactPage
  *  @module org.schema
@@ -13467,6 +15163,7 @@ ItemPage = stjs.extend(ItemPage, WebPage, [], null, {specialty: "Specialty", bre
  */
 var ContactPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13478,6 +15175,7 @@ ContactPage = stjs.extend(ContactPage, WebPage, [], null, {specialty: "Specialty
 /**
  *  Schema.org/SearchResultsPage
  *  Web page type: Search results page.
+ * 
  *  @author schema.org
  *  @class SearchResultsPage
  *  @module org.schema
@@ -13485,6 +15183,7 @@ ContactPage = stjs.extend(ContactPage, WebPage, [], null, {specialty: "Specialty
  */
 var SearchResultsPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13496,6 +15195,7 @@ SearchResultsPage = stjs.extend(SearchResultsPage, WebPage, [], null, {specialty
 /**
  *  Schema.org/CollectionPage
  *  Web page type: Collection page.
+ * 
  *  @author schema.org
  *  @class CollectionPage
  *  @module org.schema
@@ -13503,6 +15203,7 @@ SearchResultsPage = stjs.extend(SearchResultsPage, WebPage, [], null, {specialty
  */
 var CollectionPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13514,6 +15215,7 @@ CollectionPage = stjs.extend(CollectionPage, WebPage, [], null, {specialty: "Spe
 /**
  *  Schema.org/ProfilePage
  *  Web page type: Profile page.
+ * 
  *  @author schema.org
  *  @class ProfilePage
  *  @module org.schema
@@ -13521,6 +15223,7 @@ CollectionPage = stjs.extend(CollectionPage, WebPage, [], null, {specialty: "Spe
  */
 var ProfilePage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13532,6 +15235,7 @@ ProfilePage = stjs.extend(ProfilePage, WebPage, [], null, {specialty: "Specialty
 /**
  *  Schema.org/AboutPage
  *  Web page type: About page.
+ * 
  *  @author schema.org
  *  @class AboutPage
  *  @module org.schema
@@ -13539,6 +15243,7 @@ ProfilePage = stjs.extend(ProfilePage, WebPage, [], null, {specialty: "Specialty
  */
 var AboutPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13550,6 +15255,7 @@ AboutPage = stjs.extend(AboutPage, WebPage, [], null, {specialty: "Specialty", b
 /**
  *  Schema.org/QAPage
  *  A QAPage is a WebPage focussed on a specific Question and its Answer(s), e.g. in a question answering site or documenting Frequently Asked Questions (FAQs).
+ * 
  *  @author schema.org
  *  @class QAPage
  *  @module org.schema
@@ -13557,6 +15263,7 @@ AboutPage = stjs.extend(AboutPage, WebPage, [], null, {specialty: "Specialty", b
  */
 var QAPage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13568,6 +15275,7 @@ QAPage = stjs.extend(QAPage, WebPage, [], null, {specialty: "Specialty", breadcr
 /**
  *  Schema.org/DataFeed
  *  A single feed providing structured information about one or more entities or topics.
+ * 
  *  @author schema.org
  *  @class DataFeed
  *  @module org.schema
@@ -13575,6 +15283,7 @@ QAPage = stjs.extend(QAPage, WebPage, [], null, {specialty: "Specialty", breadcr
  */
 var DataFeed = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13586,14 +15295,16 @@ DataFeed = stjs.extend(DataFeed, Dataset, [], function(constructor, prototype) {
     /**
      *  Schema.org/dataFeedElement
      *  An item within in a data feed. Data feeds may have many elements.
+     * 
      *  @property dataFeedElement
-     *  @type schema,Text | schema,DataFeedItem | schema,Thing
+     *  @type schema, Text | schema,DataFeedItem | schema,Thing
      */
     prototype.dataFeedElement = null;
 }, {dataFeedElement: "Object", spatial: "Place", includedDataCatalog: "DataCatalog", includedInDataCatalog: "DataCatalog", distribution: "DataDownload", catalog: "DataCatalog", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/VideoGame
  *  A video game is an electronic game that involves human interaction with a user interface to generate visual feedback on a video device.
+ * 
  *  @author schema.org
  *  @class VideoGame
  *  @module org.schema
@@ -13601,6 +15312,7 @@ DataFeed = stjs.extend(DataFeed, Dataset, [], function(constructor, prototype) {
  */
 var VideoGame = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13612,6 +15324,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -13619,6 +15332,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/gameServer
      *  The server on which  it is possible to play the game.
+     * 
      *  @property gameServer
      *  @type GameServer
      */
@@ -13626,6 +15340,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/cheatCode
      *  Cheat codes to the game.
+     * 
      *  @property cheatCode
      *  @type CreativeWork
      */
@@ -13633,13 +15348,15 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/gamePlatform
      *  The electronic systems used to play <a href="http://en.wikipedia.org/wiki/Category:Video_game_platforms">video games</a>.
+     * 
      *  @property gamePlatform
-     *  @type schema,URL | schema,Text | schema,Thing
+     *  @type schema, URL | schema,Text | schema,Thing
      */
     prototype.gamePlatform = null;
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -13647,6 +15364,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/gameTip
      *  Links to tips, tactics, etc.
+     * 
      *  @property gameTip
      *  @type CreativeWork
      */
@@ -13654,13 +15372,15 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -13668,6 +15388,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/trailer
      *  The trailer of a movie or tv/radio series, season, episode, etc.
+     * 
      *  @property trailer
      *  @type VideoObject
      */
@@ -13675,6 +15396,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/playMode
      *  Indicates whether this game is multi-player, co-op or single-player.  The game can be marked as multi-player, co-op and single-player at the same time.
+     * 
      *  @property playMode
      *  @type GamePlayMode
      */
@@ -13682,6 +15404,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -13690,6 +15413,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
 /**
  *  Schema.org/DataDownload
  *  A dataset in downloadable form.
+ * 
  *  @author schema.org
  *  @class DataDownload
  *  @module org.schema
@@ -13697,6 +15421,7 @@ VideoGame = stjs.extend(VideoGame, Game, [], function(constructor, prototype) {
  */
 var DataDownload = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13708,6 +15433,7 @@ DataDownload = stjs.extend(DataDownload, MediaObject, [], null, {regionsAllowed:
 /**
  *  Schema.org/MusicVideoObject
  *  A music video file.
+ * 
  *  @author schema.org
  *  @class MusicVideoObject
  *  @module org.schema
@@ -13715,6 +15441,7 @@ DataDownload = stjs.extend(DataDownload, MediaObject, [], null, {regionsAllowed:
  */
 var MusicVideoObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13726,6 +15453,7 @@ MusicVideoObject = stjs.extend(MusicVideoObject, MediaObject, [], null, {regions
 /**
  *  Schema.org/AudioObject
  *  An audio file.
+ * 
  *  @author schema.org
  *  @class AudioObject
  *  @module org.schema
@@ -13733,6 +15461,7 @@ MusicVideoObject = stjs.extend(MusicVideoObject, MediaObject, [], null, {regions
  */
 var AudioObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13744,6 +15473,7 @@ AudioObject = stjs.extend(AudioObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/transcript
      *  If this MediaObject is an AudioObject or VideoObject, the transcript of that object.
+     * 
      *  @property transcript
      *  @type Text
      */
@@ -13752,6 +15482,7 @@ AudioObject = stjs.extend(AudioObject, MediaObject, [], function(constructor, pr
 /**
  *  Schema.org/ImageObject
  *  An image file.
+ * 
  *  @author schema.org
  *  @class ImageObject
  *  @module org.schema
@@ -13759,6 +15490,7 @@ AudioObject = stjs.extend(AudioObject, MediaObject, [], function(constructor, pr
  */
 var ImageObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13770,13 +15502,15 @@ ImageObject = stjs.extend(ImageObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/exifData
      *  exif data for this object.
+     * 
      *  @property exifData
-     *  @type schema,Text | schema,PropertyValue
+     *  @type schema, Text | schema,PropertyValue
      */
     prototype.exifData = null;
     /**
      *  Schema.org/thumbnail
      *  Thumbnail image for an image or video.
+     * 
      *  @property thumbnail
      *  @type ImageObject
      */
@@ -13784,6 +15518,7 @@ ImageObject = stjs.extend(ImageObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/representativeOfPage
      *  Indicates whether this image is representative of the content of the page.
+     * 
      *  @property representativeOfPage
      *  @type Boolean
      */
@@ -13791,6 +15526,7 @@ ImageObject = stjs.extend(ImageObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/caption
      *  The caption for this object.
+     * 
      *  @property caption
      *  @type Text
      */
@@ -13799,6 +15535,7 @@ ImageObject = stjs.extend(ImageObject, MediaObject, [], function(constructor, pr
 /**
  *  Schema.org/VideoObject
  *  A video file.
+ * 
  *  @author schema.org
  *  @class VideoObject
  *  @module org.schema
@@ -13806,6 +15543,7 @@ ImageObject = stjs.extend(ImageObject, MediaObject, [], function(constructor, pr
  */
 var VideoObject = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13817,6 +15555,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/director
      *  A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property director
      *  @type Person
      */
@@ -13824,6 +15563,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/actor
      *  An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actor
      *  @type Person
      */
@@ -13831,6 +15571,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/thumbnail
      *  Thumbnail image for an image or video.
+     * 
      *  @property thumbnail
      *  @type ImageObject
      */
@@ -13838,6 +15579,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/transcript
      *  If this MediaObject is an AudioObject or VideoObject, the transcript of that object.
+     * 
      *  @property transcript
      *  @type Text
      */
@@ -13845,13 +15587,15 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/musicBy
      *  The composer of the soundtrack.
+     * 
      *  @property musicBy
-     *  @type schema,Person | schema,MusicGroup
+     *  @type schema, Person | schema,MusicGroup
      */
     prototype.musicBy = null;
     /**
      *  Schema.org/actors
      *  An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property actors
      *  @type Person
      */
@@ -13859,6 +15603,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/videoQuality
      *  The quality of the video.
+     * 
      *  @property videoQuality
      *  @type Text
      */
@@ -13866,6 +15611,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/videoFrameSize
      *  The frame size of the video.
+     * 
      *  @property videoFrameSize
      *  @type Text
      */
@@ -13873,6 +15619,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/caption
      *  The caption for this object.
+     * 
      *  @property caption
      *  @type Text
      */
@@ -13880,6 +15627,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
     /**
      *  Schema.org/directors
      *  A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip.
+     * 
      *  @property directors
      *  @type Person
      */
@@ -13888,6 +15636,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
 /**
  *  Schema.org/TheaterGroup
  *  A theater group or company, for example, the Royal Shakespeare Company or Druid Theatre.
+ * 
  *  @author schema.org
  *  @class TheaterGroup
  *  @module org.schema
@@ -13895,6 +15644,7 @@ VideoObject = stjs.extend(VideoObject, MediaObject, [], function(constructor, pr
  */
 var TheaterGroup = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13906,6 +15656,7 @@ TheaterGroup = stjs.extend(TheaterGroup, PerformingGroup, [], null, {reviews: "R
 /**
  *  Schema.org/DanceGroup
  *  A dance group&#x2014;for example, the Alvin Ailey Dance Theater or Riverdance.
+ * 
  *  @author schema.org
  *  @class DanceGroup
  *  @module org.schema
@@ -13913,6 +15664,7 @@ TheaterGroup = stjs.extend(TheaterGroup, PerformingGroup, [], null, {reviews: "R
  */
 var DanceGroup = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13924,6 +15676,7 @@ DanceGroup = stjs.extend(DanceGroup, PerformingGroup, [], null, {reviews: "Revie
 /**
  *  Schema.org/MusicGroup
  *  A musical group, such as a band, an orchestra, or a choir. Can also be a solo musician.
+ * 
  *  @author schema.org
  *  @class MusicGroup
  *  @module org.schema
@@ -13931,6 +15684,7 @@ DanceGroup = stjs.extend(DanceGroup, PerformingGroup, [], null, {reviews: "Revie
  */
 var MusicGroup = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -13942,6 +15696,7 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
     /**
      *  Schema.org/albums
      *  A collection of music albums.
+     * 
      *  @property albums
      *  @type MusicAlbum
      */
@@ -13949,13 +15704,15 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
     /**
      *  Schema.org/genre
      *  Genre of the creative work, broadcast channel or group.
+     * 
      *  @property genre
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.genre = null;
     /**
      *  Schema.org/musicGroupMember
      *  A member of a music group&#x2014;for example, John, Paul, George, or Ringo.
+     * 
      *  @property musicGroupMember
      *  @type Person
      */
@@ -13963,6 +15720,7 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
     /**
      *  Schema.org/tracks
      *  A music recording (track)&#x2014;usually a single song.
+     * 
      *  @property tracks
      *  @type MusicRecording
      */
@@ -13970,13 +15728,15 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
     /**
      *  Schema.org/track
      *  A music recording (track)&#x2014;usually a single song. If an ItemList is given, the list should contain items of type MusicRecording.
+     * 
      *  @property track
-     *  @type schema,MusicRecording | schema,ItemList
+     *  @type schema, MusicRecording | schema,ItemList
      */
     prototype.track = null;
     /**
      *  Schema.org/album
      *  A music album.
+     * 
      *  @property album
      *  @type MusicAlbum
      */
@@ -13985,6 +15745,7 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
 /**
  *  Schema.org/CollegeOrUniversity
  *  A college, university, or other third-level educational institution.
+ * 
  *  @author schema.org
  *  @class CollegeOrUniversity
  *  @module org.schema
@@ -13992,6 +15753,7 @@ MusicGroup = stjs.extend(MusicGroup, PerformingGroup, [], function(constructor, 
  */
 var CollegeOrUniversity = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14003,6 +15765,7 @@ CollegeOrUniversity = stjs.extend(CollegeOrUniversity, EducationalOrganization, 
 /**
  *  Schema.org/HighSchool
  *  A high school.
+ * 
  *  @author schema.org
  *  @class HighSchool
  *  @module org.schema
@@ -14010,6 +15773,7 @@ CollegeOrUniversity = stjs.extend(CollegeOrUniversity, EducationalOrganization, 
  */
 var HighSchool = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14021,6 +15785,7 @@ HighSchool = stjs.extend(HighSchool, EducationalOrganization, [], null, {alumni:
 /**
  *  Schema.org/MiddleSchool
  *  A middle school (typically for children aged around 11-14, although this varies somewhat).
+ * 
  *  @author schema.org
  *  @class MiddleSchool
  *  @module org.schema
@@ -14028,6 +15793,7 @@ HighSchool = stjs.extend(HighSchool, EducationalOrganization, [], null, {alumni:
  */
 var MiddleSchool = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14039,6 +15805,7 @@ MiddleSchool = stjs.extend(MiddleSchool, EducationalOrganization, [], null, {alu
 /**
  *  Schema.org/Preschool
  *  A preschool.
+ * 
  *  @author schema.org
  *  @class Preschool
  *  @module org.schema
@@ -14046,6 +15813,7 @@ MiddleSchool = stjs.extend(MiddleSchool, EducationalOrganization, [], null, {alu
  */
 var Preschool = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14057,6 +15825,7 @@ Preschool = stjs.extend(Preschool, EducationalOrganization, [], null, {alumni: "
 /**
  *  Schema.org/ElementarySchool
  *  An elementary school.
+ * 
  *  @author schema.org
  *  @class ElementarySchool
  *  @module org.schema
@@ -14064,6 +15833,7 @@ Preschool = stjs.extend(Preschool, EducationalOrganization, [], null, {alumni: "
  */
 var ElementarySchool = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14075,6 +15845,7 @@ ElementarySchool = stjs.extend(ElementarySchool, EducationalOrganization, [], nu
 /**
  *  Schema.org/School
  *  A school.
+ * 
  *  @author schema.org
  *  @class School
  *  @module org.schema
@@ -14082,6 +15853,7 @@ ElementarySchool = stjs.extend(ElementarySchool, EducationalOrganization, [], nu
  */
 var School = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14093,6 +15865,7 @@ School = stjs.extend(School, EducationalOrganization, [], null, {alumni: "Person
 /**
  *  Schema.org/Pharmacy
  *  A pharmacy or drugstore.
+ * 
  *  @author schema.org
  *  @class Pharmacy
  *  @module org.schema
@@ -14100,6 +15873,7 @@ School = stjs.extend(School, EducationalOrganization, [], null, {alumni: "Person
  */
 var Pharmacy = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14111,6 +15885,7 @@ Pharmacy = stjs.extend(Pharmacy, MedicalOrganization, [], null, {reviews: "Revie
 /**
  *  Schema.org/Physician
  *  A doctor's office.
+ * 
  *  @author schema.org
  *  @class Physician
  *  @module org.schema
@@ -14118,6 +15893,7 @@ Pharmacy = stjs.extend(Pharmacy, MedicalOrganization, [], null, {reviews: "Revie
  */
 var Physician = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14129,8 +15905,9 @@ Physician = stjs.extend(Physician, MedicalOrganization, [], null, {reviews: "Rev
 /**
  *  Schema.org/ProfessionalService
  *  Original definition: "provider of professional services."\n\nThe general [[ProfessionalService]] type for local businesses was deprecated due to confusion with [[Service]]. For reference, the types that it included were: [[Dentist]],
- *         [[AccountingService]], [[Attorney]], [[Notary]], as well as types for several kinds of [[HomeAndConstructionBusiness]]: [[Electrician]], [[GeneralContractor]],
- *         [[HousePainter]], [[Locksmith]], [[Plumber]], [[RoofingContractor]]. [[LegalService]] was introduced as a more inclusive supertype of [[Attorney]].
+ *  [[AccountingService]], [[Attorney]], [[Notary]], as well as types for several kinds of [[HomeAndConstructionBusiness]]: [[Electrician]], [[GeneralContractor]],
+ *  [[HousePainter]], [[Locksmith]], [[Plumber]], [[RoofingContractor]]. [[LegalService]] was introduced as a more inclusive supertype of [[Attorney]].
+ * 
  *  @author schema.org
  *  @class ProfessionalService
  *  @module org.schema
@@ -14138,6 +15915,7 @@ Physician = stjs.extend(Physician, MedicalOrganization, [], null, {reviews: "Rev
  */
 var ProfessionalService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14149,6 +15927,7 @@ ProfessionalService = stjs.extend(ProfessionalService, LocalBusiness, [], null, 
 /**
  *  Schema.org/SelfStorage
  *  A self-storage facility.
+ * 
  *  @author schema.org
  *  @class SelfStorage
  *  @module org.schema
@@ -14156,6 +15935,7 @@ ProfessionalService = stjs.extend(ProfessionalService, LocalBusiness, [], null, 
  */
 var SelfStorage = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14167,6 +15947,7 @@ SelfStorage = stjs.extend(SelfStorage, LocalBusiness, [], null, {branchOf: "Orga
 /**
  *  Schema.org/RecyclingCenter
  *  A recycling center.
+ * 
  *  @author schema.org
  *  @class RecyclingCenter
  *  @module org.schema
@@ -14174,6 +15955,7 @@ SelfStorage = stjs.extend(SelfStorage, LocalBusiness, [], null, {branchOf: "Orga
  */
 var RecyclingCenter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14185,6 +15967,7 @@ RecyclingCenter = stjs.extend(RecyclingCenter, LocalBusiness, [], null, {branchO
 /**
  *  Schema.org/GovernmentOffice
  *  A government office&#x2014;for example, an IRS or DMV office.
+ * 
  *  @author schema.org
  *  @class GovernmentOffice
  *  @module org.schema
@@ -14192,6 +15975,7 @@ RecyclingCenter = stjs.extend(RecyclingCenter, LocalBusiness, [], null, {branchO
  */
 var GovernmentOffice = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14203,6 +15987,7 @@ GovernmentOffice = stjs.extend(GovernmentOffice, LocalBusiness, [], null, {branc
 /**
  *  Schema.org/ShoppingCenter
  *  A shopping center or mall.
+ * 
  *  @author schema.org
  *  @class ShoppingCenter
  *  @module org.schema
@@ -14210,6 +15995,7 @@ GovernmentOffice = stjs.extend(GovernmentOffice, LocalBusiness, [], null, {branc
  */
 var ShoppingCenter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14221,6 +16007,7 @@ ShoppingCenter = stjs.extend(ShoppingCenter, LocalBusiness, [], null, {branchOf:
 /**
  *  Schema.org/HealthAndBeautyBusiness
  *  Health and beauty.
+ * 
  *  @author schema.org
  *  @class HealthAndBeautyBusiness
  *  @module org.schema
@@ -14228,6 +16015,7 @@ ShoppingCenter = stjs.extend(ShoppingCenter, LocalBusiness, [], null, {branchOf:
  */
 var HealthAndBeautyBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14239,6 +16027,7 @@ HealthAndBeautyBusiness = stjs.extend(HealthAndBeautyBusiness, LocalBusiness, []
 /**
  *  Schema.org/Library
  *  A library.
+ * 
  *  @author schema.org
  *  @class Library
  *  @module org.schema
@@ -14246,6 +16035,7 @@ HealthAndBeautyBusiness = stjs.extend(HealthAndBeautyBusiness, LocalBusiness, []
  */
 var Library = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14257,6 +16047,7 @@ Library = stjs.extend(Library, LocalBusiness, [], null, {branchOf: "Organization
 /**
  *  Schema.org/TravelAgency
  *  A travel agency.
+ * 
  *  @author schema.org
  *  @class TravelAgency
  *  @module org.schema
@@ -14264,6 +16055,7 @@ Library = stjs.extend(Library, LocalBusiness, [], null, {branchOf: "Organization
  */
 var TravelAgency = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14275,6 +16067,7 @@ TravelAgency = stjs.extend(TravelAgency, LocalBusiness, [], null, {branchOf: "Or
 /**
  *  Schema.org/TelevisionStation
  *  A television station.
+ * 
  *  @author schema.org
  *  @class TelevisionStation
  *  @module org.schema
@@ -14282,6 +16075,7 @@ TravelAgency = stjs.extend(TravelAgency, LocalBusiness, [], null, {branchOf: "Or
  */
 var TelevisionStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14293,6 +16087,7 @@ TelevisionStation = stjs.extend(TelevisionStation, LocalBusiness, [], null, {bra
 /**
  *  Schema.org/Store
  *  A retail good store.
+ * 
  *  @author schema.org
  *  @class Store
  *  @module org.schema
@@ -14300,6 +16095,7 @@ TelevisionStation = stjs.extend(TelevisionStation, LocalBusiness, [], null, {bra
  */
 var Store = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14311,6 +16107,7 @@ Store = stjs.extend(Store, LocalBusiness, [], null, {branchOf: "Organization", r
 /**
  *  Schema.org/InternetCafe
  *  An internet cafe.
+ * 
  *  @author schema.org
  *  @class InternetCafe
  *  @module org.schema
@@ -14318,6 +16115,7 @@ Store = stjs.extend(Store, LocalBusiness, [], null, {branchOf: "Organization", r
  */
 var InternetCafe = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14329,6 +16127,7 @@ InternetCafe = stjs.extend(InternetCafe, LocalBusiness, [], null, {branchOf: "Or
 /**
  *  Schema.org/DryCleaningOrLaundry
  *  A dry-cleaning business.
+ * 
  *  @author schema.org
  *  @class DryCleaningOrLaundry
  *  @module org.schema
@@ -14336,6 +16135,7 @@ InternetCafe = stjs.extend(InternetCafe, LocalBusiness, [], null, {branchOf: "Or
  */
 var DryCleaningOrLaundry = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14347,6 +16147,7 @@ DryCleaningOrLaundry = stjs.extend(DryCleaningOrLaundry, LocalBusiness, [], null
 /**
  *  Schema.org/Dentist
  *  A dentist.
+ * 
  *  @author schema.org
  *  @class Dentist
  *  @module org.schema
@@ -14354,6 +16155,7 @@ DryCleaningOrLaundry = stjs.extend(DryCleaningOrLaundry, LocalBusiness, [], null
  */
 var Dentist = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14365,6 +16167,7 @@ Dentist = stjs.extend(Dentist, LocalBusiness, [], null, {branchOf: "Organization
 /**
  *  Schema.org/LegalService
  *  A LegalService is a business that provides legally-oriented services, advice and representation, e.g. law firms.\n\nAs a [[LocalBusiness]] it can be described as a [[provider]] of one or more [[Service]]\(s).
+ * 
  *  @author schema.org
  *  @class LegalService
  *  @module org.schema
@@ -14372,6 +16175,7 @@ Dentist = stjs.extend(Dentist, LocalBusiness, [], null, {branchOf: "Organization
  */
 var LegalService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14383,6 +16187,7 @@ LegalService = stjs.extend(LegalService, LocalBusiness, [], null, {branchOf: "Or
 /**
  *  Schema.org/FoodEstablishment
  *  A food-related business.
+ * 
  *  @author schema.org
  *  @class FoodEstablishment
  *  @module org.schema
@@ -14390,6 +16195,7 @@ LegalService = stjs.extend(LegalService, LocalBusiness, [], null, {branchOf: "Or
  */
 var FoodEstablishment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14401,6 +16207,7 @@ FoodEstablishment = stjs.extend(FoodEstablishment, LocalBusiness, [], function(c
     /**
      *  Schema.org/starRating
      *  An official rating for a lodging business or food establishment, e.g. from national associations or standards bodies. Use the author property to indicate the rating organization, e.g. as an Organization with name such as (e.g. HOTREC, DEHOGA, WHR, or Hotelstars).
+     * 
      *  @property starRating
      *  @type Rating
      */
@@ -14408,20 +16215,23 @@ FoodEstablishment = stjs.extend(FoodEstablishment, LocalBusiness, [], function(c
     /**
      *  Schema.org/acceptsReservations
      *  Indicates whether a FoodEstablishment accepts reservations. Values can be Boolean, an URL at which reservations can be made or (for backwards compatibility) the strings ```Yes``` or ```No```.
+     * 
      *  @property acceptsReservations
-     *  @type schema,URL | schema,Boolean | schema,Text
+     *  @type schema, URL | schema,Boolean | schema,Text
      */
     prototype.acceptsReservations = null;
     /**
      *  Schema.org/menu
      *  Either the actual menu as a structured representation, as text, or a URL of the menu.
+     * 
      *  @property menu
-     *  @type schema,URL | schema,Text | schema,Menu
+     *  @type schema, URL | schema,Text | schema,Menu
      */
     prototype.menu = null;
     /**
      *  Schema.org/servesCuisine
      *  The cuisine of the restaurant.
+     * 
      *  @property servesCuisine
      *  @type Text
      */
@@ -14429,14 +16239,16 @@ FoodEstablishment = stjs.extend(FoodEstablishment, LocalBusiness, [], function(c
     /**
      *  Schema.org/hasMenu
      *  Either the actual menu as a structured representation, as text, or a URL of the menu.
+     * 
      *  @property hasMenu
-     *  @type schema,URL | schema,Text | schema,Menu
+     *  @type schema, URL | schema,Text | schema,Menu
      */
     prototype.hasMenu = null;
 }, {starRating: "Rating", acceptsReservations: "Object", menu: "Object", hasMenu: "Object", branchOf: "Organization", reviews: "Review", event: "Event", member: "Object", memberOf: "Object", contactPoints: "ContactPoint", events: "Event", review: "Review", numberOfEmployees: "QuantitativeValue", department: "Organization", brand: "Object", areaServed: "Object", parentOrganization: "Organization", address: "Object", contactPoint: "ContactPoint", funder: "Object", subOrganization: "Organization", alumni: "Person", seeks: "Demand", sponsor: "Object", members: "Object", location: "Object", serviceArea: "Object", hasPOS: "Place", aggregateRating: "AggregateRating", founder: "Person", founders: "Person", employee: "Person", logo: "Object", owns: "Object", employees: "Person", foundingLocation: "Place", hasOfferCatalog: "OfferCatalog", makesOffer: "Offer", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/AutomotiveBusiness
  *  Car repair, sales, or parts.
+ * 
  *  @author schema.org
  *  @class AutomotiveBusiness
  *  @module org.schema
@@ -14444,6 +16256,7 @@ FoodEstablishment = stjs.extend(FoodEstablishment, LocalBusiness, [], function(c
  */
 var AutomotiveBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14455,6 +16268,7 @@ AutomotiveBusiness = stjs.extend(AutomotiveBusiness, LocalBusiness, [], null, {b
 /**
  *  Schema.org/EntertainmentBusiness
  *  A business providing entertainment.
+ * 
  *  @author schema.org
  *  @class EntertainmentBusiness
  *  @module org.schema
@@ -14462,6 +16276,7 @@ AutomotiveBusiness = stjs.extend(AutomotiveBusiness, LocalBusiness, [], null, {b
  */
 var EntertainmentBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14473,6 +16288,7 @@ EntertainmentBusiness = stjs.extend(EntertainmentBusiness, LocalBusiness, [], nu
 /**
  *  Schema.org/RadioStation
  *  A radio station.
+ * 
  *  @author schema.org
  *  @class RadioStation
  *  @module org.schema
@@ -14480,6 +16296,7 @@ EntertainmentBusiness = stjs.extend(EntertainmentBusiness, LocalBusiness, [], nu
  */
 var RadioStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14491,6 +16308,7 @@ RadioStation = stjs.extend(RadioStation, LocalBusiness, [], null, {branchOf: "Or
 /**
  *  Schema.org/HomeAndConstructionBusiness
  *  A construction business.\n\nA HomeAndConstructionBusiness is a [[LocalBusiness]] that provides services around homes and buildings.\n\nAs a [[LocalBusiness]] it can be described as a [[provider]] of one or more [[Service]]\(s).
+ * 
  *  @author schema.org
  *  @class HomeAndConstructionBusiness
  *  @module org.schema
@@ -14498,6 +16316,7 @@ RadioStation = stjs.extend(RadioStation, LocalBusiness, [], null, {branchOf: "Or
  */
 var HomeAndConstructionBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14509,6 +16328,7 @@ HomeAndConstructionBusiness = stjs.extend(HomeAndConstructionBusiness, LocalBusi
 /**
  *  Schema.org/ChildCare
  *  A Childcare center.
+ * 
  *  @author schema.org
  *  @class ChildCare
  *  @module org.schema
@@ -14516,6 +16336,7 @@ HomeAndConstructionBusiness = stjs.extend(HomeAndConstructionBusiness, LocalBusi
  */
 var ChildCare = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14527,6 +16348,7 @@ ChildCare = stjs.extend(ChildCare, LocalBusiness, [], null, {branchOf: "Organiza
 /**
  *  Schema.org/FinancialService
  *  Financial services business.
+ * 
  *  @author schema.org
  *  @class FinancialService
  *  @module org.schema
@@ -14534,6 +16356,7 @@ ChildCare = stjs.extend(ChildCare, LocalBusiness, [], null, {branchOf: "Organiza
  */
 var FinancialService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14545,14 +16368,16 @@ FinancialService = stjs.extend(FinancialService, LocalBusiness, [], function(con
     /**
      *  Schema.org/feesAndCommissionsSpecification
      *  Description of fees, commissions, and other terms applied either to a class of financial product, or by a financial service organization.
+     * 
      *  @property feesAndCommissionsSpecification
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.feesAndCommissionsSpecification = null;
 }, {feesAndCommissionsSpecification: "Object", branchOf: "Organization", reviews: "Review", event: "Event", member: "Object", memberOf: "Object", contactPoints: "ContactPoint", events: "Event", review: "Review", numberOfEmployees: "QuantitativeValue", department: "Organization", brand: "Object", areaServed: "Object", parentOrganization: "Organization", address: "Object", contactPoint: "ContactPoint", funder: "Object", subOrganization: "Organization", alumni: "Person", seeks: "Demand", sponsor: "Object", members: "Object", location: "Object", serviceArea: "Object", hasPOS: "Place", aggregateRating: "AggregateRating", founder: "Person", founders: "Person", employee: "Person", logo: "Object", owns: "Object", employees: "Person", foundingLocation: "Place", hasOfferCatalog: "OfferCatalog", makesOffer: "Offer", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/AnimalShelter
  *  Animal shelter.
+ * 
  *  @author schema.org
  *  @class AnimalShelter
  *  @module org.schema
@@ -14560,6 +16385,7 @@ FinancialService = stjs.extend(FinancialService, LocalBusiness, [], function(con
  */
 var AnimalShelter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14571,6 +16397,7 @@ AnimalShelter = stjs.extend(AnimalShelter, LocalBusiness, [], null, {branchOf: "
 /**
  *  Schema.org/EmergencyService
  *  An emergency service, such as a fire station or ER.
+ * 
  *  @author schema.org
  *  @class EmergencyService
  *  @module org.schema
@@ -14578,6 +16405,7 @@ AnimalShelter = stjs.extend(AnimalShelter, LocalBusiness, [], null, {branchOf: "
  */
 var EmergencyService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14589,6 +16417,7 @@ EmergencyService = stjs.extend(EmergencyService, LocalBusiness, [], null, {branc
 /**
  *  Schema.org/EmploymentAgency
  *  An employment agency.
+ * 
  *  @author schema.org
  *  @class EmploymentAgency
  *  @module org.schema
@@ -14596,6 +16425,7 @@ EmergencyService = stjs.extend(EmergencyService, LocalBusiness, [], null, {branc
  */
 var EmploymentAgency = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14607,6 +16437,7 @@ EmploymentAgency = stjs.extend(EmploymentAgency, LocalBusiness, [], null, {branc
 /**
  *  Schema.org/LodgingBusiness
  *  A lodging business, such as a motel, hotel, or inn.
+ * 
  *  @author schema.org
  *  @class LodgingBusiness
  *  @module org.schema
@@ -14614,6 +16445,7 @@ EmploymentAgency = stjs.extend(EmploymentAgency, LocalBusiness, [], null, {branc
  */
 var LodgingBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14625,6 +16457,7 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
     /**
      *  Schema.org/audience
      *  An intended audience, i.e. a group for whom something was created.
+     * 
      *  @property audience
      *  @type Audience
      */
@@ -14632,6 +16465,7 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
     /**
      *  Schema.org/amenityFeature
      *  An amenity feature (e.g. a characteristic or service) of the Accommodation. This generic property does not make a statement about whether the feature is included in an offer for the main accommodation or available at extra costs.
+     * 
      *  @property amenityFeature
      *  @type LocationFeatureSpecification
      */
@@ -14639,13 +16473,15 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
     /**
      *  Schema.org/availableLanguage
      *  A language someone may use with the item. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[inLanguage]]
+     * 
      *  @property availableLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.availableLanguage = null;
     /**
      *  Schema.org/starRating
      *  An official rating for a lodging business or food establishment, e.g. from national associations or standards bodies. Use the author property to indicate the rating organization, e.g. as an Organization with name such as (e.g. HOTREC, DEHOGA, WHR, or Hotelstars).
+     * 
      *  @property starRating
      *  @type Rating
      */
@@ -14653,13 +16489,15 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
     /**
      *  Schema.org/petsAllowed
      *  Indicates whether pets are allowed to enter the accommodation or lodging business. More detailed information can be put in a text value.
+     * 
      *  @property petsAllowed
-     *  @type schema,Boolean | schema,Text
+     *  @type schema, Boolean | schema,Text
      */
     prototype.petsAllowed = null;
     /**
      *  Schema.org/checkoutTime
      *  The latest someone may check out of a lodging establishment.
+     * 
      *  @property checkoutTime
      *  @type DateTime
      */
@@ -14667,6 +16505,7 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
     /**
      *  Schema.org/checkinTime
      *  The earliest someone may check into a lodging establishment.
+     * 
      *  @property checkinTime
      *  @type DateTime
      */
@@ -14675,6 +16514,7 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
 /**
  *  Schema.org/TouristInformationCenter
  *  A tourist information center.
+ * 
  *  @author schema.org
  *  @class TouristInformationCenter
  *  @module org.schema
@@ -14682,6 +16522,7 @@ LodgingBusiness = stjs.extend(LodgingBusiness, LocalBusiness, [], function(const
  */
 var TouristInformationCenter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14693,6 +16534,7 @@ TouristInformationCenter = stjs.extend(TouristInformationCenter, LocalBusiness, 
 /**
  *  Schema.org/RealEstateAgent
  *  A real-estate agent.
+ * 
  *  @author schema.org
  *  @class RealEstateAgent
  *  @module org.schema
@@ -14700,6 +16542,7 @@ TouristInformationCenter = stjs.extend(TouristInformationCenter, LocalBusiness, 
  */
 var RealEstateAgent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14711,6 +16554,7 @@ RealEstateAgent = stjs.extend(RealEstateAgent, LocalBusiness, [], null, {branchO
 /**
  *  Schema.org/SportsActivityLocation
  *  A sports location, such as a playing field.
+ * 
  *  @author schema.org
  *  @class SportsActivityLocation
  *  @module org.schema
@@ -14718,6 +16562,7 @@ RealEstateAgent = stjs.extend(RealEstateAgent, LocalBusiness, [], null, {branchO
  */
 var SportsActivityLocation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14729,6 +16574,7 @@ SportsActivityLocation = stjs.extend(SportsActivityLocation, LocalBusiness, [], 
 /**
  *  Schema.org/SportsTeam
  *  Organization: Sports team.
+ * 
  *  @author schema.org
  *  @class SportsTeam
  *  @module org.schema
@@ -14736,6 +16582,7 @@ SportsActivityLocation = stjs.extend(SportsActivityLocation, LocalBusiness, [], 
  */
 var SportsTeam = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14747,6 +16594,7 @@ SportsTeam = stjs.extend(SportsTeam, SportsOrganization, [], function(constructo
     /**
      *  Schema.org/athlete
      *  A person that acts as performing member of a sports team; a player as opposed to a coach.
+     * 
      *  @property athlete
      *  @type Person
      */
@@ -14754,6 +16602,7 @@ SportsTeam = stjs.extend(SportsTeam, SportsOrganization, [], function(constructo
     /**
      *  Schema.org/coach
      *  A person that acts in a coaching role for a sports team.
+     * 
      *  @property coach
      *  @type Person
      */
@@ -14762,6 +16611,7 @@ SportsTeam = stjs.extend(SportsTeam, SportsOrganization, [], function(constructo
 /**
  *  Schema.org/Car
  *  A car is a wheeled, self-powered motor vehicle used for transportation.
+ * 
  *  @author schema.org
  *  @class Car
  *  @module org.schema
@@ -14769,6 +16619,7 @@ SportsTeam = stjs.extend(SportsTeam, SportsOrganization, [], function(constructo
  */
 var Car = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14780,6 +16631,7 @@ Car = stjs.extend(Car, Vehicle, [], null, {driveWheelConfiguration: "Object", nu
 /**
  *  Schema.org/DepartAction
  *  The act of  departing from a place. An agent departs from an fromLocation for a destination, optionally with participants.
+ * 
  *  @author schema.org
  *  @class DepartAction
  *  @module org.schema
@@ -14787,6 +16639,7 @@ Car = stjs.extend(Car, Vehicle, [], null, {driveWheelConfiguration: "Object", nu
  */
 var DepartAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14798,6 +16651,7 @@ DepartAction = stjs.extend(DepartAction, MoveAction, [], null, {fromLocation: "P
 /**
  *  Schema.org/TravelAction
  *  The act of traveling from an fromLocation to a destination by a specified mode of transport, optionally with participants.
+ * 
  *  @author schema.org
  *  @class TravelAction
  *  @module org.schema
@@ -14805,6 +16659,7 @@ DepartAction = stjs.extend(DepartAction, MoveAction, [], null, {fromLocation: "P
  */
 var TravelAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14816,6 +16671,7 @@ TravelAction = stjs.extend(TravelAction, MoveAction, [], function(constructor, p
     /**
      *  Schema.org/distance
      *  The distance travelled, e.g. exercising or travelling.
+     * 
      *  @property distance
      *  @type Distance
      */
@@ -14824,6 +16680,7 @@ TravelAction = stjs.extend(TravelAction, MoveAction, [], function(constructor, p
 /**
  *  Schema.org/ArriveAction
  *  The act of arriving at a place. An agent arrives at a destination from a fromLocation, optionally with participants.
+ * 
  *  @author schema.org
  *  @class ArriveAction
  *  @module org.schema
@@ -14831,6 +16688,7 @@ TravelAction = stjs.extend(TravelAction, MoveAction, [], function(constructor, p
  */
 var ArriveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14842,6 +16700,7 @@ ArriveAction = stjs.extend(ArriveAction, MoveAction, [], null, {fromLocation: "P
 /**
  *  Schema.org/WatchAction
  *  The act of consuming dynamic/moving visual content.
+ * 
  *  @author schema.org
  *  @class WatchAction
  *  @module org.schema
@@ -14849,6 +16708,7 @@ ArriveAction = stjs.extend(ArriveAction, MoveAction, [], null, {fromLocation: "P
  */
 var WatchAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14860,6 +16720,7 @@ WatchAction = stjs.extend(WatchAction, ConsumeAction, [], null, {expectsAcceptan
 /**
  *  Schema.org/InstallAction
  *  The act of installing an application.
+ * 
  *  @author schema.org
  *  @class InstallAction
  *  @module org.schema
@@ -14867,6 +16728,7 @@ WatchAction = stjs.extend(WatchAction, ConsumeAction, [], null, {expectsAcceptan
  */
 var InstallAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14878,6 +16740,7 @@ InstallAction = stjs.extend(InstallAction, ConsumeAction, [], null, {expectsAcce
 /**
  *  Schema.org/DrinkAction
  *  The act of swallowing liquids.
+ * 
  *  @author schema.org
  *  @class DrinkAction
  *  @module org.schema
@@ -14885,6 +16748,7 @@ InstallAction = stjs.extend(InstallAction, ConsumeAction, [], null, {expectsAcce
  */
 var DrinkAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14896,6 +16760,7 @@ DrinkAction = stjs.extend(DrinkAction, ConsumeAction, [], null, {expectsAcceptan
 /**
  *  Schema.org/EatAction
  *  The act of swallowing solid objects.
+ * 
  *  @author schema.org
  *  @class EatAction
  *  @module org.schema
@@ -14903,6 +16768,7 @@ DrinkAction = stjs.extend(DrinkAction, ConsumeAction, [], null, {expectsAcceptan
  */
 var EatAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14914,6 +16780,7 @@ EatAction = stjs.extend(EatAction, ConsumeAction, [], null, {expectsAcceptanceOf
 /**
  *  Schema.org/ViewAction
  *  The act of consuming static visual content.
+ * 
  *  @author schema.org
  *  @class ViewAction
  *  @module org.schema
@@ -14921,6 +16788,7 @@ EatAction = stjs.extend(EatAction, ConsumeAction, [], null, {expectsAcceptanceOf
  */
 var ViewAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14932,6 +16800,7 @@ ViewAction = stjs.extend(ViewAction, ConsumeAction, [], null, {expectsAcceptance
 /**
  *  Schema.org/ListenAction
  *  The act of consuming audio content.
+ * 
  *  @author schema.org
  *  @class ListenAction
  *  @module org.schema
@@ -14939,6 +16808,7 @@ ViewAction = stjs.extend(ViewAction, ConsumeAction, [], null, {expectsAcceptance
  */
 var ListenAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14950,6 +16820,7 @@ ListenAction = stjs.extend(ListenAction, ConsumeAction, [], null, {expectsAccept
 /**
  *  Schema.org/UseAction
  *  The act of applying an object to its intended purpose.
+ * 
  *  @author schema.org
  *  @class UseAction
  *  @module org.schema
@@ -14957,6 +16828,7 @@ ListenAction = stjs.extend(ListenAction, ConsumeAction, [], null, {expectsAccept
  */
 var UseAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14968,6 +16840,7 @@ UseAction = stjs.extend(UseAction, ConsumeAction, [], null, {expectsAcceptanceOf
 /**
  *  Schema.org/ReadAction
  *  The act of consuming written content.
+ * 
  *  @author schema.org
  *  @class ReadAction
  *  @module org.schema
@@ -14975,6 +16848,7 @@ UseAction = stjs.extend(UseAction, ConsumeAction, [], null, {expectsAcceptanceOf
  */
 var ReadAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -14986,6 +16860,7 @@ ReadAction = stjs.extend(ReadAction, ConsumeAction, [], null, {expectsAcceptance
 /**
  *  Schema.org/ReplaceAction
  *  The act of editing a recipient by replacing an old object with a new object.
+ * 
  *  @author schema.org
  *  @class ReplaceAction
  *  @module org.schema
@@ -14993,6 +16868,7 @@ ReadAction = stjs.extend(ReadAction, ConsumeAction, [], null, {expectsAcceptance
  */
 var ReplaceAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15004,6 +16880,7 @@ ReplaceAction = stjs.extend(ReplaceAction, UpdateAction, [], function(constructo
     /**
      *  Schema.org/replacer
      *  A sub property of object. The object that replaces.
+     * 
      *  @property replacer
      *  @type Thing
      */
@@ -15011,6 +16888,7 @@ ReplaceAction = stjs.extend(ReplaceAction, UpdateAction, [], function(constructo
     /**
      *  Schema.org/replacee
      *  A sub property of object. The object that is being replaced.
+     * 
      *  @property replacee
      *  @type Thing
      */
@@ -15019,6 +16897,7 @@ ReplaceAction = stjs.extend(ReplaceAction, UpdateAction, [], function(constructo
 /**
  *  Schema.org/DeleteAction
  *  The act of editing a recipient by removing one of its objects.
+ * 
  *  @author schema.org
  *  @class DeleteAction
  *  @module org.schema
@@ -15026,6 +16905,7 @@ ReplaceAction = stjs.extend(ReplaceAction, UpdateAction, [], function(constructo
  */
 var DeleteAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15037,6 +16917,7 @@ DeleteAction = stjs.extend(DeleteAction, UpdateAction, [], null, {targetCollecti
 /**
  *  Schema.org/AddAction
  *  The act of editing by adding an object to a collection.
+ * 
  *  @author schema.org
  *  @class AddAction
  *  @module org.schema
@@ -15044,6 +16925,7 @@ DeleteAction = stjs.extend(DeleteAction, UpdateAction, [], null, {targetCollecti
  */
 var AddAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15055,6 +16937,7 @@ AddAction = stjs.extend(AddAction, UpdateAction, [], null, {targetCollection: "T
 /**
  *  Schema.org/BorrowAction
  *  The act of obtaining an object under an agreement to return it at a later date. Reciprocal of LendAction.\n\nRelated actions:\n\n* [[LendAction]]: Reciprocal of BorrowAction.
+ * 
  *  @author schema.org
  *  @class BorrowAction
  *  @module org.schema
@@ -15062,6 +16945,7 @@ AddAction = stjs.extend(AddAction, UpdateAction, [], null, {targetCollection: "T
  */
 var BorrowAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15073,14 +16957,16 @@ BorrowAction = stjs.extend(BorrowAction, TransferAction, [], function(constructo
     /**
      *  Schema.org/lender
      *  A sub property of participant. The person that lends the object being borrowed.
+     * 
      *  @property lender
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.lender = null;
 }, {lender: "Object", fromLocation: "Place", toLocation: "Place", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/SendAction
  *  The act of physically/electronically dispatching an object for transfer from an origin to a destination.Related actions:\n\n* [[ReceiveAction]]: The reciprocal of SendAction.\n* [[GiveAction]]: Unlike GiveAction, SendAction does not imply the transfer of ownership (e.g. I can send you my laptop, but I'm not necessarily giving it to you).
+ * 
  *  @author schema.org
  *  @class SendAction
  *  @module org.schema
@@ -15088,6 +16974,7 @@ BorrowAction = stjs.extend(BorrowAction, TransferAction, [], function(constructo
  */
 var SendAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15099,6 +16986,7 @@ SendAction = stjs.extend(SendAction, TransferAction, [], function(constructor, p
     /**
      *  Schema.org/deliveryMethod
      *  A sub property of instrument. The method of delivery.
+     * 
      *  @property deliveryMethod
      *  @type DeliveryMethod
      */
@@ -15106,14 +16994,16 @@ SendAction = stjs.extend(SendAction, TransferAction, [], function(constructor, p
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {deliveryMethod: "DeliveryMethod", recipient: "Object", fromLocation: "Place", toLocation: "Place", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/DownloadAction
  *  The act of downloading an object.
+ * 
  *  @author schema.org
  *  @class DownloadAction
  *  @module org.schema
@@ -15121,6 +17011,7 @@ SendAction = stjs.extend(SendAction, TransferAction, [], function(constructor, p
  */
 var DownloadAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15132,6 +17023,7 @@ DownloadAction = stjs.extend(DownloadAction, TransferAction, [], null, {fromLoca
 /**
  *  Schema.org/LendAction
  *  The act of providing an object under an agreement that it will be returned at a later date. Reciprocal of BorrowAction.\n\nRelated actions:\n\n* [[BorrowAction]]: Reciprocal of LendAction.
+ * 
  *  @author schema.org
  *  @class LendAction
  *  @module org.schema
@@ -15139,6 +17031,7 @@ DownloadAction = stjs.extend(DownloadAction, TransferAction, [], null, {fromLoca
  */
 var LendAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15150,6 +17043,7 @@ LendAction = stjs.extend(LendAction, TransferAction, [], function(constructor, p
     /**
      *  Schema.org/borrower
      *  A sub property of participant. The person that borrows the object being lent.
+     * 
      *  @property borrower
      *  @type Person
      */
@@ -15158,6 +17052,7 @@ LendAction = stjs.extend(LendAction, TransferAction, [], function(constructor, p
 /**
  *  Schema.org/ReceiveAction
  *  The act of physically/electronically taking delivery of an object thathas been transferred from an origin to a destination. Reciprocal of SendAction.\n\nRelated actions:\n\n* [[SendAction]]: The reciprocal of ReceiveAction.\n* [[TakeAction]]: Unlike TakeAction, ReceiveAction does not imply that the ownership has been transfered (e.g. I can receive a package, but it does not mean the package is now mine).
+ * 
  *  @author schema.org
  *  @class ReceiveAction
  *  @module org.schema
@@ -15165,6 +17060,7 @@ LendAction = stjs.extend(LendAction, TransferAction, [], function(constructor, p
  */
 var ReceiveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15176,13 +17072,15 @@ ReceiveAction = stjs.extend(ReceiveAction, TransferAction, [], function(construc
     /**
      *  Schema.org/sender
      *  A sub property of participant. The participant who is at the sending end of the action.
+     * 
      *  @property sender
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.sender = null;
     /**
      *  Schema.org/deliveryMethod
      *  A sub property of instrument. The method of delivery.
+     * 
      *  @property deliveryMethod
      *  @type DeliveryMethod
      */
@@ -15191,6 +17089,7 @@ ReceiveAction = stjs.extend(ReceiveAction, TransferAction, [], function(construc
 /**
  *  Schema.org/GiveAction
  *  The act of transferring ownership of an object to a destination. Reciprocal of TakeAction.\n\nRelated actions:\n\n* [[TakeAction]]: Reciprocal of GiveAction.\n* [[SendAction]]: Unlike SendAction, GiveAction implies that ownership is being transferred (e.g. I may send my laptop to you, but that doesn't mean I'm giving it to you).
+ * 
  *  @author schema.org
  *  @class GiveAction
  *  @module org.schema
@@ -15198,6 +17097,7 @@ ReceiveAction = stjs.extend(ReceiveAction, TransferAction, [], function(construc
  */
 var GiveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15209,14 +17109,16 @@ GiveAction = stjs.extend(GiveAction, TransferAction, [], function(constructor, p
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", fromLocation: "Place", toLocation: "Place", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/ReturnAction
  *  The act of returning to the origin that which was previously received (concrete objects) or taken (ownership).
+ * 
  *  @author schema.org
  *  @class ReturnAction
  *  @module org.schema
@@ -15224,6 +17126,7 @@ GiveAction = stjs.extend(GiveAction, TransferAction, [], function(constructor, p
  */
 var ReturnAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15235,14 +17138,16 @@ ReturnAction = stjs.extend(ReturnAction, TransferAction, [], function(constructo
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", fromLocation: "Place", toLocation: "Place", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/TakeAction
  *  The act of gaining ownership of an object from an origin. Reciprocal of GiveAction.\n\nRelated actions:\n\n* [[GiveAction]]: The reciprocal of TakeAction.\n* [[ReceiveAction]]: Unlike ReceiveAction, TakeAction implies that ownership has been transfered.
+ * 
  *  @author schema.org
  *  @class TakeAction
  *  @module org.schema
@@ -15250,6 +17155,7 @@ ReturnAction = stjs.extend(ReturnAction, TransferAction, [], function(constructo
  */
 var TakeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15261,6 +17167,7 @@ TakeAction = stjs.extend(TakeAction, TransferAction, [], null, {fromLocation: "P
 /**
  *  Schema.org/TrackAction
  *  An agent tracks an object for updates.\n\nRelated actions:\n\n* [[FollowAction]]: Unlike FollowAction, TrackAction refers to the interest on the location of innanimates objects.\n* [[SubscribeAction]]: Unlike SubscribeAction, TrackAction refers to  the interest on the location of innanimate objects.
+ * 
  *  @author schema.org
  *  @class TrackAction
  *  @module org.schema
@@ -15268,6 +17175,7 @@ TakeAction = stjs.extend(TakeAction, TransferAction, [], null, {fromLocation: "P
  */
 var TrackAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15279,6 +17187,7 @@ TrackAction = stjs.extend(TrackAction, FindAction, [], function(constructor, pro
     /**
      *  Schema.org/deliveryMethod
      *  A sub property of instrument. The method of delivery.
+     * 
      *  @property deliveryMethod
      *  @type DeliveryMethod
      */
@@ -15287,6 +17196,7 @@ TrackAction = stjs.extend(TrackAction, FindAction, [], function(constructor, pro
 /**
  *  Schema.org/DiscoverAction
  *  The act of discovering/finding an object.
+ * 
  *  @author schema.org
  *  @class DiscoverAction
  *  @module org.schema
@@ -15294,6 +17204,7 @@ TrackAction = stjs.extend(TrackAction, FindAction, [], function(constructor, pro
  */
 var DiscoverAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15305,6 +17216,7 @@ DiscoverAction = stjs.extend(DiscoverAction, FindAction, [], null, {target: "Ent
 /**
  *  Schema.org/CheckAction
  *  An agent inspects, determines, investigates, inquires, or examines an object's accuracy, quality, condition, or state.
+ * 
  *  @author schema.org
  *  @class CheckAction
  *  @module org.schema
@@ -15312,6 +17224,7 @@ DiscoverAction = stjs.extend(DiscoverAction, FindAction, [], null, {target: "Ent
  */
 var CheckAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15323,6 +17236,7 @@ CheckAction = stjs.extend(CheckAction, FindAction, [], null, {target: "EntryPoin
 /**
  *  Schema.org/ApplyAction
  *  The act of registering to an organization/service without the guarantee to receive it.\n\nRelated actions:\n\n* [[RegisterAction]]: Unlike RegisterAction, ApplyAction has no guarantees that the application will be accepted.
+ * 
  *  @author schema.org
  *  @class ApplyAction
  *  @module org.schema
@@ -15330,6 +17244,7 @@ CheckAction = stjs.extend(CheckAction, FindAction, [], null, {target: "EntryPoin
  */
 var ApplyAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15341,6 +17256,7 @@ ApplyAction = stjs.extend(ApplyAction, OrganizeAction, [], null, {target: "Entry
 /**
  *  Schema.org/BookmarkAction
  *  An agent bookmarks/flags/labels/tags/marks an object.
+ * 
  *  @author schema.org
  *  @class BookmarkAction
  *  @module org.schema
@@ -15348,6 +17264,7 @@ ApplyAction = stjs.extend(ApplyAction, OrganizeAction, [], null, {target: "Entry
  */
 var BookmarkAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15359,6 +17276,7 @@ BookmarkAction = stjs.extend(BookmarkAction, OrganizeAction, [], null, {target: 
 /**
  *  Schema.org/PlanAction
  *  The act of planning the execution of an event/task/action/reservation/plan to a future date.
+ * 
  *  @author schema.org
  *  @class PlanAction
  *  @module org.schema
@@ -15366,6 +17284,7 @@ BookmarkAction = stjs.extend(BookmarkAction, OrganizeAction, [], null, {target: 
  */
 var PlanAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15377,6 +17296,7 @@ PlanAction = stjs.extend(PlanAction, OrganizeAction, [], function(constructor, p
     /**
      *  Schema.org/scheduledTime
      *  The time the object is scheduled to.
+     * 
      *  @property scheduledTime
      *  @type DateTime
      */
@@ -15385,6 +17305,7 @@ PlanAction = stjs.extend(PlanAction, OrganizeAction, [], function(constructor, p
 /**
  *  Schema.org/AllocateAction
  *  The act of organizing tasks/objects/events by associating resources to it.
+ * 
  *  @author schema.org
  *  @class AllocateAction
  *  @module org.schema
@@ -15392,6 +17313,7 @@ PlanAction = stjs.extend(PlanAction, OrganizeAction, [], function(constructor, p
  */
 var AllocateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15403,6 +17325,7 @@ AllocateAction = stjs.extend(AllocateAction, OrganizeAction, [], null, {target: 
 /**
  *  Schema.org/LoseAction
  *  The act of being defeated in a competitive activity.
+ * 
  *  @author schema.org
  *  @class LoseAction
  *  @module org.schema
@@ -15410,6 +17333,7 @@ AllocateAction = stjs.extend(AllocateAction, OrganizeAction, [], null, {target: 
  */
 var LoseAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15421,6 +17345,7 @@ LoseAction = stjs.extend(LoseAction, AchieveAction, [], function(constructor, pr
     /**
      *  Schema.org/winner
      *  A sub property of participant. The winner of the action.
+     * 
      *  @property winner
      *  @type Person
      */
@@ -15429,6 +17354,7 @@ LoseAction = stjs.extend(LoseAction, AchieveAction, [], function(constructor, pr
 /**
  *  Schema.org/WinAction
  *  The act of achieving victory in a competitive activity.
+ * 
  *  @author schema.org
  *  @class WinAction
  *  @module org.schema
@@ -15436,6 +17362,7 @@ LoseAction = stjs.extend(LoseAction, AchieveAction, [], function(constructor, pr
  */
 var WinAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15447,6 +17374,7 @@ WinAction = stjs.extend(WinAction, AchieveAction, [], function(constructor, prot
     /**
      *  Schema.org/loser
      *  A sub property of participant. The loser of the action.
+     * 
      *  @property loser
      *  @type Person
      */
@@ -15455,6 +17383,7 @@ WinAction = stjs.extend(WinAction, AchieveAction, [], function(constructor, prot
 /**
  *  Schema.org/TieAction
  *  The act of reaching a draw in a competitive activity.
+ * 
  *  @author schema.org
  *  @class TieAction
  *  @module org.schema
@@ -15462,6 +17391,7 @@ WinAction = stjs.extend(WinAction, AchieveAction, [], function(constructor, prot
  */
 var TieAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15473,6 +17403,7 @@ TieAction = stjs.extend(TieAction, AchieveAction, [], null, {target: "EntryPoint
 /**
  *  Schema.org/IgnoreAction
  *  The act of intentionally disregarding the object. An agent ignores an object.
+ * 
  *  @author schema.org
  *  @class IgnoreAction
  *  @module org.schema
@@ -15480,6 +17411,7 @@ TieAction = stjs.extend(TieAction, AchieveAction, [], null, {target: "EntryPoint
  */
 var IgnoreAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15491,6 +17423,7 @@ IgnoreAction = stjs.extend(IgnoreAction, AssessAction, [], null, {target: "Entry
 /**
  *  Schema.org/ReviewAction
  *  The act of producing a balanced opinion about the object for an audience. An agent reviews an object with participants resulting in a review.
+ * 
  *  @author schema.org
  *  @class ReviewAction
  *  @module org.schema
@@ -15498,6 +17431,7 @@ IgnoreAction = stjs.extend(IgnoreAction, AssessAction, [], null, {target: "Entry
  */
 var ReviewAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15509,6 +17443,7 @@ ReviewAction = stjs.extend(ReviewAction, AssessAction, [], function(constructor,
     /**
      *  Schema.org/resultReview
      *  A sub property of result. The review that resulted in the performing of the action.
+     * 
      *  @property resultReview
      *  @type Review
      */
@@ -15517,6 +17452,7 @@ ReviewAction = stjs.extend(ReviewAction, AssessAction, [], function(constructor,
 /**
  *  Schema.org/ChooseAction
  *  The act of expressing a preference from a set of options or a large or unbounded set of choices/options.
+ * 
  *  @author schema.org
  *  @class ChooseAction
  *  @module org.schema
@@ -15524,6 +17460,7 @@ ReviewAction = stjs.extend(ReviewAction, AssessAction, [], function(constructor,
  */
 var ChooseAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15535,21 +17472,24 @@ ChooseAction = stjs.extend(ChooseAction, AssessAction, [], function(constructor,
     /**
      *  Schema.org/actionOption
      *  A sub property of object. The options subject to this action.
+     * 
      *  @property actionOption
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.actionOption = null;
     /**
      *  Schema.org/option
      *  A sub property of object. The options subject to this action.
+     * 
      *  @property option
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.option = null;
 }, {actionOption: "Object", option: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/ReactAction
  *  The act of responding instinctively and emotionally to an object, expressing a sentiment.
+ * 
  *  @author schema.org
  *  @class ReactAction
  *  @module org.schema
@@ -15557,6 +17497,7 @@ ChooseAction = stjs.extend(ChooseAction, AssessAction, [], function(constructor,
  */
 var ReactAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15568,6 +17509,7 @@ ReactAction = stjs.extend(ReactAction, AssessAction, [], null, {target: "EntryPo
 /**
  *  Schema.org/JoinAction
  *  An agent joins an event/group with participants/friends at a location.\n\nRelated actions:\n\n* [[RegisterAction]]: Unlike RegisterAction, JoinAction refers to joining a group/team of people.\n* [[SubscribeAction]]: Unlike SubscribeAction, JoinAction does not imply that you'll be receiving updates.\n* [[FollowAction]]: Unlike FollowAction, JoinAction does not imply that you'll be polling for updates.
+ * 
  *  @author schema.org
  *  @class JoinAction
  *  @module org.schema
@@ -15575,6 +17517,7 @@ ReactAction = stjs.extend(ReactAction, AssessAction, [], null, {target: "EntryPo
  */
 var JoinAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15586,6 +17529,7 @@ JoinAction = stjs.extend(JoinAction, InteractAction, [], function(constructor, p
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -15594,6 +17538,7 @@ JoinAction = stjs.extend(JoinAction, InteractAction, [], function(constructor, p
 /**
  *  Schema.org/MarryAction
  *  The act of marrying a person.
+ * 
  *  @author schema.org
  *  @class MarryAction
  *  @module org.schema
@@ -15601,6 +17546,7 @@ JoinAction = stjs.extend(JoinAction, InteractAction, [], function(constructor, p
  */
 var MarryAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15612,6 +17558,7 @@ MarryAction = stjs.extend(MarryAction, InteractAction, [], null, {target: "Entry
 /**
  *  Schema.org/CommunicateAction
  *  The act of conveying information to another person via a communication medium (instrument) such as speech, email, or telephone conversation.
+ * 
  *  @author schema.org
  *  @class CommunicateAction
  *  @module org.schema
@@ -15619,6 +17566,7 @@ MarryAction = stjs.extend(MarryAction, InteractAction, [], null, {target: "Entry
  */
 var CommunicateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15630,6 +17578,7 @@ CommunicateAction = stjs.extend(CommunicateAction, InteractAction, [], function(
     /**
      *  Schema.org/language
      *  A sub property of instrument. The language used on this action.
+     * 
      *  @property language
      *  @type Language
      */
@@ -15637,6 +17586,7 @@ CommunicateAction = stjs.extend(CommunicateAction, InteractAction, [], function(
     /**
      *  Schema.org/about
      *  The subject matter of the content.
+     * 
      *  @property about
      *  @type Thing
      */
@@ -15644,21 +17594,24 @@ CommunicateAction = stjs.extend(CommunicateAction, InteractAction, [], function(
     /**
      *  Schema.org/inLanguage
      *  The language of the content or performance or used in an action. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[availableLanguage]].
+     * 
      *  @property inLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.inLanguage = null;
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {language: "Language", about: "Thing", inLanguage: "Object", recipient: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/BefriendAction
  *  The act of forming a personal connection with someone (object) mutually/bidirectionally/symmetrically.\n\nRelated actions:\n\n* [[FollowAction]]: Unlike FollowAction, BefriendAction implies that the connection is reciprocal.
+ * 
  *  @author schema.org
  *  @class BefriendAction
  *  @module org.schema
@@ -15666,6 +17619,7 @@ CommunicateAction = stjs.extend(CommunicateAction, InteractAction, [], function(
  */
 var BefriendAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15677,6 +17631,7 @@ BefriendAction = stjs.extend(BefriendAction, InteractAction, [], null, {target: 
 /**
  *  Schema.org/RegisterAction
  *  The act of registering to be a user of a service, product or web page.\n\nRelated actions:\n\n* [[JoinAction]]: Unlike JoinAction, RegisterAction implies you are registering to be a user of a service, *not* a group/team of people.\n* [FollowAction]]: Unlike FollowAction, RegisterAction doesn't imply that the agent is expecting to poll for updates from the object.\n* [[SubscribeAction]]: Unlike SubscribeAction, RegisterAction doesn't imply that the agent is expecting updates from the object.
+ * 
  *  @author schema.org
  *  @class RegisterAction
  *  @module org.schema
@@ -15684,6 +17639,7 @@ BefriendAction = stjs.extend(BefriendAction, InteractAction, [], null, {target: 
  */
 var RegisterAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15695,6 +17651,7 @@ RegisterAction = stjs.extend(RegisterAction, InteractAction, [], null, {target: 
 /**
  *  Schema.org/SubscribeAction
  *  The act of forming a personal connection with someone/something (object) unidirectionally/asymmetrically to get updates pushed to.\n\nRelated actions:\n\n* [[FollowAction]]: Unlike FollowAction, SubscribeAction implies that the subscriber acts as a passive agent being constantly/actively pushed for updates.\n* [[RegisterAction]]: Unlike RegisterAction, SubscribeAction implies that the agent is interested in continuing receiving updates from the object.\n* [[JoinAction]]: Unlike JoinAction, SubscribeAction implies that the agent is interested in continuing receiving updates from the object.
+ * 
  *  @author schema.org
  *  @class SubscribeAction
  *  @module org.schema
@@ -15702,6 +17659,7 @@ RegisterAction = stjs.extend(RegisterAction, InteractAction, [], null, {target: 
  */
 var SubscribeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15713,6 +17671,7 @@ SubscribeAction = stjs.extend(SubscribeAction, InteractAction, [], null, {target
 /**
  *  Schema.org/FollowAction
  *  The act of forming a personal connection with someone/something (object) unidirectionally/asymmetrically to get updates polled from.\n\nRelated actions:\n\n* [[BefriendAction]]: Unlike BefriendAction, FollowAction implies that the connection is *not* necessarily reciprocal.\n* [[SubscribeAction]]: Unlike SubscribeAction, FollowAction implies that the follower acts as an active agent constantly/actively polling for updates.\n* [[RegisterAction]]: Unlike RegisterAction, FollowAction implies that the agent is interested in continuing receiving updates from the object.\n* [[JoinAction]]: Unlike JoinAction, FollowAction implies that the agent is interested in getting updates from the object.\n* [[TrackAction]]: Unlike TrackAction, FollowAction refers to the polling of updates of all aspects of animate objects rather than the location of inanimate objects (e.g. you track a package, but you don't follow it).
+ * 
  *  @author schema.org
  *  @class FollowAction
  *  @module org.schema
@@ -15720,6 +17679,7 @@ SubscribeAction = stjs.extend(SubscribeAction, InteractAction, [], null, {target
  */
 var FollowAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15731,14 +17691,16 @@ FollowAction = stjs.extend(FollowAction, InteractAction, [], function(constructo
     /**
      *  Schema.org/followee
      *  A sub property of object. The person or organization being followed.
+     * 
      *  @property followee
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.followee = null;
 }, {followee: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/UnRegisterAction
  *  The act of un-registering from a service.\n\nRelated actions:\n\n* [[RegisterAction]]: antonym of UnRegisterAction.\n* [[Leave]]: Unlike LeaveAction, UnRegisterAction implies that you are unregistering from a service you werer previously registered, rather than leaving a team/group of people.
+ * 
  *  @author schema.org
  *  @class UnRegisterAction
  *  @module org.schema
@@ -15746,6 +17708,7 @@ FollowAction = stjs.extend(FollowAction, InteractAction, [], function(constructo
  */
 var UnRegisterAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15757,6 +17720,7 @@ UnRegisterAction = stjs.extend(UnRegisterAction, InteractAction, [], null, {targ
 /**
  *  Schema.org/LeaveAction
  *  An agent leaves an event / group with participants/friends at a location.\n\nRelated actions:\n\n* [[JoinAction]]: The antonym of LeaveAction.\n* [[UnRegisterAction]]: Unlike UnRegisterAction, LeaveAction implies leaving a group/team of people rather than a service.
+ * 
  *  @author schema.org
  *  @class LeaveAction
  *  @module org.schema
@@ -15764,6 +17728,7 @@ UnRegisterAction = stjs.extend(UnRegisterAction, InteractAction, [], null, {targ
  */
 var LeaveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15775,6 +17740,7 @@ LeaveAction = stjs.extend(LeaveAction, InteractAction, [], function(constructor,
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -15783,6 +17749,7 @@ LeaveAction = stjs.extend(LeaveAction, InteractAction, [], function(constructor,
 /**
  *  Schema.org/ExerciseAction
  *  The act of participating in exertive activity for the purposes of improving health and fitness.
+ * 
  *  @author schema.org
  *  @class ExerciseAction
  *  @module org.schema
@@ -15790,6 +17757,7 @@ LeaveAction = stjs.extend(LeaveAction, InteractAction, [], function(constructor,
  */
 var ExerciseAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15801,6 +17769,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/opponent
      *  A sub property of participant. The opponent on this action.
+     * 
      *  @property opponent
      *  @type Person
      */
@@ -15808,6 +17777,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/exerciseCourse
      *  A sub property of location. The course where this action was taken.
+     * 
      *  @property exerciseCourse
      *  @type Place
      */
@@ -15815,6 +17785,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/fromLocation
      *  A sub property of location. The original location of the object or the agent before the action.
+     * 
      *  @property fromLocation
      *  @type Place
      */
@@ -15822,6 +17793,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/course
      *  A sub property of location. The course where this action was taken.
+     * 
      *  @property course
      *  @type Place
      */
@@ -15829,6 +17801,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/toLocation
      *  A sub property of location. The final location of the object or the agent after the action.
+     * 
      *  @property toLocation
      *  @type Place
      */
@@ -15836,6 +17809,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/distance
      *  The distance travelled, e.g. exercising or travelling.
+     * 
      *  @property distance
      *  @type Distance
      */
@@ -15843,6 +17817,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/sportsActivityLocation
      *  A sub property of location. The sports activity location where this action occurred.
+     * 
      *  @property sportsActivityLocation
      *  @type SportsActivityLocation
      */
@@ -15850,6 +17825,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/sportsEvent
      *  A sub property of location. The sports event where this action occurred.
+     * 
      *  @property sportsEvent
      *  @type SportsEvent
      */
@@ -15857,6 +17833,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
     /**
      *  Schema.org/sportsTeam
      *  A sub property of participant. The sports team that participated on this action.
+     * 
      *  @property sportsTeam
      *  @type SportsTeam
      */
@@ -15865,6 +17842,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
 /**
  *  Schema.org/PerformAction
  *  The act of participating in performance arts.
+ * 
  *  @author schema.org
  *  @class PerformAction
  *  @module org.schema
@@ -15872,6 +17850,7 @@ ExerciseAction = stjs.extend(ExerciseAction, PlayAction, [], function(constructo
  */
 var PerformAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15883,6 +17862,7 @@ PerformAction = stjs.extend(PerformAction, PlayAction, [], function(constructor,
     /**
      *  Schema.org/entertainmentBusiness
      *  A sub property of location. The entertainment business where the action occurred.
+     * 
      *  @property entertainmentBusiness
      *  @type EntertainmentBusiness
      */
@@ -15891,6 +17871,7 @@ PerformAction = stjs.extend(PerformAction, PlayAction, [], function(constructor,
 /**
  *  Schema.org/DonateAction
  *  The act of providing goods, services, or money without compensation, often for philanthropic reasons.
+ * 
  *  @author schema.org
  *  @class DonateAction
  *  @module org.schema
@@ -15898,6 +17879,7 @@ PerformAction = stjs.extend(PerformAction, PlayAction, [], function(constructor,
  */
 var DonateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15909,14 +17891,16 @@ DonateAction = stjs.extend(DonateAction, TradeAction, [], function(constructor, 
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/BuyAction
  *  The act of giving money to a seller in exchange for goods or services rendered. An agent buys an object, product, or service from a seller for a price. Reciprocal of SellAction.
+ * 
  *  @author schema.org
  *  @class BuyAction
  *  @module org.schema
@@ -15924,6 +17908,7 @@ DonateAction = stjs.extend(DonateAction, TradeAction, [], function(constructor, 
  */
 var BuyAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15935,6 +17920,7 @@ BuyAction = stjs.extend(BuyAction, TradeAction, [], function(constructor, protot
     /**
      *  Schema.org/warrantyPromise
      *  The warranty promise(s) included in the offer.
+     * 
      *  @property warrantyPromise
      *  @type WarrantyPromise
      */
@@ -15942,21 +17928,24 @@ BuyAction = stjs.extend(BuyAction, TradeAction, [], function(constructor, protot
     /**
      *  Schema.org/vendor
      *  'vendor' is an earlier term for 'seller'.
+     * 
      *  @property vendor
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.vendor = null;
     /**
      *  Schema.org/seller
      *  An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider.
+     * 
      *  @property seller
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.seller = null;
 }, {warrantyPromise: "WarrantyPromise", vendor: "Object", seller: "Object", priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/OrderAction
  *  An agent orders an object/product/service to be delivered/sent.
+ * 
  *  @author schema.org
  *  @class OrderAction
  *  @module org.schema
@@ -15964,6 +17953,7 @@ BuyAction = stjs.extend(BuyAction, TradeAction, [], function(constructor, protot
  */
 var OrderAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -15975,6 +17965,7 @@ OrderAction = stjs.extend(OrderAction, TradeAction, [], function(constructor, pr
     /**
      *  Schema.org/deliveryMethod
      *  A sub property of instrument. The method of delivery.
+     * 
      *  @property deliveryMethod
      *  @type DeliveryMethod
      */
@@ -15983,6 +17974,7 @@ OrderAction = stjs.extend(OrderAction, TradeAction, [], function(constructor, pr
 /**
  *  Schema.org/PayAction
  *  An agent pays a price to a participant.
+ * 
  *  @author schema.org
  *  @class PayAction
  *  @module org.schema
@@ -15990,6 +17982,7 @@ OrderAction = stjs.extend(OrderAction, TradeAction, [], function(constructor, pr
  */
 var PayAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16001,14 +17994,16 @@ PayAction = stjs.extend(PayAction, TradeAction, [], function(constructor, protot
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/SellAction
  *  The act of taking money from a buyer in exchange for goods or services rendered. An agent sells an object, product, or service to a buyer for a price. Reciprocal of BuyAction.
+ * 
  *  @author schema.org
  *  @class SellAction
  *  @module org.schema
@@ -16016,6 +18011,7 @@ PayAction = stjs.extend(PayAction, TradeAction, [], function(constructor, protot
  */
 var SellAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16027,6 +18023,7 @@ SellAction = stjs.extend(SellAction, TradeAction, [], function(constructor, prot
     /**
      *  Schema.org/warrantyPromise
      *  The warranty promise(s) included in the offer.
+     * 
      *  @property warrantyPromise
      *  @type WarrantyPromise
      */
@@ -16034,6 +18031,7 @@ SellAction = stjs.extend(SellAction, TradeAction, [], function(constructor, prot
     /**
      *  Schema.org/buyer
      *  A sub property of participant. The participant/person/organization that bought the object.
+     * 
      *  @property buyer
      *  @type Person
      */
@@ -16042,6 +18040,7 @@ SellAction = stjs.extend(SellAction, TradeAction, [], function(constructor, prot
 /**
  *  Schema.org/RentAction
  *  The act of giving money in return for temporary use, but not ownership, of an object such as a vehicle or property. For example, an agent rents a property from a landlord in exchange for a periodic payment.
+ * 
  *  @author schema.org
  *  @class RentAction
  *  @module org.schema
@@ -16049,6 +18048,7 @@ SellAction = stjs.extend(SellAction, TradeAction, [], function(constructor, prot
  */
 var RentAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16060,6 +18060,7 @@ RentAction = stjs.extend(RentAction, TradeAction, [], function(constructor, prot
     /**
      *  Schema.org/realEstateAgent
      *  A sub property of participant. The real estate agent involved in the action.
+     * 
      *  @property realEstateAgent
      *  @type RealEstateAgent
      */
@@ -16067,14 +18068,16 @@ RentAction = stjs.extend(RentAction, TradeAction, [], function(constructor, prot
     /**
      *  Schema.org/landlord
      *  A sub property of participant. The owner of the real estate property.
+     * 
      *  @property landlord
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.landlord = null;
 }, {realEstateAgent: "RealEstateAgent", landlord: "Object", priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/TipAction
  *  The act of giving money voluntarily to a beneficiary in recognition of services rendered.
+ * 
  *  @author schema.org
  *  @class TipAction
  *  @module org.schema
@@ -16082,6 +18085,7 @@ RentAction = stjs.extend(RentAction, TradeAction, [], function(constructor, prot
  */
 var TipAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16093,14 +18097,16 @@ TipAction = stjs.extend(TipAction, TradeAction, [], function(constructor, protot
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", priceSpecification: "PriceSpecification", price: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/QuoteAction
  *  An agent quotes/estimates/appraises an object/product/service with a price at a location/store.
+ * 
  *  @author schema.org
  *  @class QuoteAction
  *  @module org.schema
@@ -16108,6 +18114,7 @@ TipAction = stjs.extend(TipAction, TradeAction, [], function(constructor, protot
  */
 var QuoteAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16119,6 +18126,7 @@ QuoteAction = stjs.extend(QuoteAction, TradeAction, [], null, {priceSpecificatio
 /**
  *  Schema.org/ActivateAction
  *  The act of starting or activating a device or application (e.g. starting a timer or turning on a flashlight).
+ * 
  *  @author schema.org
  *  @class ActivateAction
  *  @module org.schema
@@ -16126,6 +18134,7 @@ QuoteAction = stjs.extend(QuoteAction, TradeAction, [], null, {priceSpecificatio
  */
 var ActivateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16137,6 +18146,7 @@ ActivateAction = stjs.extend(ActivateAction, ControlAction, [], null, {target: "
 /**
  *  Schema.org/SuspendAction
  *  The act of momentarily pausing a device or application (e.g. pause music playback or pause a timer).
+ * 
  *  @author schema.org
  *  @class SuspendAction
  *  @module org.schema
@@ -16144,6 +18154,7 @@ ActivateAction = stjs.extend(ActivateAction, ControlAction, [], null, {target: "
  */
 var SuspendAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16155,6 +18166,7 @@ SuspendAction = stjs.extend(SuspendAction, ControlAction, [], null, {target: "En
 /**
  *  Schema.org/ResumeAction
  *  The act of resuming a device or application which was formerly paused (e.g. resume music playback or resume a timer).
+ * 
  *  @author schema.org
  *  @class ResumeAction
  *  @module org.schema
@@ -16162,6 +18174,7 @@ SuspendAction = stjs.extend(SuspendAction, ControlAction, [], null, {target: "En
  */
 var ResumeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16173,6 +18186,7 @@ ResumeAction = stjs.extend(ResumeAction, ControlAction, [], null, {target: "Entr
 /**
  *  Schema.org/DeactivateAction
  *  The act of stopping or deactivating a device or application (e.g. stopping a timer or turning off a flashlight).
+ * 
  *  @author schema.org
  *  @class DeactivateAction
  *  @module org.schema
@@ -16180,6 +18194,7 @@ ResumeAction = stjs.extend(ResumeAction, ControlAction, [], null, {target: "Entr
  */
 var DeactivateAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16191,6 +18206,7 @@ DeactivateAction = stjs.extend(DeactivateAction, ControlAction, [], null, {targe
 /**
  *  Schema.org/FilmAction
  *  The act of capturing sound and moving images on film, video, or digitally.
+ * 
  *  @author schema.org
  *  @class FilmAction
  *  @module org.schema
@@ -16198,6 +18214,7 @@ DeactivateAction = stjs.extend(DeactivateAction, ControlAction, [], null, {targe
  */
 var FilmAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16209,6 +18226,7 @@ FilmAction = stjs.extend(FilmAction, CreateAction, [], null, {target: "EntryPoin
 /**
  *  Schema.org/WriteAction
  *  The act of authoring written creative content.
+ * 
  *  @author schema.org
  *  @class WriteAction
  *  @module org.schema
@@ -16216,6 +18234,7 @@ FilmAction = stjs.extend(FilmAction, CreateAction, [], null, {target: "EntryPoin
  */
 var WriteAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16227,6 +18246,7 @@ WriteAction = stjs.extend(WriteAction, CreateAction, [], function(constructor, p
     /**
      *  Schema.org/language
      *  A sub property of instrument. The language used on this action.
+     * 
      *  @property language
      *  @type Language
      */
@@ -16234,14 +18254,16 @@ WriteAction = stjs.extend(WriteAction, CreateAction, [], function(constructor, p
     /**
      *  Schema.org/inLanguage
      *  The language of the content or performance or used in an action. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[availableLanguage]].
+     * 
      *  @property inLanguage
-     *  @type schema,Text | schema,Language
+     *  @type schema, Text | schema,Language
      */
     prototype.inLanguage = null;
 }, {language: "Language", inLanguage: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/PaintAction
  *  The act of producing a painting, typically with paint and canvas as instruments.
+ * 
  *  @author schema.org
  *  @class PaintAction
  *  @module org.schema
@@ -16249,6 +18271,7 @@ WriteAction = stjs.extend(WriteAction, CreateAction, [], function(constructor, p
  */
 var PaintAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16260,6 +18283,7 @@ PaintAction = stjs.extend(PaintAction, CreateAction, [], null, {target: "EntryPo
 /**
  *  Schema.org/CookAction
  *  The act of producing/preparing food.
+ * 
  *  @author schema.org
  *  @class CookAction
  *  @module org.schema
@@ -16267,6 +18291,7 @@ PaintAction = stjs.extend(PaintAction, CreateAction, [], null, {target: "EntryPo
  */
 var CookAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16278,13 +18303,15 @@ CookAction = stjs.extend(CookAction, CreateAction, [], function(constructor, pro
     /**
      *  Schema.org/foodEstablishment
      *  A sub property of location. The specific food establishment where the action occurred.
+     * 
      *  @property foodEstablishment
-     *  @type schema,FoodEstablishment | schema,Place
+     *  @type schema, FoodEstablishment | schema,Place
      */
     prototype.foodEstablishment = null;
     /**
      *  Schema.org/recipe
      *  A sub property of instrument. The recipe/instructions used to perform the action.
+     * 
      *  @property recipe
      *  @type Recipe
      */
@@ -16292,6 +18319,7 @@ CookAction = stjs.extend(CookAction, CreateAction, [], function(constructor, pro
     /**
      *  Schema.org/foodEvent
      *  A sub property of location. The specific food event where the action occurred.
+     * 
      *  @property foodEvent
      *  @type FoodEvent
      */
@@ -16300,6 +18328,7 @@ CookAction = stjs.extend(CookAction, CreateAction, [], function(constructor, pro
 /**
  *  Schema.org/PhotographAction
  *  The act of capturing still images of objects using a camera.
+ * 
  *  @author schema.org
  *  @class PhotographAction
  *  @module org.schema
@@ -16307,6 +18336,7 @@ CookAction = stjs.extend(CookAction, CreateAction, [], function(constructor, pro
  */
 var PhotographAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16318,6 +18348,7 @@ PhotographAction = stjs.extend(PhotographAction, CreateAction, [], null, {target
 /**
  *  Schema.org/DrawAction
  *  The act of producing a visual/graphical representation of an object, typically with a pen/pencil and paper as instruments.
+ * 
  *  @author schema.org
  *  @class DrawAction
  *  @module org.schema
@@ -16325,6 +18356,7 @@ PhotographAction = stjs.extend(PhotographAction, CreateAction, [], null, {target
  */
 var DrawAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16336,6 +18368,7 @@ DrawAction = stjs.extend(DrawAction, CreateAction, [], null, {target: "EntryPoin
 /**
  *  Schema.org/UserComments
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserComments
  *  @module org.schema
@@ -16343,6 +18376,7 @@ DrawAction = stjs.extend(DrawAction, CreateAction, [], null, {target: "EntryPoin
  */
 var UserComments = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16354,6 +18388,7 @@ UserComments = stjs.extend(UserComments, UserInteraction, [], function(construct
     /**
      *  Schema.org/replyToUrl
      *  The URL at which a reply may be posted to the specified UserComment.
+     * 
      *  @property replyToUrl
      *  @type URL
      */
@@ -16361,6 +18396,7 @@ UserComments = stjs.extend(UserComments, UserInteraction, [], function(construct
     /**
      *  Schema.org/commentText
      *  The text of the UserComment.
+     * 
      *  @property commentText
      *  @type Text
      */
@@ -16368,6 +18404,7 @@ UserComments = stjs.extend(UserComments, UserInteraction, [], function(construct
     /**
      *  Schema.org/discusses
      *  Specifies the CreativeWork associated with the UserComment.
+     * 
      *  @property discusses
      *  @type CreativeWork
      */
@@ -16375,21 +18412,24 @@ UserComments = stjs.extend(UserComments, UserInteraction, [], function(construct
     /**
      *  Schema.org/creator
      *  The creator/author of this CreativeWork. This is the same as the Author property for CreativeWork.
+     * 
      *  @property creator
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.creator = null;
     /**
      *  Schema.org/commentTime
      *  The time at which the UserComment was made.
+     * 
      *  @property commentTime
-     *  @type schema,DateTime | schema,Date
+     *  @type schema, DateTime | schema,Date
      */
     prototype.commentTime = null;
 }, {discusses: "CreativeWork", creator: "Object", commentTime: "Object", contributor: "Object", attendees: "Object", performers: "Object", composer: "Object", performer: "Object", director: "Person", eventStatus: "EventStatusType", superEvent: "Event", translator: "Object", offers: "Offer", review: "Review", duration: "Duration", subEvent: "Event", actor: "Person", attendee: "Object", about: "Thing", funder: "Object", sponsor: "Object", location: "Object", recordedIn: "CreativeWork", organizer: "Object", aggregateRating: "AggregateRating", startDate: "Object", workFeatured: "CreativeWork", workPerformed: "CreativeWork", endDate: "Object", inLanguage: "Object", subEvents: "Event", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/UserCheckins
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserCheckins
  *  @module org.schema
@@ -16397,6 +18437,7 @@ UserComments = stjs.extend(UserComments, UserInteraction, [], function(construct
  */
 var UserCheckins = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16408,6 +18449,7 @@ UserCheckins = stjs.extend(UserCheckins, UserInteraction, [], null, {contributor
 /**
  *  Schema.org/UserPlays
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserPlays
  *  @module org.schema
@@ -16415,6 +18457,7 @@ UserCheckins = stjs.extend(UserCheckins, UserInteraction, [], null, {contributor
  */
 var UserPlays = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16426,6 +18469,7 @@ UserPlays = stjs.extend(UserPlays, UserInteraction, [], null, {contributor: "Obj
 /**
  *  Schema.org/UserTweets
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserTweets
  *  @module org.schema
@@ -16433,6 +18477,7 @@ UserPlays = stjs.extend(UserPlays, UserInteraction, [], null, {contributor: "Obj
  */
 var UserTweets = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16444,6 +18489,7 @@ UserTweets = stjs.extend(UserTweets, UserInteraction, [], null, {contributor: "O
 /**
  *  Schema.org/UserBlocks
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserBlocks
  *  @module org.schema
@@ -16451,6 +18497,7 @@ UserTweets = stjs.extend(UserTweets, UserInteraction, [], null, {contributor: "O
  */
 var UserBlocks = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16462,6 +18509,7 @@ UserBlocks = stjs.extend(UserBlocks, UserInteraction, [], null, {contributor: "O
 /**
  *  Schema.org/UserDownloads
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserDownloads
  *  @module org.schema
@@ -16469,6 +18517,7 @@ UserBlocks = stjs.extend(UserBlocks, UserInteraction, [], null, {contributor: "O
  */
 var UserDownloads = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16480,6 +18529,7 @@ UserDownloads = stjs.extend(UserDownloads, UserInteraction, [], null, {contribut
 /**
  *  Schema.org/UserPlusOnes
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserPlusOnes
  *  @module org.schema
@@ -16487,6 +18537,7 @@ UserDownloads = stjs.extend(UserDownloads, UserInteraction, [], null, {contribut
  */
 var UserPlusOnes = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16498,6 +18549,7 @@ UserPlusOnes = stjs.extend(UserPlusOnes, UserInteraction, [], null, {contributor
 /**
  *  Schema.org/UserLikes
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserLikes
  *  @module org.schema
@@ -16505,6 +18557,7 @@ UserPlusOnes = stjs.extend(UserPlusOnes, UserInteraction, [], null, {contributor
  */
 var UserLikes = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16516,6 +18569,7 @@ UserLikes = stjs.extend(UserLikes, UserInteraction, [], null, {contributor: "Obj
 /**
  *  Schema.org/UserPageVisits
  *  UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use [[Action]]-based vocabulary, alongside types such as [[Comment]].
+ * 
  *  @author schema.org
  *  @class UserPageVisits
  *  @module org.schema
@@ -16523,6 +18577,7 @@ UserLikes = stjs.extend(UserLikes, UserInteraction, [], null, {contributor: "Obj
  */
 var UserPageVisits = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16534,6 +18589,7 @@ UserPageVisits = stjs.extend(UserPageVisits, UserInteraction, [], null, {contrib
 /**
  *  Schema.org/OnDemandEvent
  *  A publication event e.g. catch-up TV or radio podcast, during which a program is available on-demand.
+ * 
  *  @author schema.org
  *  @class OnDemandEvent
  *  @module org.schema
@@ -16541,6 +18597,7 @@ UserPageVisits = stjs.extend(UserPageVisits, UserInteraction, [], null, {contrib
  */
 var OnDemandEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16552,6 +18609,7 @@ OnDemandEvent = stjs.extend(OnDemandEvent, PublicationEvent, [], null, {publishe
 /**
  *  Schema.org/BroadcastEvent
  *  An over the air or online broadcast event.
+ * 
  *  @author schema.org
  *  @class BroadcastEvent
  *  @module org.schema
@@ -16559,6 +18617,7 @@ OnDemandEvent = stjs.extend(OnDemandEvent, PublicationEvent, [], null, {publishe
  */
 var BroadcastEvent = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16570,6 +18629,7 @@ BroadcastEvent = stjs.extend(BroadcastEvent, PublicationEvent, [], function(cons
     /**
      *  Schema.org/videoFormat
      *  The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).
+     * 
      *  @property videoFormat
      *  @type Text
      */
@@ -16577,6 +18637,7 @@ BroadcastEvent = stjs.extend(BroadcastEvent, PublicationEvent, [], function(cons
     /**
      *  Schema.org/broadcastOfEvent
      *  The event being broadcast such as a sporting event or awards ceremony.
+     * 
      *  @property broadcastOfEvent
      *  @type Event
      */
@@ -16584,6 +18645,7 @@ BroadcastEvent = stjs.extend(BroadcastEvent, PublicationEvent, [], function(cons
     /**
      *  Schema.org/isLiveBroadcast
      *  True is the broadcast is of a live event.
+     * 
      *  @property isLiveBroadcast
      *  @type Boolean
      */
@@ -16592,6 +18654,7 @@ BroadcastEvent = stjs.extend(BroadcastEvent, PublicationEvent, [], function(cons
 /**
  *  Schema.org/SingleFamilyResidence
  *  Residence type: Single-family home.
+ * 
  *  @author schema.org
  *  @class SingleFamilyResidence
  *  @module org.schema
@@ -16599,6 +18662,7 @@ BroadcastEvent = stjs.extend(BroadcastEvent, PublicationEvent, [], function(cons
  */
 var SingleFamilyResidence = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16610,15 +18674,17 @@ SingleFamilyResidence = stjs.extend(SingleFamilyResidence, House, [], function(c
     /**
      *  Schema.org/numberOfRooms
      *  The number of rooms (excluding bathrooms and closets) of the acccommodation or lodging business.
-     * Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     *  Typical unit code(s): ROM for room or C62 for no unit. The type of room can be put in the unitText property of the QuantitativeValue.
+     * 
      *  @property numberOfRooms
-     *  @type schema,Number | schema,QuantitativeValue
+     *  @type schema, Number | schema,QuantitativeValue
      */
     prototype.numberOfRooms = null;
     /**
      *  Schema.org/occupancy
      *  The allowed total occupancy for the accommodation in persons (including infants etc). For individual accommodations, this is not necessarily the legal maximum but defines the permitted usage as per the contractual agreement (e.g. a double room used by a single person).
-     * Typical unit code(s): C62 for person
+     *  Typical unit code(s): C62 for person
+     * 
      *  @property occupancy
      *  @type QuantitativeValue
      */
@@ -16627,8 +18693,8 @@ SingleFamilyResidence = stjs.extend(SingleFamilyResidence, House, [], function(c
 /**
  *  Schema.org/HotelRoom
  *  A hotel room is a single room in a hotel.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class HotelRoom
@@ -16637,6 +18703,7 @@ SingleFamilyResidence = stjs.extend(SingleFamilyResidence, House, [], function(c
  */
 var HotelRoom = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16648,15 +18715,17 @@ HotelRoom = stjs.extend(HotelRoom, Room, [], function(constructor, prototype) {
     /**
      *  Schema.org/bed
      *  The type of bed or beds included in the accommodation. For the single case of just one bed of a certain type, you use bed directly with a text.
-     *       If you want to indicate the quantity of a certain kind of bed, use an instance of BedDetails. For more detailed information, use the amenityFeature property.
+     *  If you want to indicate the quantity of a certain kind of bed, use an instance of BedDetails. For more detailed information, use the amenityFeature property.
+     * 
      *  @property bed
-     *  @type schema,Text | schema,BedDetails
+     *  @type schema, Text | schema,BedDetails
      */
     prototype.bed = null;
     /**
      *  Schema.org/occupancy
      *  The allowed total occupancy for the accommodation in persons (including infants etc). For individual accommodations, this is not necessarily the legal maximum but defines the permitted usage as per the contractual agreement (e.g. a double room used by a single person).
-     * Typical unit code(s): C62 for person
+     *  Typical unit code(s): C62 for person
+     * 
      *  @property occupancy
      *  @type QuantitativeValue
      */
@@ -16665,8 +18734,8 @@ HotelRoom = stjs.extend(HotelRoom, Room, [], function(constructor, prototype) {
 /**
  *  Schema.org/MeetingRoom
  *  A meeting room, conference room, or conference hall is a room provided for singular events such as business conferences and meetings (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Conference_hall">http://en.wikipedia.org/wiki/Conference_hall</a>).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class MeetingRoom
@@ -16675,6 +18744,7 @@ HotelRoom = stjs.extend(HotelRoom, Room, [], function(constructor, prototype) {
  */
 var MeetingRoom = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16686,6 +18756,7 @@ MeetingRoom = stjs.extend(MeetingRoom, Room, [], null, {amenityFeature: "Locatio
 /**
  *  Schema.org/LegislativeBuilding
  *  A legislative building&#x2014;for example, the state capitol.
+ * 
  *  @author schema.org
  *  @class LegislativeBuilding
  *  @module org.schema
@@ -16693,6 +18764,7 @@ MeetingRoom = stjs.extend(MeetingRoom, Room, [], null, {amenityFeature: "Locatio
  */
 var LegislativeBuilding = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16704,6 +18776,7 @@ LegislativeBuilding = stjs.extend(LegislativeBuilding, GovernmentBuilding, [], n
 /**
  *  Schema.org/CityHall
  *  A city hall.
+ * 
  *  @author schema.org
  *  @class CityHall
  *  @module org.schema
@@ -16711,6 +18784,7 @@ LegislativeBuilding = stjs.extend(LegislativeBuilding, GovernmentBuilding, [], n
  */
 var CityHall = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16722,6 +18796,7 @@ CityHall = stjs.extend(CityHall, GovernmentBuilding, [], null, {reviews: "Review
 /**
  *  Schema.org/DefenceEstablishment
  *  A defence establishment, such as an army or navy base.
+ * 
  *  @author schema.org
  *  @class DefenceEstablishment
  *  @module org.schema
@@ -16729,6 +18804,7 @@ CityHall = stjs.extend(CityHall, GovernmentBuilding, [], null, {reviews: "Review
  */
 var DefenceEstablishment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16740,6 +18816,7 @@ DefenceEstablishment = stjs.extend(DefenceEstablishment, GovernmentBuilding, [],
 /**
  *  Schema.org/Courthouse
  *  A courthouse.
+ * 
  *  @author schema.org
  *  @class Courthouse
  *  @module org.schema
@@ -16747,6 +18824,7 @@ DefenceEstablishment = stjs.extend(DefenceEstablishment, GovernmentBuilding, [],
  */
 var Courthouse = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16758,6 +18836,7 @@ Courthouse = stjs.extend(Courthouse, GovernmentBuilding, [], null, {reviews: "Re
 /**
  *  Schema.org/Embassy
  *  An embassy.
+ * 
  *  @author schema.org
  *  @class Embassy
  *  @module org.schema
@@ -16765,6 +18844,7 @@ Courthouse = stjs.extend(Courthouse, GovernmentBuilding, [], null, {reviews: "Re
  */
 var Embassy = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16776,6 +18856,7 @@ Embassy = stjs.extend(Embassy, GovernmentBuilding, [], null, {reviews: "Review",
 /**
  *  Schema.org/HinduTemple
  *  A Hindu temple.
+ * 
  *  @author schema.org
  *  @class HinduTemple
  *  @module org.schema
@@ -16783,6 +18864,7 @@ Embassy = stjs.extend(Embassy, GovernmentBuilding, [], null, {reviews: "Review",
  */
 var HinduTemple = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16794,6 +18876,7 @@ HinduTemple = stjs.extend(HinduTemple, PlaceOfWorship, [], null, {reviews: "Revi
 /**
  *  Schema.org/Synagogue
  *  A synagogue.
+ * 
  *  @author schema.org
  *  @class Synagogue
  *  @module org.schema
@@ -16801,6 +18884,7 @@ HinduTemple = stjs.extend(HinduTemple, PlaceOfWorship, [], null, {reviews: "Revi
  */
 var Synagogue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16812,6 +18896,7 @@ Synagogue = stjs.extend(Synagogue, PlaceOfWorship, [], null, {reviews: "Review",
 /**
  *  Schema.org/Mosque
  *  A mosque.
+ * 
  *  @author schema.org
  *  @class Mosque
  *  @module org.schema
@@ -16819,6 +18904,7 @@ Synagogue = stjs.extend(Synagogue, PlaceOfWorship, [], null, {reviews: "Review",
  */
 var Mosque = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16830,6 +18916,7 @@ Mosque = stjs.extend(Mosque, PlaceOfWorship, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/BuddhistTemple
  *  A Buddhist temple.
+ * 
  *  @author schema.org
  *  @class BuddhistTemple
  *  @module org.schema
@@ -16837,6 +18924,7 @@ Mosque = stjs.extend(Mosque, PlaceOfWorship, [], null, {reviews: "Review", ameni
  */
 var BuddhistTemple = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16848,6 +18936,7 @@ BuddhistTemple = stjs.extend(BuddhistTemple, PlaceOfWorship, [], null, {reviews:
 /**
  *  Schema.org/Church
  *  A church.
+ * 
  *  @author schema.org
  *  @class Church
  *  @module org.schema
@@ -16855,6 +18944,7 @@ BuddhistTemple = stjs.extend(BuddhistTemple, PlaceOfWorship, [], null, {reviews:
  */
 var Church = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16866,6 +18956,7 @@ Church = stjs.extend(Church, PlaceOfWorship, [], null, {reviews: "Review", ameni
 /**
  *  Schema.org/CatholicChurch
  *  A Catholic church.
+ * 
  *  @author schema.org
  *  @class CatholicChurch
  *  @module org.schema
@@ -16873,6 +18964,7 @@ Church = stjs.extend(Church, PlaceOfWorship, [], null, {reviews: "Review", ameni
  */
 var CatholicChurch = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16884,6 +18976,7 @@ CatholicChurch = stjs.extend(CatholicChurch, PlaceOfWorship, [], null, {reviews:
 /**
  *  Schema.org/OceanBodyOfWater
  *  An ocean (for example, the Pacific).
+ * 
  *  @author schema.org
  *  @class OceanBodyOfWater
  *  @module org.schema
@@ -16891,6 +18984,7 @@ CatholicChurch = stjs.extend(CatholicChurch, PlaceOfWorship, [], null, {reviews:
  */
 var OceanBodyOfWater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16902,6 +18996,7 @@ OceanBodyOfWater = stjs.extend(OceanBodyOfWater, BodyOfWater, [], null, {reviews
 /**
  *  Schema.org/Canal
  *  A canal, like the Panama Canal.
+ * 
  *  @author schema.org
  *  @class Canal
  *  @module org.schema
@@ -16909,6 +19004,7 @@ OceanBodyOfWater = stjs.extend(OceanBodyOfWater, BodyOfWater, [], null, {reviews
  */
 var Canal = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16920,6 +19016,7 @@ Canal = stjs.extend(Canal, BodyOfWater, [], null, {reviews: "Review", amenityFea
 /**
  *  Schema.org/Reservoir
  *  A reservoir of water, typically an artificially created lake, like the Lake Kariba reservoir.
+ * 
  *  @author schema.org
  *  @class Reservoir
  *  @module org.schema
@@ -16927,6 +19024,7 @@ Canal = stjs.extend(Canal, BodyOfWater, [], null, {reviews: "Review", amenityFea
  */
 var Reservoir = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16938,6 +19036,7 @@ Reservoir = stjs.extend(Reservoir, BodyOfWater, [], null, {reviews: "Review", am
 /**
  *  Schema.org/Waterfall
  *  A waterfall, like Niagara.
+ * 
  *  @author schema.org
  *  @class Waterfall
  *  @module org.schema
@@ -16945,6 +19044,7 @@ Reservoir = stjs.extend(Reservoir, BodyOfWater, [], null, {reviews: "Review", am
  */
 var Waterfall = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16956,6 +19056,7 @@ Waterfall = stjs.extend(Waterfall, BodyOfWater, [], null, {reviews: "Review", am
 /**
  *  Schema.org/Pond
  *  A pond.
+ * 
  *  @author schema.org
  *  @class Pond
  *  @module org.schema
@@ -16963,6 +19064,7 @@ Waterfall = stjs.extend(Waterfall, BodyOfWater, [], null, {reviews: "Review", am
  */
 var Pond = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16974,6 +19076,7 @@ Pond = stjs.extend(Pond, BodyOfWater, [], null, {reviews: "Review", amenityFeatu
 /**
  *  Schema.org/LakeBodyOfWater
  *  A lake (for example, Lake Pontrachain).
+ * 
  *  @author schema.org
  *  @class LakeBodyOfWater
  *  @module org.schema
@@ -16981,6 +19084,7 @@ Pond = stjs.extend(Pond, BodyOfWater, [], null, {reviews: "Review", amenityFeatu
  */
 var LakeBodyOfWater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -16992,6 +19096,7 @@ LakeBodyOfWater = stjs.extend(LakeBodyOfWater, BodyOfWater, [], null, {reviews: 
 /**
  *  Schema.org/SeaBodyOfWater
  *  A sea (for example, the Caspian sea).
+ * 
  *  @author schema.org
  *  @class SeaBodyOfWater
  *  @module org.schema
@@ -16999,6 +19104,7 @@ LakeBodyOfWater = stjs.extend(LakeBodyOfWater, BodyOfWater, [], null, {reviews: 
  */
 var SeaBodyOfWater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17010,6 +19116,7 @@ SeaBodyOfWater = stjs.extend(SeaBodyOfWater, BodyOfWater, [], null, {reviews: "R
 /**
  *  Schema.org/RiverBodyOfWater
  *  A river (for example, the broad majestic Shannon).
+ * 
  *  @author schema.org
  *  @class RiverBodyOfWater
  *  @module org.schema
@@ -17017,6 +19124,7 @@ SeaBodyOfWater = stjs.extend(SeaBodyOfWater, BodyOfWater, [], null, {reviews: "R
  */
 var RiverBodyOfWater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17028,6 +19136,7 @@ RiverBodyOfWater = stjs.extend(RiverBodyOfWater, BodyOfWater, [], null, {reviews
 /**
  *  Schema.org/EmployeeRole
  *  A subclass of OrganizationRole used to describe employee relationships.
+ * 
  *  @author schema.org
  *  @class EmployeeRole
  *  @module org.schema
@@ -17035,6 +19144,7 @@ RiverBodyOfWater = stjs.extend(RiverBodyOfWater, BodyOfWater, [], null, {reviews
  */
 var EmployeeRole = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17046,13 +19156,15 @@ EmployeeRole = stjs.extend(EmployeeRole, OrganizationRole, [], function(construc
     /**
      *  Schema.org/baseSalary
      *  The base salary of the job or of an employee in an EmployeeRole.
+     * 
      *  @property baseSalary
-     *  @type schema,Number | schema,PriceSpecification | schema,MonetaryAmount
+     *  @type schema, Number | schema,PriceSpecification | schema,MonetaryAmount
      */
     prototype.baseSalary = null;
     /**
      *  Schema.org/salaryCurrency
      *  The currency (coded using [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) ) used for the main salary information in this job posting or for this employee.
+     * 
      *  @property salaryCurrency
      *  @type Text
      */
@@ -17061,6 +19173,7 @@ EmployeeRole = stjs.extend(EmployeeRole, OrganizationRole, [], function(construc
 /**
  *  Schema.org/ParentAudience
  *  A set of characteristics describing parents, who can be interested in viewing some content.
+ * 
  *  @author schema.org
  *  @class ParentAudience
  *  @module org.schema
@@ -17068,6 +19181,7 @@ EmployeeRole = stjs.extend(EmployeeRole, OrganizationRole, [], function(construc
  */
 var ParentAudience = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17079,6 +19193,7 @@ ParentAudience = stjs.extend(ParentAudience, PeopleAudience, [], function(constr
     /**
      *  Schema.org/childMinAge
      *  Minimal age of the child.
+     * 
      *  @property childMinAge
      *  @type Number
      */
@@ -17086,6 +19201,7 @@ ParentAudience = stjs.extend(ParentAudience, PeopleAudience, [], function(constr
     /**
      *  Schema.org/childMaxAge
      *  Maximal age of the child.
+     * 
      *  @property childMaxAge
      *  @type Number
      */
@@ -17094,6 +19210,7 @@ ParentAudience = stjs.extend(ParentAudience, PeopleAudience, [], function(constr
 /**
  *  Schema.org/BankAccount
  *  A product or service offered by a bank whereby one may deposit, withdraw or transfer money and in some cases be paid interest.
+ * 
  *  @author schema.org
  *  @class BankAccount
  *  @module org.schema
@@ -17101,6 +19218,7 @@ ParentAudience = stjs.extend(ParentAudience, PeopleAudience, [], function(constr
  */
 var BankAccount = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17112,6 +19230,7 @@ BankAccount = stjs.extend(BankAccount, FinancialProduct, [], null, {feesAndCommi
 /**
  *  Schema.org/PaymentCard
  *  A payment method using a credit, debit, store or other card to associate the payment with an account.
+ * 
  *  @author schema.org
  *  @class PaymentCard
  *  @module org.schema
@@ -17119,6 +19238,7 @@ BankAccount = stjs.extend(BankAccount, FinancialProduct, [], null, {feesAndCommi
  */
 var PaymentCard = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17130,6 +19250,7 @@ PaymentCard = stjs.extend(PaymentCard, FinancialProduct, [], null, {feesAndCommi
 /**
  *  Schema.org/LoanOrCredit
  *  A financial product for the loaning of an amount of money under agreed terms and charges.
+ * 
  *  @author schema.org
  *  @class LoanOrCredit
  *  @module org.schema
@@ -17137,6 +19258,7 @@ PaymentCard = stjs.extend(PaymentCard, FinancialProduct, [], null, {feesAndCommi
  */
 var LoanOrCredit = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17148,20 +19270,23 @@ LoanOrCredit = stjs.extend(LoanOrCredit, FinancialProduct, [], function(construc
     /**
      *  Schema.org/requiredCollateral
      *  Assets required to secure loan or credit repayments. It may take form of third party pledge, goods, financial instruments (cash, securities, etc.)
+     * 
      *  @property requiredCollateral
-     *  @type schema,Text | schema,Thing
+     *  @type schema, Text | schema,Thing
      */
     prototype.requiredCollateral = null;
     /**
      *  Schema.org/amount
      *  The amount of money.
+     * 
      *  @property amount
-     *  @type schema,Number | schema,MonetaryAmount
+     *  @type schema, Number | schema,MonetaryAmount
      */
     prototype.amount = null;
     /**
      *  Schema.org/loanTerm
      *  The duration of the loan or credit agreement.
+     * 
      *  @property loanTerm
      *  @type QuantitativeValue
      */
@@ -17170,6 +19295,7 @@ LoanOrCredit = stjs.extend(LoanOrCredit, FinancialProduct, [], function(construc
 /**
  *  Schema.org/PaymentService
  *  A Service to transfer funds from a person or organization to a beneficiary person or organization.
+ * 
  *  @author schema.org
  *  @class PaymentService
  *  @module org.schema
@@ -17177,6 +19303,7 @@ LoanOrCredit = stjs.extend(LoanOrCredit, FinancialProduct, [], function(construc
  */
 var PaymentService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17188,6 +19315,7 @@ PaymentService = stjs.extend(PaymentService, FinancialProduct, [], null, {feesAn
 /**
  *  Schema.org/InvestmentOrDeposit
  *  A type of financial product that typically requires the client to transfer funds to a financial service in return for potential beneficial financial return.
+ * 
  *  @author schema.org
  *  @class InvestmentOrDeposit
  *  @module org.schema
@@ -17195,6 +19323,7 @@ PaymentService = stjs.extend(PaymentService, FinancialProduct, [], null, {feesAn
  */
 var InvestmentOrDeposit = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17206,14 +19335,16 @@ InvestmentOrDeposit = stjs.extend(InvestmentOrDeposit, FinancialProduct, [], fun
     /**
      *  Schema.org/amount
      *  The amount of money.
+     * 
      *  @property amount
-     *  @type schema,Number | schema,MonetaryAmount
+     *  @type schema, Number | schema,MonetaryAmount
      */
     prototype.amount = null;
 }, {amount: "Object", feesAndCommissionsSpecification: "Object", annualPercentageRate: "Object", interestRate: "Object", audience: "Audience", broker: "Object", isRelatedTo: "Object", offers: "Offer", review: "Review", brand: "Object", areaServed: "Object", hoursAvailable: "OpeningHoursSpecification", produces: "Thing", availableChannel: "ServiceChannel", isSimilarTo: "Object", provider: "Object", serviceArea: "Object", aggregateRating: "AggregateRating", serviceOutput: "Thing", logo: "Object", hasOfferCatalog: "OfferCatalog", serviceAudience: "Audience", category: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/CurrencyConversionService
  *  A service to convert funds from one currency to another currency.
+ * 
  *  @author schema.org
  *  @class CurrencyConversionService
  *  @module org.schema
@@ -17221,6 +19352,7 @@ InvestmentOrDeposit = stjs.extend(InvestmentOrDeposit, FinancialProduct, [], fun
  */
 var CurrencyConversionService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17232,6 +19364,7 @@ CurrencyConversionService = stjs.extend(CurrencyConversionService, FinancialProd
 /**
  *  Schema.org/UnitPriceSpecification
  *  The price asked for a given offer by the respective organization or person.
+ * 
  *  @author schema.org
  *  @class UnitPriceSpecification
  *  @module org.schema
@@ -17239,6 +19372,7 @@ CurrencyConversionService = stjs.extend(CurrencyConversionService, FinancialProd
  */
 var UnitPriceSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17250,6 +19384,7 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
     /**
      *  Schema.org/billingIncrement
      *  This property specifies the minimal quantity and rounding increment that will be the basis for the billing. The unit of measurement is specified by the unitCode property.
+     * 
      *  @property billingIncrement
      *  @type Number
      */
@@ -17257,6 +19392,7 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
     /**
      *  Schema.org/priceType
      *  A short text or acronym indicating multiple price specifications for the same offer, e.g. SRP for the suggested retail price or INVOICE for the invoice price, mostly used in the car industry.
+     * 
      *  @property priceType
      *  @type Text
      */
@@ -17264,13 +19400,15 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
     /**
      *  Schema.org/unitCode
      *  The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.
+     * 
      *  @property unitCode
-     *  @type schema,URL | schema,Text
+     *  @type schema, URL | schema,Text
      */
     prototype.unitCode = null;
     /**
      *  Schema.org/referenceQuantity
      *  The reference quantity for which a certain price applies, e.g. 1 EUR per 4 kWh of electricity. This property is a replacement for unitOfMeasurement for the advanced cases where the price does not relate to a standard unit.
+     * 
      *  @property referenceQuantity
      *  @type QuantitativeValue
      */
@@ -17278,7 +19416,8 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
     /**
      *  Schema.org/unitText
      *  A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code for
-     * <a href='unitCode'>unitCode</a>.
+     *  <a href='unitCode'>unitCode</a>.
+     * 
      *  @property unitText
      *  @type Text
      */
@@ -17287,6 +19426,7 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
 /**
  *  Schema.org/PaymentChargeSpecification
  *  The costs of settling the payment using a particular payment method.
+ * 
  *  @author schema.org
  *  @class PaymentChargeSpecification
  *  @module org.schema
@@ -17294,6 +19434,7 @@ UnitPriceSpecification = stjs.extend(UnitPriceSpecification, PriceSpecification,
  */
 var PaymentChargeSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17305,6 +19446,7 @@ PaymentChargeSpecification = stjs.extend(PaymentChargeSpecification, PriceSpecif
     /**
      *  Schema.org/appliesToDeliveryMethod
      *  The delivery method(s) to which the delivery charge or payment charge specification applies.
+     * 
      *  @property appliesToDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -17312,6 +19454,7 @@ PaymentChargeSpecification = stjs.extend(PaymentChargeSpecification, PriceSpecif
     /**
      *  Schema.org/appliesToPaymentMethod
      *  The payment method(s) to which the payment charge specification applies.
+     * 
      *  @property appliesToPaymentMethod
      *  @type PaymentMethod
      */
@@ -17320,6 +19463,7 @@ PaymentChargeSpecification = stjs.extend(PaymentChargeSpecification, PriceSpecif
 /**
  *  Schema.org/CompoundPriceSpecification
  *  A compound price specification is one that bundles multiple prices that all apply in combination for different dimensions of consumption. Use the name property of the attached unit price specification for indicating the dimension of a price component (e.g. "electricity" or "final cleaning").
+ * 
  *  @author schema.org
  *  @class CompoundPriceSpecification
  *  @module org.schema
@@ -17327,6 +19471,7 @@ PaymentChargeSpecification = stjs.extend(PaymentChargeSpecification, PriceSpecif
  */
 var CompoundPriceSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17338,6 +19483,7 @@ CompoundPriceSpecification = stjs.extend(CompoundPriceSpecification, PriceSpecif
     /**
      *  Schema.org/priceComponent
      *  This property links to all [[UnitPriceSpecification]] nodes that apply in parallel for the [[CompoundPriceSpecification]] node.
+     * 
      *  @property priceComponent
      *  @type UnitPriceSpecification
      */
@@ -17346,6 +19492,7 @@ CompoundPriceSpecification = stjs.extend(CompoundPriceSpecification, PriceSpecif
 /**
  *  Schema.org/DeliveryChargeSpecification
  *  The price for the delivery of an offer using a particular delivery method.
+ * 
  *  @author schema.org
  *  @class DeliveryChargeSpecification
  *  @module org.schema
@@ -17353,6 +19500,7 @@ CompoundPriceSpecification = stjs.extend(CompoundPriceSpecification, PriceSpecif
  */
 var DeliveryChargeSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17364,6 +19512,7 @@ DeliveryChargeSpecification = stjs.extend(DeliveryChargeSpecification, PriceSpec
     /**
      *  Schema.org/appliesToDeliveryMethod
      *  The delivery method(s) to which the delivery charge or payment charge specification applies.
+     * 
      *  @property appliesToDeliveryMethod
      *  @type DeliveryMethod
      */
@@ -17371,33 +19520,34 @@ DeliveryChargeSpecification = stjs.extend(DeliveryChargeSpecification, PriceSpec
     /**
      *  Schema.org/areaServed
      *  The geographic area where a service or offered item is provided.
+     * 
      *  @property areaServed
-     *  @type schema,GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
+     *  @type schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea
      */
     prototype.areaServed = null;
     /**
      *  Schema.org/ineligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.\n\nSee also [[eligibleRegion]].
-     *       
+     * 
      *  @property ineligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.ineligibleRegion = null;
     /**
      *  Schema.org/eligibleRegion
      *  The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.\n\nSee also [[ineligibleRegion]].
-     *     
+     * 
      *  @property eligibleRegion
-     *  @type schema,GeoShape | schema,Text | schema,Place
+     *  @type schema, GeoShape | schema,Text | schema,Place
      */
     prototype.eligibleRegion = null;
 }, {appliesToDeliveryMethod: "DeliveryMethod", areaServed: "Object", ineligibleRegion: "Object", eligibleRegion: "Object", price: "Object", eligibleTransactionVolume: "PriceSpecification", eligibleQuantity: "QuantitativeValue", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/GeoCircle
  *  A GeoCircle is a GeoShape representing a circular geographic area. As it is a GeoShape
- *           it provides the simple textual property 'circle', but also allows the combination of postalCode alongside geoRadius.
- *           The center of the circle can be indicated via the 'geoMidpoint' property, or more approximately using 'address', 'postalCode'.
- *        
+ *  it provides the simple textual property 'circle', but also allows the combination of postalCode alongside geoRadius.
+ *  The center of the circle can be indicated via the 'geoMidpoint' property, or more approximately using 'address', 'postalCode'.
+ * 
  *  @author schema.org
  *  @class GeoCircle
  *  @module org.schema
@@ -17405,6 +19555,7 @@ DeliveryChargeSpecification = stjs.extend(DeliveryChargeSpecification, PriceSpec
  */
 var GeoCircle = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17416,6 +19567,7 @@ GeoCircle = stjs.extend(GeoCircle, GeoShape, [], function(constructor, prototype
     /**
      *  Schema.org/geoMidpoint
      *  Indicates the GeoCoordinates at the centre of a GeoShape e.g. GeoCircle.
+     * 
      *  @property geoMidpoint
      *  @type GeoCoordinates
      */
@@ -17423,14 +19575,16 @@ GeoCircle = stjs.extend(GeoCircle, GeoShape, [], function(constructor, prototype
     /**
      *  Schema.org/geoRadius
      *  Indicates the approximate radius of a GeoCircle (metres unless indicated otherwise via Distance notation).
+     * 
      *  @property geoRadius
-     *  @type schema,Number | schema,Text | schema,Distance
+     *  @type schema, Number | schema,Text | schema,Distance
      */
     prototype.geoRadius = null;
 }, {geoMidpoint: "GeoCoordinates", geoRadius: "Object", elevation: "Object", addressCountry: "Object", address: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/LocationFeatureSpecification
  *  Specifies a location feature by providing a structured value representing a feature of an accommodation as a property-value pair of varying degrees of formality.
+ * 
  *  @author schema.org
  *  @class LocationFeatureSpecification
  *  @module org.schema
@@ -17438,6 +19592,7 @@ GeoCircle = stjs.extend(GeoCircle, GeoShape, [], function(constructor, prototype
  */
 var LocationFeatureSpecification = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17449,6 +19604,7 @@ LocationFeatureSpecification = stjs.extend(LocationFeatureSpecification, Propert
     /**
      *  Schema.org/validFrom
      *  The date when the item becomes valid.
+     * 
      *  @property validFrom
      *  @type DateTime
      */
@@ -17456,6 +19612,7 @@ LocationFeatureSpecification = stjs.extend(LocationFeatureSpecification, Propert
     /**
      *  Schema.org/hoursAvailable
      *  The hours during which this service or contact is available.
+     * 
      *  @property hoursAvailable
      *  @type OpeningHoursSpecification
      */
@@ -17463,6 +19620,7 @@ LocationFeatureSpecification = stjs.extend(LocationFeatureSpecification, Propert
     /**
      *  Schema.org/validThrough
      *  The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.
+     * 
      *  @property validThrough
      *  @type DateTime
      */
@@ -17471,6 +19629,7 @@ LocationFeatureSpecification = stjs.extend(LocationFeatureSpecification, Propert
 /**
  *  Schema.org/PostalAddress
  *  The mailing address.
+ * 
  *  @author schema.org
  *  @class PostalAddress
  *  @module org.schema
@@ -17478,6 +19637,7 @@ LocationFeatureSpecification = stjs.extend(LocationFeatureSpecification, Propert
  */
 var PostalAddress = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17489,6 +19649,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  Schema.org/postalCode
      *  The postal code. For example, 94043.
+     * 
      *  @property postalCode
      *  @type Text
      */
@@ -17496,6 +19657,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  Schema.org/postOfficeBoxNumber
      *  The post office box number for PO box addresses.
+     * 
      *  @property postOfficeBoxNumber
      *  @type Text
      */
@@ -17503,6 +19665,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  Schema.org/addressLocality
      *  The locality. For example, Mountain View.
+     * 
      *  @property addressLocality
      *  @type Text
      */
@@ -17510,13 +19673,15 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  Schema.org/addressCountry
      *  The country. For example, USA. You can also provide the two-letter [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1).
+     * 
      *  @property addressCountry
-     *  @type schema,Text | schema,Country
+     *  @type schema, Text | schema,Country
      */
     prototype.addressCountry = null;
     /**
      *  Schema.org/streetAddress
      *  The street address. For example, 1600 Amphitheatre Pkwy.
+     * 
      *  @property streetAddress
      *  @type Text
      */
@@ -17524,6 +19689,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
     /**
      *  Schema.org/addressRegion
      *  The region. For example, CA.
+     * 
      *  @property addressRegion
      *  @type Text
      */
@@ -17532,6 +19698,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
 /**
  *  Schema.org/DriveWheelConfigurationValue
  *  A value indicating which roadwheels will receive torque.
+ * 
  *  @author schema.org
  *  @class DriveWheelConfigurationValue
  *  @module org.schema
@@ -17539,6 +19706,7 @@ PostalAddress = stjs.extend(PostalAddress, ContactPoint, [], function(constructo
  */
 var DriveWheelConfigurationValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17550,6 +19718,7 @@ DriveWheelConfigurationValue = stjs.extend(DriveWheelConfigurationValue, Qualita
 /**
  *  Schema.org/SteeringPositionValue
  *  A value indicating a steering position.
+ * 
  *  @author schema.org
  *  @class SteeringPositionValue
  *  @module org.schema
@@ -17557,6 +19726,7 @@ DriveWheelConfigurationValue = stjs.extend(DriveWheelConfigurationValue, Qualita
  */
 var SteeringPositionValue = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17568,6 +19738,7 @@ SteeringPositionValue = stjs.extend(SteeringPositionValue, QualitativeValue, [],
 /**
  *  Schema.org/LockerDelivery
  *  A DeliveryMethod in which an item is made available via locker.
+ * 
  *  @author schema.org
  *  @class LockerDelivery
  *  @module org.schema
@@ -17575,6 +19746,7 @@ SteeringPositionValue = stjs.extend(SteeringPositionValue, QualitativeValue, [],
  */
 var LockerDelivery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17586,7 +19758,7 @@ LockerDelivery = stjs.extend(LockerDelivery, DeliveryMethod, [], null, {identifi
 /**
  *  Schema.org/ParcelService
  *  A private parcel service as the delivery mode available for a certain offer.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#DHL\n* http://purl.org/goodrelations/v1#FederalExpress\n* http://purl.org/goodrelations/v1#UPS
- *       
+ * 
  *  @author schema.org
  *  @class ParcelService
  *  @module org.schema
@@ -17594,6 +19766,7 @@ LockerDelivery = stjs.extend(LockerDelivery, DeliveryMethod, [], null, {identifi
  */
 var ParcelService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17605,6 +19778,7 @@ ParcelService = stjs.extend(ParcelService, DeliveryMethod, [], null, {identifier
 /**
  *  Schema.org/BlogPosting
  *  A blog post.
+ * 
  *  @author schema.org
  *  @class BlogPosting
  *  @module org.schema
@@ -17612,6 +19786,7 @@ ParcelService = stjs.extend(ParcelService, DeliveryMethod, [], null, {identifier
  */
 var BlogPosting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17623,6 +19798,7 @@ BlogPosting = stjs.extend(BlogPosting, SocialMediaPosting, [], null, {sharedCont
 /**
  *  Schema.org/DiscussionForumPosting
  *  A posting to a discussion forum.
+ * 
  *  @author schema.org
  *  @class DiscussionForumPosting
  *  @module org.schema
@@ -17630,6 +19806,7 @@ BlogPosting = stjs.extend(BlogPosting, SocialMediaPosting, [], null, {sharedCont
  */
 var DiscussionForumPosting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17641,6 +19818,7 @@ DiscussionForumPosting = stjs.extend(DiscussionForumPosting, SocialMediaPosting,
 /**
  *  Schema.org/APIReference
  *  Reference documentation for application programming interfaces (APIs).
+ * 
  *  @author schema.org
  *  @class APIReference
  *  @module org.schema
@@ -17648,6 +19826,7 @@ DiscussionForumPosting = stjs.extend(DiscussionForumPosting, SocialMediaPosting,
  */
 var APIReference = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17659,6 +19838,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
     /**
      *  Schema.org/assembly
      *  Library file name e.g., mscorlib.dll, system.web.dll.
+     * 
      *  @property assembly
      *  @type Text
      */
@@ -17666,6 +19846,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
     /**
      *  Schema.org/executableLibraryName
      *  Library file name e.g., mscorlib.dll, system.web.dll.
+     * 
      *  @property executableLibraryName
      *  @type Text
      */
@@ -17673,6 +19854,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
     /**
      *  Schema.org/assemblyVersion
      *  Associated product/technology version. e.g., .NET Framework 4.5.
+     * 
      *  @property assemblyVersion
      *  @type Text
      */
@@ -17680,6 +19862,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
     /**
      *  Schema.org/targetPlatform
      *  Type of app development: phone, Metro style, desktop, XBox, etc.
+     * 
      *  @property targetPlatform
      *  @type Text
      */
@@ -17687,6 +19870,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
     /**
      *  Schema.org/programmingModel
      *  Indicates whether API is managed or unmanaged.
+     * 
      *  @property programmingModel
      *  @type Text
      */
@@ -17695,6 +19879,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
 /**
  *  Schema.org/ImageGallery
  *  Web page type: Image gallery page.
+ * 
  *  @author schema.org
  *  @class ImageGallery
  *  @module org.schema
@@ -17702,6 +19887,7 @@ APIReference = stjs.extend(APIReference, TechArticle, [], function(constructor, 
  */
 var ImageGallery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17713,6 +19899,7 @@ ImageGallery = stjs.extend(ImageGallery, CollectionPage, [], null, {specialty: "
 /**
  *  Schema.org/VideoGallery
  *  Web page type: Video gallery page.
+ * 
  *  @author schema.org
  *  @class VideoGallery
  *  @module org.schema
@@ -17720,6 +19907,7 @@ ImageGallery = stjs.extend(ImageGallery, CollectionPage, [], null, {specialty: "
  */
 var VideoGallery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17731,6 +19919,7 @@ VideoGallery = stjs.extend(VideoGallery, CollectionPage, [], null, {specialty: "
 /**
  *  Schema.org/Barcode
  *  An image of a visual machine-readable code such as a barcode or QR code.
+ * 
  *  @author schema.org
  *  @class Barcode
  *  @module org.schema
@@ -17738,6 +19927,7 @@ VideoGallery = stjs.extend(VideoGallery, CollectionPage, [], null, {specialty: "
  */
 var Barcode = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17749,6 +19939,7 @@ Barcode = stjs.extend(Barcode, ImageObject, [], null, {exifData: "Object", thumb
 /**
  *  Schema.org/PostOffice
  *  A post office.
+ * 
  *  @author schema.org
  *  @class PostOffice
  *  @module org.schema
@@ -17756,6 +19947,7 @@ Barcode = stjs.extend(Barcode, ImageObject, [], null, {exifData: "Object", thumb
  */
 var PostOffice = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17767,6 +19959,7 @@ PostOffice = stjs.extend(PostOffice, GovernmentOffice, [], null, {branchOf: "Org
 /**
  *  Schema.org/TattooParlor
  *  A tattoo parlor.
+ * 
  *  @author schema.org
  *  @class TattooParlor
  *  @module org.schema
@@ -17774,6 +19967,7 @@ PostOffice = stjs.extend(PostOffice, GovernmentOffice, [], null, {branchOf: "Org
  */
 var TattooParlor = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17785,6 +19979,7 @@ TattooParlor = stjs.extend(TattooParlor, HealthAndBeautyBusiness, [], null, {bra
 /**
  *  Schema.org/HairSalon
  *  A hair salon.
+ * 
  *  @author schema.org
  *  @class HairSalon
  *  @module org.schema
@@ -17792,6 +19987,7 @@ TattooParlor = stjs.extend(TattooParlor, HealthAndBeautyBusiness, [], null, {bra
  */
 var HairSalon = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17803,6 +19999,7 @@ HairSalon = stjs.extend(HairSalon, HealthAndBeautyBusiness, [], null, {branchOf:
 /**
  *  Schema.org/NailSalon
  *  A nail salon.
+ * 
  *  @author schema.org
  *  @class NailSalon
  *  @module org.schema
@@ -17810,6 +20007,7 @@ HairSalon = stjs.extend(HairSalon, HealthAndBeautyBusiness, [], null, {branchOf:
  */
 var NailSalon = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17821,6 +20019,7 @@ NailSalon = stjs.extend(NailSalon, HealthAndBeautyBusiness, [], null, {branchOf:
 /**
  *  Schema.org/DaySpa
  *  A day spa.
+ * 
  *  @author schema.org
  *  @class DaySpa
  *  @module org.schema
@@ -17828,6 +20027,7 @@ NailSalon = stjs.extend(NailSalon, HealthAndBeautyBusiness, [], null, {branchOf:
  */
 var DaySpa = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17839,6 +20039,7 @@ DaySpa = stjs.extend(DaySpa, HealthAndBeautyBusiness, [], null, {branchOf: "Orga
 /**
  *  Schema.org/BeautySalon
  *  Beauty salon.
+ * 
  *  @author schema.org
  *  @class BeautySalon
  *  @module org.schema
@@ -17846,6 +20047,7 @@ DaySpa = stjs.extend(DaySpa, HealthAndBeautyBusiness, [], null, {branchOf: "Orga
  */
 var BeautySalon = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17857,6 +20059,7 @@ BeautySalon = stjs.extend(BeautySalon, HealthAndBeautyBusiness, [], null, {branc
 /**
  *  Schema.org/ToyStore
  *  A toy store.
+ * 
  *  @author schema.org
  *  @class ToyStore
  *  @module org.schema
@@ -17864,6 +20067,7 @@ BeautySalon = stjs.extend(BeautySalon, HealthAndBeautyBusiness, [], null, {branc
  */
 var ToyStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17875,6 +20079,7 @@ ToyStore = stjs.extend(ToyStore, Store, [], null, {branchOf: "Organization", rev
 /**
  *  Schema.org/ClothingStore
  *  A clothing store.
+ * 
  *  @author schema.org
  *  @class ClothingStore
  *  @module org.schema
@@ -17882,6 +20087,7 @@ ToyStore = stjs.extend(ToyStore, Store, [], null, {branchOf: "Organization", rev
  */
 var ClothingStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17893,6 +20099,7 @@ ClothingStore = stjs.extend(ClothingStore, Store, [], null, {branchOf: "Organiza
 /**
  *  Schema.org/OutletStore
  *  An outlet store.
+ * 
  *  @author schema.org
  *  @class OutletStore
  *  @module org.schema
@@ -17900,6 +20107,7 @@ ClothingStore = stjs.extend(ClothingStore, Store, [], null, {branchOf: "Organiza
  */
 var OutletStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17911,6 +20119,7 @@ OutletStore = stjs.extend(OutletStore, Store, [], null, {branchOf: "Organization
 /**
  *  Schema.org/MovieRentalStore
  *  A movie rental store.
+ * 
  *  @author schema.org
  *  @class MovieRentalStore
  *  @module org.schema
@@ -17918,6 +20127,7 @@ OutletStore = stjs.extend(OutletStore, Store, [], null, {branchOf: "Organization
  */
 var MovieRentalStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17929,6 +20139,7 @@ MovieRentalStore = stjs.extend(MovieRentalStore, Store, [], null, {branchOf: "Or
 /**
  *  Schema.org/JewelryStore
  *  A jewelry store.
+ * 
  *  @author schema.org
  *  @class JewelryStore
  *  @module org.schema
@@ -17936,6 +20147,7 @@ MovieRentalStore = stjs.extend(MovieRentalStore, Store, [], null, {branchOf: "Or
  */
 var JewelryStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17947,6 +20159,7 @@ JewelryStore = stjs.extend(JewelryStore, Store, [], null, {branchOf: "Organizati
 /**
  *  Schema.org/PawnShop
  *  A shop that will buy, or lend money against the security of, personal possessions.
+ * 
  *  @author schema.org
  *  @class PawnShop
  *  @module org.schema
@@ -17954,6 +20167,7 @@ JewelryStore = stjs.extend(JewelryStore, Store, [], null, {branchOf: "Organizati
  */
 var PawnShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17965,6 +20179,7 @@ PawnShop = stjs.extend(PawnShop, Store, [], null, {branchOf: "Organization", rev
 /**
  *  Schema.org/MobilePhoneStore
  *  A store that sells mobile phones and related accessories.
+ * 
  *  @author schema.org
  *  @class MobilePhoneStore
  *  @module org.schema
@@ -17972,6 +20187,7 @@ PawnShop = stjs.extend(PawnShop, Store, [], null, {branchOf: "Organization", rev
  */
 var MobilePhoneStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -17983,6 +20199,7 @@ MobilePhoneStore = stjs.extend(MobilePhoneStore, Store, [], null, {branchOf: "Or
 /**
  *  Schema.org/SportingGoodsStore
  *  A sporting goods store.
+ * 
  *  @author schema.org
  *  @class SportingGoodsStore
  *  @module org.schema
@@ -17990,6 +20207,7 @@ MobilePhoneStore = stjs.extend(MobilePhoneStore, Store, [], null, {branchOf: "Or
  */
 var SportingGoodsStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18001,6 +20219,7 @@ SportingGoodsStore = stjs.extend(SportingGoodsStore, Store, [], null, {branchOf:
 /**
  *  Schema.org/Florist
  *  A florist.
+ * 
  *  @author schema.org
  *  @class Florist
  *  @module org.schema
@@ -18008,6 +20227,7 @@ SportingGoodsStore = stjs.extend(SportingGoodsStore, Store, [], null, {branchOf:
  */
 var Florist = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18019,6 +20239,7 @@ Florist = stjs.extend(Florist, Store, [], null, {branchOf: "Organization", revie
 /**
  *  Schema.org/ComputerStore
  *  A computer store.
+ * 
  *  @author schema.org
  *  @class ComputerStore
  *  @module org.schema
@@ -18026,6 +20247,7 @@ Florist = stjs.extend(Florist, Store, [], null, {branchOf: "Organization", revie
  */
 var ComputerStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18037,6 +20259,7 @@ ComputerStore = stjs.extend(ComputerStore, Store, [], null, {branchOf: "Organiza
 /**
  *  Schema.org/ConvenienceStore
  *  A convenience store.
+ * 
  *  @author schema.org
  *  @class ConvenienceStore
  *  @module org.schema
@@ -18044,6 +20267,7 @@ ComputerStore = stjs.extend(ComputerStore, Store, [], null, {branchOf: "Organiza
  */
 var ConvenienceStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18055,6 +20279,7 @@ ConvenienceStore = stjs.extend(ConvenienceStore, Store, [], null, {branchOf: "Or
 /**
  *  Schema.org/MensClothingStore
  *  A men's clothing store.
+ * 
  *  @author schema.org
  *  @class MensClothingStore
  *  @module org.schema
@@ -18062,6 +20287,7 @@ ConvenienceStore = stjs.extend(ConvenienceStore, Store, [], null, {branchOf: "Or
  */
 var MensClothingStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18073,6 +20299,7 @@ MensClothingStore = stjs.extend(MensClothingStore, Store, [], null, {branchOf: "
 /**
  *  Schema.org/HomeGoodsStore
  *  A home goods store.
+ * 
  *  @author schema.org
  *  @class HomeGoodsStore
  *  @module org.schema
@@ -18080,6 +20307,7 @@ MensClothingStore = stjs.extend(MensClothingStore, Store, [], null, {branchOf: "
  */
 var HomeGoodsStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18091,6 +20319,7 @@ HomeGoodsStore = stjs.extend(HomeGoodsStore, Store, [], null, {branchOf: "Organi
 /**
  *  Schema.org/FurnitureStore
  *  A furniture store.
+ * 
  *  @author schema.org
  *  @class FurnitureStore
  *  @module org.schema
@@ -18098,6 +20327,7 @@ HomeGoodsStore = stjs.extend(HomeGoodsStore, Store, [], null, {branchOf: "Organi
  */
 var FurnitureStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18109,6 +20339,7 @@ FurnitureStore = stjs.extend(FurnitureStore, Store, [], null, {branchOf: "Organi
 /**
  *  Schema.org/ShoeStore
  *  A shoe store.
+ * 
  *  @author schema.org
  *  @class ShoeStore
  *  @module org.schema
@@ -18116,6 +20347,7 @@ FurnitureStore = stjs.extend(FurnitureStore, Store, [], null, {branchOf: "Organi
  */
 var ShoeStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18127,6 +20359,7 @@ ShoeStore = stjs.extend(ShoeStore, Store, [], null, {branchOf: "Organization", r
 /**
  *  Schema.org/DepartmentStore
  *  A department store.
+ * 
  *  @author schema.org
  *  @class DepartmentStore
  *  @module org.schema
@@ -18134,6 +20367,7 @@ ShoeStore = stjs.extend(ShoeStore, Store, [], null, {branchOf: "Organization", r
  */
 var DepartmentStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18145,6 +20379,7 @@ DepartmentStore = stjs.extend(DepartmentStore, Store, [], null, {branchOf: "Orga
 /**
  *  Schema.org/GardenStore
  *  A garden store.
+ * 
  *  @author schema.org
  *  @class GardenStore
  *  @module org.schema
@@ -18152,6 +20387,7 @@ DepartmentStore = stjs.extend(DepartmentStore, Store, [], null, {branchOf: "Orga
  */
 var GardenStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18163,6 +20399,7 @@ GardenStore = stjs.extend(GardenStore, Store, [], null, {branchOf: "Organization
 /**
  *  Schema.org/HardwareStore
  *  A hardware store.
+ * 
  *  @author schema.org
  *  @class HardwareStore
  *  @module org.schema
@@ -18170,6 +20407,7 @@ GardenStore = stjs.extend(GardenStore, Store, [], null, {branchOf: "Organization
  */
 var HardwareStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18181,6 +20419,7 @@ HardwareStore = stjs.extend(HardwareStore, Store, [], null, {branchOf: "Organiza
 /**
  *  Schema.org/BikeStore
  *  A bike store.
+ * 
  *  @author schema.org
  *  @class BikeStore
  *  @module org.schema
@@ -18188,6 +20427,7 @@ HardwareStore = stjs.extend(HardwareStore, Store, [], null, {branchOf: "Organiza
  */
 var BikeStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18199,6 +20439,7 @@ BikeStore = stjs.extend(BikeStore, Store, [], null, {branchOf: "Organization", r
 /**
  *  Schema.org/OfficeEquipmentStore
  *  An office equipment store.
+ * 
  *  @author schema.org
  *  @class OfficeEquipmentStore
  *  @module org.schema
@@ -18206,6 +20447,7 @@ BikeStore = stjs.extend(BikeStore, Store, [], null, {branchOf: "Organization", r
  */
 var OfficeEquipmentStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18217,6 +20459,7 @@ OfficeEquipmentStore = stjs.extend(OfficeEquipmentStore, Store, [], null, {branc
 /**
  *  Schema.org/BookStore
  *  A bookstore.
+ * 
  *  @author schema.org
  *  @class BookStore
  *  @module org.schema
@@ -18224,6 +20467,7 @@ OfficeEquipmentStore = stjs.extend(OfficeEquipmentStore, Store, [], null, {branc
  */
 var BookStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18235,6 +20479,7 @@ BookStore = stjs.extend(BookStore, Store, [], null, {branchOf: "Organization", r
 /**
  *  Schema.org/HobbyShop
  *  A store that sells materials useful or necessary for various hobbies.
+ * 
  *  @author schema.org
  *  @class HobbyShop
  *  @module org.schema
@@ -18242,6 +20487,7 @@ BookStore = stjs.extend(BookStore, Store, [], null, {branchOf: "Organization", r
  */
 var HobbyShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18253,6 +20499,7 @@ HobbyShop = stjs.extend(HobbyShop, Store, [], null, {branchOf: "Organization", r
 /**
  *  Schema.org/TireShop
  *  A tire shop.
+ * 
  *  @author schema.org
  *  @class TireShop
  *  @module org.schema
@@ -18260,6 +20507,7 @@ HobbyShop = stjs.extend(HobbyShop, Store, [], null, {branchOf: "Organization", r
  */
 var TireShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18271,6 +20519,7 @@ TireShop = stjs.extend(TireShop, Store, [], null, {branchOf: "Organization", rev
 /**
  *  Schema.org/LiquorStore
  *  A shop that sells alcoholic drinks such as wine, beer, whisky and other spirits.
+ * 
  *  @author schema.org
  *  @class LiquorStore
  *  @module org.schema
@@ -18278,6 +20527,7 @@ TireShop = stjs.extend(TireShop, Store, [], null, {branchOf: "Organization", rev
  */
 var LiquorStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18289,6 +20539,7 @@ LiquorStore = stjs.extend(LiquorStore, Store, [], null, {branchOf: "Organization
 /**
  *  Schema.org/ElectronicsStore
  *  An electronics store.
+ * 
  *  @author schema.org
  *  @class ElectronicsStore
  *  @module org.schema
@@ -18296,6 +20547,7 @@ LiquorStore = stjs.extend(LiquorStore, Store, [], null, {branchOf: "Organization
  */
 var ElectronicsStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18307,6 +20559,7 @@ ElectronicsStore = stjs.extend(ElectronicsStore, Store, [], null, {branchOf: "Or
 /**
  *  Schema.org/PetStore
  *  A pet store.
+ * 
  *  @author schema.org
  *  @class PetStore
  *  @module org.schema
@@ -18314,6 +20567,7 @@ ElectronicsStore = stjs.extend(ElectronicsStore, Store, [], null, {branchOf: "Or
  */
 var PetStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18325,6 +20579,7 @@ PetStore = stjs.extend(PetStore, Store, [], null, {branchOf: "Organization", rev
 /**
  *  Schema.org/MusicStore
  *  A music store.
+ * 
  *  @author schema.org
  *  @class MusicStore
  *  @module org.schema
@@ -18332,6 +20587,7 @@ PetStore = stjs.extend(PetStore, Store, [], null, {branchOf: "Organization", rev
  */
 var MusicStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18343,6 +20599,7 @@ MusicStore = stjs.extend(MusicStore, Store, [], null, {branchOf: "Organization",
 /**
  *  Schema.org/GroceryStore
  *  A grocery store.
+ * 
  *  @author schema.org
  *  @class GroceryStore
  *  @module org.schema
@@ -18350,6 +20607,7 @@ MusicStore = stjs.extend(MusicStore, Store, [], null, {branchOf: "Organization",
  */
 var GroceryStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18361,6 +20619,7 @@ GroceryStore = stjs.extend(GroceryStore, Store, [], null, {branchOf: "Organizati
 /**
  *  Schema.org/WholesaleStore
  *  A wholesale store.
+ * 
  *  @author schema.org
  *  @class WholesaleStore
  *  @module org.schema
@@ -18368,6 +20627,7 @@ GroceryStore = stjs.extend(GroceryStore, Store, [], null, {branchOf: "Organizati
  */
 var WholesaleStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18379,6 +20639,7 @@ WholesaleStore = stjs.extend(WholesaleStore, Store, [], null, {branchOf: "Organi
 /**
  *  Schema.org/Attorney
  *  Professional service: Attorney. \n\nThis type is deprecated - [[LegalService]] is more inclusive and less ambiguous.
+ * 
  *  @author schema.org
  *  @class Attorney
  *  @module org.schema
@@ -18386,6 +20647,7 @@ WholesaleStore = stjs.extend(WholesaleStore, Store, [], null, {branchOf: "Organi
  */
 var Attorney = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18397,6 +20659,7 @@ Attorney = stjs.extend(Attorney, LegalService, [], null, {branchOf: "Organizatio
 /**
  *  Schema.org/Notary
  *  A notary.
+ * 
  *  @author schema.org
  *  @class Notary
  *  @module org.schema
@@ -18404,6 +20667,7 @@ Attorney = stjs.extend(Attorney, LegalService, [], null, {branchOf: "Organizatio
  */
 var Notary = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18415,6 +20679,7 @@ Notary = stjs.extend(Notary, LegalService, [], null, {branchOf: "Organization", 
 /**
  *  Schema.org/CafeOrCoffeeShop
  *  A cafe or coffee shop.
+ * 
  *  @author schema.org
  *  @class CafeOrCoffeeShop
  *  @module org.schema
@@ -18422,6 +20687,7 @@ Notary = stjs.extend(Notary, LegalService, [], null, {branchOf: "Organization", 
  */
 var CafeOrCoffeeShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18433,6 +20699,7 @@ CafeOrCoffeeShop = stjs.extend(CafeOrCoffeeShop, FoodEstablishment, [], null, {s
 /**
  *  Schema.org/Brewery
  *  Brewery.
+ * 
  *  @author schema.org
  *  @class Brewery
  *  @module org.schema
@@ -18440,6 +20707,7 @@ CafeOrCoffeeShop = stjs.extend(CafeOrCoffeeShop, FoodEstablishment, [], null, {s
  */
 var Brewery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18451,6 +20719,7 @@ Brewery = stjs.extend(Brewery, FoodEstablishment, [], null, {starRating: "Rating
 /**
  *  Schema.org/Bakery
  *  A bakery.
+ * 
  *  @author schema.org
  *  @class Bakery
  *  @module org.schema
@@ -18458,6 +20727,7 @@ Brewery = stjs.extend(Brewery, FoodEstablishment, [], null, {starRating: "Rating
  */
 var Bakery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18469,6 +20739,7 @@ Bakery = stjs.extend(Bakery, FoodEstablishment, [], null, {starRating: "Rating",
 /**
  *  Schema.org/Restaurant
  *  A restaurant.
+ * 
  *  @author schema.org
  *  @class Restaurant
  *  @module org.schema
@@ -18476,6 +20747,7 @@ Bakery = stjs.extend(Bakery, FoodEstablishment, [], null, {starRating: "Rating",
  */
 var Restaurant = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18487,6 +20759,7 @@ Restaurant = stjs.extend(Restaurant, FoodEstablishment, [], null, {starRating: "
 /**
  *  Schema.org/IceCreamShop
  *  An ice cream shop.
+ * 
  *  @author schema.org
  *  @class IceCreamShop
  *  @module org.schema
@@ -18494,6 +20767,7 @@ Restaurant = stjs.extend(Restaurant, FoodEstablishment, [], null, {starRating: "
  */
 var IceCreamShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18505,6 +20779,7 @@ IceCreamShop = stjs.extend(IceCreamShop, FoodEstablishment, [], null, {starRatin
 /**
  *  Schema.org/Winery
  *  A winery.
+ * 
  *  @author schema.org
  *  @class Winery
  *  @module org.schema
@@ -18512,6 +20787,7 @@ IceCreamShop = stjs.extend(IceCreamShop, FoodEstablishment, [], null, {starRatin
  */
 var Winery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18523,6 +20799,7 @@ Winery = stjs.extend(Winery, FoodEstablishment, [], null, {starRating: "Rating",
 /**
  *  Schema.org/FastFoodRestaurant
  *  A fast-food restaurant.
+ * 
  *  @author schema.org
  *  @class FastFoodRestaurant
  *  @module org.schema
@@ -18530,6 +20807,7 @@ Winery = stjs.extend(Winery, FoodEstablishment, [], null, {starRating: "Rating",
  */
 var FastFoodRestaurant = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18541,6 +20819,7 @@ FastFoodRestaurant = stjs.extend(FastFoodRestaurant, FoodEstablishment, [], null
 /**
  *  Schema.org/BarOrPub
  *  A bar or pub.
+ * 
  *  @author schema.org
  *  @class BarOrPub
  *  @module org.schema
@@ -18548,6 +20827,7 @@ FastFoodRestaurant = stjs.extend(FastFoodRestaurant, FoodEstablishment, [], null
  */
 var BarOrPub = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18559,6 +20839,7 @@ BarOrPub = stjs.extend(BarOrPub, FoodEstablishment, [], null, {starRating: "Rati
 /**
  *  Schema.org/AutoBodyShop
  *  Auto body shop.
+ * 
  *  @author schema.org
  *  @class AutoBodyShop
  *  @module org.schema
@@ -18566,6 +20847,7 @@ BarOrPub = stjs.extend(BarOrPub, FoodEstablishment, [], null, {starRating: "Rati
  */
 var AutoBodyShop = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18577,6 +20859,7 @@ AutoBodyShop = stjs.extend(AutoBodyShop, AutomotiveBusiness, [], null, {branchOf
 /**
  *  Schema.org/GasStation
  *  A gas station.
+ * 
  *  @author schema.org
  *  @class GasStation
  *  @module org.schema
@@ -18584,6 +20867,7 @@ AutoBodyShop = stjs.extend(AutoBodyShop, AutomotiveBusiness, [], null, {branchOf
  */
 var GasStation = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18595,6 +20879,7 @@ GasStation = stjs.extend(GasStation, AutomotiveBusiness, [], null, {branchOf: "O
 /**
  *  Schema.org/AutoDealer
  *  An car dealership.
+ * 
  *  @author schema.org
  *  @class AutoDealer
  *  @module org.schema
@@ -18602,6 +20887,7 @@ GasStation = stjs.extend(GasStation, AutomotiveBusiness, [], null, {branchOf: "O
  */
 var AutoDealer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18613,6 +20899,7 @@ AutoDealer = stjs.extend(AutoDealer, AutomotiveBusiness, [], null, {branchOf: "O
 /**
  *  Schema.org/MotorcycleDealer
  *  A motorcycle dealer.
+ * 
  *  @author schema.org
  *  @class MotorcycleDealer
  *  @module org.schema
@@ -18620,6 +20907,7 @@ AutoDealer = stjs.extend(AutoDealer, AutomotiveBusiness, [], null, {branchOf: "O
  */
 var MotorcycleDealer = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18631,6 +20919,7 @@ MotorcycleDealer = stjs.extend(MotorcycleDealer, AutomotiveBusiness, [], null, {
 /**
  *  Schema.org/AutoWash
  *  A car wash business.
+ * 
  *  @author schema.org
  *  @class AutoWash
  *  @module org.schema
@@ -18638,6 +20927,7 @@ MotorcycleDealer = stjs.extend(MotorcycleDealer, AutomotiveBusiness, [], null, {
  */
 var AutoWash = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18649,6 +20939,7 @@ AutoWash = stjs.extend(AutoWash, AutomotiveBusiness, [], null, {branchOf: "Organ
 /**
  *  Schema.org/AutoRental
  *  A car rental business.
+ * 
  *  @author schema.org
  *  @class AutoRental
  *  @module org.schema
@@ -18656,6 +20947,7 @@ AutoWash = stjs.extend(AutoWash, AutomotiveBusiness, [], null, {branchOf: "Organ
  */
 var AutoRental = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18667,6 +20959,7 @@ AutoRental = stjs.extend(AutoRental, AutomotiveBusiness, [], null, {branchOf: "O
 /**
  *  Schema.org/AutoPartsStore
  *  An auto parts store.
+ * 
  *  @author schema.org
  *  @class AutoPartsStore
  *  @module org.schema
@@ -18674,6 +20967,7 @@ AutoRental = stjs.extend(AutoRental, AutomotiveBusiness, [], null, {branchOf: "O
  */
 var AutoPartsStore = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18685,6 +20979,7 @@ AutoPartsStore = stjs.extend(AutoPartsStore, AutomotiveBusiness, [], null, {bran
 /**
  *  Schema.org/AutoRepair
  *  Car repair business.
+ * 
  *  @author schema.org
  *  @class AutoRepair
  *  @module org.schema
@@ -18692,6 +20987,7 @@ AutoPartsStore = stjs.extend(AutoPartsStore, AutomotiveBusiness, [], null, {bran
  */
 var AutoRepair = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18703,6 +20999,7 @@ AutoRepair = stjs.extend(AutoRepair, AutomotiveBusiness, [], null, {branchOf: "O
 /**
  *  Schema.org/MotorcycleRepair
  *  A motorcycle repair shop.
+ * 
  *  @author schema.org
  *  @class MotorcycleRepair
  *  @module org.schema
@@ -18710,6 +21007,7 @@ AutoRepair = stjs.extend(AutoRepair, AutomotiveBusiness, [], null, {branchOf: "O
  */
 var MotorcycleRepair = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18721,6 +21019,7 @@ MotorcycleRepair = stjs.extend(MotorcycleRepair, AutomotiveBusiness, [], null, {
 /**
  *  Schema.org/NightClub
  *  A nightclub or discotheque.
+ * 
  *  @author schema.org
  *  @class NightClub
  *  @module org.schema
@@ -18728,6 +21027,7 @@ MotorcycleRepair = stjs.extend(MotorcycleRepair, AutomotiveBusiness, [], null, {
  */
 var NightClub = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18739,6 +21039,7 @@ NightClub = stjs.extend(NightClub, EntertainmentBusiness, [], null, {branchOf: "
 /**
  *  Schema.org/Casino
  *  A casino.
+ * 
  *  @author schema.org
  *  @class Casino
  *  @module org.schema
@@ -18746,6 +21047,7 @@ NightClub = stjs.extend(NightClub, EntertainmentBusiness, [], null, {branchOf: "
  */
 var Casino = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18757,6 +21059,7 @@ Casino = stjs.extend(Casino, EntertainmentBusiness, [], null, {branchOf: "Organi
 /**
  *  Schema.org/ComedyClub
  *  A comedy club.
+ * 
  *  @author schema.org
  *  @class ComedyClub
  *  @module org.schema
@@ -18764,6 +21067,7 @@ Casino = stjs.extend(Casino, EntertainmentBusiness, [], null, {branchOf: "Organi
  */
 var ComedyClub = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18775,6 +21079,7 @@ ComedyClub = stjs.extend(ComedyClub, EntertainmentBusiness, [], null, {branchOf:
 /**
  *  Schema.org/ArtGallery
  *  An art gallery.
+ * 
  *  @author schema.org
  *  @class ArtGallery
  *  @module org.schema
@@ -18782,6 +21087,7 @@ ComedyClub = stjs.extend(ComedyClub, EntertainmentBusiness, [], null, {branchOf:
  */
 var ArtGallery = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18793,6 +21099,7 @@ ArtGallery = stjs.extend(ArtGallery, EntertainmentBusiness, [], null, {branchOf:
 /**
  *  Schema.org/MovieTheater
  *  A movie theater.
+ * 
  *  @author schema.org
  *  @class MovieTheater
  *  @module org.schema
@@ -18800,6 +21107,7 @@ ArtGallery = stjs.extend(ArtGallery, EntertainmentBusiness, [], null, {branchOf:
  */
 var MovieTheater = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18811,6 +21119,7 @@ MovieTheater = stjs.extend(MovieTheater, EntertainmentBusiness, [], function(con
     /**
      *  Schema.org/screenCount
      *  The number of screens in the movie theater.
+     * 
      *  @property screenCount
      *  @type Number
      */
@@ -18819,6 +21128,7 @@ MovieTheater = stjs.extend(MovieTheater, EntertainmentBusiness, [], function(con
 /**
  *  Schema.org/AdultEntertainment
  *  An adult entertainment establishment.
+ * 
  *  @author schema.org
  *  @class AdultEntertainment
  *  @module org.schema
@@ -18826,6 +21136,7 @@ MovieTheater = stjs.extend(MovieTheater, EntertainmentBusiness, [], function(con
  */
 var AdultEntertainment = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18837,6 +21148,7 @@ AdultEntertainment = stjs.extend(AdultEntertainment, EntertainmentBusiness, [], 
 /**
  *  Schema.org/AmusementPark
  *  An amusement park.
+ * 
  *  @author schema.org
  *  @class AmusementPark
  *  @module org.schema
@@ -18844,6 +21156,7 @@ AdultEntertainment = stjs.extend(AdultEntertainment, EntertainmentBusiness, [], 
  */
 var AmusementPark = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18855,6 +21168,7 @@ AmusementPark = stjs.extend(AmusementPark, EntertainmentBusiness, [], null, {bra
 /**
  *  Schema.org/Electrician
  *  An electrician.
+ * 
  *  @author schema.org
  *  @class Electrician
  *  @module org.schema
@@ -18862,6 +21176,7 @@ AmusementPark = stjs.extend(AmusementPark, EntertainmentBusiness, [], null, {bra
  */
 var Electrician = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18873,6 +21188,7 @@ Electrician = stjs.extend(Electrician, HomeAndConstructionBusiness, [], null, {b
 /**
  *  Schema.org/Locksmith
  *  A locksmith.
+ * 
  *  @author schema.org
  *  @class Locksmith
  *  @module org.schema
@@ -18880,6 +21196,7 @@ Electrician = stjs.extend(Electrician, HomeAndConstructionBusiness, [], null, {b
  */
 var Locksmith = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18891,6 +21208,7 @@ Locksmith = stjs.extend(Locksmith, HomeAndConstructionBusiness, [], null, {branc
 /**
  *  Schema.org/MovingCompany
  *  A moving company.
+ * 
  *  @author schema.org
  *  @class MovingCompany
  *  @module org.schema
@@ -18898,6 +21216,7 @@ Locksmith = stjs.extend(Locksmith, HomeAndConstructionBusiness, [], null, {branc
  */
 var MovingCompany = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18909,6 +21228,7 @@ MovingCompany = stjs.extend(MovingCompany, HomeAndConstructionBusiness, [], null
 /**
  *  Schema.org/HousePainter
  *  A house painting service.
+ * 
  *  @author schema.org
  *  @class HousePainter
  *  @module org.schema
@@ -18916,6 +21236,7 @@ MovingCompany = stjs.extend(MovingCompany, HomeAndConstructionBusiness, [], null
  */
 var HousePainter = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18927,6 +21248,7 @@ HousePainter = stjs.extend(HousePainter, HomeAndConstructionBusiness, [], null, 
 /**
  *  Schema.org/RoofingContractor
  *  A roofing contractor.
+ * 
  *  @author schema.org
  *  @class RoofingContractor
  *  @module org.schema
@@ -18934,6 +21256,7 @@ HousePainter = stjs.extend(HousePainter, HomeAndConstructionBusiness, [], null, 
  */
 var RoofingContractor = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18945,6 +21268,7 @@ RoofingContractor = stjs.extend(RoofingContractor, HomeAndConstructionBusiness, 
 /**
  *  Schema.org/Plumber
  *  A plumbing service.
+ * 
  *  @author schema.org
  *  @class Plumber
  *  @module org.schema
@@ -18952,6 +21276,7 @@ RoofingContractor = stjs.extend(RoofingContractor, HomeAndConstructionBusiness, 
  */
 var Plumber = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18963,6 +21288,7 @@ Plumber = stjs.extend(Plumber, HomeAndConstructionBusiness, [], null, {branchOf:
 /**
  *  Schema.org/HVACBusiness
  *  A business that provide Heating, Ventilation and Air Conditioning services.
+ * 
  *  @author schema.org
  *  @class HVACBusiness
  *  @module org.schema
@@ -18970,6 +21296,7 @@ Plumber = stjs.extend(Plumber, HomeAndConstructionBusiness, [], null, {branchOf:
  */
 var HVACBusiness = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18981,6 +21308,7 @@ HVACBusiness = stjs.extend(HVACBusiness, HomeAndConstructionBusiness, [], null, 
 /**
  *  Schema.org/GeneralContractor
  *  A general contractor.
+ * 
  *  @author schema.org
  *  @class GeneralContractor
  *  @module org.schema
@@ -18988,6 +21316,7 @@ HVACBusiness = stjs.extend(HVACBusiness, HomeAndConstructionBusiness, [], null, 
  */
 var GeneralContractor = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -18999,6 +21328,7 @@ GeneralContractor = stjs.extend(GeneralContractor, HomeAndConstructionBusiness, 
 /**
  *  Schema.org/BankOrCreditUnion
  *  Bank or credit union.
+ * 
  *  @author schema.org
  *  @class BankOrCreditUnion
  *  @module org.schema
@@ -19006,6 +21336,7 @@ GeneralContractor = stjs.extend(GeneralContractor, HomeAndConstructionBusiness, 
  */
 var BankOrCreditUnion = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19017,6 +21348,7 @@ BankOrCreditUnion = stjs.extend(BankOrCreditUnion, FinancialService, [], null, {
 /**
  *  Schema.org/AutomatedTeller
  *  ATM/cash machine.
+ * 
  *  @author schema.org
  *  @class AutomatedTeller
  *  @module org.schema
@@ -19024,6 +21356,7 @@ BankOrCreditUnion = stjs.extend(BankOrCreditUnion, FinancialService, [], null, {
  */
 var AutomatedTeller = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19035,7 +21368,7 @@ AutomatedTeller = stjs.extend(AutomatedTeller, FinancialService, [], null, {fees
 /**
  *  Schema.org/AccountingService
  *  Accountancy business.\n\nAs a [[LocalBusiness]] it can be described as a [[provider]] of one or more [[Service]]\(s).
- *       
+ * 
  *  @author schema.org
  *  @class AccountingService
  *  @module org.schema
@@ -19043,6 +21376,7 @@ AutomatedTeller = stjs.extend(AutomatedTeller, FinancialService, [], null, {fees
  */
 var AccountingService = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19054,6 +21388,7 @@ AccountingService = stjs.extend(AccountingService, FinancialService, [], null, {
 /**
  *  Schema.org/InsuranceAgency
  *  An Insurance agency.
+ * 
  *  @author schema.org
  *  @class InsuranceAgency
  *  @module org.schema
@@ -19061,6 +21396,7 @@ AccountingService = stjs.extend(AccountingService, FinancialService, [], null, {
  */
 var InsuranceAgency = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19072,8 +21408,8 @@ InsuranceAgency = stjs.extend(InsuranceAgency, FinancialService, [], null, {fees
 /**
  *  Schema.org/BedAndBreakfast
  *  Bed and breakfast.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class BedAndBreakfast
@@ -19082,6 +21418,7 @@ InsuranceAgency = stjs.extend(InsuranceAgency, FinancialService, [], null, {fees
  */
 var BedAndBreakfast = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19093,8 +21430,8 @@ BedAndBreakfast = stjs.extend(BedAndBreakfast, LodgingBusiness, [], null, {audie
 /**
  *  Schema.org/Motel
  *  A motel.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Motel
@@ -19103,6 +21440,7 @@ BedAndBreakfast = stjs.extend(BedAndBreakfast, LodgingBusiness, [], null, {audie
  */
 var Motel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19114,8 +21452,8 @@ Motel = stjs.extend(Motel, LodgingBusiness, [], null, {audience: "Audience", ame
 /**
  *  Schema.org/Hotel
  *  A hotel is an establishment that provides lodging paid on a short-term basis (Source: Wikipedia, the free encyclopedia, see http://en.wikipedia.org/wiki/Hotel).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Hotel
@@ -19124,6 +21462,7 @@ Motel = stjs.extend(Motel, LodgingBusiness, [], null, {audience: "Audience", ame
  */
 var Hotel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19135,8 +21474,8 @@ Hotel = stjs.extend(Hotel, LodgingBusiness, [], null, {audience: "Audience", ame
 /**
  *  Schema.org/Hostel
  *  A hostel - cheap accommodation, often in shared dormitories.
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
  * 
  *  @author schema.org
  *  @class Hostel
@@ -19145,6 +21484,7 @@ Hotel = stjs.extend(Hotel, LodgingBusiness, [], null, {audience: "Audience", ame
  */
 var Hostel = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19156,9 +21496,9 @@ Hostel = stjs.extend(Hostel, LodgingBusiness, [], null, {audience: "Audience", a
 /**
  *  Schema.org/Resort
  *  A resort is a place used for relaxation or recreation, attracting visitors for holidays or vacations. Resorts are places, towns or sometimes commercial establishment operated by a single company (Source: Wikipedia, the free encyclopedia, see <a href="http://en.wikipedia.org/wiki/Resort">http://en.wikipedia.org/wiki/Resort</a>).
- * <br /><br />
- * See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
- *     
+ *  <br /><br />
+ *  See also the <a href="/docs/hotels.html">dedicated document on the use of schema.org for marking up hotels and other forms of accommodations</a>.
+ * 
  *  @author schema.org
  *  @class Resort
  *  @module org.schema
@@ -19166,6 +21506,7 @@ Hostel = stjs.extend(Hostel, LodgingBusiness, [], null, {audience: "Audience", a
  */
 var Resort = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19177,6 +21518,7 @@ Resort = stjs.extend(Resort, LodgingBusiness, [], null, {audience: "Audience", a
 /**
  *  Schema.org/GolfCourse
  *  A golf course.
+ * 
  *  @author schema.org
  *  @class GolfCourse
  *  @module org.schema
@@ -19184,6 +21526,7 @@ Resort = stjs.extend(Resort, LodgingBusiness, [], null, {audience: "Audience", a
  */
 var GolfCourse = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19195,6 +21538,7 @@ GolfCourse = stjs.extend(GolfCourse, SportsActivityLocation, [], null, {branchOf
 /**
  *  Schema.org/BowlingAlley
  *  A bowling alley.
+ * 
  *  @author schema.org
  *  @class BowlingAlley
  *  @module org.schema
@@ -19202,6 +21546,7 @@ GolfCourse = stjs.extend(GolfCourse, SportsActivityLocation, [], null, {branchOf
  */
 var BowlingAlley = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19213,6 +21558,7 @@ BowlingAlley = stjs.extend(BowlingAlley, SportsActivityLocation, [], null, {bran
 /**
  *  Schema.org/TennisComplex
  *  A tennis complex.
+ * 
  *  @author schema.org
  *  @class TennisComplex
  *  @module org.schema
@@ -19220,6 +21566,7 @@ BowlingAlley = stjs.extend(BowlingAlley, SportsActivityLocation, [], null, {bran
  */
 var TennisComplex = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19231,6 +21578,7 @@ TennisComplex = stjs.extend(TennisComplex, SportsActivityLocation, [], null, {br
 /**
  *  Schema.org/SkiResort
  *  A ski resort.
+ * 
  *  @author schema.org
  *  @class SkiResort
  *  @module org.schema
@@ -19238,6 +21586,7 @@ TennisComplex = stjs.extend(TennisComplex, SportsActivityLocation, [], null, {br
  */
 var SkiResort = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19249,6 +21598,7 @@ SkiResort = stjs.extend(SkiResort, SportsActivityLocation, [], null, {branchOf: 
 /**
  *  Schema.org/ExerciseGym
  *  A gym.
+ * 
  *  @author schema.org
  *  @class ExerciseGym
  *  @module org.schema
@@ -19256,6 +21606,7 @@ SkiResort = stjs.extend(SkiResort, SportsActivityLocation, [], null, {branchOf: 
  */
 var ExerciseGym = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19267,6 +21618,7 @@ ExerciseGym = stjs.extend(ExerciseGym, SportsActivityLocation, [], null, {branch
 /**
  *  Schema.org/StadiumOrArena
  *  A stadium.
+ * 
  *  @author schema.org
  *  @class StadiumOrArena
  *  @module org.schema
@@ -19274,6 +21626,7 @@ ExerciseGym = stjs.extend(ExerciseGym, SportsActivityLocation, [], null, {branch
  */
 var StadiumOrArena = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19285,6 +21638,7 @@ StadiumOrArena = stjs.extend(StadiumOrArena, SportsActivityLocation, [], null, {
 /**
  *  Schema.org/SportsClub
  *  A sports club.
+ * 
  *  @author schema.org
  *  @class SportsClub
  *  @module org.schema
@@ -19292,6 +21646,7 @@ StadiumOrArena = stjs.extend(StadiumOrArena, SportsActivityLocation, [], null, {
  */
 var SportsClub = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19303,6 +21658,7 @@ SportsClub = stjs.extend(SportsClub, SportsActivityLocation, [], null, {branchOf
 /**
  *  Schema.org/HealthClub
  *  A health club.
+ * 
  *  @author schema.org
  *  @class HealthClub
  *  @module org.schema
@@ -19310,6 +21666,7 @@ SportsClub = stjs.extend(SportsClub, SportsActivityLocation, [], null, {branchOf
  */
 var HealthClub = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19321,6 +21678,7 @@ HealthClub = stjs.extend(HealthClub, SportsActivityLocation, [], null, {branchOf
 /**
  *  Schema.org/PublicSwimmingPool
  *  A public swimming pool.
+ * 
  *  @author schema.org
  *  @class PublicSwimmingPool
  *  @module org.schema
@@ -19328,6 +21686,7 @@ HealthClub = stjs.extend(HealthClub, SportsActivityLocation, [], null, {branchOf
  */
 var PublicSwimmingPool = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19339,6 +21698,7 @@ PublicSwimmingPool = stjs.extend(PublicSwimmingPool, SportsActivityLocation, [],
 /**
  *  Schema.org/WearAction
  *  The act of dressing oneself in clothing.
+ * 
  *  @author schema.org
  *  @class WearAction
  *  @module org.schema
@@ -19346,6 +21706,7 @@ PublicSwimmingPool = stjs.extend(PublicSwimmingPool, SportsActivityLocation, [],
  */
 var WearAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19357,6 +21718,7 @@ WearAction = stjs.extend(WearAction, UseAction, [], null, {expectsAcceptanceOf: 
 /**
  *  Schema.org/InsertAction
  *  The act of adding at a specific location in an ordered collection.
+ * 
  *  @author schema.org
  *  @class InsertAction
  *  @module org.schema
@@ -19364,6 +21726,7 @@ WearAction = stjs.extend(WearAction, UseAction, [], null, {expectsAcceptanceOf: 
  */
 var InsertAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19375,6 +21738,7 @@ InsertAction = stjs.extend(InsertAction, AddAction, [], function(constructor, pr
     /**
      *  Schema.org/toLocation
      *  A sub property of location. The final location of the object or the agent after the action.
+     * 
      *  @property toLocation
      *  @type Place
      */
@@ -19383,6 +21747,7 @@ InsertAction = stjs.extend(InsertAction, AddAction, [], function(constructor, pr
 /**
  *  Schema.org/CancelAction
  *  The act of asserting that a future event/action is no longer going to happen.\n\nRelated actions:\n\n* [[ConfirmAction]]: The antonym of CancelAction.
+ * 
  *  @author schema.org
  *  @class CancelAction
  *  @module org.schema
@@ -19390,6 +21755,7 @@ InsertAction = stjs.extend(InsertAction, AddAction, [], function(constructor, pr
  */
 var CancelAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19401,6 +21767,7 @@ CancelAction = stjs.extend(CancelAction, PlanAction, [], null, {target: "EntryPo
 /**
  *  Schema.org/ReserveAction
  *  Reserving a concrete object.\n\nRelated actions:\n\n* [[ScheduleAction]]</a>: Unlike ScheduleAction, ReserveAction reserves concrete objects (e.g. a table, a hotel) towards a time slot / spatial allocation.
+ * 
  *  @author schema.org
  *  @class ReserveAction
  *  @module org.schema
@@ -19408,6 +21775,7 @@ CancelAction = stjs.extend(CancelAction, PlanAction, [], null, {target: "EntryPo
  */
 var ReserveAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19419,6 +21787,7 @@ ReserveAction = stjs.extend(ReserveAction, PlanAction, [], null, {target: "Entry
 /**
  *  Schema.org/ScheduleAction
  *  Scheduling future actions, events, or tasks.\n\nRelated actions:\n\n* [[ReserveAction]]: Unlike ReserveAction, ScheduleAction allocates future actions (e.g. an event, a task, etc) towards a time slot / spatial allocation.
+ * 
  *  @author schema.org
  *  @class ScheduleAction
  *  @module org.schema
@@ -19426,6 +21795,7 @@ ReserveAction = stjs.extend(ReserveAction, PlanAction, [], null, {target: "Entry
  */
 var ScheduleAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19437,6 +21807,7 @@ ScheduleAction = stjs.extend(ScheduleAction, PlanAction, [], null, {target: "Ent
 /**
  *  Schema.org/RejectAction
  *  The act of rejecting to/adopting an object.\n\nRelated actions:\n\n* [[AcceptAction]]: The antonym of RejectAction.
+ * 
  *  @author schema.org
  *  @class RejectAction
  *  @module org.schema
@@ -19444,6 +21815,7 @@ ScheduleAction = stjs.extend(ScheduleAction, PlanAction, [], null, {target: "Ent
  */
 var RejectAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19455,6 +21827,7 @@ RejectAction = stjs.extend(RejectAction, AllocateAction, [], null, {target: "Ent
 /**
  *  Schema.org/AuthorizeAction
  *  The act of granting permission to an object.
+ * 
  *  @author schema.org
  *  @class AuthorizeAction
  *  @module org.schema
@@ -19462,6 +21835,7 @@ RejectAction = stjs.extend(RejectAction, AllocateAction, [], null, {target: "Ent
  */
 var AuthorizeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19473,14 +21847,16 @@ AuthorizeAction = stjs.extend(AuthorizeAction, AllocateAction, [], function(cons
     /**
      *  Schema.org/recipient
      *  A sub property of participant. The participant who is at the receiving end of the action.
+     * 
      *  @property recipient
-     *  @type schema,Organization | schema,Person | schema,Audience
+     *  @type schema, Organization | schema,Person | schema,Audience
      */
     prototype.recipient = null;
 }, {recipient: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/AcceptAction
  *  The act of committing to/adopting an object.\n\nRelated actions:\n\n* [[RejectAction]]: The antonym of AcceptAction.
+ * 
  *  @author schema.org
  *  @class AcceptAction
  *  @module org.schema
@@ -19488,6 +21864,7 @@ AuthorizeAction = stjs.extend(AuthorizeAction, AllocateAction, [], function(cons
  */
 var AcceptAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19499,6 +21876,7 @@ AcceptAction = stjs.extend(AcceptAction, AllocateAction, [], null, {target: "Ent
 /**
  *  Schema.org/AssignAction
  *  The act of allocating an action/event/task to some destination (someone or something).
+ * 
  *  @author schema.org
  *  @class AssignAction
  *  @module org.schema
@@ -19506,6 +21884,7 @@ AcceptAction = stjs.extend(AcceptAction, AllocateAction, [], null, {target: "Ent
  */
 var AssignAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19517,6 +21896,7 @@ AssignAction = stjs.extend(AssignAction, AllocateAction, [], null, {target: "Ent
 /**
  *  Schema.org/VoteAction
  *  The act of expressing a preference from a fixed/finite/structured set of choices/options.
+ * 
  *  @author schema.org
  *  @class VoteAction
  *  @module org.schema
@@ -19524,6 +21904,7 @@ AssignAction = stjs.extend(AssignAction, AllocateAction, [], null, {target: "Ent
  */
 var VoteAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19535,6 +21916,7 @@ VoteAction = stjs.extend(VoteAction, ChooseAction, [], function(constructor, pro
     /**
      *  Schema.org/candidate
      *  A sub property of object. The candidate subject of this action.
+     * 
      *  @property candidate
      *  @type Person
      */
@@ -19543,6 +21925,7 @@ VoteAction = stjs.extend(VoteAction, ChooseAction, [], function(constructor, pro
 /**
  *  Schema.org/WantAction
  *  The act of expressing a desire about the object. An agent wants an object.
+ * 
  *  @author schema.org
  *  @class WantAction
  *  @module org.schema
@@ -19550,6 +21933,7 @@ VoteAction = stjs.extend(VoteAction, ChooseAction, [], function(constructor, pro
  */
 var WantAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19561,6 +21945,7 @@ WantAction = stjs.extend(WantAction, ReactAction, [], null, {target: "EntryPoint
 /**
  *  Schema.org/AgreeAction
  *  The act of expressing a consistency of opinion with the object. An agent agrees to/about an object (a proposition, topic or theme) with participants.
+ * 
  *  @author schema.org
  *  @class AgreeAction
  *  @module org.schema
@@ -19568,6 +21953,7 @@ WantAction = stjs.extend(WantAction, ReactAction, [], null, {target: "EntryPoint
  */
 var AgreeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19579,6 +21965,7 @@ AgreeAction = stjs.extend(AgreeAction, ReactAction, [], null, {target: "EntryPoi
 /**
  *  Schema.org/LikeAction
  *  The act of expressing a positive sentiment about the object. An agent likes an object (a proposition, topic or theme) with participants.
+ * 
  *  @author schema.org
  *  @class LikeAction
  *  @module org.schema
@@ -19586,6 +21973,7 @@ AgreeAction = stjs.extend(AgreeAction, ReactAction, [], null, {target: "EntryPoi
  */
 var LikeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19597,6 +21985,7 @@ LikeAction = stjs.extend(LikeAction, ReactAction, [], null, {target: "EntryPoint
 /**
  *  Schema.org/DislikeAction
  *  The act of expressing a negative sentiment about the object. An agent dislikes an object (a proposition, topic or theme) with participants.
+ * 
  *  @author schema.org
  *  @class DislikeAction
  *  @module org.schema
@@ -19604,6 +21993,7 @@ LikeAction = stjs.extend(LikeAction, ReactAction, [], null, {target: "EntryPoint
  */
 var DislikeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19615,6 +22005,7 @@ DislikeAction = stjs.extend(DislikeAction, ReactAction, [], null, {target: "Entr
 /**
  *  Schema.org/DisagreeAction
  *  The act of expressing a difference of opinion with the object. An agent disagrees to/about an object (a proposition, topic or theme) with participants.
+ * 
  *  @author schema.org
  *  @class DisagreeAction
  *  @module org.schema
@@ -19622,6 +22013,7 @@ DislikeAction = stjs.extend(DislikeAction, ReactAction, [], null, {target: "Entr
  */
 var DisagreeAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19633,6 +22025,7 @@ DisagreeAction = stjs.extend(DisagreeAction, ReactAction, [], null, {target: "En
 /**
  *  Schema.org/EndorseAction
  *  An agent approves/certifies/likes/supports/sanction an object.
+ * 
  *  @author schema.org
  *  @class EndorseAction
  *  @module org.schema
@@ -19640,6 +22033,7 @@ DisagreeAction = stjs.extend(DisagreeAction, ReactAction, [], null, {target: "En
  */
 var EndorseAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19651,14 +22045,16 @@ EndorseAction = stjs.extend(EndorseAction, ReactAction, [], function(constructor
     /**
      *  Schema.org/endorsee
      *  A sub property of participant. The person/organization being supported.
+     * 
      *  @property endorsee
-     *  @type schema,Organization | schema,Person
+     *  @type schema, Organization | schema,Person
      */
     prototype.endorsee = null;
 }, {endorsee: "Object", target: "EntryPoint", participant: "Object", instrument: "Thing", agent: "Object", object: "Thing", actionStatus: "ActionStatusType", result: "Thing", location: "Object", error: "Thing", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Schema.org/AskAction
  *  The act of posing a question / favor to someone.\n\nRelated actions:\n\n* [[ReplyAction]]: Appears generally as a response to AskAction.
+ * 
  *  @author schema.org
  *  @class AskAction
  *  @module org.schema
@@ -19666,6 +22062,7 @@ EndorseAction = stjs.extend(EndorseAction, ReactAction, [], function(constructor
  */
 var AskAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19677,6 +22074,7 @@ AskAction = stjs.extend(AskAction, CommunicateAction, [], function(constructor, 
     /**
      *  Schema.org/question
      *  A sub property of object. A question.
+     * 
      *  @property question
      *  @type Question
      */
@@ -19685,6 +22083,7 @@ AskAction = stjs.extend(AskAction, CommunicateAction, [], function(constructor, 
 /**
  *  Schema.org/ShareAction
  *  The act of distributing content to people for their amusement or edification.
+ * 
  *  @author schema.org
  *  @class ShareAction
  *  @module org.schema
@@ -19692,6 +22091,7 @@ AskAction = stjs.extend(AskAction, CommunicateAction, [], function(constructor, 
  */
 var ShareAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19703,6 +22103,7 @@ ShareAction = stjs.extend(ShareAction, CommunicateAction, [], null, {language: "
 /**
  *  Schema.org/InformAction
  *  The act of notifying someone of information pertinent to them, with no expectation of a response.
+ * 
  *  @author schema.org
  *  @class InformAction
  *  @module org.schema
@@ -19710,6 +22111,7 @@ ShareAction = stjs.extend(ShareAction, CommunicateAction, [], null, {language: "
  */
 var InformAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19721,6 +22123,7 @@ InformAction = stjs.extend(InformAction, CommunicateAction, [], function(constru
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -19729,6 +22132,7 @@ InformAction = stjs.extend(InformAction, CommunicateAction, [], function(constru
 /**
  *  Schema.org/ReplyAction
  *  The act of responding to a question/message asked/sent by the object. Related to [[AskAction]]\n\nRelated actions:\n\n* [[AskAction]]: Appears generally as an origin of a ReplyAction.
+ * 
  *  @author schema.org
  *  @class ReplyAction
  *  @module org.schema
@@ -19736,6 +22140,7 @@ InformAction = stjs.extend(InformAction, CommunicateAction, [], function(constru
  */
 var ReplyAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19747,6 +22152,7 @@ ReplyAction = stjs.extend(ReplyAction, CommunicateAction, [], function(construct
     /**
      *  Schema.org/resultComment
      *  A sub property of result. The Comment created or sent as a result of this action.
+     * 
      *  @property resultComment
      *  @type Comment
      */
@@ -19755,6 +22161,7 @@ ReplyAction = stjs.extend(ReplyAction, CommunicateAction, [], function(construct
 /**
  *  Schema.org/CheckInAction
  *  The act of an agent communicating (service provider, social media, etc) their arrival by registering/confirming for a previously reserved service (e.g. flight check in) or at a place (e.g. hotel), possibly resulting in a result (boarding pass, etc).\n\nRelated actions:\n\n* [[CheckOutAction]]: The antonym of CheckInAction.\n* [[ArriveAction]]: Unlike ArriveAction, CheckInAction implies that the agent is informing/confirming the start of a previously reserved service.\n* [[ConfirmAction]]: Unlike ConfirmAction, CheckInAction implies that the agent is informing/confirming the *start* of a previously reserved service rather than its validity/existence.
+ * 
  *  @author schema.org
  *  @class CheckInAction
  *  @module org.schema
@@ -19762,6 +22169,7 @@ ReplyAction = stjs.extend(ReplyAction, CommunicateAction, [], function(construct
  */
 var CheckInAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19773,6 +22181,7 @@ CheckInAction = stjs.extend(CheckInAction, CommunicateAction, [], null, {languag
 /**
  *  Schema.org/CheckOutAction
  *  The act of an agent communicating (service provider, social media, etc) their departure of a previously reserved service (e.g. flight check in) or place (e.g. hotel).\n\nRelated actions:\n\n* [[CheckInAction]]: The antonym of CheckOutAction.\n* [[DepartAction]]: Unlike DepartAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.\n* [[CancelAction]]: Unlike CancelAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.
+ * 
  *  @author schema.org
  *  @class CheckOutAction
  *  @module org.schema
@@ -19780,6 +22189,7 @@ CheckInAction = stjs.extend(CheckInAction, CommunicateAction, [], null, {languag
  */
 var CheckOutAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19791,6 +22201,7 @@ CheckOutAction = stjs.extend(CheckOutAction, CommunicateAction, [], null, {langu
 /**
  *  Schema.org/InviteAction
  *  The act of asking someone to attend an event. Reciprocal of RsvpAction.
+ * 
  *  @author schema.org
  *  @class InviteAction
  *  @module org.schema
@@ -19798,6 +22209,7 @@ CheckOutAction = stjs.extend(CheckOutAction, CommunicateAction, [], null, {langu
  */
 var InviteAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19809,6 +22221,7 @@ InviteAction = stjs.extend(InviteAction, CommunicateAction, [], function(constru
     /**
      *  Schema.org/event
      *  Upcoming or past event associated with this place, organization, or action.
+     * 
      *  @property event
      *  @type Event
      */
@@ -19817,6 +22230,7 @@ InviteAction = stjs.extend(InviteAction, CommunicateAction, [], function(constru
 /**
  *  Schema.org/CommentAction
  *  The act of generating a comment about a subject.
+ * 
  *  @author schema.org
  *  @class CommentAction
  *  @module org.schema
@@ -19824,6 +22238,7 @@ InviteAction = stjs.extend(InviteAction, CommunicateAction, [], function(constru
  */
 var CommentAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19835,6 +22250,7 @@ CommentAction = stjs.extend(CommentAction, CommunicateAction, [], function(const
     /**
      *  Schema.org/resultComment
      *  A sub property of result. The Comment created or sent as a result of this action.
+     * 
      *  @property resultComment
      *  @type Comment
      */
@@ -19843,7 +22259,7 @@ CommentAction = stjs.extend(CommentAction, CommunicateAction, [], function(const
 /**
  *  Schema.org/CreditCard
  *  A card payment method of a particular brand or name.  Used to mark up a particular payment method and/or the financial product/service that supplies the card account.\n\nCommonly used values:\n\n* http://purl.org/goodrelations/v1#AmericanExpress\n* http://purl.org/goodrelations/v1#DinersClub\n* http://purl.org/goodrelations/v1#Discover\n* http://purl.org/goodrelations/v1#JCB\n* http://purl.org/goodrelations/v1#MasterCard\n* http://purl.org/goodrelations/v1#VISA
- *        
+ * 
  *  @author schema.org
  *  @class CreditCard
  *  @module org.schema
@@ -19851,6 +22267,7 @@ CommentAction = stjs.extend(CommentAction, CommunicateAction, [], function(const
  */
 var CreditCard = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19862,6 +22279,7 @@ CreditCard = stjs.extend(CreditCard, PaymentCard, [], null, {feesAndCommissionsS
 /**
  *  Schema.org/DepositAccount
  *  A type of Bank Account with a main purpose of depositing funds to gain interest or other benefits.
+ * 
  *  @author schema.org
  *  @class DepositAccount
  *  @module org.schema
@@ -19869,6 +22287,7 @@ CreditCard = stjs.extend(CreditCard, PaymentCard, [], null, {feesAndCommissionsS
  */
 var DepositAccount = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19880,6 +22299,7 @@ DepositAccount = stjs.extend(DepositAccount, InvestmentOrDeposit, [], null, {amo
 /**
  *  Schema.org/LiveBlogPosting
  *  A blog post intended to provide a rolling textual coverage of an ongoing event through continuous updates.
+ * 
  *  @author schema.org
  *  @class LiveBlogPosting
  *  @module org.schema
@@ -19887,6 +22307,7 @@ DepositAccount = stjs.extend(DepositAccount, InvestmentOrDeposit, [], null, {amo
  */
 var LiveBlogPosting = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19898,6 +22319,7 @@ LiveBlogPosting = stjs.extend(LiveBlogPosting, BlogPosting, [], function(constru
     /**
      *  Schema.org/coverageEndTime
      *  The time when the live blog will stop covering the Event. Note that coverage may continue after the Event concludes.
+     * 
      *  @property coverageEndTime
      *  @type DateTime
      */
@@ -19905,6 +22327,7 @@ LiveBlogPosting = stjs.extend(LiveBlogPosting, BlogPosting, [], function(constru
     /**
      *  Schema.org/coverageStartTime
      *  The time when the live blog will begin covering the Event. Note that coverage may begin before the Event's start time. The LiveBlogPosting may also be created before coverage begins.
+     * 
      *  @property coverageStartTime
      *  @type DateTime
      */
@@ -19912,6 +22335,7 @@ LiveBlogPosting = stjs.extend(LiveBlogPosting, BlogPosting, [], function(constru
     /**
      *  Schema.org/liveBlogUpdate
      *  An update to the LiveBlog.
+     * 
      *  @property liveBlogUpdate
      *  @type BlogPosting
      */
@@ -19920,6 +22344,7 @@ LiveBlogPosting = stjs.extend(LiveBlogPosting, BlogPosting, [], function(constru
 /**
  *  Schema.org/PrependAction
  *  The act of inserting at the beginning if an ordered collection.
+ * 
  *  @author schema.org
  *  @class PrependAction
  *  @module org.schema
@@ -19927,6 +22352,7 @@ LiveBlogPosting = stjs.extend(LiveBlogPosting, BlogPosting, [], function(constru
  */
 var PrependAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19938,6 +22364,7 @@ PrependAction = stjs.extend(PrependAction, InsertAction, [], null, {toLocation: 
 /**
  *  Schema.org/AppendAction
  *  The act of inserting at the end if an ordered collection.
+ * 
  *  @author schema.org
  *  @class AppendAction
  *  @module org.schema
@@ -19945,6 +22372,7 @@ PrependAction = stjs.extend(PrependAction, InsertAction, [], null, {toLocation: 
  */
 var AppendAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19956,6 +22384,7 @@ AppendAction = stjs.extend(AppendAction, InsertAction, [], null, {toLocation: "P
 /**
  *  Schema.org/ConfirmAction
  *  The act of notifying someone that a future event/action is going to happen as expected.\n\nRelated actions:\n\n* [[CancelAction]]: The antonym of ConfirmAction.
+ * 
  *  @author schema.org
  *  @class ConfirmAction
  *  @module org.schema
@@ -19963,6 +22392,7 @@ AppendAction = stjs.extend(AppendAction, InsertAction, [], null, {toLocation: "P
  */
 var ConfirmAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19974,6 +22404,7 @@ ConfirmAction = stjs.extend(ConfirmAction, InformAction, [], null, {event: "Even
 /**
  *  Schema.org/RsvpAction
  *  The act of notifying an event organizer as to whether you expect to attend the event.
+ * 
  *  @author schema.org
  *  @class RsvpAction
  *  @module org.schema
@@ -19981,6 +22412,7 @@ ConfirmAction = stjs.extend(ConfirmAction, InformAction, [], null, {event: "Even
  */
 var RsvpAction = /**
  *  Constructor, automatically sets @context and @type.
+ * 
  *  @constructor
  */
 function() {
@@ -19992,6 +22424,7 @@ RsvpAction = stjs.extend(RsvpAction, InformAction, [], function(constructor, pro
     /**
      *  Schema.org/additionalNumberOfGuests
      *  If responding yes, the number of guests who will attend in addition to the invitee.
+     * 
      *  @property additionalNumberOfGuests
      *  @type Number
      */
@@ -19999,6 +22432,7 @@ RsvpAction = stjs.extend(RsvpAction, InformAction, [], function(constructor, pro
     /**
      *  Schema.org/rsvpResponse
      *  The response (yes, no, maybe) to the RSVP.
+     * 
      *  @property rsvpResponse
      *  @type RsvpResponseType
      */
@@ -20006,6 +22440,7 @@ RsvpAction = stjs.extend(RsvpAction, InformAction, [], function(constructor, pro
     /**
      *  Schema.org/comment
      *  Comments, typically from users.
+     * 
      *  @property comment
      *  @type Comment
      */
