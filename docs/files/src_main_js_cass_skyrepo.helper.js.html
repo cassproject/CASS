@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LoginController - CASS Javascript Library</title>
+    <title>src/main/js/cass/skyrepo.helper.js - CASS Javascript Library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -48,9 +48,6 @@
                                 <li><a href="../classes/ActionStatusType.html">ActionStatusType</a></li>
                                 <li><a href="../classes/ActivateAction.html">ActivateAction</a></li>
                                 <li><a href="../classes/AddAction.html">AddAction</a></li>
-                                <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
-                                <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
-                                <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                                 <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                                 <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                                 <li><a href="../classes/AdvancedStandingAction.html">AdvancedStandingAction</a></li>
@@ -68,12 +65,10 @@
                                 <li><a href="../classes/Apartment.html">Apartment</a></li>
                                 <li><a href="../classes/ApartmentComplex.html">ApartmentComplex</a></li>
                                 <li><a href="../classes/APIReference.html">APIReference</a></li>
-                                <li><a href="../classes/AppController.html">AppController</a></li>
                                 <li><a href="../classes/AppendAction.html">AppendAction</a></li>
                                 <li><a href="../classes/ApplyAction.html">ApplyAction</a></li>
                                 <li><a href="../classes/ApprenticeshipCertificate.html">ApprenticeshipCertificate</a></li>
                                 <li><a href="../classes/ApproveAction.html">ApproveAction</a></li>
-                                <li><a href="../classes/AppSettings.html">AppSettings</a></li>
                                 <li><a href="../classes/Aquarium.html">Aquarium</a></li>
                                 <li><a href="../classes/ArriveAction.html">ArriveAction</a></li>
                                 <li><a href="../classes/ArtGallery.html">ArtGallery</a></li>
@@ -390,7 +385,6 @@
                                 <li><a href="../classes/IceCreamShop.html">IceCreamShop</a></li>
                                 <li><a href="../classes/IdentifierValue.html">IdentifierValue</a></li>
                                 <li><a href="../classes/IdentifierValueSet.html">IdentifierValueSet</a></li>
-                                <li><a href="../classes/IdentityController.html">IdentityController</a></li>
                                 <li><a href="../classes/IgnoreAction.html">IgnoreAction</a></li>
                                 <li><a href="../classes/ImageGallery.html">ImageGallery</a></li>
                                 <li><a href="../classes/ImageObject.html">ImageObject</a></li>
@@ -446,7 +440,6 @@
                                 <li><a href="../classes/Locksmith.html">Locksmith</a></li>
                                 <li><a href="../classes/LodgingBusiness.html">LodgingBusiness</a></li>
                                 <li><a href="../classes/LodgingReservation.html">LodgingReservation</a></li>
-                                <li><a href="../classes/LoginController.html">LoginController</a></li>
                                 <li><a href="../classes/LoseAction.html">LoseAction</a></li>
                                 <li><a href="../classes/Map.html">Map</a></li>
                                 <li><a href="../classes/MapCategoryType.html">MapCategoryType</a></li>
@@ -652,10 +645,8 @@
                                 <li><a href="../classes/SellAction.html">SellAction</a></li>
                                 <li><a href="../classes/SendAction.html">SendAction</a></li>
                                 <li><a href="../classes/Series.html">Series</a></li>
-                                <li><a href="../classes/ServerController.html">ServerController</a></li>
                                 <li><a href="../classes/Service.html">Service</a></li>
                                 <li><a href="../classes/ServiceChannel.html">ServiceChannel</a></li>
-                                <li><a href="../classes/SessionController.html">SessionController</a></li>
                                 <li><a href="../classes/ShareAction.html">ShareAction</a></li>
                                 <li><a href="../classes/ShoeStore.html">ShoeStore</a></li>
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
@@ -773,7 +764,6 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/cass.manager.html">cass.manager</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -813,527 +803,113 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>LoginController Class</h1>
-<div class="box meta">
-
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_es.cassManager.js.html#l1213"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1213</code></a>
-        </div>
-
-            Module: <a href="../modules/cass.manager.html">cass.manager</a>
-
-</div>
-
-
-<div class="box intro">
-    <p>Manages the current user's logged in state and interfaces with the server to
-sign in/out and create users</p>
-
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_create">create</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getLoggedin">getLoggedin</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getPreviouslyLoggedIn">getPreviouslyLoggedIn</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_login">login</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_logout">logout</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_save">save</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_setLoggedIn">setLoggedIn</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                    </ul>
-                </div>
-
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_create" class="method item">
-    <h3 class="name"><code>create</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>username</code>
-                </li>
-                <li class="arg">
-                        <code>password</code>
-                </li>
-                <li class="arg">
-                        <code>success</code>
-                </li>
-                <li class="arg">
-                        <code>failure</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1340"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1340</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Creates a new user and saves the account details on the login server, then signs in
-to the new account on successful creation</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">username</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>username of the new account</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">password</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>password of the new account</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">success</code>
-                        <span class="type">Callback0</span>
-
-
-                    <div class="param-description">
-                        <p>callback for successful creation and sign in</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">failure</code>
-                        <span class="type">Callback1<String></span>
-
-
-                    <div class="param-description">
-                        <p>callback for error during creation</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getLoggedin" class="method item">
-    <h3 class="name"><code>getLoggedin</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1248"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1248</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Getter for boolean flag of whether or not user is logged in</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>true if signed in, false if logged out</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getPreviouslyLoggedIn" class="method item">
-    <h3 class="name"><code>getPreviouslyLoggedIn</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1259"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1259</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>If the last time the user was using the application, they were signed in this
-returns true (used to remind them to sign in again once they return)</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>true if previously signed in, false if not signed in last time, or user is here for
-the first time from this computer</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_login" class="method item">
-    <h3 class="name"><code>login</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>username</code>
-                </li>
-                <li class="arg">
-                        <code>password</code>
-                </li>
-                <li class="arg">
-                        <code>success</code>
-                </li>
-                <li class="arg">
-                        <code>failure</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1291"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1291</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Validates a username and password on the server and then parses the user's credentials and
-checks if they have an admin key. Also tells the identity manager to check for contacts in
-local storage after signed in.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">username</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>username of the user signing in</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">password</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>password of the user signing in</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">success</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>callback on successful login</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">failure</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>callback on error during login</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_logout" class="method item">
-    <h3 class="name"><code>logout</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1326"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1326</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sets the flags so the user is logged out, wipes all sign in data so the user is no longer
-authenticated and is unidentified</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>success</code>
-                </li>
-                <li class="arg">
-                        <code>failure</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1365"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1365</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Saves the users credentials and contacts to the server</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">success</code>
-                        <span class="type">Callback0</span>
-
-
-                    <div class="param-description">
-                        <p>callback for successful save</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">failure</code>
-                        <span class="type">Callback1<String></span>
-
-
-                    <div class="param-description">
-                        <p>callback for error during save</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_setLoggedIn" class="method item">
-    <h3 class="name"><code>setLoggedIn</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>val</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_es.cassManager.js.html#l1235"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;es.cassManager.js:1235</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Setter for the boolean flag of whether or not a user is loged in</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">val</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                        <p>true if signed in, false if logged out</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-            </div>
-
-
-
-    </div>
+<h1 class="file-heading">File: src/main/js/cass/skyrepo.helper.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
+
+
+/**
+ * Helper function to flatten any string-language objects (Objects 
+ * with @value and @lang fields only) into an elasticsearch
+ * friendly type
+ *  
+ * @param jsonLd object to flatten
+ * @returns flattened jsonLd object as String
+ */
+// @first is an internal parameter to indicate which call is not a recursive call (used to return a string object at the end)
+function flattenStringFields(jsonLd, first){
+	
+	if(jsonLd == undefined){
+		jsonLd = JSON.parse(this.params.obj);
+		first = true;
+	}
+
+
+	if(Array.isArray(jsonLd)){
+		var ret = [];
+		
+		for(idx in jsonLd){
+			ret.push(flattenStringFields(jsonLd[idx], false));
+		}
+		
+		return ret;
+	}else if(jsonLd === Object(jsonLd)){
+		for(var key in jsonLd){
+			try{
+				var field = jsonLd[key];
+
+				// Check if objects in array are string-language objects
+				if(Array.isArray(field)){
+					var flattenText = true; // flag identifying if they are string-language objects
+					var textArray = [];
+					var langArray = [];
+					for(var idx in field){
+						var obj = field[idx];
+						
+						if(obj === Object(obj)){
+							if(Object.keys(obj).length == 2 &amp;&amp; obj[&quot;@value&quot;] != undefined &amp;&amp; obj[&quot;@language&quot;] != undefined){
+								textArray.push(obj[&quot;@value&quot;]);
+								langArray.push(obj[&quot;@language&quot;]);
+							}else{
+								flattenText = false
+							}
+						}else{
+							flattenText = false;
+						}
+					}
+					// if not string-language objects keep recursing
+					if(!flattenText){
+						jsonLd[key] = flattenStringFields(field, false);
+					// otherwise flatten @value to field and create &lt;key&gt;@language field
+					}else{
+						jsonLd[key] = textArray;
+						jsonLd[key+&quot;@language&quot;] = langArray;
+					}	
+				// Check if object is a string-language object
+				}else if(field === Object(field)){
+					// if string-language object flatten @value to field and create &lt;key&gt;@language field
+					if(Object.keys(field).length == 2 &amp;&amp; field[&quot;@value&quot;] != undefined &amp;&amp; field[&quot;@language&quot;] != undefined){
+						jsonLd[key] = field[&quot;@value&quot;];
+						jsonLd[key+&quot;@language&quot;] = field[&quot;@language&quot;];
+					// otherwise keep recursing
+					}else if (Object.keys(field).length &gt; 0){
+						jsonLd[key] = flattenStringFields(field, false);
+					}	
+				}
+			}catch(exception){
+				error(&quot;Exception when flattening json-ld text fields: &quot;+exception.message)
+			}
+		}
+	}
+	
+	if(first != undefined &amp;&amp; first == false){
+		return jsonLd;
+	}else{
+		return JSON.stringify(jsonLd)
+	}
+}
+
+    </pre>
 </div>
                     </div>
                 </div>

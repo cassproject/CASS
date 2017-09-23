@@ -48,9 +48,6 @@
                                 <li><a href="../classes/ActionStatusType.html">ActionStatusType</a></li>
                                 <li><a href="../classes/ActivateAction.html">ActivateAction</a></li>
                                 <li><a href="../classes/AddAction.html">AddAction</a></li>
-                                <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
-                                <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
-                                <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                                 <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                                 <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                                 <li><a href="../classes/AdvancedStandingAction.html">AdvancedStandingAction</a></li>
@@ -68,12 +65,10 @@
                                 <li><a href="../classes/Apartment.html">Apartment</a></li>
                                 <li><a href="../classes/ApartmentComplex.html">ApartmentComplex</a></li>
                                 <li><a href="../classes/APIReference.html">APIReference</a></li>
-                                <li><a href="../classes/AppController.html">AppController</a></li>
                                 <li><a href="../classes/AppendAction.html">AppendAction</a></li>
                                 <li><a href="../classes/ApplyAction.html">ApplyAction</a></li>
                                 <li><a href="../classes/ApprenticeshipCertificate.html">ApprenticeshipCertificate</a></li>
                                 <li><a href="../classes/ApproveAction.html">ApproveAction</a></li>
-                                <li><a href="../classes/AppSettings.html">AppSettings</a></li>
                                 <li><a href="../classes/Aquarium.html">Aquarium</a></li>
                                 <li><a href="../classes/ArriveAction.html">ArriveAction</a></li>
                                 <li><a href="../classes/ArtGallery.html">ArtGallery</a></li>
@@ -390,7 +385,6 @@
                                 <li><a href="../classes/IceCreamShop.html">IceCreamShop</a></li>
                                 <li><a href="../classes/IdentifierValue.html">IdentifierValue</a></li>
                                 <li><a href="../classes/IdentifierValueSet.html">IdentifierValueSet</a></li>
-                                <li><a href="../classes/IdentityController.html">IdentityController</a></li>
                                 <li><a href="../classes/IgnoreAction.html">IgnoreAction</a></li>
                                 <li><a href="../classes/ImageGallery.html">ImageGallery</a></li>
                                 <li><a href="../classes/ImageObject.html">ImageObject</a></li>
@@ -446,7 +440,6 @@
                                 <li><a href="../classes/Locksmith.html">Locksmith</a></li>
                                 <li><a href="../classes/LodgingBusiness.html">LodgingBusiness</a></li>
                                 <li><a href="../classes/LodgingReservation.html">LodgingReservation</a></li>
-                                <li><a href="../classes/LoginController.html">LoginController</a></li>
                                 <li><a href="../classes/LoseAction.html">LoseAction</a></li>
                                 <li><a href="../classes/Map.html">Map</a></li>
                                 <li><a href="../classes/MapCategoryType.html">MapCategoryType</a></li>
@@ -652,10 +645,8 @@
                                 <li><a href="../classes/SellAction.html">SellAction</a></li>
                                 <li><a href="../classes/SendAction.html">SendAction</a></li>
                                 <li><a href="../classes/Series.html">Series</a></li>
-                                <li><a href="../classes/ServerController.html">ServerController</a></li>
                                 <li><a href="../classes/Service.html">Service</a></li>
                                 <li><a href="../classes/ServiceChannel.html">ServiceChannel</a></li>
-                                <li><a href="../classes/SessionController.html">SessionController</a></li>
                                 <li><a href="../classes/ShareAction.html">ShareAction</a></li>
                                 <li><a href="../classes/ShoeStore.html">ShoeStore</a></li>
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
@@ -773,7 +764,6 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/cass.manager.html">cass.manager</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -818,7 +808,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ebac.identity.js.html#l1195"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1195</code></a>
+            Defined in: <a href="../files/src_main_js_cass_ebac.identity.js.html#l1201"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1201</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -829,18 +819,20 @@
 <div class="box intro">
     <p>Logs into and stores/retrieves credentials from a compatible remote server.
 Performs anonymization of the user.</p>
-<p>Requires initialization with server specific salts. Server specific salts
+<p>
+Requires initialization with server specific salts. Server specific salts
 prevent co-occurrence attacks, should credentials on one server be
-compromised (intercepted in transit).</p>
-<p>Transmits hashed username, hashed password, and encrypts credentials using
+compromised (intercepted in transit).
+<p>
+Transmits hashed username, hashed password, and encrypts credentials using
 the hashed combination of the username and password. This prevents the system
-storing the credentials from having any knowledge of the user.</p>
-<p>Password recovery is done by, when the password changes, creating a
+storing the credentials from having any knowledge of the user.
+<p>
+Password recovery is done by, when the password changes, creating a
 cryptographic pad (or perfect cipher) where one half is stored on the server,
 and the other half is stored with the user. Should the user lose this pad and
 forget their password, they are not able to recover or reset their password,
-and their data should be considered lost.</p>
-
+and their data should be considered lost.
 </div>
 
 
@@ -943,7 +935,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1392"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1392</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1398"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1398</code></a>
         </p>
 
 
@@ -952,8 +944,8 @@ and their data should be considered lost.</p>
 
     <div class="description">
         <p>Change password of user in memory. Does not automatically commit new credentials.</p>
-<p>Please clear username and password fields after this function is called.</p>
-
+<p>
+Please clear username and password fields after this function is called.
     </div>
 
         <div class="params">
@@ -1023,7 +1015,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1343"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1343</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1349"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1349</code></a>
         </p>
 
 
@@ -1066,7 +1058,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1475"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1475</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1481"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1481</code></a>
         </p>
 
 
@@ -1075,8 +1067,8 @@ and their data should be considered lost.</p>
 
     <div class="description">
         <p>Commits credentials in EcIdentityManager to remote server.</p>
-<p>Will trigger pad generation and fail if the pad has not been specified.</p>
-
+<p>
+Will trigger pad generation and fail if the pad has not been specified.
     </div>
 
         <div class="params">
@@ -1161,7 +1153,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1246"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1246</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1252</code></a>
         </p>
 
 
@@ -1295,7 +1287,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1279"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1279</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1285"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1285</code></a>
         </p>
 
 
@@ -1366,7 +1358,7 @@ and their data should be considered lost.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1490"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1490</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1496"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1496</code></a>
         </p>
 
 
@@ -1375,12 +1367,13 @@ and their data should be considered lost.</p>
 
     <div class="description">
         <p>Creates an account.</p>
-<p>Please note that the remote login server does not throw error messages if
+<p>
+Please note that the remote login server does not throw error messages if
 an account creation is blocked due to being a duplicate. This prevents
 login probing. This will always succeed (if the request is properly
-formed and makes it to the server).</p>
-<p>Will trigger pad generation and fail if the pad has not been specified.</p>
-
+formed and makes it to the server).
+<p>
+Will trigger pad generation and fail if the pad has not been specified.
     </div>
 
         <div class="params">
@@ -1450,7 +1443,7 @@ formed and makes it to the server).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1426"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1426</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1432"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1432</code></a>
         </p>
 
 
@@ -1460,9 +1453,10 @@ formed and makes it to the server).</p>
     <div class="description">
         <p>Fetch credentials from server, invoking events based on login success or
 failure.</p>
-<p>Automatically populates EcIdentityManager.</p>
-<p>Requires login().</p>
-
+<p>
+Automatically populates EcIdentityManager.
+<p>
+Requires login().
     </div>
 
         <div class="params">
@@ -1525,7 +1519,7 @@ failure.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1513"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1513</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1518"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1518</code></a>
         </p>
 
 
@@ -1612,7 +1606,7 @@ failure.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1356</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1362"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1362</code></a>
         </p>
 
 
@@ -1669,7 +1663,7 @@ failure.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1571"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1571</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1574</code></a>
         </p>
 
 
@@ -1736,7 +1730,7 @@ cards, not appending).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1367"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1367</code></a>
+        <a href="../files/src_main_js_cass_ebac.identity.js.html#l1373"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1373</code></a>
         </p>
 
 
@@ -1746,8 +1740,8 @@ cards, not appending).</p>
     <div class="description">
         <p>"Log Into" system, generating credentials. Does not actually remotely
 access any machine.</p>
-<p>Please clear username and password fields after this function is called.</p>
-
+<p>
+Please clear username and password fields after this function is called.
     </div>
 
         <div class="params">

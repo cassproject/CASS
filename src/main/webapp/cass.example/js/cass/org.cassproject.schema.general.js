@@ -172,6 +172,25 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += new Date().getTime();
     };
     /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository) and unique identifier.
+     * 
+     *  @param {string} server Base URL of the server's repository functionality.
+     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
+     *  @method assignId
+     */
+    prototype.assignIdAndVersion = function(server, uniqueIdentifier, version) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += "data/";
+        this.id += this.getFullType().replace("http://", "").replaceAll("/", ".");
+        this.id += "/";
+        this.id += uniqueIdentifier;
+        this.id += "/";
+        this.id += version;
+    };
+    /**
      *  Determines if the object has an owner identified by pk.
      *  Homogenizes the PEM strings for comparison.
      *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.

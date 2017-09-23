@@ -48,9 +48,6 @@
                                 <li><a href="../classes/ActionStatusType.html">ActionStatusType</a></li>
                                 <li><a href="../classes/ActivateAction.html">ActivateAction</a></li>
                                 <li><a href="../classes/AddAction.html">AddAction</a></li>
-                                <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
-                                <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
-                                <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                                 <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                                 <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                                 <li><a href="../classes/AdvancedStandingAction.html">AdvancedStandingAction</a></li>
@@ -68,12 +65,10 @@
                                 <li><a href="../classes/Apartment.html">Apartment</a></li>
                                 <li><a href="../classes/ApartmentComplex.html">ApartmentComplex</a></li>
                                 <li><a href="../classes/APIReference.html">APIReference</a></li>
-                                <li><a href="../classes/AppController.html">AppController</a></li>
                                 <li><a href="../classes/AppendAction.html">AppendAction</a></li>
                                 <li><a href="../classes/ApplyAction.html">ApplyAction</a></li>
                                 <li><a href="../classes/ApprenticeshipCertificate.html">ApprenticeshipCertificate</a></li>
                                 <li><a href="../classes/ApproveAction.html">ApproveAction</a></li>
-                                <li><a href="../classes/AppSettings.html">AppSettings</a></li>
                                 <li><a href="../classes/Aquarium.html">Aquarium</a></li>
                                 <li><a href="../classes/ArriveAction.html">ArriveAction</a></li>
                                 <li><a href="../classes/ArtGallery.html">ArtGallery</a></li>
@@ -390,7 +385,6 @@
                                 <li><a href="../classes/IceCreamShop.html">IceCreamShop</a></li>
                                 <li><a href="../classes/IdentifierValue.html">IdentifierValue</a></li>
                                 <li><a href="../classes/IdentifierValueSet.html">IdentifierValueSet</a></li>
-                                <li><a href="../classes/IdentityController.html">IdentityController</a></li>
                                 <li><a href="../classes/IgnoreAction.html">IgnoreAction</a></li>
                                 <li><a href="../classes/ImageGallery.html">ImageGallery</a></li>
                                 <li><a href="../classes/ImageObject.html">ImageObject</a></li>
@@ -446,7 +440,6 @@
                                 <li><a href="../classes/Locksmith.html">Locksmith</a></li>
                                 <li><a href="../classes/LodgingBusiness.html">LodgingBusiness</a></li>
                                 <li><a href="../classes/LodgingReservation.html">LodgingReservation</a></li>
-                                <li><a href="../classes/LoginController.html">LoginController</a></li>
                                 <li><a href="../classes/LoseAction.html">LoseAction</a></li>
                                 <li><a href="../classes/Map.html">Map</a></li>
                                 <li><a href="../classes/MapCategoryType.html">MapCategoryType</a></li>
@@ -652,10 +645,8 @@
                                 <li><a href="../classes/SellAction.html">SellAction</a></li>
                                 <li><a href="../classes/SendAction.html">SendAction</a></li>
                                 <li><a href="../classes/Series.html">Series</a></li>
-                                <li><a href="../classes/ServerController.html">ServerController</a></li>
                                 <li><a href="../classes/Service.html">Service</a></li>
                                 <li><a href="../classes/ServiceChannel.html">ServiceChannel</a></li>
-                                <li><a href="../classes/SessionController.html">SessionController</a></li>
                                 <li><a href="../classes/ShareAction.html">ShareAction</a></li>
                                 <li><a href="../classes/ShoeStore.html">ShoeStore</a></li>
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
@@ -773,7 +764,6 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/cass.manager.html">cass.manager</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -817,24 +807,34 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
- *  Object that holds the Moodle Adapter configuration values returned 
- *  from the server and provides methods for saving new config values 
- *  
+ *  Object that holds the Moodle Adapter configuration values returned
+ *  from the server and provides methods for saving new config values
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module org.cassproject
  *  @class MoodleConfig
  *  @constructor
- *  
- *  @author devlin.junker@eduworks.com
  */
 var MoodleConfig = function() {
     EcLinkedData.call(this, null, null);
@@ -844,37 +844,17 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
     prototype.moodleEndpoint = null;
     prototype.moodleToken = null;
     /**
-     *  Saves this config Objects configuration values to the server specified
-     *  
-     *  @memberOf MoodleConfig
-     *  @method save
-     *  @param {String} serverUrl
-     *  			URL of server to save configuration values to
-     *  @param {Callback1&lt;Object&gt;} success
-     *  			Callback triggered on successfully saving config values to server
-     *  @param {Callback1&lt;String&gt;} failure
-     *  			Callback triggered if an error occurs while saving the config values
-     */
-    prototype.save = function(serverUrl, success, failure) {
-        var fd = new FormData();
-        fd.append(&quot;config&quot;, JSON.stringify(this));
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
-            fd.append(&quot;signatureSheet&quot;, signatureSheet);
-            EcRemote.postExpectingObject(serverUrl, &quot;adapter/moodle/config/set&quot;, fd, success, failure);
-        });
-    };
-    /**
      *  Retrieves the Moodle adapter configuration values from the server
-     *  
+     * 
+     *  @param {String}            serverUrl
+     *                             URL of server to save configuration values to
+     *  @param {Callback1&lt;Object&gt;} success
+     *                             Callback triggered on successfully retrieving config values to server
+     *  @param {Callback1&lt;String&gt;} failure
+     *                             Callback triggered if an error occurs while getting the config values
      *  @memberOf MoodleConfig
      *  @method get
      *  @static
-     *  @param {String} serverUrl
-     *  			URL of server to save configuration values to
-     *  @param {Callback1&lt;Object&gt;} success
-     *  			Callback triggered on successfully retrieving config values to server
-     *  @param {Callback1&lt;String&gt;} failure
-     *  			Callback triggered if an error occurs while getting the config values
      */
     constructor.get = function(serverUrl, success, failure) {
         var fd = new FormData();
@@ -885,16 +865,16 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
     };
     /**
      *  Retrieves the Moodle adapter Encryption Key from the server to share frameworks with
-     *  
+     * 
+     *  @param {String}            serverUrl
+     *                             URL of server to save configuration values to
+     *  @param {Callback1&lt;String&gt;} success
+     *                             Callback triggered on successfully retrieving config values to server
+     *  @param {Callback1&lt;String&gt;} failure
+     *                             Callback triggered if an error occurs while getting the config values
      *  @memberOf MoodleConfig
      *  @method get
      *  @static
-     *  @param {String} serverUrl
-     *  			URL of server to save configuration values to
-     *  @param {Callback1&lt;String&gt;} success
-     *  			Callback triggered on successfully retrieving config values to server
-     *  @param {Callback1&lt;String&gt;} failure
-     *  			Callback triggered if an error occurs while getting the config values
      */
     constructor.getMoodleKey = function(serverUrl, success, failure) {
         var fd = new FormData();
@@ -909,16 +889,35 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
     constructor.syncMoodleToCass = function(serverUrl, success, failure) {
         EcRemote.postExpectingString(serverUrl, &quot;moodle/moodleToCass&quot;, new FormData(), success, failure);
     };
+    /**
+     *  Saves this config Objects configuration values to the server specified
+     * 
+     *  @param {String}            serverUrl
+     *                             URL of server to save configuration values to
+     *  @param {Callback1&lt;Object&gt;} success
+     *                             Callback triggered on successfully saving config values to server
+     *  @param {Callback1&lt;String&gt;} failure
+     *                             Callback triggered if an error occurs while saving the config values
+     *  @memberOf MoodleConfig
+     *  @method save
+     */
+    prototype.save = function(serverUrl, success, failure) {
+        var fd = new FormData();
+        fd.append(&quot;config&quot;, JSON.stringify(this));
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, &quot;adapter/moodle/config/set&quot;, fd, success, failure);
+        });
+    };
 }, {atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
- *  Object that holds the xAPI Adapter configuration values returned 
- *  from the server and provides methods for saving new config values 
- *  
+ *  Object that holds the xAPI Adapter configuration values returned
+ *  from the server and provides methods for saving new config values
+ * 
+ *  @author devlin.junker@eduworks.com
  *  @module org.cassproject
  *  @class XapiConfig
  *  @constructor
- *  
- *  @author devlin.junker@eduworks.com
  */
 var XapiConfig = function() {
     EcLinkedData.call(this, null, null);
@@ -929,16 +928,30 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
     prototype.xapiEndpoint = null;
     prototype.xapiHostName = null;
     /**
+     *  Retrieves the adapter configuration values from the server
+     * 
+     *  @param serverUrl URL of server to save configuration values to
+     *  @param success   Callback triggered on successfully retrieving config values to server
+     *  @param failure   Callback triggered if an error occurs while getting the config values
+     *  @memberOf XapiConfig
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(serverUrl, success, failure) {
+        var fd = new FormData();
+        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+            fd.append(&quot;signatureSheet&quot;, signatureSheet);
+            EcRemote.postExpectingObject(serverUrl, &quot;adapter/xapi/config/get&quot;, fd, success, failure);
+        });
+    };
+    /**
      *  Saves this config Objects configuration values to the server specified
-     *  
+     * 
+     *  @param serverUrl URL of server to save configuration values to
+     *  @param success   Callback triggered on successfully saving config values to server
+     *  @param failure   Callback triggered if an error occurs while saving the config values
      *  @memberOf XapiConfig
      *  @method save
-     *  @param serverUrl
-     *  			URL of server to save configuration values to
-     *  @param success
-     *  			Callback triggered on successfully saving config values to server
-     *  @param failure
-     *  			Callback triggered if an error occurs while saving the config values
      */
     prototype.save = function(serverUrl, success, failure) {
         var fd = new FormData();
@@ -946,26 +959,6 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/xapi/config/set&quot;, fd, success, failure);
-        });
-    };
-    /**
-     *  Retrieves the adapter configuration values from the server
-     *  
-     *  @memberOf XapiConfig
-     *  @method get
-     *  @static
-     *  @param serverUrl
-     *  			URL of server to save configuration values to
-     *  @param success
-     *  			Callback triggered on successfully retrieving config values to server
-     *  @param failure
-     *  			Callback triggered if an error occurs while getting the config values
-     */
-    constructor.get = function(serverUrl, success, failure) {
-        var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
-            fd.append(&quot;signatureSheet&quot;, signatureSheet);
-            EcRemote.postExpectingObject(serverUrl, &quot;adapter/xapi/config/get&quot;, fd, success, failure);
         });
     };
 }, {atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});

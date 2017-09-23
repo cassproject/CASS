@@ -882,9 +882,13 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         if (done) 
                             log("Searching for exact ID:" + url + ", found more than one@:" + repo.selectedServer);
                         done = true;
+                        delete (EcRepository.fetching)[url];
                         success(strings[i]);
                     }
                 }
+                if (done) 
+                    return;
+                EcRepository.find(url, error, history, i + 1, success, failure);
             }
         }, function(s) {
             EcRepository.find(url, error, history, i + 1, success, failure);
@@ -1164,8 +1168,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var cacheUrls = new Array();
         for (var i = 0; i < urls.length; i++) {
             var url = urls[i];
-            if (url.startsWith(this.selectedServer) && (EcRepository.cache)[url] == null) {
+            if ((EcRepository.cache)[url] != null) {} else if (url.startsWith(this.selectedServer)) {
                 cacheUrls.push(url.replace(this.selectedServer, "").replace("custom/", ""));
+            } else if (!EcRepository.shouldTryUrl(url)) {
+                var m = forge.md.md5.create();
+                m.update(url);
+                cacheUrls.push("data/" + m.digest().toHex());
             }
         }
         if (cacheUrls.length == 0) {
@@ -1185,6 +1193,18 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     d.copyFrom(results[i]);
                     results[i] = d;
                     if (EcRepository.caching) {
+                        if (!EcRepository.shouldTryUrl(d.id)) {
+                            var m = forge.md.md5.create();
+                            m.update(d.id);
+                            var md5 = m.digest().toHex();
+                            for (var j = 0; j < urls.length; j++) {
+                                var url = urls[j];
+                                if (url.indexOf(md5) != -1) {
+                                    (EcRepository.cache)[url] = d;
+                                    break;
+                                }
+                            }
+                        }
                         (EcRepository.cache)[d.shortId()] = d;
                         (EcRepository.cache)[d.id] = d;
                     }
@@ -1203,6 +1223,18 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         d.copyFrom(results[i]);
                         results[i] = d;
                         if (EcRepository.caching) {
+                            if (!EcRepository.shouldTryUrl(d.id)) {
+                                var m = forge.md.md5.create();
+                                m.update(d.id);
+                                var md5 = m.digest().toHex();
+                                for (var j = 0; j < urls.length; j++) {
+                                    var url = urls[j];
+                                    if (url.indexOf(md5) != -1) {
+                                        (EcRepository.cache)[url] = d;
+                                        break;
+                                    }
+                                }
+                            }
                             (EcRepository.cache)[d.shortId()] = d;
                             (EcRepository.cache)[d.id] = d;
                         }
