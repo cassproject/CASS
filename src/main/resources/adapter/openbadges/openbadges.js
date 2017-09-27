@@ -183,7 +183,7 @@ badgeAssertion = function () {
     var result = {
         "@context": "https://w3id.org/openbadges/v2",
         "id": repoEndpoint() + "badge/assertion/" + query.id,
-        "type": "BadgeClass",
+        "type": "Assertion",
         "recipient": subject,
         "evidence": evidences,
         "issuedOn": new Date(a.getAssertionDate()).toISOString(),
