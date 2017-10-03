@@ -23,7 +23,6 @@ badgeGetPerson = function (fingerprint) {
     }
     return person;
 }
-
 badgeCryptographicKey = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -40,7 +39,6 @@ badgeCryptographicKey = function (fingerprint) {
         publicKeyPem: person.publicKey
     });
 };
-
 badgeProfile = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -57,7 +55,7 @@ badgeProfile = function (fingerprint) {
         url: person.url,
         telephone: person.telephone,
         description: person.description,
-        image: person.image,
+        image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
         email: person.email,
         publicKey: repoEndpoint() + "badge/cryptographicKey/" + fingerprint,
         verification: {
@@ -65,7 +63,6 @@ badgeProfile = function (fingerprint) {
         }
     })
 };
-
 badgeSubject = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -111,7 +108,6 @@ badgeSubject = function (fingerprint) {
         })
     }
 };
-
 badgeClass = function (competencyId, fingerprint, assertion) {
     badgeSetup.call(this);
 
@@ -139,18 +135,23 @@ badgeClass = function (competencyId, fingerprint, assertion) {
         competencyId = repoEndpoint() + "badge/class/" + md5.digest().toHex() + "/" + fingerprint;
     }
 
+    var criteria = {type:"Criteria"};
+    if (competency.description != null)
+        criteria.narrative = competency.description;
+    else
+        criteria.narrative = competency.getName();
     return JSON.stringify({
         "@context": "https://w3id.org/openbadges/v2",
         id: competencyId,
         type: "BadgeClass",
         issuer: repoEndpoint() + "badge/profile/" + fingerprint,
         name: competency.name,
+        criteria: criteria,
         description: competency.description,
-        image: competency.image,
-        alignmentObject: [competencyAlignment]
-    })
+        image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
+        alignment: [competencyAlignment]
+    });
 };
-
 badgeAssertion = function () {
     badgeSetup.call(this);
 
@@ -179,18 +180,30 @@ badgeAssertion = function () {
 
     var evidences = [];
     for (var i = 0; i < a.getEvidenceCount(); i++)
-        evidences.push(a.getEvidence(i));
+    {
+        var evidence = a.getEvidence(i);
+        if (evidence.toLowerCase().startsWith("http"))
+                evidences.push(evidence);
+        else if (EcObject.isObject(evidence))
+                evidences.push(evidence);
+        else
+                evidences.push({type:"Evidence",narrative:evidence});
+    }
+    if (evidences.length == 1)
+        evidences = evidences[0];
     var result = {
         "@context": "https://w3id.org/openbadges/v2",
         "id": repoEndpoint() + "badge/assertion/" + query.id,
-        "type": "Assertion",
+        "type":"Assertion",
         "recipient": subject,
         "evidence": evidences,
+"narrative": "This individual was claimed to have demonstrated this competency.",
+        "image": "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
         "issuedOn": new Date(a.getAssertionDate()).toISOString(),
         "expires": new Date(a.getExpirationDate()).toISOString(),
         "badge": clazz.id,
         "verification": {
-            "type": "hosted"
+            "type": "HostedBadge"
         }
     };
     //    result = bakeImage(result);
@@ -201,3 +214,4 @@ bindWebService("/badge/profile", badgeProfile);
 bindWebService("/badge/cryptographicKey", badgeCryptographicKey);
 bindWebService("/badge/class", badgeClass);
 bindWebService("/badge/assertion", badgeAssertion);
+
