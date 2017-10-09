@@ -48,9 +48,6 @@
                                 <li><a href="../classes/ActionStatusType.html">ActionStatusType</a></li>
                                 <li><a href="../classes/ActivateAction.html">ActivateAction</a></li>
                                 <li><a href="../classes/AddAction.html">AddAction</a></li>
-                                <li><a href="../classes/AddCompetenciesToFrameworkModal.html">AddCompetenciesToFrameworkModal</a></li>
-                                <li><a href="../classes/AddFieldModal.html">AddFieldModal</a></li>
-                                <li><a href="../classes/AddOwnerModal.html">AddOwnerModal</a></li>
                                 <li><a href="../classes/AdministrativeArea.html">AdministrativeArea</a></li>
                                 <li><a href="../classes/AdultEntertainment.html">AdultEntertainment</a></li>
                                 <li><a href="../classes/AdvancedStandingAction.html">AdvancedStandingAction</a></li>
@@ -68,12 +65,10 @@
                                 <li><a href="../classes/Apartment.html">Apartment</a></li>
                                 <li><a href="../classes/ApartmentComplex.html">ApartmentComplex</a></li>
                                 <li><a href="../classes/APIReference.html">APIReference</a></li>
-                                <li><a href="../classes/AppController.html">AppController</a></li>
                                 <li><a href="../classes/AppendAction.html">AppendAction</a></li>
                                 <li><a href="../classes/ApplyAction.html">ApplyAction</a></li>
                                 <li><a href="../classes/ApprenticeshipCertificate.html">ApprenticeshipCertificate</a></li>
                                 <li><a href="../classes/ApproveAction.html">ApproveAction</a></li>
-                                <li><a href="../classes/AppSettings.html">AppSettings</a></li>
                                 <li><a href="../classes/Aquarium.html">Aquarium</a></li>
                                 <li><a href="../classes/ArriveAction.html">ArriveAction</a></li>
                                 <li><a href="../classes/ArtGallery.html">ArtGallery</a></li>
@@ -390,7 +385,6 @@
                                 <li><a href="../classes/IceCreamShop.html">IceCreamShop</a></li>
                                 <li><a href="../classes/IdentifierValue.html">IdentifierValue</a></li>
                                 <li><a href="../classes/IdentifierValueSet.html">IdentifierValueSet</a></li>
-                                <li><a href="../classes/IdentityController.html">IdentityController</a></li>
                                 <li><a href="../classes/IgnoreAction.html">IgnoreAction</a></li>
                                 <li><a href="../classes/ImageGallery.html">ImageGallery</a></li>
                                 <li><a href="../classes/ImageObject.html">ImageObject</a></li>
@@ -446,7 +440,6 @@
                                 <li><a href="../classes/Locksmith.html">Locksmith</a></li>
                                 <li><a href="../classes/LodgingBusiness.html">LodgingBusiness</a></li>
                                 <li><a href="../classes/LodgingReservation.html">LodgingReservation</a></li>
-                                <li><a href="../classes/LoginController.html">LoginController</a></li>
                                 <li><a href="../classes/LoseAction.html">LoseAction</a></li>
                                 <li><a href="../classes/Map.html">Map</a></li>
                                 <li><a href="../classes/MapCategoryType.html">MapCategoryType</a></li>
@@ -652,10 +645,8 @@
                                 <li><a href="../classes/SellAction.html">SellAction</a></li>
                                 <li><a href="../classes/SendAction.html">SendAction</a></li>
                                 <li><a href="../classes/Series.html">Series</a></li>
-                                <li><a href="../classes/ServerController.html">ServerController</a></li>
                                 <li><a href="../classes/Service.html">Service</a></li>
                                 <li><a href="../classes/ServiceChannel.html">ServiceChannel</a></li>
-                                <li><a href="../classes/SessionController.html">SessionController</a></li>
                                 <li><a href="../classes/ShareAction.html">ShareAction</a></li>
                                 <li><a href="../classes/ShoeStore.html">ShoeStore</a></li>
                                 <li><a href="../classes/ShoppingCenter.html">ShoppingCenter</a></li>
@@ -773,7 +764,6 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/cass.manager.html">cass.manager</a></li>
                                 <li><a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a></li>
                                 <li><a href="../modules/com.eduworks.ec.ui.html">com.eduworks.ec.ui</a></li>
                                 <li><a href="../modules/org.cassproject.html">org.cassproject</a></li>
@@ -817,15 +807,26 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*
- Copyright 2015-2016 Eduworks Corporation and other contributing parties.
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
 
- Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
 /**
  *  Created by fray on 5/30/17.
  */
@@ -839,22 +840,24 @@ AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(cons
 /**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
  *  (hereafter, &quot;Inquiry&quot;)
- *  @class InquiryPacket
- *  @module org.cassproject
+ * 
  *  @author fritz.ray@eduworks.com
  *  @author tom.buskirk@eduworks.com
+ *  @class InquiryPacket
+ *  @module org.cassproject
  */
 var InquiryPacket = /**
  *  Create an InquiryPacket.
- *  @constructor
- *  @param {EcPk[]} subject Public keys of the individual to retreive assertions about.
- *  @param {EcCompetency} competency Competency that the inquiry is made about.
- *  @param {EcLevel} level Level of the competency.
- *  @param {EcFramework} context Framework to provide boundaries for the inquiry within.
+ * 
+ *  @param {EcPk[]}                  subject Public keys of the individual to retreive assertions about.
+ *  @param {EcCompetency}            competency Competency that the inquiry is made about.
+ *  @param {EcLevel}                 level Level of the competency.
+ *  @param {EcFramework}             context Framework to provide boundaries for the inquiry within.
  *  @param {function(InquiryPacket)} success Method to call when a result has been reached.
- *  @param {function(string)} failure Method to call if the inquiry fails.
- *  @param {string} rule For rollup rules, this is a search used to populate this inquiry packet.
- *  @param {IPType} type The type of this inquiry packet. May be competency, rollup rule, or relation.
+ *  @param {function(string)}        failure Method to call if the inquiry fails.
+ *  @param {string}                  rule For rollup rules, this is a search used to populate this inquiry packet.
+ *  @param {IPType}                  type The type of this inquiry packet. May be competency, rollup rule, or relation.
+ *  @constructor
  */
 function(subject, competency, level, context, success, failure, rule, type) {
     this.positive = new Array();
@@ -879,10 +882,9 @@ function(subject, competency, level, context, success, failure, rule, type) {
 };
 InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, prototype) {
     prototype.root = false;
-    constructor.IPType = stjs.enumeration(&quot;COMPETENCY&quot;, &quot;ROLLUPRULE&quot;, &quot;RELATION_AND&quot;, &quot;RELATION_OR&quot;, &quot;RELATION_NARROWS&quot;, &quot;RELATION_BROADENS&quot;, &quot;RELATION_REQUIRES&quot;, &quot;RELATION_ISREQUIREDBY&quot;);
-    constructor.ResultType = stjs.enumeration(&quot;TRUE&quot;, &quot;FALSE&quot;, &quot;UNKNOWN&quot;, &quot;INDETERMINANT&quot;);
     /**
      *  One or more identifiers that identify an individual.
+     * 
      *  @property subject
      *  @type EcPk[]
      */
@@ -890,55 +892,64 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     /**
      *  Competency that this packet is inquiring about.
      *  May be multiple competencies that are either collapsed due to an inference loop, or are equivalent to one another.
+     * 
      *  @property competency
      *  @type EcCompetency[]
      */
     prototype.competency = null;
     /**
      *  Framework that this inquiry is scoped to.
+     * 
      *  @property context
      *  @type EcFramework
      */
     prototype.context = null;
     /**
      *  Callback when this and all child inquiries have successfully reached a conclusion.
+     * 
      *  @property success
      *  @type function(InquiryPacket)
      */
     prototype.success = null;
     /**
      *  Callback if this inquiry requires additional information to proceed.
+     * 
      *  @property ask
-     *  @type string function(string) 
+     *  @type string function(string)
      */
     prototype.ask = null;
     /**
      *  Callback if this inquiry fails.
+     * 
      *  @property failure
      *  @type function(string)
      */
     prototype.failure = null;
     /**
-     *  Level that the competency is being measured at. 
+     *  Level that the competency is being measured at.
      *  May have multiple levels referring to multiple competencies due to cycles or equivalence.
+     * 
      *  @property level
      *  @type EcLevel[]
      */
     prototype.level = null;
     /**
      *  Packets that are equivalent to this packet. May be used when equivalence is best represented with additional packets.
+     * 
      *  @property equivalentPackets
      *  @type InquiryPacket[]
      */
     prototype.equivalentPackets = null;
     /**
      *  Packets that assist in determining the state of this packet.
+     * 
      *  @property subPackets
      *  @type InquiryPacket[]
      */
     prototype.subPackets = null;
     /**
      *  Datetime representing when this packet was created.
+     * 
      *  @property dateCreated
      *  @internal
      *  @type number
@@ -946,72 +957,84 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     prototype.dateCreated = 0.0;
     /**
      *  Mark true when assertions have been retrieved for this packet.
+     * 
      *  @property hasCheckedAssertionsForCompetency
      *  @type boolean
      */
     prototype.hasCheckedAssertionsForCompetency = false;
     /**
      *  Mark true when rollup rules have been processed for this packet.
+     * 
      *  @property hasCheckedRollupRulesForCompetency
      *  @type boolean
      */
     prototype.hasCheckedRollupRulesForCompetency = false;
     /**
      *  Mark true when relations have been processed for this packet.
+     * 
      *  @property hasCheckedRelationshipsForCompetency
      *  @type boolean
      */
     prototype.hasCheckedRelationshipsForCompetency = false;
     /**
      *  Async counter to keep track of number of unresolved processes.
+     * 
      *  @property numberOfQueriesRunning
      *  @type integer
      */
     prototype.numberOfQueriesRunning = 0;
     /**
      *  Local log for this inquiry packet.
+     * 
      *  @property log
      *  @type string
      */
     prototype.log = null;
     /**
      *  Assertions (direct or indirect) that contribute to a positive result.
+     * 
      *  @property positive
      *  @type EcAssertion[]
      */
     prototype.positive = null;
     /**
      *  Assertions (direct or indirect) that contribute to a negative result.
+     * 
      *  @property negative
      *  @type EcAssertion[]
      */
     prototype.negative = null;
     /**
      *  Set to true if this packet has completed processing.
+     * 
      *  @property finished
      *  @type boolean
      */
     prototype.finished = false;
     /**
      *  Set to true if this packet has finished stage one.
+     * 
      *  @property stageOneFinished
      *  @type boolean
      */
     prototype.stageOneComplete = false;
     /**
      *  Type of inquiry packet. Inquiry packets can represent relational logic, rollup logic or competencies.
+     * 
      *  @property type
      *  @type IPType
      */
     prototype.type = null;
     /**
      *  Rollup Rule search string. (if IPType == ROLLUPRULE)
+     * 
      *  @property rule
-     *  @type string 
+     *  @type string
      */
     prototype.rule = null;
     /**
      *  Result as a ResultType.
+     * 
      *  @property result
      *  @type ResultType
      */
@@ -1021,8 +1044,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if any child packets have an indeterminate result.
-     *  @method anyIndeterminantChildPackets
+     * 
      *  @return {boolean}
+     *  @method anyIndeterminantChildPackets
      */
     prototype.anyIndeterminantChildPackets = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1037,8 +1061,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all child packets have unknown results.
-     *  @method allChildPacketsUnknown
+     * 
      *  @return {boolean}
+     *  @method allChildPacketsUnknown
      */
     prototype.allChildPacketsUnknown = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1053,8 +1078,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all child packets have unknown results.
-     *  @method allChildPacketsUnknown
+     * 
      *  @return {boolean}
+     *  @method allChildPacketsUnknown
      */
     prototype.allChildPacketsAreTrue = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1069,8 +1095,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if any child packets have false results.
+     * 
+     *  @return {boolean}
      *  @method anyChildPacketsAreFalse
-     *  @return {boolean} 
      */
     prototype.anyChildPacketsAreFalse = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1085,8 +1112,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if any child packets have unknown results.
-     *  @method anyChildPacketsAreUnknown
+     * 
      *  @return {boolean}
+     *  @method anyChildPacketsAreUnknown
      */
     prototype.anyChildPacketsAreUnknown = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1101,8 +1129,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if any child packets have true results.
-     *  @method anyChildPacketsAreTrue
+     * 
      *  @return {boolean}
+     *  @method anyChildPacketsAreTrue
      */
     prototype.anyChildPacketsAreTrue = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1117,8 +1146,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all equivalent packets have unknown results.
-     *  @method allEquivalentPacketsUnknown
+     * 
      *  @return {boolean}
+     *  @method allEquivalentPacketsUnknown
      */
     prototype.allEquivalentPacketsUnknown = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1129,8 +1159,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all equivalent packets have the true or unknown result.
-     *  @method allEquivalentPacketsTrueOrUnknown
+     * 
      *  @return {boolean}
+     *  @method allEquivalentPacketsTrueOrUnknown
      */
     prototype.allEquivalentPacketsTrueOrUnknown = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1141,8 +1172,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all sub packets have the true or unknown result.
-     *  @method allSubPacketsTrueOrUnknown
+     * 
      *  @return {boolean}
+     *  @method allSubPacketsTrueOrUnknown
      */
     prototype.allSubPacketsTrueOrUnknown = function() {
         for (var i = 0; i &lt; this.subPackets.length; i++) {
@@ -1153,8 +1185,9 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all equivalent packets have the false or unknown result.
-     *  @method allEquivalentPacketsFalseOrUnknown	
+     * 
      *  @return {boolean}
+     *  @method allEquivalentPacketsFalseOrUnknown
      */
     prototype.allEquivalentPacketsFalseOrUnknown = function() {
         for (var i = 0; i &lt; this.equivalentPackets.length; i++) {
@@ -1165,6 +1198,7 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if all sub packets have the false or unknown result.
+     * 
      *  @return
      */
     prototype.allSubPacketsFalseOrUnknown = function() {
@@ -1176,6 +1210,7 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     };
     /**
      *  Returns true if the provided ID represents a competency in this packet.
+     * 
      *  @param competencyId
      *  @return
      */
@@ -1185,15 +1220,301 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
                 return true;
         return false;
     };
+    constructor.IPType = stjs.enumeration(&quot;COMPETENCY&quot;, &quot;ROLLUPRULE&quot;, &quot;RELATION_AND&quot;, &quot;RELATION_OR&quot;, &quot;RELATION_NARROWS&quot;, &quot;RELATION_BROADENS&quot;, &quot;RELATION_REQUIRES&quot;, &quot;RELATION_ISREQUIREDBY&quot;);
+    constructor.ResultType = stjs.enumeration(&quot;TRUE&quot;, &quot;FALSE&quot;, &quot;UNKNOWN&quot;, &quot;INDETERMINANT&quot;);
 }, {subject: {name: &quot;Array&quot;, arguments: [&quot;EcPk&quot;]}, competency: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, context: &quot;EcFramework&quot;, success: {name: &quot;Callback1&quot;, arguments: [&quot;InquiryPacket&quot;]}, ask: {name: &quot;Function1&quot;, arguments: [null, null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [&quot;EcLevel&quot;]}, equivalentPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, subPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, type: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.IPType&quot;]}, result: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.ResultType&quot;]}}, {});
-var RrToken = function() {};
-RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
-    prototype.number = null;
-    prototype.bool = null;
+var NodePacket = function() {
+    this.nodeList = new Array();
+    this.nodeMap = {};
+};
+NodePacket = stjs.extend(NodePacket, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.nodeMap = null;
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getNodeCount = function() {
+        return this.nodeList.length;
+    };
+    prototype.addNode = function(n) {
+        if (this.nodeMap[n.getId()] == null) {
+            this.nodeList.push(n);
+            this.nodeMap[n.getId()] = n;
+        }
+    };
+    prototype.toString = function() {
+        var ret = &quot;&quot;;
+        ret = ret + &quot;NodePacket: (&quot;;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            if ((i + 1) &lt; this.nodeList.length) 
+                ret = ret + this.nodeList[i].toString() + &quot;, &quot;;
+             else 
+                ret = ret + this.nodeList[i].toString();
+        }
+        ret = ret + &quot;)&quot;;
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}}, {});
+var Node = function(nameId) {
+    this.name = nameId;
+    this.id = nameId;
+};
+Node = stjs.extend(Node, null, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.id = null;
+    prototype.getName = function() {
+        return this.name;
+    };
+    prototype.setName = function(name) {
+        this.name = name;
+    };
+    prototype.getId = function() {
+        return this.id;
+    };
+    prototype.setId = function(id) {
+        this.id = id;
+    };
+    prototype.toString = function() {
+        return &quot;Node: \&quot;&quot; + this.id + &quot;\&quot;&quot;;
+    };
+}, {}, {});
+var PapDependencyParms = function() {};
+PapDependencyParms = stjs.extend(PapDependencyParms, null, [], function(constructor, prototype) {
+    prototype.parentIndex = null;
+    prototype.childIndex = null;
+    prototype.type = null;
+    prototype.weight = null;
+    prototype.leak = null;
+    prototype.dependencyFirst = false;
+    prototype.reverse = false;
+    prototype.getParentIndex = function() {
+        return this.parentIndex;
+    };
+    prototype.setParentIndex = function(parentIndex) {
+        this.parentIndex = parentIndex;
+    };
+    prototype.getChildIndex = function() {
+        return this.childIndex;
+    };
+    prototype.setChildIndex = function(childIndex) {
+        this.childIndex = childIndex;
+    };
+    prototype.getType = function() {
+        return this.type;
+    };
+    prototype.setType = function(type) {
+        this.type = type;
+    };
+    prototype.getWeight = function() {
+        return this.weight;
+    };
+    prototype.setWeight = function(weight) {
+        this.weight = weight;
+    };
+    prototype.getLeak = function() {
+        return this.leak;
+    };
+    prototype.setLeak = function(leak) {
+        this.leak = leak;
+    };
+    prototype.getDependencyFirst = function() {
+        return this.dependencyFirst;
+    };
+    prototype.setDependencyFirst = function(dependencyFirst) {
+        this.dependencyFirst = dependencyFirst;
+    };
+    prototype.getReverse = function() {
+        return this.reverse;
+    };
+    prototype.setReverse = function(reverse) {
+        this.reverse = reverse;
+    };
+    prototype.swapParentChildIndexes = function() {
+        var temp = this.parentIndex;
+        this.parentIndex = this.childIndex;
+        this.childIndex = temp;
+    };
+}, {}, {});
+var PapUpdate = function(index, change, positive) {
+    this.index = index;
+    this.change = change;
+    this.visited = new Array();
+    this.positive = positive;
+};
+PapUpdate = stjs.extend(PapUpdate, null, [], function(constructor, prototype) {
+    prototype.index = 0;
+    prototype.visited = null;
+    prototype.change = 0.0;
+    prototype.positive = false;
+    prototype.hasVisited = function(index) {
+        for (var i = 0; i &lt; this.visited.length; i++) {
+            if (this.visited[i].intValue() == index) 
+                return true;
+        }
+        return false;
+    };
+    prototype.updateChild = function(index, change) {
+        var res = new PapUpdate(index, change, this.positive);
+        res.setVisited(this.cloneVisited());
+        res.getVisited().push(index);
+        return res;
+    };
+    prototype.toString = function() {
+        var sign = this.positive ? &quot;+&quot; : &quot;-&quot;;
+        return &quot;&lt;update &quot; + this.index + &quot; | &quot; + sign + this.change + &quot;&gt;&quot;;
+    };
+    prototype.compare = function(other) {
+        var diff = this.change - other.getChange();
+        if (diff &lt; 0) 
+            return 1;
+        if (diff &gt; 0) 
+            return -1;
+        return 0;
+    };
+    prototype.cloneVisited = function() {
+        var newVis = new Array();
+        for (var i = 0; i &lt; this.visited.length; i++) {
+            newVis.push(this.visited[i]);
+        }
+        return newVis;
+    };
+    prototype.getIndex = function() {
+        return this.index;
+    };
+    prototype.setIndex = function(index) {
+        this.index = index;
+    };
+    prototype.getVisited = function() {
+        return this.visited;
+    };
+    prototype.setVisited = function(visited) {
+        this.visited = visited;
+    };
+    prototype.getChange = function() {
+        return this.change;
+    };
+    prototype.setChange = function(change) {
+        this.change = change;
+    };
+    prototype.getPositive = function() {
+        return this.positive;
+    };
+    prototype.setPositive = function(positive) {
+        this.positive = positive;
+    };
+}, {visited: {name: &quot;Array&quot;, arguments: [null]}}, {});
+var RelationType = function() {};
+RelationType = stjs.extend(RelationType, null, [], function(constructor, prototype) {
+    constructor.RELATION_TYPE = stjs.enumeration(&quot;IS_EQUIVALENT_TO&quot;, &quot;NARROWS&quot;, &quot;BROADENS&quot;, &quot;REQUIRES&quot;, &quot;IS_REQUIRED_BY&quot;);
+}, {}, {});
+var SimpleAssertion = function(id, competencyId, confidence) {
+    this.id = id;
+    this.competencyId = competencyId;
+    this.confidence = confidence;
+};
+SimpleAssertion = stjs.extend(SimpleAssertion, null, [], function(constructor, prototype) {
+    prototype.id = null;
+    prototype.subjectPem = null;
+    prototype.competencyId = null;
+    prototype.confidence = null;
+    prototype.assertionDate = null;
+    prototype.expirationDate = null;
+    prototype.negative = null;
+    prototype.getId = function() {
+        return this.id;
+    };
+    prototype.setId = function(id) {
+        this.id = id;
+    };
+    prototype.getSubjectPem = function() {
+        return this.subjectPem;
+    };
+    prototype.setSubjectPem = function(subjectPem) {
+        this.subjectPem = subjectPem;
+    };
+    prototype.getCompetencyId = function() {
+        return this.competencyId;
+    };
+    prototype.setCompetencyId = function(competencyId) {
+        this.competencyId = competencyId;
+    };
+    prototype.getConfidence = function() {
+        return this.confidence;
+    };
+    prototype.setConfidence = function(confidence) {
+        this.confidence = confidence;
+    };
+    prototype.getAssertionDate = function() {
+        return this.assertionDate;
+    };
+    prototype.setAssertionDate = function(assertionDate) {
+        this.assertionDate = assertionDate;
+    };
+    prototype.getExpirationDate = function() {
+        return this.expirationDate;
+    };
+    prototype.setExpirationDate = function(expirationDate) {
+        this.expirationDate = expirationDate;
+    };
+    prototype.isNegative = function() {
+        return this.negative;
+    };
+    prototype.setNegative = function(negative) {
+        this.negative = negative;
+    };
+}, {}, {});
+var ExceptionReturn = function(errorMessage) {
+    this.errorMessage = errorMessage;
+};
+ExceptionReturn = stjs.extend(ExceptionReturn, null, [], function(constructor, prototype) {
+    prototype.errorMessage = null;
+    prototype.getErrorMessage = function() {
+        return this.errorMessage;
+    };
+    prototype.setErrorMessage = function(errorMessage) {
+        this.errorMessage = errorMessage;
+    };
+    prototype.getJsonString = function() {
+        return JSON.stringify(this);
+    };
 }, {}, {});
 var RrQuery = function() {};
 RrQuery = stjs.extend(RrQuery, null, [], function(constructor, prototype) {
     prototype.query = null;
+}, {}, {});
+var PapCompetencyPrediction = function() {};
+PapCompetencyPrediction = stjs.extend(PapCompetencyPrediction, null, [], function(constructor, prototype) {
+    prototype.competencyId = null;
+    prototype.confidence = 0.0;
+    prototype.conflictLevel = 0.0;
+    prototype.conflictClass = null;
+    prototype.getCompetencyId = function() {
+        return this.competencyId;
+    };
+    prototype.setCompetencyId = function(competencyId) {
+        this.competencyId = competencyId;
+    };
+    prototype.getConfidence = function() {
+        return this.confidence;
+    };
+    prototype.setConfidence = function(confidence) {
+        this.confidence = confidence;
+    };
+    prototype.getConflictLevel = function() {
+        return this.conflictLevel;
+    };
+    prototype.setConflictLevel = function(conflictLevel) {
+        this.conflictLevel = conflictLevel;
+    };
+    prototype.getConflictClass = function() {
+        return this.conflictClass;
+    };
+    prototype.setConflictClass = function(conflictClass) {
+        this.conflictClass = conflictClass;
+    };
 }, {}, {});
 var RrS = function() {
     this.token = new Array();
@@ -1209,6 +1530,437 @@ RrS = stjs.extend(RrS, null, [], function(constructor, prototype) {
         this.query.push(rrQuery);
     };
 }, {token: {name: &quot;Array&quot;, arguments: [&quot;RrToken&quot;]}, query: {name: &quot;Array&quot;, arguments: [&quot;RrQuery&quot;]}}, {});
+var RrToken = function() {};
+RrToken = stjs.extend(RrToken, null, [], function(constructor, prototype) {
+    prototype.number = null;
+    prototype.bool = null;
+}, {}, {});
+var NodeRelationMap = function() {
+    this.nodeList = new Array();
+    this.relationMap = {};
+};
+NodeRelationMap = stjs.extend(NodeRelationMap, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.relationMap = null;
+    prototype.addNodeRelations = function(n, rm) {
+        this.nodeList.push(n);
+        this.relationMap[n.getId()] = rm;
+    };
+    prototype.getRelationsForNode = function(n) {
+        return this.relationMap[n.getId()];
+    };
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getRelationMap = function() {
+        return this.relationMap;
+    };
+    prototype.setRelationMap = function(relationMap) {
+        this.relationMap = relationMap;
+    };
+    prototype.toString = function() {
+        var ret = &quot;&quot;;
+        var n;
+        var nra;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + n.toString() + &quot;\n&quot;;
+            nra = this.relationMap[n.getId()];
+            for (var j = 0; j &lt; nra.length; j++) {
+                ret = ret + &quot;\t&quot; + nra[j].toString() + &quot;\n&quot;;
+            }
+        }
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
+var NodeRelation = function(source, target, type) {
+    this.source = source;
+    this.target = target;
+    this.type = type;
+};
+NodeRelation = stjs.extend(NodeRelation, null, [], function(constructor, prototype) {
+    prototype.type = null;
+    prototype.source = null;
+    prototype.target = null;
+    prototype.getSource = function() {
+        return this.source;
+    };
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getType = function() {
+        return this.type;
+    };
+    prototype.setType = function(type) {
+        this.type = type;
+    };
+    prototype.toString = function() {
+        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
+    };
+}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;Node&quot;, target: &quot;Node&quot;}, {});
+var CgEdge = function(source, target, relation) {
+    this.source = source;
+    this.target = target;
+    this.relation = relation;
+};
+CgEdge = stjs.extend(CgEdge, null, [], function(constructor, prototype) {
+    prototype.source = null;
+    prototype.target = null;
+    prototype.relation = null;
+    prototype.getSource = function() {
+        return this.source;
+    };
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getRelation = function() {
+        return this.relation;
+    };
+    prototype.setRelation = function(relation) {
+        this.relation = relation;
+    };
+}, {}, {});
+var PapDependencyDefinitionBase = function(depClass, reverse, weight, leak) {
+    this.depClass = depClass;
+    this.reverse = reverse;
+    this.weight = weight;
+    this.leak = leak;
+};
+PapDependencyDefinitionBase = stjs.extend(PapDependencyDefinitionBase, null, [], function(constructor, prototype) {
+    prototype.depClass = null;
+    prototype.reverse = false;
+    prototype.weight = null;
+    prototype.leak = null;
+    prototype.getDepClass = function() {
+        return this.depClass;
+    };
+    prototype.setDepClass = function(depClass) {
+        this.depClass = depClass;
+    };
+    prototype.getReverse = function() {
+        return this.reverse;
+    };
+    prototype.setReverse = function(reverse) {
+        this.reverse = reverse;
+    };
+    prototype.getWeight = function() {
+        return this.weight;
+    };
+    prototype.setWeight = function(weight) {
+        this.weight = weight;
+    };
+    prototype.getLeak = function() {
+        return this.leak;
+    };
+    prototype.setLeak = function(leak) {
+        this.leak = leak;
+    };
+}, {}, {});
+var ArrayUtil = function() {};
+ArrayUtil = stjs.extend(ArrayUtil, null, [], function(constructor, prototype) {
+    constructor.arrayContains = function(a, o) {
+        for (var i = 0; i &lt; a.length; i++) {
+            if (a[i] == o) 
+                return true;
+        }
+        return false;
+    };
+    constructor.arrayRemove = function(a, o) {
+        var retArray = new Array();
+        for (var i = 0; i &lt; a.length; i++) {
+            if (a[i] != o) 
+                retArray.push(a[i]);
+        }
+        return retArray;
+    };
+    constructor.arrayLastIndexOf = function(a, o) {
+        for (var i = (a.length - 1); i &gt;= 0; i--) {
+            if (a[i] == o) 
+                return i;
+        }
+        return -1;
+    };
+    constructor.arrayToString = function(a) {
+        if (a == null || a.length == 0) 
+            return &quot;&lt;Emtpy&gt;&quot;;
+        var ret = &quot;&quot;;
+        for (var i = 0; i &lt; a.length; i++) {
+            if ((i + 1) &lt; a.length) 
+                ret = ret + a[i].toString() + &quot;, &quot;;
+             else 
+                ret = ret + a[i].toString();
+        }
+        return ret;
+    };
+}, {}, {});
+var PacketRelation = function(source, target, type) {
+    this.source = source;
+    this.target = target;
+    this.type = type;
+};
+PacketRelation = stjs.extend(PacketRelation, null, [], function(constructor, prototype) {
+    prototype.type = null;
+    prototype.source = null;
+    prototype.target = null;
+    prototype.getSource = function() {
+        return this.source;
+    };
+    prototype.setSource = function(source) {
+        this.source = source;
+    };
+    prototype.getTarget = function() {
+        return this.target;
+    };
+    prototype.setTarget = function(target) {
+        this.target = target;
+    };
+    prototype.getType = function() {
+        return this.type;
+    };
+    prototype.setType = function(type) {
+        this.type = type;
+    };
+    prototype.toString = function() {
+        return this.getSource().toString() + &quot; &gt;&gt;&quot; + this.getType() + &quot;&lt;&lt; &quot; + this.getTarget().toString();
+    };
+}, {type: {name: &quot;Enum&quot;, arguments: [&quot;RelationType.RELATION_TYPE&quot;]}, source: &quot;NodePacket&quot;, target: &quot;NodePacket&quot;}, {});
+var PapSettings = function() {
+    this.iterations = PapSettings.DEFAULT_ITERATIONS;
+    this.abruptExpiration = PapSettings.DEFAULT_ABRUPT_EXP;
+    this.gradualForgetting = PapSettings.DEFAULT_GRAD_FORGETTING;
+    this.evidenceWeight = PapSettings.DEFAULT_EVIDENCE_WEIGHT;
+    this.discount = PapSettings.DEFAULT_DISCOUNT;
+    this.priorityQueueThreshold = PapSettings.DEFAULT_PRIORITY_QUEUE_THRESHOLD;
+    this.betaPrecision = PapSettings.DEFAULT_BETA_PRECISION;
+    this.betaMean = PapSettings.DEFAULT_BETA_MEAN;
+};
+PapSettings = stjs.extend(PapSettings, null, [], function(constructor, prototype) {
+    constructor.DEFAULT_ITERATIONS = 200;
+    constructor.DEFAULT_ABRUPT_EXP = false;
+    constructor.DEFAULT_GRAD_FORGETTING = true;
+    constructor.DEFAULT_EVIDENCE_WEIGHT = 1.0;
+    constructor.DEFAULT_DISCOUNT = 1.0;
+    constructor.DEFAULT_PRIORITY_QUEUE_THRESHOLD = 0.01;
+    constructor.DEFAULT_BETA_PRECISION = 0.1;
+    constructor.DEFAULT_BETA_MEAN = 0.2;
+    prototype.iterations = null;
+    prototype.abruptExpiration = false;
+    prototype.gradualForgetting = false;
+    prototype.evidenceWeight = null;
+    prototype.discount = null;
+    prototype.priorityQueueThreshold = null;
+    prototype.betaPrecision = null;
+    prototype.betaMean = null;
+    prototype.getIterations = function() {
+        return this.iterations;
+    };
+    prototype.setIterations = function(iterations) {
+        this.iterations = iterations;
+    };
+    prototype.getAbruptExpiration = function() {
+        return this.abruptExpiration;
+    };
+    prototype.setAbruptExpiration = function(abruptExpiration) {
+        this.abruptExpiration = abruptExpiration;
+    };
+    prototype.getGradualForgetting = function() {
+        return this.gradualForgetting;
+    };
+    prototype.setGradualForgetting = function(gradualForgetting) {
+        this.gradualForgetting = gradualForgetting;
+    };
+    prototype.getEvidenceWeight = function() {
+        return this.evidenceWeight;
+    };
+    prototype.setEvidenceWeight = function(evidenceWeight) {
+        this.evidenceWeight = evidenceWeight;
+    };
+    prototype.getDiscount = function() {
+        return this.discount;
+    };
+    prototype.setDiscount = function(discount) {
+        this.discount = discount;
+    };
+    prototype.getPriorityQueueThreshold = function() {
+        return this.priorityQueueThreshold;
+    };
+    prototype.setPriorityQueueThreshold = function(priorityQueueThreshold) {
+        this.priorityQueueThreshold = priorityQueueThreshold;
+    };
+    prototype.getBetaPrecision = function() {
+        return this.betaPrecision;
+    };
+    prototype.setBetaPrecision = function(betaPrecision) {
+        this.betaPrecision = betaPrecision;
+    };
+    prototype.getBetaMean = function() {
+        return this.betaMean;
+    };
+    prototype.setBetaMean = function(betaMean) {
+        this.betaMean = betaMean;
+    };
+}, {}, {});
+var PapCompetencyNetwork = function(dependencies, numberNodes, settings) {
+    this.numberNodes = numberNodes;
+    this.dependencies = dependencies;
+    this.activations = new Array();
+    this.alphas = new Array();
+    this.betas = new Array();
+    this.updated = new Array();
+    for (var i = 0; i &lt; numberNodes; i++) {
+        var beta_prior = settings.getBetaPrecision();
+        var beta_mean = settings.getBetaMean();
+        this.alphas.push(beta_mean * beta_prior);
+        this.betas.push((1.0 - beta_mean) * beta_prior);
+        this.activations.push(beta_mean);
+        this.updated.push(false);
+    }
+};
+PapCompetencyNetwork = stjs.extend(PapCompetencyNetwork, null, [], function(constructor, prototype) {
+    constructor.LOW_CONFLICT_CLASS = &quot;low&quot;;
+    constructor.MEDIUM_CONFLICT_CLASS = &quot;medium&quot;;
+    constructor.HIGH_CONFLICT_CLASS = &quot;high&quot;;
+    constructor.EMPTY_PREDICTION = 0.0;
+    constructor.EMPTY_CONFLICT_LEVEL = 0.0;
+    constructor.MEDIUM_CONFLICT_CLASS_QUALIFIER = 1.05;
+    constructor.HIGH_CONFLICT_CLASS_QUALIFIER = 1.5;
+    prototype.dependencies = null;
+    prototype.activations = null;
+    prototype.alphas = null;
+    prototype.betas = null;
+    prototype.updated = null;
+    prototype.numberNodes = 0;
+    prototype.update = function(nodeIndex, change, positive) {
+        var a = this.alphas[nodeIndex];
+        var b = this.betas[nodeIndex];
+        if (positive) 
+            this.alphas[nodeIndex] = a + change;
+         else 
+            this.betas[nodeIndex] = b + change;
+        this.activations[nodeIndex] = (a + (positive ? change : 0)) / (a + b + change);
+        this.updated[nodeIndex] = true;
+    };
+    prototype.getPrediction = function(index) {
+        if (this.updated[index]) {
+            return this.activations[index];
+        } else 
+            return PapCompetencyNetwork.EMPTY_PREDICTION;
+    };
+    prototype.getConflictLevel = function(index) {
+        if (this.updated[index]) {
+            var a = this.alphas[index];
+            var b = this.betas[index];
+            var act = this.activations[index];
+            var stdev = Math.sqrt((a * b) / (a + b + 1)) / (a + b);
+            return Math.min(act, 1.0 - act) / stdev;
+        } else 
+            return PapCompetencyNetwork.EMPTY_CONFLICT_LEVEL;
+    };
+    prototype.getConflictClass = function(index) {
+        var level = this.getConflictLevel(index);
+        var res = PapCompetencyNetwork.LOW_CONFLICT_CLASS;
+        if (level &gt;= PapCompetencyNetwork.MEDIUM_CONFLICT_CLASS_QUALIFIER) 
+            res = PapCompetencyNetwork.MEDIUM_CONFLICT_CLASS;
+        if (level &gt;= PapCompetencyNetwork.HIGH_CONFLICT_CLASS_QUALIFIER) 
+            res = PapCompetencyNetwork.HIGH_CONFLICT_CLASS;
+        return res;
+    };
+    prototype.getDependencies = function() {
+        return this.dependencies;
+    };
+    prototype.setDependencies = function(dependencies) {
+        this.dependencies = dependencies;
+    };
+    prototype.getActivations = function() {
+        return this.activations;
+    };
+    prototype.setActivations = function(activations) {
+        this.activations = activations;
+    };
+    prototype.getAlphas = function() {
+        return this.alphas;
+    };
+    prototype.setAlphas = function(alphas) {
+        this.alphas = alphas;
+    };
+    prototype.getBetas = function() {
+        return this.betas;
+    };
+    prototype.setBetas = function(betas) {
+        this.betas = betas;
+    };
+    prototype.getUpdated = function() {
+        return this.updated;
+    };
+    prototype.setUpdated = function(updated) {
+        this.updated = updated;
+    };
+    prototype.getNumberNodes = function() {
+        return this.numberNodes;
+    };
+    prototype.setNumberNodes = function(numberNodes) {
+        this.numberNodes = numberNodes;
+    };
+}, {dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, activations: {name: &quot;Array&quot;, arguments: [null]}, alphas: {name: &quot;Array&quot;, arguments: [null]}, betas: {name: &quot;Array&quot;, arguments: [null]}, updated: {name: &quot;Array&quot;, arguments: [null]}}, {});
+var PapAssertion = function(confidence, competencyIndex, assertionDate, expirationDate, result) {
+    this.confidence = confidence;
+    this.assertionDate = assertionDate;
+    this.expirationDate = expirationDate;
+    this.result = result;
+    this.competencyIndex = competencyIndex;
+};
+PapAssertion = stjs.extend(PapAssertion, null, [], function(constructor, prototype) {
+    prototype.confidence = null;
+    prototype.competencyIndex = null;
+    prototype.assertionDate = null;
+    prototype.expirationDate = null;
+    prototype.result = false;
+    prototype.getConfidence = function() {
+        return this.confidence;
+    };
+    prototype.setConfidence = function(confidence) {
+        this.confidence = confidence;
+    };
+    prototype.getCompetencyIndex = function() {
+        return this.competencyIndex;
+    };
+    prototype.setCompetencyIndex = function(competencyIndex) {
+        this.competencyIndex = competencyIndex;
+    };
+    prototype.getAssertionDate = function() {
+        return this.assertionDate;
+    };
+    prototype.setAssertionDate = function(assertionDate) {
+        this.assertionDate = assertionDate;
+    };
+    prototype.getExpirationDate = function() {
+        return this.expirationDate;
+    };
+    prototype.setExpirationDate = function(expirationDate) {
+        this.expirationDate = expirationDate;
+    };
+    prototype.getResult = function() {
+        return this.result;
+    };
+    prototype.setResult = function(result) {
+        this.result = result;
+    };
+}, {}, {});
 var RollupRuleInterface = function(input, processor) {
     var chars = new antlr4.InputStream(input);
     var lexer = new RollupLexer.RollupLexer(chars);
@@ -1243,19 +1995,19 @@ var RollupRuleInterface = function(input, processor) {
     this.parser.addParseListener(this.listener);
 };
 RollupRuleInterface = stjs.extend(RollupRuleInterface, null, [], function(constructor, prototype) {
-    prototype.listener = null;
     prototype.logFunction = null;
-    prototype.parser = null;
-    prototype.processor = null;
     prototype.success = null;
     prototype.failure = null;
+    prototype.listener = null;
+    prototype.parser = null;
+    prototype.processor = null;
     prototype.go = function() {
         this.processor.logFunction = this.logFunction;
         this.processor.success = this.success;
         this.processor.failure = this.failure;
         this.parser.s();
     };
-}, {listener: &quot;RollupListener.RollupListener&quot;, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, parser: &quot;RollupParser.RollupParser&quot;, processor: &quot;RollupRuleProcessor&quot;, success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}}, {});
+}, {logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, listener: &quot;RollupListener.RollupListener&quot;, parser: &quot;RollupParser.RollupParser&quot;, processor: &quot;RollupRuleProcessor&quot;}, {});
 var RollupRulePacketGenerator = function(ip, ep) {
     this.ip = ip;
     this.ep = ep;
@@ -1263,11 +2015,11 @@ var RollupRulePacketGenerator = function(ip, ep) {
     this.queryOperations = new Array();
 };
 RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], function(constructor, prototype) {
-    constructor.OperationType = stjs.enumeration(&quot;AND&quot;, &quot;OR&quot;);
     prototype.queries = null;
     prototype.queryOperations = null;
     prototype.ip = null;
     prototype.ep = null;
+    constructor.main = function(args) {};
     prototype.addQuery = function(query) {
         this.queries.push(query);
     };
@@ -1355,23 +2107,78 @@ RollupRulePacketGenerator = stjs.extend(RollupRulePacketGenerator, null, [], fun
             this.buildQueryTree(rollupIp);
         return rollupIp;
     };
-    constructor.main = function(args) {};
+    constructor.OperationType = stjs.enumeration(&quot;AND&quot;, &quot;OR&quot;);
 }, {queries: {name: &quot;Array&quot;, arguments: [null]}, queryOperations: {name: &quot;Array&quot;, arguments: [{name: &quot;Enum&quot;, arguments: [&quot;RollupRulePacketGenerator.OperationType&quot;]}]}, ip: &quot;InquiryPacket&quot;, ep: &quot;AssertionProcessor&quot;}, {});
 if (!stjs.mainCallDisabled) 
     RollupRulePacketGenerator.main();
+var PapDependency = function(depParms) {
+    PapDependencyParms.call(this);
+    if (depParms.getDependencyFirst()) {
+        this.setParentIndex(depParms.getParentIndex());
+        this.setChildIndex(depParms.getChildIndex());
+    } else {
+        this.setChildIndex(depParms.getParentIndex());
+        this.setParentIndex(depParms.getChildIndex());
+    }
+    this.setType(depParms.getType());
+    this.setWeight(depParms.getWeight());
+    this.setLeak(depParms.getLeak());
+};
+PapDependency = stjs.extend(PapDependency, PapDependencyParms, [], function(constructor, prototype) {
+    constructor.NECESSARY_TYPE = &quot;NECESSARY&quot;;
+    constructor.SUFFICIENT_TYPE = &quot;SUFFICIENT&quot;;
+    constructor.EQUIVALENCE_TYPE = &quot;EQUIVALENCE&quot;;
+    constructor.BROADENS_TYPE = &quot;BROADENS&quot;;
+    constructor.NULL_TYPE = &quot;NULL&quot;;
+    constructor.HASH_CODE_MULTIPLIER = 41;
+    constructor.HASH_CODE_PERCENTAGE_MULTIPLIER = 97;
+    constructor.getDependencyTypes = function() {
+        var dt = new Array();
+        dt.push(PapDependency.NECESSARY_TYPE);
+        dt.push(PapDependency.SUFFICIENT_TYPE);
+        dt.push(PapDependency.EQUIVALENCE_TYPE);
+        dt.push(PapDependency.BROADENS_TYPE);
+        dt.push(PapDependency.NULL_TYPE);
+        return dt;
+    };
+    prototype.toString = function() {
+        return &quot;Dependency: [&quot; + this.getType().toString() + &quot;] &quot; + this.getParentIndex() + &quot; &lt;-- &quot; + this.getChildIndex();
+    };
+    prototype.equals = function(other) {
+        return (this.getParentIndex() == (other).getParentIndex()) &amp;&amp; (this.getChildIndex() == (other).getChildIndex()) &amp;&amp; (this.getType() == (other).getType());
+    };
+    prototype.hashCode = function() {
+        var temp = 0;
+        if (PapDependency.NECESSARY_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 1;
+         else if (PapDependency.EQUIVALENCE_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 2;
+         else if (PapDependency.SUFFICIENT_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 3;
+         else if (PapDependency.BROADENS_TYPE.equalsIgnoreCase(this.getType())) 
+            temp = 4;
+        temp *= PapDependency.HASH_CODE_MULTIPLIER;
+        temp += this.getParentIndex();
+        temp *= PapDependency.HASH_CODE_MULTIPLIER;
+        temp += this.getChildIndex();
+        return temp + (stjs.trunc((100 * this.getWeight())) % PapDependency.HASH_CODE_PERCENTAGE_MULTIPLIER);
+    };
+}, {}, {});
 /**
- *  Creates child packets for an InquiryPacket based on its context. 
- *  @class RelationshipPacketGenerator
+ *  Creates child packets for an InquiryPacket based on its context.
+ * 
  *  @author fritz.ray@eduworks.com
  *  @author tom.buskirk@eduworks.com
+ *  @class RelationshipPacketGenerator
  *  @module org.cassproject
  */
 var RelationshipPacketGenerator = /**
  *  Constructor for the RelationshipPacketGenerator
- *  @constructor
- *  @param {InquiryPacket} ip Inquiry Packet to generate and fill with relationship packets.
+ * 
+ *  @param {InquiryPacket}      ip Inquiry Packet to generate and fill with relationship packets.
  *  @param {AssertionProcessor} ep Assertion processor to tell to resume when complete.
- *  @param {object} processedAlignments An object to fill with keys to ensure that relations are not processed twice.
+ *  @param {object}             processedAlignments An object to fill with keys to ensure that relations are not processed twice.
+ *  @constructor
  */
 function(ip, ep, processedAlignments) {
     this.ip = ip;
@@ -1385,77 +2192,89 @@ function(ip, ep, processedAlignments) {
 RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [], function(constructor, prototype) {
     /**
      *  Method to call when any operation fails.
+     * 
      *  @property failure
      *  @type function(string)
      */
     prototype.failure = null;
     /**
      *  Method to call when the operation succeeds.
+     * 
      *  @property success
      *  @type function()
      */
     prototype.success = null;
     /**
      *  Method to call when the generator has log statements to emit.
+     * 
      *  @property logFunction
      *  @type function(any)
      */
     prototype.logFunction = null;
     /**
-     *  Async counter to keep track of number of outstanding requests.
-     *  @property numberOfRelationsToProcess
-     *  @type integer
-     */
-    prototype.numberOfRelationsToProcess = 0;
-    /**
-     *  Number of relations that have been processed.
-     *  @property numberOfRelationsProcessed
-     *  @type integer
-     */
-    prototype.numberOfRelationsProcessed = 0;
-    /**
      *  List of packets representing the narrows relation.
+     * 
      *  @property narrowsPackets
      *  @type InquiryPacket[]
      */
     prototype.narrowsPackets = null;
     /**
      *  List of packets representing the broadens relation.
+     * 
      *  @property broadensPackets
      *  @type InquiryPacket[]
      */
     prototype.broadensPackets = null;
     /**
      *  List of packets representing the required relation.
+     * 
      *  @property requiredPackets
      *  @type InquiryPacket[]
      */
     prototype.requiredPackets = null;
     /**
      *  List of packets representing the isRequiredBy relation.
+     * 
      *  @property isRequiredByPackets
      *  @type InquiryPacket[]
      */
     prototype.isRequiredByPackets = null;
+    prototype.relationLookup = null;
+    /**
+     *  Async counter to keep track of number of outstanding requests.
+     * 
+     *  @property numberOfRelationsToProcess
+     *  @type integer
+     */
+    prototype.numberOfRelationsToProcess = 0;
+    /**
+     *  Number of relations that have been processed.
+     * 
+     *  @property numberOfRelationsProcessed
+     *  @type integer
+     */
+    prototype.numberOfRelationsProcessed = 0;
     /**
      *  Alignments to ignore, as they have already been processed.
+     * 
      *  @property processedAlignments;
      *  @type Object (Map&lt;String,String&gt;)
      */
     prototype.processedAlignments = null;
     /**
      *  Assertion Processor that invoked this generator.
+     * 
      *  @property ep
      *  @type AssertionProcessor
      */
     prototype.ep = null;
     /**
      *  Inquiry Packet that this generator is creating relationships for.
+     * 
      *  @property ip
      *  @type InquiryPacket
      */
     prototype.ip = null;
-    prototype.relationLookup = null;
     prototype.log = function(string) {
         if (this.logFunction != null) 
             this.logFunction(&quot;&quot; + new Date().getTime() % 100000 + &quot;: &quot; + string);
@@ -1593,6 +2412,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
     };
     /**
      *  Method to invoke to begin relation processing.
+     * 
      *  @method go
      */
     prototype.go = function() {
@@ -1617,7 +2437,7 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
             }
         }
     };
-}, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, success: &quot;Callback0&quot;, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, narrowsPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, broadensPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, requiredPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, isRequiredByPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, processedAlignments: {name: &quot;Map&quot;, arguments: [null, null]}, ep: &quot;AssertionProcessor&quot;, ip: &quot;InquiryPacket&quot;, relationLookup: &quot;Object&quot;}, {});
+}, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, success: &quot;Callback0&quot;, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, narrowsPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, broadensPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, requiredPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, isRequiredByPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, relationLookup: &quot;Object&quot;, processedAlignments: {name: &quot;Map&quot;, arguments: [null, null]}, ep: &quot;AssertionProcessor&quot;, ip: &quot;InquiryPacket&quot;}, {});
 var RollupRuleGenerator = function(ip) {
     this.ip = ip;
     this.rule = &quot;&quot;;
@@ -1658,6 +2478,518 @@ RollupRuleGenerator = stjs.extend(RollupRuleGenerator, null, [], function(constr
             }
     };
 }, {failure: {name: &quot;Callback1&quot;, arguments: [null]}, success: {name: &quot;Callback1&quot;, arguments: [null]}, ip: &quot;InquiryPacket&quot;}, {});
+var PapNetworkPrediction = function(predictionDate, subjectPem, competencyList, competencyNetwork) {
+    this.predictionDate = predictionDate;
+    this.subjectPem = subjectPem;
+    this.predictions = new Array();
+    var currentCompetency;
+    var pcp;
+    for (var i = 0; i &lt; competencyList.length; i++) {
+        currentCompetency = competencyList[i];
+        pcp = new PapCompetencyPrediction();
+        pcp.setCompetencyId(currentCompetency);
+        pcp.setConfidence(competencyNetwork.getPrediction(i));
+        pcp.setConflictLevel(competencyNetwork.getConflictLevel(i));
+        pcp.setConflictClass(competencyNetwork.getConflictClass(i));
+        this.predictions.push(pcp);
+    }
+};
+PapNetworkPrediction = stjs.extend(PapNetworkPrediction, null, [], function(constructor, prototype) {
+    prototype.predictionDate = null;
+    prototype.subjectPem = null;
+    prototype.predictions = null;
+    prototype.getPredictionDate = function() {
+        return this.predictionDate;
+    };
+    prototype.setPredictionDate = function(predictionDate) {
+        this.predictionDate = predictionDate;
+    };
+    prototype.getSubjectPem = function() {
+        return this.subjectPem;
+    };
+    prototype.setSubjectPem = function(subjectPem) {
+        this.subjectPem = subjectPem;
+    };
+    prototype.getPredictions = function() {
+        return this.predictions;
+    };
+    prototype.setPredictions = function(predictions) {
+        this.predictions = predictions;
+    };
+    prototype.getJsonString = function() {
+        return JSON.stringify(this);
+    };
+}, {predictions: {name: &quot;Array&quot;, arguments: [&quot;PapCompetencyPrediction&quot;]}}, {});
+var NodeGraph = function() {
+    this.nodeList = new Array();
+    this.relationList = new Array();
+    this.nodeMap = {};
+    this.relationMap = {};
+};
+NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
+    prototype.nodeList = null;
+    prototype.nodeMap = null;
+    prototype.relationList = null;
+    prototype.relationMap = null;
+    prototype.addNode = function(n) {
+        if (this.nodeMap[n.getId()] == null) {
+            this.nodeList.push(n);
+            this.nodeMap[n.getId()] = n;
+        }
+    };
+    prototype.createImpliedRelations = function() {
+        var relationsToAdd = new Array();
+        var nr;
+        for (var i = 0; i &lt; this.relationList.length; i++) {
+            nr = this.relationList[i];
+            if (nr.getType().equals(RelationType.RELATION_TYPE.NARROWS)) {
+                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
+            } else if (nr.getType().equals(RelationType.RELATION_TYPE.REQUIRES)) {
+                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
+            } else if (nr.getType().equals(RelationType.RELATION_TYPE.BROADENS)) {
+                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
+            } else if (nr.getType().equals(RelationType.RELATION_TYPE.IS_REQUIRED_BY)) {
+                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
+            }
+        }
+        var nnr;
+        for (var i = 0; i &lt; relationsToAdd.length; i++) {
+            nnr = relationsToAdd[i];
+            this.addRelation(nnr.getSource(), nnr.getTarget(), nnr.getType());
+        }
+    };
+    prototype.addRelation = function(sourceNode, targetNode, relationType) {
+        var nodeRelationList;
+        if (this.nodeHasRelations(sourceNode)) 
+            nodeRelationList = this.getRelationListForNode(sourceNode);
+         else {
+            nodeRelationList = new Array();
+            this.relationMap[sourceNode.getId()] = nodeRelationList;
+        }
+        var newNodeRelation = new NodeRelation(sourceNode, targetNode, relationType);
+        if (!this.doesRelationAlreadyExist(newNodeRelation, nodeRelationList)) {
+            nodeRelationList.push(newNodeRelation);
+            this.relationList.push(newNodeRelation);
+        }
+    };
+    prototype.getRelationListForNode = function(n) {
+        return this.relationMap[n.getId()];
+    };
+    prototype.getNarrowsIsRequiredByEqualsRelationListForNode = function(n) {
+        var retList = new Array();
+        if (this.relationMap[n.getId()] != null) {
+            var nra = this.relationMap[n.getId()];
+            var nr;
+            for (var i = 0; i &lt; nra.length; i++) {
+                nr = nra[i];
+                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) || nr.getType().equals(RelationType.RELATION_TYPE.NARROWS) || nr.getType().equals(RelationType.RELATION_TYPE.IS_REQUIRED_BY)) {
+                    retList.push(nr);
+                }
+            }
+        }
+        return retList;
+    };
+    prototype.getBroadensRequiresEqualsRelationListForNode = function(n) {
+        var retList = new Array();
+        if (this.relationMap[n.getId()] != null) {
+            var nra = this.relationMap[n.getId()];
+            var nr;
+            for (var i = 0; i &lt; nra.length; i++) {
+                nr = nra[i];
+                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) || nr.getType().equals(RelationType.RELATION_TYPE.BROADENS) || nr.getType().equals(RelationType.RELATION_TYPE.REQUIRES)) {
+                    retList.push(nr);
+                }
+            }
+        }
+        return retList;
+    };
+    prototype.getNodeList = function() {
+        return this.nodeList;
+    };
+    prototype.setNodeList = function(nodeList) {
+        this.nodeList = nodeList;
+    };
+    prototype.getRelationList = function() {
+        return this.relationList;
+    };
+    prototype.setRelationList = function(relationList) {
+        this.relationList = relationList;
+    };
+    prototype.nodeHasRelations = function(n) {
+        if (this.relationMap[n.getId()] == null) 
+            return false;
+        return true;
+    };
+    prototype.doesRelationAlreadyExist = function(nodeRelation, nodeRelationList) {
+        var nr;
+        for (var i = 0; i &lt; nodeRelationList.length; i++) {
+            nr = nodeRelationList[i];
+            if (nodeRelation.getSource().getId().equals(nr.getSource().getId()) &amp;&amp; nodeRelation.getTarget().getId().equals(nr.getTarget().getId()) &amp;&amp; nodeRelation.getType().equals(nr.getType())) 
+                return true;
+        }
+        return false;
+    };
+    prototype.toStringGraphAll = function() {
+        var ret = &quot;&quot;;
+        var n;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + n.toString() + &quot;\n&quot;;
+        }
+        var nr;
+        for (var i = 0; i &lt; this.relationList.length; i++) {
+            nr = this.relationList[i];
+            ret = ret + nr.toString() + &quot;\n&quot;;
+        }
+        return ret;
+    };
+    prototype.toStringGraphByNode = function() {
+        var ret = &quot;&quot;;
+        ret = ret + &quot; - TEST HOWDY - \n&quot;;
+        var n;
+        var nra;
+        var nr;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
+            if (this.nodeHasRelations(n)) {
+                nra = this.getRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+            } else 
+                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
+        }
+        return ret;
+    };
+    prototype.toStringGraphByNodeSplit = function() {
+        var ret = &quot;&quot;;
+        var n;
+        var nra;
+        var nr;
+        for (var i = 0; i &lt; this.nodeList.length; i++) {
+            n = this.nodeList[i];
+            ret = ret + &quot;   --&gt; &quot; + n.toString() + &quot;\n&quot;;
+            if (this.nodeHasRelations(n)) {
+                ret = ret + &quot;\t\t=== Narrows/isRequiredBy ===\n&quot;;
+                nra = this.getNarrowsIsRequiredByEqualsRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+                ret = ret + &quot;\t\t=== Broadens/Requires ===\n&quot;;
+                nra = this.getBroadensRequiresEqualsRelationListForNode(n);
+                for (var j = 0; j &lt; nra.length; j++) {
+                    nr = nra[j];
+                    ret = ret + &quot;\t\t&quot; + nr.toString() + &quot;\n&quot;;
+                }
+            } else 
+                ret = ret + &quot;\t\t---------NO RELATIONSHIPS---------\n&quot;;
+        }
+        return ret;
+    };
+}, {nodeList: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}, relationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;NodeRelation&quot;]}]}}, {});
+var CompetencyGraph = function(includeAssertions) {
+    this.nodes = new Array();
+    this.edges = new Array();
+    this.positiveAssertions = new Array();
+    this.negativeAssertions = new Array();
+    this.nodeMap = {};
+    this.edgeMap = {};
+    this.includeAssertions = includeAssertions;
+};
+CompetencyGraph = stjs.extend(CompetencyGraph, null, [], function(constructor, prototype) {
+    constructor.NARROWS_RELATION_TEXT = &quot;narrows&quot;;
+    constructor.BROADENS_RELATION_TEXT = &quot;broadens&quot;;
+    constructor.REQUIRES_RELATION_TEXT = &quot;requires&quot;;
+    constructor.IS_REQUIRED_BY_RELATION_TEXT = &quot;isRequiredBy&quot;;
+    constructor.IS_EQUIVALENT_TO_RELATION_TEXT = &quot;isEquivalentTo&quot;;
+    constructor.EDGE_MAP_FIELD_DELIMETER = &quot; -------||||||------- &quot;;
+    constructor.CleanGraph = function(nodes, edges) {
+        this.nodes = nodes;
+        this.edges = edges;
+    };
+    constructor.CleanGraph = stjs.extend(constructor.CleanGraph, null, [], function(constructor, prototype) {
+        prototype.nodes = null;
+        prototype.edges = null;
+    }, {nodes: {name: &quot;Array&quot;, arguments: [null]}, edges: {name: &quot;Array&quot;, arguments: [&quot;CgEdge&quot;]}}, {});
+    constructor.CleanGraphWithAssertions = function(nodes, edges, positiveAssertions, negativeAssertions) {
+        this.nodes = nodes;
+        this.edges = edges;
+        this.positiveAssertions = positiveAssertions;
+        this.negativeAssertions = negativeAssertions;
+    };
+    constructor.CleanGraphWithAssertions = stjs.extend(constructor.CleanGraphWithAssertions, null, [], function(constructor, prototype) {
+        prototype.nodes = null;
+        prototype.edges = null;
+        prototype.positiveAssertions = null;
+        prototype.negativeAssertions = null;
+    }, {nodes: {name: &quot;Array&quot;, arguments: [null]}, edges: {name: &quot;Array&quot;, arguments: [&quot;CgEdge&quot;]}, positiveAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}, negativeAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}}, {});
+    prototype.nodes = null;
+    prototype.edges = null;
+    prototype.positiveAssertions = null;
+    prototype.negativeAssertions = null;
+    prototype.nodeMap = null;
+    prototype.edgeMap = null;
+    prototype.includeAssertions = false;
+    prototype.addNode = function(id) {
+        if (!this.graphContainsNode(id)) {
+            this.nodes.push(id);
+            this.nodeMap[id] = id;
+        }
+    };
+    prototype.getEdgeKey = function(source, target, relationType) {
+        return source + CompetencyGraph.EDGE_MAP_FIELD_DELIMETER + target + CompetencyGraph.EDGE_MAP_FIELD_DELIMETER + relationType;
+    };
+    prototype.addEdge = function(source, target, relationType) {
+        if (!this.graphContainsEdge(source, target, relationType)) {
+            this.edges.push(new CgEdge(source, target, relationType));
+            var edgeKey = this.getEdgeKey(source, target, relationType);
+            this.edgeMap[edgeKey] = edgeKey;
+        }
+    };
+    prototype.addPositiveAssertion = function(simpleAssertion) {
+        if (simpleAssertion != null) 
+            this.positiveAssertions.push(simpleAssertion);
+    };
+    prototype.addNegativeAssertion = function(simpleAssertion) {
+        if (simpleAssertion != null) 
+            this.negativeAssertions.push(simpleAssertion);
+    };
+    prototype.graphContainsNode = function(nodeId) {
+        if (this.nodeMap[nodeId] == null) 
+            return false;
+        return true;
+    };
+    prototype.graphContainsEdge = function(source, target, relationType) {
+        if (this.edgeMap[this.getEdgeKey(source, target, relationType)] == null) 
+            return false;
+        return true;
+    };
+    prototype.createImpliedRelationships = function() {
+        var edgesToAdd = new Array();
+        var e;
+        for (var i = 0; i &lt; this.edges.length; i++) {
+            e = this.edges[i];
+            if (e.getRelation().equalsIgnoreCase(CompetencyGraph.NARROWS_RELATION_TEXT)) {
+                edgesToAdd.push(new CgEdge(e.getTarget(), e.getSource(), CompetencyGraph.BROADENS_RELATION_TEXT));
+            } else if (e.getRelation().equalsIgnoreCase(CompetencyGraph.REQUIRES_RELATION_TEXT)) {
+                edgesToAdd.push(new CgEdge(e.getTarget(), e.getSource(), CompetencyGraph.IS_REQUIRED_BY_RELATION_TEXT));
+            } else if (e.getRelation().equalsIgnoreCase(CompetencyGraph.IS_EQUIVALENT_TO_RELATION_TEXT)) {
+                edgesToAdd.push(new CgEdge(e.getTarget(), e.getSource(), CompetencyGraph.IS_EQUIVALENT_TO_RELATION_TEXT));
+            }
+        }
+        var ne;
+        for (var i = 0; i &lt; edgesToAdd.length; i++) {
+            ne = edgesToAdd[i];
+            this.addEdge(ne.getSource(), ne.getTarget(), ne.getRelation());
+        }
+    };
+    prototype.getJsonString = function() {
+        if (this.includeAssertions) 
+            return JSON.stringify(new CompetencyGraph.CleanGraphWithAssertions(this.nodes, this.edges, this.positiveAssertions, this.negativeAssertions));
+         else 
+            return JSON.stringify(new CompetencyGraph.CleanGraph(this.nodes, this.edges));
+    };
+    prototype.getNodes = function() {
+        return this.nodes;
+    };
+    prototype.setNodes = function(nodes) {
+        this.nodes = nodes;
+    };
+    prototype.getEdges = function() {
+        return this.edges;
+    };
+    prototype.setEdges = function(edges) {
+        this.edges = edges;
+    };
+    prototype.getPositiveAssertions = function() {
+        return this.positiveAssertions;
+    };
+    prototype.setPositiveAssertions = function(positiveAssertions) {
+        this.positiveAssertions = positiveAssertions;
+    };
+    prototype.getNegativeAssertions = function() {
+        return this.negativeAssertions;
+    };
+    prototype.setNegativeAssertions = function(negativeAssertions) {
+        this.negativeAssertions = negativeAssertions;
+    };
+}, {nodes: {name: &quot;Array&quot;, arguments: [null]}, edges: {name: &quot;Array&quot;, arguments: [&quot;CgEdge&quot;]}, positiveAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}, negativeAssertions: {name: &quot;Array&quot;, arguments: [&quot;SimpleAssertion&quot;]}, nodeMap: {name: &quot;Map&quot;, arguments: [null, null]}, edgeMap: {name: &quot;Map&quot;, arguments: [null, null]}}, {});
+var PapDependencyDefinitions = function() {
+    this.dependencyDefinitionMap = {};
+};
+PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], function(constructor, prototype) {
+    constructor.DEFAULT_WEIGHT = 1.0;
+    constructor.DEFAULT_LEAK = 0.0;
+    constructor.DEFAULT_REVERSE = false;
+    constructor.DEFAULT_NARROWS_BASE_CLASS = &quot;broadens&quot;;
+    constructor.DEFAULT_NARROWS_REVERSE = true;
+    constructor.DEFAULT_NARROWS_WEIGHT = 0.9;
+    constructor.DEFAULT_NARROWS_LEAK = 0.0;
+    constructor.DEFAULT_NARROWS_KEY = &quot;narrows&quot;;
+    constructor.DEFAULT_ENABLES_BASE_CLASS = &quot;isSufficientFor&quot;;
+    constructor.DEFAULT_ENABLES_REVERSE = true;
+    constructor.DEFAULT_ENABLES_WEIGHT = 0.9;
+    constructor.DEFAULT_ENABLES_LEAK = 0.0;
+    constructor.DEFAULT_ENABLES_KEY = &quot;enables&quot;;
+    constructor.DEFAULT_REQUIRES_BASE_CLASS = &quot;isRequiredBy&quot;;
+    constructor.DEFAULT_REQUIRES_REVERSE = false;
+    constructor.DEFAULT_REQUIRES_WEIGHT = 0.9;
+    constructor.DEFAULT_REQUIRES_LEAK = 0.0;
+    constructor.DEFAULT_REQUIRES_KEY = &quot;requires&quot;;
+    prototype.dependencyDefinitionMap = null;
+    /**
+     *  Pulled default values from CruncherAssertionProcessor
+     *      dependencyDefs = new JSONObject();
+     * 
+     *      JSONObject narrows = new JSONObject();
+     *      narrows.put(&quot;class&quot;,&quot;broadens&quot;);
+     *      narrows.put(&quot;reverse&quot;,true);
+     *      narrows.put(&quot;weight&quot;,0.9);
+     *      dependencyDefs.put(&quot;narrows&quot;,narrows);
+     * 
+     *      JSONObject enables = new JSONObject();
+     *      enables.put(&quot;class&quot;,&quot;isSufficientFor&quot;);
+     *      enables.put(&quot;weight&quot;,0.9);
+     *      enables.put(&quot;reverse&quot;,true);
+     *      dependencyDefs.put(&quot;enables&quot;,enables);
+     * 
+     *      JSONObject requires = new JSONObject();
+     *      requires.put(&quot;class&quot;,&quot;isRequiredBy&quot;);
+     *      requires.put(&quot;weight&quot;,0.9);
+     *      dependencyDefs.put(&quot;requires&quot;,requires);
+     */
+    prototype.initDefaultDefinitions = function() {
+        var narrowsDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_NARROWS_BASE_CLASS, PapDependencyDefinitions.DEFAULT_NARROWS_REVERSE, PapDependencyDefinitions.DEFAULT_NARROWS_WEIGHT, PapDependencyDefinitions.DEFAULT_NARROWS_LEAK);
+        var enablesDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_ENABLES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_ENABLES_REVERSE, PapDependencyDefinitions.DEFAULT_ENABLES_WEIGHT, PapDependencyDefinitions.DEFAULT_ENABLES_LEAK);
+        var requiresDepDef = new PapDependencyDefinitionBase(PapDependencyDefinitions.DEFAULT_REQUIRES_BASE_CLASS, PapDependencyDefinitions.DEFAULT_REQUIRES_REVERSE, PapDependencyDefinitions.DEFAULT_REQUIRES_WEIGHT, PapDependencyDefinitions.DEFAULT_REQUIRES_LEAK);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_NARROWS_KEY, narrowsDepDef);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_ENABLES_KEY, enablesDepDef);
+        this.addDependencyDefinition(PapDependencyDefinitions.DEFAULT_REQUIRES_KEY, requiresDepDef);
+    };
+    prototype.getWeightForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_WEIGHT;
+         else 
+            return base.getWeight();
+    };
+    prototype.getLeakForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_LEAK;
+         else 
+            return base.getLeak();
+    };
+    prototype.getReverseForType = function(depType) {
+        var base = this.dependencyDefinitionMap[depType];
+        if (base == null) 
+            return PapDependencyDefinitions.DEFAULT_REVERSE;
+         else 
+            return base.getReverse();
+    };
+    prototype.addDependencyDefinition = function(relationshipName, definition) {
+        this.getDependencyDefinitionMap()[relationshipName] = definition;
+    };
+    prototype.getDependencyDefinitionMap = function() {
+        return this.dependencyDefinitionMap;
+    };
+    prototype.setDependencyDefinitionMap = function(dependencyDefinitionMap) {
+        this.dependencyDefinitionMap = dependencyDefinitionMap;
+    };
+}, {dependencyDefinitionMap: {name: &quot;Map&quot;, arguments: [null, &quot;PapDependencyDefinitionBase&quot;]}}, {});
+var NodePacketGraph = function() {
+    this.nodePacketList = new Array();
+    this.nodePacketMap = {};
+    this.relationList = new Array();
+};
+NodePacketGraph = stjs.extend(NodePacketGraph, null, [], function(constructor, prototype) {
+    prototype.nodePacketList = null;
+    prototype.nodePacketMap = null;
+    prototype.relationList = null;
+    prototype.initNodePacketGraph = function(nodes) {
+        var np;
+        var n;
+        this.nodePacketList = new Array();
+        this.nodePacketMap = {};
+        this.relationList = new Array();
+        for (var i = 0; i &lt; nodes.length; i++) {
+            n = nodes[i];
+            np = new NodePacket();
+            np.addNode(n);
+            this.nodePacketList.push(np);
+            this.nodePacketMap[n.getId()] = np;
+        }
+    };
+    prototype.getNodePacketForNode = function(n) {
+        return this.nodePacketMap[n.getId()];
+    };
+    prototype.mergeNodePackets = function(packet1, packet2) {
+        if (packet1 != packet2) {
+            var n;
+            var na = packet2.getNodeList();
+            for (var i = 0; i &lt; na.length; i++) {
+                n = na[i];
+                packet1.addNode(n);
+                this.nodePacketMap[n.getId()] = packet1;
+            }
+            this.nodePacketList = ArrayUtil.arrayRemove(this.nodePacketList, packet2);
+        }
+    };
+    prototype.getNodePacketList = function() {
+        return this.nodePacketList;
+    };
+    prototype.setNodePacketList = function(nodePacketList) {
+        this.nodePacketList = nodePacketList;
+    };
+    prototype.getRelationList = function() {
+        return this.relationList;
+    };
+    prototype.setRelationList = function(relationList) {
+        this.relationList = relationList;
+    };
+    prototype.addNodePacket = function(np) {
+        this.nodePacketList.push(np);
+    };
+    prototype.addRelation = function(sourceNodePacket, targetNodePacket, relationType) {
+        var newPacketRelation = new PacketRelation(sourceNodePacket, targetNodePacket, relationType);
+        this.relationList.push(newPacketRelation);
+    };
+    prototype.buildPacketRelationsFromNodeRelations = function(nodeRelationList) {
+        var sourceNodePacket;
+        var targetNodePacket;
+        var nr;
+        for (var i = 0; i &lt; nodeRelationList.length; i++) {
+            nr = nodeRelationList[i];
+            sourceNodePacket = this.getNodePacketForNode(nr.getSource());
+            targetNodePacket = this.getNodePacketForNode(nr.getTarget());
+            if (sourceNodePacket != targetNodePacket) 
+                this.addRelation(sourceNodePacket, targetNodePacket, nr.getType());
+        }
+    };
+    prototype.toStringGraphAll = function() {
+        var ret = &quot;&quot;;
+        ret = ret + &quot;&gt;&gt; Packets: \n&quot;;
+        var np;
+        for (var i = 0; i &lt; this.nodePacketList.length; i++) {
+            np = this.nodePacketList[i];
+            ret = ret + &quot;   &quot; + np.toString() + &quot;\n&quot;;
+        }
+        var pr;
+        if (this.relationList.length &gt; 0) {
+            ret = ret + &quot;&gt;&gt;Relationships: &gt;\n&quot;;
+            for (var i = 0; i &lt; this.relationList.length; i++) {
+                pr = this.relationList[i];
+                ret = ret + &quot;   &quot; + pr.toString() + &quot;\n&quot;;
+            }
+        } else {
+            ret = ret + &quot;&gt;&gt;NO RELATIONS EXIST!&quot;;
+        }
+        return ret;
+    };
+}, {nodePacketList: {name: &quot;Array&quot;, arguments: [&quot;NodePacket&quot;]}, nodePacketMap: {name: &quot;Map&quot;, arguments: [null, &quot;NodePacket&quot;]}, relationList: {name: &quot;Array&quot;, arguments: [&quot;PacketRelation&quot;]}}, {});
 /**
  *  Processor used in Assertion Processing. Can estimate or determine competence
  *  of individuals.
@@ -1674,13 +3006,13 @@ var AssertionProcessor = function() {
     this.profileMode = false;
 };
 AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(constructor, prototype) {
+    constructor.DEF_STEP = false;
     prototype.repositories = null;
     prototype.step = false;
     prototype.profileMode = false;
     prototype.logFunction = null;
     prototype.assertions = null;
     prototype.coprocessors = null;
-    constructor.DEF_STEP = false;
     prototype.processedEquivalencies = null;
     prototype.context = null;
     prototype.assertionsCollected = false;
@@ -1973,18 +3305,18 @@ var RollupRuleProcessor = function(ip, ep) {
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
 };
 RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constructor, prototype) {
-    prototype.onQueryExitResult = null;
-    prototype.query = null;
     prototype.success = null;
     prototype.failure = null;
     prototype.logFunction = null;
     prototype.positive = null;
     prototype.negative = null;
+    prototype.onQueryExitResult = null;
+    prototype.query = null;
+    prototype.rollupRulePacketGenerator = null;
     prototype.s = null;
     prototype.tok = null;
     prototype.que = null;
     prototype.ip = null;
-    prototype.rollupRulePacketGenerator = null;
     prototype.log = function(string) {
         if (this.logFunction != null) 
             this.logFunction(string);
@@ -2032,7 +3364,961 @@ RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constr
             }
         }
     };
-}, {success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, s: &quot;RrS&quot;, tok: &quot;RrToken&quot;, que: &quot;RrQuery&quot;, ip: &quot;InquiryPacket&quot;, rollupRulePacketGenerator: &quot;RollupRulePacketGenerator&quot;}, {});
+}, {success: {name: &quot;Callback1&quot;, arguments: [null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, rollupRulePacketGenerator: &quot;RollupRulePacketGenerator&quot;, s: &quot;RrS&quot;, tok: &quot;RrToken&quot;, que: &quot;RrQuery&quot;, ip: &quot;InquiryPacket&quot;}, {});
+var TestGraphBuilder = function() {};
+TestGraphBuilder = stjs.extend(TestGraphBuilder, null, [], function(constructor, prototype) {
+    constructor.buildTest0 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeA, RelationType.RELATION_TYPE.NARROWS);
+    };
+    constructor.buildTest1 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeD, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeE, RelationType.RELATION_TYPE.NARROWS);
+    };
+    constructor.buildTest2 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        var nodeG = new Node(&quot;G&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.IS_EQUIVALENT_TO);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeF, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeF, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeD, nodeE, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeE, nodeG, RelationType.RELATION_TYPE.REQUIRES);
+    };
+    constructor.buildTest3 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        var nodeG = new Node(&quot;G&quot;);
+        var nodeH = new Node(&quot;H&quot;);
+        var nodeI = new Node(&quot;I&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+        graph.addNode(nodeH);
+        graph.addNode(nodeI);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeI, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeI, nodeB, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeE, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeE, nodeF, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeF, nodeG, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeG, nodeH, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeH, nodeE, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+    };
+    constructor.buildTest4 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        var nodeG = new Node(&quot;G&quot;);
+        var nodeH = new Node(&quot;H&quot;);
+        var nodeI = new Node(&quot;I&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+        graph.addNode(nodeH);
+        graph.addNode(nodeI);
+        graph.addRelation(nodeD, nodeE, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeF, nodeG, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeG, nodeH, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeI, nodeB, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeE, nodeF, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeI, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeH, nodeE, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeG, nodeB, RelationType.RELATION_TYPE.NARROWS);
+    };
+    constructor.buildTest5 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        var nodeG = new Node(&quot;G&quot;);
+        var nodeH = new Node(&quot;H&quot;);
+        var nodeI = new Node(&quot;I&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+        graph.addNode(nodeH);
+        graph.addNode(nodeI);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeI, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeI, nodeB, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeD, nodeE, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeE, nodeF, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeF, nodeG, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeG, nodeH, RelationType.RELATION_TYPE.REQUIRES);
+        graph.addRelation(nodeH, nodeE, RelationType.RELATION_TYPE.NARROWS);
+    };
+    constructor.buildTest6 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        var nodeG = new Node(&quot;G&quot;);
+        var nodeH = new Node(&quot;H&quot;);
+        var nodeI = new Node(&quot;I&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addNode(nodeG);
+        graph.addNode(nodeH);
+        graph.addNode(nodeI);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeI, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeI, nodeB, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeE, RelationType.RELATION_TYPE.REQUIRES);
+        graph.addRelation(nodeE, nodeF, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeF, nodeG, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeG, nodeH, RelationType.RELATION_TYPE.REQUIRES);
+        graph.addRelation(nodeH, nodeE, RelationType.RELATION_TYPE.REQUIRES);
+    };
+    constructor.buildTest7 = function(graph) {
+        var nodeA = new Node(&quot;A&quot;);
+        var nodeB = new Node(&quot;B&quot;);
+        var nodeC = new Node(&quot;C&quot;);
+        var nodeD = new Node(&quot;D&quot;);
+        var nodeE = new Node(&quot;E&quot;);
+        var nodeF = new Node(&quot;F&quot;);
+        graph.addNode(nodeA);
+        graph.addNode(nodeB);
+        graph.addNode(nodeC);
+        graph.addNode(nodeD);
+        graph.addNode(nodeE);
+        graph.addNode(nodeF);
+        graph.addRelation(nodeA, nodeB, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeB, nodeC, RelationType.RELATION_TYPE.NARROWS);
+        graph.addRelation(nodeC, nodeD, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeD, nodeB, RelationType.RELATION_TYPE.IS_REQUIRED_BY);
+        graph.addRelation(nodeB, nodeF, RelationType.RELATION_TYPE.BROADENS);
+        graph.addRelation(nodeF, nodeE, RelationType.RELATION_TYPE.REQUIRES);
+        graph.addRelation(nodeE, nodeB, RelationType.RELATION_TYPE.REQUIRES);
+    };
+    constructor.buildTestGraph = function() {
+        var graph = new NodeGraph();
+        TestGraphBuilder.buildTest7(graph);
+        graph.createImpliedRelations();
+        return graph;
+    };
+}, {}, {});
+var CompetencyGraphBuilder = function() {
+    this.repositories = new Array();
+    this.subjects = new Array();
+};
+CompetencyGraphBuilder = stjs.extend(CompetencyGraphBuilder, null, [], function(constructor, prototype) {
+    constructor.SIZE_OF_ASSERTION_QUERY = 5000;
+    prototype.success = null;
+    prototype.failure = null;
+    prototype.includeAssertions = true;
+    prototype.frameworkId = null;
+    prototype.rootCompetencyId = null;
+    prototype.repositories = null;
+    prototype.subjects = null;
+    prototype.createImpliedEdges = true;
+    prototype.competencyGraph = null;
+    prototype.frameworkRelationMap = null;
+    prototype.frameworkRelationList = null;
+    prototype.assertionList = null;
+    prototype.assertionMap = null;
+    prototype.relationshipsToProcess = 0;
+    prototype.relationshipsProcessed = 0;
+    prototype.repositoriesToQuery = 0;
+    prototype.repostioriesQueried = 0;
+    prototype.assertionsToFillIn = 0;
+    prototype.assertionsFilledIn = 0;
+    prototype.getRelationsForCompetency = function(competencyId) {
+        var competencyRelations = this.frameworkRelationMap[competencyId];
+        if (competencyRelations == null) {
+            competencyRelations = new Array();
+            this.frameworkRelationMap[competencyId] = competencyRelations;
+        }
+        return competencyRelations;
+    };
+    prototype.addRelationToCompetencyMap = function(competencyId, relation) {
+        var competencyRelations;
+        competencyRelations = this.getRelationsForCompetency(competencyId);
+        competencyRelations.push(relation);
+        this.frameworkRelationMap[competencyId] = competencyRelations;
+    };
+    prototype.buildFrameworkRelationsMap = function() {
+        var relation;
+        for (var i = 0; i &lt; this.frameworkRelationList.length; i++) {
+            relation = this.frameworkRelationList[i];
+            this.addRelationToCompetencyMap(relation.source, relation);
+            this.addRelationToCompetencyMap(relation.target, relation);
+        }
+    };
+    prototype.addCompetencyTreeToGraph = function(competencyId) {
+        this.competencyGraph.addNode(competencyId);
+        var competencyRelations = this.frameworkRelationMap[competencyId];
+        if (competencyRelations != null &amp;&amp; competencyRelations.length &gt; 0) {
+            var relation;
+            for (var i = 0; i &lt; competencyRelations.length; i++) {
+                relation = competencyRelations[i];
+                if (!this.competencyGraph.graphContainsEdge(relation.source, relation.target, relation.relationType)) {
+                    this.competencyGraph.addEdge(relation.source, relation.target, relation.relationType);
+                }
+                if (!this.competencyGraph.graphContainsNode(relation.target)) {
+                    this.addCompetencyTreeToGraph(relation.target);
+                }
+                if (!this.competencyGraph.graphContainsNode(relation.source)) {
+                    this.addCompetencyTreeToGraph(relation.source);
+                }
+            }
+        }
+    };
+    prototype.returnGraph = function() {
+        this.success(this.competencyGraph);
+    };
+    prototype.addAssertionsToGraph = function() {
+        var sa;
+        var a;
+        for (var i = 0; i &lt; this.assertionList.length; i++) {
+            a = this.assertionList[i];
+            sa = this.assertionMap[a.id];
+            if (sa != null) {
+                if (sa.isNegative()) 
+                    this.competencyGraph.addNegativeAssertion(sa);
+                 else 
+                    this.competencyGraph.addPositiveAssertion(sa);
+            }
+        }
+    };
+    prototype.checkAssertionDetailsFetched = function() {
+        if (this.assertionsFilledIn &gt;= this.assertionsToFillIn) {
+            this.addAssertionsToGraph();
+            this.returnGraph();
+        }
+    };
+    prototype.fetchAssertionDetailsNegativeStatus = function(a, sa) {
+        var cgb = this;
+        a.getNegativeAsync(function(negative) {
+            if (negative != null &amp;&amp; negative) 
+                sa.setNegative(true);
+             else 
+                sa.setNegative(false);
+            cgb.assertionMap[sa.getId()] = sa;
+            cgb.assertionsFilledIn++;
+            cgb.checkAssertionDetailsFetched();
+        }, function(s) {
+            sa.setNegative(false);
+            cgb.assertionMap[sa.getId()] = sa;
+            cgb.assertionsFilledIn++;
+            cgb.checkAssertionDetailsFetched();
+        });
+    };
+    prototype.fetchAssertionDetailsExpirationDate = function(a, sa) {
+        var cgb = this;
+        a.getExpirationDateAsync(function(expirationDate) {
+            if (expirationDate == null || expirationDate &lt;= stjs.trunc(new Date().getTime())) {
+                cgb.assertionsFilledIn++;
+                cgb.checkAssertionDetailsFetched();
+            } else {
+                sa.setExpirationDate(expirationDate);
+                cgb.fetchAssertionDetailsNegativeStatus(a, sa);
+            }
+        }, function(s) {
+            cgb.failure(new ExceptionReturn(&quot;Failed fetchAssertionDetailsExpirationDate: &quot; + s));
+        });
+    };
+    prototype.fetchAssertionDetailsAssertionDate = function(a, sa) {
+        var cgb = this;
+        a.getAssertionDateAsync(function(assertionDate) {
+            if (assertionDate == null || assertionDate &gt; stjs.trunc(new Date().getTime())) {
+                cgb.assertionsFilledIn++;
+                cgb.checkAssertionDetailsFetched();
+            } else {
+                sa.setAssertionDate(assertionDate);
+                cgb.fetchAssertionDetailsExpirationDate(a, sa);
+            }
+        }, function(s) {
+            cgb.failure(new ExceptionReturn(&quot;Failed fetchAssertionDetailsAssertionDate: &quot; + s));
+        });
+    };
+    prototype.isASubject = function(pk) {
+        if (this.subjects == null || this.subjects.length == 0) 
+            return true;
+        var sub;
+        for (var i = 0; i &lt; this.subjects.length; i++) {
+            sub = this.subjects[i];
+            if (sub.toPem().trim().equals(pk.toPem().trim())) 
+                return true;
+        }
+        return false;
+    };
+    prototype.fetchAssertionDetailsSubject = function(a, sa) {
+        var cgb = this;
+        a.getSubjectAsync(function(sub) {
+            if (sub == null || !cgb.isASubject(sub)) {
+                cgb.assertionsFilledIn++;
+                cgb.checkAssertionDetailsFetched();
+            } else {
+                sa.setSubjectPem(sub.toPem());
+                cgb.fetchAssertionDetailsAssertionDate(a, sa);
+            }
+        }, function(s) {
+            cgb.failure(new ExceptionReturn(&quot;Failed fetchAssertionDetailsSubject: &quot; + s));
+        });
+    };
+    prototype.fillInAssertions = function() {
+        this.assertionsToFillIn = this.assertionList.length;
+        this.assertionsFilledIn = 0;
+        if (this.assertionsToFillIn == 0) 
+            this.returnGraph();
+        var a;
+        var sa;
+        for (var i = 0; i &lt; this.assertionList.length; i++) {
+            a = this.assertionList[i];
+            sa = new SimpleAssertion(a.id, a.competency, a.confidence);
+            this.fetchAssertionDetailsSubject(a, sa);
+        }
+    };
+    prototype.checkNumberOfReposQueried = function() {
+        if (this.repostioriesQueried &gt;= this.repositoriesToQuery) {
+            this.fillInAssertions();
+        }
+    };
+    prototype.addAssertionsToList = function(repoAssertions) {
+        for (var i = 0; i &lt; repoAssertions.length; i++) {
+            this.assertionList.push(repoAssertions[i]);
+        }
+        this.repostioriesQueried++;
+    };
+    prototype.buildAssertionSearchQuery = function() {
+        var query = &quot;(&quot;;
+        for (var i = 0; i &lt; this.competencyGraph.getNodes().length; i++) {
+            if (i != 0) 
+                query += &quot; OR &quot;;
+            query += &quot;competency:\&quot;&quot; + this.competencyGraph.getNodes()[i] + &quot;\&quot;&quot;;
+        }
+        query += &quot;)&quot;;
+        if (this.subjects != null) {
+            for (var i = 0; i &lt; this.subjects.length; i++) {
+                query += &quot; AND (\\*@reader:\&quot;&quot; + this.subjects[i].toPem() + &quot;\&quot;)&quot;;
+            }
+        }
+        return query;
+    };
+    prototype.processCompetencyAssertions = function() {
+        this.repositoriesToQuery = this.repositories.length;
+        this.repostioriesQueried = 0;
+        var currentRepository;
+        var params = new Object();
+        (params)[&quot;size&quot;] = CompetencyGraphBuilder.SIZE_OF_ASSERTION_QUERY;
+        var searchQuery = this.buildAssertionSearchQuery();
+        var cgb = this;
+        for (var i = 0; i &lt; this.repositories.length; i++) {
+            currentRepository = this.repositories[i];
+            EcAssertion.search(currentRepository, searchQuery, function(assertions) {
+                cgb.addAssertionsToList(assertions);
+                cgb.checkNumberOfReposQueried();
+            }, function(s) {
+                cgb.failure(new ExceptionReturn(&quot;Error fetching assertions: &quot; + s));
+            }, params);
+        }
+    };
+    prototype.assembleGraphComponents = function() {
+        try {
+            this.buildFrameworkRelationsMap();
+            this.addCompetencyTreeToGraph(this.rootCompetencyId);
+            if (this.createImpliedEdges) 
+                this.competencyGraph.createImpliedRelationships();
+            if (this.includeAssertions) 
+                this.processCompetencyAssertions();
+             else 
+                this.returnGraph();
+        }catch (e) {
+            this.failure(new ExceptionReturn(&quot;Exception buildAndReturnCompetencyGraph: &quot; + e.toString()));
+        }
+    };
+    prototype.checkNumberOfRelationsProcessed = function() {
+        if (this.relationshipsProcessed &gt;= this.relationshipsToProcess) {
+            this.assembleGraphComponents();
+        }
+    };
+    prototype.addRelationshipToList = function(a) {
+        this.frameworkRelationList.push(a);
+        this.relationshipsProcessed++;
+    };
+    prototype.fetchFrameworkRelations = function(f) {
+        this.relationshipsToProcess = f.relation.length;
+        this.relationshipsProcessed = 0;
+        var cgb = this;
+        if (this.relationshipsToProcess == 0) {
+            this.competencyGraph.addNode(this.rootCompetencyId);
+            this.success(this.competencyGraph);
+        } else {
+            for (var i = 0; i &lt; this.relationshipsToProcess; i++) {
+                EcAlignment.get(f.relation[i], function(a) {
+                    cgb.addRelationshipToList(a);
+                    cgb.checkNumberOfRelationsProcessed();
+                }, function(s) {
+                    cgb.failure(new ExceptionReturn(&quot;Error fetching relationship: &quot; + s));
+                });
+            }
+        }
+    };
+    prototype.fetchFrameworkAndGo = function() {
+        var cgb = this;
+        EcFramework.get(this.frameworkId, function(f) {
+            cgb.fetchFrameworkRelations(f);
+        }, function(s) {
+            cgb.failure(new ExceptionReturn(&quot;Error fetching framework(&quot; + cgb.frameworkId + &quot;): &quot; + s));
+        });
+    };
+    prototype.validateInput = function() {
+        if (this.includeAssertions &amp;&amp; (this.repositories == null || this.repositories.length == 0)) {
+            this.failure(new ExceptionReturn(&quot;Assertion repository information not provided.&quot;));
+        } else if (this.success == null) {
+            this.failure(new ExceptionReturn(&quot;Success callback required.&quot;));
+        } else if (this.frameworkId == null) {
+            this.failure(new ExceptionReturn(&quot;Framework ID required.&quot;));
+        } else if (this.rootCompetencyId == null) {
+            this.failure(new ExceptionReturn(&quot;Root Competency ID required.&quot;));
+        }
+    };
+    prototype.initBuilder = function(createImpliedEdges) {
+        this.createImpliedEdges = createImpliedEdges;
+        this.competencyGraph = new CompetencyGraph(this.includeAssertions);
+        this.assertionMap = {};
+        this.frameworkRelationMap = {};
+        this.frameworkRelationList = new Array();
+        this.assertionList = new Array();
+    };
+    prototype.buildCompetencyGraph = function(createImpliedEdges) {
+        this.validateInput();
+        this.initBuilder(createImpliedEdges);
+        this.fetchFrameworkAndGo();
+    };
+}, {success: {name: &quot;Callback1&quot;, arguments: [&quot;CompetencyGraph&quot;]}, failure: {name: &quot;Callback1&quot;, arguments: [&quot;ExceptionReturn&quot;]}, repositories: {name: &quot;Array&quot;, arguments: [&quot;EcRepository&quot;]}, subjects: {name: &quot;Array&quot;, arguments: [&quot;EcPk&quot;]}, competencyGraph: &quot;CompetencyGraph&quot;, frameworkRelationMap: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}]}, frameworkRelationList: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, assertionList: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, assertionMap: {name: &quot;Map&quot;, arguments: [null, &quot;SimpleAssertion&quot;]}}, {});
+var PredictiveAssertionProcessor = function() {};
+PredictiveAssertionProcessor = stjs.extend(PredictiveAssertionProcessor, null, [], function(constructor, prototype) {
+    constructor.LOG_ENABLED = false;
+    constructor.ABRUBT_EXP_RETENTION = 0.0;
+    constructor.DEFAULT_RETENTION = 1.0;
+    constructor.STEP_SIZE_NUMERATOR = 1.0;
+    constructor.INITIAL_VALUE = 0.0;
+    constructor.INIT_PARENT_IDX_DEP_PARM = -1;
+    constructor.INIT_CHILD_IDX_DEP_PARM = -1;
+    constructor.INIT_WEIGHT_DEP_PARM = 0.0;
+    constructor.INIT_LEAK_DEP_PARM = 0.0;
+    constructor.INIT_REVERSE_DEP_PARM = false;
+    constructor.DEFAULT_PROB_LEARN_UNMET_REQS = 0.0;
+    constructor.DEFAULT_PROB_INSUFF = 0.0;
+    constructor.DEFAULT_DISCOUNT = 1.0;
+    prototype.competencyIndex = null;
+    prototype.values = null;
+    prototype.dependencies = null;
+    prototype.assertions = null;
+    prototype.dependencyDefs = null;
+    prototype.settings = null;
+    prototype.inputGraph = null;
+    prototype.subjectPem = null;
+    prototype.predictionDate = null;
+    prototype.competencyNetwork = null;
+    prototype.stepSize = 0.0;
+    prototype.priorityQueueThreshold = 0.0;
+    prototype.competencePrediction = null;
+    prototype.log = function(s) {
+        if (PredictiveAssertionProcessor.LOG_ENABLED) {
+            console.log(s);
+        }
+    };
+    prototype.verifyDependencyDefs = function() {
+        if (this.dependencyDefs == null) {
+            this.dependencyDefs = new PapDependencyDefinitions();
+            this.dependencyDefs.initDefaultDefinitions();
+        }
+    };
+    prototype.processInputParameters = function(inputGraph, subjectPem, predictionDate, dependencyDefs, settings) {
+        this.dependencyDefs = dependencyDefs;
+        this.verifyDependencyDefs();
+        this.settings = settings;
+        if (this.settings == null) 
+            this.settings = new PapSettings();
+        this.inputGraph = inputGraph;
+        this.subjectPem = subjectPem;
+        if (this.subjectPem != null) 
+            this.subjectPem = this.subjectPem.trim();
+        this.predictionDate = predictionDate;
+        if (this.predictionDate == null) 
+            this.predictionDate = stjs.trunc((new Date()).getTime());
+        this.stepSize = PredictiveAssertionProcessor.STEP_SIZE_NUMERATOR / this.settings.getIterations();
+        this.priorityQueueThreshold = this.settings.getPriorityQueueThreshold() / this.settings.getIterations();
+    };
+    prototype.initDependenciesMap = function() {
+        this.dependencies = {};
+        var type;
+        for (var i = 0; i &lt; PapDependency.getDependencyTypes().length; i++) {
+            type = PapDependency.getDependencyTypes()[i];
+            var dependencySubMap = {};
+            this.dependencies[type] = dependencySubMap;
+        }
+    };
+    prototype.initAssertionsMap = function() {
+        this.assertions = {};
+        for (var i = 0; i &lt; this.inputGraph.getNodes().length; i++) {
+            this.assertions[String.valueOf(i)] = new Array();
+        }
+    };
+    prototype.buildValuesCompetencyIndexAndDependencies = function() {
+        this.competencyIndex = {};
+        this.values = new Array();
+        for (var i = 0; i &lt; this.inputGraph.getNodes().length; i++) {
+            this.values.push(PredictiveAssertionProcessor.INITIAL_VALUE);
+            this.competencyIndex[this.inputGraph.getNodes()[i]] = i;
+            var type;
+            for (var j = 0; j &lt; PapDependency.getDependencyTypes().length; j++) {
+                type = PapDependency.getDependencyTypes()[j];
+                this.dependencies[type][String.valueOf(i)] = new Array();
+            }
+        }
+    };
+    prototype.initDataStructures = function() {
+        this.initDependenciesMap();
+        this.initAssertionsMap();
+        this.buildValuesCompetencyIndexAndDependencies();
+    };
+    prototype.getDefaultPapDependencyParms = function() {
+        var depParms = new PapDependencyParms();
+        depParms.setType(PapDependency.NULL_TYPE);
+        depParms.setParentIndex(PredictiveAssertionProcessor.INIT_PARENT_IDX_DEP_PARM);
+        depParms.setChildIndex(PredictiveAssertionProcessor.INIT_CHILD_IDX_DEP_PARM);
+        depParms.setWeight(PredictiveAssertionProcessor.INIT_WEIGHT_DEP_PARM);
+        depParms.setLeak(PredictiveAssertionProcessor.INIT_LEAK_DEP_PARM);
+        depParms.setReverse(PredictiveAssertionProcessor.INIT_REVERSE_DEP_PARM);
+        return depParms;
+    };
+    prototype.getDependencyParmsForEdge = function(edge) {
+        var depType = edge.getRelation();
+        var depClass = this.dependencyDefs.getDependencyDefinitionMap()[depType].getDepClass();
+        var depParms = this.getDefaultPapDependencyParms();
+        switch (depClass.toLowerCase()) {
+            case &quot;isrequiredby&quot;:
+                depParms.setChildIndex(this.competencyIndex[edge.getSource()]);
+                depParms.setParentIndex(this.competencyIndex[edge.getTarget()]);
+                depParms.setType(PapDependency.NECESSARY_TYPE);
+                depParms.setWeight(this.dependencyDefs.getWeightForType(depType));
+                depParms.setLeak(this.dependencyDefs.getLeakForType(depType));
+                depParms.setReverse(this.dependencyDefs.getReverseForType(depType));
+                break;
+            case &quot;issufficientfor&quot;:
+                depParms.setChildIndex(this.competencyIndex[edge.getSource()]);
+                depParms.setParentIndex(this.competencyIndex[edge.getTarget()]);
+                depParms.setType(PapDependency.SUFFICIENT_TYPE);
+                depParms.setWeight(this.dependencyDefs.getWeightForType(depType));
+                depParms.setLeak(this.dependencyDefs.getLeakForType(depType));
+                depParms.setReverse(this.dependencyDefs.getReverseForType(depType));
+                break;
+            case &quot;isequivalentto&quot;:
+                depParms.setParentIndex(this.competencyIndex[edge.getSource()]);
+                depParms.setChildIndex(this.competencyIndex[edge.getTarget()]);
+                depParms.setType(PapDependency.EQUIVALENCE_TYPE);
+                depParms.setWeight(this.dependencyDefs.getWeightForType(depType));
+                break;
+            case &quot;broadens&quot;:
+                depParms.setParentIndex(this.competencyIndex[edge.getSource()]);
+                depParms.setChildIndex(this.competencyIndex[edge.getTarget()]);
+                depParms.setType(PapDependency.BROADENS_TYPE);
+                depParms.setWeight(this.dependencyDefs.getWeightForType(depType));
+                depParms.setReverse(this.dependencyDefs.getReverseForType(depType));
+                break;
+        }
+        return depParms;
+    };
+    prototype.dependencyExists = function(type, index, dependency) {
+        var dependencyArray = this.dependencies[type][index];
+        if (dependencyArray == null) {
+            return true;
+        }
+        var currentDep;
+        for (var i = 0; i &lt; dependencyArray.length; i++) {
+            currentDep = dependencyArray[i];
+            if (currentDep.equals(dependency)) 
+                return true;
+        }
+        return false;
+    };
+    prototype.processEdges = function() {
+        for (var i = 0; i &lt; this.inputGraph.getEdges().length; i++) {
+            var edge = this.inputGraph.getEdges()[i];
+            var depParms = this.getDependencyParmsForEdge(edge);
+            var newDep;
+            if (PapDependency.EQUIVALENCE_TYPE.equals(depParms.getType())) {
+                depParms.setDependencyFirst(true);
+                newDep = new PapDependency(depParms);
+                if (!this.dependencyExists(depParms.getType(), String.valueOf(depParms.getParentIndex()), newDep)) {
+                    this.dependencies[depParms.getType()][String.valueOf(depParms.getParentIndex())].push(newDep);
+                }
+                depParms.swapParentChildIndexes();
+                newDep = new PapDependency(depParms);
+                if (!this.dependencyExists(depParms.getType(), String.valueOf(depParms.getParentIndex()), newDep)) {
+                    this.dependencies[depParms.getType()][String.valueOf(depParms.getParentIndex())].push(newDep);
+                }
+            } else if (edge.getRelation() != null &amp;&amp; edge.getRelation().trim().length &gt; 0) {
+                depParms.setDependencyFirst(!depParms.getReverse());
+                newDep = new PapDependency(depParms);
+                if (!this.dependencyExists(depParms.getType(), String.valueOf(depParms.getParentIndex()), newDep)) {
+                    this.dependencies[depParms.getType()][String.valueOf(depParms.getParentIndex())].push(newDep);
+                }
+            }
+        }
+    };
+    prototype.addAssertions = function(assertionList) {
+        var sa;
+        var pa;
+        for (var i = 0; i &lt; assertionList.length; i++) {
+            sa = assertionList[i];
+            if (sa.getAssertionDate() &lt;= this.predictionDate &amp;&amp; ((!this.settings.getAbruptExpiration()) || this.predictionDate &lt;= sa.getExpirationDate())) {
+                var index = this.competencyIndex[sa.getCompetencyId()];
+                pa = new PapAssertion(sa.getConfidence(), index, sa.getAssertionDate(), sa.getExpirationDate(), !sa.isNegative());
+                this.assertions[String.valueOf(index)].push(pa);
+            }
+        }
+    };
+    prototype.processAssertions = function() {
+        if (this.subjectPem == null || this.subjectPem.length &lt;= 0) {
+            this.addAssertions(this.inputGraph.getNegativeAssertions());
+            this.addAssertions(this.inputGraph.getPositiveAssertions());
+        } else {
+            var sa;
+            var matchingAssertionList = new Array();
+            for (var i = 0; i &lt; this.inputGraph.getNegativeAssertions().length; i++) {
+                sa = this.inputGraph.getNegativeAssertions()[i];
+                if (this.subjectPem.equals(sa.getSubjectPem())) 
+                    matchingAssertionList.push(sa);
+            }
+            this.addAssertions(matchingAssertionList);
+            matchingAssertionList = new Array();
+            for (var i = 0; i &lt; this.inputGraph.getPositiveAssertions().length; i++) {
+                sa = this.inputGraph.getPositiveAssertions()[i];
+                if (this.subjectPem.equals(sa.getSubjectPem())) 
+                    matchingAssertionList.push(sa);
+            }
+            this.addAssertions(matchingAssertionList);
+        }
+    };
+    prototype.getTimeFactor = function(assertionDate, expirationDate) {
+        var range = expirationDate - assertionDate;
+        var timeUntilPrediction = this.predictionDate - assertionDate;
+        var rate = (timeUntilPrediction) / range;
+        return rate;
+    };
+    prototype.getRetention = function(assertionDate, expirationDate) {
+        if (this.settings.getAbruptExpiration() &amp;&amp; this.predictionDate &gt; (expirationDate)) 
+            return PredictiveAssertionProcessor.ABRUBT_EXP_RETENTION;
+         else {
+            if (this.settings.getGradualForgetting()) {
+                var factor = this.getTimeFactor(assertionDate, expirationDate);
+                return Math.exp(-factor);
+            } else 
+                return PredictiveAssertionProcessor.DEFAULT_RETENTION;
+        }
+    };
+    prototype.addAssertionsToUpdateQueue = function(updateQueue) {
+        var assertionList;
+        var assertion;
+        var val;
+        for (var i = 0; i &lt; this.inputGraph.getNodes().length; i++) {
+            assertionList = this.assertions[String.valueOf(i)];
+            for (var j = 0; j &lt; assertionList.length; j++) {
+                assertion = assertionList[j];
+                val = this.stepSize * assertion.getConfidence() * this.settings.getEvidenceWeight() * this.getRetention(assertion.getAssertionDate(), assertion.getExpirationDate());
+                if (val &gt; this.priorityQueueThreshold) {
+                    updateQueue.push(new PapUpdate(assertion.getCompetencyIndex(), val, assertion.getResult()));
+                }
+            }
+        }
+    };
+    prototype.processNecessaryNetworkDependencies = function(update, updateQueue) {
+        var updateDependencies = this.competencyNetwork.getDependencies()[PapDependency.NECESSARY_TYPE][String.valueOf(update.getIndex())];
+        if (updateDependencies != null) {
+            var probabilityLearnUnmetRequirements = PredictiveAssertionProcessor.DEFAULT_PROB_LEARN_UNMET_REQS;
+            if (updateDependencies.length &gt; 0) {
+                probabilityLearnUnmetRequirements = updateDependencies[0].getLeak();
+            }
+            var totalRes = (1 - probabilityLearnUnmetRequirements);
+            var dep;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                totalRes *= (1 - dep.getWeight() * this.competencyNetwork.getActivations()[dep.getChildIndex()]);
+            }
+            var gradient;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                if (!update.hasVisited(dep.getChildIndex())) {
+                    gradient = update.getChange() * totalRes / (1 - dep.getWeight() * this.competencyNetwork.getActivations()[dep.getChildIndex()]) * dep.getWeight() * this.settings.getDiscount();
+                    if (gradient &gt; this.priorityQueueThreshold) {
+                        updateQueue.push(update.updateChild(dep.getChildIndex(), gradient));
+                    }
+                }
+            }
+        }
+    };
+    prototype.processSufficientNetworkDependencies = function(update, updateQueue) {
+        var updateDependencies = this.competencyNetwork.getDependencies()[PapDependency.SUFFICIENT_TYPE][String.valueOf(update.getIndex())];
+        if (updateDependencies != null) {
+            var probabilityInsufficient = PredictiveAssertionProcessor.DEFAULT_PROB_INSUFF;
+            if (updateDependencies.length &gt; 0) {
+                probabilityInsufficient = updateDependencies[0].getLeak();
+            }
+            var totalRes = (1 - probabilityInsufficient);
+            var dep;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                totalRes *= (1.0 - (1.0 - this.competencyNetwork.getActivations()[dep.getChildIndex()]) * dep.getWeight());
+            }
+            var gradient;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                if (!update.hasVisited(dep.getChildIndex())) {
+                    gradient = update.getChange() * (1.0 - totalRes / (1.0 - dep.getWeight() * (1.0 - this.competencyNetwork.getActivations()[dep.getChildIndex()]))) * this.settings.getDiscount();
+                    if (gradient &gt; this.priorityQueueThreshold) {
+                        updateQueue.push(update.updateChild(dep.getChildIndex(), gradient));
+                    }
+                }
+            }
+        }
+    };
+    prototype.processEquivalenceNetworkDependencies = function(update, updateQueue) {
+        var updateDependencies = this.competencyNetwork.getDependencies()[PapDependency.EQUIVALENCE_TYPE][String.valueOf(update.getIndex())];
+        if (updateDependencies != null) {
+            var dep;
+            var gradient;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                if (!update.hasVisited(dep.getChildIndex())) {
+                    gradient = update.getChange() * dep.getWeight() * this.settings.getDiscount();
+                    if (Math.abs(gradient) &gt; this.priorityQueueThreshold) {
+                        updateQueue.push(update.updateChild(dep.getChildIndex(), gradient));
+                    }
+                }
+            }
+        }
+    };
+    prototype.processBroadensNetworkDependencies = function(update, updateQueue) {
+        var updateDependencies = this.competencyNetwork.getDependencies()[PapDependency.BROADENS_TYPE][String.valueOf(update.getIndex())];
+        if (updateDependencies != null) {
+            var dep;
+            var gradient;
+            for (var i = 0; i &lt; updateDependencies.length; i++) {
+                dep = updateDependencies[i];
+                if (!update.hasVisited(dep.getChildIndex())) {
+                    gradient = update.getChange() * this.settings.getDiscount() * dep.getWeight();
+                    if (gradient &gt; this.priorityQueueThreshold) {
+                        updateQueue.push(update.updateChild(dep.getChildIndex(), gradient));
+                    }
+                }
+            }
+        }
+    };
+    prototype.predictCompetence = function() {
+        this.competencyNetwork = new PapCompetencyNetwork(this.dependencies, this.inputGraph.getNodes().length, this.settings);
+        var updateQueue;
+        var currentUpdate;
+        for (var iteration = 0; iteration &lt; this.settings.getIterations(); iteration++) {
+            updateQueue = new Array();
+            this.addAssertionsToUpdateQueue(updateQueue);
+             while (updateQueue.length &gt; 0){
+                currentUpdate = updateQueue.pop();
+                this.competencyNetwork.update(currentUpdate.getIndex(), currentUpdate.getChange(), currentUpdate.getPositive());
+                this.processNecessaryNetworkDependencies(currentUpdate, updateQueue);
+                this.processSufficientNetworkDependencies(currentUpdate, updateQueue);
+                this.processEquivalenceNetworkDependencies(currentUpdate, updateQueue);
+                this.processBroadensNetworkDependencies(currentUpdate, updateQueue);
+            }
+        }
+    };
+    prototype.buildCompetencePrediction = function() {
+        this.competencePrediction = new PapNetworkPrediction(this.predictionDate, this.subjectPem, this.inputGraph.getNodes(), this.competencyNetwork);
+    };
+    prototype.predictAll = function(inputGraph, subjectPem, predictionDate, dependencyDefs, settings) {
+        this.processInputParameters(inputGraph, subjectPem, predictionDate, dependencyDefs, settings);
+        this.initDataStructures();
+        this.processEdges();
+        this.processAssertions();
+        this.predictCompetence();
+        this.buildCompetencePrediction();
+        return this.competencePrediction;
+    };
+}, {competencyIndex: {name: &quot;Map&quot;, arguments: [null, null]}, values: {name: &quot;Array&quot;, arguments: [null]}, dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, assertions: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapAssertion&quot;]}]}, dependencyDefs: &quot;PapDependencyDefinitions&quot;, settings: &quot;PapSettings&quot;, inputGraph: &quot;CompetencyGraph&quot;, competencyNetwork: &quot;PapCompetencyNetwork&quot;, competencePrediction: &quot;PapNetworkPrediction&quot;}, {});
+var CyclicGraphCollapser = function() {};
+CyclicGraphCollapser = stjs.extend(CyclicGraphCollapser, null, [], function(constructor, prototype) {
+    prototype.nodesProcessed = null;
+    prototype.visitedNodes = null;
+    prototype.buildNarrowsIsRequiredByEqualsMap = function(graph) {
+        var relationMap = new NodeRelationMap();
+        var n;
+        var nodeList = graph.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            n = nodeList[i];
+            relationMap.addNodeRelations(n, graph.getNarrowsIsRequiredByEqualsRelationListForNode(n));
+        }
+        return relationMap;
+    };
+    prototype.buildBroadensRequiresEqualsMap = function(graph) {
+        var relationMap = new NodeRelationMap();
+        var n;
+        var nodeList = graph.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            n = nodeList[i];
+            relationMap.addNodeRelations(n, graph.getBroadensRequiresEqualsRelationListForNode(n));
+        }
+        return relationMap;
+    };
+    prototype.mergeEquivalentNodes = function(relationMap, npg) {
+        var nodeList = relationMap.getNodeList();
+        var nodeRelations;
+        var nr;
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            nodeRelations = relationMap.getRelationsForNode(nodeList[i]);
+            for (var j = 0; j &lt; nodeRelations.length; j++) {
+                nr = nodeRelations[j];
+                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO)) {
+                    npg.mergeNodePackets(npg.getNodePacketForNode(nr.getSource()), npg.getNodePacketForNode(nr.getTarget()));
+                }
+            }
+        }
+    };
+    prototype.mergeCyclicNodes = function(startCycleNode, npg) {
+        var startingIdx = ArrayUtil.arrayLastIndexOf(this.visitedNodes, startCycleNode);
+        var partOfCycleNode;
+        for (var i = startingIdx + 1; i &lt; this.visitedNodes.length; i++) {
+            partOfCycleNode = this.visitedNodes[i];
+            if (partOfCycleNode != startCycleNode) {
+                npg.mergeNodePackets(npg.getNodePacketForNode(startCycleNode), npg.getNodePacketForNode(partOfCycleNode));
+            }
+        }
+    };
+    prototype.findCycles = function(n, relationMap, npg) {
+        if (ArrayUtil.arrayContains(this.visitedNodes, n)) {
+            this.mergeCyclicNodes(n, npg);
+        } else {
+            this.nodesProcessed.push(n);
+            var relationsToVisit = relationMap.getRelationsForNode(n);
+            if (relationsToVisit == null || relationsToVisit.length == 0) 
+                return;
+             else {
+                this.visitedNodes.push(n);
+                var nr;
+                for (var i = 0; i &lt; relationsToVisit.length; i++) {
+                    nr = relationsToVisit[i];
+                    this.findCycles(nr.getTarget(), relationMap, npg);
+                }
+                this.visitedNodes = ArrayUtil.arrayRemove(this.visitedNodes, n);
+            }
+        }
+    };
+    prototype.startFindCycles = function(relationMap, npg) {
+        var nodeList = relationMap.getNodeList();
+        for (var i = 0; i &lt; nodeList.length; i++) {
+            this.visitedNodes = new Array();
+            this.findCycles(nodeList[i], relationMap, npg);
+        }
+    };
+    prototype.buildNodePacketGraph = function(relationMap) {
+        var npg = new NodePacketGraph();
+        npg.initNodePacketGraph(relationMap.getNodeList());
+        this.mergeEquivalentNodes(relationMap, npg);
+        this.nodesProcessed = new Array();
+        this.startFindCycles(relationMap, npg);
+        return npg;
+    };
+    prototype.mergeNodePacketGraphs = function(nirbeNpg, breNpg) {
+        var mergedNpg = nirbeNpg;
+        var np;
+        var nodePacketList = breNpg.getNodePacketList();
+        for (var i = 0; i &lt; nodePacketList.length; i++) {
+            np = nodePacketList[i];
+            if (np.getNodeCount() &gt; 1) {
+                var targetNodePacket = mergedNpg.getNodePacketForNode(np.getNodeList()[0]);
+                for (var j = 1; j &lt; np.getNodeList().length; j++) {
+                    mergedNpg.mergeNodePackets(targetNodePacket, mergedNpg.getNodePacketForNode(np.getNodeList()[j]));
+                }
+            }
+        }
+        return mergedNpg;
+    };
+    prototype.collapseGraph = function(graph) {
+        try {
+            var nirbeNrm = this.buildNarrowsIsRequiredByEqualsMap(graph);
+            var nirbeNpg = this.buildNodePacketGraph(nirbeNrm);
+            var breNrm = this.buildBroadensRequiresEqualsMap(graph);
+            var breNpg = this.buildNodePacketGraph(breNrm);
+            var finalNodePacketGraph = this.mergeNodePacketGraphs(nirbeNpg, breNpg);
+            finalNodePacketGraph.buildPacketRelationsFromNodeRelations(graph.getRelationList());
+            return finalNodePacketGraph;
+        }catch (e) {
+             throw e;
+        }
+    };
+}, {nodesProcessed: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}, visitedNodes: {name: &quot;Array&quot;, arguments: [&quot;Node&quot;]}}, {});
 var CombinatorAssertionProcessor = function() {
     AssertionProcessor.call(this);
 };
@@ -2341,34 +4627,34 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
      *  positive assertions &gt; 0 &amp;&amp; number of negative assertions &gt; 0 THEN
      *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &amp;&amp;
      *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
-     * 
+     *  &lt;p&gt;
      *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
      *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
      *  packets = INDETERMINANT THEN INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
      *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
      *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
      *  INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
      *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
      *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
-     * 
-     * 
+     *  &lt;p&gt;
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
      *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
      *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
      *  INDETERMINANT
-     * 
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
      */
     prototype.determineCompetencyOrRollupRuleResult = function(ip) {
@@ -2521,36 +4807,35 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
      *  positive assertions &gt; 0 &amp;&amp; number of negative assertions &gt; 0 THEN
      *  assertionResult = INDETERMINANT IF number of positive assertions = 0 &amp;&amp;
      *  number of negative assertions = 0 THEN assertionResult = UNKNOWN )
-     *  
+     *  &lt;p&gt;
      *  IF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any
      *  equivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub
      *  packets = INDETERMINANT THEN INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF
      *  all sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN
      *  THEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
      *  INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =
      *  TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =
      *  FALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
-     *  
-     *  
+     *  &lt;p&gt;
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN
      *  IF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE IF assertionResult = FALSE: IF all equivalent packets =
      *  FALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE
      *  INDETERMINANT
-     *  
+     *  &lt;p&gt;
      *  ELSE INDETERMINANT
-     *  
      */
     prototype.determineCompetencyOrRollupRuleResult = function(ip) {
         var assertionResult = this.getPacketAssertionResult(ip);

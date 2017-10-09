@@ -13,9 +13,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "ActionStatusType",
         "ActivateAction",
         "AddAction",
-        "AddCompetenciesToFrameworkModal",
-        "AddFieldModal",
-        "AddOwnerModal",
         "AdministrativeArea",
         "AdultEntertainment",
         "AdvancedStandingAction",
@@ -32,8 +29,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "Answer",
         "Apartment",
         "ApartmentComplex",
-        "AppController",
-        "AppSettings",
         "AppendAction",
         "ApplyAction",
         "ApprenticeshipCertificate",
@@ -353,7 +348,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "IceCreamShop",
         "IdentifierValue",
         "IdentifierValueSet",
-        "IdentityController",
         "IgnoreAction",
         "ImageGallery",
         "ImageObject",
@@ -409,7 +403,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "Locksmith",
         "LodgingBusiness",
         "LodgingReservation",
-        "LoginController",
         "LoseAction",
         "Map",
         "MapCategoryType",
@@ -615,10 +608,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "SellAction",
         "SendAction",
         "Series",
-        "ServerController",
         "Service",
         "ServiceChannel",
-        "SessionController",
         "ShareAction",
         "ShoeStore",
         "ShoppingCenter",
@@ -734,7 +725,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "Zoo"
     ],
     "modules": [
-        "cass.manager",
         "com.eduworks.ec",
         "com.eduworks.ec.ui",
         "org.cassproject",
@@ -743,11 +733,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "org.schema"
     ],
     "allModules": [
-        {
-            "displayName": "cass.manager",
-            "name": "cass.manager",
-            "description": "Manages the storage object of the browser whether it be the session or \nlocal storage, and provides methods for retrieving values.\n\nAlso holds a list of recently viewed object ids for different classes\nfor a specific computer in the browsers storage, this can be used\nto precache objects for use or to display the recently viewed objects"
-        },
         {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",

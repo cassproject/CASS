@@ -4916,7 +4916,7 @@ ParcelDelivery = stjs.extend(ParcelDelivery, Intangible, [], function(constructo
  * --END_LICENSE--
  */
 
-   /**
+    /**
      *  Schema.org/trackingUrl
      *  Tracking url for the parcel delivery.
      * 
