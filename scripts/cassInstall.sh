@@ -67,7 +67,6 @@ apt-get -qqy remove tomcat7 maven
 apt-get -qqy autoremove
 apt-get -qqy install oracle-java8-installer
 echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat7
-apt-get -qqy install tomcat7
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/java/jdk1.8.0_144/jre/bin/java" ];
  then
