@@ -13,6 +13,7 @@ badgeSetup = function () {
     EcIdentityManager.addIdentity(identity);
 
 }
+
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);
 
@@ -23,6 +24,7 @@ badgeGetPerson = function (fingerprint) {
     }
     return person;
 }
+
 badgeCryptographicKey = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -39,6 +41,7 @@ badgeCryptographicKey = function (fingerprint) {
         publicKeyPem: person.publicKey
     });
 };
+
 badgeProfile = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -50,7 +53,7 @@ badgeProfile = function (fingerprint) {
     return JSON.stringify({
         "@context": "https://w3id.org/openbadges/v2",
         id: repoEndpoint() + "badge/profile/" + fingerprint,
-        type: "Profile",
+        type: "Issuer",
         name: person.name,
         url: person.url,
         telephone: person.telephone,
@@ -63,6 +66,7 @@ badgeProfile = function (fingerprint) {
         }
     })
 };
+
 badgeSubject = function (fingerprint) {
     badgeSetup.call(this);
     if (fingerprint == null)
@@ -108,12 +112,13 @@ badgeSubject = function (fingerprint) {
         })
     }
 };
+
 badgeClass = function (competencyId, fingerprint, assertion) {
     badgeSetup.call(this);
 
     var competency = null;
     if (competencyId != null)
-        competency = EcRepository.getBlocking(competencyId);
+        competency = EcCompetency.getBlocking(competencyId);
     else {
         var query = queryParse.call(this);
         debug(query);
@@ -152,6 +157,7 @@ badgeClass = function (competencyId, fingerprint, assertion) {
         alignment: [competencyAlignment]
     });
 };
+
 badgeAssertion = function () {
     badgeSetup.call(this);
 
@@ -208,6 +214,37 @@ badgeAssertion = function () {
     };
     //    result = bakeImage(result);
     return JSON.stringify(result);
+}
+
+
+openbadgeCheckId = function(){
+	badgeSetup.call(this);
+
+	var a = new EcAssertion();
+	a.copyFrom(JSON.parse(this.params.obj));
+	debug(JSON.stringify(a,null,2));
+
+	if (!EcArray.has(a.subject.reader,EcPpk.fromPem(openbadgesPpk()).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(openbadgesPpk()).toPk()))
+		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
+
+	if (repoEndpoint().contains("localhost"))
+		return debug("Badge not generated for assertion: Endpoint Configuration is not set.");
+
+	var subject = a.getSubject();
+	if (subject == null)
+		return debug("Badge not generated for assertion: No subject found.");
+    var person = badgeGetPerson.call(this, subject.fingerprint());
+    if (person == null)
+        return debug("Badge not generated for assertion: Subject profile not found.");
+
+    if (person.email == null)
+    	return debug("Badge not generated for assertion: Profile does not contain email address.");
+
+	badgeSendEmail({
+		recipient: person.email,
+		competencyName: EcRepository.getBlocking(a.competency).name,
+		badgeId: repoEndpoint() + "badge/assertion/" + a.getGuid()
+	});
 }
 
 bindWebService("/badge/profile", badgeProfile);
