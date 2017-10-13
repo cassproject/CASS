@@ -11,3 +11,23 @@ ppk=#if(
 #openbadgesPpk=ppk;
 pk=ppk.rsaPpkToPk();
 /badge/pk=pk;
+
+badgeSendEmail=#sendEmail(
+	html="true",
+	_smtpHost=#badgeSMTPHost(),
+	_smtpPort=#badgeSMTPPort(),
+	_smtpUser=#badgeSMTPUser(),
+	_smtpPass=#badgeSMTPPassword(),
+	_from=#badgeEmailFrom(),
+	_to="@recipient",
+	_subject="You have been issued a badge!",
+	_template="Someone has claimed you know how to '$(competencyName)' and has issued you a badge! <br>
+	   Add the badge to your badge backpack (Badgr, Credly, or others) using the below URL: <br><br>
+	   $(badgeId) <br><br>
+	   Congratulations!<br>
+	   <small>This message was sent by the Competency and Skills System on the behalf of the badge issuer.</small>
+	",
+	competencyName=#string(str="@competencyName"),
+	badgeId=#string(str="@badgeId")
+);
+#badgeSendEmail = badgeSendEmail;
