@@ -1130,7 +1130,7 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         $(ModalManager.MODAL_CONTAINER_ID).removeClass(&quot;large&quot;);
         $(ModalManager.MODAL_CONTAINER_ID).removeClass(&quot;full&quot;);
         var modalSize = modal.getModalSize();
-        if (modalSize.equals(&quot;tiny&quot;) || modalSize.equals(&quot;small&quot;) || modalSize.equals(&quot;medium&quot;) || modalSize.equals(&quot;large&quot;) || modalSize.equals(&quot;full&quot;)) {
+        if (modalSize == &quot;tiny&quot; || modalSize == &quot;small&quot; || modalSize == &quot;medium&quot; || modalSize == &quot;large&quot; || modalSize == &quot;full&quot;) {
             $(ModalManager.MODAL_CONTAINER_ID).addClass(modalSize);
         } else {
             $(ModalManager.MODAL_CONTAINER_ID).addClass(&quot;small&quot;);
@@ -1241,7 +1241,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
     };
     prototype.fillInnerString = function(scope, dataObj, key) {
-        if (key.contains(&quot;/&quot;) || key.contains(&quot;:&quot;) || key.contains(&quot;@&quot;)) 
+        if (key.indexOf(&quot;/&quot;) != -1 || key.indexOf(&quot;:&quot;) != -1 || key.indexOf(&quot;@&quot;) != -1) 
             return;
         var a = (dataObj);
         var v = a[key];
@@ -1281,7 +1281,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
     };
     prototype.fillInnerStringReferences = function(scope, dataObj, key) {
-        if (key.contains(&quot;/&quot;) || key.contains(&quot;:&quot;) || key.contains(&quot;@&quot;)) 
+        if (key.indexOf(&quot;/&quot;) != -1 || key.indexOf(&quot;:&quot;) != -1 || key.indexOf(&quot;@&quot;) != -1) 
             return;
         var a = (dataObj);
         var v = a[key];
@@ -1298,7 +1298,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         if ((typeof v) == &quot;function&quot;) {}
     };
     prototype.fillInnerArray = function(scope, dataObj, key) {
-        if (key.contains(&quot;/&quot;) || key.contains(&quot;:&quot;) || key.contains(&quot;@&quot;)) 
+        if (key.indexOf(&quot;/&quot;) != -1 || key.indexOf(&quot;:&quot;) != -1 || key.indexOf(&quot;@&quot;) != -1) 
             return;
         var props = (dataObj);
         var v = props[key];
@@ -1514,7 +1514,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             }
             if (ScreenManager.startupScreen != null) {
                 var params = null;
-                if (window.document.location.hash.contains(&quot;?&quot;)) {
+                if (window.document.location.hash.indexOf(&quot;?&quot;) != -1) {
                     var hashSplit = (window.document.location.hash.split(&quot;?&quot;));
                     if (hashSplit.length &gt; 1 &amp;&amp; hashSplit[1] != &quot;&quot;) {
                         var paramSplit = (hashSplit[1].split(&quot;&amp;&quot;));

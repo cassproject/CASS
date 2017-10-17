@@ -52,7 +52,7 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/get", fd, success, failure);
-        });
+        }, failure);
     };
     /**
      *  Retrieves the Moodle adapter Encryption Key from the server to share frameworks with
@@ -72,7 +72,7 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingString(serverUrl, "adapter/moodle/config/key", fd, success, failure);
-        });
+        }, failure);
     };
     constructor.syncCassToMoodle = function(serverUrl, success, failure) {
         EcRemote.postExpectingString(serverUrl, "moodle/cassToMoodle", new FormData(), success, failure);
@@ -98,7 +98,7 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(serverUrl, "adapter/moodle/config/set", fd, success, failure);
-        });
+        }, failure);
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
 /**
@@ -133,7 +133,7 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(serverUrl, "adapter/xapi/config/get", fd, success, failure);
-        });
+        }, failure);
     };
     /**
      *  Saves this config Objects configuration values to the server specified
@@ -150,6 +150,6 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
         EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
             fd.append("signatureSheet", signatureSheet);
             EcRemote.postExpectingObject(serverUrl, "adapter/xapi/config/set", fd, success, failure);
-        });
+        }, failure);
     };
 }, {atProperties: {name: "Array", arguments: [null]}}, {});
