@@ -55,7 +55,7 @@ badgeProfile = function (fingerprint) {
         id: repoEndpoint() + "badge/profile/" + fingerprint,
         type: "Issuer",
         name: person.name,
-        url: person.url,
+        url: person.url == null ? (repoEndpoint() + "badge/profile/" + fingerprint) : person.url ,
         telephone: person.telephone,
         description: person.description,
         image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
@@ -152,7 +152,7 @@ badgeClass = function (competencyId, fingerprint, assertion) {
         issuer: repoEndpoint() + "badge/profile/" + fingerprint,
         name: competency.name,
         criteria: criteria,
-        description: competency.description,
+        description: competency.description == null ? competency.name : competency.description,
         image: "https://api.badgr.io/public/badges/X7kb4H72TXiMoYN_kJNdEQ/image",
         alignment: [competencyAlignment]
     });
