@@ -107,6 +107,7 @@ function populateCompetency(id,cui) {
 			ui = cui;
 		else
 			ui = $("[url='" + competency.shortId() + "']");
+		ui.attr("actual",competency.shortId());
 		ui.children(".cass-competency-name").text(competency.getName());
 		if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
 			$("#selectedCompetency").text(competency.getName()).show();
