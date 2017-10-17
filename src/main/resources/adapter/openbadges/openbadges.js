@@ -216,13 +216,14 @@ badgeAssertion = function () {
     return JSON.stringify(result);
 }
 
-
 openbadgeCheckId = function(){
 	badgeSetup.call(this);
 
 	var a = new EcAssertion();
 	a.copyFrom(JSON.parse(this.params.obj));
-	debug(JSON.stringify(a,null,2));
+
+	if (a.subject.reader == null)
+		return debug("Badge not generated for assertion: Assertion has no readers.");
 
 	if (!EcArray.has(a.subject.reader,EcPpk.fromPem(openbadgesPpk()).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(openbadgesPpk()).toPk()))
 		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
@@ -251,4 +252,3 @@ bindWebService("/badge/profile", badgeProfile);
 bindWebService("/badge/cryptographicKey", badgeCryptographicKey);
 bindWebService("/badge/class", badgeClass);
 bindWebService("/badge/assertion", badgeAssertion);
-
