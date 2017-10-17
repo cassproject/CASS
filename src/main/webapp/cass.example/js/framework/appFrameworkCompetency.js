@@ -24,9 +24,7 @@ function insertCompetencyIntoFramework(competencyId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.addCompetency(competencyId);
         EcRepository.save(f, function () {
             populateFramework(frameworkId);
@@ -51,9 +49,7 @@ function removeCompetencyFromFramework(competencyId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.removeCompetency(competencyId, function () {
             EcRepository.save(f, function () {
                 populateFramework(frameworkId);
@@ -104,19 +100,19 @@ function bulkFromFramework() {
     }
     var copy = $("#bulkFromFrameworkCompetencyDuplicate").is(':checked');
 
-    EcRepository.get(frameworkId, function (frameworkTarget) {
-        EcRepository.get(importFrameworkFrom, function (frameworkSource) {
-            if (frameworkTarget.competency === undefined)
+    EcFramework.get(frameworkId, function (frameworkTarget) {
+        EcFramework.get(importFrameworkFrom, function (frameworkSource) {
+            if (frameworkTarget.competency == null)
                 frameworkTarget.competency = [];
-            if (frameworkSource.competency === undefined)
+            if (frameworkSource.competency == null)
                 frameworkSource.competency = [];
-            if (frameworkTarget.relation === undefined)
+            if (frameworkTarget.relation == null)
                 frameworkTarget.relation = [];
-            if (frameworkSource.relation === undefined)
+            if (frameworkSource.relation == null)
                 frameworkSource.relation = [];
-            if (frameworkTarget.level === undefined)
+            if (frameworkTarget.level == null)
                 frameworkTarget.level = [];
-            if (frameworkSource.level === undefined)
+            if (frameworkSource.level == null)
                 frameworkSource.level = [];
             if (copy) {
                 bulkMap = {};
@@ -126,7 +122,7 @@ function bulkFromFramework() {
                 for (var i = 0; i < frameworkSource.competency.length; i++) {
                     //Copy all competencies and populate mapping in bulkMap.
                     var competencyId = frameworkSource.competency[i];
-                    EcRepository.get(competencyId, function (competency) {
+                    EcCompetency.get(competencyId, function (competency) {
                         var oldId = competency.shortId();
                         competency.generateId(repo.selectedServer);
                         competency.owners = [];
@@ -145,15 +141,17 @@ function bulkFromFramework() {
                                 } else
                                     for (var i = 0; i < frameworkSource.relation.length; i++) {
                                         var relationId = frameworkSource.relation[i];
-                                        EcRepository.get(relationId, function (relation) {
+                                        EcAlignment.get(relationId, function (relation) {
                                             var oldId = relation.shortId();
                                             relation.generateId(repo.selectedServer);
-                                            relation.source = bulkMap[relation.source];
-                                            relation.target = bulkMap[relation.target];
+                                            if (bulkMap[relation.source] != null)
+                                            	relation.source = bulkMap[relation.source];
+                                            if (bulkMap[relation.target] != null)
+                                            	relation.target = bulkMap[relation.target];
                                             relation.owners = [];
                                             if (identity != null)
                                                 relation.addOwner(identity.ppk.toPk());
-                                            if (relation.source === undefined || relation.target === undefined) {
+                                            if (relation.source == null || relation.target == null) {
                                                 relationArray.push(relation.shortId());
                                                 error("Some relations did not copy over. This may be due to missing competencies or versioning errors.");
                                                 if (relationArray.length == frameworkSource.relation.length)
@@ -167,6 +165,8 @@ function bulkFromFramework() {
                                                     relationArray.push(relation.shortId());
                                                     if (relationArray.length == frameworkSource.relation.length)
                                                         EcRepository.save(frameworkTarget, function () {
+                                                        	//Invalidate Cache
+                                                        	EcRepository.cache = {};
                                                             populateFramework(frameworkId);
                                                             $("#bulkFromFramework").foundation('close');
                                                         }, error);
@@ -176,7 +176,7 @@ function bulkFromFramework() {
                                     //Phase 3: Copy all relations (updating source/target IDs)
                                 for (var i = 0; i < frameworkSource.level.length; i++) {
                                     var levelId = frameworkSource.level[i];
-                                    EcRepository.get(levelId, function (level) {
+                                    EcLevel.get(levelId, function (level) {
                                         var oldId = level.shortId();
                                         level.generateId(repo.selectedServer);
                                         level.competency = bulkMap[level.competency];

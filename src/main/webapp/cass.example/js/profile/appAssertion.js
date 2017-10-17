@@ -50,7 +50,7 @@ function createNewAssertion() {
             }
         }, null, error);
     } else {
-        EcRepository.get(frameworkId, function (framework) {
+        EcFramework.get(frameworkId, function (framework) {
             if (framework.competency != null)
                 for (var i = 0; i < framework.competency.length; i++) {
                     EcCompetency.get(framework.competency[i], function (competency) {
@@ -90,7 +90,7 @@ function createNewAssertionSelectedCompetencyChanged(e) {
                 .attr("value", level.shortId());
         }, null, error);
     } else {
-        EcRepository.get(frameworkId, function (framework) {
+        EcFramework.get(frameworkId, function (framework) {
             if (framework.level != null) {
                 var first = true;
                 for (var i = 0; i < framework.level.length; i++) {

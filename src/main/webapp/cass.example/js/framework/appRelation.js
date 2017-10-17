@@ -199,7 +199,7 @@ function editRelationDelete() {
         return;
     }
     if (confirm("This will delete the selected relation. Continue?") == true)
-        EcRepository.get($("#editRelationId").val(), function (relation) {
+        EcAlignment.get($("#editRelationId").val(), function (relation) {
             EcRepository._delete(relation, function (response) {
                 removeRelationFromFramework(relation.shortId(), frameworkId);
                 $("#editRelation").foundation('close');

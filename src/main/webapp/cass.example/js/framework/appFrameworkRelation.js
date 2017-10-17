@@ -9,7 +9,7 @@
 */
 
 function populateFrameworkRelations(frameworkId,ui) {
-    EcRepository.get(frameworkId, function (fw) {
+    EcFramework.get(frameworkId, function (fw) {
         var relationUi = $("[url='" + frameworkId + "']").find(".cass-competency-relations").html("");
         if (relationUi.length > 0 && fw.relation !== undefined) {
             repo.precache(fw.relation);
@@ -21,7 +21,7 @@ function populateFrameworkRelations(frameworkId,ui) {
 }
 
 function populateFrameworkRelation(fw, relationId,fwui) {
-	EcRepository.get(relationId, function (relation) {
+	EcAlignment.get(relationId, function (relation) {
 		var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
 		var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
 		var base = null;
@@ -77,12 +77,10 @@ function insertRelationIntoFramework(relationId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.addRelation(relationId);
         EcRepository.save(f, function () {
-            EcRepository.get(frameworkId, function (fw) {
+            EcFramework.get(frameworkId, function (fw) {
                 populateFrameworkRelation(fw, relationId);
             });
         }, error);
@@ -107,7 +105,7 @@ function removeRelationFromFramework(relationId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         var f = new EcFramework();
         f.copyFrom(framework);
         f.removeRelation(relationId);

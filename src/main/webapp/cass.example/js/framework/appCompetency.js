@@ -55,9 +55,10 @@ function editCompetency(competencyId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(competencyId, function (competency) {
+    EcCompetency.get(competencyId, function (competency) {
         $("#editCompetencyName").val(competency.getName());
         $("#editCompetencyDescription").val(competency.getDescription());
+        $("#editCompetencyScope").val(competency.scope);
         $("#editCompetency").foundation('open');
         $("#editCompetency").select();
     }, error);
@@ -69,8 +70,8 @@ function editCompetencySave() {
         error("Framework not selected.");
         return;
     }
-    var competencyId = $("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url");
-    EcRepository.get(competencyId, function (competency) {
+    var competencyId = $("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".cass-competency.is-active").attr("url");
+    EcCompetency.get(competencyId, function (competency) {
         competency.name = $("#editCompetencyName").val();
         competency.description = $("#editCompetencyDescription").val();
         competency.scope = $("#editCompetencyScope").val();
@@ -87,9 +88,9 @@ function editCompetencyDelete() {
         error("Framework not selected.");
         return;
     }
-    var competencyId = $("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url");
+    var competencyId = $("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".cass-competency.is-active").attr("url");
     if (confirm("This will delete the selected competency. Continue?") == true) {
-        EcRepository.get(competencyId, function (competency) {
+        EcCompetency.get(competencyId, function (competency) {
             EcRepository._delete(competency, function (response) {
                 $("#editCompetency").foundation('close');
                 removeCompetencyFromFramework(competencyId, frameworkId);
@@ -109,7 +110,7 @@ function populateCompetency(id,cui) {
 			ui = $("[url='" + competency.shortId() + "']");
 		ui.attr("actual",competency.shortId());
 		ui.children(".cass-competency-name").text(competency.getName());
-		if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".is-active").attr("url") == competency.shortId()) {
+		if ($("#frameworks").find(".is-active").find(".cass-framework-competencies").find(".cass-competency.is-active").attr("url") == competency.shortId()) {
 			$("#selectedCompetency").text(competency.getName()).show();
 			$("#selectedFramework").hide();
 		}
@@ -148,7 +149,9 @@ function insertExistingCompetency() {
             else
                 results.html("");
             for (var i = 0; i < competencies.length; i++) {
-                var competency = competencies[i];
+                var c = competencies[i];
+                var competency = new EcCompetency();
+                competency.copyFrom(c);
                 results.append(cassCompetencyTemplate);
                 var ui = results.children().last();
                 ui.attr("url", competency.shortId());
