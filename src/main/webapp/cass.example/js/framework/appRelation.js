@@ -26,7 +26,7 @@ function insertExistingRelation() {
         function (relations) {
             $("#insertExistingRelationResults").html("");
             for (var i = 0; i < relations.length; i++) {
-                EcRepository.get(relations[i].shortId(), function (relation) {
+                EcAlignment.get(relations[i].shortId(), function (relation) {
                     var ui = $("#insertExistingRelation");
                     var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
                     var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
@@ -57,13 +57,13 @@ $("body").on("click", ".cass-relation-target,.cass-relation-source,.assertionCom
     var competencyId = $(this).attr("url");
     e.stopPropagation();
     if ($(".cass-competency[url=\"" + competencyId + "\"]>.accordion-content").attr("aria-hidden") != "false") {
-        $(".cass-framework[url='"+frameworkId+"']").find(".cass-framework-competencies").children(".accordion").foundation('down', $(".cass-competency[url='" + competencyId + "']>.accordion-content"));
+        $(".cass-framework[url='"+frameworkId+"']").find(".cass-framework-competencies").children(".accordion").foundation('down', $(".cass-competency[url='" + competencyId + "'],.cass-competency[actual='" + competencyId + "']>.accordion-content"));
         (function (url) {
             setTimeout(function () {
                 timeout(function () {
-                    if ($(".cass-competency[url=\"" + url + "\"]>").length > 0)
+                    if ($(".cass-competency[url=\"" + url + "\"],.cass-competency[actual=\"" + url + "\"]").length > 0)
                     $('html, body').animate({
-                        scrollTop: $(".cass-competency[url=\"" + url + "\"]>").offset().top
+                        scrollTop: $(".cass-competency[url=\"" + url + "\"],.cass-competency[actual=\"" + url + "\"]").offset().top
                     }, 500);
                 });
             }, 500);
@@ -77,7 +77,7 @@ function insertNewRelation() {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         if (framework.competency == null) {
             error("No competencies found.");
             return;
@@ -85,7 +85,7 @@ function insertNewRelation() {
         $("#newRelationSource").html("");
         $("#newRelationTarget").html("");
         for (var i = 0; i < framework.competency.length; i++) {
-            EcRepository.get(framework.competency[i], function (competency) {
+            EcCompetency.get(framework.competency[i], function (competency) {
                 var ui = $("#newRelationSource").append("<option/>").children().last();
                 ui.text(competency.getName());
                 ui.attr("value", competency.shortId());
@@ -145,15 +145,15 @@ function editRelation(relationId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(relationId, function (relation) {
+    EcAlignment.get(relationId, function (relation) {
         $("#editRelationId").val(relation.shortId());
         $("#editRelationName").val(relation.getName());
         $("#editRelationDescription").val(relation.getDescription());
-        EcRepository.get(frameworkId, function (framework) {
+        EcFramework.get(frameworkId, function (framework) {
             $("#editRelationSource").html("");
             $("#editRelationTarget").html("");
             for (var i = 0; i < framework.competency.length; i++) {
-                EcRepository.get(framework.competency[i], function (competency) {
+                EcCompetency.get(framework.competency[i], function (competency) {
                     var ui = $("#editRelationSource").append("<option/>").children().last();
                     ui.text(competency.getName());
                     ui.attr("value", competency.shortId());
@@ -177,14 +177,14 @@ function editRelationSave() {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get($("#editRelationId").val(), function (relation) {
+    EcAlignment.get($("#editRelationId").val(), function (relation) {
         relation.source = $("#editRelationSource option:selected").attr("value");
         relation.target = $("#editRelationTarget option:selected").attr("value");
         relation.relationType = $("#editRelationType option:selected").attr("value");
         relation.name = $("#editRelationName").val();
         relation.description = $("#editRelationDescription").val();
         EcRepository.save(relation, function () {
-            EcRepository.get(frameworkId, function (fw) {
+            EcFramework.get(frameworkId, function (fw) {
                 populateFrameworkRelation(fw, relation.shortId());
                 $("#editRelation").foundation('close');
             });
@@ -199,7 +199,7 @@ function editRelationDelete() {
         return;
     }
     if (confirm("This will delete the selected relation. Continue?") == true)
-        EcRepository.get($("#editRelationId").val(), function (relation) {
+        EcAlignment.get($("#editRelationId").val(), function (relation) {
             EcRepository._delete(relation, function (response) {
                 removeRelationFromFramework(relation.shortId(), frameworkId);
                 $("#editRelation").foundation('close');

@@ -929,7 +929,7 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     prototype.title = null;
     /**
      *  The performance characteristics required by this level in text form.
-     *  TBD: Isn&#x27;t this what description represents?
+     *  FR - Represented by description.
      * 
      *  @property performance
      *  @type string
@@ -1191,18 +1191,18 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     prototype.validThrough = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (&quot;isEquivalenTo&quot;.equals(this.relationType)) 
+        if (&quot;isEquivalenTo&quot; == this.relationType) 
             this.relationType = Relation.IS_EQUIVALENT_TO;
-        if (Relation.TYPE_0_1.equals(this.type)) {
+        if (Relation.TYPE_0_1 == this.type) {
             var me = (this);
             if (me[&quot;@context&quot;] == null &amp;&amp; me[&quot;@schema&quot;] != null) 
                 me[&quot;@context&quot;] = me[&quot;@schema&quot;];
             this.setContextAndType(Cass.context_0_2, Relation.TYPE_0_2);
         }
-        if (Relation.TYPE_0_2.equals(this.getFullType())) {
+        if (Relation.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Cass.context_0_3, Relation.TYPE_0_3);
         }
-        if (Relation.TYPE_0_3.equals(this.getFullType())) {
+        if (Relation.TYPE_0_3 == this.getFullType()) {
             this.setContextAndType(Cass.context_0_4, Relation.TYPE_0_4);
         }
     };

@@ -110,7 +110,7 @@ function editLevel(levelId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(levelId, function (level) {
+    EcLevel.get(levelId, function (level) {
         $("#editLevelId").val(level.shortId());
         $("#editLevelName").val(level.getName());
         $("#editLevelTitle").val(level.title);
@@ -125,7 +125,7 @@ function editLevelSave() {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get($("#editLevelId").val(), function (level) {
+    EcLevel.get($("#editLevelId").val(), function (level) {
         level.name = $("#editLevelName").val();
         level.title = $("#editLevelTitle").val();
         level.description = $("#editLevelDescription").val();
@@ -143,7 +143,7 @@ function editLevelDelete() {
         return;
     }
     if (confirm("This will delete the selected level. Continue?") == true)
-        EcRepository.get($("#editLevelId").val(), function (level) {
+        EcLevel.get($("#editLevelId").val(), function (level) {
             EcRepository._delete(level, function (response) {
                 removeLevelFromFramework(level.shortId(), frameworkId);
                 $("#editLevel").foundation('close');

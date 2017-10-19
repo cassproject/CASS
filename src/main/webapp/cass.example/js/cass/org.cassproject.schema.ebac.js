@@ -114,13 +114,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
     prototype.password = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (EbacCredentialRequest.TYPE_0_1.equals(this.type)) {
+        if (EbacCredentialRequest.TYPE_0_1 == this.type) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacCredentialRequest.TYPE_0_2);
         }
-        if (EbacCredentialRequest.TYPE_0_2.equals(this.getFullType())) {
+        if (EbacCredentialRequest.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentialRequest.TYPE_0_3);
         }
     };
@@ -507,13 +507,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     };
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (EbacEncryptedValue.TYPE_0_1.equals(this.type)) {
+        if (EbacEncryptedValue.TYPE_0_1 == this.type) {
             var me = (this);
             if (me["@context"] == null && me["@schema"] != null) 
                 me["@context"] = me["@schema"];
             this.setContextAndType(Ebac.context_0_2, EbacEncryptedValue.TYPE_0_2);
         }
-        if (EbacEncryptedValue.TYPE_0_2.equals(this.getFullType())) {
+        if (EbacEncryptedValue.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacEncryptedValue.TYPE_0_3);
         }
     };

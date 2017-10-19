@@ -9,13 +9,15 @@
 */
 
 function populateFrameworkLevels(frameworkId) {
-    EcRepository.get(frameworkId, function (fw) {
+    EcFramework.get(frameworkId, function (fw) {
         $("[url='" + frameworkId + "']").find(".cass-competency-levels").html("");
-        if (fw.level !== undefined) {
+        if (fw.level != null) {
             repo.precache(fw.level);
             for (var i = 0; i < fw.level.length; i++) {
-                EcRepository.get(fw.level[i], function (level) {
+                EcLevel.get(fw.level[i], function (level) {
                     var ui = $("[url='" + frameworkId + "']").find("[url='" + level.competency + "']");
+                    if (ui.length == 0)
+                    	ui = $("[url='" + frameworkId + "']").find("[actual='" + level.competency + "']");
                     ui.find(".cass-competency-levels").append(cassLevelTemplate);
                     ui = ui.find(".cass-competency-levels").children().last();
                     ui.attr("url", level.shortId());
@@ -52,16 +54,13 @@ function insertLevelIntoFramework(levelId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.addLevel(levelId);
         EcRepository.save(f, function () {
             populateFrameworkLevels(frameworkId);
         }, error);
     }, error);
 }
-
 
 function removeLevelFromFrameworkButton(me) {
     var levelId = $(me).parents(".cass-competency-level").attr("url");
@@ -80,9 +79,7 @@ function removeLevelFromFramework(levelId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.removeLevel(levelId);
         EcRepository.save(f, function () {
             populateFrameworkLevels(frameworkId);

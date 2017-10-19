@@ -9,7 +9,7 @@
 */
 
 function populateFrameworkRelations(frameworkId,ui) {
-    EcRepository.get(frameworkId, function (fw) {
+    EcFramework.get(frameworkId, function (fw) {
         var relationUi = $("[url='" + frameworkId + "']").find(".cass-competency-relations").html("");
         if (relationUi.length > 0 && fw.relation !== undefined) {
             repo.precache(fw.relation);
@@ -21,7 +21,7 @@ function populateFrameworkRelations(frameworkId,ui) {
 }
 
 function populateFrameworkRelation(fw, relationId,fwui) {
-	EcRepository.get(relationId, function (relation) {
+	EcAlignment.get(relationId, function (relation) {
 		var source = EcRemoteLinkedData.trimVersionFromUrl(relation.source);
 		var target = EcRemoteLinkedData.trimVersionFromUrl(relation.target);
 		var base = null;
@@ -30,12 +30,21 @@ function populateFrameworkRelation(fw, relationId,fwui) {
 		else
 			base = $("[url='" + fw.shortId() + "']");
 		base.find("[url='" + relation.shortId() + "']").remove();
-		var ui = base.find("[url='" + source + "']");
-		ui.find(".cass-competency-relations").append(cassRelationTemplate);
-		ui = ui.find(".cass-competency-relations").children().last();
+		var ui = base.find(".cass-competency[url='" + source + "']");
+		if (ui.length == 0)
+			ui = base.find(".cass-competency[actual=\"" + source + "\"]");
+		ui = ui.find(".cass-competency-relations").append(cassRelationTemplate).children().last();
 		ui.attr("url", relation.shortId());
-		ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(EcRepository.getBlocking(source).getName());
-		ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(EcRepository.getBlocking(target).getName());
+		var src = EcCompetency.getBlocking(source);
+		var tgt = EcCompetency.getBlocking(target);
+		if (src != null)
+			ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(src.getName());
+		else
+			ui.find(".cass-relation-source").attr("url", source).find(".cass-competency-name").text(source);
+		if (tgt != null)
+			ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(tgt.getName());
+		else
+			ui.find(".cass-relation-target").attr("url", target).find(".cass-competency-name").text(target);
 		ui.find(".cass-relation-type").text(relation.relationType);
 		if (identity != null && relation.canEdit(identity.ppk.toPk()))
 			ui.find(".canEditRelation").show();
@@ -45,10 +54,10 @@ function populateFrameworkRelation(fw, relationId,fwui) {
 			ui.find(".canEditFramework").show();
 		else
 			ui.find(".canEditFramework").hide();
-		var tui = base.find("[url='" + target + "']").find(".cass-competency-relations").append(ui.clone()).children().last();
-//            tui = tui.add(ui);
-//            populateCompetency(source,tui.find(".cass-relation-source"));
-//            populateCompetency(target,tui.find(".cass-relation-target"));
+		var tui = base.find(".cass-competency[url=\"" + target + "\"]");
+		if (tui.length == 0)
+			tui = base.find(".cass-competency[actual=\"" + target + "\"]");
+		tui.find(".cass-competency-relations").append(ui.clone()).children().last();
 	}, error);
 }
 
@@ -68,12 +77,10 @@ function insertRelationIntoFramework(relationId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
-        var f = new EcFramework();
-        f.copyFrom(framework);
+    EcFramework.get(frameworkId, function (f) {
         f.addRelation(relationId);
         EcRepository.save(f, function () {
-            EcRepository.get(frameworkId, function (fw) {
+            EcFramework.get(frameworkId, function (fw) {
                 populateFrameworkRelation(fw, relationId);
             });
         }, error);
@@ -98,7 +105,7 @@ function removeRelationFromFramework(relationId, frameworkId) {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         var f = new EcFramework();
         f.copyFrom(framework);
         f.removeRelation(relationId);

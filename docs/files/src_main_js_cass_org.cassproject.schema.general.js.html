@@ -1013,7 +1013,25 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             return false;
         var pkPem = pk.toPem();
         for (var i = 0; i &lt; this.owner.length; i++) 
-            if (pkPem.equals(EcPk.fromPem(this.owner[i]).toPem())) 
+            if (pkPem == EcPk.fromPem(this.owner[i]).toPem()) 
+                return true;
+        return false;
+    };
+    /**
+     *  Determines if the object has a reader identified by pk.
+     *  Homogenizes the PEM strings for comparison.
+     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
+     * 
+     *  @param {EcPk} pk Public Key of the owner.
+     *  @return {boolean} True if owner is represented by the PK, false otherwise.
+     *  @method hasOwner
+     */
+    prototype.hasReader = function(pk) {
+        if (this.reader == null) 
+            return false;
+        var pkPem = pk.toPem();
+        for (var i = 0; i &lt; this.reader.length; i++) 
+            if (pkPem == EcPk.fromPem(this.reader[i]).toPem()) 
                 return true;
         return false;
     };
@@ -1040,7 +1058,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.toSignableJson = function() {
         var d = JSON.parse(this.toJson());
-        if (this.type.contains(&quot;http://schema.eduworks.com/&quot;) &amp;&amp; this.type.contains(&quot;/0.1/&quot;)) {
+        if (this.type.indexOf(&quot;http://schema.eduworks.com/&quot;) != -1 &amp;&amp; this.type.indexOf(&quot;/0.1/&quot;) != -1) {
             delete (d)[&quot;@signature&quot;];
             delete (d)[&quot;@owner&quot;];
             delete (d)[&quot;@reader&quot;];
@@ -1065,7 +1083,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         var signed = EcRsaOaep.sign(ppk, signableJson);
         if (this.signature != null) {
             for (var i = 0; i &lt; this.signature.length; i++) 
-                if (this.signature[i].equals(signed)) 
+                if (this.signature[i] == signed) 
                     return;
         } else {
             this.signature = new Array();
@@ -1120,7 +1138,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (this.owner == null) 
             this.owner = new Array();
         for (var i = 0; i &lt; this.owner.length; i++) 
-            if (this.owner[i].equals(pem)) 
+            if (this.owner[i] == pem) 
                 return;
         this.owner.push(pem);
         this.signature = null;
@@ -1137,7 +1155,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (this.owner == null) 
             this.owner = new Array();
         for (var i = 0; i &lt; this.owner.length; i++) 
-            if (this.owner[i].equals(pem)) 
+            if (this.owner[i] == pem) 
                 this.owner.splice(i, 1);
         this.signature = null;
     };
@@ -1153,7 +1171,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (this.reader == null) 
             this.reader = new Array();
         for (var i = 0; i &lt; this.reader.length; i++) 
-            if (this.reader[i].equals(pem)) 
+            if (this.reader[i] == pem) 
                 return;
         this.reader.push(pem);
         this.signature = null;
@@ -1170,7 +1188,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (this.reader == null) 
             this.reader = new Array();
         for (var i = 0; i &lt; this.reader.length; i++) 
-            if (this.reader[i].equals(pem)) 
+            if (this.reader[i] == pem) 
                 this.reader.splice(i, 1);
         this.signature = null;
     };
@@ -1187,7 +1205,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             return true;
         if (this.getFullType() == null) 
             return true;
-        if (this.getFullType().contains(&quot;http://&quot;) == false &amp;&amp; this.getFullType().contains(&quot;https://&quot;) == false) 
+        if (this.getFullType().indexOf(&quot;http://&quot;) == -1 &amp;&amp; this.getFullType().indexOf(&quot;https://&quot;) == -1) 
             return true;
         return false;
     };
@@ -1220,7 +1238,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @method isId
      */
     prototype.isId = function(id) {
-        return EcRemoteLinkedData.trimVersionFromUrl(this.id).equals(EcRemoteLinkedData.trimVersionFromUrl(id));
+        return EcRemoteLinkedData.trimVersionFromUrl(this.id) == EcRemoteLinkedData.trimVersionFromUrl(id);
     };
     /**
      *  Return the ID of this object without the version information.
@@ -1271,7 +1289,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
             result += &quot; OR (@context:\&quot;&quot; + types[i].substring(0, lastSlash + 1) + &quot;\&quot; AND @type:\&quot;&quot; + types[i].substring(lastSlash + 1) + &quot;\&quot;)&quot;;
         }
         for (var i = 0; i &lt; types.length; i++) {
-            if (result.equals(&quot;&quot;) == false) 
+            if (result != &quot;&quot;) 
                 result += &quot; OR &quot;;
             result += &quot;@encryptedType:\&quot;&quot; + types[i] + &quot;\&quot;&quot;;
             var lastSlash = types[i].lastIndexOf(&quot;/&quot;);

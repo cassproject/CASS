@@ -1421,7 +1421,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             return false;
         }
         var typeSplit = (type.split(&quot;/&quot;));
-        return this.encryptedType.equals(type) || this.encryptedType.equals(typeSplit[typeSplit.length - 1]);
+        return this.encryptedType == type || this.encryptedType == typeSplit[typeSplit.length - 1];
     };
     /**
      *  Adds a reader to the object, if the reader does not exist.
@@ -1436,7 +1436,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             this.reader = new Array();
         }
         for (var i = 0; i &lt; this.reader.length; i++) {
-            if (this.reader[i].equals(pem)) {
+            if (this.reader[i] == pem) {
                 return;
             }
         }
@@ -1461,7 +1461,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             this.reader = new Array();
         }
         for (var i = 0; i &lt; this.reader.length; i++) {
-            if (this.reader[i].equals(pem)) {
+            if (this.reader[i] == pem) {
                 this.reader.splice(i, 1);
             }
         }
@@ -1603,7 +1603,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var fd = new FormData();
         if (EcRepository.unsigned) {
-            EcRemote.postExpectingObject(url, null, fd, function(p1) {
+            EcRemote.getExpectingObject(url, null, function(p1) {
                 delete (EcRepository.fetching)[url];
                 var d = new EcRemoteLinkedData(&quot;&quot;, &quot;&quot;);
                 d.copyFrom(p1);
@@ -1643,7 +1643,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }, function(p1) {
                     EcRepository.find(url, p1, new Object(), 0, success, failure);
                 });
-            });
+            }, failure);
     };
     constructor.shouldTryUrl = function(url) {
         if (url == null) 
@@ -1652,7 +1652,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return true;
         if (EcRepository.repos.length == 0) 
             return true;
-        if (url.contains(&quot;/api/&quot;) || url.contains(&quot;/data/&quot;)) 
+        if (url.indexOf(&quot;/api/&quot;) != -1 || url.indexOf(&quot;/data/&quot;) != -1) 
             return true;
         var validUrlFound = false;
         for (var i = 0; i &lt; EcRepository.repos.length; i++) {
@@ -1700,7 +1700,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 EcRepository.find(url, error, history, i + 1, success, failure);
             }
         }, function(s) {
-            EcRepository.find(url, error, history, i + 1, success, failure);
+            EcRepository.find(url, s, history, i + 1, success, failure);
         });
     };
     constructor.findBlocking = function(url, error, history, i) {
@@ -1906,12 +1906,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(arg0) {
                 fd.append(&quot;signatureSheet&quot;, arg0);
                 EcRemote.postExpectingString(data.id, &quot;&quot;, fd, success, failure);
-            });
+            }, failure);
         } else {
             EcIdentityManager.signatureSheetAsync(60000, data.id, function(arg0) {
                 fd.append(&quot;signatureSheet&quot;, arg0);
                 EcRemote.postExpectingString(data.id, &quot;&quot;, fd, success, failure);
-            });
+            }, failure);
         }
     };
     /**
@@ -1954,7 +1954,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
             EcRemote._delete(data.shortId(), signatureSheet, success, failure);
-        });
+        }, failure);
     };
     /**
      *  Retrieves data from the server and caches it for use later during the
@@ -2052,7 +2052,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         success();
                     }
                 }, null);
-            });
+            }, null);
     };
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
@@ -2129,7 +2129,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         success(results);
                     }
                 }, failure);
-            });
+            }, failure);
     };
     /**
      *  Search a repository for JSON-LD compatible data.
@@ -2259,7 +2259,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         failure(p1);
                     }
                 });
-            });
+            }, failure);
     };
     /**
      *  Search a repository for JSON-LD compatible data synchronously.
@@ -2354,11 +2354,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (!query.startsWith(&quot;(&quot;) || !query.endsWith(&quot;)&quot;)) {
                 query = &quot;(&quot; + query + &quot;)&quot;;
             }
-            if (ownership.equals(&quot;public&quot;)) {
+            if (ownership == &quot;public&quot;) {
                 query += &quot; AND (_missing_:@owner)&quot;;
-            } else if (ownership.equals(&quot;owned&quot;)) {
+            } else if (ownership == &quot;owned&quot;) {
                 query += &quot; AND (_exists_:@owner)&quot;;
-            } else if (ownership.equals(&quot;me&quot;)) {
+            } else if (ownership == &quot;me&quot;) {
                 query += &quot; AND (&quot;;
                 for (var i = 0; i &lt; EcIdentityManager.ids.length; i++) {
                     if (i != 0) {
@@ -2500,7 +2500,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var me = this;
         var successCheck = function(p1) {
             if (p1 != null) {
-                if ((p1)[&quot;ping&quot;].equals(&quot;pong&quot;)) {
+                if ((p1)[&quot;ping&quot;] == &quot;pong&quot;) {
                     me.selectedServer = guess;
                     me.autoDetectFound = true;
                     success();
@@ -2509,8 +2509,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         };
         var failureCheck = function(p1) {
             if (p1 != null) {
-                if (!p1.equals(&quot;&quot;)) {
-                    if (p1.contains(&quot;pong&quot;)) {
+                if (!(p1 == &quot;&quot;)) {
+                    if (p1.indexOf(&quot;pong&quot;) != -1) {
                         me.selectedServer = guess;
                         me.autoDetectFound = true;
                         success();
@@ -2518,7 +2518,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 }
             }
         };
-        if (guess != null &amp;&amp; guess.equals(&quot;&quot;) == false) {
+        if (guess != null &amp;&amp; guess != &quot;&quot;) {
             try {
                 EcRemote.getExpectingObject(guess, &quot;ping&quot;, successCheck, failureCheck);
             }catch (ex) {}
@@ -2540,7 +2540,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var me = this;
         var successCheck = function(p1) {
             if (p1 != null) {
-                if ((p1)[&quot;ping&quot;].equals(&quot;pong&quot;)) {
+                if ((p1)[&quot;ping&quot;] == &quot;pong&quot;) {
                     me.selectedServer = guess;
                     me.autoDetectFound = true;
                 }
@@ -2548,15 +2548,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         };
         var failureCheck = function(p1) {
             if (p1 != null) {
-                if (!p1.equals(&quot;&quot;)) {
-                    if (p1.contains(&quot;pong&quot;)) {
+                if (p1 != &quot;&quot;) {
+                    if (p1.indexOf(&quot;pong&quot;) != -1) {
                         me.selectedServer = guess;
                         me.autoDetectFound = true;
                     }
                 }
             }
         };
-        if (guess != null &amp;&amp; guess.equals(&quot;&quot;) == false) {
+        if (guess != null &amp;&amp; guess != &quot;&quot;) {
             try {
                 EcRemote.getExpectingObject(guess, &quot;ping&quot;, successCheck, failureCheck);
             }catch (ex) {}
