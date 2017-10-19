@@ -255,7 +255,7 @@ function exportCsv() {
             var relationUrl = fw.relation[i];
             (function (relationUrl, fw) {
                 timeout(function () {
-                    EcRelation.get(relationUrl, function (relation) {
+                    EcAlignment.get(relationUrl, function (relation) {
                         csvRelationOutput.push(JSON.parse(relation.toJson()));
                         if (csvRelationOutput.length == fw.relation.length) {
                             var csv = Papa.unparse(csvRelationOutput);
@@ -345,7 +345,7 @@ function importMedbiqXml() {
         error("Framework not selected.");
         return;
     }
-    EcRepository.get(frameworkId, function (framework) {
+    EcFramework.get(frameworkId, function (framework) {
         if (framework.competency == null)
             framework.competency = [];
         var i = 0;

@@ -103,7 +103,7 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      */
     prototype.equals = function(obj) {
         if (stjs.isInstanceOf(obj.constructor, EcContact)) 
-            return this.pk.equals((obj).pk);
+            return this.pk == (obj).pk;
         return Object.prototype.equals.call(this, obj);
     };
     /**
@@ -584,7 +584,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  @method signatureSheetForAsync
      *  @static
      */
-    constructor.signatureSheetForAsync = function(identityPksinPem, duration, server, success) {
+    constructor.signatureSheetForAsync = function(identityPksinPem, duration, server, success, failure) {
         var signatures = new Array();
         new EcAsyncHelper().each(EcIdentityManager.ids, function(p1, incrementalSuccess) {
             var ppk = p1.ppk;
@@ -598,7 +598,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                         EcIdentityManager.createSignatureAsync(duration, server, ppk, function(p1) {
                             signatures.push(p1.atIfy());
                             incrementalSuccess();
-                        });
+                        }, failure);
                     }
                 }
             }
@@ -658,7 +658,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  @method signatureSheetAsync
      *  @static
      */
-    constructor.signatureSheetAsync = function(duration, server, success) {
+    constructor.signatureSheetAsync = function(duration, server, success, failure) {
         if (!EcIdentityManager.async) {
             var sheet = EcIdentityManager.signatureSheet(duration, server);
             if (success != null) 
@@ -683,7 +683,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             EcIdentityManager.createSignatureAsync(finalDuration, server, ppk, function(p1) {
                 signatures.push(p1.atIfy());
                 incrementalSuccess();
-            });
+            }, failure);
         }, function(pks) {
             var cache = null;
             var stringified = JSON.stringify(signatures);
@@ -730,7 +730,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
      *  @method createSignatureAsync
      *  @static
      */
-    constructor.createSignatureAsync = function(duration, server, ppk, success) {
+    constructor.createSignatureAsync = function(duration, server, ppk, success, failure) {
         var s = new EbacSignature();
         s.owner = ppk.toPk().toPem();
         s.expiry = new Date().getTime() + duration;
@@ -738,7 +738,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         EcRsaOaepAsync.sign(ppk, s.toJson(), function(p1) {
             s.signature = p1;
             success(s);
-        }, null);
+        }, failure);
     };
     /**
      *  Get PPK from PK (if we have it)
@@ -1413,12 +1413,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      */
     prototype.changePassword = function(username, oldPassword, newPassword) {
         var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
-        if (!this.usernameWithSalt.equals(usernameHash)) {
+        if (this.usernameWithSalt != usernameHash) {
             alert("Username does not match. Aborting password change.");
             return false;
         }
         var oldPasswordHash = forge.util.encode64(forge.pkcs5.pbkdf2(oldPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
-        if (!this.passwordWithSalt.equals(oldPasswordHash)) {
+        if (this.passwordWithSalt != oldPasswordHash) {
             alert("Old password does not match. Aborting password change.");
             return false;
         }
@@ -1540,14 +1540,14 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
             this.pad = padGenerationCallback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
-            if (id.source != null && id.source.equals(this.server) == false) 
+            if (id.source != null && id.source != this.server) 
                 continue;
             id.source = this.server;
             credentials.push(id.toCredential(this.secretWithSalt));
         }
         for (var i = 0; i < EcIdentityManager.contacts.length; i++) {
             var id = EcIdentityManager.contacts[i];
-            if (id.source != null && id.source.equals(this.server) == false) 
+            if (id.source != null && id.source != this.server) 
                 continue;
             id.source = this.server;
             contacts.push(id.toEncryptedContact(this.secretWithSalt));
@@ -1569,7 +1569,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
             }, function(arg0) {
                 failure(arg0);
             });
-        });
+        }, failure);
     };
     /**
      *  Splices together passwords (in a fashion more like shuffling a deck of

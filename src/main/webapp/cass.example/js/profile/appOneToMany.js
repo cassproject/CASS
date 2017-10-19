@@ -81,7 +81,7 @@ function oneToManySearch()
         var frameworkId = $("#frameworks").find(".is-active").attr("url");
         if (frameworkId != null)
         {
-            EcRepository.get(frameworkId, function (framework)
+            EcFramework.get(frameworkId, function (framework)
             {
                 var searchString = oneToManyBaseSearchString();
 
@@ -124,10 +124,8 @@ var acsItemTemplate = {
 
 function accumulateAssertion(assertion, acs)
 {
-    EcRepository.get(assertion.shortId(), function (assertion)
+    EcAssertion.get(assertion.shortId(), function (a)
     {
-        var a = new EcAssertion();
-        a.copyFrom(assertion);
 
         timeout(function ()
         {
@@ -187,7 +185,7 @@ function updateAssertionTranscript(acs)
     {
         var competencyId = ary[competencyIdIndex];
         if (acs[competencyId].length > 0)
-            EcRepository.get(competencyId, function (competency)
+            EcCompetency.get(competencyId, function (competency)
             {
                 var ui = $("#frameworks").find(".cass-competency[url='" + competencyId + "']");
                 var name = ui.children(".cass-competency-name");

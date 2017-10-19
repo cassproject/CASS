@@ -26,7 +26,7 @@ $("#oneToOne").on("click", ".cass-competency", null, function (e)
 $("#oneToOne").on("click", ".assertionActionDelete", null, function (e)
 {
     if (confirm("This will delete the selected assertion. Continue?") == true)
-        EcRepository.get($(this).parents("#oneToOneAssertion").attr("url"), function (assertion)
+        EcAssertion.get($(this).parents("#oneToOneAssertion").attr("url"), function (assertion)
         {
             EcRepository._delete(assertion, function (success)
             {
@@ -87,7 +87,7 @@ function oneToOneSearch()
         var frameworkId = $("#frameworks").find(".is-active").attr("url");
         if (frameworkId != null)
         {
-            EcRepository.get(frameworkId, function (framework)
+            EcFramework.get(frameworkId, function (framework)
             {
                 var searchString = oneToOneBaseSearchString();
 
@@ -151,10 +151,8 @@ $("#oneToOneAssertion").remove();
 
 function displayAssertionSearchItem(where, assertion)
 {
-    EcRepository.get(assertion.shortId(), function (assertion)
+    EcAssertion.get(assertion.shortId(), function (a)
     {
-        var a = new EcAssertion();
-        a.copyFrom(assertion);
         where.append(cassAssertionTemplate);
 
         var ui = where.children().last();

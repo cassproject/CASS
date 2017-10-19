@@ -321,7 +321,7 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("large");
         $(ModalManager.MODAL_CONTAINER_ID).removeClass("full");
         var modalSize = modal.getModalSize();
-        if (modalSize.equals("tiny") || modalSize.equals("small") || modalSize.equals("medium") || modalSize.equals("large") || modalSize.equals("full")) {
+        if (modalSize == "tiny" || modalSize == "small" || modalSize == "medium" || modalSize == "large" || modalSize == "full") {
             $(ModalManager.MODAL_CONTAINER_ID).addClass(modalSize);
         } else {
             $(ModalManager.MODAL_CONTAINER_ID).addClass("small");
@@ -432,7 +432,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
     };
     prototype.fillInnerString = function(scope, dataObj, key) {
-        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+        if (key.indexOf("/") != -1 || key.indexOf(":") != -1 || key.indexOf("@") != -1) 
             return;
         var a = (dataObj);
         var v = a[key];
@@ -472,7 +472,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         }
     };
     prototype.fillInnerStringReferences = function(scope, dataObj, key) {
-        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+        if (key.indexOf("/") != -1 || key.indexOf(":") != -1 || key.indexOf("@") != -1) 
             return;
         var a = (dataObj);
         var v = a[key];
@@ -489,7 +489,7 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         if ((typeof v) == "function") {}
     };
     prototype.fillInnerArray = function(scope, dataObj, key) {
-        if (key.contains("/") || key.contains(":") || key.contains("@")) 
+        if (key.indexOf("/") != -1 || key.indexOf(":") != -1 || key.indexOf("@") != -1) 
             return;
         var props = (dataObj);
         var v = props[key];
@@ -705,7 +705,7 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
             }
             if (ScreenManager.startupScreen != null) {
                 var params = null;
-                if (window.document.location.hash.contains("?")) {
+                if (window.document.location.hash.indexOf("?") != -1) {
                     var hashSplit = (window.document.location.hash.split("?"));
                     if (hashSplit.length > 1 && hashSplit[1] != "") {
                         var paramSplit = (hashSplit[1].split("&"));

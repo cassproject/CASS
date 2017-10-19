@@ -1731,7 +1731,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 473,
+            "line": 475,
             "description": "Implementation of a Rollup Rule object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1746,7 +1746,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 630,
+            "line": 632,
             "description": "Implementation of an alignment object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com\n        <p>\n        TODO: Test case where an absent relation is in the framework."
         },
@@ -1761,7 +1761,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1012,
+            "line": 1014,
             "description": "Implementation of a Level object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1776,7 +1776,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1254,
+            "line": 1256,
             "description": "Implementation of a Competency object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1791,7 +1791,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1763,
+            "line": 1765,
             "description": "Implementation of a Framework object with methods for interacting with CASS\nservices on a server.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -13341,7 +13341,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 488,
+            "line": 490,
             "description": "Retrieves a rollup rule from the server",
             "params": [
                 {
@@ -13369,7 +13369,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 519,
+            "line": 521,
             "description": "Searches for levels with a string query",
             "params": [
                 {
@@ -13415,7 +13415,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 567,
+            "line": 569,
             "description": "Method for setting a rollup rule name",
             "params": [
                 {
@@ -13431,7 +13431,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 577,
+            "line": 579,
             "description": "Method for setting a rollup rule description",
             "params": [
                 {
@@ -13448,7 +13448,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 587,
+            "line": 589,
             "description": "Saves this rollup rules details on the server specified by its ID",
             "params": [
                 {
@@ -13470,7 +13470,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 616,
+            "line": 618,
             "description": "Deletes this rollup rule from the server specified by it's ID",
             "params": [
                 {
@@ -13492,7 +13492,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 647,
+            "line": 649,
             "description": "Retrieves the alignment specified with the ID from the server",
             "params": [
                 {
@@ -13521,7 +13521,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 691,
+            "line": 693,
             "description": "Retrieves an alignment from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -13542,7 +13542,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 727,
+            "line": 729,
             "description": "Searches the repository using the query and optional parameters provided",
             "params": [
                 {
@@ -13590,7 +13590,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 773,
+            "line": 775,
             "description": "Searches the repository for alignments with a specific ID in the source field",
             "params": [
                 {
@@ -13638,7 +13638,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 825,
+            "line": 827,
             "description": "Searches the repository for alignments with one of an array of IDs in the source field",
             "params": [
                 {
@@ -13686,7 +13686,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 886,
+            "line": 888,
             "description": "Searches the repository for alignments with a specific ID in the target field",
             "params": [
                 {
@@ -13734,7 +13734,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 939,
+            "line": 941,
             "description": "Setter for alignment name",
             "params": [
                 {
@@ -13751,7 +13751,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 950,
+            "line": 952,
             "description": "Setter for alignment description",
             "params": [
                 {
@@ -13768,7 +13768,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 961,
+            "line": 963,
             "description": "Saves this alignment details on the server corresponding to its ID",
             "params": [
                 {
@@ -13791,7 +13791,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 998,
+            "line": 1000,
             "description": "Deletes the alignment from the server corresponding to its ID",
             "params": [
                 {
@@ -13814,7 +13814,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1027,
+            "line": 1029,
             "description": "Retrieves a level from the server specified by its ID",
             "params": [
                 {
@@ -13842,7 +13842,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1063,
+            "line": 1065,
             "description": "Searches for levels with a string query",
             "params": [
                 {
@@ -13888,7 +13888,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1111,
+            "line": 1113,
             "description": "Searches for levels using a competency that the results must be related to",
             "params": [
                 {
@@ -13934,7 +13934,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1165,
+            "line": 1167,
             "description": "Adds a relationship between this level and a target level to define\nhow they correspond to one another",
             "params": [
                 {
@@ -13966,7 +13966,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1189,
+            "line": 1191,
             "description": "Method to set the name of this level",
             "params": [
                 {
@@ -13983,7 +13983,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1200,
+            "line": 1202,
             "description": "Method to set the description of the level",
             "params": [
                 {
@@ -14000,7 +14000,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1211,
+            "line": 1213,
             "description": "Saves this levels details to the server",
             "params": [
                 {
@@ -14022,7 +14022,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1240,
+            "line": 1242,
             "description": "Deletes the level from it's repository",
             "params": [
                 {
@@ -14044,7 +14044,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1271,
+            "line": 1273,
             "description": "Retrieves a competency from it's server asynchronously",
             "params": [
                 {
@@ -14072,7 +14072,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1316,
+            "line": 1318,
             "description": "Retrieves a competency from it's server synchronously, the call\nblocks until it is successful or an error occurs",
             "params": [
                 {
@@ -14093,7 +14093,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1348,
+            "line": 1350,
             "description": "Searches a repository for competencies that match the search query",
             "params": [
                 {
@@ -14138,7 +14138,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1396,
+            "line": 1398,
             "description": "Adds a new alignment on the server specified with this competency as its\nsource and the specified target competency",
             "params": [
                 {
@@ -14184,7 +14184,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1427,
+            "line": 1429,
             "description": "Searches the repository given for any relationships that contain this competency",
             "params": [
                 {
@@ -14216,7 +14216,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1444,
+            "line": 1446,
             "description": "Searches the repository given for any relationships that contain this competency",
             "params": [
                 {
@@ -14249,7 +14249,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1478,
+            "line": 1480,
             "description": "Adds a new level on the server specified for this competency.",
             "params": [
                 {
@@ -14294,7 +14294,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1508,
+            "line": 1510,
             "description": "Searches the repository given for any levels of this competency",
             "params": [
                 {
@@ -14326,7 +14326,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1572,
+            "line": 1574,
             "description": "Adds a new rollup rule on the server specified for this competency",
             "params": [
                 {
@@ -14371,7 +14371,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1602,
+            "line": 1604,
             "description": "Searches the repository given for any rollup rules of this competency",
             "params": [
                 {
@@ -14403,7 +14403,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1666,
+            "line": 1668,
             "description": "Method to set competency scope",
             "params": [
                 {
@@ -14420,7 +14420,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1677,
+            "line": 1679,
             "description": "Saves the competency details to the server",
             "params": [
                 {
@@ -14442,7 +14442,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1698,
+            "line": 1700,
             "description": "Deletes the competency from the server\n<p>\nTODO: Delete rollup rules?",
             "params": [
                 {
@@ -14469,7 +14469,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1780,
+            "line": 1782,
             "description": "Retrieves a framework from the server, specified by the ID",
             "params": [
                 {
@@ -14497,7 +14497,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1819,
+            "line": 1821,
             "description": "Retrieves a framework from the server in a blocking fashion, specified by the ID",
             "params": [
                 {
@@ -14525,7 +14525,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1851,
+            "line": 1853,
             "description": "Searches the repository given for frameworks using the query passed in",
             "params": [
                 {
@@ -14571,7 +14571,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1900,
+            "line": 1902,
             "description": "Adds the competency ID specified to the frameworks list of competency IDs",
             "params": [
                 {
@@ -14588,7 +14588,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1917,
+            "line": 1919,
             "description": "Removes a competency ID from the framework's list, also removes any\nlevels and relations associated with that competency\n<p>\nTODO: remove rollup rules? should we add flag to remove these extras",
             "params": [
                 {
@@ -14615,7 +14615,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 1969,
+            "line": 1971,
             "description": "Helper method to remove relationships associated with a competency from this framework",
             "params": [
                 {
@@ -14649,7 +14649,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2003,
+            "line": 2005,
             "description": "Helper method to remove levels associated with a competency from this framework",
             "params": [
                 {
@@ -14683,7 +14683,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2034,
+            "line": 2036,
             "description": "Adds a relation ID to the framework's list of relations",
             "params": [
                 {
@@ -14700,7 +14700,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2051,
+            "line": 2053,
             "description": "Removes a relation ID from the framework's list of relations",
             "params": [
                 {
@@ -14717,7 +14717,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2067,
+            "line": 2069,
             "description": "Adds a level ID to the framework's list of levels",
             "params": [
                 {
@@ -14734,7 +14734,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2084,
+            "line": 2086,
             "description": "Removes a level ID from the framework's list of levels",
             "params": [
                 {
@@ -14751,7 +14751,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2100,
+            "line": 2102,
             "description": "Adds a rollup rule ID to the framework's list of rollup rules",
             "params": [
                 {
@@ -14768,7 +14768,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2117,
+            "line": 2119,
             "description": "Removes a rollup rule ID from the framework's list of rollup rules",
             "params": [
                 {
@@ -14785,7 +14785,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2133,
+            "line": 2135,
             "description": "Saves this frameworks details on the server specified by it's ID",
             "params": [
                 {
@@ -14807,7 +14807,7 @@
         },
         {
             "file": "src/main/js/cass/cass.competency.js",
-            "line": 2154,
+            "line": 2156,
             "description": "Deletes this framework from the server specified by it's ID",
             "params": [
                 {
@@ -24762,7 +24762,7 @@
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
             "line": 121,
-            "description": "The performance characteristics required by this level in text form.\nTBD: Isn't this what description represents?",
+            "description": "The performance characteristics required by this level in text form.\nFR - Represented by description.",
             "itemtype": "property",
             "name": "performance",
             "type": "string",
@@ -25635,6 +25635,26 @@
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
             "line": 211,
+            "description": "Determines if the object has a reader identified by pk.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
+            "params": [
+                {
+                    "name": "pk",
+                    "description": "Public Key of the owner.",
+                    "type": "EcPk"
+                }
+            ],
+            "return": {
+                "description": "True if owner is represented by the PK, false otherwise.",
+                "type": "Boolean"
+            },
+            "itemtype": "method",
+            "name": "hasOwner",
+            "class": "EcRemoteLinkedData",
+            "module": "org.cassproject"
+        },
+        {
+            "file": "src/main/js/cass/org.cassproject.schema.general.js",
+            "line": 229,
             "description": "Determines if the PK matches an owner or if the object is public.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -25654,7 +25674,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 225,
+            "line": 243,
             "description": "Encodes the object in a form where it is ready to be signed.\nThis method is under long term review, and may change from version to version.",
             "return": {
                 "description": "ASCII-sort order encoded space-free and tab-free JSON-LD."
@@ -25666,7 +25686,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 247,
+            "line": 265,
             "description": "Sign this object using a private key.\nDoes not check for ownership, objects signed with keys absent from @owner or @reader may be removed.",
             "params": [
                 {
@@ -25682,7 +25702,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 266,
+            "line": 284,
             "description": "Verifies the object's signatures.",
             "return": {
                 "description": "true if all of the signatures could be verified, false if they could not",
@@ -25695,7 +25715,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 302,
+            "line": 320,
             "description": "Adds an owner to the object, if the owner does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -25711,7 +25731,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 319,
+            "line": 337,
             "description": "Removes an owner from the object, if the owner does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -25727,7 +25747,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 335,
+            "line": 353,
             "description": "Adds a reader to the object, if the reader does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -25743,7 +25763,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 352,
+            "line": 370,
             "description": "Removes a reader from the object, if the reader does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -25759,7 +25779,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 368,
+            "line": 386,
             "description": "Determines if the object is not retrievable from a repository should it be written.",
             "return": {
                 "description": "True if the object is NOT VALID for storage, false otherwise.",
@@ -25772,7 +25792,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 385,
+            "line": 403,
             "description": "Updates the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "updateTimestamp",
@@ -25781,7 +25801,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 397,
+            "line": 415,
             "description": "Updates the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "updateTimestamp",
@@ -25790,7 +25810,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 405,
+            "line": 423,
             "description": "Returns true if the provided ID represents this object.\nUse this, as version information can make direct comparison difficult.",
             "params": [
                 {
@@ -25810,7 +25830,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 416,
+            "line": 434,
             "description": "Return the ID of this object without the version information.\nUsed to reference the latest version of an object.",
             "return": {
                 "description": "ID of the latest version of this object.",
@@ -25823,7 +25843,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 426,
+            "line": 444,
             "description": "Return the GUID portion of the short ID.",
             "return": {
                 "description": "Guid of the linked data object.",
@@ -25836,7 +25856,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 437,
+            "line": 455,
             "description": "Return the URL Base portion of the short ID.",
             "return": {
                 "description": "Server Base URL of the linked data object.",
@@ -25849,7 +25869,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 448,
+            "line": 466,
             "description": "Return a valid ElasticSearch search string that will retrieve all objects with this type.",
             "return": {
                 "description": "ElasticSearch compatible search string.",
@@ -47066,7 +47086,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 213,
+            "line": 224,
             "description": "Also could be called \"upcast\", for those in the know.\n<p>\nGhetto method of copying properties from some other object. As freshly\ndeserialized javascript objects do not inherently attach the functions of\ntheir type, it is this or factory hell.",
             "params": [
                 {
@@ -47081,7 +47101,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 238,
+            "line": 277,
             "description": "Upgrades the object to the latest version, performing transforms and the like.",
             "itemtype": "method",
             "name": "upgrade",
@@ -47090,7 +47110,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 244,
+            "line": 283,
             "description": "Removes the @ symbol from properties in order to make them more\naccessible in Javascript.",
             "return": {
                 "description": "This object, with @ properties converted to @-less properties.",
@@ -47104,7 +47124,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 265,
+            "line": 304,
             "description": "Gets all versions of JSON-LD type strings for this type of object.",
             "return": {
                 "description": "Array of URIs.",
@@ -61666,211 +61686,211 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:488"
+            "line": " src/main/js/cass/cass.competency.js:490"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:519"
+            "line": " src/main/js/cass/cass.competency.js:521"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:567"
+            "line": " src/main/js/cass/cass.competency.js:569"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:577"
+            "line": " src/main/js/cass/cass.competency.js:579"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:587"
+            "line": " src/main/js/cass/cass.competency.js:589"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:616"
+            "line": " src/main/js/cass/cass.competency.js:618"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:647"
+            "line": " src/main/js/cass/cass.competency.js:649"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:691"
+            "line": " src/main/js/cass/cass.competency.js:693"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:727"
+            "line": " src/main/js/cass/cass.competency.js:729"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:773"
+            "line": " src/main/js/cass/cass.competency.js:775"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:825"
+            "line": " src/main/js/cass/cass.competency.js:827"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:886"
+            "line": " src/main/js/cass/cass.competency.js:888"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:939"
+            "line": " src/main/js/cass/cass.competency.js:941"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:950"
+            "line": " src/main/js/cass/cass.competency.js:952"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:961"
+            "line": " src/main/js/cass/cass.competency.js:963"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:998"
+            "line": " src/main/js/cass/cass.competency.js:1000"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1027"
+            "line": " src/main/js/cass/cass.competency.js:1029"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1063"
+            "line": " src/main/js/cass/cass.competency.js:1065"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1111"
+            "line": " src/main/js/cass/cass.competency.js:1113"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1165"
+            "line": " src/main/js/cass/cass.competency.js:1167"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1189"
+            "line": " src/main/js/cass/cass.competency.js:1191"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1200"
+            "line": " src/main/js/cass/cass.competency.js:1202"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1211"
+            "line": " src/main/js/cass/cass.competency.js:1213"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1240"
+            "line": " src/main/js/cass/cass.competency.js:1242"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1271"
+            "line": " src/main/js/cass/cass.competency.js:1273"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1316"
+            "line": " src/main/js/cass/cass.competency.js:1318"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1348"
+            "line": " src/main/js/cass/cass.competency.js:1350"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1396"
+            "line": " src/main/js/cass/cass.competency.js:1398"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1427"
+            "line": " src/main/js/cass/cass.competency.js:1429"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1444"
+            "line": " src/main/js/cass/cass.competency.js:1446"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1478"
+            "line": " src/main/js/cass/cass.competency.js:1480"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1508"
+            "line": " src/main/js/cass/cass.competency.js:1510"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1572"
+            "line": " src/main/js/cass/cass.competency.js:1574"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1602"
+            "line": " src/main/js/cass/cass.competency.js:1604"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1666"
+            "line": " src/main/js/cass/cass.competency.js:1668"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1677"
+            "line": " src/main/js/cass/cass.competency.js:1679"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1698"
+            "line": " src/main/js/cass/cass.competency.js:1700"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1780"
+            "line": " src/main/js/cass/cass.competency.js:1782"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1819"
+            "line": " src/main/js/cass/cass.competency.js:1821"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1851"
+            "line": " src/main/js/cass/cass.competency.js:1853"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1900"
+            "line": " src/main/js/cass/cass.competency.js:1902"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1917"
+            "line": " src/main/js/cass/cass.competency.js:1919"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:1969"
+            "line": " src/main/js/cass/cass.competency.js:1971"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2003"
+            "line": " src/main/js/cass/cass.competency.js:2005"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2034"
+            "line": " src/main/js/cass/cass.competency.js:2036"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2051"
+            "line": " src/main/js/cass/cass.competency.js:2053"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2067"
+            "line": " src/main/js/cass/cass.competency.js:2069"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2084"
+            "line": " src/main/js/cass/cass.competency.js:2086"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2100"
+            "line": " src/main/js/cass/cass.competency.js:2102"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2117"
+            "line": " src/main/js/cass/cass.competency.js:2119"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2133"
+            "line": " src/main/js/cass/cass.competency.js:2135"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.competency.js:2154"
+            "line": " src/main/js/cass/cass.competency.js:2156"
         },
         {
             "message": "unknown tag: abstract",
@@ -62498,7 +62518,7 @@
         },
         {
             "message": "unknown tag: internal",
-            "line": " src/main/js/cass/org.json-ld.js:244"
+            "line": " src/main/js/cass/org.json-ld.js:283"
         },
         {
             "message": "unknown tag: memberof",

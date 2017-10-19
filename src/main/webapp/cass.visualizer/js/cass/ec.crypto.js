@@ -7579,7 +7579,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
         var keyUsages = new Array();
         keyUsages.push("encrypt");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "RSA-OAEP";
         algorithm.hash = "SHA-1";
         if (pk.key == null) 
@@ -7613,7 +7613,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
         var keyUsages = new Array();
         keyUsages.push("decrypt");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "RSA-OAEP";
         algorithm.hash = "SHA-1";
         if (ppk.key == null) 
@@ -7639,7 +7639,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
         var keyUsages = new Array();
         keyUsages.push("sign");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "RSASSA-PKCS1-v1_5";
         algorithm.hash = "SHA-1";
         if (ppk.signKey == null) 
@@ -7665,7 +7665,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
         var keyUsages = new Array();
         keyUsages.push("sign");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "RSASSA-PKCS1-v1_5";
         algorithm.hash = "SHA-256";
         if (ppk.signKey == null) 
@@ -7691,7 +7691,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
         }
         var keyUsages = new Array();
         keyUsages.push("verify");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "RSASSA-PKCS1-v1_5";
         algorithm.hash = "SHA-1";
         if (pk.signKey == null) 
@@ -7716,7 +7716,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         }
         var keyUsages = new Array();
         keyUsages.push("encrypt", "decrypt");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "AES-CTR";
         algorithm.counter = base64.decode(iv);
         algorithm.length = 128;
@@ -7743,7 +7743,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
         }
         var keyUsages = new Array();
         keyUsages.push("encrypt", "decrypt");
-        var algorithm = new AlgorithmIdentifier();
+        var algorithm = new Object();
         algorithm.name = "AES-CTR";
         algorithm.counter = base64.decode(iv);
         algorithm.length = 128;

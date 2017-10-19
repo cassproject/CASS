@@ -434,6 +434,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             this.subject = EcEncryptedValue.revive(this.subject);
             this.subject.addReader(newReader);
         }
+        EcRemoteLinkedData.prototype.addReader.call(this, newReader);
     };
     prototype.removeReader = function(newReader) {
         if (this.agent != null) {
@@ -465,6 +466,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             this.subject = EcEncryptedValue.revive(this.subject);
             this.subject.removeReader(newReader);
         }
+        EcRemoteLinkedData.prototype.removeReader.call(this, newReader);
     };
     prototype.getSearchStringByTypeAndCompetency = function(competency) {
         return "(" + this.getSearchStringByType() + " AND competency:\"" + competency.shortId() + "\")";

@@ -1467,7 +1467,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.transformReferences = function(data) {
         var props = (data);
         for (var prop in props) {
-            if (props[prop] == null || props[prop] == undefined || !toString.call(props[prop]).contains(&quot;String&quot;)) {
+            if (props[prop] == null || props[prop] == undefined || toString.call(props[prop]).indexOf(&quot;String&quot;) == -1) {
                 if (EcObject.isObject(props[prop])) {
                     var nested = props[prop];
                     CSVImport.transformReferences(nested);

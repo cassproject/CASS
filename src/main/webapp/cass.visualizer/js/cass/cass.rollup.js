@@ -1733,13 +1733,13 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
         var nr;
         for (var i = 0; i < this.relationList.length; i++) {
             nr = this.relationList[i];
-            if (nr.getType().equals(RelationType.RELATION_TYPE.NARROWS)) {
+            if (nr.getType() == RelationType.RELATION_TYPE.NARROWS) {
                 relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
-            } else if (nr.getType().equals(RelationType.RELATION_TYPE.REQUIRES)) {
+            } else if (nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
                 relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
-            } else if (nr.getType().equals(RelationType.RELATION_TYPE.BROADENS)) {
+            } else if (nr.getType() == RelationType.RELATION_TYPE.BROADENS) {
                 relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
-            } else if (nr.getType().equals(RelationType.RELATION_TYPE.IS_REQUIRED_BY)) {
+            } else if (nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
                 relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
             }
         }
@@ -1773,7 +1773,7 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
             var nr;
             for (var i = 0; i < nra.length; i++) {
                 nr = nra[i];
-                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) || nr.getType().equals(RelationType.RELATION_TYPE.NARROWS) || nr.getType().equals(RelationType.RELATION_TYPE.IS_REQUIRED_BY)) {
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.NARROWS || nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
                     retList.push(nr);
                 }
             }
@@ -1787,7 +1787,7 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
             var nr;
             for (var i = 0; i < nra.length; i++) {
                 nr = nra[i];
-                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) || nr.getType().equals(RelationType.RELATION_TYPE.BROADENS) || nr.getType().equals(RelationType.RELATION_TYPE.REQUIRES)) {
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO || nr.getType() == RelationType.RELATION_TYPE.BROADENS || nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
                     retList.push(nr);
                 }
             }
@@ -1815,7 +1815,7 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
         var nr;
         for (var i = 0; i < nodeRelationList.length; i++) {
             nr = nodeRelationList[i];
-            if (nodeRelation.getSource().getId().equals(nr.getSource().getId()) && nodeRelation.getTarget().getId().equals(nr.getTarget().getId()) && nodeRelation.getType().equals(nr.getType())) 
+            if (nodeRelation.getSource().getId() == nr.getSource().getId() && nodeRelation.getTarget().getId() == nr.getTarget().getId() && nodeRelation.getType() == nr.getType()) 
                 return true;
         }
         return false;
@@ -2546,10 +2546,10 @@ RollupRuleProcessor = stjs.extend(RollupRuleProcessor, null, [], function(constr
     };
     prototype.exitLogical_or_math_operator = function(ctx) {
         if (ctx.cLogic != null) {
-            if ("AND".equals(ctx.cLogic.text.toUpperCase())) {
+            if ("AND" == ctx.cLogic.text.toUpperCase()) {
                 this.log("ADDING OPERATION: " + RollupRulePacketGenerator.OperationType.AND);
                 this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.AND);
-            } else if ("OR".equals(ctx.cLogic.text.toUpperCase())) {
+            } else if ("OR" == ctx.cLogic.text.toUpperCase()) {
                 this.log("ADDING OPERATION: " + RollupRulePacketGenerator.OperationType.OR);
                 this.rollupRulePacketGenerator.addQueryOperation(RollupRulePacketGenerator.OperationType.OR);
             }
@@ -2898,7 +2898,7 @@ CompetencyGraphBuilder = stjs.extend(CompetencyGraphBuilder, null, [], function(
         var sub;
         for (var i = 0; i < this.subjects.length; i++) {
             sub = this.subjects[i];
-            if (sub.toPem().trim().equals(pk.toPem().trim())) 
+            if (sub.toPem().trim() == pk.toPem().trim()) 
                 return true;
         }
         return false;
@@ -3431,7 +3431,7 @@ CyclicGraphCollapser = stjs.extend(CyclicGraphCollapser, null, [], function(cons
             nodeRelations = relationMap.getRelationsForNode(nodeList[i]);
             for (var j = 0; j < nodeRelations.length; j++) {
                 nr = nodeRelations[j];
-                if (nr.getType().equals(RelationType.RELATION_TYPE.IS_EQUIVALENT_TO)) {
+                if (nr.getType() == RelationType.RELATION_TYPE.IS_EQUIVALENT_TO) {
                     npg.mergeNodePackets(npg.getNodePacketForNode(nr.getSource()), npg.getNodePacketForNode(nr.getTarget()));
                 }
             }

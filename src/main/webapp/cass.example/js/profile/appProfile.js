@@ -32,7 +32,7 @@ $("#profile").on("click", ".cass-competency", null, function (e)
 $("#profile").on("click", ".assertionActionDelete", null, function (e)
 {
     if (confirm("This will delete the selected assertion. Continue?") == true)
-        EcRepository.get($(this).parents("#oneToOneAssertion").attr("url"), function (assertion)
+        EcAssertion.get($(this).parents("#oneToOneAssertion").attr("url"), function (assertion)
         {
             EcRepository._delete(assertion, function (success)
             {
@@ -176,7 +176,7 @@ function profileUpdateAssertionTranscript(acs)
     {
         var competencyId = ary[competencyIdIndex];
         if (acs[competencyId].length > 0)
-            EcRepository.get(competencyId, function (competency)
+            EcCompetency.get(competencyId, function (competency)
             {
                 var ui = $("#profileContainer").find(".cass-competency[url='" + competencyId + "']");
                 var name = ui.children(".cass-competency-name");
