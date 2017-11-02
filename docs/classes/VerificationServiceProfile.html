@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2837"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2837</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3731"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3731</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/VerificationServiceProfile">credentialengine.org/VerificationServiceProfile</a>
-A resource describing the means by which someone can verify whether a credential has been attained.</p>
+Entity describing the means by which someone can verify whether a credential has been attained.
+Includes, but is not limited to, verification of whether quality assurance credentials have been issued for organizations, learning opportunities, and assessments.</p>
 
 </div>
 
@@ -889,6 +892,10 @@ A resource describing the means by which someone can verify whether a credential
                                 <a href="#property_estimatedCost">estimatedCost</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_holderMustAuthorize">holderMustAuthorize</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_identifier">identifier</a>
 
@@ -930,6 +937,10 @@ A resource describing the means by which someone can verify whether a credential
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_subjectWebpage">subjectWebpage</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_targetCredential">targetCredential</a>
 
                             </li>
@@ -938,7 +949,19 @@ A resource describing the means by which someone can verify whether a credential
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_verificationDirectory">verificationDirectory</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_verificationMethodDescription">verificationMethodDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_verificationService">verificationService</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_verifiedClaimType">verifiedClaimType</a>
 
                             </li>
                     </ul>
@@ -1202,7 +1225,7 @@ An alias for the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2857"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2857</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3750"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3750</code></a>
         </p>
 
 
@@ -1210,7 +1233,7 @@ An alias for the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/dateEffective">http://purl.org/ctdl/terms/dateEffective</a>
-The effective date of the described resource content.</p>
+Effective date of the content of a credential, assessment or learning opportunity.</p>
 
     </div>
 
@@ -1219,7 +1242,7 @@ The effective date of the described resource content.</p>
 </div>
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1231,7 +1254,7 @@ The effective date of the described resource content.</p>
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2865"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2865</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3757"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3757</code></a>
         </p>
 
 
@@ -1239,7 +1262,7 @@ The effective date of the described resource content.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -1282,7 +1305,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2873"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2873</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3764"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3764</code></a>
         </p>
 
 
@@ -1290,7 +1313,33 @@ A sub property of description. A short description of the item used to disambigu
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/estimatedCost">http://purl.org/ctdl/terms/estimatedCost</a>
-The estimated cost of the described resource.</p>
+Estimated cost of a credential, learning opportunity or assessment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_holderMustAuthorize" class="property item">
+    <h3 class="name"><code>holderMustAuthorize</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3771"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3771</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/holderMustAuthorize">http://purl.org/ctdl/terms/holderMustAuthorize</a>
+Whether or not the credential holder must authorize the organization to provide the verification service.</p>
 
     </div>
 
@@ -1358,7 +1407,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2881"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2881</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3778"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3778</code></a>
         </p>
 
 
@@ -1366,7 +1415,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/jurisdiction">http://purl.org/ctdl/terms/jurisdiction</a>
-The geo-political region in which the described resource is applicable.</p>
+Geographic or political region in which the credential is formally applicable or an organization has authority to act.</p>
 
     </div>
 
@@ -1434,7 +1483,7 @@ The name of the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2889"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2889</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3785"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3785</code></a>
         </p>
 
 
@@ -1442,7 +1491,7 @@ The name of the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/offeredBy">http://purl.org/ctdl/terms/offeredBy</a>
-Access to the described resource is offered by the referenced agent.</p>
+Agent that offers the credential, learning opportunity or assessment.</p>
 
     </div>
 
@@ -1460,7 +1509,7 @@ Access to the described resource is offered by the referenced agent.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2897"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2897</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3792"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3792</code></a>
         </p>
 
 
@@ -1468,7 +1517,7 @@ Access to the described resource is offered by the referenced agent.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/offeredIn">http://purl.org/ctdl/terms/offeredIn</a>
-The resource being described is offered in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.</p>
 
     </div>
 
@@ -1502,7 +1551,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 </div>
 <div id="property_region" class="property item">
     <h3 class="name"><code>region</code></h3>
-    <span class="type"><a href="../classes/GeoCoordinates.html" class="crosslink">GeoCoordinates</a></span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -1511,7 +1560,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2905"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2905</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3799"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3799</code></a>
         </p>
 
 
@@ -1519,7 +1568,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/region">http://purl.org/ctdl/terms/region</a>
-A geo-political area of the described resource.</p>
+Entity that describes the longitude, latitude and other location details of an area.</p>
 
     </div>
 
@@ -1551,6 +1600,33 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
 
 </div>
+<div id="property_subjectWebpage" class="property item">
+    <h3 class="name"><code>subjectWebpage</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3806"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3806</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/subjectWebpage">http://purl.org/ctdl/terms/subjectWebpage</a>
+The webpage that describes this entity.
+The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_targetCredential" class="property item">
     <h3 class="name"><code>targetCredential</code></h3>
     <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
@@ -1562,7 +1638,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2913"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2913</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3814"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3814</code></a>
         </p>
 
 
@@ -1570,7 +1646,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/targetCredential">http://purl.org/ctdl/terms/targetCredential</a>
-A credential that is a focus or target of the resource being described.</p>
+Credential that is a focus or target of the condition, process or verification service.</p>
 
     </div>
 
@@ -1602,9 +1678,9 @@ URL of the item.
 
 
 </div>
-<div id="property_verificationMethodDescription" class="property item">
-    <h3 class="name"><code>verificationMethodDescription</code></h3>
-    <span class="type">Literal</span>
+<div id="property_verificationDirectory" class="property item">
+    <h3 class="name"><code>verificationDirectory</code></h3>
+    <span class="type">AnyURI</span>
 
 
 
@@ -1613,7 +1689,33 @@ URL of the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2921"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2921</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3821"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3821</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/verificationDirectory">http://purl.org/ctdl/terms/verificationDirectory</a>
+Directory of credential holders and their current statuses.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_verificationMethodDescription" class="property item">
+    <h3 class="name"><code>verificationMethodDescription</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3828"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3828</code></a>
         </p>
 
 
@@ -1621,7 +1723,60 @@ URL of the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/verificationMethodDescription">http://purl.org/ctdl/terms/verificationMethodDescription</a>
-Description of the methods used to evaluate the resource validity and reliability.</p>
+Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_verificationService" class="property item">
+    <h3 class="name"><code>verificationService</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3835"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3835</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/verificationService">http://purl.org/ctdl/terms/verificationService</a>
+Direct access to the verification service.
+This property identifies machine-accessible services, such as API endpoints, that provide direct access to the verification service being described.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_verifiedClaimType" class="property item">
+    <h3 class="name"><code>verifiedClaimType</code></h3>
+    <span class="type"><a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3843"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3843</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/verifiedClaimType">http://purl.org/ctdl/terms/verifiedClaimType</a>
+Type of claim provided through a verification service; select from an existing enumeration of such types.</p>
 
     </div>
 

@@ -748,6 +748,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     constructor.cache = new Object();
     constructor.fetching = new Object();
     constructor.repos = new Array();
+    prototype.adminKeys = null;
     prototype.selectedServer = null;
     prototype.autoDetectFound = false;
     /**
@@ -1143,9 +1144,64 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
         }
-        EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
-            EcRemote._delete(data.shortId(), signatureSheet, success, failure);
-        }, failure);
+        var targetUrl;
+        targetUrl = data.shortId();
+        if (data.owner != null && data.owner.length > 0) {
+            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+                if (signatureSheet.length == 2) {
+                    for (var i = 0; i < EcRepository.repos.length; i++) {
+                        if (data.id.indexOf(EcRepository.repos[i].selectedServer) != -1) {
+                            EcRepository.repos[i].deleteRegistered(data, success, failure);
+                            return;
+                        }
+                    }
+                    failure("Cannot delete object without a signature. If deleting from a server, use the non-static _delete");
+                } else 
+                    EcRemote._delete(targetUrl, signatureSheet, success, failure);
+            }, failure);
+        } else {
+            EcRemote._delete(targetUrl, "[]", success, failure);
+        }
+    };
+    /**
+     *  Attempts to delete a piece of data.
+     *  <p>
+     *  Uses a signature sheet informed by the owner field of the data.
+     * 
+     *  @param {EcRemoteLinkedData} data Data to save to the location designated
+     *                              by its id.
+     *  @param {Callback1<String>}  success Callback triggered on successful
+     *                              delete
+     *  @param {Callback1<String>}  failure Callback triggered if error during
+     *                              delete
+     *  @memberOf EcRepository
+     *  @method DELETE
+     *  @static
+     */
+    prototype.deleteRegistered = function(data, success, failure) {
+        if (EcRepository.caching) {
+            delete (EcRepository.cache)[data.id];
+            delete (EcRepository.cache)[data.shortId()];
+        }
+        var targetUrl;
+        if (EcRepository.shouldTryUrl(data.id)) 
+            targetUrl = data.shortId();
+         else {
+            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + EcCrypto.md5(data.id));
+        }
+        var me = this;
+        if (data.owner != null && data.owner.length > 0) {
+            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+                if (signatureSheet.length == 2 && me.adminKeys != null) {
+                    EcIdentityManager.signatureSheetForAsync(me.adminKeys, 60000, data.id, function(signatureSheet) {
+                        EcRemote._delete(targetUrl, signatureSheet, success, failure);
+                    }, failure);
+                } else 
+                    EcRemote._delete(targetUrl, signatureSheet, success, failure);
+            }, failure);
+        } else {
+            EcRemote._delete(targetUrl, "[]", success, failure);
+        }
     };
     /**
      *  Retrieves data from the server and caches it for use later during the
@@ -1171,9 +1227,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if ((EcRepository.cache)[url] != null) {} else if (url.startsWith(this.selectedServer)) {
                 cacheUrls.push(url.replace(this.selectedServer, "").replace("custom/", ""));
             } else if (!EcRepository.shouldTryUrl(url)) {
-                var m = forge.md.md5.create();
-                m.update(url);
-                cacheUrls.push("data/" + m.digest().toHex());
+                cacheUrls.push("data/" + EcCrypto.md5(url));
             }
         }
         if (cacheUrls.length == 0) {
@@ -1194,9 +1248,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     results[i] = d;
                     if (EcRepository.caching) {
                         if (!EcRepository.shouldTryUrl(d.id)) {
-                            var m = forge.md.md5.create();
-                            m.update(d.id);
-                            var md5 = m.digest().toHex();
+                            var md5 = EcCrypto.md5(d.id);
                             for (var j = 0; j < urls.length; j++) {
                                 var url = urls[j];
                                 if (url.indexOf(md5) != -1) {
@@ -1224,9 +1276,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         results[i] = d;
                         if (EcRepository.caching) {
                             if (!EcRepository.shouldTryUrl(d.id)) {
-                                var m = forge.md.md5.create();
-                                m.update(d.id);
-                                var md5 = m.digest().toHex();
+                                var md5 = EcCrypto.md5(d.id);
                                 for (var j = 0; j < urls.length; j++) {
                                     var url = urls[j];
                                     if (url.indexOf(md5) != -1) {
@@ -1363,8 +1413,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *                                           Google query strings.
      *  @param {Object}                          paramObj Additional parameters that can be used to tailor
      *                                           the search.
-     *  @param size
-     *  @param start
      *  @param {Callback1<EcRemoteLinkedData>}   eachSuccess Success event for each
      *                                           found object.
      *  @param {Callback1<EcRemoteLinkedData[]>} success Success event, called
@@ -1461,8 +1509,6 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *                  Google query strings.
      *  @param {Object} paramObj Additional parameters that can be used to tailor
      *                  the search.
-     *  @param size
-     *  @param start
      *  @returns EcRemoteLinkedData[]
      *  @memberOf EcRepository
      *  @method searchWithParams
@@ -1606,7 +1652,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
             }
         }
-        servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/", "/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/", "/api/custom/");
+        EcArray.removeDuplicates(hostnames);
+        servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/", "/", "/service/", "/api/");
+        EcArray.removeDuplicates(servicePrefixes);
         var me = this;
         me.autoDetectFound = false;
         for (var j = 0; j < hostnames.length; j++) {
@@ -1614,8 +1662,22 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 for (var i = 0; i < protocols.length; i++) {
                     this.autoDetectRepositoryActualAsync(protocols[i] + "//" + hostnames[j] + servicePrefixes[k].replaceAll("//", "/"), success, failure);
                     setTimeout(function() {
-                        if (me.autoDetectFound == false) 
-                            failure("Could not find service.");
+                        if (me.autoDetectFound == false) {
+                            var servicePrefixes = new Array();
+                            servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/custom/", "/api/custom/");
+                            EcArray.removeDuplicates(servicePrefixes);
+                            for (var j = 0; j < hostnames.length; j++) {
+                                for (var k = 0; k < servicePrefixes.length; k++) {
+                                    for (var i = 0; i < protocols.length; i++) {
+                                        me.autoDetectRepositoryActualAsync(protocols[i] + "//" + hostnames[j] + servicePrefixes[k].replaceAll("//", "/"), success, failure);
+                                        setTimeout(function() {
+                                            if (me.autoDetectFound == false) 
+                                                failure("Could not find service.");
+                                        }, 5000);
+                                    }
+                                }
+                            }
+                        }
                     }, 5000);
                 }
             }
@@ -1692,9 +1754,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var successCheck = function(p1) {
             if (p1 != null) {
                 if ((p1)["ping"] == "pong") {
-                    me.selectedServer = guess;
-                    me.autoDetectFound = true;
-                    success();
+                    if (me.autoDetectFound == false) {
+                        me.selectedServer = guess;
+                        me.autoDetectFound = true;
+                        success();
+                    }
                 }
             }
         };
@@ -1702,9 +1766,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             if (p1 != null) {
                 if (!(p1 == "")) {
                     if (p1.indexOf("pong") != -1) {
-                        me.selectedServer = guess;
-                        me.autoDetectFound = true;
-                        success();
+                        if (me.autoDetectFound == false) {
+                            me.selectedServer = guess;
+                            me.autoDetectFound = true;
+                            success();
+                        }
                     }
                 }
             }
@@ -1785,7 +1851,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method backup
      */
     prototype.backup = function(serverSecret, success, failure) {
-        EcRemote.getExpectingObject(this.selectedServer, "skyrepo/util/backup?secret=" + serverSecret, success, failure);
+        EcRemote.getExpectingObject(this.selectedServer, "util/backup?secret=" + serverSecret, success, failure);
     };
     /**
      *  Restores the skyrepo elasticsearch backup from the server backup directory
@@ -1797,7 +1863,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method restoreBackup
      */
     prototype.restoreBackup = function(serverSecret, success, failure) {
-        EcRemote.getExpectingObject(this.selectedServer, "skyrepo/util/restore?secret=" + serverSecret, success, failure);
+        EcRemote.getExpectingObject(this.selectedServer, "util/restore?secret=" + serverSecret, success, failure);
     };
     /**
      *  Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore
@@ -1809,7 +1875,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method wipe
      */
     prototype.wipe = function(serverSecret, success, failure) {
-        EcRemote.getExpectingObject(this.selectedServer, "skyrepo/util/purge?secret=" + serverSecret, success, failure);
+        EcRemote.getExpectingObject(this.selectedServer, "util/purge?secret=" + serverSecret, success, failure);
     };
     /**
      *  Handles the search results in search by params, before returning them
@@ -1861,13 +1927,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         } else {
             service = "/sky/admin";
         }
+        var me = this;
         EcRemote.getExpectingObject(this.selectedServer, service, function(p1) {
-            success(p1);
+            var ary = p1;
+            me.adminKeys = new Array();
+            for (var i = 0; i < ary.length; i++) {
+                me.adminKeys.push(ary[i]);
+            }
+            success(ary);
         }, function(p1) {
             failure("");
         });
     };
-}, {cache: "Object", fetching: "Object", repos: {name: "Array", arguments: ["EcRepository"]}}, {});
+}, {cache: "Object", fetching: "Object", repos: {name: "Array", arguments: ["EcRepository"]}, adminKeys: {name: "Array", arguments: [null]}}, {});
 /**
  *  Implementation of a file with methods for communicating with repository services
  * 
@@ -2017,7 +2089,7 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
      *  @memberOf EcFile
      *  @method _delete
      */
-    prototype._delete = function(success, failure) {
-        EcRepository.DELETE(this, success, failure);
+    prototype._delete = function(repo, success, failure) {
+        repo.constructor.DELETE(this, success, failure);
     };
 }, {owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});

@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -874,10 +876,6 @@ The geographic coordinates of a place or event.</p>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_address">address</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_addressCountry">addressCountry</a>
 
                             </li>
@@ -897,6 +895,10 @@ The geographic coordinates of a place or event.</p>
                                 <a href="#property_elevation">elevation</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_geoURI">geoURI</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_identifier">identifier</a>
 
@@ -907,6 +909,14 @@ The geographic coordinates of a place or event.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_latitude">latitude</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_latitude">latitude</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_longitude">longitude</a>
 
                             </li>
                             <li class="index-item property">
@@ -1164,33 +1174,6 @@ An additional type for the item, typically used for adding more specific types f
 </div>
 <div id="property_address" class="property item">
     <h3 class="name"><code>address</code></h3>
-    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2950"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2950</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/address">http://purl.org/ctdl/terms/address</a>
-Physical address of the resource.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_address" class="property item">
-    <h3 class="name"><code>address</code></h3>
     <span class="type">Schema, PostalAddress | schema,Text</span>
 
 
@@ -1342,6 +1325,34 @@ The elevation of a location (<a href="https://en.wikipedia.org/wiki/World_Geodet
 
 
 </div>
+<div id="property_geoURI" class="property item">
+    <h3 class="name"><code>geoURI</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3869"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3869</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/geoURI">http://purl.org/ctdl/terms/geoURI</a>
+Entity that describes the longitude, latitude and other location details of a place.
+This may define a place at any scale. Examples include a city, state, province, country, or continent.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_identifier" class="property item inherited">
     <h3 class="name"><code>identifier</code></h3>
     <span class="type">Schema, URL | schema,Text | schema,PropertyValue</span>
@@ -1418,6 +1429,34 @@ The latitude of a location. For example <code>37.42242</code> (<a href="https://
 
 
 </div>
+<div id="property_latitude" class="property item">
+    <h3 class="name"><code>latitude</code></h3>
+    <span class="type">Float</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3877"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3877</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/latitude">http://purl.org/ctdl/terms/latitude</a>
+Latitude of a location.
+For example 37.42242 (WGS 84)</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_longitude" class="property item">
     <h3 class="name"><code>longitude</code></h3>
     <span class="type">Schema, Number | schema,Text</span>
@@ -1438,6 +1477,34 @@ The latitude of a location. For example <code>37.42242</code> (<a href="https://
     <div class="description">
         <p><a href="http://Schema.org/longitude">Schema.org/longitude</a>
 The longitude of a location. For example <code>-122.08585</code> (<a href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS 84</a>).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_longitude" class="property item">
+    <h3 class="name"><code>longitude</code></h3>
+    <span class="type">Float</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3885"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3885</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/longitude">http://purl.org/ctdl/terms/longitude</a>
+The longitude of a location.
+For example -122.08585 (WGS 84).</p>
 
     </div>
 
@@ -1471,7 +1538,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 </div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1483,7 +1550,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2958"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2958</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3893"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3893</code></a>
         </p>
 
 
@@ -1491,7 +1558,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
-The name of the resource being described.</p>
+Name or title of the entity.</p>
 
     </div>
 
@@ -1574,30 +1641,26 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
 
 </div>
-<div id="property_url" class="property item">
+<div id="property_url" class="property item inherited">
     <h3 class="name"><code>url</code></h3>
-    <span class="type">AnyURI</span>
+    <span class="type">URL</span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/Thing.html#property_url">
-                Thing
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2966"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2966</code></a>
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_url">Thing</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l34"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:34</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/url">http://purl.org/ctdl/terms/url</a>
-URL of the resource being described.</p>
-
+        Schema.org/url
+URL of the item.
     </div>
 
 

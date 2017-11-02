@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3520"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3520</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4334"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4334</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/AccreditAction">credentialengine.org/AccreditAction</a>
-An action by an independent, neutral, and authoritative agent that certifies a resource as meeting a prescribed set of standards.</p>
+Action by an independent, neutral, and authoritative agent that certifies an entity as meeting a prescribed set of standards.
+Since an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action.</p>
 
 </div>
 
@@ -953,7 +956,7 @@ An action by an independent, neutral, and authoritative agent that certifies a r
                                 <a href="#property_result">result</a>
 
                             </li>
-                            <li class="index-item property inherited">
+                            <li class="index-item property">
                                 <a href="#property_resultingAward">resultingAward</a>
 
                             </li>
@@ -1191,7 +1194,7 @@ An action by an independent, neutral, and authoritative agent that certifies a r
                 CredentialingAction
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3540"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3540</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4353"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4353</code></a>
         </p>
 
 
@@ -1199,7 +1202,7 @@ An action by an independent, neutral, and authoritative agent that certifies a r
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/actingAgent">http://purl.org/ctdl/terms/actingAgent</a>
-The direct performer or driver (animate or inanimate) of an action.</p>
+Organization or person performing an action.</p>
 
     </div>
 
@@ -1245,7 +1248,7 @@ Indicates the current disposition of the Action.
                 CredentialingAction
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3548"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3548</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4360"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4360</code></a>
         </p>
 
 
@@ -1253,7 +1256,7 @@ Indicates the current disposition of the Action.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/actionStatusType">http://purl.org/ctdl/terms/actionStatusType</a>
-Indicates the current disposition of the action.</p>
+Entity describing the current disposition or standing of an action; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -1285,30 +1288,26 @@ An additional type for the item, typically used for adding more specific types f
 
 
 </div>
-<div id="property_agent" class="property item">
+<div id="property_agent" class="property item inherited">
     <h3 class="name"><code>agent</code></h3>
-    <span class="type"><a href="../classes/CredentialOrganization.html" class="crosslink">CredentialOrganization</a> | <a href="../classes/CredentialPerson.html" class="crosslink">CredentialPerson</a> | <a href="../classes/QACredentialOrganization.html" class="crosslink">QACredentialOrganization</a></span>
+    <span class="type">Schema, Organization | schema,Person</span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/Action.html#property_agent">
-                Action
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3556"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3556</code></a>
+                <p>Inherited from
+                <a href="../classes/Action.html#property_agent">Action</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2310"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2310</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/agent">http://purl.org/ctdl/terms/agent</a>
-The direct performer or driver of the action (animate or inanimate).</p>
-
+        Schema.org/agent
+The direct performer or driver of the action (animate or inanimate). e.g. *John* wrote a book.
     </div>
 
 
@@ -1341,7 +1340,7 @@ An alias for the item.
 </div>
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1353,7 +1352,7 @@ An alias for the item.
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3564"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3564</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4367"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4367</code></a>
         </p>
 
 
@@ -1361,7 +1360,7 @@ An alias for the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -1407,7 +1406,7 @@ A sub property of description. A short description of the item used to disambigu
                 CredentialingAction
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3572"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3572</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4374"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4374</code></a>
         </p>
 
 
@@ -1415,7 +1414,7 @@ A sub property of description. A short description of the item used to disambigu
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/endDate">http://purl.org/ctdl/terms/endDate</a>
-The end date of something.</p>
+Date some event or activity ends.</p>
 
     </div>
 
@@ -1486,7 +1485,7 @@ For failed actions, more information on the cause of the failure.
                 CredentialingAction
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3580"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3580</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4381"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4381</code></a>
         </p>
 
 
@@ -1494,7 +1493,8 @@ For failed actions, more information on the cause of the failure.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/evidenceOfAction">http://purl.org/ctdl/terms/evidenceOfAction</a>
-A resource that provides evidence of the continuing validity of the action being described.</p>
+Entity that proves that the action occured or that the action continues to be valid.
+The evidence verifies the information in the action and is particular to it. It is not a directory of such evidentiary entities or a description of how such verifications might generically be characterized.</p>
 
     </div>
 
@@ -1565,7 +1565,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
                 Action
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3588"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3588</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4389"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4389</code></a>
         </p>
 
 
@@ -1573,7 +1573,8 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/instrument">http://purl.org/ctdl/terms/instrument</a>
-The object that helped the agent perform the action. e.g. John wrote a book with a pen.</p>
+Object that helped the agent perform the action. e.g. John wrote a book with a pen.
+A credential or other instrument whose criteria was applied in executing the action.</p>
 
     </div>
 
@@ -1669,7 +1670,7 @@ The name of the item.
                 Action
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3596"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3596</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4397"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4397</code></a>
         </p>
 
 
@@ -1677,7 +1678,7 @@ The name of the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/object">http://purl.org/ctdl/terms/object</a>
-The object upon [which] the action is carried out, whose state is kept intact or changed.</p>
+Object upon which the action is carried out, whose state is kept intact or changed.</p>
 
     </div>
 
@@ -1698,7 +1699,7 @@ The object upon [which] the action is carried out, whose state is kept intact or
                 Action
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3604"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3604</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4404</code></a>
         </p>
 
 
@@ -1706,7 +1707,7 @@ The object upon [which] the action is carried out, whose state is kept intact or
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/participant">http://purl.org/ctdl/terms/participant</a>
-Other co-agents that participated in the action indirectly.</p>
+Co-agents that participated in the action indirectly.</p>
 
     </div>
 
@@ -1772,12 +1773,9 @@ The result produced in the action. e.g. John wrote *a book*.
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CredentialingAction.html#property_resultingAward">
-                CredentialingAction
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3612"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3612</code></a>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4411"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4411</code></a>
         </p>
 
 
@@ -1785,7 +1783,8 @@ The result produced in the action. e.g. John wrote *a book*.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/resultingAward">http://purl.org/ctdl/terms/resultingAward</a>
-The result produced in the action.</p>
+Awarded credential resulting from an action.
+An awarded credential is of the type ceterms:CredentialAssertion.</p>
 
     </div>
 
@@ -1831,7 +1830,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
                 CredentialingAction
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3620"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3620</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4419"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4419</code></a>
         </p>
 
 
@@ -1839,7 +1838,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/startDate">http://purl.org/ctdl/terms/startDate</a>
-The start date of something.</p>
+Date the validity or usefulness of the information in this resource begins.</p>
 
     </div>
 

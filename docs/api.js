@@ -154,6 +154,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Conversation",
         "CookAction",
         "Corporation",
+        "CostManifest",
         "CostProfile",
         "Country",
         "Course",
@@ -525,6 +526,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ProductModel",
         "ProfessionalDoctorate",
         "ProfessionalService",
+        "ProficiencyScale",
         "ProfilePage",
         "ProgramMembership",
         "PropertyValue",
@@ -751,7 +753,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "org.credentialengine",
             "name": "org.credentialengine",
-            "description": "credentialengine.org/CredentialingAction\nAn action taken by an agent affecting the status of an object resource."
+            "description": "credentialengine.org/CredentialingAction\nAction taken by an agent affecting the status of an object entity.\nSince an instance of ceterms:CredentialingAction is a claim that a certain agent has taken the action being described, creation of such a ceterms:CredentialingAction should be reserved to the agent of that action."
         },
         {
             "displayName": "org.json.ld",
