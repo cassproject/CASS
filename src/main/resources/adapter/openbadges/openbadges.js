@@ -222,10 +222,10 @@ openbadgeCheckId = function(){
 	var a = new EcAssertion();
 	a.copyFrom(JSON.parse(this.params.obj));
 
-	if (a.subject.reader == null)
+	if (a.subject["@reader"] == null)
 		return debug("Badge not generated for assertion: Assertion has no readers.");
 
-	if (!EcArray.has(a.subject.reader,EcPpk.fromPem(openbadgesPpk()).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(openbadgesPpk()).toPk()))
+	if (!EcArray.has(a.subject["@reader"],EcPpk.fromPem(openbadgesPpk()).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(openbadgesPpk()).toPk()))
 		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
 	if (repoEndpoint().contains("localhost"))
