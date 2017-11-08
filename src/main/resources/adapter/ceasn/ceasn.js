@@ -27,6 +27,8 @@ EcIdentityManager.addIdentity(ceasnIdentity);
 
 //asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
 
+function cassCompetencyAsCeasn() {}
+
 function cassFrameworkAsCeasn() {
     EcRepository.cache = {};
     var repo = new EcRepository();
@@ -53,13 +55,14 @@ function cassFrameworkAsCeasn() {
             competency = c;
         }
         if (competency != null) {
-    		var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929")["@context"]);
-			competency.context = "http://schema.cassproject.org/0.3/cass2ceasn";
-			competency["ceasn:inLanguage"] = "en-US";
-			competency["ceasn:ctid"] = "ce-"+uuidFromString(competency.id);
-			competency = jsonLdCompact(competency.toJson(), ctx);
-			competency["ceasn:competencyText"] = competency.name;
-			competency["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
+            var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929")["@context"]);
+            competency.context = "http://schema.cassproject.org/0.3/cass2ceasn";
+            competency["ceasn:ctid"] = "ce-" + uuidFromString(competency.id);
+            competency = jsonLdCompact(competency.toJson(), ctx);
+            if (competency["ceasn:inLanguage"] == null)
+                competency["ceasn:inLanguage"] = "en";
+            competency["ceasn:competencyText"] = competency["ceasn:name"];
+            competency["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
             return JSON.stringify(competency);
         }
     }
@@ -79,9 +82,9 @@ function cassFrameworkAsCeasn() {
     var competencies = {};
     var topLevelCompIds = []
     for (var i = 0; i < f.competency.length; i++) {
-    	var c = null;
-    	if (c == null)
-    		c = EcCompetency.getBlocking(f.competency[i]);
+        var c = null;
+        if (c == null)
+            c = EcCompetency.getBlocking(f.competency[i]);
         competencies[f.competency[i]] = competencies[c.id] = c;
         if (competencies[c.id] == null)
             error("Competency not found.", 404);
@@ -171,25 +174,32 @@ function cassFrameworkAsCeasn() {
     }
 
     var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929")["@context"]);
-	f.competency = [];
+    f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
-        c["ceasn:inLanguage"] = "en-US";
         c["ceasn:isPartOf"] = f.id;
-        if (c["ceasn:isChildOf"] == null){
-        	c["ceasn:isChildOf"] = f.id;
-        	if (f["ceasn:hasTopChild"] == null)
-        		f["ceasn:hasTopChild"] = [];
-        	f["ceasn:hasTopChild"].push(c.id);
+        if (c["ceasn:isChildOf"] == null) {
+            c["ceasn:isChildOf"] = f.id;
+            if (f["ceasn:hasTopChild"] == null)
+                f["ceasn:hasTopChild"] = [];
+            f["ceasn:hasTopChild"].push(c.id);
         }
         f.competency.push(c.id);
-        c["ceasn:ctid"] = "ce-"+uuidFromString(c.id);
+        c["ceasn:ctid"] = "ce-" + uuidFromString(c.id);
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
-        competencies[id]["ceasn:competencyText"] = competencies[id].name;
-        competencies[id]["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
+        competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
+        if (competencies[id]["ceasn:inLanguage"] == null)
+            competencies[id]["ceasn:inLanguage"] = "en";
+        delete competencies[id]["@context"];
+
+        for (var k in competencies[id])
+            if (k.indexOf("ceasn:") == 0 || k.indexOf("@") == 0)
+            ;
+            else
+                delete competencies[id][k];
     }
 
     f.context = "http://schema.cassproject.org/0.3/cass2ceasn";
@@ -197,15 +207,22 @@ function cassFrameworkAsCeasn() {
 
     if (f.description == null)
         f.description = f.name;
-    f["ceasn:inLanguage"] = "en-US";
-    f["ceasn:ctid"] = "ce-"+uuidFromString(f.id);
-    competencies[f.id] = jsonLdCompact(f.toJson(), ctx);
-    competencies[f.id]["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
+    f["ceasn:ctid"] = "ce-" + uuidFromString(f.id);
+    f = jsonLdCompact(f.toJson(), ctx);
+    f["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
 
-	var results = [];
-	for (var k in competencies)
-		results.push(competencies[k]);
-    return JSON.stringify(results, null, 2);
+    if (f["ceasn:inLanguage"] == null)
+        f["ceasn:inLanguage"] = "en";
+    var results = [];
+    for (var k in competencies)
+        results.push(competencies[k]);
+    f["@graph"] = results;
+    for (var k in f)
+        if (k.indexOf("ceasn:") == 0 || k.indexOf("@") == 0)
+        ;
+        else
+            delete f[k];
+    return JSON.stringify(f, null, 2);
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
@@ -391,12 +408,14 @@ function ceasnFrameworkToCass() {
 function ceasnEndpoint() {
     if (this.params.methodType == "GET")
         return cassFrameworkAsCeasn.call(this);
-    else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
-        return ceasnFrameworkToCass.call(this);
+    //else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
+    //    return ceasnFrameworkToCass.call(this);
     else if (this.params.methodType == "DELETE") {
         error("Not Yet Implemented.", "405");
         return "Not Yet Implemented";
-    }
+    } else
+        error("Not Yet Implemented.", "405");
+    return "Not Yet Implemented";
 }
 
 bindWebService("/ceasn", ceasnEndpoint);
