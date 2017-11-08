@@ -209,20 +209,22 @@ function cassFrameworkAsCeasn() {
         f.description = f.name;
     f["ceasn:ctid"] = "ce-" + uuidFromString(f.id);
     f = jsonLdCompact(f.toJson(), ctx);
-    f["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
 
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
     var results = [];
     for (var k in competencies)
         results.push(competencies[k]);
-    f["@graph"] = results;
+    results.push(f);
+    var r = {};
+    r["@graph"] = results;
+    r["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
     for (var k in f)
         if (k.indexOf("ceasn:") == 0 || k.indexOf("@") == 0)
         ;
         else
             delete f[k];
-    return JSON.stringify(f, null, 2);
+    return JSON.stringify(r, null, 2);
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
