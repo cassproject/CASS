@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l874"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:874</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l967"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:967</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -1045,6 +1047,10 @@ Geo-political information about applicable geographic areas and their exceptions
                                 <a href="#property_genre">genre</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_globalJurisdiction">globalJurisdiction</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_hasPart">hasPart</a>
 
@@ -1093,6 +1099,10 @@ Geo-political information about applicable geographic areas and their exceptions
                                 <a href="#property_isPartOf">isPartOf</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_jurisdictionException">jurisdictionException</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_keywords">keywords</a>
 
@@ -1115,6 +1125,10 @@ Geo-political information about applicable geographic areas and their exceptions
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_mainJurisdiction">mainJurisdiction</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1773,7 +1787,7 @@ A secondary title of the CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l894"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:894</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l985"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:985</code></a>
         </p>
 
 
@@ -1781,7 +1795,7 @@ A secondary title of the CreativeWork.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/assertedBy">http://purl.org/ctdl/terms/assertedBy</a>
-The agent providing the information contained in the entity being described.</p>
+Agent making a statement based on fact or belief.</p>
 
     </div>
 
@@ -2265,7 +2279,7 @@ Date of first broadcast/publication.
 </div>
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -2277,7 +2291,7 @@ Date of first broadcast/publication.
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l902"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:902</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l992"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:992</code></a>
         </p>
 
 
@@ -2285,7 +2299,7 @@ Date of first broadcast/publication.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -2562,6 +2576,33 @@ A person or organization that supports (sponsors) something through some kind of
     <div class="description">
         Schema.org/genre
 Genre of the creative work, broadcast channel or group.
+    </div>
+
+
+
+</div>
+<div id="property_globalJurisdiction" class="property item">
+    <h3 class="name"><code>globalJurisdiction</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l999"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:999</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/globalJurisdiction">http://purl.org/ctdl/terms/globalJurisdiction</a>
+Whether or not the credential is useful, applicable or recognized everywhere.
+Exceptions indicated by the ceterms:jurisdictionException property apply.</p>
+
     </div>
 
 
@@ -2867,6 +2908,33 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
 
 
 </div>
+<div id="property_jurisdictionException" class="property item">
+    <h3 class="name"><code>jurisdictionException</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1007"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1007</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/jurisdictionException">http://purl.org/ctdl/terms/jurisdictionException</a>
+Geographic or political region in which the credential is not formally recognized or an organization has no authority to act .
+The ceterms:jurisdictionalException property is used in conjunction with the ceterms:jurisdiction property and expresses any exceptions to a more general statement; e.g., the United states except for Colorado.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_keywords" class="property item inherited">
     <h3 class="name"><code>keywords</code></h3>
     <span class="type">Text</span>
@@ -3012,6 +3080,32 @@ Indicates the primary entity described in some page or other CreativeWork.
     <div class="description">
         Schema.org/mainEntityOfPage
 Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
+    </div>
+
+
+
+</div>
+<div id="property_mainJurisdiction" class="property item">
+    <h3 class="name"><code>mainJurisdiction</code></h3>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1015"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1015</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/mainJurisdiction">http://purl.org/ctdl/terms/mainJurisdiction</a>
+Primary geographic or political region in which the credential is recognized as applicable or in which an organization has recognized authority to act.</p>
+
     </div>
 
 

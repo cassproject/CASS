@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -1624,13 +1626,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
-        var url = server;
-        if (!url.endsWith(&quot;/&quot;) &amp;&amp; service != null &amp;&amp; service.equals(&quot;&quot;)) {
-            url += &quot;/&quot;;
-        }
-        if (service != null) {
-            url += service;
-        }
+        var url = EcRemote.urlAppend(server, service);
         var p = {};
         p.method = &quot;GET&quot;;
         p.url = url;
@@ -1662,13 +1658,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingString = function(server, service, success, failure) {
-        var url = server;
-        if (!url.endsWith(&quot;/&quot;) &amp;&amp; service != null &amp;&amp; service.equals(&quot;&quot;)) {
-            url += &quot;/&quot;;
-        }
-        if (service != null) {
-            url += service;
-        }
+        var url = EcRemote.urlAppend(server, service);
         var p = {};
         p.method = &quot;GET&quot;;
         p.url = url;
@@ -1683,6 +1673,16 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         } else {
             $.ajax(p);
         }
+    };
+    constructor.urlAppend = function(server, service) {
+        var url = server;
+        if (!url.endsWith(&quot;/&quot;) &amp;&amp; service != null &amp;&amp; service.equals(&quot;&quot;)) {
+            url += &quot;/&quot;;
+        }
+        if (service != null) {
+            url += service;
+        }
+        return url;
     };
     /**
      *  DELETEs something at a remote endpoint. Composed of a server endpoint

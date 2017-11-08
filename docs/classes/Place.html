@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -878,6 +880,18 @@ Entities that have a somewhat fixed, physical extension.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_addressCountry">addressCountry</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_addressLocality">addressLocality</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_addressRegion">addressRegion</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_aggregateRating">aggregateRating</a>
 
                             </li>
@@ -930,6 +944,10 @@ Entities that have a somewhat fixed, physical extension.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_geoURI">geoURI</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_globalLocationNumber">globalLocationNumber</a>
 
                             </li>
@@ -950,7 +968,15 @@ Entities that have a somewhat fixed, physical extension.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_latitude">latitude</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_logo">logo</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_longitude">longitude</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -985,6 +1011,14 @@ Entities that have a somewhat fixed, physical extension.</p>
                                 <a href="#property_photos">photos</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_postalCode">postalCode</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_postOfficeBoxNumber">postOfficeBoxNumber</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_potentialAction">potentialAction</a>
 
@@ -1007,6 +1041,14 @@ Entities that have a somewhat fixed, physical extension.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_specialOpeningHoursSpecification">specialOpeningHoursSpecification</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_streetAddress">streetAddress</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_targetContactPoint">targetContactPoint</a>
 
                             </li>
                             <li class="index-item property">
@@ -1052,8 +1094,7 @@ Entities that have a somewhat fixed, physical extension.</p>
     </div>
 
     <div class="description">
-        <p>Returns the description of the thing</p>
-
+        Returns the description of the thing
     </div>
 
 
@@ -1062,8 +1103,7 @@ Entities that have a somewhat fixed, physical extension.</p>
 
             <div class="returns-description">
                         <span class="type">String</span>:
-                    <p>description of Thing</p>
-
+                    description of Thing
             </div>
         </div>
 
@@ -1095,8 +1135,7 @@ Entities that have a somewhat fixed, physical extension.</p>
     </div>
 
     <div class="description">
-        <p>Returns the name of the thing</p>
-
+        Returns the name of the thing
     </div>
 
 
@@ -1105,8 +1144,7 @@ Entities that have a somewhat fixed, physical extension.</p>
 
             <div class="returns-description">
                         <span class="type">String</span>:
-                    <p>name of Thing</p>
-
+                    name of Thing
             </div>
         </div>
 
@@ -1141,8 +1179,7 @@ Entities that have a somewhat fixed, physical extension.</p>
     </div>
 
     <div class="description">
-        <p>Method to set Thing description</p>
-
+        Method to set Thing description
     </div>
 
         <div class="params">
@@ -1155,8 +1192,7 @@ Entities that have a somewhat fixed, physical extension.</p>
 
 
                     <div class="param-description">
-                        <p>Description to set for its Thing</p>
-
+                        Description to set for its Thing
                     </div>
 
                 </li>
@@ -1195,8 +1231,7 @@ Entities that have a somewhat fixed, physical extension.</p>
     </div>
 
     <div class="description">
-        <p>Method to set Thing name</p>
-
+        Method to set Thing name
     </div>
 
         <div class="params">
@@ -1209,8 +1244,7 @@ Entities that have a somewhat fixed, physical extension.</p>
 
 
                     <div class="param-description">
-                        <p>Name to set for this Thing</p>
-
+                        Name to set for this Thing
                     </div>
 
                 </li>
@@ -1269,9 +1303,8 @@ A property-value pair representing an additional characteristics of the entitity
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/additionalType">Schema.org/additionalType</a>
-An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. <a href="http://Schema.org">Schema.org</a> tools may have only weaker understanding of extra types, in particular those defined externally.</p>
-
+        Schema.org/additionalType
+An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. In RDFa syntax, it is better to use the native RDFa syntax - the 'typeof' attribute - for multiple types. Schema.org tools may have only weaker understanding of extra types, in particular those defined externally.
     </div>
 
 
@@ -1297,6 +1330,87 @@ An additional type for the item, typically used for adding more specific types f
     <div class="description">
         <p><a href="http://Schema.org/address">Schema.org/address</a>
 Physical address of the item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_addressCountry" class="property item">
+    <h3 class="name"><code>addressCountry</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3554"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3554</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/addressCountry">http://purl.org/ctdl/terms/addressCountry</a>
+Nation with its own government and occupying a particular territory identified by the two-letter ISO 3166-1 alpha-2 country code.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_addressLocality" class="property item">
+    <h3 class="name"><code>addressLocality</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3561"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3561</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/addressLocality">http://purl.org/ctdl/terms/addressLocality</a>
+Town, city, or village in which a particular location is situtated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_addressRegion" class="property item">
+    <h3 class="name"><code>addressRegion</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3568"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3568</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/addressRegion">http://purl.org/ctdl/terms/addressRegion</a>
+State or province in which a particular location is situtated.</p>
 
     </div>
 
@@ -1347,9 +1461,8 @@ The overall rating, based on a collection of reviews or ratings, of the item.</p
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/alternateName">Schema.org/alternateName</a>
-An alias for the item.</p>
-
+        Schema.org/alternateName
+An alias for the item.
     </div>
 
 
@@ -1485,26 +1598,29 @@ The basic containment relation between a place and another that it contains.</p>
 
 
 </div>
-<div id="property_description" class="property item inherited">
+<div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Text</span>
+    <span class="type">LangString</span>
 
 
 
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Thing.html#property_description">Thing</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l50"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:50</code></a>
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_description">
+                Thing
+            </a>
+            but overwritten in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3575"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3575</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/description">Schema.org/description</a>
-A description of the item.</p>
+        <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -1529,9 +1645,8 @@ A description of the item.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/disambiguatingDescription">Schema.org/disambiguatingDescription</a>
-A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.</p>
-
+        Schema.org/disambiguatingDescription
+A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.
     </div>
 
 
@@ -1641,6 +1756,34 @@ The geo coordinates of the place.</p>
 
 
 </div>
+<div id="property_geoURI" class="property item">
+    <h3 class="name"><code>geoURI</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3582"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3582</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/geoURI">http://purl.org/ctdl/terms/geoURI</a>
+Entity that describes the longitude, latitude and other location details of a place.
+This may define a place at any scale. Examples include a city, state, province, country, or continent.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_globalLocationNumber" class="property item">
     <h3 class="name"><code>globalLocationNumber</code></h3>
     <span class="type">Text</span>
@@ -1711,9 +1854,8 @@ A URL to a map of the place.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/identifier">Schema.org/identifier</a>
-The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. <a href="http://Schema.org">Schema.org</a> provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See <a href="/docs/datamodel.html#identifierBg">background notes</a> for more details.</p>
-
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
     </div>
 
 
@@ -1737,9 +1879,8 @@ The identifier property represents any kind of identifier for any kind of [[Thin
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/image">Schema.org/image</a>
-An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].</p>
-
+        Schema.org/image
+An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].
     </div>
 
 
@@ -1765,6 +1906,34 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="description">
         <p><a href="http://Schema.org/isicV4">Schema.org/isicV4</a>
 The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_latitude" class="property item">
+    <h3 class="name"><code>latitude</code></h3>
+    <span class="type">Float</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3590"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3590</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/latitude">http://purl.org/ctdl/terms/latitude</a>
+Latitude of a location.
+For example 37.42242 (WGS 84)</p>
 
     </div>
 
@@ -1797,6 +1966,34 @@ An associated logo.</p>
 
 
 </div>
+<div id="property_longitude" class="property item">
+    <h3 class="name"><code>longitude</code></h3>
+    <span class="type">Float</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3598"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3598</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/longitude">http://purl.org/ctdl/terms/longitude</a>
+The longitude of a location.
+For example -122.08585 (WGS 84).</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_mainEntityOfPage" class="property item inherited">
     <h3 class="name"><code>mainEntityOfPage</code></h3>
     <span class="type">Schema, URL | schema,CreativeWork</span>
@@ -1815,9 +2012,8 @@ An associated logo.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/mainEntityOfPage">Schema.org/mainEntityOfPage</a>
-Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See <a href="/docs/datamodel.html#mainEntityBackground">background notes</a> for details.</p>
-
+        Schema.org/mainEntityOfPage
+Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.
     </div>
 
 
@@ -1901,26 +2097,29 @@ The total number of individuals that may attend an event or venue.</p>
 
 
 </div>
-<div id="property_name" class="property item inherited">
+<div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Text</span>
+    <span class="type">LangString</span>
 
 
 
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Thing.html#property_name">Thing</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l18"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:18</code></a>
+            <p>Inherited from
+            <a href="../classes/Thing.html#property_name">
+                Thing
+            </a>
+            but overwritten in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3606"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3606</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/name">Schema.org/name</a>
-The name of the item.</p>
+        <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
+Name or title of the entity.</p>
 
     </div>
 
@@ -2005,6 +2204,60 @@ Photographs of this place.</p>
 
 
 </div>
+<div id="property_postalCode" class="property item">
+    <h3 class="name"><code>postalCode</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3613"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3613</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/postalCode">http://purl.org/ctdl/terms/postalCode</a>
+The postal code. For example, 94043.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_postOfficeBoxNumber" class="property item">
+    <h3 class="name"><code>postOfficeBoxNumber</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3620"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3620</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/postOfficeBoxNumber">http://purl.org/ctdl/terms/postOfficeBoxNumber</a>
+Post office box number for post office addresses.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_potentialAction" class="property item inherited">
     <h3 class="name"><code>potentialAction</code></h3>
     <span class="type"><a href="../classes/Action.html" class="crosslink">Action</a></span>
@@ -2023,9 +2276,8 @@ Photographs of this place.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/potentialAction">Schema.org/potentialAction</a>
-Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</p>
-
+        Schema.org/potentialAction
+Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
     </div>
 
 
@@ -2101,9 +2353,8 @@ Review of the item.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/sameAs">Schema.org/sameAs</a>
-URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.</p>
-
+        Schema.org/sameAs
+URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.
     </div>
 
 
@@ -2161,6 +2412,60 @@ The special opening hours of a certain place.\n\nUse this to explicitly override
 
 
 </div>
+<div id="property_streetAddress" class="property item">
+    <h3 class="name"><code>streetAddress</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3627"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3627</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/streetAddress">http://purl.org/ctdl/terms/streetAddress</a>
+Street address. e.g. "1600 Amphitheatre Pkwy".</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_targetContactPoint" class="property item">
+    <h3 class="name"><code>targetContactPoint</code></h3>
+    <span class="type"><a href="../classes/ContactPoint.html" class="crosslink">ContactPoint</a></span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3634"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3634</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/targetContactPoint">http://purl.org/ctdl/terms/targetContactPoint</a>
+Options for contacting the organization or person.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_telephone" class="property item">
     <h3 class="name"><code>telephone</code></h3>
     <span class="type">Text</span>
@@ -2205,9 +2510,8 @@ The telephone number.</p>
     </div>
 
     <div class="description">
-        <p><a href="http://Schema.org/url">Schema.org/url</a>
-URL of the item.</p>
-
+        Schema.org/url
+URL of the item.
     </div>
 
 

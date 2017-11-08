@@ -815,13 +815,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && service.equals("")) {
-            url += "/";
-        }
-        if (service != null) {
-            url += service;
-        }
+        var url = EcRemote.urlAppend(server, service);
         var p = {};
         p.method = "GET";
         p.url = url;
@@ -853,13 +847,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingString = function(server, service, success, failure) {
-        var url = server;
-        if (!url.endsWith("/") && service != null && service.equals("")) {
-            url += "/";
-        }
-        if (service != null) {
-            url += service;
-        }
+        var url = EcRemote.urlAppend(server, service);
         var p = {};
         p.method = "GET";
         p.url = url;
@@ -874,6 +862,16 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         } else {
             $.ajax(p);
         }
+    };
+    constructor.urlAppend = function(server, service) {
+        var url = server;
+        if (!url.endsWith("/") && service != null && service.equals("")) {
+            url += "/";
+        }
+        if (service != null) {
+            url += service;
+        }
+        return url;
     };
     /**
      *  DELETEs something at a remote endpoint. Composed of a server endpoint

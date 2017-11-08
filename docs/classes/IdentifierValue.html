@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2614"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2614</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2815"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2815</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,7 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/IdentifierValue">credentialengine.org/IdentifierValue</a>
-An identifier value.</p>
+Alphanumeric Identifier value.</p>
 
 </div>
 
@@ -847,6 +849,14 @@ An identifier value.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_identifierType">identifierType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_identifierValueCode">identifierValueCode</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_name">name</a>
 
                             </li>
@@ -862,7 +872,7 @@ An identifier value.</p>
 
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -871,7 +881,7 @@ An identifier value.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2632"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2632</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2831"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2831</code></a>
         </p>
 
 
@@ -879,7 +889,60 @@ An identifier value.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifierType" class="property item">
+    <h3 class="name"><code>identifierType</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2838"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2838</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/identifierType">http://purl.org/ctdl/terms/identifierType</a>
+Formal name or acronym of the identifier type such as ISBN and ISSN.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_identifierValueCode" class="property item">
+    <h3 class="name"><code>identifierValueCode</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2845"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2845</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/identifierValueCode">http://purl.org/ctdl/terms/identifierValueCode</a>
+Alphanumeric string identifier of the entity.
+Where a formal identification system exists for the identifier, recommended best practice is to use a string conforming to that system.</p>
 
     </div>
 
@@ -888,7 +951,7 @@ A short description of the resource being described.</p>
 </div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -897,7 +960,7 @@ A short description of the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2640"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2640</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2853"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2853</code></a>
         </p>
 
 
@@ -905,7 +968,7 @@ A short description of the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
-The name of the resource being described.</p>
+Name or title of the entity.</p>
 
     </div>
 
