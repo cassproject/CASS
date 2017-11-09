@@ -2,8 +2,8 @@ var asnContext = {
     "asn": "http://purl.org/asn/schema/core/",
     "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
     "asnscheme": "http://purl.org/asn/scheme/",
-    "ceasn": "http://credreg.net/ceasn/terms/",
-    "ceterms": "http://credreg.net/ctdl/terms/",
+    "ceasn": "http://purl.org/ctdlasn/terms/",
+    "ceterms": "http://purl.org/ctdl/terms/",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dct": "http://purl.org/dc/terms/",
     "gem": "http://purl.org/gem/elements/",
@@ -24,10 +24,6 @@ var ceasnIdentity = new EcIdentity();
 ceasnIdentity.ppk = EcPpk.fromPem(ceasnPpk());
 ceasnIdentity.displayName = "CEASN Server Identity";
 EcIdentityManager.addIdentity(ceasnIdentity);
-
-//asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
-
-function cassCompetencyAsCeasn() {}
 
 function cassFrameworkAsCeasn() {
     EcRepository.cache = {};
@@ -74,13 +70,15 @@ function cassFrameworkAsCeasn() {
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
 
-    var ids = [];
-    ids = ids.concat(f.competency);
-    ids = ids.concat(f.relation);
+    var all = [];
+    	all = all.concat(f.competency);
+    	all = all.concat(f.relation);
+    repo.precache(all,null,null);
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
     var topLevelCompIds = []
+
     for (var i = 0; i < f.competency.length; i++) {
         var c = null;
         if (c == null)
@@ -260,7 +258,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     var parentMap = {};
 
     EcIdentityManager.addIdentity(ceasnIdentity);
-    EcRemote.async = false;
 
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
@@ -416,7 +413,6 @@ function ceasnFrameworkToCass() {
         error("no @graph created, unsure how to parse");
     }
 }
-
 
 function ceasnEndpoint() {
     if (this.params.methodType == "GET")
