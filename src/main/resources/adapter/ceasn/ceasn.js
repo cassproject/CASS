@@ -95,25 +95,27 @@ function cassFrameworkAsCeasn() {
         if (r.relationType == Relation.NARROWS) {
             EcArray.setRemove(f.competency, r.target);
 
+			if (r.target == f.id || r.target == f.shortId()) continue;
+
             if (competencies[r.source] != null)
-                if (competencies[r.source]["ceasn:hasChild"] == null)
-                    competencies[r.source]["ceasn:hasChild"] = [];
+                if (competencies[r.source]["ceasn:isChildOf"] == null)
+                    competencies[r.source]["ceasn:isChildOf"] = [];
 
             if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    competencies[r.source]["ceasn:hasChild"].push(competencies[r.target].id);
+                    competencies[r.source]["ceasn:isChildOf"].push(competencies[r.target].id);
                 else
-                    competencies[r.source]["ceasn:hasChild"].push(r.target);
+                    competencies[r.source]["ceasn:isChildOf"].push(r.target);
 
             if (competencies[r.target] != null)
-                if (competencies[r.target]["ceasn:isChildOf"] == null)
-                    competencies[r.target]["ceasn:isChildOf"] = [];
+                if (competencies[r.target]["ceasn:hasChild"] == null)
+                    competencies[r.target]["ceasn:hasChild"] = [];
 
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:isChildOf"].push(competencies[r.source].id);
+                    competencies[r.target]["ceasn:hasChild"].push(competencies[r.source].id);
                 else
-                    competencies[r.target]["ceasn:isChildOf"].push(r.source);
+                    competencies[r.target]["ceasn:hasChild"].push(r.source);
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO) {
             EcArray.setRemove(f.competency, r.source);
@@ -213,9 +215,18 @@ function cassFrameworkAsCeasn() {
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
     var results = [];
-    for (var k in competencies)
+    for (var k in competencies) {
+    	var found = false;
+    	for (var j = 0;j < results.length;j++)
+    		if (results[j]["@id"] == competencies[k]["@id"]){
+    			found = true;
+    			break;
+    		}
+		if (found) continue;
         results.push(competencies[k]);
+	}
     results.push(f);
+	delete f["@context"];
     var r = {};
     r["@graph"] = results;
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json?releaseID=20170929";
@@ -410,12 +421,11 @@ function ceasnFrameworkToCass() {
 function ceasnEndpoint() {
     if (this.params.methodType == "GET")
         return cassFrameworkAsCeasn.call(this);
-    //else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
-    //    return ceasnFrameworkToCass.call(this);
-    else if (this.params.methodType == "DELETE") {
+    else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
         error("Not Yet Implemented.", "405");
-        return "Not Yet Implemented";
-    } else
+    else if (this.params.methodType == "DELETE")
+        error("Not Yet Implemented.", "405");
+    else
         error("Not Yet Implemented.", "405");
     return "Not Yet Implemented";
 }
