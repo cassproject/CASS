@@ -12,6 +12,80 @@
 		<ec-version>1.3.0</ec-version>
 	</properties>
 
+	<developers>
+		<developer>
+			<name>Ronald "Fritz" Ray</name>
+			<email>fritz.ray@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>PST</timezone>
+		</developer>
+		<developer>
+			<name>Devlin Junker</name>
+			<email>devlin.junker@eduworks.com</email>
+			<organization>Eduworks Corporation (Retired)</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>PST</timezone>
+		</developer>
+		<developer>
+			<name>Debbie Brown</name>
+			<email>debbie.brown@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>CST</timezone>
+		</developer>
+		<developer>
+			<name>Thomas Buskirk</name>
+			<email>tom.buskirk@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>CST</timezone>
+		</developer>
+		<developer>
+			<name>Aaron Veden</name>
+			<email>aaron.veden@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>PST</timezone>
+		</developer>
+		<developer>
+			<name>Elaine Kelsey</name>
+			<email>elaine.kelsey@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>PST</timezone>
+		</developer>
+		<developer>
+			<name>Robby Goetschalckx</name>
+			<email>robby.goetschalckx@eduworks.com</email>
+			<organization>Eduworks Corporation</organization>
+			<organizationUrl>http://www.eduworks.com</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>PST</timezone>
+		</developer>
+	</developers>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.eduworks</groupId>
