@@ -28,8 +28,8 @@ RemoteIdentityManagerInterface = stjs.extend(RemoteIdentityManagerInterface, nul
     prototype.startLogin = function(username, password) {};
     prototype.changePassword = function(username, oldPassword, newPassword) {};
     prototype.fetch = function(success, failure) {};
-    prototype.commit = function(success, failure, padGenerationCallback) {};
-    prototype.create = function(success, failure, padGenerationCallback) {};
+    prototype.commit = function(success, failure) {};
+    prototype.create = function(success, failure) {};
 }, {}, {});
 /**
  *  A contact is an identity that we do not own. Using the public key we may: 1.
@@ -848,6 +848,14 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
         }
         return searchString;
     };
+    constructor.getMyPks = function() {
+        var pks = new Array();
+        if (EcIdentityManager.ids == null) 
+            return pks;
+        for (var i = 0; i < EcIdentityManager.ids.length; i++) 
+            pks.push(EcIdentityManager.ids[i].ppk.toPk());
+        return pks;
+    };
 }, {ids: {name: "Array", arguments: ["EcIdentity"]}, contacts: {name: "Array", arguments: ["EcContact"]}, onIdentityChanged: {name: "Callback1", arguments: ["EcIdentity"]}, onContactChanged: {name: "Callback1", arguments: ["EcContact"]}, signatureSheetCache: "Object"}, {});
 if (!stjs.mainCallDisabled) 
     EcIdentityManager.main();
@@ -1102,11 +1110,10 @@ OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentity
      * 
      *  @param {Callback1<String>}   success
      *  @param {Callback1<String>}   failure
-     *  @param padGenerationCallback
      *  @memberOf OAuth2FileBasedRemoteIdentityManager
      *  @method commit
      */
-    prototype.commit = function(success, failure, padGenerationCallback) {
+    prototype.commit = function(success, failure) {
         var me = this;
         var apio = new Object();
         (apio)["network"] = this.network;
@@ -1128,7 +1135,7 @@ OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentity
          else 
             failure("Please login again.");
     };
-    prototype.create = function(success, failure, padGenerationCallback) {
+    prototype.create = function(success, failure) {
         var o = new Object();
         (o)["scope"] = (this.configuration)[this.server + "Scope"];
         var me = this;
@@ -1485,13 +1492,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      * 
      *  @param {Callback1<String>}   success
      *  @param {Callback1<String>}   failure
-     *  @param padGenerationCallback
      *  @memberOf EcRemoteIdentityManager
      *  @method commit
      */
-    prototype.commit = function(success, failure, padGenerationCallback) {
+    prototype.commit = function(success, failure) {
         var service = "sky/id/commit";
-        this.sendCredentials(success, failure, padGenerationCallback, service);
+        this.sendCredentials(success, failure, service);
     };
     /**
      *  Creates an account.
@@ -1507,13 +1513,12 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      *                               Callback triggered after successfully creating an account
      *  @param {Callback1<String>}   failure
      *                               Callback triggered if error creating an account
-     *  @param padGenerationCallback Callback triggered if pad not specified
      *  @memberOf EcRemoteIdentityManager
      *  @method create
      */
-    prototype.create = function(success, failure, padGenerationCallback) {
+    prototype.create = function(success, failure) {
         var service = "sky/id/create";
-        this.sendCredentials(success, failure, padGenerationCallback, service);
+        this.sendCredentials(success, failure, service);
     };
     /**
      *  Sends the identity managers credentials to the service specified
@@ -1522,12 +1527,11 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      *                               Callback triggered if credentials sent successfully
      *  @param {Callback1<String>}   failure
      *                               Callback triggered if error sending credentials
-     *  @param padGenerationCallback Callback triggered if pad needed
      *  @param service               Service to send credentials to on server
      *  @memberOf EcRemoteIdentityManager
      *  @method sendCredentials
      */
-    prototype.sendCredentials = function(success, failure, padGenerationCallback, service) {
+    prototype.sendCredentials = function(success, failure, service) {
         if (!this.configured) 
             alert("Remote Identity not configured.");
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
@@ -1536,8 +1540,6 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
         }
         var credentials = new Array();
         var contacts = new Array();
-        if (this.pad == null && padGenerationCallback != null) 
-            this.pad = padGenerationCallback();
         for (var i = 0; i < EcIdentityManager.ids.length; i++) {
             var id = EcIdentityManager.ids[i];
             if (id.source != null && id.source != this.server) 

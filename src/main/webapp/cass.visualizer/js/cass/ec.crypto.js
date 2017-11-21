@@ -35,6 +35,11 @@ var EcCrypto = function() {};
 EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
     constructor.caching = false;
     constructor.decryptionCache = new Object();
+    constructor.md5 = function(s) {
+        var m = forge.md.md5.create();
+        m.update(s);
+        return m.digest().toHex();
+    };
 }, {decryptionCache: "Object"}, {});
 /**
  *  Helper classes for dealing with RSA Public Keys.

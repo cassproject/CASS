@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l223"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:223</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l191"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:191</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,7 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/EarningsProfile">credentialengine.org/EarningsProfile</a>
-A resource that describes earning and related statistical information for a given credential.</p>
+Entity that describes earning and related statistical information for a given credential.</p>
 
 </div>
 
@@ -981,10 +983,6 @@ A resource that describes earning and related statistical information for a give
                                 <a href="#property_creator">creator</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_credentialProfiled">credentialProfiled</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_dateCreated">dateCreated</a>
 
@@ -1057,6 +1055,10 @@ A resource that describes earning and related statistical information for a give
                                 <a href="#property_headline">headline</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_highEarnings">highEarnings</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_identifier">identifier</a>
 
@@ -1117,6 +1119,10 @@ A resource that describes earning and related statistical information for a give
                                 <a href="#property_locationCreated">locationCreated</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_lowEarnings">lowEarnings</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_mainEntity">mainEntity</a>
 
@@ -1127,6 +1133,10 @@ A resource that describes earning and related statistical information for a give
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_material">material</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_medianEarnings">medianEarnings</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1143,6 +1153,10 @@ A resource that describes earning and related statistical information for a give
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_position">position</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_postReceiptMonths">postReceiptMonths</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -2178,32 +2192,6 @@ The creator/author of this CreativeWork. This is the same as the Author property
 
 
 </div>
-<div id="property_credentialProfiled" class="property item">
-    <h3 class="name"><code>credentialProfiled</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l243"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:243</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/credentialProfiled">http://purl.org/ctdl/terms/credentialProfiled</a>
-The resource being described is a profile of the credential being referenced.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_dateCreated" class="property item inherited">
     <h3 class="name"><code>dateCreated</code></h3>
     <span class="type">Schema, DateTime | schema,Date</span>
@@ -2240,7 +2228,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l251"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:251</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l209"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:209</code></a>
         </p>
 
 
@@ -2248,7 +2236,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/dateEffective">http://purl.org/ctdl/terms/dateEffective</a>
-The effective date of the described resource content.</p>
+Effective date of the content of a credential, assessment or learning opportunity.</p>
 
     </div>
 
@@ -2655,6 +2643,32 @@ Headline of the article.
 
 
 </div>
+<div id="property_highEarnings" class="property item">
+    <h3 class="name"><code>highEarnings</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l216"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:216</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/highEarnings">http://purl.org/ctdl/terms/highEarnings</a>
+Upper interquartile earnings.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_identifier" class="property item inherited">
     <h3 class="name"><code>identifier</code></h3>
     <span class="type">Schema, URL | schema,Text | schema,PropertyValue</span>
@@ -2916,7 +2930,7 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l259"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:259</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l223"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:223</code></a>
         </p>
 
 
@@ -2924,7 +2938,7 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/jurisdiction">http://purl.org/ctdl/terms/jurisdiction</a>
-The geo-political region in which the described resource is applicable.</p>
+Geographic or political region in which the credential is formally applicable or an organization has authority to act.</p>
 
     </div>
 
@@ -3031,6 +3045,32 @@ The location where the CreativeWork was created, which may not be the same as th
 
 
 </div>
+<div id="property_lowEarnings" class="property item">
+    <h3 class="name"><code>lowEarnings</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l230"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:230</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/lowEarnings">http://purl.org/ctdl/terms/lowEarnings</a>
+Lower interquartile earnings.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_mainEntity" class="property item inherited">
     <h3 class="name"><code>mainEntity</code></h3>
     <span class="type"><a href="../classes/Thing.html" class="crosslink">Thing</a></span>
@@ -3101,6 +3141,32 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="description">
         Schema.org/material
 A material that something is made from, e.g. leather, wool, cotton, paper.
+    </div>
+
+
+
+</div>
+<div id="property_medianEarnings" class="property item">
+    <h3 class="name"><code>medianEarnings</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l237"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:237</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/medianEarnings">http://purl.org/ctdl/terms/medianEarnings</a>
+Median earnings.</p>
+
     </div>
 
 
@@ -3201,6 +3267,33 @@ An offer to provide this item&#x2014;for example, an offer to sell a product, re
     <div class="description">
         Schema.org/position
 The position of an item in a series or sequence of items.
+    </div>
+
+
+
+</div>
+<div id="property_postReceiptMonths" class="property item">
+    <h3 class="name"><code>postReceiptMonths</code></h3>
+    <span class="type">Integer</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:244</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/postReceiptMonths">http://purl.org/ctdl/terms/postReceiptMonths</a>
+Number of months after earning a credential when employment and earnings data is collected.
+Number of months usually range between 3 months (one quarter) to ten years.</p>
+
     </div>
 
 
@@ -3383,7 +3476,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
 </div>
 <div id="property_region" class="property item">
     <h3 class="name"><code>region</code></h3>
-    <span class="type"><a href="../classes/GeoCoordinates.html" class="crosslink">GeoCoordinates</a></span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -3392,7 +3485,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l267"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:267</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:252</code></a>
         </p>
 
 
@@ -3400,7 +3493,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/region">http://purl.org/ctdl/terms/region</a>
-A geo-political area of the described resource.</p>
+Entity that describes the longitude, latitude and other location details of an area.</p>
 
     </div>
 
@@ -3543,7 +3636,7 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l275"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:275</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l259"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:259</code></a>
         </p>
 
 
@@ -3551,7 +3644,8 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/source">http://purl.org/ctdl/terms/source</a>
-The source of this resource's information.</p>
+Authoritative source of an entity's information.
+Citation or description of an authoritative souce from which information or description has been derived.</p>
 
     </div>
 

@@ -241,6 +241,25 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         return this.hasOwner(pk);
     };
     /**
+     *  Determines if the PK matches an owner or if the object is public.
+     *  Homogenizes the PEM strings for comparison.
+     *  Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.
+     * 
+     *  @param {EcPk} pk Public Key of the owner.
+     *  @return {boolean} True if owner is represented by the PK, false otherwise.
+     *  @method canEdit
+     */
+    prototype.canEditAny = function(ids) {
+        if (this.owner == null || this.owner.length == 0) 
+            return true;
+        if (ids == null) 
+            return false;
+        for (var i = 0; i < ids.length; i++) 
+            if (this.hasOwner(ids[i])) 
+                return true;
+        return false;
+    };
+    /**
      *  Encodes the object in a form where it is ready to be signed.
      *  This method is under long term review, and may change from version to version.
      * 

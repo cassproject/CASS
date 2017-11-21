@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -886,6 +888,14 @@ A contact point—for example, a Customer Complaints department.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_contactOption">contactOption</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_contactType">contactType</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_contactType">contactType</a>
 
                             </li>
@@ -903,6 +913,10 @@ A contact point—for example, a Customer Complaints department.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_email">email</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_faxNumber">faxNumber</a>
 
                             </li>
                             <li class="index-item property">
@@ -947,6 +961,10 @@ A contact point—for example, a Customer Complaints department.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_socialMedia">socialMedia</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_telephone">telephone</a>
 
                             </li>
                             <li class="index-item property">
@@ -1261,6 +1279,33 @@ A language someone may use with the item. Please use one of the language codes f
 </div>
 <div id="property_contactOption" class="property item">
     <h3 class="name"><code>contactOption</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3156"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3156</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/contactOption">http://purl.org/ctdl/terms/contactOption</a>
+Option for a toll-free number or support for hearing-impaired callers.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contactOption" class="property item">
+    <h3 class="name"><code>contactOption</code></h3>
     <span class="type"><a href="../classes/ContactPointOption.html" class="crosslink">ContactPointOption</a></span>
 
 
@@ -1305,6 +1350,34 @@ An option available on this contact point (e.g. a toll-free number or support fo
     <div class="description">
         <p><a href="http://Schema.org/contactType">Schema.org/contactType</a>
 A person or organization can have different contact points, for different purposes. For example, a sales contact point, a PR contact point and so on. This property is used to specify the kind of contact point.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_contactType" class="property item">
+    <h3 class="name"><code>contactType</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3163"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3163</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/contactType">http://purl.org/ctdl/terms/contactType</a>
+Text identifying the type of service provided by an organizational contact.
+A person or organization may have different contact points for different services. The contact type property provides for adding text to identity the service; e.g., "toll-free number" or "support for hearing-impaired callers".</p>
 
     </div>
 
@@ -1363,6 +1436,33 @@ A sub property of description. A short description of the item used to disambigu
 </div>
 <div id="property_email" class="property item">
     <h3 class="name"><code>email</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3171"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3171</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/email">http://purl.org/ctdl/terms/email</a>
+Email address of the organization or person.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_email" class="property item">
+    <h3 class="name"><code>email</code></h3>
     <span class="type">Text</span>
 
 
@@ -1387,9 +1487,9 @@ Email address.</p>
 
 
 </div>
-<div id="property_email" class="property item">
-    <h3 class="name"><code>email</code></h3>
-    <span class="type">Literal</span>
+<div id="property_faxNumber" class="property item">
+    <h3 class="name"><code>faxNumber</code></h3>
+    <span class="type">String</span>
 
 
 
@@ -1399,15 +1499,15 @@ Email address.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2717"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2717</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3178"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3178</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/email">http://purl.org/ctdl/terms/email</a>
-Email address of the agent being described.</p>
+        <p><a href="http://purl.org/ctdl/terms/faxNumber">http://purl.org/ctdl/terms/faxNumber</a>
+Fax number.</p>
 
     </div>
 
@@ -1543,7 +1643,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 </div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1555,7 +1655,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2725"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2725</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3185"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3185</code></a>
         </p>
 
 
@@ -1563,7 +1663,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
-The name of the resource being described.</p>
+Name or title of the entity.</p>
 
     </div>
 
@@ -1684,7 +1784,7 @@ The geographic area where the service is provided.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2733"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2733</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3192"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3192</code></a>
         </p>
 
 
@@ -1692,7 +1792,7 @@ The geographic area where the service is provided.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/socialMedia">http://purl.org/ctdl/terms/socialMedia</a>
-A social media resource for the resource being described.</p>
+Social media access point for an agent or an agent's contact point.</p>
 
     </div>
 
@@ -1719,6 +1819,33 @@ A social media resource for the resource being described.</p>
     <div class="description">
         <p><a href="http://Schema.org/telephone">Schema.org/telephone</a>
 The telephone number.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_telephone" class="property item">
+    <h3 class="name"><code>telephone</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3199"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3199</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/telephone">http://purl.org/ctdl/terms/telephone</a>
+Telephone number.</p>
 
     </div>
 

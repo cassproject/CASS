@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:284</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l268"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:268</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/AssessmentProfile">credentialengine.org/AssessmentProfile</a>
-A resource that describes the key characteristics of an assessment for a credential.</p>
+Entity that describes the key characteristics of an assessment for a credential.
+Characteristics described include, but are not limited to, processes for assessment development, maintenance, selection and evaluation as well as assessment examples.</p>
 
 </div>
 
@@ -917,6 +920,10 @@ A resource that describes the key characteristics of an assessment for a credent
                                 <a href="#property_administrationProcess">administrationProcess</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_advancedStandingFrom">advancedStandingFrom</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_aggregateRating">aggregateRating</a>
 
@@ -935,6 +942,30 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property">
                                 <a href="#property_approvedIn">approvedIn</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assesses">assesses</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assessmentExample">assessmentExample</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assessmentExampleDescription">assessmentExampleDescription</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assessmentMethodType">assessmentMethodType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assessmentOutput">assessmentOutput</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_assessmentUseType">assessmentUseType</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -997,6 +1028,10 @@ A resource that describes the key characteristics of an assessment for a credent
                                 <a href="#property_commonConditions">commonConditions</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_commonCosts">commonCosts</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_contentLocation">contentLocation</a>
 
@@ -1043,6 +1078,10 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property">
                                 <a href="#property_creditUnitValue">creditUnitValue</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_ctid">ctid</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1121,6 +1160,10 @@ A resource that describes the key characteristics of an assessment for a credent
                                 <a href="#property_exampleOfWork">exampleOfWork</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_externalResearch">externalResearch</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_fileFormat">fileFormat</a>
 
@@ -1135,6 +1178,14 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_genre">genre</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasGroupEvaluation">hasGroupEvaluation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasGroupParticipation">hasGroupParticipation</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1173,6 +1224,10 @@ A resource that describes the key characteristics of an assessment for a credent
                                 <a href="#property_isAccessibleForFree">isAccessibleForFree</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_isAdvancedStandingFor">isAdvancedStandingFor</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_isBasedOn">isBasedOn</a>
 
@@ -1187,6 +1242,22 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_isPartOf">isPartOf</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isPreparationFor">isPreparationFor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isProctored">isProctored</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isRecommendedFor">isRecommendedFor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_isRequiredFor">isRequiredFor</a>
 
                             </li>
                             <li class="index-item property">
@@ -1259,6 +1330,10 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_potentialAction">potentialAction</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_preparationFrom">preparationFrom</a>
 
                             </li>
                             <li class="index-item property">
@@ -1353,6 +1428,10 @@ A resource that describes the key characteristics of an assessment for a credent
                                 <a href="#property_scoringMethodExampleDescription">scoringMethodExampleDescription</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_scoringMethodType">scoringMethodType</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_sourceOrganization">sourceOrganization</a>
 
@@ -1375,10 +1454,6 @@ A resource that describes the key characteristics of an assessment for a credent
                             </li>
                             <li class="index-item property">
                                 <a href="#property_targetAssessment">targetAssessment</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_targetCompetency">targetCompetency</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1865,7 +1940,7 @@ Specifies the Person that is legally accountable for the CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l304"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:304</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l287"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:287</code></a>
         </p>
 
 
@@ -1873,7 +1948,7 @@ Specifies the Person that is legally accountable for the CreativeWork.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/accreditedBy">http://purl.org/ctdl/terms/accreditedBy</a>
-An agent that accredits the described resource.</p>
+Quality assurance organization that provides official authorization to, or approval of, a credential, organization, assessment, or learning opportunity.</p>
 
     </div>
 
@@ -1891,7 +1966,7 @@ An agent that accredits the described resource.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l312"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:312</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l294"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:294</code></a>
         </p>
 
 
@@ -1899,7 +1974,7 @@ An agent that accredits the described resource.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/accreditedIn">http://purl.org/ctdl/terms/accreditedIn</a>
-The resource being described is accredited in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or assessment is accredited.</p>
 
     </div>
 
@@ -1942,7 +2017,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l320"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:320</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l301"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:301</code></a>
         </p>
 
 
@@ -1950,7 +2025,34 @@ An additional type for the item, typically used for adding more specific types f
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/administrationProcess">http://purl.org/ctdl/terms/administrationProcess</a>
-A profile of the process by which the resource being described, or aspects of it, are administered.</p>
+Entity describing the process by which a credential, assessment, organization, or aspects of it, are administered.
+Processes described include the execution of events and the development of resources in the lifecycle of a credential or organization, such as the process for the proctoring of assessments.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_advancedStandingFrom" class="property item">
+    <h3 class="name"><code>advancedStandingFrom</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l309"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:309</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/advancedStandingFrom">http://purl.org/ctdl/terms/advancedStandingFrom</a>
+Credential that has its time or cost reduced by another credential, assessment or learning opportunity.</p>
 
     </div>
 
@@ -2043,7 +2145,7 @@ A secondary title of the CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l328"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:328</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:316</code></a>
         </p>
 
 
@@ -2051,7 +2153,7 @@ A secondary title of the CreativeWork.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/approvedBy">http://purl.org/ctdl/terms/approvedBy</a>
-Pronouncement of a favorable judgment by the agent being referenced.</p>
+Organization that pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.</p>
 
     </div>
 
@@ -2069,7 +2171,7 @@ Pronouncement of a favorable judgment by the agent being referenced.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l336"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:336</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l323"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:323</code></a>
         </p>
 
 
@@ -2077,7 +2179,163 @@ Pronouncement of a favorable judgment by the agent being referenced.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/approvedIn">http://purl.org/ctdl/terms/approvedIn</a>
-The resource being described is approved in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale in which an organization pronounces favorable judgment for this credential, assessment, learning opportunity, or organization.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assesses" class="property item">
+    <h3 class="name"><code>assesses</code></h3>
+    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l330"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:330</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assesses">http://purl.org/ctdl/terms/assesses</a>
+Competency evaluated through the assessment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assessmentExample" class="property item">
+    <h3 class="name"><code>assessmentExample</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l337"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:337</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assessmentExample">http://purl.org/ctdl/terms/assessmentExample</a>
+Example assessment or assessment item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assessmentExampleDescription" class="property item">
+    <h3 class="name"><code>assessmentExampleDescription</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l344"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:344</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assessmentExampleDescription">http://purl.org/ctdl/terms/assessmentExampleDescription</a>
+Text of an example assessment or assessment item.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assessmentMethodType" class="property item">
+    <h3 class="name"><code>assessmentMethodType</code></h3>
+    <span class="type"><a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l351"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:351</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assessmentMethodType">http://purl.org/ctdl/terms/assessmentMethodType</a>
+Type of method used to conduct an assessment; select from an existing enumeration of such types.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assessmentOutput" class="property item">
+    <h3 class="name"><code>assessmentOutput</code></h3>
+    <span class="type">LangString</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:358</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assessmentOutput">http://purl.org/ctdl/terms/assessmentOutput</a>
+Description of the assessment artifact, performance or examination.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_assessmentUseType" class="property item">
+    <h3 class="name"><code>assessmentUseType</code></h3>
+    <span class="type"><a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l365"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:365</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/assessmentUseType">http://purl.org/ctdl/terms/assessmentUseType</a>
+Type of intended use of the assessment; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -2195,7 +2453,7 @@ The author of this content or rating. Please note that author is special in that
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l344"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:344</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l372"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:372</code></a>
         </p>
 
 
@@ -2203,7 +2461,7 @@ The author of this content or rating. Please note that author is special in that
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/availabilityListing">http://purl.org/ctdl/terms/availabilityListing</a>
-A resource that lists online and/or physical locations for the described resource.</p>
+Listing of online and/or physical locations where a credential can be pursued.</p>
 
     </div>
 
@@ -2212,7 +2470,7 @@ A resource that lists online and/or physical locations for the described resourc
 </div>
 <div id="property_availableAt" class="property item">
     <h3 class="name"><code>availableAt</code></h3>
-    <span class="type"><a href="../classes/GeoCoordinates.html" class="crosslink">GeoCoordinates</a></span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -2221,7 +2479,7 @@ A resource that lists online and/or physical locations for the described resourc
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l352"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:352</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l379"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:379</code></a>
         </p>
 
 
@@ -2229,7 +2487,7 @@ A resource that lists online and/or physical locations for the described resourc
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/availableAt">http://purl.org/ctdl/terms/availableAt</a>
-The location where the described resource is available.</p>
+Physical location where the credential, assessment, or learning opportunity can be pursued.</p>
 
     </div>
 
@@ -2247,7 +2505,7 @@ The location where the described resource is available.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l360"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:360</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l386"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:386</code></a>
         </p>
 
 
@@ -2255,7 +2513,7 @@ The location where the described resource is available.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/availableOnlineAt">http://purl.org/ctdl/terms/availableOnlineAt</a>
-The online location where the described resource is available.</p>
+Online location where the credential, assessment, or learning opportunity can be pursued.</p>
 
     </div>
 
@@ -2364,7 +2622,7 @@ A citation or reference to another creative work, such as another publication, w
 </div>
 <div id="property_codedNotation" class="property item">
     <h3 class="name"><code>codedNotation</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">String</span>
 
 
 
@@ -2373,7 +2631,7 @@ A citation or reference to another creative work, such as another publication, w
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l368"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:368</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l393"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:393</code></a>
         </p>
 
 
@@ -2381,7 +2639,8 @@ A citation or reference to another creative work, such as another publication, w
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/codedNotation">http://purl.org/ctdl/terms/codedNotation</a>
-A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.</p>
+Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".</p>
 
     </div>
 
@@ -2449,7 +2708,7 @@ The number of comments this CreativeWork (e.g. Article, Question or Answer) has 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l376"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:376</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l401"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:401</code></a>
         </p>
 
 
@@ -2457,7 +2716,33 @@ The number of comments this CreativeWork (e.g. Article, Question or Answer) has 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/commonConditions">http://purl.org/ctdl/terms/commonConditions</a>
-The resource being referenced describes a set of common conditions applicable to the resource being described.</p>
+Set constraints, prerequisites, entry conditions, or requirements that are shared across an organization, organizational subdivision, set of credentials, or category of entities and activities.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_commonCosts" class="property item">
+    <h3 class="name"><code>commonCosts</code></h3>
+    <span class="type"><a href="../classes/CostManifest.html" class="crosslink">CostManifest</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l408"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:408</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/commonCosts">http://purl.org/ctdl/terms/commonCosts</a>
+Set of costs maintained at an organizational or sub-organizational level, which apply to this credential, assessment, or learning opportunity.</p>
 
     </div>
 
@@ -2600,7 +2885,7 @@ The year during which the claimed copyright for the CreativeWork was first asser
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l384"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:384</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l415"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:415</code></a>
         </p>
 
 
@@ -2608,7 +2893,8 @@ The year during which the claimed copyright for the CreativeWork was first asser
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/corequisite">http://purl.org/ctdl/terms/corequisite</a>
-The resource being referenced must be pursued concurrently with the resource being described.</p>
+Credentials that must be pursued concurrently.
+Includes dual (double) degrees that cannot be earned independently of each other.</p>
 
     </div>
 
@@ -2642,7 +2928,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
 </div>
 <div id="property_creditHourType" class="property item">
     <h3 class="name"><code>creditHourType</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -2651,7 +2937,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l392"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:392</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l423"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:423</code></a>
         </p>
 
 
@@ -2659,7 +2945,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/creditHourType">http://purl.org/ctdl/terms/creditHourType</a>
-Units of time corresponding to types of credits.</p>
+Type of unit of time corresponding to type of credit such as semester hours, quarter hours, clock hours, or hours of participation.</p>
 
     </div>
 
@@ -2677,7 +2963,7 @@ Units of time corresponding to types of credits.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l400"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:400</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l430"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:430</code></a>
         </p>
 
 
@@ -2685,7 +2971,7 @@ Units of time corresponding to types of credits.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/creditHourValue">http://purl.org/ctdl/terms/creditHourValue</a>
-The number of credit hours awarded for completing or attaining the resource being described.</p>
+Number of credit hours awarded for successful completion of a learning opportunity or assessment.</p>
 
     </div>
 
@@ -2703,7 +2989,7 @@ The number of credit hours awarded for completing or attaining the resource bein
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l408"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:408</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l437"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:437</code></a>
         </p>
 
 
@@ -2711,7 +2997,7 @@ The number of credit hours awarded for completing or attaining the resource bein
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/creditUnitType">http://purl.org/ctdl/terms/creditUnitType</a>
-The type of credit associated with degree and non-degree learning opportunities.</p>
+Type of credit associated with both degree and non-degree learning opportunities; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -2720,7 +3006,7 @@ The type of credit associated with degree and non-degree learning opportunities.
 </div>
 <div id="property_creditUnitTypeDescription" class="property item">
     <h3 class="name"><code>creditUnitTypeDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -2729,7 +3015,7 @@ The type of credit associated with degree and non-degree learning opportunities.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l416"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:416</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l444"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:444</code></a>
         </p>
 
 
@@ -2737,7 +3023,7 @@ The type of credit associated with degree and non-degree learning opportunities.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/creditUnitTypeDescription">http://purl.org/ctdl/terms/creditUnitTypeDescription</a>
-A more refined, detailed description of credit unit type.</p>
+Detailed description of credit unit type.</p>
 
     </div>
 
@@ -2755,7 +3041,7 @@ A more refined, detailed description of credit unit type.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l424"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:424</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l451"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:451</code></a>
         </p>
 
 
@@ -2763,7 +3049,34 @@ A more refined, detailed description of credit unit type.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/creditUnitValue">http://purl.org/ctdl/terms/creditUnitValue</a>
-The number of either credit units awarded for college credit or continuing education units for completing or attaining the resource being described.</p>
+Number of either credit units awarded for college credit or continuing education units for successful completion of the learning opportunity or assessment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_ctid" class="property item">
+    <h3 class="name"><code>ctid</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l458"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:458</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/ctid">http://purl.org/ctdl/terms/ctid</a>
+Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.</p>
 
     </div>
 
@@ -2806,7 +3119,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l432"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:432</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l466"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:466</code></a>
         </p>
 
 
@@ -2814,7 +3127,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/dateEffective">http://purl.org/ctdl/terms/dateEffective</a>
-The effective date of the described resource content.</p>
+Effective date of the content of a credential, assessment or learning opportunity.</p>
 
     </div>
 
@@ -2882,7 +3195,7 @@ Date of first broadcast/publication.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l440"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:440</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l473"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:473</code></a>
         </p>
 
 
@@ -2890,7 +3203,7 @@ Date of first broadcast/publication.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/deliveryType">http://purl.org/ctdl/terms/deliveryType</a>
-The means by which the resource being described is delivered to people or interacted with by people.</p>
+Type of means by which a learning opportunity or assessment is delivered to credential seekers and by which they interact; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -2899,7 +3212,7 @@ The means by which the resource being described is delivered to people or intera
 </div>
 <div id="property_deliveryTypeDescription" class="property item">
     <h3 class="name"><code>deliveryTypeDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -2908,7 +3221,7 @@ The means by which the resource being described is delivered to people or intera
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l448"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:448</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l480"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:480</code></a>
         </p>
 
 
@@ -2916,7 +3229,7 @@ The means by which the resource being described is delivered to people or intera
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/deliveryTypeDescription">http://purl.org/ctdl/terms/deliveryTypeDescription</a>
-A more detailed, refined description of delivery type.</p>
+Detailed description of the delivery type of an assessment or learning opportunity.</p>
 
     </div>
 
@@ -2925,7 +3238,7 @@ A more detailed, refined description of delivery type.</p>
 </div>
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -2937,7 +3250,7 @@ A more detailed, refined description of delivery type.</p>
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l456"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:456</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l487"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:487</code></a>
         </p>
 
 
@@ -2945,7 +3258,7 @@ A more detailed, refined description of delivery type.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -2963,7 +3276,7 @@ A short description of the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l464"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:464</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:494</code></a>
         </p>
 
 
@@ -2971,7 +3284,7 @@ A short description of the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/developmentProcess">http://purl.org/ctdl/terms/developmentProcess</a>
-A profile of the process by which the resource being described, or aspects of it, were created.</p>
+Entity describing the process by which a credential, or aspects of it, were created.</p>
 
     </div>
 
@@ -3164,7 +3477,7 @@ A media object that encodes this CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l472"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:472</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l501"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:501</code></a>
         </p>
 
 
@@ -3172,7 +3485,7 @@ A media object that encodes this CreativeWork.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/entryCondition">http://purl.org/ctdl/terms/entryCondition</a>
-The prerequisites for entry into the resource being described.</p>
+Prerequisites for entry into a credentialing program, a learning opportunity or an assessment including transcripts, records of previous experience, and lower-level learning opportunities.</p>
 
     </div>
 
@@ -3190,7 +3503,7 @@ The prerequisites for entry into the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l480"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:480</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l508"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:508</code></a>
         </p>
 
 
@@ -3198,7 +3511,7 @@ The prerequisites for entry into the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/estimatedCost">http://purl.org/ctdl/terms/estimatedCost</a>
-The estimated cost of the described resource.</p>
+Estimated cost of a credential, learning opportunity or assessment.</p>
 
     </div>
 
@@ -3216,7 +3529,7 @@ The estimated cost of the described resource.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l488"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:488</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l515"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:515</code></a>
         </p>
 
 
@@ -3224,7 +3537,7 @@ The estimated cost of the described resource.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/estimatedDuration">http://purl.org/ctdl/terms/estimatedDuration</a>
-The estimated time it will take to complete the described activity.</p>
+Estimated time it will take to complete a credential, learning opportunity or assessment.</p>
 
     </div>
 
@@ -3251,6 +3564,32 @@ The estimated time it will take to complete the described activity.</p>
     <div class="description">
         Schema.org/exampleOfWork
 A creative work that this work is an example/instance/realization/derivation of.
+    </div>
+
+
+
+</div>
+<div id="property_externalResearch" class="property item">
+    <h3 class="name"><code>externalResearch</code></h3>
+    <span class="type">AnyURI</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l522"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:522</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/externalResearch">http://purl.org/ctdl/terms/externalResearch</a>
+Research that supports or validates one or more aspects of the entity.</p>
+
     </div>
 
 
@@ -3292,7 +3631,7 @@ Media type, typically MIME format (see [IANA site](http://www.iana.org/assignmen
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l496"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:496</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l529"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:529</code></a>
         </p>
 
 
@@ -3300,7 +3639,8 @@ Media type, typically MIME format (see [IANA site](http://www.iana.org/assignmen
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/financialAssistance">http://purl.org/ctdl/terms/financialAssistance</a>
-The types of financial assistance for which the resource being described qualifies.</p>
+Entity that describes financial assistance for which this credential, assessment, or learning opportunity qualifies.
+Whether the financial aid in question is associated with a credential, an assessment, or a learning opportunity is dependent on context.</p>
 
     </div>
 
@@ -3352,6 +3692,58 @@ A person or organization that supports (sponsors) something through some kind of
     <div class="description">
         Schema.org/genre
 Genre of the creative work, broadcast channel or group.
+    </div>
+
+
+
+</div>
+<div id="property_hasGroupEvaluation" class="property item">
+    <h3 class="name"><code>hasGroupEvaluation</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l537"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:537</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/hasGroupEvaluation">http://purl.org/ctdl/terms/hasGroupEvaluation</a>
+Whether or not the assessment activity is scored as a group.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasGroupParticipation" class="property item">
+    <h3 class="name"><code>hasGroupParticipation</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l544"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:544</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/hasGroupParticipation">http://purl.org/ctdl/terms/hasGroupParticipation</a>
+Whether or not two or more participants are required to complete the assessment activity.</p>
+
     </div>
 
 
@@ -3471,7 +3863,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
                 CreativeWork
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l504"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:504</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l551"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:551</code></a>
         </p>
 
 
@@ -3479,7 +3871,8 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/inLanguage">http://purl.org/ctdl/terms/inLanguage</a>
-The primary language used in or by the resource being described.</p>
+Primary language of the credential, learning opportunity or assessment.
+This is the primary language the entity, even if the it makes use of other languages. For example, a course that teaches Spanish to English-speaking students may primarily be in English, because that is the language used to convey the material.</p>
 
     </div>
 
@@ -3497,7 +3890,7 @@ The primary language used in or by the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l512"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:512</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l559"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:559</code></a>
         </p>
 
 
@@ -3505,7 +3898,7 @@ The primary language used in or by the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/instructionalProgramType">http://purl.org/ctdl/terms/instructionalProgramType</a>
-The class identifier for instructional program context.</p>
+Type of instructional program; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -3582,6 +3975,32 @@ The predominant mode of learning supported by the learning resource. Acceptable 
     <div class="description">
         Schema.org/isAccessibleForFree
 A flag to signal that the publication is accessible for free.
+    </div>
+
+
+
+</div>
+<div id="property_isAdvancedStandingFor" class="property item">
+    <h3 class="name"><code>isAdvancedStandingFor</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l566"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:566</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/isAdvancedStandingFor">http://purl.org/ctdl/terms/isAdvancedStandingFor</a>
+This credential, assessment, or learning opportunity reduces the time or cost required to earn or complete the referenced credential, assessment, or learning opportunity.</p>
+
     </div>
 
 
@@ -3687,6 +4106,111 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
 
 
 </div>
+<div id="property_isPreparationFor" class="property item">
+    <h3 class="name"><code>isPreparationFor</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l573"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:573</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/isPreparationFor">http://purl.org/ctdl/terms/isPreparationFor</a>
+This credential, assessment, or learning opportunity provides preparation for the credential, assessment, or learning opportunity being referenced.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isProctored" class="property item">
+    <h3 class="name"><code>isProctored</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l580"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:580</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/isProctored">http://purl.org/ctdl/terms/isProctored</a>
+Whether or not the assessment is supervised or monitored by an agent.
+Such supervision or proctoring includes: (1)  guaranteeing of the identities of the examinees; (2) the conditions of the examination including instructions, time, materials, equipment and completion, and (3) completed without unauthorized assistance.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isRecommendedFor" class="property item">
+    <h3 class="name"><code>isRecommendedFor</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l588"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:588</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/isRecommendedFor">http://purl.org/ctdl/terms/isRecommendedFor</a>
+It is recommended to earn or complete this credential, assessment, or learning opportunity before attempting to earn or complete the referenced credential, assessment, or learning opportunity.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_isRequiredFor" class="property item">
+    <h3 class="name"><code>isRequiredFor</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l595"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:595</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/isRequiredFor">http://purl.org/ctdl/terms/isRequiredFor</a>
+This credential, assessment, or learning opportunity must be earned or completed prior to attempting to earn or complete the referenced credential, assessment, or learning opportunity.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_jurisdiction" class="property item">
     <h3 class="name"><code>jurisdiction</code></h3>
     <span class="type"><a href="../classes/JurisdictionProfile.html" class="crosslink">JurisdictionProfile</a></span>
@@ -3698,7 +4222,7 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l520"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:520</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l602"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:602</code></a>
         </p>
 
 
@@ -3706,7 +4230,7 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/jurisdiction">http://purl.org/ctdl/terms/jurisdiction</a>
-The geo-political region in which the described resource is applicable.</p>
+Geographic or political region in which the credential is formally applicable or an organization has authority to act.</p>
 
     </div>
 
@@ -3715,7 +4239,7 @@ The geo-political region in which the described resource is applicable.</p>
 </div>
 <div id="property_keyword" class="property item">
     <h3 class="name"><code>keyword</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -3724,7 +4248,7 @@ The geo-political region in which the described resource is applicable.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l528"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:528</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l609"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:609</code></a>
         </p>
 
 
@@ -3732,7 +4256,7 @@ The geo-political region in which the described resource is applicable.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/keyword">http://purl.org/ctdl/terms/keyword</a>
-Keywords or key phrases describing aspects of a resource considered useful for its discovery.</p>
+Keyword or key phrase describing relevant aspects of an entity.</p>
 
     </div>
 
@@ -3900,7 +4424,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l536"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:536</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l616"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:616</code></a>
         </p>
 
 
@@ -3908,7 +4432,8 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/maintenanceProcess">http://purl.org/ctdl/terms/maintenanceProcess</a>
-The process by which the resource being described is maintained including review and updating.</p>
+Entity describing the process by which the credential is maintained including review and updating.
+Such maintenance does not include renewal of a credential by an individual holder.</p>
 
     </div>
 
@@ -3967,7 +4492,7 @@ Indicates that the CreativeWork contains a reference to, but is not necessarily 
 </div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -3979,7 +4504,7 @@ Indicates that the CreativeWork contains a reference to, but is not necessarily 
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l544"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:544</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l624"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:624</code></a>
         </p>
 
 
@@ -3987,7 +4512,7 @@ Indicates that the CreativeWork contains a reference to, but is not necessarily 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
-The name of the resource being described.</p>
+Name or title of the entity.</p>
 
     </div>
 
@@ -4005,7 +4530,7 @@ The name of the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l552"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:552</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l631"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:631</code></a>
         </p>
 
 
@@ -4013,7 +4538,7 @@ The name of the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/offeredBy">http://purl.org/ctdl/terms/offeredBy</a>
-Access to the described resource is offered by the referenced agent.</p>
+Agent that offers the credential, learning opportunity or assessment.</p>
 
     </div>
 
@@ -4031,7 +4556,7 @@ Access to the described resource is offered by the referenced agent.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l560"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:560</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l638"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:638</code></a>
         </p>
 
 
@@ -4039,7 +4564,7 @@ Access to the described resource is offered by the referenced agent.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/offeredIn">http://purl.org/ctdl/terms/offeredIn</a>
-The resource being described is offered in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale where the credential, learning resource or assessment is offered.</p>
 
     </div>
 
@@ -4082,7 +4607,7 @@ An offer to provide this item&#x2014;for example, an offer to sell a product, re
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l568"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:568</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l645"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:645</code></a>
         </p>
 
 
@@ -4090,7 +4615,8 @@ An offer to provide this item&#x2014;for example, an offer to sell a product, re
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/ownedBy">http://purl.org/ctdl/terms/ownedBy</a>
-An agent that has an enforceable claim or title to a resource.</p>
+Organization or person with an enforceable claim or legal title to the credential, assessment or learning opportunity.
+Agent includes credentialing organizations, quality assurance organizations and persons. It does not not include credential holders.</p>
 
     </div>
 
@@ -4147,6 +4673,32 @@ Indicates a potential Action, which describes an idealized action in which this 
 
 
 </div>
+<div id="property_preparationFrom" class="property item">
+    <h3 class="name"><code>preparationFrom</code></h3>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l653"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:653</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/preparationFrom">http://purl.org/ctdl/terms/preparationFrom</a>
+Another credential, learning opportunity or assessment that provides preparation for this credential, learning opportunity or assessment.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_processStandards" class="property item">
     <h3 class="name"><code>processStandards</code></h3>
     <span class="type">AnyURI</span>
@@ -4158,7 +4710,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l576"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:576</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l660"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:660</code></a>
         </p>
 
 
@@ -4166,7 +4718,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/processStandards">http://purl.org/ctdl/terms/processStandards</a>
-A resource describing the criteria, standards, and/or requirements used.</p>
+Webpage or online document that describes the criteria, standards, and/or requirements used with a process.</p>
 
     </div>
 
@@ -4175,7 +4727,7 @@ A resource describing the criteria, standards, and/or requirements used.</p>
 </div>
 <div id="property_processStandardsDescription" class="property item">
     <h3 class="name"><code>processStandardsDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -4184,7 +4736,7 @@ A resource describing the criteria, standards, and/or requirements used.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l584"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:584</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:667</code></a>
         </p>
 
 
@@ -4192,7 +4744,7 @@ A resource describing the criteria, standards, and/or requirements used.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/processStandardsDescription">http://purl.org/ctdl/terms/processStandardsDescription</a>
-A description of the criteria, standards, and/or requirements used.</p>
+Textual description of the criteria, standards, and/or requirements used with a process.</p>
 
     </div>
 
@@ -4335,7 +4887,7 @@ Link to page describing the editorial principles of the organization primarily r
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l592"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:592</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l674"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:674</code></a>
         </p>
 
 
@@ -4343,7 +4895,7 @@ Link to page describing the editorial principles of the organization primarily r
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/recognizedBy">http://purl.org/ctdl/terms/recognizedBy</a>
-The agent being referenced acknowledges the validity of the described resource.</p>
+Agent that acknowledges the validity of the credential, learning opportunity of assessment.</p>
 
     </div>
 
@@ -4361,7 +4913,7 @@ The agent being referenced acknowledges the validity of the described resource.<
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l600"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:600</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l681"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:681</code></a>
         </p>
 
 
@@ -4369,7 +4921,7 @@ The agent being referenced acknowledges the validity of the described resource.<
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/recognizedIn">http://purl.org/ctdl/terms/recognizedIn</a>
-The resource being described is publicly recommended, acknowledged, or endorsed in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale in which the credential, learning resource, or assessment has been publicly recommended, acknowledged or endorsed.</p>
 
     </div>
 
@@ -4378,7 +4930,7 @@ The resource being described is publicly recommended, acknowledged, or endorsed 
 </div>
 <div id="property_recommends" class="property item">
     <h3 class="name"><code>recommends</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
 
 
 
@@ -4387,7 +4939,7 @@ The resource being described is publicly recommended, acknowledged, or endorsed 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l608"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:608</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l688"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:688</code></a>
         </p>
 
 
@@ -4395,7 +4947,7 @@ The resource being described is publicly recommended, acknowledged, or endorsed 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/recommends">http://purl.org/ctdl/terms/recommends</a>
-The resource being described recommends the resource being referenced.</p>
+Recommended credential, learning opportunity or assessment.</p>
 
     </div>
 
@@ -4429,7 +4981,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
 </div>
 <div id="property_region" class="property item">
     <h3 class="name"><code>region</code></h3>
-    <span class="type"><a href="../classes/GeoCoordinates.html" class="crosslink">GeoCoordinates</a></span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -4438,7 +4990,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l616"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:616</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l695"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:695</code></a>
         </p>
 
 
@@ -4446,7 +4998,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/region">http://purl.org/ctdl/terms/region</a>
-A geo-political area of the described resource.</p>
+Entity that describes the longitude, latitude and other location details of an area.</p>
 
     </div>
 
@@ -4464,7 +5016,7 @@ A geo-political area of the described resource.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l624"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:624</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l702"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:702</code></a>
         </p>
 
 
@@ -4472,7 +5024,7 @@ A geo-political area of the described resource.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/regulatedBy">http://purl.org/ctdl/terms/regulatedBy</a>
-The agent being referenced enforces the legal requirements of the referenced resource.</p>
+Quality assurance organization that enforces the legal requirements of the credential, learning resource or assessment.</p>
 
     </div>
 
@@ -4490,7 +5042,7 @@ The agent being referenced enforces the legal requirements of the referenced res
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l632"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:632</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l709"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:709</code></a>
         </p>
 
 
@@ -4498,7 +5050,7 @@ The agent being referenced enforces the legal requirements of the referenced res
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/regulatedIn">http://purl.org/ctdl/terms/regulatedIn</a>
-The resource being described is regulated in the jurisdiction being referenced.</p>
+Region or political jurisdiction such as a state, province or locale in which the credential, learning opportunity or resource is regulated.</p>
 
     </div>
 
@@ -4532,7 +5084,7 @@ The place and time the release was issued, expressed as a PublicationEvent.
 </div>
 <div id="property_requires" class="property item">
     <h3 class="name"><code>requires</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
 
 
 
@@ -4541,7 +5093,7 @@ The place and time the release was issued, expressed as a PublicationEvent.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l640"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:640</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l716"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:716</code></a>
         </p>
 
 
@@ -4549,7 +5101,7 @@ The place and time the release was issued, expressed as a PublicationEvent.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/requires">http://purl.org/ctdl/terms/requires</a>
-The resource being described requires the resource being referenced.</p>
+Requirement or set of requirements for this credential, learning opportunity, or assessment.</p>
 
     </div>
 
@@ -4658,7 +5210,7 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
 </div>
 <div id="property_scoringMethodDescription" class="property item">
     <h3 class="name"><code>scoringMethodDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -4667,7 +5219,7 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l648"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:648</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l723"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:723</code></a>
         </p>
 
 
@@ -4675,7 +5227,7 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/scoringMethodDescription">http://purl.org/ctdl/terms/scoringMethodDescription</a>
-The method used to score the assessment.</p>
+Textual description of the method used to score the assessment.</p>
 
     </div>
 
@@ -4693,7 +5245,7 @@ The method used to score the assessment.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l656"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:656</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l730"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:730</code></a>
         </p>
 
 
@@ -4701,7 +5253,7 @@ The method used to score the assessment.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/scoringMethodExample">http://purl.org/ctdl/terms/scoringMethodExample</a>
-A resource that is an example of the method or tool used to score the assessment.</p>
+Webpage or online document providing an example of the method or tool used to score the assessment.</p>
 
     </div>
 
@@ -4710,7 +5262,7 @@ A resource that is an example of the method or tool used to score the assessment
 </div>
 <div id="property_scoringMethodExampleDescription" class="property item">
     <h3 class="name"><code>scoringMethodExampleDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -4719,7 +5271,7 @@ A resource that is an example of the method or tool used to score the assessment
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l664"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:664</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l737"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:737</code></a>
         </p>
 
 
@@ -4727,7 +5279,33 @@ A resource that is an example of the method or tool used to score the assessment
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/scoringMethodExampleDescription">http://purl.org/ctdl/terms/scoringMethodExampleDescription</a>
-The text of an example of the method or tool used to score the assessment.</p>
+Textual example of the method or tool used to score the assessment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_scoringMethodType" class="property item">
+    <h3 class="name"><code>scoringMethodType</code></h3>
+    <span class="type"><a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l744"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:744</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/scoringMethodType">http://purl.org/ctdl/terms/scoringMethodType</a>
+Type of method used to score the assessment; select from an existing enumeration of such types.</p>
 
     </div>
 
@@ -4822,7 +5400,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l672"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:672</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l751"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:751</code></a>
         </p>
 
 
@@ -4830,7 +5408,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/subject">http://purl.org/ctdl/terms/subject</a>
-Words or brief phrases describing topicality of a resource.</p>
+Words or brief phrases describing the topicality of the entity; select subject terms from an existing enumeration of such terms.</p>
 
     </div>
 
@@ -4848,7 +5426,7 @@ Words or brief phrases describing topicality of a resource.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l680"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:680</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l758"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:758</code></a>
         </p>
 
 
@@ -4856,7 +5434,8 @@ Words or brief phrases describing topicality of a resource.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/subjectWebpage">http://purl.org/ctdl/terms/subjectWebpage</a>
-The web page where the subject of the resource being described is located.</p>
+The webpage that describes this entity.
+The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.</p>
 
     </div>
 
@@ -4874,7 +5453,7 @@ The web page where the subject of the resource being described is located.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l688"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:688</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l766"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:766</code></a>
         </p>
 
 
@@ -4882,33 +5461,7 @@ The web page where the subject of the resource being described is located.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/targetAssessment">http://purl.org/ctdl/terms/targetAssessment</a>
-A resource that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for the resource being described.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_targetCompetency" class="property item">
-    <h3 class="name"><code>targetCompetency</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l696"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:696</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/targetCompetency">http://purl.org/ctdl/terms/targetCompetency</a>
-An alignment to a competency assertion in an established framework.</p>
+Assessment that provides direct, indirect, formative or summative evaluation or estimation of the nature, ability, or quality for an entity.</p>
 
     </div>
 
@@ -5094,7 +5647,7 @@ URL of the item.
 </div>
 <div id="property_verificationMethodDescription" class="property item">
     <h3 class="name"><code>verificationMethodDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -5103,7 +5656,7 @@ URL of the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l704"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:704</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l773"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:773</code></a>
         </p>
 
 
@@ -5111,7 +5664,7 @@ URL of the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/verificationMethodDescription">http://purl.org/ctdl/terms/verificationMethodDescription</a>
-Description of the methods used to evaluate the resource validity and reliability.</p>
+Textual description of the methods used to evaluate an assessment, learning opportunity, process or verificaiton service for validity or reliability.</p>
 
     </div>
 
@@ -5154,7 +5707,7 @@ The version of the CreativeWork embodied by a specified resource.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l712"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:712</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l780"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:780</code></a>
         </p>
 
 
@@ -5162,7 +5715,8 @@ The version of the CreativeWork embodied by a specified resource.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/versionIdentifier">http://purl.org/ctdl/terms/versionIdentifier</a>
-An alphanumeric identifier of a version of the resource being described that is unique within the organizational context.</p>
+Alphanumeric identifier of the version of the credential that is unique within the organizational context of its owner.
+The credential version captured here is any local identifier used by the credential owner to identify the version of the credential in the its local system.</p>
 
     </div>
 

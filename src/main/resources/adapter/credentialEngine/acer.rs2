@@ -1,0 +1,11 @@
+ppk=#fileLoad(path="adapter.cer.private.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="adapter.cer.private.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="adapter.cer.private.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="adapter.cer.private.pem");
+#cerPpk=ppk;

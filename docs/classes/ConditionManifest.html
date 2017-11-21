@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -808,7 +810,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2492"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2492</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2707"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2707</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -818,7 +820,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/ConditionManifest">credentialengine.org/ConditionManifest</a>
-A set of conditions maintained at the organizational and/or sub-organizational level.</p>
+Set of constraints, prerequisites, entry conditions, or requirements maintained at the organizational and/or sub-organizational level.
+These conditions are intended to be referenced by external entities such as individual credentials in order to facilitate the process of their description and to reduce unnecessary duplication of data applicable across an array of entities.</p>
 
 </div>
 
@@ -840,11 +843,15 @@ A set of conditions maintained at the organizational and/or sub-organizational l
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_advancedStandingFrom">advancedStandingFrom</a>
+                                <a href="#property_conditionManifestOf">conditionManifestOf</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_commonConditions">commonConditions</a>
+                                <a href="#property_corequisite">corequisite</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_ctid">ctid</a>
 
                             </li>
                             <li class="index-item property">
@@ -856,31 +863,15 @@ A set of conditions maintained at the organizational and/or sub-organizational l
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_isAdvancedStandingFor">isAdvancedStandingFor</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isPreparationFor">isPreparationFor</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isRecommendedFor">isRecommendedFor</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isRequiredFor">isRequiredFor</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_name">name</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_preparationFrom">preparationFrom</a>
+                                <a href="#property_recommends">recommends</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_recommends">recommends</a>
+                                <a href="#property_renewal">renewal</a>
 
                             </li>
                             <li class="index-item property">
@@ -901,9 +892,9 @@ A set of conditions maintained at the organizational and/or sub-organizational l
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_advancedStandingFrom" class="property item">
-    <h3 class="name"><code>advancedStandingFrom</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+<div id="property_conditionManifestOf" class="property item">
+    <h3 class="name"><code>conditionManifestOf</code></h3>
+    <span class="type"><a href="../classes/CredentialOrganization.html" class="crosslink">CredentialOrganization</a> | <a href="../classes/QACredentialOrganization.html" class="crosslink">QACredentialOrganization</a></span>
 
 
 
@@ -912,24 +903,24 @@ A set of conditions maintained at the organizational and/or sub-organizational l
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2509"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2509</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2723"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2723</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/advancedStandingFrom">http://purl.org/ctdl/terms/advancedStandingFrom</a>
-The resource being described has time or cost reduced by the resource being referenced.</p>
+        <p><a href="http://purl.org/ctdl/terms/conditionManifestOf">http://purl.org/ctdl/terms/conditionManifestOf</a>
+Organization maintaining the condition manifest.</p>
 
     </div>
 
 
 
 </div>
-<div id="property_commonConditions" class="property item">
-    <h3 class="name"><code>commonConditions</code></h3>
-    <span class="type"><a href="../classes/ConditionManifest.html" class="crosslink">ConditionManifest</a></span>
+<div id="property_corequisite" class="property item">
+    <h3 class="name"><code>corequisite</code></h3>
+    <span class="type"><a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a></span>
 
 
 
@@ -938,15 +929,43 @@ The resource being described has time or cost reduced by the resource being refe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2517"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2517</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2730"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2730</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/commonConditions">http://purl.org/ctdl/terms/commonConditions</a>
-The resource being referenced describes a set of common conditions applicable to the resource being described.</p>
+        <p><a href="http://purl.org/ctdl/terms/corequisite">http://purl.org/ctdl/terms/corequisite</a>
+Credentials that must be pursued concurrently.
+Includes dual (double) degrees that cannot be earned independently of each other.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_ctid" class="property item">
+    <h3 class="name"><code>ctid</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2738"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2738</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/ctid">http://purl.org/ctdl/terms/ctid</a>
+Globally unique Credential Transparency Identifier (CTID) by which the creator, owner or provider of a credential, learning opportunity competency, or assessment recognizes the entity in transactions with the external environment (e.g., in verifiable claims involving a credential).
+The CTID is the equivalent of a version identifier for the resource. Different versions of a resource are considered distinct expressions and each must be assigned its own CTID. Each version of a resource can have only one CTID assigned. However, a single version of a resource may have distinct identifier values for both the ctid property and the credentialId property. In such a case both identifiers will be recognized by the resource creator/owner/provider in transactions with the external environment.</p>
 
     </div>
 
@@ -955,7 +974,7 @@ The resource being referenced describes a set of common conditions applicable to
 </div>
 <div id="property_description" class="property item">
     <h3 class="name"><code>description</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -964,7 +983,7 @@ The resource being referenced describes a set of common conditions applicable to
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2525"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2525</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2746"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2746</code></a>
         </p>
 
 
@@ -972,7 +991,7 @@ The resource being referenced describes a set of common conditions applicable to
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-A short description of the resource being described.</p>
+Statememnt, characterization or account of the entity.</p>
 
     </div>
 
@@ -990,7 +1009,7 @@ A short description of the resource being described.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2533"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2533</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2753"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2753</code></a>
         </p>
 
 
@@ -998,111 +1017,7 @@ A short description of the resource being described.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/entryCondition">http://purl.org/ctdl/terms/entryCondition</a>
-The prerequisites for entry into the resource being described.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isAdvancedStandingFor" class="property item">
-    <h3 class="name"><code>isAdvancedStandingFor</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2541"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2541</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/isAdvancedStandingFor">http://purl.org/ctdl/terms/isAdvancedStandingFor</a>
-The resource being described reduces time or cost for the resource being referenced.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isPreparationFor" class="property item">
-    <h3 class="name"><code>isPreparationFor</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2549"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2549</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/isPreparationFor">http://purl.org/ctdl/terms/isPreparationFor</a>
-The resource being described provides preparation for the resource being referenced.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isRecommendedFor" class="property item">
-    <h3 class="name"><code>isRecommendedFor</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2557"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2557</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/isRecommendedFor">http://purl.org/ctdl/terms/isRecommendedFor</a>
-The resource being described is recommended for the resource being referenced.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isRequiredFor" class="property item">
-    <h3 class="name"><code>isRequiredFor</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2565"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2565</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/isRequiredFor">http://purl.org/ctdl/terms/isRequiredFor</a>
-The resource being described is required for the resource being referenced.</p>
+Prerequisites for entry into a credentialing program, a learning opportunity or an assessment including transcripts, records of previous experience, and lower-level learning opportunities.</p>
 
     </div>
 
@@ -1111,7 +1026,7 @@ The resource being described is required for the resource being referenced.</p>
 </div>
 <div id="property_name" class="property item">
     <h3 class="name"><code>name</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1120,7 +1035,7 @@ The resource being described is required for the resource being referenced.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2573"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2573</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2760"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2760</code></a>
         </p>
 
 
@@ -1128,33 +1043,7 @@ The resource being described is required for the resource being referenced.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/name">http://purl.org/ctdl/terms/name</a>
-The name of the resource being described.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_preparationFrom" class="property item">
-    <h3 class="name"><code>preparationFrom</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2581"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2581</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/preparationFrom">http://purl.org/ctdl/terms/preparationFrom</a>
-Preparation for the resource being described is provided by the resource being referenced.</p>
+Name or title of the entity.</p>
 
     </div>
 
@@ -1163,7 +1052,7 @@ Preparation for the resource being described is provided by the resource being r
 </div>
 <div id="property_recommends" class="property item">
     <h3 class="name"><code>recommends</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
 
 
 
@@ -1172,7 +1061,7 @@ Preparation for the resource being described is provided by the resource being r
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2589"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2589</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2767"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2767</code></a>
         </p>
 
 
@@ -1180,7 +1069,34 @@ Preparation for the resource being described is provided by the resource being r
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/recommends">http://purl.org/ctdl/terms/recommends</a>
-The resource being described recommends the resource being referenced.</p>
+Recommended credential, learning opportunity or assessment.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_renewal" class="property item">
+    <h3 class="name"><code>renewal</code></h3>
+    <span class="type"><a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2774"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2774</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/renewal">http://purl.org/ctdl/terms/renewal</a>
+Entity describing the constraints, prerequisites, entry conditions, or requirements necessary to maintenance and renewal of an awarded credential.
+Generally, renewal applies to certifications and licenses; however, it may occasionally apply to other types of credentials.</p>
 
     </div>
 
@@ -1189,7 +1105,7 @@ The resource being described recommends the resource being referenced.</p>
 </div>
 <div id="property_requires" class="property item">
     <h3 class="name"><code>requires</code></h3>
-    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
+    <span class="type"><a href="../classes/ApprenticeshipCertificate.html" class="crosslink">ApprenticeshipCertificate</a> | <a href="../classes/AssessmentProfile.html" class="crosslink">AssessmentProfile</a> | <a href="../classes/AssociateDegree.html" class="crosslink">AssociateDegree</a> | <a href="../classes/BachelorDegree.html" class="crosslink">BachelorDegree</a> | <a href="../classes/Badge.html" class="crosslink">Badge</a> | <a href="../classes/Certificate.html" class="crosslink">Certificate</a> | <a href="../classes/Certification.html" class="crosslink">Certification</a> | <a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/ConditionProfile.html" class="crosslink">ConditionProfile</a> | <a href="../classes/Credential.html" class="crosslink">Credential</a> | <a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a> | <a href="../classes/Degree.html" class="crosslink">Degree</a> | <a href="../classes/DigitalBadge.html" class="crosslink">DigitalBadge</a> | <a href="../classes/Diploma.html" class="crosslink">Diploma</a> | <a href="../classes/DoctoralDegree.html" class="crosslink">DoctoralDegree</a> | <a href="../classes/GeneralEducationDevelopment.html" class="crosslink">GeneralEducationDevelopment</a> | <a href="../classes/JourneymanCertificate.html" class="crosslink">JourneymanCertificate</a> | <a href="../classes/LearningOpportunityProfile.html" class="crosslink">LearningOpportunityProfile</a> | <a href="../classes/License.html" class="crosslink">License</a> | <a href="../classes/MasterCertificate.html" class="crosslink">MasterCertificate</a> | <a href="../classes/MasterDegree.html" class="crosslink">MasterDegree</a> | <a href="../classes/MicroCredential.html" class="crosslink">MicroCredential</a> | <a href="../classes/OpenBadge.html" class="crosslink">OpenBadge</a> | <a href="../classes/ProfessionalDoctorate.html" class="crosslink">ProfessionalDoctorate</a> | <a href="../classes/QualityAssuranceCredential.html" class="crosslink">QualityAssuranceCredential</a> | <a href="../classes/ResearchDoctorate.html" class="crosslink">ResearchDoctorate</a> | <a href="../classes/SecondarySchoolDiploma.html" class="crosslink">SecondarySchoolDiploma</a></span>
 
 
 
@@ -1198,7 +1114,7 @@ The resource being described recommends the resource being referenced.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2597"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2597</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2782"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2782</code></a>
         </p>
 
 
@@ -1206,7 +1122,7 @@ The resource being described recommends the resource being referenced.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/requires">http://purl.org/ctdl/terms/requires</a>
-The resource being described requires the resource being referenced.</p>
+Requirement or set of requirements for this credential, learning opportunity, or assessment.</p>
 
     </div>
 
@@ -1224,7 +1140,7 @@ The resource being described requires the resource being referenced.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2605"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2605</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2789"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2789</code></a>
         </p>
 
 
@@ -1232,7 +1148,8 @@ The resource being described requires the resource being referenced.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/subjectWebpage">http://purl.org/ctdl/terms/subjectWebpage</a>
-The web page where the subject of the resource being described is located.</p>
+The webpage that describes this entity.
+The web page being referenced describes the entity. The value of subjectWebpage is an authoritative location for information about the subject but should not assumed to be a persistent identifier of the subject.</p>
 
     </div>
 

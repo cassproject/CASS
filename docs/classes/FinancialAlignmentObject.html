@@ -189,6 +189,7 @@
                                 <li><a href="../classes/Conversation.html">Conversation</a></li>
                                 <li><a href="../classes/CookAction.html">CookAction</a></li>
                                 <li><a href="../classes/Corporation.html">Corporation</a></li>
+                                <li><a href="../classes/CostManifest.html">CostManifest</a></li>
                                 <li><a href="../classes/CostProfile.html">CostProfile</a></li>
                                 <li><a href="../classes/Country.html">Country</a></li>
                                 <li><a href="../classes/Course.html">Course</a></li>
@@ -562,6 +563,7 @@
                                 <li><a href="../classes/ProductModel.html">ProductModel</a></li>
                                 <li><a href="../classes/ProfessionalDoctorate.html">ProfessionalDoctorate</a></li>
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
+                                <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
@@ -811,7 +813,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3956"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3956</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4682"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4682</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -821,7 +823,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/FinancialAlignmentObject">credentialengine.org/FinancialAlignmentObject</a>
-An alignment to a financial framework.</p>
+An alignment to a financial framework.
+Examples include, but are not limited to, Free Application for Federal Student Aid (FAFSA) in the U.S.</p>
 
 </div>
 
@@ -1200,7 +1203,7 @@ An additional type for the item, typically used for adding more specific types f
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3976"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3976</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4701"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4701</code></a>
         </p>
 
 
@@ -1217,7 +1220,7 @@ The date  the alignment was made.</p>
 </div>
 <div id="property_alignmentType" class="property item">
     <h3 class="name"><code>alignmentType</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">String</span>
 
 
 
@@ -1229,7 +1232,7 @@ The date  the alignment was made.</p>
                 AlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3984"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3984</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4708"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4708</code></a>
         </p>
 
 
@@ -1237,7 +1240,8 @@ The date  the alignment was made.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/alignmentType">http://purl.org/ctdl/terms/alignmentType</a>
-A category of alignment between the learning resource and the framework node.</p>
+Type of relationship between two entities.
+In CTDL, the alignment type value is definitively identified by the property for which the AlignmentObject is the rdfs:range; therefore, use of this property is generally redundant.</p>
 
     </div>
 
@@ -1271,7 +1275,7 @@ An alias for the item.
 </div>
 <div id="property_codedNotation" class="property item">
     <h3 class="name"><code>codedNotation</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">String</span>
 
 
 
@@ -1283,7 +1287,7 @@ An alias for the item.
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3992"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3992</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4716"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4716</code></a>
         </p>
 
 
@@ -1291,7 +1295,8 @@ An alias for the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/codedNotation">http://purl.org/ctdl/terms/codedNotation</a>
-A short set of alpha-numeric symbols that uniquely identifies a resource and supports its discovery.</p>
+Set of alpha-numeric symbols that uniquely identifies an item and supports its discovery and use.
+Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identifying a node in the U.S. Common Core State Standards on creating equations in algebra, or, the code "8021" in the U.S. Standard Industrial Classification (SIC) for identifying the occupational context for "Offices and Clinics of Dentists".</p>
 
     </div>
 
@@ -1387,7 +1392,7 @@ The framework to which the resource being described is aligned.
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4000"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4000</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4724"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4724</code></a>
         </p>
 
 
@@ -1395,7 +1400,8 @@ The framework to which the resource being described is aligned.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/framework">http://purl.org/ctdl/terms/framework</a>
-The framework to which the resource being described is aligned.</p>
+Credential framework to which the entity is aligned.
+Frameworks may include, but are not limited to, competency frameworks and concept schemes such as industry, occupation, and instructional program codes.</p>
 
     </div>
 
@@ -1404,7 +1410,7 @@ The framework to which the resource being described is aligned.</p>
 </div>
 <div id="property_frameworkName" class="property item">
     <h3 class="name"><code>frameworkName</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1416,7 +1422,7 @@ The framework to which the resource being described is aligned.</p>
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4008"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4008</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4732"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4732</code></a>
         </p>
 
 
@@ -1424,7 +1430,7 @@ The framework to which the resource being described is aligned.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/frameworkName">http://purl.org/ctdl/terms/frameworkName</a>
-The name of the framework to which the resource being described is aligned.</p>
+Name of the framework.</p>
 
     </div>
 
@@ -1645,7 +1651,7 @@ The name of a node in an established educational framework.
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4016"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4016</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4739"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4739</code></a>
         </p>
 
 
@@ -1653,7 +1659,7 @@ The name of a node in an established educational framework.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/targetNode">http://purl.org/ctdl/terms/targetNode</a>
-The node of a framework targeted by the alignment.</p>
+Individual entry in a formally defined framework such as a competency or an industry, instructional program, or occupation code.</p>
 
     </div>
 
@@ -1662,7 +1668,7 @@ The node of a framework targeted by the alignment.</p>
 </div>
 <div id="property_targetNodeDescription" class="property item">
     <h3 class="name"><code>targetNodeDescription</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1674,7 +1680,7 @@ The node of a framework targeted by the alignment.</p>
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4024"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4024</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4746"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4746</code></a>
         </p>
 
 
@@ -1682,7 +1688,7 @@ The node of a framework targeted by the alignment.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/targetNodeDescription">http://purl.org/ctdl/terms/targetNodeDescription</a>
-The description of a node in an established educational framework.</p>
+Textual description of an individual concept or competency in a formally defined framework.</p>
 
     </div>
 
@@ -1691,7 +1697,7 @@ The description of a node in an established educational framework.</p>
 </div>
 <div id="property_targetNodeName" class="property item">
     <h3 class="name"><code>targetNodeName</code></h3>
-    <span class="type">Literal</span>
+    <span class="type">LangString</span>
 
 
 
@@ -1703,7 +1709,7 @@ The description of a node in an established educational framework.</p>
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4032"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4032</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4753"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4753</code></a>
         </p>
 
 
@@ -1711,7 +1717,7 @@ The description of a node in an established educational framework.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/targetNodeName">http://purl.org/ctdl/terms/targetNodeName</a>
-The name of a node in an established educational framework.</p>
+Name of an individual concept or competency in a formally defined framework.</p>
 
     </div>
 
@@ -1782,7 +1788,7 @@ URL of the item.
                 CredentialAlignmentObject
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4040"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4040</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l4760"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:4760</code></a>
         </p>
 
 
@@ -1790,7 +1796,7 @@ URL of the item.
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/weight">http://purl.org/ctdl/terms/weight</a>
-An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.</p>
+Measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.</p>
 
     </div>
 
