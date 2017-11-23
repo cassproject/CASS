@@ -80,7 +80,10 @@ function cassFrameworkAsCeasn() {
     }
 
     for (var i = 0; i < f.relation.length; i++) {
+    	//Workaround due to bug in 1.3.0
+    	if (EcRepository.getBlocking(f.relation[i]) == null) continue;
         var r = EcAlignment.getBlocking(f.relation[i]);
+        if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
             EcArray.setRemove(f.competency, r.target);
 
