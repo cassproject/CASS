@@ -183,10 +183,22 @@ function cassFrameworkAsCeasn() {
             f["ceasn:hasTopChild"].push(c.id);
         }
         f.competency.push(c.id);
+        if (c.name == null || c.name == "")
+        if (c.description != null && c.description != "")
+        {
+        	c.name = c.description;
+        	delete c.description;
+        }
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
         competencies[id]["ceterms:ctid"] = "ce-" + uuidFromString(f.id + c.shortId());
-        competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
-        delete competencies[id]["ceasn:name"];
+        if (competencies[id]["ceasn:name"] != null){
+        	competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
+        	delete competencies[id]["ceasn:name"];
+        }
+        if (competencies[id]["ceasn:description"] != null){
+        	competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
+        	delete competencies[id]["ceasn:description"];
+        }
         if (competencies[id]["ceasn:inLanguage"] == null)
             competencies[id]["ceasn:inLanguage"] = "en";
         delete competencies[id]["@context"];
@@ -230,6 +242,7 @@ function stripNonCe(f) {
             if (k.indexOf("ceterms:ctid") != 0)
                 if (k.indexOf("ceasn:description") != 0)
                     if (k.indexOf("ceasn:name") != 0)
+                    if (k.indexOf("ceasn:weight") != 0)
                         if (k.indexOf("ceasn:codedNotation") != 0)
                             if (k.indexOf("ceasn:competencyText") != 0)
                                 if (EcArray.isArray(f[k]) == false)
