@@ -85,23 +85,25 @@ if (f.relation != null)
         if (r.relationType == Relation.NARROWS) {
             EcArray.setRemove(f.competency, r.target);
 
+            if (r.target == f.id || r.target == f.shortId()) continue;
+
             if (competencies[r.source] != null)
-                if (competencies[r.source]["gemq:hasChild"] == null)
-                    competencies[r.source]["gemq:hasChild"] = [];
+                if (competencies[r.source]["gemq:isChildOf"] == null)
+                    competencies[r.source]["gemq:isChildOf"] = [];
             if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    competencies[r.source]["gemq:hasChild"].push(competencies[r.target].id);
+                    competencies[r.source]["gemq:isChildOf"].push(competencies[r.target].id);
                 else
-                    competencies[r.source]["gemq:hasChild"].push(r.target);
+                    competencies[r.source]["gemq:isChildOf"].push(r.target);
 
             if (competencies[r.target] != null)
-                if (competencies[r.target]["gemq:isChildOf"] == null)
-                    competencies[r.target]["gemq:isChildOf"] = [];
+                if (competencies[r.target]["gemq:hasChild"] == null)
+                    competencies[r.target]["gemq:hasChild"] = [];
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["gemq:isChildOf"].push(competencies[r.source].id);
+                    competencies[r.target]["gemq:hasChild"].push(competencies[r.source].id);
                 else
-                    competencies[r.target]["gemq:isChildOf"].push(r.source);
+                    competencies[r.target]["gemq:hasChild"].push(r.source);
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO) {
             EcArray.setRemove(f.competency, r.source);
