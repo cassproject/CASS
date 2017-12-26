@@ -8,6 +8,7 @@ This document is intended to act as a technical guide to the installation of CAS
 This installation of CASS will provide several components that operate to provide a working system. It is composed of:
  * The CASS Repository, a Java application that runs in a Servlet Container, such as Tomcat.
  * The CASS Library, a Javascript library that provides an interoperability layer between web applications and the CASS Repository.
+ * CASS Embeddable Apps, a set of iframeable applications for branded web applications.
  * CASS Application Examples, a set of CASS branded applications that can be freely used, adapted, modified, or inspected.
  * CASS Manager, a robust application facilitating interoperability across multiple CASS repositories and other services.
  * CASS Visualizer, an example application showing a visualization.
@@ -26,26 +27,10 @@ During the installation, you will be asked to select a version to install. The '
 
     @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
     refreshenv
-    choco install -y tomcat maven git elasticsearch
+    choco install -y cass
     refreshenv
 
 Go to services, start elasticsearch-service-x64 and set it to start automatically.
-
-### Install/Upgrade:
-    Open Elevated Command Line
-    Navigate to a working directory
-    git ls-remote http://github.com/cassproject/CASS
-    Select a version (just the 0.2.0 part, or master)
-
-All release versions are of the form major.minor.revision. Experimental is on 'master'.
-0.2.0 and below is only compatible with ElasticSearch 2.2.1.
-If Elasticsearch 5.2 was installed, use '0.3.0' and above or 'master'.
-Copy path may vary.
-
-    git clone https://github.com/cassproject/CASS -b <selected version, ex: master>
-    cd CASS
-    mvn install
-    copy target\cass.war "c:\Program Files\Apache Software Foundation\tomcat\apache-tomcat-8.5.12\webapps\cass.war"
 
 # Post Installation
 To support open linked data, it is important that the objects created in CASS have public, reliable URLs. For this:
