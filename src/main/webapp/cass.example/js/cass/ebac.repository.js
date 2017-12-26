@@ -884,6 +884,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                             log("Searching for exact ID:" + url + ", found more than one@:" + repo.selectedServer);
                         done = true;
                         delete (EcRepository.fetching)[url];
+                        if (EcRepository.caching) {
+                            (EcRepository.cache)[url] = strings[i];
+                        }
                         success(strings[i]);
                     }
                 }
@@ -910,6 +913,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
          else {
             for (var j = 0; j < strings.length; j++) {
                 if (strings[j].id == url) {
+                    delete (EcRepository.fetching)[url];
+                    if (EcRepository.caching) {
+                        (EcRepository.cache)[url] = strings[j];
+                    }
                     return strings[j];
                 }
             }
