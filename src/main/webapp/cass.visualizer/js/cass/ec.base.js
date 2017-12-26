@@ -120,7 +120,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @method isArray
      */
     constructor.isArray = function(o) {
-        return toString.call(o) == "[object Array]";
+        return Object.prototype.toString.call(o) == "[object Array]";
     };
     /**
      *  Removes values IFF the values == one another.

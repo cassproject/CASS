@@ -704,6 +704,8 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
         if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
             return p1;
         var alignment = new EcAlignment();

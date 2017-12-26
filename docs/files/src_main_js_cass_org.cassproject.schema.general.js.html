@@ -957,11 +957,14 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (!this.id.endsWith(&quot;/&quot;)) 
             this.id += &quot;/&quot;;
         this.id += &quot;data/&quot;;
-        this.id += this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
+        this.id += this.getDottedType();
         this.id += &quot;/&quot;;
         this.id += generateUUID();
         this.id += &quot;/&quot;;
         this.id += new Date().getTime();
+    };
+    prototype.getDottedType = function() {
+        return this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
     };
     /**
      *  Will generate an identifier using the server URL provided (usually from
@@ -976,7 +979,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (!this.id.endsWith(&quot;/&quot;)) 
             this.id += &quot;/&quot;;
         this.id += &quot;data/&quot;;
-        this.id += this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
+        this.id += this.getDottedType();
         this.id += &quot;/&quot;;
         this.id += uniqueIdentifier;
         this.id += &quot;/&quot;;
@@ -995,7 +998,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         if (!this.id.endsWith(&quot;/&quot;)) 
             this.id += &quot;/&quot;;
         this.id += &quot;data/&quot;;
-        this.id += this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
+        this.id += this.getDottedType();
         this.id += &quot;/&quot;;
         this.id += uniqueIdentifier;
         this.id += &quot;/&quot;;

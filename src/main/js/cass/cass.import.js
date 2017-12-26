@@ -35,10 +35,10 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
 var Importer = function() {};
 Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
     constructor.isObject = function(obj) {
-        return toString.call(obj) == "[object Object]";
+        return Object.prototype.toString.call(obj) == "[object Object]";
     };
     constructor.isArray = function(obj) {
-        return toString.call(obj) == "[object Array]";
+        return Object.prototype.toString.call(obj) == "[object Array]";
     };
 }, {}, {});
 /**
@@ -109,7 +109,14 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                             compExport.buildExport(CSVExport.frameworkCompetencies);
                             compExport.downloadCSV(fw.getName() + " - Competencies.csv");
                         } else {}
-                    }, failure);
+                    }, function(s) {
+                        CSVExport.frameworkCompetencies.push(null);
+                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.downloadCSV(fw.getName() + " - Competencies.csv");
+                        } else {}
+                    });
                 }
                 for (var i = 0; i < fw.relation.length; i++) {
                     var relationUrl = fw.relation[i];
@@ -122,7 +129,16 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                             if (success != null && success != undefined) 
                                 success();
                         } else {}
-                    }, failure);
+                    }, function(s) {
+                        CSVExport.frameworkRelations.push(null);
+                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.downloadCSV(fw.getName() + " - Relations.csv");
+                            if (success != null && success != undefined) 
+                                success();
+                        } else {}
+                    });
                 }
             }
         }, failure);
@@ -167,10 +183,11 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
             }
         };
         prototype.buildExport = function(objects) {
-            for (var i = 0; i < objects.length; i++) {
-                var object = objects[i];
-                this.addCSVRow(object);
-            }
+            for (var i = 0; i < objects.length; i++) 
+                if (objects[i] != null) {
+                    var object = objects[i];
+                    this.addCSVRow(object);
+                }
         };
         prototype.downloadCSV = function(name) {
             var csv = Papa.unparse(this.csvOutput);
@@ -588,12 +605,14 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var relationTypeKey = tabularData[i][relationTypeIndex];
                 var destKey = tabularData[i][destIndex];
                 if ((CSVImport.importCsvLookup)[sourceKey] == null) 
-                    continue;
+                    alignment.source = sourceKey;
+                 else 
+                    alignment.source = (CSVImport.importCsvLookup)[sourceKey];
                 if ((CSVImport.importCsvLookup)[destKey] == null) 
-                    continue;
-                alignment.source = (CSVImport.importCsvLookup)[sourceKey];
+                    alignment.target = destKey;
+                 else 
+                    alignment.target = (CSVImport.importCsvLookup)[destKey];
                 alignment.relationType = relationTypeKey;
-                alignment.target = (CSVImport.importCsvLookup)[destKey];
                 if (owner != null) 
                     alignment.addOwner(owner.ppk.toPk());
                 alignment.generateId(serverUrl);
@@ -623,6 +642,9 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                         relations[j]._delete(null, null);
                     }
                 });
+            }
+            if (CSVImport.saved == 0 && CSVImport.saved == relations.length) {
+                success(competencies, relations);
             }
         }, error: failure});
     };
@@ -658,7 +680,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.transformReferences = function(data) {
         var props = (data);
         for (var prop in props) {
-            if (props[prop] == null || props[prop] == undefined || toString.call(props[prop]).indexOf("String") == -1) {
+            if (props[prop] == null || props[prop] == undefined || Object.prototype.toString.call(props[prop]).indexOf("String") == -1) {
                 if (EcObject.isObject(props[prop])) {
                     var nested = props[prop];
                     CSVImport.transformReferences(nested);

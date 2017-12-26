@@ -1998,7 +1998,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.shouldTryUrl(data.id)) 
             targetUrl = data.shortId();
          else {
-            targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + EcCrypto.md5(data.id));
+            targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + data.getDottedType() + &quot;/&quot; + EcCrypto.md5(data.id));
         }
         var me = this;
         if (data.owner != null &amp;&amp; data.owner.length &gt; 0) {
@@ -2397,6 +2397,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if ((paramObj)[&quot;types&quot;] != null) {
             paramProps[&quot;types&quot;] = (paramObj)[&quot;types&quot;];
         }
+        if ((paramObj)[&quot;sort&quot;] != null) {
+            paramProps[&quot;sort&quot;] = (paramObj)[&quot;sort&quot;];
+        }
+        if ((paramObj)[&quot;track_scores&quot;] != null) {
+            paramProps[&quot;track_scores&quot;] = (paramObj)[&quot;track_scores&quot;];
+        }
         if ((paramObj)[&quot;ownership&quot;] != null) {
             var ownership = (paramObj)[&quot;ownership&quot;];
             if (!query.startsWith(&quot;(&quot;) || !query.endsWith(&quot;)&quot;)) {
@@ -2576,13 +2582,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (!(p1 == &quot;&quot;)) {
-                    if (p1.indexOf(&quot;pong&quot;) != -1) {
-                        if (me.autoDetectFound == false) {
-                            me.selectedServer = guess;
-                            me.autoDetectFound = true;
-                            success();
+                    try {
+                        if (p1.indexOf(&quot;pong&quot;) != -1) {
+                            if (me.autoDetectFound == false) {
+                                me.selectedServer = guess;
+                                me.autoDetectFound = true;
+                                success();
+                            }
                         }
-                    }
+                    }catch (ex) {}
                 }
             }
         };
@@ -2617,10 +2625,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (p1 != &quot;&quot;) {
-                    if (p1.indexOf(&quot;pong&quot;) != -1) {
-                        me.selectedServer = guess;
-                        me.autoDetectFound = true;
-                    }
+                    try {
+                        if (p1.indexOf(&quot;pong&quot;) != -1) {
+                            me.selectedServer = guess;
+                            me.autoDetectFound = true;
+                        }
+                    }catch (ex) {}
                 }
             }
         };
