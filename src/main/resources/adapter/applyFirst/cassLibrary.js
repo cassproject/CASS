@@ -20,6 +20,8 @@ print("classpath:org.cassproject.schema.general.js");
 load("classpath:org.cassproject.schema.general.js");
 print("classpath:org.schema.js");
 load("classpath:org.schema.js");
+print("classpath:org.w3.skos.js");
+load("classpath:org.w3.skos.js");
 print("classpath:org.cassproject.schema.ebac.js");
 load("classpath:org.cassproject.schema.ebac.js");
 print("classpath:org.cassproject.schema.cass.js");
