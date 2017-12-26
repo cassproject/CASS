@@ -884,6 +884,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                             log("Searching for exact ID:" + url + ", found more than one@:" + repo.selectedServer);
                         done = true;
                         delete (EcRepository.fetching)[url];
+                        if (EcRepository.caching) {
+                            (EcRepository.cache)[url] = strings[i];
+                        }
                         success(strings[i]);
                     }
                 }
@@ -910,6 +913,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
          else {
             for (var j = 0; j < strings.length; j++) {
                 if (strings[j].id == url) {
+                    delete (EcRepository.fetching)[url];
+                    if (EcRepository.caching) {
+                        (EcRepository.cache)[url] = strings[j];
+                    }
                     return strings[j];
                 }
             }
@@ -1187,7 +1194,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.shouldTryUrl(data.id)) 
             targetUrl = data.shortId();
          else {
-            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + EcCrypto.md5(data.id));
+            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.id));
         }
         var me = this;
         if (data.owner != null && data.owner.length > 0) {
@@ -1586,6 +1593,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if ((paramObj)["types"] != null) {
             paramProps["types"] = (paramObj)["types"];
         }
+        if ((paramObj)["sort"] != null) {
+            paramProps["sort"] = (paramObj)["sort"];
+        }
+        if ((paramObj)["track_scores"] != null) {
+            paramProps["track_scores"] = (paramObj)["track_scores"];
+        }
         if ((paramObj)["ownership"] != null) {
             var ownership = (paramObj)["ownership"];
             if (!query.startsWith("(") || !query.endsWith(")")) {
@@ -1765,13 +1778,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (!(p1 == "")) {
-                    if (p1.indexOf("pong") != -1) {
-                        if (me.autoDetectFound == false) {
-                            me.selectedServer = guess;
-                            me.autoDetectFound = true;
-                            success();
+                    try {
+                        if (p1.indexOf("pong") != -1) {
+                            if (me.autoDetectFound == false) {
+                                me.selectedServer = guess;
+                                me.autoDetectFound = true;
+                                success();
+                            }
                         }
-                    }
+                    }catch (ex) {}
                 }
             }
         };
@@ -1806,10 +1821,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (p1 != "") {
-                    if (p1.indexOf("pong") != -1) {
-                        me.selectedServer = guess;
-                        me.autoDetectFound = true;
-                    }
+                    try {
+                        if (p1.indexOf("pong") != -1) {
+                            me.selectedServer = guess;
+                            me.autoDetectFound = true;
+                        }
+                    }catch (ex) {}
                 }
             }
         };

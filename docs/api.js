@@ -129,6 +129,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Clip",
         "ClothingStore",
         "Code",
+        "Collection",
         "CollectionPage",
         "CollegeOrUniversity",
         "ComedyClub",
@@ -141,6 +142,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "CompoundPriceSpecification",
         "ComputerLanguage",
         "ComputerStore",
+        "Concept",
+        "ConceptScheme",
         "ConditionManifest",
         "ConditionProfile",
         "ConfirmAction",
@@ -474,6 +477,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "OrderAction",
         "OrderItem",
         "OrderStatus",
+        "OrderedCollection",
         "Organization",
         "OrganizationRole",
         "OrganizeAction",
@@ -732,7 +736,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "org.cassproject",
         "org.credentialengine",
         "org.json.ld",
-        "org.schema"
+        "org.schema",
+        "org.w3.skos"
     ],
     "allModules": [
         {
@@ -764,6 +769,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "org.schema",
             "name": "org.schema",
             "description": "Schema.org/Thing\nThe most generic type of item."
+        },
+        {
+            "displayName": "org.w3.skos",
+            "name": "org.w3.skos",
+            "description": "www.w3.org/2004/02/skos/core/Collection\nA meaningful collection of concepts.\nLabelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy."
         }
     ],
     "elements": []

@@ -164,6 +164,7 @@
                                 <li><a href="../classes/Clip.html">Clip</a></li>
                                 <li><a href="../classes/ClothingStore.html">ClothingStore</a></li>
                                 <li><a href="../classes/Code.html">Code</a></li>
+                                <li><a href="../classes/Collection.html">Collection</a></li>
                                 <li><a href="../classes/CollectionPage.html">CollectionPage</a></li>
                                 <li><a href="../classes/CollegeOrUniversity.html">CollegeOrUniversity</a></li>
                                 <li><a href="../classes/ComedyClub.html">ComedyClub</a></li>
@@ -176,6 +177,8 @@
                                 <li><a href="../classes/CompoundPriceSpecification.html">CompoundPriceSpecification</a></li>
                                 <li><a href="../classes/ComputerLanguage.html">ComputerLanguage</a></li>
                                 <li><a href="../classes/ComputerStore.html">ComputerStore</a></li>
+                                <li><a href="../classes/Concept.html">Concept</a></li>
+                                <li><a href="../classes/ConceptScheme.html">ConceptScheme</a></li>
                                 <li><a href="../classes/ConditionManifest.html">ConditionManifest</a></li>
                                 <li><a href="../classes/ConditionProfile.html">ConditionProfile</a></li>
                                 <li><a href="../classes/ConfirmAction.html">ConfirmAction</a></li>
@@ -509,6 +512,7 @@
                                 <li><a href="../classes/OpeningHoursSpecification.html">OpeningHoursSpecification</a></li>
                                 <li><a href="../classes/Order.html">Order</a></li>
                                 <li><a href="../classes/OrderAction.html">OrderAction</a></li>
+                                <li><a href="../classes/OrderedCollection.html">OrderedCollection</a></li>
                                 <li><a href="../classes/OrderItem.html">OrderItem</a></li>
                                 <li><a href="../classes/OrderStatus.html">OrderStatus</a></li>
                                 <li><a href="../classes/Organization.html">Organization</a></li>
@@ -772,6 +776,7 @@
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
                                 <li><a href="../modules/org.json.ld.html">org.json.ld</a></li>
                                 <li><a href="../modules/org.schema.html">org.schema</a></li>
+                                <li><a href="../modules/org.w3.skos.html">org.w3.skos</a></li>
                             </ul>
                         </div>
                     </div>
@@ -931,7 +936,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @method isArray
      */
     constructor.isArray = function(o) {
-        return toString.call(o) == &quot;[object Array]&quot;;
+        return Object.prototype.toString.call(o) == &quot;[object Array]&quot;;
     };
     /**
      *  Removes values IFF the values == one another.
@@ -1011,9 +1016,11 @@ var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
     constructor.desiredFps = 10;
     constructor.lastFrame = null;
-    constructor.tasks = null;
+    constructor.tasks = new Array();
     constructor.delayedFunctions = 0;
     constructor.immediateFunctions = 0;
+    constructor.asyncImmediateFunctions = 0;
+    constructor.runningAsyncFunctions = 0;
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
@@ -1028,6 +1035,27 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
             c();
         }
         return null;
+    };
+    constructor.asyncImmediate = function(c) {
+        Task.tasks.push(c);
+        Task.asyncImmediateFunctions++;
+        if (Task.runningAsyncFunctions &lt; 20) {
+            Task.runningAsyncFunctions++;
+            return setTimeout(function() {
+                Task.asyncContinue();
+            }, 0);
+        }
+        return null;
+    };
+    constructor.asyncContinue = function() {
+        var keepGoing = function() {
+            Task.asyncContinue();
+        };
+        if (Task.tasks.length &gt; 0) {
+            var c = Task.tasks.pop();
+            c(keepGoing);
+        } else 
+            Task.runningAsyncFunctions--;
     };
 }, {tasks: {name: &quot;Array&quot;, arguments: [&quot;CallbackOrFunction&quot;]}}, {});
 /**

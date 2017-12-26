@@ -164,6 +164,7 @@
                                 <li><a href="../classes/Clip.html">Clip</a></li>
                                 <li><a href="../classes/ClothingStore.html">ClothingStore</a></li>
                                 <li><a href="../classes/Code.html">Code</a></li>
+                                <li><a href="../classes/Collection.html">Collection</a></li>
                                 <li><a href="../classes/CollectionPage.html">CollectionPage</a></li>
                                 <li><a href="../classes/CollegeOrUniversity.html">CollegeOrUniversity</a></li>
                                 <li><a href="../classes/ComedyClub.html">ComedyClub</a></li>
@@ -176,6 +177,8 @@
                                 <li><a href="../classes/CompoundPriceSpecification.html">CompoundPriceSpecification</a></li>
                                 <li><a href="../classes/ComputerLanguage.html">ComputerLanguage</a></li>
                                 <li><a href="../classes/ComputerStore.html">ComputerStore</a></li>
+                                <li><a href="../classes/Concept.html">Concept</a></li>
+                                <li><a href="../classes/ConceptScheme.html">ConceptScheme</a></li>
                                 <li><a href="../classes/ConditionManifest.html">ConditionManifest</a></li>
                                 <li><a href="../classes/ConditionProfile.html">ConditionProfile</a></li>
                                 <li><a href="../classes/ConfirmAction.html">ConfirmAction</a></li>
@@ -509,6 +512,7 @@
                                 <li><a href="../classes/OpeningHoursSpecification.html">OpeningHoursSpecification</a></li>
                                 <li><a href="../classes/Order.html">Order</a></li>
                                 <li><a href="../classes/OrderAction.html">OrderAction</a></li>
+                                <li><a href="../classes/OrderedCollection.html">OrderedCollection</a></li>
                                 <li><a href="../classes/OrderItem.html">OrderItem</a></li>
                                 <li><a href="../classes/OrderStatus.html">OrderStatus</a></li>
                                 <li><a href="../classes/Organization.html">Organization</a></li>
@@ -772,6 +776,7 @@
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
                                 <li><a href="../modules/org.json.ld.html">org.json.ld</a></li>
                                 <li><a href="../modules/org.schema.html">org.schema</a></li>
+                                <li><a href="../modules/org.w3.skos.html">org.w3.skos</a></li>
                             </ul>
                         </div>
                     </div>
@@ -1695,6 +1700,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                             log(&quot;Searching for exact ID:&quot; + url + &quot;, found more than one@:&quot; + repo.selectedServer);
                         done = true;
                         delete (EcRepository.fetching)[url];
+                        if (EcRepository.caching) {
+                            (EcRepository.cache)[url] = strings[i];
+                        }
                         success(strings[i]);
                     }
                 }
@@ -1721,6 +1729,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
          else {
             for (var j = 0; j &lt; strings.length; j++) {
                 if (strings[j].id == url) {
+                    delete (EcRepository.fetching)[url];
+                    if (EcRepository.caching) {
+                        (EcRepository.cache)[url] = strings[j];
+                    }
                     return strings[j];
                 }
             }
@@ -1998,7 +2010,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.shouldTryUrl(data.id)) 
             targetUrl = data.shortId();
          else {
-            targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + EcCrypto.md5(data.id));
+            targetUrl = EcRemote.urlAppend(this.selectedServer, &quot;data/&quot; + data.getDottedType() + &quot;/&quot; + EcCrypto.md5(data.id));
         }
         var me = this;
         if (data.owner != null &amp;&amp; data.owner.length &gt; 0) {
@@ -2397,6 +2409,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if ((paramObj)[&quot;types&quot;] != null) {
             paramProps[&quot;types&quot;] = (paramObj)[&quot;types&quot;];
         }
+        if ((paramObj)[&quot;sort&quot;] != null) {
+            paramProps[&quot;sort&quot;] = (paramObj)[&quot;sort&quot;];
+        }
+        if ((paramObj)[&quot;track_scores&quot;] != null) {
+            paramProps[&quot;track_scores&quot;] = (paramObj)[&quot;track_scores&quot;];
+        }
         if ((paramObj)[&quot;ownership&quot;] != null) {
             var ownership = (paramObj)[&quot;ownership&quot;];
             if (!query.startsWith(&quot;(&quot;) || !query.endsWith(&quot;)&quot;)) {
@@ -2576,13 +2594,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (!(p1 == &quot;&quot;)) {
-                    if (p1.indexOf(&quot;pong&quot;) != -1) {
-                        if (me.autoDetectFound == false) {
-                            me.selectedServer = guess;
-                            me.autoDetectFound = true;
-                            success();
+                    try {
+                        if (p1.indexOf(&quot;pong&quot;) != -1) {
+                            if (me.autoDetectFound == false) {
+                                me.selectedServer = guess;
+                                me.autoDetectFound = true;
+                                success();
+                            }
                         }
-                    }
+                    }catch (ex) {}
                 }
             }
         };
@@ -2617,10 +2637,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var failureCheck = function(p1) {
             if (p1 != null) {
                 if (p1 != &quot;&quot;) {
-                    if (p1.indexOf(&quot;pong&quot;) != -1) {
-                        me.selectedServer = guess;
-                        me.autoDetectFound = true;
-                    }
+                    try {
+                        if (p1.indexOf(&quot;pong&quot;) != -1) {
+                            me.selectedServer = guess;
+                            me.autoDetectFound = true;
+                        }
+                    }catch (ex) {}
                 }
             }
         };

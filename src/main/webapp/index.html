@@ -23,14 +23,14 @@
     <div style="background-color: #2199e8; margin-bottom: 2em;">
         <div class="row">
             <div class="large-12 columns">
-                <img src="http://www.cassproject.org/_/rsrc/1451948061999/config/customLogo.gif?revision=16">
+                <img src="http://www.cassproject.org/img/CASS-Logo-website-white.png">
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="large-12 columns">
-            <h1>The Competencies and Skills System (CASS)<br><small>Version 0.3 (unstable)</small></h1>
+            <h1>The Competencies and Skills System (CASS)<br><small>Version 0.3</small></h1>
             <p class="lead">CASS provides basic services to implement competency-based education, training, and workforce development programs.
                 <br>Define, manage, and access competencies and records.</p>
         </div>
@@ -41,17 +41,26 @@
             <h2>Global Services</h2>
         </center>
         <hr/>
-        <div class="large-6 columns">
-            <h3>CASS Manager</h3>
+        <div class="large-4 columns">
+            <a id="competenciesGithub" style="float:right" class="button small" href="https://github.com/cassproject/competencies.us">GitHub</a>
+            <h3>Competencies.us</h3>
             <p class="lead">Work with competency frameworks on CASS anywhere.</p>
-            <p>Competencies.us is the most complete tool for connecting to and interacting with multiple CASS servers. Align competencies across several organizations, manage learning objects, and import data, all from one app.</p>
-            <a id="compus" class="button small" href="https://competencies.us">competencies.us</a>
+            <p>Competencies.us is the most complete tool for connecting to and interacting with multiple CASS servers. Align competencies across multiple organizations, manage learning objects, and import data, all from one app.</p>
+            <a id="compus" class="button small" href="https://competencies.us">competencies.us (Alpha)</a>
         </div>
-        <div class="large-6 columns">
+        <div class="large-4 columns">
+            <a id="viewerGithub" style="float:right" class="button small" href="https://github.com/cassproject/cass-viewer">GitHub</a>
             <h3>CASS Viewer</h3>
             <p class="lead">Search and browse frameworks and competencies.</p>
-            <p>Browse frameworks simply and easily using our CASS Viewer utility located on GitHub. No Sign-in Required.</p>
+            <p>Browse frameworks simply and easily using our CASS Viewer utility located on GitHub. Embed this website into your homepage or web application. No Sign-in Required.</p>
             <a id="viewer" class="button small" href="https://cassproject.github.io/cass-viewer">View Frameworks</a>
+        </div>
+        <div class="large-4 columns">
+            <a id="editorGithub" style="float:right" class="button small" href="https://github.com/cassproject/cass-editor">GitHub</a>
+            <h3>CASS Editor</h3>
+            <p class="lead">Create and Edit frameworks and competencies.</p>
+            <p>Create and edit frameworks simply and easily using our CASS Editor utility located on GitHub. Embed this website into your homepage or web application. No Sign-in Required.</p>
+            <a id="editor" class="button small" href="https://cassproject.github.io/cass-editor">Edit Frameworks</a>
         </div>
         <hr/>
     </div>
@@ -86,7 +95,7 @@
         </center>
         <hr/>
         <div class="large-6 columns">
-            <h3>Manage Frameworks</h3>
+            <h3>Manage Frameworks (Deprecated)</h3>
             <p class="lead">View, create, and manage competencies and frameworks.</p>
             <p>By providing a universal, consistent and persistent way to reference a given competency, CASS enables learning management systems, HR systems, learning record stores, talent management systems, and student information systems to produce competency-based credentials and transcripts that can be properly interpreted by any organization.</p>
             <a class="button small" href="cass.example/framework.html">Manage Competency Frameworks</a>
@@ -111,8 +120,8 @@
             <p>By tracking assertions and relating competencies to one another, assertion processing can fill in the gaps in the learner knowledge profile and help answer the fundamental question: What does the learner know?</p>
             <a class="button small" href="cass.example/processing.html">See Assertion Processing</a>
         </div>
-        <hr/>
     </div>
+    <hr/>
 
     <div class="row">
         <div class="columns large-6" style="text-align: center;">
@@ -127,10 +136,11 @@
     <script src="cass.example/js/foundation.min.js"></script>
     <script lang="text/javascript">
         if (location.protocol == "http:") {
-            $("#compus,#viewer").attr("title", "Global services require your server to run HTTPS. Click to navigate using default servers.").attr("disabled", true);
+            $("#compus,#viewer,#editor").attr("title", "Global services require your server to run HTTPS. Click to navigate using default servers.").attr("disabled", true);
         } else {
             $("#compus").attr("href", $("#compus").attr("href") + "?server=" + location.origin);
             $("#viewer").attr("href", $("#viewer").attr("href") + "?server=" + location.origin);
+            $("#editor").attr("href", $("#editor").attr("href") + "?server=" + location.origin);
         }
 
     </script>

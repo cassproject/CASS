@@ -164,6 +164,7 @@
                                 <li><a href="../classes/Clip.html">Clip</a></li>
                                 <li><a href="../classes/ClothingStore.html">ClothingStore</a></li>
                                 <li><a href="../classes/Code.html">Code</a></li>
+                                <li><a href="../classes/Collection.html">Collection</a></li>
                                 <li><a href="../classes/CollectionPage.html">CollectionPage</a></li>
                                 <li><a href="../classes/CollegeOrUniversity.html">CollegeOrUniversity</a></li>
                                 <li><a href="../classes/ComedyClub.html">ComedyClub</a></li>
@@ -176,6 +177,8 @@
                                 <li><a href="../classes/CompoundPriceSpecification.html">CompoundPriceSpecification</a></li>
                                 <li><a href="../classes/ComputerLanguage.html">ComputerLanguage</a></li>
                                 <li><a href="../classes/ComputerStore.html">ComputerStore</a></li>
+                                <li><a href="../classes/Concept.html">Concept</a></li>
+                                <li><a href="../classes/ConceptScheme.html">ConceptScheme</a></li>
                                 <li><a href="../classes/ConditionManifest.html">ConditionManifest</a></li>
                                 <li><a href="../classes/ConditionProfile.html">ConditionProfile</a></li>
                                 <li><a href="../classes/ConfirmAction.html">ConfirmAction</a></li>
@@ -509,6 +512,7 @@
                                 <li><a href="../classes/OpeningHoursSpecification.html">OpeningHoursSpecification</a></li>
                                 <li><a href="../classes/Order.html">Order</a></li>
                                 <li><a href="../classes/OrderAction.html">OrderAction</a></li>
+                                <li><a href="../classes/OrderedCollection.html">OrderedCollection</a></li>
                                 <li><a href="../classes/OrderItem.html">OrderItem</a></li>
                                 <li><a href="../classes/OrderStatus.html">OrderStatus</a></li>
                                 <li><a href="../classes/Organization.html">Organization</a></li>
@@ -772,6 +776,7 @@
                                 <li><a href="../modules/org.credentialengine.html">org.credentialengine</a></li>
                                 <li><a href="../modules/org.json.ld.html">org.json.ld</a></li>
                                 <li><a href="../modules/org.schema.html">org.schema</a></li>
+                                <li><a href="../modules/org.w3.skos.html">org.w3.skos</a></li>
                             </ul>
                         </div>
                     </div>
@@ -829,6 +834,263 @@
  * --END_LICENSE--
  */
 
+/**
+ *  Created by fray on 11/29/17.
+ */
+var EcConcept = function() {
+    Concept.call(this);
+};
+EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype) {
+    /**
+     *  Retrieves a concept from it&#x27;s server asynchronously
+     * 
+     *  @param {String}            id
+     *                             ID of the concept to retrieve from the server
+     *  @param {Callback1&lt;String&gt;} success
+     *                             Callback triggered after retrieving the concept,
+     *                             returns the concept retrieved
+     *  @param {Callback1&lt;String&gt;} failure
+     *                             Callback triggered if error retrieving concept
+     *  @memberOf EcConcept
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            if (stjs.isInstanceOf(p1.constructor, EcConcept)) 
+                if (success != null) {
+                    success(p1);
+                    return;
+                }
+            var concept = new EcConcept();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                EcEncryptedValue.encryptOnSave(p1.id, true);
+            }
+            if (p1.isAny(concept.getTypes())) {
+                concept.copyFrom(p1);
+                if (EcRepository.caching) {
+                    (EcRepository.cache)[concept.shortId()] = concept;
+                    (EcRepository.cache)[concept.id] = concept;
+                }
+                if (success != null) 
+                    success(concept);
+            } else {
+                var msg = &quot;Retrieved object was not a concept&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, failure);
+    };
+    /**
+     *  Retrieves a concept from it&#x27;s server synchronously, the call
+     *  blocks until it is successful or an error occurs
+     * 
+     *  @param {String} id
+     *                  ID of the concept to retrieve
+     *  @return EcConcept
+     *  The concept retrieved
+     *  @memberOf EcConcept
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
+        var concept = new EcConcept();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            EcEncryptedValue.encryptOnSave(p1.id, true);
+        }
+        if (p1.isAny(concept.getTypes())) {
+            concept.copyFrom(p1);
+            return concept;
+        } else {
+            var msg = &quot;Retrieved object was not a concept&quot;;
+            console.error(msg);
+            return null;
+        }
+    };
+    /**
+     *  Searches a repository for competencies that match the search query
+     * 
+     *  @param {EcRepository}                  repo
+     *                                         Repository to search using the query
+     *  @param {String}                        query
+     *                                         Query string to pass to the search web service
+     *  @param {Callback1&lt;Array&lt;EcConcept&gt;&gt; success
+     *                                         Callback triggered after completing the search, returns the results
+     *  @param {Callback1&lt;String&gt;}             failure
+     *                                         Callback triggered if error searching
+     *  @param {Object}                        paramObj
+     *                                         Parameter object for search
+     *  @memberOf EcConcept
+     *  @method search
+     *  @static
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = &quot;&quot;;
+        queryAdd = new EcConcept().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var comp = new EcConcept();
+                    if (p1[i].isAny(comp.getTypes())) {
+                        comp.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcConcept.myType)) {
+                            var obj = val.decryptIntoObject();
+                            comp.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(comp.id, true);
+                        }
+                    }
+                    ret[i] = comp;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {topConceptOf: &quot;ConceptScheme&quot;, semanticRelation: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  Created by fray on 11/29/17.
+ */
+var EcConceptScheme = function() {
+    ConceptScheme.call(this);
+};
+EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(constructor, prototype) {
+    /**
+     *  Retrieves a concept scheme from the server, specified by the ID
+     * 
+     *  @param {String}                 id
+     *                                  ID of the concept scheme to retrieve
+     *  @param {Callback1&lt;EcConceptScheme&gt;} success
+     *                                  Callback triggered after successfully retrieving the concept scheme,
+     *                                  returns the retrieved concept scheme
+     *  @param {Callback1&lt;String&gt;}      failure
+     *                                  Callback triggered if an error occurs while retrieving the concept scheme
+     *  @memberOf EcConceptScheme
+     *  @method get
+     *  @static
+     */
+    constructor.get = function(id, success, failure) {
+        EcRepository.get(id, function(p1) {
+            var scheme = new EcConceptScheme();
+            if (p1.isA(EcEncryptedValue.myType)) {
+                var encrypted = new EcEncryptedValue();
+                encrypted.copyFrom(p1);
+                p1 = encrypted.decryptIntoObject();
+                EcEncryptedValue.encryptOnSave(p1.id, true);
+            }
+            if (p1.isAny(scheme.getTypes())) {
+                scheme.copyFrom(p1);
+                if (success != null) 
+                    success(scheme);
+            } else {
+                var msg = &quot;Resultant object is not a concept scheme.&quot;;
+                if (failure != null) 
+                    failure(msg);
+                 else 
+                    console.error(msg);
+            }
+        }, function(p1) {
+            if (failure != null) 
+                failure(p1);
+        });
+    };
+    /**
+     *  Retrieves a concept scheme from the server in a blocking fashion, specified by the ID
+     * 
+     *  @param {String}                 id
+     *                                  ID of the concept scheme to retrieve
+     *  @param {Callback1&lt;EcConceptScheme&gt;} success
+     *                                  Callback triggered after successfully retrieving the concept scheme,
+     *                                  returns the retrieved concept scheme
+     *  @param {Callback1&lt;String&gt;}      failure
+     *                                  Callback triggered if an error occurs while retrieving the concept scheme
+     *  @memberOf EcConceptScheme
+     *  @method getBlocking
+     *  @static
+     */
+    constructor.getBlocking = function(id) {
+        var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
+        var scheme = new EcConceptScheme();
+        if (p1.isA(EcEncryptedValue.myType)) {
+            var encrypted = new EcEncryptedValue();
+            encrypted.copyFrom(p1);
+            p1 = encrypted.decryptIntoObject();
+            EcEncryptedValue.encryptOnSave(p1.id, true);
+        }
+        if (p1.isAny(scheme.getTypes())) {
+            scheme.copyFrom(p1);
+            return scheme;
+        } else {
+            return null;
+        }
+    };
+    /**
+     *  Searches the repository given for concept schemes using the query passed in
+     * 
+     *  @param {EcRepository}                 repo
+     *                                        Repository to search for concept schemes
+     *  @param {String}                       query
+     *                                        Query string used to search for a concept scheme
+     *  @param {Callback1&lt;Array&lt;EcConceptScheme&gt;} success
+     *                                        Callback triggered when the search successfully returns,
+     *                                        returns search results
+     *  @param {Callback1&lt;String&gt;}            failure
+     *                                        Callback triggered if an error occurs while searching
+     *  @param {Object}                       paramObj
+     *                                        Parameter object for search
+     *  @memberOf EcConceptScheme
+     *  @method search
+     *  @static
+     */
+    constructor.search = function(repo, query, success, failure, paramObj) {
+        var queryAdd = &quot;&quot;;
+        queryAdd = new EcConceptScheme().getSearchStringByType();
+        if (query == null || query == &quot;&quot;) 
+            query = queryAdd;
+         else 
+            query = &quot;(&quot; + query + &quot;) AND &quot; + queryAdd;
+        repo.searchWithParams(query, paramObj, null, function(p1) {
+            if (success != null) {
+                var ret = [];
+                for (var i = 0; i &lt; p1.length; i++) {
+                    var scheme = new EcConceptScheme();
+                    if (p1[i].isAny(scheme.getTypes())) {
+                        scheme.copyFrom(p1[i]);
+                    } else if (p1[i].isA(EcEncryptedValue.myType)) {
+                        var val = new EcEncryptedValue();
+                        val.copyFrom(p1[i]);
+                        if (val.isAnEncrypted(EcConceptScheme.myType)) {
+                            var obj = val.decryptIntoObject();
+                            scheme.copyFrom(obj);
+                            EcEncryptedValue.encryptOnSave(scheme.id, true);
+                        }
+                    }
+                    ret[i] = scheme;
+                }
+                success(ret);
+            }
+        }, failure);
+    };
+}, {hasTopConcept: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
  *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
@@ -1515,6 +1777,8 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
      */
     constructor.getBlocking = function(id) {
         var p1 = EcRepository.getBlocking(id);
+        if (p1 == null) 
+            return null;
         if (stjs.isInstanceOf(p1.constructor, EcAlignment)) 
             return p1;
         var alignment = new EcAlignment();
@@ -2107,10 +2371,19 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
  */
 var EcCompetency = function() {
     Competency.call(this);
+    var me = (this);
+    if (EcCompetency.template != null) {
+        var you = (EcCompetency.template);
+        for (var key in you) {
+            if ((typeof you[key]) != &quot;function&quot;) 
+                me[key.replace(&quot;@&quot;, &quot;&quot;)] = you[key];
+        }
+    }
 };
 EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, prototype) {
     constructor.relDone = {};
     constructor.levelDone = {};
+    constructor.template = null;
     /**
      *  Retrieves a competency from it&#x27;s server asynchronously
      * 
@@ -2602,7 +2875,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
-}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of a Framework object with methods for interacting with CASS
  *  services on a server.
@@ -2616,10 +2889,19 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
  */
 var EcFramework = function() {
     Framework.call(this);
+    var me = (this);
+    if (EcFramework.template != null) {
+        var you = (EcFramework.template);
+        for (var key in you) {
+            if ((typeof you[key]) != &quot;function&quot;) 
+                me[key.replace(&quot;@&quot;, &quot;&quot;)] = you[key];
+        }
+    }
 };
 EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prototype) {
     constructor.relDone = {};
     constructor.levelDone = {};
+    constructor.template = null;
     /**
      *  Retrieves a framework from the server, specified by the ID
      * 
@@ -2705,8 +2987,6 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
      *                                        Callback triggered if an error occurs while searching
      *  @param {Object}                       paramObj
      *                                        Parameter object for search
-     *  @param size
-     *  @param start
      *  @memberOf EcFramework
      *  @method search
      *  @static
@@ -3025,7 +3305,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             }
         });
     };
-}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>
