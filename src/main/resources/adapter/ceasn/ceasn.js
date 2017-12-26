@@ -211,6 +211,7 @@ function cassFrameworkAsCeasn() {
     if (f.description == null)
         f.description = f.name;
     framework = f;
+    delete f.competency;
     f = jsonLdCompact(f.toJson(), ctx);
     f["ceterms:ctid"] = "ce-" + uuidFromString(framework.id);
 
