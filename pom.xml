@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.cassproject</groupId>
@@ -189,34 +189,6 @@
 							<overWriteSnapshots>true</overWriteSnapshots>
 						</configuration>
 					</execution>
-					<execution>
-						<id>unpack-example</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includes>*.js</includes>
-							<excludes>skyrepo.backup.js,formdata.js,jvm-npm.js</excludes>
-							<outputDirectory>src/main/webapp/cass.example/js/cass</outputDirectory>
-							<overWriteReleases>true</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
-					<execution>
-						<id>unpack-visualizer</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includes>*.js</includes>
-							<excludes>skyrepo.backup.js,formdata.js,jvm-npm.js</excludes>
-							<outputDirectory>src/main/webapp/cass.visualizer/js/cass</outputDirectory>
-							<overWriteReleases>true</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -225,23 +197,17 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>src/main/js/cass</directory>
+							<directory>src/main/js</directory>
 							<includes>
 								<include>**/*</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/cass.example/js/cass</directory>
+							<directory>src/main/webapp/cass.example/js</directory>
 							<includes>
-								<include>**/*</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-						<fileset>
-							<directory>src/main/webapp/cass.visualizer/js/cass</directory>
-							<includes>
-								<include>**/*</include>
+								<include>cass/*</include>
+								<include>cass.*</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
@@ -249,11 +215,70 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.samaxes.maven</groupId>
+				<artifactId>minify-maven-plugin</artifactId>
+				<version>1.7.6</version>
+				<executions>
+					<execution>
+						<id>default-minify</id>
+						<configuration>
+							<charset>UTF-8</charset>
+							<closureWarningLevels>
+								<es5Strict>OFF</es5Strict>
+							</closureWarningLevels>
+							<cssSourceDir>css</cssSourceDir>
+							<cssSourceFiles>
+							</cssSourceFiles>
+							<jsSourceDir>.</jsSourceDir>
+							<jsSourceFiles>
+								<jsSourceFile>src/main/webapp/cass.example/forge/forge.min.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/require.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/papaparse.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/xml2json.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/base64toArrayBuffer.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/pem-jwk.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/stjs.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/ec.base.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/random.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/blobHelper.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/ec.crypto.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.json-ld.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.cassproject.schema.general.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.schema.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.credentialengine.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.w3.skos.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.cassproject.schema.ebac.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/org.cassproject.schema.cass.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/ebac.identity.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/ebac.repository.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/cass.competency.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/cass.import.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/cass.adapter.js</jsSourceFile>
+								<jsSourceFile>src/main/js/cass/cass.rollup.js</jsSourceFile>
+							</jsSourceFiles>
+							<closureLanguageIn>ECMASCRIPT6</closureLanguageIn>
+							<closureLanguageOut>ECMASCRIPT5</closureLanguageOut>
+							<webappSourceDir>${basedir}</webappSourceDir>
+							<webappTargetDir>${basedir}</webappTargetDir>
+							<jsTargetDir>src/main/js</jsTargetDir>
+							<jsFinalFile>cass.js</jsFinalFile>
+							<jsEngine>CLOSURE</jsEngine>
+						</configuration>
+						<goals>
+							<goal>minify</goal>
+						</goals>
+						<phase>process-sources</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<version>1.14</version>
 				<configuration>
-					<verbose>false</verbose>
+					<verbose>true</verbose>
 				</configuration>
 				<executions>
 					<execution>
@@ -271,22 +296,47 @@
 							<processEndTag>--END_LICENSE--</processEndTag>
 							<sectionDelimiter>-----</sectionDelimiter>
 							<emptyLineAfterHeader>true</emptyLineAfterHeader>
+							<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 							<roots>
 								<root>src/main/js</root>
 								<root>src/main/webapp/cass.example/js/cass</root>
-								<root>src/main/webapp/cass.visualizer/js/cass</root>
-								<root>src/main/webapp/cass.manager/generated-js</root>
 							</roots>
+							<includes>
+								<include>**/*.js</include>
+								<include>*.js</include>
+							</includes>
 							<excludes>
 								<exclude>**/xml2json.js</exclude>
 								<exclude>**/stjs.js</exclude>
 								<exclude>**/pem-jwk.js</exclude>
 								<exclude>**/require.js</exclude>
+								<exclude>**/jsonld.js</exclude>
 								<exclude>**/openpgp.js</exclude>
 								<exclude>**/FileSaver.js</exclude>
 								<exclude>**/base64x-1.1.js</exclude>
 								<exclude>**/base64toArrayBuffer.js</exclude>
 							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/webapp/cass.example/js</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/js</directory>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
