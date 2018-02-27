@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -818,7 +818,7 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
                     }
                 }
                 if (!works) {
-                    d.signature.splice(i);
+                    d.signature.splice(i, 1);
                 } else {
                     i++;
                 }
@@ -949,6 +949,7 @@ OAuth2FileBasedRemoteIdentityManager = stjs.extend(OAuth2FileBasedRemoteIdentity
     prototype.fetch = function(success, failure) {
         var o = new Object();
         (o)["scope"] = (this.configuration)[this.server + "Scope"];
+        (o)["display"] = "page";
         var me = this;
         hello.on("auth.login", function(o) {
             me.oauthLoginResponse = o;

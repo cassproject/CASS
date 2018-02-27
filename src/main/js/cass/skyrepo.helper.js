@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ function flattenStringFields(jsonLd, first){
 		jsonLd = JSON.parse(this.params.obj);
 		first = true;
 	}
-
 
 	if(Array.isArray(jsonLd)){
 		var ret = [];

@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.json-ld.js.html#l21"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:21</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l42371"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42371</code></a>
         </div>
 
             Module: <a href="../modules/org.json.ld.html">org.json.ld</a>
@@ -852,7 +852,19 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_atIfy">atIfy</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_copyFrom">copyFrom</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_copyFrom">copyFrom</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_deAtify">deAtify</a>
 
                             </li>
                             <li class="index-item method">
@@ -864,7 +876,19 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_getFullType">getFullType</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getTypes">getTypes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getTypes">getTypes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isA">isA</a>
 
                             </li>
                             <li class="index-item method">
@@ -876,7 +900,21 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_isAny">isAny</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_isAtProperty">isAtProperty</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isAtProperty">isAtProperty</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isProbablyJson">isProbablyJson</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -890,7 +928,19 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_setContextAndType">setContextAndType</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_toJson">toJson</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toJson">toJson</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_upgrade">upgrade</a>
 
                             </li>
                             <li class="index-item method">
@@ -909,6 +959,14 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_context">context</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_type">type</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_type">type</a>
 
                             </li>
@@ -921,6 +979,51 @@ Note: This Linked Data Object is not assumed to have an @id field.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_atIfy" class="method item">
+    <h3 class="name"><code>atIfy</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42459"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42459</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Forces Javascript to encode the object in alphabetical order in order to
+make signature based actions more viable. Also places @(at) symbols in
+front of appropriate fields.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>Serializable JSON object.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_atIfy" class="method item">
     <h3 class="name"><code>atIfy</code></h3>
 
@@ -987,6 +1090,63 @@ front of appropriate fields.</p>
     <div class="meta">
                 <p>
                 Defined in
+        <a href="../files/src_main_js_cass.js.html#l42574"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42574</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Also could be called "upcast", for those in the know.</p>
+<p>
+Ghetto method of copying properties from some other object. As freshly
+deserialized javascript objects do not inherently attach the functions of
+their type, it is this or factory hell.
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">that</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>The freshly deserialized object, or the object to upcast into this object.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_copyFrom" class="method item">
+    <h3 class="name"><code>copyFrom</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>that</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
         <a href="../files/src_main_js_cass_org.json-ld.js.html#l224"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:224</code></a>
         </p>
 
@@ -1020,6 +1180,50 @@ their type, it is this or factory hell.
             </ul>
         </div>
 
+
+
+</div>
+<div id="method_deAtify" class="method item">
+    <h3 class="name"><code>deAtify</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcLinkedData.html" class="crosslink">EcLinkedData</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42633"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42633</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes the @ symbol from properties in order to make them more
+accessible in Javascript.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcLinkedData.html" class="crosslink">EcLinkedData</a></span>:
+                    <p>This object, with @ properties converted to @-less properties.</p>
+
+            </div>
+        </div>
 
 
 </div>
@@ -1111,6 +1315,50 @@ the type to be defined in @context.</p>
 
 
 </div>
+<div id="method_getFullType" class="method item">
+    <h3 class="name"><code>getFullType</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42545"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42545</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Gets the fully qualified type name, as JSON-LD allows the "namespace" of
+the type to be defined in @context.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>Fully qualified type name.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getTypes" class="method item">
     <h3 class="name"><code>getTypes</code></h3>
 
@@ -1130,6 +1378,49 @@ the type to be defined in @context.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_org.json-ld.js.html#l304"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:304</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Gets all versions of JSON-LD type strings for this type of object.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>Array of URIs.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTypes" class="method item">
+    <h3 class="name"><code>getTypes</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42654"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42654</code></a>
         </p>
 
 
@@ -1179,6 +1470,73 @@ the type to be defined in @context.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_org.json-ld.js.html#l166"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:166</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Uses the object's fully qualified type name and compares it to the
+provided type.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Fully qualified type name uri.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if match, False if not.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isA" class="method item">
+    <h3 class="name"><code>isA</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42516"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42516</code></a>
         </p>
 
 
@@ -1288,6 +1646,73 @@ provided type.</p>
 
 
 </div>
+<div id="method_isAny" class="method item">
+    <h3 class="name"><code>isAny</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42528"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42528</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Uses the object's fully qualified type name and compares it to the
+provided type.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Fully qualified type name uris.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if match, False if not.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_isAtProperty" class="method item">
     <h3 class="name"><code>isAtProperty</code></h3>
 
@@ -1349,6 +1774,141 @@ provided type.</p>
             <div class="returns-description">
                         <span class="type">Boolean</span>:
                     <p>True if property is in the set of atProperties.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isAtProperty" class="method item">
+    <h3 class="name"><code>isAtProperty</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>key</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42406"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42406</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Determines which fields to serialize into @fields.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">key</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Property name to check if it should be an @property.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if property is in the set of atProperties.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isProbablyJson" class="method item">
+    <h3 class="name"><code>isProbablyJson</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>probableJson</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42421"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42421</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper function to determine if a piece of data is probably a JSON
+object.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">probableJson</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>JSON to test.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>True if it is probably JSON. False if not.</p>
 
             </div>
         </div>
@@ -1447,6 +2007,74 @@ object.</p>
     <div class="meta">
                 <p>
                 Defined in
+        <a href="../files/src_main_js_cass.js.html#l42433"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42433</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Set the JSON-LD @context and @type.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">context</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>JSON-LD Context.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>JSON-LD Type.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setContextAndType" class="method item">
+    <h3 class="name"><code>setContextAndType</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>context</code>
+                </li>
+                <li class="arg">
+                        <code>type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
         <a href="../files/src_main_js_cass_org.json-ld.js.html#l83"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:83</code></a>
         </p>
 
@@ -1488,6 +2116,49 @@ object.</p>
             </ul>
         </div>
 
+
+
+</div>
+<div id="method_toJson" class="method item">
+    <h3 class="name"><code>toJson</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42449"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42449</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Serializes this object to JSON.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>JSON formatted object (with JSON-LD fields).</p>
+
+            </div>
+        </div>
 
 
 </div>
@@ -1565,6 +2236,37 @@ object.</p>
 
 
 </div>
+<div id="method_upgrade" class="method item">
+    <h3 class="name"><code>upgrade</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42627"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42627</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Upgrades the object to the latest version, performing transforms and the like.</p>
+
+    </div>
+
+
+
+
+</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
@@ -1595,6 +2297,31 @@ object.</p>
 
 
 </div>
+<div id="property_context" class="property item">
+    <h3 class="name"><code>context</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42399"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42399</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>JSON-LD @context field.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_type" class="property item">
     <h3 class="name"><code>type</code></h3>
     <span class="type">String</span>
@@ -1607,6 +2334,31 @@ object.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_org.json-ld.js.html#l42"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.json-ld.js:42</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>JSON-LD @type field.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_type" class="property item">
+    <h3 class="name"><code>type</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42392"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42392</code></a>
         </p>
 
 

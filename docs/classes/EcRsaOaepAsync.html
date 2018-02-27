@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7221"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7221</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l41827"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41827</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -850,6 +850,16 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_decrypt">decrypt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_encrypt">encrypt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_encrypt">encrypt</a>
 
                                     <span class="flag static">static</span>
@@ -860,7 +870,22 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_sign">sign</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_signSha256">signSha256</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_signSha256">signSha256</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_verify">verify</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -911,6 +936,105 @@
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7306"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7306</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_decrypt" class="crosslink">EcRsaOaep.decrypt</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppk</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public private keypair to use to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">ciphertext</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Ciphertext to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is unencoded
+plaintext.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_decrypt" class="method item">
+    <h3 class="name"><code>decrypt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppk</code>
+                </li>
+                <li class="arg">
+                        <code>ciphertext</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41912"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41912</code></a>
         </p>
 
 
@@ -1077,6 +1201,105 @@ message.</p>
 
 
 </div>
+<div id="method_encrypt" class="method item">
+    <h3 class="name"><code>encrypt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pk</code>
+                </li>
+                <li class="arg">
+                        <code>plaintext</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41883"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41883</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_encrypt" class="crosslink">EcRsaOaep.encrypt</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pk</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public Key to use to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">plaintext</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Plaintext to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64
+encoded Ciphertext.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_sign" class="method item">
     <h3 class="name"><code>sign</code></h3>
 
@@ -1109,6 +1332,105 @@ message.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7350"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7350</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_sign" class="crosslink">EcRsaOaep.sign</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppk</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public private keypair to use to sign message.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to sign.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64
+encoded signature.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_sign" class="method item">
+    <h3 class="name"><code>sign</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppk</code>
+                </li>
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41956"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41956</code></a>
         </p>
 
 
@@ -1275,6 +1597,105 @@ message.</p>
 
 
 </div>
+<div id="method_signSha256" class="method item">
+    <h3 class="name"><code>signSha256</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppk</code>
+                </li>
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41985"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41985</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_signSha256" class="crosslink">EcRsaOaep.signSha256</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppk</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public private keypair to use to sign message.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to sign.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64
+encoded signature.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_verify" class="method item">
     <h3 class="name"><code>verify</code></h3>
 
@@ -1310,6 +1731,119 @@ message.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7408"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7408</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcRsaOaep.html#method_verify" class="crosslink">EcRsaOaep.verify</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pk</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public key to use to verify message.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to use in verification.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">signature</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Signature to use in verification.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(boolean)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is whether
+signature is valid.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_verify" class="method item">
+    <h3 class="name"><code>verify</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pk</code>
+                </li>
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>signature</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42014"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42014</code></a>
         </p>
 
 

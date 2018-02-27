@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.competency.js.html#l889"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:889</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l90309"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90309</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -850,7 +850,21 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method__delete">_delete</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBlocking">getBlocking</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -864,7 +878,21 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_save">save</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_search">search</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_search">search</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_searchByCompetency">searchByCompetency</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -884,7 +912,25 @@ services on a server.</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_searchBySource">searchBySource</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_searchBySource">searchBySource</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_setDescription">setDescription</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setDescription">setDescription</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setName">setName</a>
 
                             </li>
                             <li class="index-item method">
@@ -901,6 +947,75 @@ services on a server.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__delete" class="method item">
+    <h3 class="name"><code>_delete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90677"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90677</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Deletes the alignment from the server corresponding to its ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully deleting the alignment</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                       Callback triggered if error while deleting alignment</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method__delete" class="method item">
     <h3 class="name"><code>_delete</code></h3>
 
@@ -1055,6 +1170,159 @@ returns the alignment</p>
 
 
 </div>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90326"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90326</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves the alignment specified with the ID from the server</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the alignment to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<EcAlignment></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully retrieving the alignment,
+returns the alignment</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                            Callback triggered if error while retrieving alignment</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getBlocking" class="method item">
+    <h3 class="name"><code>getBlocking</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90370"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90370</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves an alignment from it's server synchronously, the call
+blocks until it is successful or an error occurs</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the alignment to retrieve</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>EcAlignment
+The alignment retrieved</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getBlocking" class="method item">
     <h3 class="name"><code>getBlocking</code></h3>
 
@@ -1192,6 +1460,75 @@ The alignment retrieved</p>
 
 
 </div>
+<div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90640"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90640</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Saves this alignment details on the server corresponding to its ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successfully saving the alignment</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                       Callback triggered if error while saving alignment</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_search" class="method item">
     <h3 class="name"><code>search</code></h3>
 
@@ -1233,6 +1570,145 @@ The alignment retrieved</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_cass.competency.js.html#l988"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:988</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository using the query and optional parameters provided</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search using the query provided</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">query</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>The query to send to the search</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successful search return</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if error searching</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[paramObj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Parameters to include in the search</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_search" class="method item">
+    <h3 class="name"><code>search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>query</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[paramObj]</code>
+                </li>
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90408"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90408</code></a>
         </p>
 
 
@@ -1444,6 +1920,119 @@ The alignment retrieved</p>
 
 
 </div>
+<div id="method_searchByCompetency" class="method item">
+    <h3 class="name"><code>searchByCompetency</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>competencyId</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[paramObj]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90567"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90567</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository for alignments with a specific ID in the target field</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search for alignments with the source specified</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">competencyId</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID in the target field of the alignments to find</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successful search return</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if error searching</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[paramObj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Parameters to include in the search</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_searchBySource" class="method item">
     <h3 class="name"><code>searchBySource</code></h3>
 
@@ -1484,7 +2073,7 @@ The alignment retrieved</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_cass.competency.js.html#l1034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:1034</code></a>
+        <a href="../files/src_main_js_cass.js.html#l90454"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90454</code></a>
         </p>
 
 
@@ -1722,6 +2311,338 @@ The alignment retrieved</p>
 
 
 </div>
+<div id="method_searchBySource" class="method item">
+    <h3 class="name"><code>searchBySource</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>sourceId</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[paramObj]</code>
+                </li>
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90506"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90506</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository for alignments with one of an array of IDs in the source field</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search for alignments with the source specified</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sourceId</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID in the source field of the alignments to find</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successful search return</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if error searching</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[paramObj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Parameters to include in the search</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_searchBySource" class="method item">
+    <h3 class="name"><code>searchBySource</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>sourceId</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[paramObj]</code>
+                </li>
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_cass.competency.js.html#l1034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:1034</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository for alignments with a specific ID in the source field</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search for alignments with the source specified</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sourceId</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID in the source field of the alignments to find</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered on successful search return</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<String></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if error searching</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[paramObj]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Parameters to include in the search</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setDescription" class="method item">
+    <h3 class="name"><code>setDescription</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>description</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90629"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90629</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Setter for alignment description</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">description</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>description to give this alignment</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_setDescription" class="method item">
     <h3 class="name"><code>setDescription</code></h3>
 
@@ -1766,6 +2687,60 @@ The alignment retrieved</p>
 
                     <div class="param-description">
                         <p>description to give this alignment</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setName" class="method item">
+    <h3 class="name"><code>setName</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l90618"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:90618</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Setter for alignment name</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>name to give this alignment</p>
 
                     </div>
 

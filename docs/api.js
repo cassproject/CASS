@@ -743,7 +743,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "com.eduworks.ec",
             "name": "com.eduworks.ec",
-            "description": "Location of strings that store the current namespace for general Eduworks Objects."
+            "description": "A contact is an identity that we do not own. Using the public key we may: 1.\nSend them information (by encrypting data with their public key) 2. Verify a\nsigned message that was sent (by using the verify function of the public key)\n3. Distinguish between this identity and other identities through the\ndisplayName."
         },
         {
             "displayName": "com.eduworks.ec.ui",
@@ -753,7 +753,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "org.cassproject",
             "name": "org.cassproject",
-            "description": "Location of strings that store the current namespace for EBAC/KBAC."
+            "description": "Implementation of a Rollup Rule object with methods for interacting with CASS\nservices on a server."
         },
         {
             "displayName": "org.credentialengine",

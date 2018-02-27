@@ -815,10 +815,10 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7440"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7440</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l42046"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42046</code></a>
         </div>
 
-            Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
+            Module: <a href="../modules/org.json.ld.html">org.json.ld</a>
 
 </div>
 
@@ -846,6 +846,16 @@
                     <ul class="index-list methods">
                             <li class="index-item method">
                                 <a href="#method_decrypt">decrypt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_decrypt">decrypt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_encrypt">encrypt</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -896,9 +906,124 @@
 
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a> module.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7527"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7527</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcAesCtr.html#method_decrypt" class="crosslink">EcAesCtr.decrypt</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ciphertext</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">secret</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Secret to use to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">iv</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Initialization Vector to use to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Plaintext
+with no encoding.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_decrypt" class="method item">
+    <h3 class="name"><code>decrypt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ciphertext</code>
+                </li>
+                <li class="arg">
+                        <code>secret</code>
+                </li>
+                <li class="arg">
+                        <code>iv</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42133"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42133</code></a>
         </p>
 
 
@@ -1009,9 +1134,124 @@ message.</p>
 
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a> module.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7496"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7496</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronous form of <a href="../classes/EcAesCtr.html#method_encrypt" class="crosslink">EcAesCtr.encrypt</a></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">plaintext</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">secret</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Secret to use to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">iv</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Initialization Vector to use to encrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Success method, result is Base64
+encoded Ciphertext.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>Failure method, parameter is error
+message.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_encrypt" class="method item">
+    <h3 class="name"><code>encrypt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>plaintext</code>
+                </li>
+                <li class="arg">
+                        <code>secret</code>
+                </li>
+                <li class="arg">
+                        <code>iv</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l42102"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:42102</code></a>
         </p>
 
 

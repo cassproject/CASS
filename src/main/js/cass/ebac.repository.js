@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -766,6 +766,15 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @static
      */
     constructor.get = function(url, success, failure) {
+        if (EcRemote.async == false) {
+            var result = EcRepository.getBlocking(url);
+            if (result == null) 
+                if (failure != null) 
+                    failure("Could not locate object. May be due to EcRepository.alwaysTryUrl flag.");
+                 else if (success != null) 
+                    success(result);
+            return;
+        }
         if (EcRepository.caching) {
             if ((EcRepository.cache)[url] != null) {
                 if (EcRemote.async) {
@@ -1006,10 +1015,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         return s;
     };
     /**
-     *  Attempts to save a piece of data. Does some checks before saving to
-     *  ensure the data is valid. Warns the developer that they are using the
-     *  repository save function rather than an object specific version, this can
-     *  be avoided by calling _save
+     *  Attempts to save a piece of data.
      *  <p>
      *  Uses a signature sheet informed by the owner field of the data.
      * 
@@ -1023,7 +1029,24 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @static
      */
     constructor.save = function(data, success, failure) {
-        EcRepository._save(data, success, failure);
+        EcRepository._save(data, success, failure, null);
+    };
+    /**
+     *  Attempts to save a piece of data. If the @id of the data is not of this server, will register the data to the server.
+     *  <p>
+     *  Uses a signature sheet informed by the owner field of the data.
+     * 
+     *  @param {EcRemoteLinkedData} data Data to save to the location designated
+     *                              by its id.
+     *  @param {Callback1<String>}  success Callback triggered on successful save
+     *  @param {Callback1<String>}  failure Callback triggered if error during
+     *                              save
+     *  @memberOf EcRepository
+     *  @method save
+     *  @static
+     */
+    prototype.saveTo = function(data, success, failure) {
+        EcRepository._save(data, success, failure, this);
     };
     /**
      *  Attempts to save a piece of data. Does some checks before saving to
@@ -1040,7 +1063,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method _save
      *  @static
      */
-    constructor._save = function(data, success, failure) {
+    constructor._save = function(data, success, failure, repo) {
         if (data.invalid()) {
             var msg = "Cannot save data. It is missing a vital component.";
             if (failure != null) {
@@ -1059,10 +1082,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcEncryptedValue.encryptOnSave(data.id, null)) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
             EcIdentityManager.sign(data);
-            EcRepository._saveWithoutSigning(data, success, failure);
+            EcRepository._saveWithoutSigning(data, success, failure, repo);
         } else {
             EcIdentityManager.sign(data);
-            EcRepository._saveWithoutSigning(data, success, failure);
+            EcRepository._saveWithoutSigning(data, success, failure, repo);
         }
     };
     /**
@@ -1079,7 +1102,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method _saveWithoutSigning
      *  @static
      */
-    constructor._saveWithoutSigning = function(data, success, failure) {
+    constructor._saveWithoutSigning = function(data, success, failure, repo) {
         if (EcRepository.caching) {
             delete (EcRepository.cache)[data.id];
             delete (EcRepository.cache)[data.shortId()];
@@ -1088,29 +1111,32 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             failure("Data is malformed.");
             return;
         }
-        data.updateTimestamp();
+        if (EcRepository.alwaysTryUrl || repo == null || repo.constructor.shouldTryUrl(data.id)) 
+            data.updateTimestamp();
         var fd = new FormData();
         fd.append("data", data.toJson());
+        var afterSignatureSheet = function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            if (!EcRepository.alwaysTryUrl) 
+                if (repo != null) 
+                    if (!repo.constructor.shouldTryUrl(data.id)) {
+                        EcRemote.postExpectingString(EcRemote.urlAppend(repo.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.id)), "", fd, success, failure);
+                        return;
+                    }
+            EcRemote.postExpectingString(data.id, "", fd, success, failure);
+        };
         if (EcRemote.async == false) {
+            var signatureSheet;
             if (data.owner != null && data.owner.length > 0) {
-                var arg0 = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
-                fd.append("signatureSheet", arg0);
-                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+                signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
             } else {
-                var arg0 = EcIdentityManager.signatureSheet(60000, data.id);
-                fd.append("signatureSheet", arg0);
-                EcRemote.postExpectingString(data.id, "", fd, success, failure);
+                signatureSheet = EcIdentityManager.signatureSheet(60000, data.id);
             }
+            afterSignatureSheet(signatureSheet);
         } else if (data.owner != null && data.owner.length > 0) {
-            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(arg0) {
-                fd.append("signatureSheet", arg0);
-                EcRemote.postExpectingString(data.id, "", fd, success, failure);
-            }, failure);
+            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, afterSignatureSheet, failure);
         } else {
-            EcIdentityManager.signatureSheetAsync(60000, data.id, function(arg0) {
-                fd.append("signatureSheet", arg0);
-                EcRemote.postExpectingString(data.id, "", fd, success, failure);
-            }, failure);
+            EcIdentityManager.signatureSheetAsync(60000, data.id, afterSignatureSheet, failure);
         }
     };
     /**
@@ -1429,6 +1455,20 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *  @method searchWithParams
      */
     prototype.searchWithParams = function(originalQuery, originalParamObj, eachSuccess, success, failure) {
+        if (EcRemote.async == false) {
+            var result = this.searchWithParamsBlocking(originalQuery, originalParamObj);
+            if (result == null) 
+                if (failure != null) 
+                    failure("Search failed.");
+                 else {
+                    for (var i = 0; i < result.length; i++) 
+                        if (eachSuccess != null) 
+                            eachSuccess(result[i]);
+                    if (success != null) 
+                        success(result);
+                }
+            return;
+        }
         var query = originalQuery;
         var paramObj = originalParamObj;
         if (paramObj == null) {
@@ -1444,7 +1484,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.cachingSearch) {
             cacheKey = JSON.stringify(paramProps) + query;
             if ((EcRepository.cache)[cacheKey] != null) {
-                this.handleSearchResults((EcRepository.cache)[cacheKey], eachSuccess, success);
+                this.handleSearchResults((EcRepository.cache)[cacheKey], eachSuccess, success, failure);
                 return;
             }
             var me = this;
@@ -1477,7 +1517,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 if (cacheKey != null) {
                     delete (EcRepository.fetching)[cacheKey];
                 }
-                me.handleSearchResults(p1, eachSuccess, success);
+                me.handleSearchResults(p1, eachSuccess, success, failure);
             }, function(p1) {
                 if (cacheKey != null) {
                     delete (EcRepository.fetching)[cacheKey];
@@ -1496,7 +1536,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     if (cacheKey != null) {
                         delete (EcRepository.fetching)[cacheKey];
                     }
-                    me.handleSearchResults(p1, eachSuccess, success);
+                    me.handleSearchResults(p1, eachSuccess, success, failure);
                 }, function(p1) {
                     if (cacheKey != null) {
                         delete (EcRepository.fetching)[cacheKey];
@@ -1538,7 +1578,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         cacheKey = JSON.stringify(paramProps) + query;
         if (EcRepository.cachingSearch) {
             if ((EcRepository.cache)[cacheKey] != null) {
-                return this.handleSearchResults((EcRepository.cache)[cacheKey], null, null);
+                return this.handleSearchResults((EcRepository.cache)[cacheKey], null, null, null);
             }
         }
         var fd = new FormData();
@@ -1576,7 +1616,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 (EcRepository.cache)[cacheKey] = null;
             });
         }
-        var result = this.handleSearchResults((EcRepository.cache)[cacheKey], null, null);
+        var result = this.handleSearchResults((EcRepository.cache)[cacheKey], null, null, null);
         if (!EcRepository.cachingSearch) {
             delete (EcRepository.cache)[cacheKey];
         }
@@ -1903,11 +1943,17 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
      *                                           trigger for each search result
      *  @param {Callback1<EcRemoteLinkedData[]>} success Callback function to
      *                                           trigger with all search results
+     *  @param failure
      *  @memberOf EcRepository
      *  @method handleSearchResults
      *  @private
      */
-    prototype.handleSearchResults = function(results, eachSuccess, success) {
+    prototype.handleSearchResults = function(results, eachSuccess, success, failure) {
+        if (results == null) {
+            if (failure != null) 
+                failure("Error in search. See HTTP request for more details.");
+            return null;
+        }
         for (var i = 0; i < results.length; i++) {
             var d = new EcRemoteLinkedData(null, null);
             d.copyFrom(results[i]);
@@ -2087,14 +2133,14 @@ EcFile = stjs.extend(EcFile, GeneralFile, [], function(constructor, prototype) {
      */
     prototype.save = function(success, failure) {
         if (this.name == null || this.name == "") {
-            var msg = "Competency Name can not be empty";
+            var msg = "File Name can not be empty";
             if (failure != null) 
                 failure(msg);
              else 
                 console.error(msg);
             return;
         }
-        EcRepository._save(this, success, failure);
+        EcRepository.save(this, success, failure);
     };
     /**
      *  Deletes the file from the repository using repository web services

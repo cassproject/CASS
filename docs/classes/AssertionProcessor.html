@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.rollup.js.html#l2184"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.rollup.js:2184</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l95540"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:95540</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -845,6 +845,10 @@ of individuals.</p>
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_has">has</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_has">has</a>
 
@@ -902,6 +906,166 @@ of individuals.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_cass.rollup.js.html#l2219"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.rollup.js:2219</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Asynchronously processes and provides an answer to the question: Does an
+individual hold a competency?</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">subject</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk[]</a></span>
+
+
+                    <div class="param-description">
+                        <p>Public keys that identify the subject.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">competency</code>
+                        <span class="type"><a href="../classes/EcCompetency.html" class="crosslink">EcCompetency</a></span>
+
+
+                    <div class="param-description">
+                        <p>The Competency being inquired about.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">level</code>
+                        <span class="type"><a href="../classes/EcLevel.html" class="crosslink">EcLevel</a></span>
+
+
+                    <div class="param-description">
+                        <p>The Level of the Competency at which the question
+is being asked.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="../classes/EcFramework.html" class="crosslink">EcFramework</a></span>
+
+
+                    <div class="param-description">
+                        <p>The Framework in which to scope the inquiry.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">additionalSignatures</code>
+                        <span class="type"><a href="../classes/EbacSignature.html" class="crosslink">EbacSignature[]</a></span>
+
+
+                    <div class="param-description">
+                        <p>Additional signatures
+provided by an authority, used to request additional access on a one-time
+basis.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Function(InquiryPacket)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when
+a decision has been reached.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">ask</code>
+                        <span class="type">String                   function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when the
+assertion processor detects that it needs information. (Usernames,
+passwords, etc)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Function(string)</span>
+
+
+                    <div class="param-description">
+                        <p>The method that is invoked when the
+assertion processor has failed.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_has" class="method item">
+    <h3 class="name"><code>has</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>subject</code>
+                </li>
+                <li class="arg">
+                        <code>competency</code>
+                </li>
+                <li class="arg">
+                        <code>level</code>
+                </li>
+                <li class="arg">
+                        <code>context</code>
+                </li>
+                <li class="arg">
+                        <code>additionalSignatures</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>ask</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l95575"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:95575</code></a>
         </p>
 
 

@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7014"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7014</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l41620"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41620</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -849,7 +849,21 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_equals">equals</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_fromPem">fromPem</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fromPem">fromPem</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateKey">generateKey</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -864,7 +878,20 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_generateKeyAsync">generateKeyAsync</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_inArray">inArray</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_inArray">inArray</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPem">toPem</a>
 
                             </li>
                             <li class="index-item method">
@@ -876,7 +903,19 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_toPk">toPk</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_toPkcs1Pem">toPkcs1Pem</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPkcs1Pem">toPkcs1Pem</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toPkcs8Pem">toPkcs8Pem</a>
 
                             </li>
                             <li class="index-item method">
@@ -893,6 +932,72 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_equals" class="method item">
+    <h3 class="name"><code>equals</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>Key</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41682"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41682</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true iff the PEM forms of the public private keypair match.
+Can also match against a public key if the public portion of the keypair match.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">Key</code>
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a> | <a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>to compare to.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>boolean If they match.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_equals" class="method item">
     <h3 class="name"><code>equals</code></h3>
 
@@ -953,6 +1058,74 @@ Can also match against a public key if the public portion of the keypair match.<
 
             <div class="returns-description">
                     <p>boolean If they match.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_fromPem" class="method item">
+    <h3 class="name"><code>fromPem</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pem</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41633"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41633</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pem</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>PEM as a string.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>:
+                    <p>Object used to perform public key operations.</p>
 
             </div>
         </div>
@@ -1046,6 +1219,50 @@ Can also match against a public key if the public portion of the keypair match.<
     <div class="meta">
                 <p>
                 Defined in
+        <a href="../files/src_main_js_cass.js.html#l41667"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41667</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generates an RSA Keypair synchronously. Can take a while.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>:
+                    <p>Public private keypair.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_generateKey" class="method item">
+    <h3 class="name"><code>generateKey</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7061"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7061</code></a>
         </p>
 
@@ -1068,6 +1285,61 @@ Can also match against a public key if the public portion of the keypair match.<
 
             </div>
         </div>
+
+
+</div>
+<div id="method_generateKeyAsync" class="method item">
+    <h3 class="name"><code>generateKeyAsync</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41651"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41651</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generates an RSA Keypair using web workers.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function(EcPpk)</span>
+
+
+                    <div class="param-description">
+                        <p>Method called when the keypair is generated.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -1191,6 +1463,115 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_inArray" class="method item">
+    <h3 class="name"><code>inArray</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ppks</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41746"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41746</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if this PPK is in an array of PPKs.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ppks</code>
+                        <span class="type">Array<EcPpk></span>
+
+
+                    <div class="param-description">
+                        <p>Array of ppks</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>true iff this PPK in ppks.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toPem" class="method item">
+    <h3 class="name"><code>toPem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41697"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41697</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPem" class="method item">
     <h3 class="name"><code>toPem</code></h3>
 
@@ -1278,6 +1659,49 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_toPk" class="method item">
+    <h3 class="name"><code>toPk</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41735"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41735</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Extracts the public key portion from the public private keypair.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>:
+                    <p>Public Key Helper.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPkcs1Pem" class="method item">
     <h3 class="name"><code>toPkcs1Pem</code></h3>
 
@@ -1322,6 +1746,50 @@ Can also match against a public key if the public portion of the keypair match.<
 
 
 </div>
+<div id="method_toPkcs1Pem" class="method item">
+    <h3 class="name"><code>toPkcs1Pem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41707"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41707</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_toPkcs8Pem" class="method item">
     <h3 class="name"><code>toPkcs8Pem</code></h3>
 
@@ -1341,6 +1809,50 @@ Can also match against a public key if the public portion of the keypair match.<
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7111"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7111</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encodes the private key into a PEM encoded PrivateKeyInfo (PKCS#8) formatted RSA Public Key.
+(In case you were curious.)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>PEM encoded public key without whitespace.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toPkcs8Pem" class="method item">
+    <h3 class="name"><code>toPkcs8Pem</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l41717"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41717</code></a>
         </p>
 
 

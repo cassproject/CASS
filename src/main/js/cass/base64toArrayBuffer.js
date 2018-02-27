@@ -3317,7 +3317,7 @@
 
         // 3. Return a code point whose value is 0xF780 + byte − 0x80.
         return 0xF780 + bite - 0x80;
-      };
+      };project
     }
 
     // 15.5.2 x-user-defined encoder

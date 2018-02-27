@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ebac.identity.js.html#l1175"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:1175</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l86875"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:86875</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -850,12 +850,29 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_equals">equals</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fromEncryptedContact">fromEncryptedContact</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_fromEncryptedContact">fromEncryptedContact</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_getImageUrl">getImageUrl</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getImageUrl">getImageUrl</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toEncryptedContact">toEncryptedContact</a>
 
                             </li>
                             <li class="index-item method">
@@ -874,7 +891,19 @@
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_displayName">displayName</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_pk">pk</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_pk">pk</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_source">source</a>
 
                             </li>
                             <li class="index-item property">
@@ -915,6 +944,72 @@
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ebac.identity.js.html#l94"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:94</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Comparison method that checks if the key is the same as another EcContact</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Contact to compare if same key</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if the key is the same, false if not</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_equals" class="method item">
+    <h3 class="name"><code>equals</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>obj</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85793"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85793</code></a>
         </p>
 
 
@@ -1053,6 +1148,103 @@ came from.</p>
 
 
 </div>
+<div id="method_fromEncryptedContact" class="method item">
+    <h3 class="name"><code>fromEncryptedContact</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>contact</code>
+                </li>
+                <li class="arg">
+                        <code>secret</code>
+                </li>
+                <li class="arg">
+                        <code>source</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcContact.html" class="crosslink">EcContact</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85768"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85768</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper function to decrypt an encrypted contact (storable version of an contact)
+into an contact</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">contact</code>
+                        <span class="type"><a href="../classes/EbacContact.html" class="crosslink">EbacContact</a></span>
+
+
+                    <div class="param-description">
+                        <p>Contact to decrypt.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">secret</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>AES secret used to decrypt the credential.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">source</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Source of the credential, used to track where a contact
+came from.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcContact.html" class="crosslink">EcContact</a></span>:
+                    <p>Decrypted identity object, ready for use.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getImageUrl" class="method item">
     <h3 class="name"><code>getImageUrl</code></h3>
 
@@ -1072,6 +1264,49 @@ came from.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ebac.identity.js.html#l109"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:109</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the URL to generic image that should be displayed for the contact</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>URL of generic image file</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getImageUrl" class="method item">
+    <h3 class="name"><code>getImageUrl</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85808"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85808</code></a>
         </p>
 
 
@@ -1163,6 +1398,73 @@ version of a contact)</p>
 
 
 </div>
+<div id="method_toEncryptedContact" class="method item">
+    <h3 class="name"><code>toEncryptedContact</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>secret</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EbacContact.html" class="crosslink">EbacContact</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85819"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85819</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper function to encrypt a contact into an encrypted contact (storable
+version of a contact)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">secret</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>AES secret used to encrypt the contact.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EbacContact.html" class="crosslink">EbacContact</a></span>:
+                    <p>Encrypted contact object.</p>
+
+            </div>
+        </div>
+
+
+</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
@@ -1180,6 +1482,31 @@ version of a contact)</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ebac.identity.js.html#l55"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:55</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Display Name of the contact</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_displayName" class="property item">
+    <h3 class="name"><code>displayName</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85754"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85754</code></a>
         </p>
 
 
@@ -1218,6 +1545,31 @@ version of a contact)</p>
 
 
 </div>
+<div id="property_pk" class="property item">
+    <h3 class="name"><code>pk</code></h3>
+    <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85747"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85747</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Public Key of the contact</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_source" class="property item">
     <h3 class="name"><code>source</code></h3>
     <span class="type">String</span>
@@ -1230,6 +1582,31 @@ version of a contact)</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ebac.identity.js.html#l62"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.identity.js:62</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>URL to the home server of the contact</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_source" class="property item">
+    <h3 class="name"><code>source</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l85761"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:85761</code></a>
         </p>
 
 

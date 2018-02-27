@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.competency.js.html#l2063"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:2063</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l91483"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91483</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -850,7 +850,19 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method__delete">_delete</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_addCompetency">addCompetency</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addCompetency">addCompetency</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addLevel">addLevel</a>
 
                             </li>
                             <li class="index-item method">
@@ -862,11 +874,29 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_addRelation">addRelation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addRollupRule">addRollupRule</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_addRollupRule">addRollupRule</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_get">get</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBlocking">getBlocking</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -884,11 +914,31 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_removeCompetency">removeCompetency</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeCompetency">removeCompetency</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeLevel">removeLevel</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_removeLevel">removeLevel</a>
 
                             </li>
                             <li class="index-item method private">
                                 <a href="#method_removeLevelsThatInclude">removeLevelsThatInclude</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_removeLevelsThatInclude">removeLevelsThatInclude</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_removeRelationshipsThatInclude">removeRelationshipsThatInclude</a>
 
                             </li>
                             <li class="index-item method private">
@@ -900,8 +950,21 @@ services on a server.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_removeRollupRule">removeRollupRule</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_save">save</a>
 
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_save">save</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_search">search</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_search">search</a>
@@ -918,6 +981,74 @@ services on a server.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__delete" class="method item">
+    <h3 class="name"><code>_delete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91881"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91881</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Deletes this framework from the server specified by it's ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if successfully deleted framework</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs when deleting the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method__delete" class="method item">
     <h3 class="name"><code>_delete</code></h3>
 
@@ -1040,6 +1171,114 @@ services on a server.</p>
 
 
 </div>
+<div id="method_addCompetency" class="method item">
+    <h3 class="name"><code>addCompetency</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91627"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91627</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds the competency ID specified to the frameworks list of competency IDs</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the competency to add</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addLevel" class="method item">
+    <h3 class="name"><code>addLevel</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91794"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91794</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a level ID to the framework's list of levels</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the level to add to framework's list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_addLevel" class="method item">
     <h3 class="name"><code>addLevel</code></h3>
 
@@ -1115,6 +1354,60 @@ services on a server.</p>
     <div class="meta">
                 <p>
                 Defined in
+        <a href="../files/src_main_js_cass.js.html#l91761"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91761</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a relation ID to the framework's list of relations</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID to add to the framework's relation list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addRelation" class="method item">
+    <h3 class="name"><code>addRelation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
         <a href="../files/src_main_js_cass_cass.competency.js.html#l2341"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:2341</code></a>
         </p>
 
@@ -1138,6 +1431,60 @@ services on a server.</p>
 
                     <div class="param-description">
                         <p>ID to add to the framework's relation list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addRollupRule" class="method item">
+    <h3 class="name"><code>addRollupRule</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91827"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91827</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a rollup rule ID to the framework's list of rollup rules</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the rollup rule to add</p>
 
                     </div>
 
@@ -1286,6 +1633,90 @@ returns the retrieved framework</p>
 
 
 </div>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91509"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91509</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves a framework from the server, specified by the ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the framework to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<EcFramework></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully retrieving the framework,
+returns the retrieved framework</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while retrieving the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_getBlocking" class="method item">
     <h3 class="name"><code>getBlocking</code></h3>
 
@@ -1360,6 +1791,144 @@ returns the retrieved framework</p>
 
                     <div class="param-description">
                         <p>Callback triggered if an error occurs while retrieving the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getBlocking" class="method item">
+    <h3 class="name"><code>getBlocking</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91548"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91548</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieves a framework from the server in a blocking fashion, specified by the ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the framework to retrieve</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<EcFramework></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully retrieving the framework,
+returns the retrieved framework</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while retrieving the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeCompetency" class="method item">
+    <h3 class="name"><code>removeCompetency</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_cass.competency.js.html#l2358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:2358</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a relation ID from the framework's list of relations</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID to remove from the framework's relation list</p>
 
                     </div>
 
@@ -1475,7 +2044,7 @@ TODO: remove rollup rules? should we add flag to remove these extras
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_cass.competency.js.html#l2358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:2358</code></a>
+        <a href="../files/src_main_js_cass.js.html#l91778"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91778</code></a>
         </p>
 
 
@@ -1498,6 +2067,90 @@ TODO: remove rollup rules? should we add flag to remove these extras
 
                     <div class="param-description">
                         <p>ID to remove from the framework's relation list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeCompetency" class="method item">
+    <h3 class="name"><code>removeCompetency</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91644"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91644</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a competency ID from the framework's list, also removes any
+levels and relations associated with that competency</p>
+<p>
+TODO: remove rollup rules? should we add flag to remove these extras
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the competency to remove</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after succesfully removing the competency and levels and relationships</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs when removing competency and levels and relationships</p>
 
                     </div>
 
@@ -1552,6 +2205,157 @@ TODO: remove rollup rules? should we add flag to remove these extras
 
                     <div class="param-description">
                         <p>ID to remove from framework's level list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeLevel" class="method item">
+    <h3 class="name"><code>removeLevel</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91811"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91811</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a level ID from the framework's list of levels</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID to remove from framework's level list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeLevelsThatInclude" class="method item private">
+    <h3 class="name"><code>removeLevelsThatInclude</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>i</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91730"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91730</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper method to remove levels associated with a competency from this framework</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the competency being removed, to find levels on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">i</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>recursive index parameter</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after all levels in the framework have been checked</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs looking through levels</p>
 
                     </div>
 
@@ -1756,6 +2560,103 @@ TODO: remove rollup rules? should we add flag to remove these extras
 
 
 </div>
+<div id="method_removeRelationshipsThatInclude" class="method item private">
+    <h3 class="name"><code>removeRelationshipsThatInclude</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>i</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91696"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91696</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper method to remove relationships associated with a competency from this framework</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the competency being removed, to find relationships on</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">i</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>recursive index parameter</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after all relationships in the framework have been checked</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs looking through relationships</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_removeRollupRule" class="method item">
     <h3 class="name"><code>removeRollupRule</code></h3>
 
@@ -1778,6 +2679,60 @@ TODO: remove rollup rules? should we add flag to remove these extras
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_cass.competency.js.html#l2424"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.competency.js:2424</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a rollup rule ID from the framework's list of rollup rules</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID to remove from rollup rule list</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeRollupRule" class="method item">
+    <h3 class="name"><code>removeRollupRule</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91844"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91844</code></a>
         </p>
 
 
@@ -1868,6 +2823,186 @@ TODO: remove rollup rules? should we add flag to remove these extras
 
                     <div class="param-description">
                         <p>Callback triggered if error occurs while saving the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_save" class="method item">
+    <h3 class="name"><code>save</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91860"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91860</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Saves this frameworks details on the server specified by it's ID</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successfully saving the framework</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error occurs while saving the framework</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_search" class="method item">
+    <h3 class="name"><code>search</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+                <li class="arg">
+                        <code>query</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+                <li class="arg">
+                        <code>paramObj</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l91580"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:91580</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Searches the repository given for frameworks using the query passed in</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to search for frameworks</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">query</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Query string used to search for a framework</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback1<Array<EcFramework></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered when the search successfully returns,
+returns search results</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if an error occurs while searching</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">paramObj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Parameter object for search</p>
 
                     </div>
 

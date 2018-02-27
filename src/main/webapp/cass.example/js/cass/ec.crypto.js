@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2017 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -7578,7 +7578,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.encrypt(pk, text));
             return;
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.encrypt(pk, text, success, failure);
             return;
         }
@@ -7612,7 +7612,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.decrypt(ppk, text));
             return;
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.decrypt(ppk, text, success, failure);
             return;
         }
@@ -7638,7 +7638,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.sign(ppk, text));
             return;
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
             return;
         }
@@ -7664,7 +7664,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.signSha256(ppk, text));
             return;
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
             return;
         }
@@ -7690,7 +7690,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.verify(pk, text, signature));
             return;
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.verify(pk, text, signature, success, failure);
             return;
         }
@@ -7715,7 +7715,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
     constructor.encrypt = function(text, secret, iv, success, failure) {
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcAesCtrAsyncWorker.encrypt(text, secret, iv, success, failure);
             return;
         }
@@ -7742,7 +7742,7 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
                 return;
             }
         }
-        if (window.crypto.subtle == null) {
+        if (window.crypto == null || window.crypto.subtle == null) {
             EcAesCtrAsyncWorker.decrypt(text, secret, iv, success, failure);
             return;
         }

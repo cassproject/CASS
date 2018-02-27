@@ -818,17 +818,17 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l8511"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8511</code></a>
+            Defined in: <a href="../files/src_main_js_cass.js.html#l75485"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:75485</code></a>
         </div>
 
-            Module: <a href="../modules/org.schema.html">org.schema</a>
+            Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
 
 </div>
 
 
 <div class="box intro">
-    <p><a href="http://Schema.org/Course">Schema.org/Course</a>
-A description of an educational course which may be offered as distinct instances at which take place at different times or take place at different locations, or be offered through different media or modes of study. An educational course is a sequence of one or more educational events and/or creative works which aims to build knowledge, competence or ability of learners.</p>
+    <p><a href="http://credentialengine.org/Course">credentialengine.org/Course</a>
+Structured sequence of one or more educational activities that aims to develop a prescribed set of knowledge, competence or ability of learners.</p>
 
 </div>
 
@@ -854,7 +854,19 @@ A description of an educational course which may be offered as distinct instance
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_courseCode">courseCode</a>
+
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_coursePrerequisites">coursePrerequisites</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_coursePrerequisites">coursePrerequisites</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_hasCourseInstance">hasCourseInstance</a>
 
                             </li>
                             <li class="index-item property">
@@ -880,9 +892,37 @@ A description of an educational course which may be offered as distinct instance
 
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8547"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8547</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8546"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8546</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/courseCode">Schema.org/courseCode</a>
+The identifier for the [[Course]] used by the course [[provider]] (e.g. CS101 or 6.001).</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_courseCode" class="property item">
+    <h3 class="name"><code>courseCode</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l51997"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:51997</code></a>
         </p>
 
 
@@ -906,9 +946,37 @@ The identifier for the [[Course]] used by the course [[provider]] (e.g. CS101 or
 
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8539"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8539</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8538"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8538</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/coursePrerequisites">Schema.org/coursePrerequisites</a>
+Requirements for taking the Course. May be completion of another [[Course]] or a textual description like "permission of instructor". Requirements may be a pre-requisite competency, referenced using [[AlignmentObject]].</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_coursePrerequisites" class="property item">
+    <h3 class="name"><code>coursePrerequisites</code></h3>
+    <span class="type">Schema, AlignmentObject | schema,Text | schema,Course</span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l51989"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:51989</code></a>
         </p>
 
 
@@ -932,9 +1000,37 @@ Requirements for taking the Course. May be completion of another [[Course]] or a
 
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8531"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8531</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8530"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8530</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/hasCourseInstance">Schema.org/hasCourseInstance</a>
+An offering of the course at a specific time and place or through specific media or mode of study or to a specific section of students.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_hasCourseInstance" class="property item">
+    <h3 class="name"><code>hasCourseInstance</code></h3>
+    <span class="type"><a href="../classes/CourseInstance.html" class="crosslink">CourseInstance</a></span>
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/org.schema.html">org.schema</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass.js.html#l51981"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:51981</code></a>
         </p>
 
 
