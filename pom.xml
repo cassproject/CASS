@@ -5,11 +5,11 @@
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>1.5.0</ec-version>
+		<ec-version>1.6.0</ec-version>
 	</properties>
 
 	<developers>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.ebac.skyid</artifactId>
-			<version>5.9.1</version>
+			<version>5.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.websocket</groupId>
