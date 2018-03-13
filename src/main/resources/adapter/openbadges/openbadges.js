@@ -1,12 +1,19 @@
 badgeSetup = function () {
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
+    
+    if (this.setup != true){
+    print("classpath:forge/forge.bundle.js");
+    load("classpath:forge/forge.bundle.js");
+    }
+    this.setup = true;
 
     if (EcRepository.repos == null || EcRepository.repos.length == 0) {
         //Permit find to work.
         var repo = new EcRepository();
         repo.selectedServer = repoEndpoint();
     }
+    EcRepository.caching = false;
     var identity = new EcIdentity();
     identity.ppk = EcPpk.fromPem(openbadgesPpk());
     identity.displayName = "OpenBadges Internal Identity";
@@ -78,6 +85,7 @@ badgeSubject = function (fingerprint) {
     if (person.email != null) {
         var sha = forge.md.sha256.create();
         var salt = EcAes.newIv(16);
+	salt = fingerprint;
         sha.update(person.email + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
@@ -90,6 +98,7 @@ badgeSubject = function (fingerprint) {
     if (person.url != null) {
         var sha = forge.md.sha256.create();
         var salt = EcAes.newIv(16);
+	salt = fingerprint;
         sha.update(person.url + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
@@ -102,6 +111,7 @@ badgeSubject = function (fingerprint) {
     if (person.telephone != null) {
         var sha = forge.md.sha256.create();
         var salt = EcAes.newIv(16);
+	salt = fingerprint;
         sha.update(person.telephone + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
@@ -252,3 +262,5 @@ bindWebService("/badge/profile", badgeProfile);
 bindWebService("/badge/cryptographicKey", badgeCryptographicKey);
 bindWebService("/badge/class", badgeClass);
 bindWebService("/badge/assertion", badgeAssertion);
+
+

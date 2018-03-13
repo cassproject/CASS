@@ -31,3 +31,4 @@ badgeSendEmail=#sendEmail(
 	badgeId=#string(str="@badgeId")
 );
 #badgeSendEmail = badgeSendEmail;
+
