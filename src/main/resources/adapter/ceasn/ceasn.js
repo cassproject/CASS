@@ -378,7 +378,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             version: version
         });
 
-        return repoEndpoint() + "ceasn/" + guid;
+        return repoEndpoint() + "ctdlasn/" + guid;
     } // end if frameworkObj != null
 }
 
@@ -447,3 +447,4 @@ function ceasnEndpoint() {
 }
 
 bindWebService("/ceasn", ceasnEndpoint);
+bindWebService("/ctdlasn", ceasnEndpoint);
