@@ -177,7 +177,7 @@ function cassFrameworkAsCeasn() {
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
         c["ceasn:isPartOf"] = f.id;
         if (c["ceasn:isChildOf"] == null) {
-            c["ceasn:isChildOf"] = f.id;
+            c["ceasn:isTopChildOf"] = f.id;
             if (f["ceasn:hasTopChild"] == null)
                 f["ceasn:hasTopChild"] = [];
             f["ceasn:hasTopChild"].push(c.id);
