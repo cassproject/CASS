@@ -18,3 +18,5 @@ scripts/node/node_modules
 node_modules/
 
 etc/
+
+adapter\.xapi\.json
