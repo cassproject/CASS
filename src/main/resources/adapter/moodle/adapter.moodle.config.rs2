@@ -1,19 +1,20 @@
 
 configFilePath=#string(str="adapter.moodle.json");
 
-
 postData=#fileFromDatastream(name="config");
 postObject=postData.fileToString().toObject();
 
-configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
-	eq=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject(),
-	ne=#object(
-		moodleEndpoint="",
-		moodleToken="",
-		enabled=#false()
-	)
+configObject=#object(
+	moodleEndpoint="",
+	moodleToken="",
+	enabled=#false()
 );
-configObject=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject();
+configObject=#if(
+	operator=#fileExists(path=configFilePath),
+	operand="true",
+	eq=#fileLoad(path=configFilePath).fileToString().toObject(),
+	ne=configObject.toString().fileSave(path=configFilePath).toObject()
+).catch(any=configObject);
 
 configVal=configObject.getByParam(param="@key");
 #moodleConfigVal=configVal;
@@ -40,12 +41,8 @@ checkConfigGet=#if(operator=isSkyAdmin, operand=#true(),
 );
 /adapter/moodle/config/get=configGet;
 
-
-
-
 token=#moodleConfigVal(key="moodleToken");
 #moodleWsToken=token;
-
 
 endpoint=#add(
 	a=#if(operator=#indexOf(str="@endpointStart", substr="http"), operand="0",
