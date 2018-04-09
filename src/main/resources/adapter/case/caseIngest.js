@@ -113,6 +113,7 @@ embedCFPackageIntoFramework = function(f,document){
 	var p = httpGet(document.CFPackageURI.uri);
 	var results = [f];
 	var i = 0;
+	if (p.CFAssociations != null)
 	for (i = 0;i < p.CFAssociations.length;i++)
 	{
 		var relation = convertCFAssociationIntoRelation(p.CFAssociations[i]);
@@ -124,6 +125,7 @@ embedCFPackageIntoFramework = function(f,document){
 		p.CFAssociations[i] = r.id;
 	}
 	f.relation = p.CFAssociations;
+    if (p.CFItems != null)
 	for (i = 0;i < p.CFItems.length;i++)
 	{
 		var competency = convertCFItemIntoCompetency(p.CFItems[i]);
