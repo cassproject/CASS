@@ -430,7 +430,7 @@ checkCreativeWorkInDescription=checkDescriptionHasSection.call(
 	sectionAddition=#if(operator=#toObject(obj="@creativeWork").get(educationalUse=""), operand="Reference",
 		eq=#add(
 			a='<a href="',
-			b=#toObject(obj="@creativeWork").get(url=""),
+			b=#toObject(obj="@creativeWork").get(url="").replace(replace="&",with="&amp;",simple="true"),
 			c='">',
 			d=#toObject(obj="@creativeWork").get(name=""),
 			e='</a>'
