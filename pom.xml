@@ -286,7 +286,7 @@
 						<goals>
 							<goal>update-file-header</goal>
 						</goals>
-						<phase>process-sources</phase>
+						<phase>prepare-package</phase>
 						<configuration>
 							<licenseName>apache_v2</licenseName>
 							<organizationName>Eduworks Corporation and other contributing parties.</organizationName>
@@ -299,11 +299,21 @@
 							<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 							<roots>
 								<root>src/main/js</root>
-								<root>src/main/webapp/cass.example/js/cass</root>
+								<root>src/main/webapp/cass.example/js</root>
 							</roots>
 							<includes>
-								<include>**/*.js</include>
-								<include>*.js</include>
+								<include>**/cass*.js</include>
+								<include>cass*.js</include>
+								<include>**/ebac*.js</include>
+								<include>ebac*.js</include>
+								<include>**/ec*.js</include>
+								<include>ec*.js</include>
+								<include>**/org.*.js</include>
+								<include>org.*.js</include>
+								<include>**/Rollup*.js</include>
+								<include>Rollup*.js</include>
+								<include>**/skyrepo.*.js</include>
+								<include>skyrepo.*.js</include>
 							</includes>
 							<excludes>
 								<exclude>**/xml2json.js</exclude>
