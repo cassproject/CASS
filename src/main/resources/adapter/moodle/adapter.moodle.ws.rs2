@@ -4,6 +4,7 @@ getCompetency=#object(
 	moodlewsrestformat="json",
 	id="@internalId",
 ).httpPost(formdata="true",url=#moodleEndpoint());
+getCompetency=getCompetency.put(name=getCompetency.get(name="").replace(replace="&amp;",with="&",simple=""),description=getCompetency.get(description="").replace(replace="&amp;",with="&",simple=""));
 #moodleGetCompetency = getCompetency;
 
 
