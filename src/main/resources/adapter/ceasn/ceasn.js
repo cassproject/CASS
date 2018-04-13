@@ -222,7 +222,7 @@ function cassFrameworkAsCeasn() {
         if (f.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             f["ceterms:ctid"] = f.getGuid();
         else
-            f["ceterms:ctid"] = uuidFromString(f.id);
+            f["ceterms:ctid"] = uuidFromString(f.shortId());
     }
     if (f["ceterms:ctid"].indexOf("ce-") != 0)
         f["ceterms:ctid"] = "ce-"+f["ceterms:ctid"];
