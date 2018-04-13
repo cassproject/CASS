@@ -193,7 +193,7 @@ function cassFrameworkAsCeasn() {
             if (c.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
                 c["ceterms:ctid"] = c.getGuid();
             else
-                c["ceterms:ctid"] = "ce-" + uuidFromString(f.id + c.shortId());
+                c["ceterms:ctid"] = "ce-" + uuidFromString(f.shortId() + c.shortId());
         }
         if (c["ceterms:ctid"].indexOf("ce-") != 0)
             c["ceterms:ctid"] = "ce-"+c["ceterms:ctid"];
@@ -222,7 +222,7 @@ function cassFrameworkAsCeasn() {
         if (f.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             f["ceterms:ctid"] = f.getGuid();
         else
-            f["ceterms:ctid"] = uuidFromString(f.id);
+            f["ceterms:ctid"] = uuidFromString(f.shortId());
     }
     if (f["ceterms:ctid"].indexOf("ce-") != 0)
         f["ceterms:ctid"] = "ce-"+f["ceterms:ctid"];
