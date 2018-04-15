@@ -149,7 +149,7 @@ cfItems = function (f) {
     delete f2.description;
     if (f2.CFItemType == null) {
         f2.CFItemType = null;
-        f2.CFItemTypeURI = nullexit;
+        f2.CFItemTypeURI = null;
     }
     f2.CFDocumentURI = {};
     var parent = JSON.parse(skyRepoSearch({q: "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""}));
