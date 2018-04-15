@@ -9,7 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>1.6.0</ec-version>
+		<ec-version>2.0.0</ec-version>
 	</properties>
 
 	<developers>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.ebac.skyid</artifactId>
-			<version>5.10.0</version>
+			<version>5.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.websocket</groupId>
