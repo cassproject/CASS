@@ -119,11 +119,7 @@ embedCFPackageIntoFramework = function(f,document){
 	{
 		var relation = convertCFAssociationIntoRelation(p.CFAssociations[i]);
 		results.push(relation);
-		var internalId = stringToHex(md5(relation.id));
-		var version = date(relation["schema:dateModified"],null,true);
-		var r = new EcAlignment();
-		r.assignIdAndVersion(repoEndpoint(),internalId,version);
-		p.CFAssociations[i] = r.id;
+        p.CFAssociations[i] = relation.id;
 	}
 	f.relation = p.CFAssociations;
     if (p.CFItems != null)
@@ -131,11 +127,7 @@ embedCFPackageIntoFramework = function(f,document){
 	{
 		var competency = convertCFItemIntoCompetency(p.CFItems[i]);
 		results.push(competency);
-		var internalId = stringToHex(md5(competency.id));
-		var version = date(competency["schema:dateModified"],null,true);
-		var r = new EcCompetency();
-		r.assignIdAndVersion(repoEndpoint(),internalId,version);
-		p.CFItems[i] = r.id;
+        p.CFItems[i] = competency.id;
 	}
 	f.competency = p.CFItems;
 	return results;
