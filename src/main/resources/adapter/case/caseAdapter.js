@@ -16,13 +16,25 @@ cfError = function (code, codeMajor, severity, description, codeMinor, codeMinor
 
 cfGetFramework = function (f) {
     var query = queryParse.call(this);
-    if (f == null || f === undefined) {
+    if (f == null || f === undefined || !EcObject.isObject(f)) {
         if (f == null)
             f = skyrepoGet.call(this, query);
         if (f == null || f["@type"] == null || !f["@type"].contains("ramework"))
             f = null;
         if (f == null)
             f = EcFramework.getBlocking(urlDecode(this.params.id));
+        if (f == null)
+            f = EcFramework.getBlocking(query.id);
+        if (f == null) {
+            var result = null;
+            EcFramework.search(repo, "@id:" + query.id, function (success) {
+                result = success;
+            }, console.log);
+            if (result.length > 0) {
+                f = new EcFramework();
+                f.copyFrom(result[0]);
+            }
+        }
     }
     var result = new EcFramework();
     result.copyFrom(f);
@@ -45,7 +57,17 @@ cfGetCompetency = function (c) {
         if (competency == null && url != null)
             competency = EcCompetency.getBlocking(url);
         if (competency == null && url != null)
-            competency = EcCompetency.getBlocking(EcCrypto.md5(url));
+            competency = EcCompetency.getBlocking(thisEndpoint() + "data/" + EcCrypto.md5(url));
+        if (competency == null) {
+            var result = null;
+            EcCompetency.search(repo, "@id:" + query.id, function (success) {
+                result = success;
+            }, console.log);
+            if (result.length > 0) {
+                competency = new EcCompetency();
+                competency.copyFrom(result[0]);
+            }
+        }
         var c = new EcCompetency();
         c.copyFrom(competency);
     }
@@ -73,11 +95,8 @@ cfDocuments = function (f) {
     var name = f.getName();
     var guid = f.getGuid();
     f.context = "http://schema.cassproject.org/0.3/cass2case";
-    print(JSON.stringify(f, null, 2));
     f = jsonLdExpand(f.toJson());
-    print(JSON.stringify(f, null, 2));
     var f2 = jsonLdCompact(JSON.stringify(f), "http://schema.cassproject.org/0.3/sampleCase");
-    print(JSON.stringify(f2, null, 2));
     f2.identifier = guid;
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
@@ -131,7 +150,7 @@ cfConcepts = function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItems = function (f) {
+cfItems = function (f, fw) {
     var query = queryParse.call(this);
     f = cfGetCompetency.call(this, f);
     result = {};
@@ -152,12 +171,16 @@ cfItems = function (f) {
         f2.CFItemTypeURI = null;
     }
     f2.CFDocumentURI = {};
-    var parent = JSON.parse(skyRepoSearch({q: "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""}));
-    if (parent.length == 0)
-        cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
-    t = parent[0];
-    parent[0] = new EcFramework();
-    parent[0].copyFrom(t);
+    if (fw == null) {
+        var parent = JSON.parse(skyRepoSearch({q: "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""}));
+        if (parent.length == 0)
+            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
+        t = parent[0];
+        parent[0] = new EcFramework();
+        parent[0].copyFrom(t);
+    }
+    else
+        parent = [fw];
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
@@ -174,7 +197,7 @@ cfItems = function (f) {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
-cfItemAssociations = function (f) {
+cfItemAssociations = function (f, fw) {
     var query = queryParse.call(this);
     if (f == null || f === undefined) {
         var framework = null;
@@ -193,6 +216,8 @@ cfItemAssociations = function (f) {
     var f2 = jsonLdCompact(JSON.stringify(f), "http://schema.cassproject.org/0.3/sampleCase");
     f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2.relationType];
     delete f2.relationType;
+    if (f2.destinationNodeURI == null) return null;
+    if (f2.originNodeURI == null) return null;
     var destNode = cfGetCompetency(f2.destinationNodeURI.uri);
     var t = destNode;
     destNode = new EcCompetency();
@@ -202,18 +227,22 @@ cfItemAssociations = function (f) {
     sourceNode = new EcCompetency();
     sourceNode.copyFrom(t);
     f2.destinationNodeURI.title = destNode.name;
-    f2.destinationNodeURI.uri = JSON.parse(cfItems.call(this, destNode)).uri;
-    f2.destinationNodeURI.identifier = JSON.parse(cfItems.call(this, destNode)).identifier;
+    f2.destinationNodeURI.uri = JSON.parse(cfItems.call(this, destNode, fw)).uri;
+    f2.destinationNodeURI.identifier = JSON.parse(cfItems.call(this, destNode, fw)).identifier;
     f2.originNodeURI.title = sourceNode.name;
-    f2.originNodeURI.uri = JSON.parse(cfItems.call(this, sourceNode)).uri;
-    f2.originNodeURI.identifier = JSON.parse(cfItems.call(this, sourceNode)).identifier;
+    f2.originNodeURI.uri = JSON.parse(cfItems.call(this, sourceNode, fw)).uri;
+    f2.originNodeURI.identifier = JSON.parse(cfItems.call(this, sourceNode, fw)).identifier;
     f2.CFDocumentURI = {};
-    var parent = JSON.parse(skyRepoSearch({q: "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\""}));
-    if (parent.length == 0)
-        cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
-    t = parent[0];
-    parent[0] = new EcFramework();
-    parent[0].copyFrom(t);
+    if (fw == null) {
+        var parent = JSON.parse(skyRepoSearch({q: "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\""}));
+        if (parent.length == 0)
+            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
+        t = parent[0];
+        parent[0] = new EcFramework();
+        parent[0].copyFrom(t);
+    }
+    else
+        parent = [fw];
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
@@ -253,26 +282,35 @@ cfLicenses = function () {
 429 - The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 500 - This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'. The payload structure is defined by the structure imsx_StatusInfo.Type.
 */
+var repo;
 cfPackages = function (f) {
+    if (repo == null)
+        repo = new EcRepository();
+    repo.selectedServer = thisEndpoint();
+
     EcRepository.cache = {};
     var result = {};
     var f2 = result;
     f = cfGetFramework.call(this, f);
 
-    result.CFDocument = JSON.parse(cfDocuments(f));
+    result.CFDocument = JSON.parse(cfDocuments.call(this, f));
     result.CFItems = [];
     if (f.competency != null)
         for (var i = 0; i < f.competency.length; i++) {
             var c = EcCompetency.getBlocking(f.competency[i]);
             if (c != null)
-                result.CFItems.push(JSON.parse(cfItems(c)));
+                c= JSON.parse(cfItems(c, f));
+            if (c != null)
+                result.CFItems.push(c);
         }
     result.CFAssociations = [];
     if (f.relation != null)
         for (var i = 0; i < f.relation.length; i++) {
             var a = EcAlignment.getBlocking(f.relation[i]);
             if (a != null)
-                result.CFAssociations.push(JSON.parse(cfItemAssociations(a)));
+                a = JSON.parse(cfItemAssociations(a, f));
+            if (a != null)
+                result.CFAssociations.push(a);
         }
     result.CFDefinitions = {CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: []};
     f2 = cfClean(f2);
