@@ -1,3 +1,23 @@
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
+
 var AlgorithmIdentifier = function() {};
 AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constructor, prototype) {
     prototype.name = null;
@@ -7213,7 +7233,7 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if (window == null && (typeof self).equals("undefined")) {
+        if (window == null && ((typeof self).equals("undefined")) || Worker == undefined || Worker == null) {
             return;
         }
         if (!EcRemote.async) {
@@ -7432,7 +7452,7 @@ EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constr
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if (window == null && (typeof self).equals("undefined")) {
+        if (window == null && ((typeof self).equals("undefined")) || Worker == undefined || Worker == null) {
             return;
         }
         if (!EcRemote.async) {

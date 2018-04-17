@@ -456,6 +456,7 @@ var Node = function(nameId) {
 Node = stjs.extend(Node, null, [], function(constructor, prototype) {
     prototype.name = null;
     prototype.id = null;
+    prototype.description = null;
     prototype.getName = function() {
         return this.name;
     };
@@ -467,6 +468,12 @@ Node = stjs.extend(Node, null, [], function(constructor, prototype) {
     };
     prototype.setId = function(id) {
         this.id = id;
+    };
+    prototype.getDescription = function() {
+        return this.description;
+    };
+    prototype.setDescription = function(description) {
+        this.description = description;
     };
     prototype.toString = function() {
         return "Node: \"" + this.id + "\"";
@@ -3685,6 +3692,131 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
         rri.go();
     };
 }, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+var FrameworkCollapser = function() {};
+FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(constructor, prototype) {
+    prototype.framework = null;
+    prototype.createImpliedRelations = false;
+    prototype.competencyArray = null;
+    prototype.competencyNodeMap = null;
+    prototype.relationArray = null;
+    prototype.frameworkNodeGraph = null;
+    prototype.collapsedFrameworkNodePacketGraph = null;
+    prototype.successCallback = null;
+    prototype.failureCallback = null;
+    prototype.buildFrameworkUrlLookups = function() {
+        var urlArray = new Array();
+        var cid;
+        var rid;
+        for (var i = 0; i < this.framework.competency.length; i++) {
+            cid = this.framework.competency[i];
+            urlArray.push(cid);
+        }
+        if (this.framework.relation != null && this.framework.relation.length > 0) {
+            for (var i = 0; i < this.framework.relation.length; i++) {
+                rid = this.framework.relation[i];
+                urlArray.push(rid);
+            }
+        }
+        return urlArray;
+    };
+    prototype.parseCompetencies = function(rlda) {
+        this.competencyArray = new Array();
+        var rld;
+        for (var i = 0; i < rlda.length; i++) {
+            rld = rlda[i];
+            if ("competency".equalsIgnoreCase(rld.type)) 
+                this.competencyArray.push(rld);
+        }
+    };
+    prototype.parseRelationships = function(rlda) {
+        this.relationArray = new Array();
+        var rld;
+        for (var i = 0; i < rlda.length; i++) {
+            rld = rlda[i];
+            if ("relation".equalsIgnoreCase(rld.type)) 
+                this.relationArray.push(rld);
+        }
+    };
+    prototype.addCompetenciesToFrameworkNodeGraph = function() {
+        var cmp;
+        var n;
+        this.competencyNodeMap = {};
+        for (var i = 0; i < this.competencyArray.length; i++) {
+            cmp = this.competencyArray[i];
+            n = new Node(cmp.shortId());
+            n.setName(cmp.name);
+            n.setDescription(cmp.description);
+            this.frameworkNodeGraph.addNode(n);
+            this.competencyNodeMap[cmp.shortId()] = n;
+        }
+    };
+    prototype.getRelationType = function(rs) {
+        if ("requires".equalsIgnoreCase(rs)) 
+            return RelationType.RELATION_TYPE.REQUIRES;
+         else if ("narrows".equalsIgnoreCase(rs)) 
+            return RelationType.RELATION_TYPE.NARROWS;
+         else if ("isEquivalentTo".equalsIgnoreCase(rs)) 
+            return RelationType.RELATION_TYPE.IS_EQUIVALENT_TO;
+         else 
+            return null;
+    };
+    prototype.addRelationshipsToFrameworkNodeGraph = function() {
+        var rel;
+        var type;
+        for (var i = 0; i < this.relationArray.length; i++) {
+            rel = this.relationArray[i];
+            type = this.getRelationType(rel.relationType);
+            if (type != null) 
+                this.frameworkNodeGraph.addRelation(this.competencyNodeMap[rel.source], this.competencyNodeMap[rel.target], type);
+        }
+    };
+    prototype.generateFrameworkNodeGraph = function() {
+        this.frameworkNodeGraph = new NodeGraph();
+        this.addCompetenciesToFrameworkNodeGraph();
+        this.addRelationshipsToFrameworkNodeGraph();
+        if (this.createImpliedRelations) 
+            this.frameworkNodeGraph.createImpliedRelations();
+    };
+    prototype.collapseFrameworkNodeGraph = function() {
+        var cgc = new CyclicGraphCollapser();
+        this.collapsedFrameworkNodePacketGraph = cgc.collapseGraph(this.frameworkNodeGraph);
+    };
+    prototype.continueFrameworkCollapse = function(rlda) {
+        this.parseCompetencies(rlda);
+        this.parseRelationships(rlda);
+        try {
+            this.generateFrameworkNodeGraph();
+            try {
+                this.collapseFrameworkNodeGraph();
+                this.successCallback(this.framework.shortId(), this.collapsedFrameworkNodePacketGraph);
+            }catch (e2) {
+                this.failureCallback("Framework collapse failed: " + e2.toString());
+            }
+        }catch (e) {
+            this.failureCallback("Framework node graph generation failed: " + e.toString());
+        }
+    };
+    prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
+        if (framework == null) 
+            failure("Framework is null or undefined");
+         else if (framework.competency == null || framework.competency.length < 1) 
+            failure("Framework has no competencies");
+         else if (repo == null) 
+            failure("Repo is null or undefined");
+         else {
+            this.framework = framework;
+            this.createImpliedRelations = createImpliedRelations;
+            this.successCallback = success;
+            this.failureCallback = failure;
+            var fc = this;
+            repo.multiget(this.buildFrameworkUrlLookups(), function(rlda) {
+                fc.continueFrameworkCollapse(rlda);
+            }, fc.failureCallback, function(rlda) {
+                fc.continueFrameworkCollapse(rlda);
+            });
+        }
+    };
+}, {framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };

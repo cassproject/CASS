@@ -8049,7 +8049,7 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if (window == null &amp;&amp; (typeof self).equals(&quot;undefined&quot;)) {
+        if (window == null &amp;&amp; ((typeof self).equals(&quot;undefined&quot;)) || Worker == undefined || Worker == null) {
             return;
         }
         if (!EcRemote.async) {
@@ -8268,7 +8268,7 @@ EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constr
     constructor.q1 = null;
     constructor.q2 = null;
     constructor.initWorker = function() {
-        if (window == null &amp;&amp; (typeof self).equals(&quot;undefined&quot;)) {
+        if (window == null &amp;&amp; ((typeof self).equals(&quot;undefined&quot;)) || Worker == undefined || Worker == null) {
             return;
         }
         if (!EcRemote.async) {

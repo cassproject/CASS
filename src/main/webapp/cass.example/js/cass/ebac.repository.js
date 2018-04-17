@@ -1180,7 +1180,21 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var targetUrl;
         targetUrl = data.shortId();
         if (data.owner != null && data.owner.length > 0) {
-            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+            if (EcRemote.async) {
+                EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+                    if (signatureSheet.length == 2) {
+                        for (var i = 0; i < EcRepository.repos.length; i++) {
+                            if (data.id.indexOf(EcRepository.repos[i].selectedServer) != -1) {
+                                EcRepository.repos[i].deleteRegistered(data, success, failure);
+                                return;
+                            }
+                        }
+                        failure("Cannot delete object without a signature. If deleting from a server, use the non-static _delete");
+                    } else 
+                        EcRemote._delete(targetUrl, signatureSheet, success, failure);
+                }, failure);
+            } else {
+                var signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
                 if (signatureSheet.length == 2) {
                     for (var i = 0; i < EcRepository.repos.length; i++) {
                         if (data.id.indexOf(EcRepository.repos[i].selectedServer) != -1) {
@@ -1191,7 +1205,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     failure("Cannot delete object without a signature. If deleting from a server, use the non-static _delete");
                 } else 
                     EcRemote._delete(targetUrl, signatureSheet, success, failure);
-            }, failure);
+            }
         } else {
             EcRemote._delete(targetUrl, "[]", success, failure);
         }
@@ -1224,14 +1238,23 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var me = this;
         if (data.owner != null && data.owner.length > 0) {
-            EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
-                if (signatureSheet.length == 2 && me.adminKeys != null) {
-                    EcIdentityManager.signatureSheetForAsync(me.adminKeys, 60000, data.id, function(signatureSheet) {
+            if (EcRemote.async) {
+                EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+                    if (signatureSheet.length == 2 && me.adminKeys != null) {
+                        EcIdentityManager.signatureSheetForAsync(me.adminKeys, 60000, data.id, function(signatureSheet) {
+                            EcRemote._delete(targetUrl, signatureSheet, success, failure);
+                        }, failure);
+                    } else 
                         EcRemote._delete(targetUrl, signatureSheet, success, failure);
-                    }, failure);
+                }, failure);
+            } else {
+                var signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
+                if (signatureSheet.length == 2 && me.adminKeys != null) {
+                    signatureSheet = EcIdentityManager.signatureSheetFor(me.adminKeys, 60000, data.id);
+                    EcRemote._delete(targetUrl, signatureSheet, success, failure);
                 } else 
                     EcRemote._delete(targetUrl, signatureSheet, success, failure);
-            }, failure);
+            }
         } else {
             EcRemote._delete(targetUrl, "[]", success, failure);
         }
@@ -1457,16 +1480,16 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
     prototype.searchWithParams = function(originalQuery, originalParamObj, eachSuccess, success, failure) {
         if (EcRemote.async == false) {
             var result = this.searchWithParamsBlocking(originalQuery, originalParamObj);
-            if (result == null) 
+            if (result == null) {
                 if (failure != null) 
                     failure("Search failed.");
-                 else {
-                    for (var i = 0; i < result.length; i++) 
-                        if (eachSuccess != null) 
-                            eachSuccess(result[i]);
-                    if (success != null) 
-                        success(result);
-                }
+            } else {
+                for (var i = 0; i < result.length; i++) 
+                    if (eachSuccess != null) 
+                        eachSuccess(result[i]);
+                if (success != null) 
+                    success(result);
+            }
             return;
         }
         var query = originalQuery;

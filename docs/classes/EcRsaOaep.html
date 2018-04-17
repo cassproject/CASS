@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass.js.html#l41506"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41506</code></a>
+            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l6900"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:6900</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -852,16 +852,6 @@ Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_decrypt">decrypt</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_encrypt">encrypt</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_encrypt">encrypt</a>
 
                                     <span class="flag static">static</span>
@@ -872,22 +862,7 @@ Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_sign">sign</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_signSha256">signSha256</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_signSha256">signSha256</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_verify">verify</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -935,88 +910,6 @@ Encryption Padding (OAEP) encryption and decryption. Uses RSA SSA PKCS#1 v1.5
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l6926"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:6926</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Decrypts a block of ciphertext (no more than 256 bytes) with a private
-key using RSA OAEP encryption. Returns a unencoded plaintext.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">ppk</code>
-                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
-
-
-                    <div class="param-description">
-                        <p>Public private keypair.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">ciphertext</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Ciphertext.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-                    <p>Unencoded plaintext.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_decrypt" class="method item">
-    <h3 class="name"><code>decrypt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>ppk</code>
-                </li>
-                <li class="arg">
-                        <code>ciphertext</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41532"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41532</code></a>
         </p>
 
 
@@ -1140,76 +1033,6 @@ using RSA OAEP encryption. Returns a base64 encoded ciphertext.</p>
 
 
 </div>
-<div id="method_encrypt" class="method item">
-    <h3 class="name"><code>encrypt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pk</code>
-                </li>
-                <li class="arg">
-                        <code>plaintext</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41517"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41517</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Encrypts a block of plaintext (no more than 256 bytes) with a public key
-using RSA OAEP encryption. Returns a base64 encoded ciphertext.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pk</code>
-                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
-
-
-                    <div class="param-description">
-                        <p>Public Key.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">plaintext</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Plaintext. Does not perform encoding.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_sign" class="method item">
     <h3 class="name"><code>sign</code></h3>
 
@@ -1239,88 +1062,6 @@ using RSA OAEP encryption. Returns a base64 encoded ciphertext.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l6955"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:6955</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Creates a signature for the provided text using the public private
-keypair. May be verified with the public key. Uses SHA1 hash with a UTF8
-decoding of the text. Returns base64 encoded signature.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">ppk</code>
-                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
-
-
-                    <div class="param-description">
-                        <p>Public private keypair.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">text</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Text to sign.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>Base64 encoded signature.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_sign" class="method item">
-    <h3 class="name"><code>sign</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>ppk</code>
-                </li>
-                <li class="arg">
-                        <code>text</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41561"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41561</code></a>
         </p>
 
 
@@ -1456,88 +1197,6 @@ UTF8 decoding of the text. Returns base64 encoded signature.</p>
 
 
 </div>
-<div id="method_signSha256" class="method item">
-    <h3 class="name"><code>signSha256</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>ppk</code>
-                </li>
-                <li class="arg">
-                        <code>text</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41580"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41580</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Creates a signature for the provided text using the public private
-keypair. May be verified with the public key. Uses SHA256 hash with a
-UTF8 decoding of the text. Returns base64 encoded signature.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">ppk</code>
-                        <span class="type"><a href="../classes/EcPpk.html" class="crosslink">EcPpk</a></span>
-
-
-                    <div class="param-description">
-                        <p>Public private keypair.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">text</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Text to sign.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>Base64 encoded signature.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_verify" class="method item">
     <h3 class="name"><code>verify</code></h3>
 
@@ -1570,101 +1229,6 @@ UTF8 decoding of the text. Returns base64 encoded signature.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l6990"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:6990</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Verifies the integrity of the provided text using a signature and a
-public key. Uses SHA1 hash with a UTF8 decoding of the text.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pk</code>
-                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
-
-
-                    <div class="param-description">
-                        <p>Public key.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">text</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Text to verify.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">signature</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Base64 encoded signature.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>True IFF the signature is valid.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_verify" class="method item">
-    <h3 class="name"><code>verify</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pk</code>
-                </li>
-                <li class="arg">
-                        <code>text</code>
-                </li>
-                <li class="arg">
-                        <code>signature</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41596"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41596</code></a>
         </p>
 
 

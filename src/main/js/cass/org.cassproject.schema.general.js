@@ -1,3 +1,23 @@
+/*-
+ * --BEGIN_LICENSE--
+ * Competency and Skills System
+ * -----
+ * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * -----
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * --END_LICENSE--
+ */
+
 /**
  *  Location of strings that store the current namespace for general Eduworks Objects.
  * 
@@ -131,6 +151,19 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += generateUUID();
         this.id += "/";
         this.id += new Date().getTime();
+    };
+    /**
+     *  Will generate an short (non-versioned) identifier using the server URL provided (usually from
+     *  an EcRepository).
+     * 
+     *  @param {string} server Base URL of the server's repository functionality.
+     *  @method generateShortId
+     */
+    prototype.generateShortId = function(server) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += generateUUID();
     };
     prototype.getDottedType = function() {
         return this.getFullType().replace("http://", "").replaceAll("/", ".");

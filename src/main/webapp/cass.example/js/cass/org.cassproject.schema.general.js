@@ -152,6 +152,19 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += "/";
         this.id += new Date().getTime();
     };
+    /**
+     *  Will generate an short (non-versioned) identifier using the server URL provided (usually from
+     *  an EcRepository).
+     * 
+     *  @param {string} server Base URL of the server's repository functionality.
+     *  @method generateShortId
+     */
+    prototype.generateShortId = function(server) {
+        this.id = server;
+        if (!this.id.endsWith("/")) 
+            this.id += "/";
+        this.id += generateUUID();
+    };
     prototype.getDottedType = function() {
         return this.getFullType().replace("http://", "").replaceAll("/", ".");
     };

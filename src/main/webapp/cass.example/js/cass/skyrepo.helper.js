@@ -49,7 +49,7 @@ function flattenStringFields(jsonLd, first){
 				var field = jsonLd[key];
 
 				// Check if objects in array are string-language objects
-				if(Array.isArray(field)){
+				if(Array.isArray(field) && field.length > 0){
 					var flattenText = true; // flag identifying if they are string-language objects
 					var textArray = [];
 					var langArray = [];
@@ -98,3 +98,4 @@ function flattenStringFields(jsonLd, first){
 		return JSON.stringify(jsonLd)
 	}
 }
+

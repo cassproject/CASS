@@ -815,7 +815,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass.js.html#l41761"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41761</code></a>
+            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7155"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7155</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -847,16 +847,6 @@ Output is encoded in base64 for easier handling.</p>
                     <ul class="index-list methods">
                             <li class="index-item method">
                                 <a href="#method_decrypt">decrypt</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_decrypt">decrypt</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_encrypt">encrypt</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -972,103 +962,6 @@ Returns plaintext as a string (Sequence of bytes, no encoding).</p>
 
 
 </div>
-<div id="method_decrypt" class="method item">
-    <h3 class="name"><code>decrypt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>ciphertext</code>
-                </li>
-                <li class="arg">
-                        <code>secret</code>
-                </li>
-                <li class="arg">
-                        <code>iv</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41793"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41793</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Decrypts ciphertext using AES-256-CTR.
-Ciphertext must be base64 encoded ciphertext.
-Returns plaintext as a string (Sequence of bytes, no encoding).</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">ciphertext</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Ciphertext to decrypt.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">secret</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Secret to use to decrypt.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">iv</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Initialization Vector to use to decrypt.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-                    <p>Plaintext with no encoding.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_encrypt" class="method item">
     <h3 class="name"><code>encrypt</code></h3>
 
@@ -1101,103 +994,6 @@ Returns plaintext as a string (Sequence of bytes, no encoding).</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_ec.crypto.js.html#l7165"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7165</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Encrypts plaintext using AES-256-CTR.
-Plaintext is treated as as a sequence of bytes, does not perform UTF8 decoding.
-Returns base64 encoded ciphertext.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">plaintext</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Text to encrypt.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">secret</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Secret to use to encrypt.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">iv</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>Initialization Vector to use to encrypt.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-                    <p>Ciphertext encoded using base64.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_encrypt" class="method item">
-    <h3 class="name"><code>encrypt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>plaintext</code>
-                </li>
-                <li class="arg">
-                        <code>secret</code>
-                </li>
-                <li class="arg">
-                        <code>iv</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass.js.html#l41771"><code>src&#x2F;main&#x2F;js&#x2F;cass.js:41771</code></a>
         </p>
 
 
