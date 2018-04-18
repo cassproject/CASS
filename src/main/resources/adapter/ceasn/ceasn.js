@@ -110,30 +110,30 @@ function cassFrameworkAsCeasn() {
                         competencies[r.target]["ceasn:narrowAlignment"].push(r.source);
             }
             else {
-            EcArray.setRemove(f.competency, r.target);
+                EcArray.setRemove(f.competency, r.target);
 
-            if (r.target == f.id || r.target == f.shortId()) continue;
+                if (r.target == f.id || r.target == f.shortId()) continue;
 
-            if (competencies[r.source] != null)
-                if (competencies[r.source]["ceasn:isChildOf"] == null)
-                    competencies[r.source]["ceasn:isChildOf"] = [];
-
-            if (competencies[r.source] != null)
-                if (competencies[r.target] != null)
-                    competencies[r.source]["ceasn:isChildOf"].push(competencies[r.target].id);
-                else
-                    competencies[r.source]["ceasn:isChildOf"].push(r.target);
-
-            if (competencies[r.target] != null)
-                if (competencies[r.target]["ceasn:hasChild"] == null)
-                    competencies[r.target]["ceasn:hasChild"] = [];
-
-            if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:hasChild"].push(competencies[r.source].id);
-                else
-                    competencies[r.target]["ceasn:hasChild"].push(r.source);
-        }
+                    if (competencies[r.source]["ceasn:isChildOf"] == null)
+                        competencies[r.source]["ceasn:isChildOf"] = [];
+
+                if (competencies[r.source] != null)
+                    if (competencies[r.target] != null)
+                        competencies[r.source]["ceasn:isChildOf"].push(competencies[r.target].id);
+                    else
+                        competencies[r.source]["ceasn:isChildOf"].push(r.target);
+
+                if (competencies[r.target] != null)
+                    if (competencies[r.target]["ceasn:hasChild"] == null)
+                        competencies[r.target]["ceasn:hasChild"] = [];
+
+                if (competencies[r.target] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target]["ceasn:hasChild"].push(competencies[r.source].id);
+                    else
+                        competencies[r.target]["ceasn:hasChild"].push(r.source);
+            }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO)
             if (r.target.indexOf("data") != 0 && r.source.indexOf("data") != 0) {
@@ -287,10 +287,12 @@ function stripNonCe(f) {
                         if (k.indexOf("ceasn:weight") != 0)
                             if (k.indexOf("ceasn:derivedFrom") != 0)
                                 if (k.indexOf("ceasn:isTopChildOf") != 0)
+                                    if (k.indexOf("ceasn:isPartOf") != 0)
                                     if (k.indexOf("ceasn:listID") != 0)
                                         if (k.indexOf("ceasn:dateCopyrighted") != 0)
                                             if (k.indexOf("ceasn:dateCreated") != 0)
-                                            if (k.indexOf("ceasn:dateValidFrom") != 0)
+                                                if (k.indexOf("ceasn:dateValidFrom") != 0)
+                                                    if (k.indexOf("ceasn:rights") != 0)
                                                 if (k.indexOf("ceasn:dateValidUntil") != 0)
                                                     if (k.indexOf("ceasn:license") != 0)
                                                         if (k.indexOf("ceasn:rightsHolder") != 0)
