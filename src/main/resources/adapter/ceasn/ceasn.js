@@ -273,8 +273,8 @@ function cassFrameworkAsCeasn() {
     results.push(f);
     delete f["@context"];
     var r = {};
-    r["@graph"] = results;
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+    r["@graph"] = results;
     return JSON.stringify(r, null, 2);
 }
 
