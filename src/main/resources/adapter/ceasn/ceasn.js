@@ -85,6 +85,31 @@ function cassFrameworkAsCeasn() {
         var r = EcAlignment.getBlocking(f.relation[i]);
         if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
+            if (f.competency.indexOf(r.target) == -1)
+            {
+                if (r.target == f.id || r.target == f.shortId()) continue;
+
+                if (competencies[r.source] != null)
+                    if (competencies[r.source]["ceasn:broadAlignment"] == null)
+                        competencies[r.source]["ceasn:broadAlignment"] = [];
+
+                if (competencies[r.source] != null)
+                    if (competencies[r.target] != null)
+                        competencies[r.source]["ceasn:broadAlignment"].push(competencies[r.target].id);
+                    else
+                        competencies[r.source]["ceasn:broadAlignment"].push(r.target);
+
+                if (competencies[r.target] != null)
+                    if (competencies[r.target]["ceasn:narrowAlignment"] == null)
+                        competencies[r.target]["ceasn:narrowAlignment"] = [];
+
+                if (competencies[r.target] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target]["ceasn:narrowAlignment"].push(competencies[r.source].id);
+                    else
+                        competencies[r.target]["ceasn:narrowAlignment"].push(r.source);
+            }
+            else {
             EcArray.setRemove(f.competency, r.target);
 
             if (r.target == f.id || r.target == f.shortId()) continue;
@@ -108,6 +133,7 @@ function cassFrameworkAsCeasn() {
                     competencies[r.target]["ceasn:hasChild"].push(competencies[r.source].id);
                 else
                     competencies[r.target]["ceasn:hasChild"].push(r.source);
+        }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO)
             if (r.target.indexOf("data") != 0 && r.source.indexOf("data") != 0) {
