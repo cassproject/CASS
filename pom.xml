@@ -269,14 +269,14 @@
 						<goals>
 							<goal>minify</goal>
 						</goals>
-						<phase>process-sources</phase>
+						<phase>process-resources</phase>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.14</version>
+				<version>1.16</version>
 				<configuration>
 					<verbose>true</verbose>
 				</configuration>
@@ -286,7 +286,7 @@
 						<goals>
 							<goal>update-file-header</goal>
 						</goals>
-						<phase>prepare-package</phase>
+						<phase>process-sources</phase>
 						<configuration>
 							<licenseName>apache_v2</licenseName>
 							<organizationName>Eduworks Corporation and other contributing parties.</organizationName>
