@@ -2,6 +2,9 @@
 # CASS
 Competency and Skills Service -- Competency Management
 
+Stable: 0.3.x
+Development: 0.4.x
+
 [High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)
 
