@@ -65,7 +65,7 @@ add-apt-repository ppa:webupd8team/java
 apt-get -qqy update
 apt-get -qqy remove tomcat7 maven
 apt-get -qqy autoremove
-apt-get -qqy install oracle-java8-installer
+apt-get -qqy -o "DPkg::Options::=--force-confold" -o "DPkg::Options::=--force-confdef" install oracle-java8-installer
 echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat7
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/java/jdk1.8.0_144/jre/bin/java" ];
@@ -86,7 +86,7 @@ if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
 echo -----
 echo Installing git...
-apt-get -qqy install git
+apt-get -qqy -o "DPkg::Options::=--force-confold" -o "DPkg::Options::=--force-confdef" install git
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
@@ -99,7 +99,7 @@ if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
 echo -----
 echo Installing Maven...
-apt-get -qqy install maven
+apt-get -qqy -o "DPkg::Options::=--force-confold" -o "DPkg::Options::=--force-confdef" install maven
 fi
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/bin/mvn" ];
  then
@@ -114,7 +114,7 @@ if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat 7...
-apt-get -qqy install tomcat7
+apt-get -qqy -o "DPkg::Options::=--force-confold" -o "DPkg::Options::=--force-confdef" install tomcat7
 mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
