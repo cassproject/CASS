@@ -51,6 +51,7 @@ echo Updating Repositories...
 if [ "$platformDebian" -ne 0 ];
  then
 apt-get -qqy update
+apt-get -qqy install curl software-properties-common
 fi
 if [ "$platformFedora" -ne 0 ];
  then
