@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Object that holds the Moodle Adapter configuration values returned
  *  from the server and provides methods for saving new config values

@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 /**
  *  Parent class of all view manager classes, stores a cache of the views and
  *  their corresponding DOM selectors and provides functions for setting a view

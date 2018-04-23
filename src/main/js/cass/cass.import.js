@@ -17,7 +17,6 @@
  * limitations under the License.
  * --END_LICENSE--
  */
-
 var PapaParseParams = function() {};
 PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
     prototype.complete = null;
