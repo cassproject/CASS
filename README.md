@@ -2,6 +2,9 @@
 # CASS
 Competency and Skills Service -- Competency Management
 
+[High level documentation](https://docs.cassproject.org)
+[Developer documentation](https://devs.cassproject.org)
+
 # Purpose of this Document
 This document is intended to act as a technical guide to the installation of CASS.
 
