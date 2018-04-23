@@ -318,6 +318,8 @@
 							<excludes>
 								<exclude>**/xml2json.js</exclude>
 								<exclude>**/stjs.js</exclude>
+								<exclude>**/cass.js</exclude>
+								<exclude>**/cass.min.js</exclude>
 								<exclude>**/pem-jwk.js</exclude>
 								<exclude>**/require.js</exclude>
 								<exclude>**/jsonld.js</exclude>
