@@ -2,7 +2,7 @@
 # CASS
 Competency and Skills Service -- Competency Management
 
-[High level documentation](https://docs.cassproject.org)
+[High level documentation](https://docs.cassproject.org)  
 [Developer documentation](https://devs.cassproject.org)
 
 # Purpose of this Document
