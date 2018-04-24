@@ -80,13 +80,12 @@ function cassFrameworkAsCeasn() {
     }
 
     for (var i = 0; i < f.relation.length; i++) {
-    	//Workaround due to bug in 1.3.0
-    	if (EcRepository.getBlocking(f.relation[i]) == null) continue;
+        //Workaround due to bug in 1.3.0
+        if (EcRepository.getBlocking(f.relation[i]) == null) continue;
         var r = EcAlignment.getBlocking(f.relation[i]);
         if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
-            if (f.competency.indexOf(r.target) == -1)
-            {
+            if (f.competency.indexOf(r.target) == -1) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
@@ -210,28 +209,27 @@ function cassFrameworkAsCeasn() {
         }
         f.competency.push(c.id);
         if (c.name == null || c.name == "")
-        if (c.description != null && c.description != "")
-        {
-        	c.name = c.description;
-        	delete c.description;
-        }
+            if (c.description != null && c.description != "") {
+                c.name = c.description;
+                delete c.description;
+            }
         if (c["ceterms:ctid"] == null) {
             if (c.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
                 c["ceterms:ctid"] = c.getGuid();
             else
-                c["ceterms:ctid"] = new UUID(3,"nil",f.shortId() + c.shortId()).format();
+                c["ceterms:ctid"] = new UUID(3, "nil", f.shortId() + c.shortId()).format();
         }
         if (c["ceterms:ctid"].indexOf("ce-") != 0)
-            c["ceterms:ctid"] = "ce-"+c["ceterms:ctid"];
+            c["ceterms:ctid"] = "ce-" + c["ceterms:ctid"];
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
 
-        if (competencies[id]["ceasn:name"] != null){
-        	competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
-        	delete competencies[id]["ceasn:name"];
+        if (competencies[id]["ceasn:name"] != null) {
+            competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
+            delete competencies[id]["ceasn:name"];
         }
-        if (competencies[id]["ceasn:description"] != null){
-        	competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
-        	delete competencies[id]["ceasn:description"];
+        if (competencies[id]["ceasn:description"] != null) {
+            competencies[id]["ceasn:comment"] = competencies[id]["ceasn:description"];
+            delete competencies[id]["ceasn:description"];
         }
         if (competencies[id]["ceasn:inLanguage"] == null)
             competencies[id]["ceasn:inLanguage"] = "en";
@@ -248,10 +246,10 @@ function cassFrameworkAsCeasn() {
         if (f.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             f["ceterms:ctid"] = f.getGuid();
         else
-            f["ceterms:ctid"] = new UUID(3,"nil",f.shortId()).format();
+            f["ceterms:ctid"] = new UUID(3, "nil", f.shortId()).format();
     }
     if (f["ceterms:ctid"].indexOf("ce-") != 0)
-        f["ceterms:ctid"] = "ce-"+f["ceterms:ctid"];
+        f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
     framework = f;
     delete f.competency;
@@ -288,21 +286,22 @@ function stripNonCe(f) {
                             if (k.indexOf("ceasn:derivedFrom") != 0)
                                 if (k.indexOf("ceasn:isTopChildOf") != 0)
                                     if (k.indexOf("ceasn:isPartOf") != 0)
-                                    if (k.indexOf("ceasn:listID") != 0)
-                                        if (k.indexOf("ceasn:dateCopyrighted") != 0)
-                                            if (k.indexOf("ceasn:dateCreated") != 0)
-                                                if (k.indexOf("ceasn:dateValidFrom") != 0)
-                                                    if (k.indexOf("ceasn:rights") != 0)
-                                                if (k.indexOf("ceasn:dateValidUntil") != 0)
-                                                    if (k.indexOf("ceasn:license") != 0)
-                                                        if (k.indexOf("ceasn:rightsHolder") != 0)
-                                                            if (k.indexOf("ceasn:publicationStatusType") != 0)
-                        if (k.indexOf("ceasn:codedNotation") != 0)
-                            if (k.indexOf("ceasn:competencyText") != 0)
-                                if (EcArray.isArray(f[k]) == false)
-                                    f[k] = [f[k]];
+                                        if (k.indexOf("ceasn:listID") != 0)
+                                            if (k.indexOf("ceasn:dateCopyrighted") != 0)
+                                                if (k.indexOf("ceasn:repositoryDate") != 0)
+                                                    if (k.indexOf("ceasn:dateCreated") != 0)
+                                                        if (k.indexOf("ceasn:dateValidFrom") != 0)
+                                                            if (k.indexOf("ceasn:rights") != 0)
+                                                                if (k.indexOf("ceasn:dateValidUntil") != 0)
+                                                                    if (k.indexOf("ceasn:license") != 0)
+                                                                        if (k.indexOf("ceasn:rightsHolder") != 0)
+                                                                            if (k.indexOf("ceasn:publicationStatusType") != 0)
+                                                                                if (k.indexOf("ceasn:codedNotation") != 0)
+                                                                                    if (k.indexOf("ceasn:competencyText") != 0)
+                                                                                        if (EcArray.isArray(f[k]) == false)
+                                                                                            f[k] = [f[k]];
         if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0)
-        ;
+            ;
         else
             delete f[k];
     }
@@ -532,7 +531,9 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /* global module: false */
     if (typeof define === "function" && typeof define.amd !== "undefined")
     /*  AMD environment  */
-        define(function () { return factory(root); });
+        define(function () {
+            return factory(root);
+        });
     else if (typeof module === "object" && typeof module.exports === "object") {
         /*  CommonJS environment  */
         module.exports = factory(root);
@@ -635,7 +636,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  string to array conversion  */
     var s2a = function (s, _options) {
         /*  determine options  */
-        var options = { ibits: 8, obits: 8, obigendian: true };
+        var options = {ibits: 8, obits: 8, obigendian: true};
         for (var opt in _options)
             if (typeof options[opt] !== "undefined")
                 options[opt] = _options[opt];
@@ -648,7 +649,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         var w;
         var wk = 0;
         var sl = s.length;
-        for (;;) {
+        for (; ;) {
             /*  fetch next octet from string  */
             if (ck === 0)
                 C = s.charCodeAt(i++);
@@ -657,12 +658,12 @@ bindWebService("/ctdlasn", ceasnEndpoint);
 
             /*  place next word into array  */
             if (options.obigendian) {
-                if (wk === 0) w  = (c <<  (options.obits - 8));
-                else          w |= (c << ((options.obits - 8) - wk));
+                if (wk === 0) w = (c << (options.obits - 8));
+                else w |= (c << ((options.obits - 8) - wk));
             }
             else {
-                if (wk === 0) w  = c;
-                else          w |= (c << wk);
+                if (wk === 0) w = c;
+                else w |= (c << wk);
             }
             wk = (wk + 8) % options.obits;
             if (wk === 0) {
@@ -677,7 +678,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  array to string conversion  */
     var a2s = function (a, _options) {
         /*  determine options  */
-        var options = { ibits: 32, ibigendian: true };
+        var options = {ibits: 32, ibigendian: true};
         for (var opt in _options)
             if (typeof options[opt] !== "undefined")
                 options[opt] = _options[opt];
@@ -707,13 +708,16 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         just sufficient enough for the UUID v1 generator and PCG PRNG!  */
 
     /*  UI64 constants  */
-    var UI64_DIGITS     = 8;    /* number of digits */
-    var UI64_DIGIT_BITS = 8;    /* number of bits in a digit */
-    var UI64_DIGIT_BASE = 256;  /* the numerical base of a digit */
+    var UI64_DIGITS = 8;
+    /* number of digits */
+    var UI64_DIGIT_BITS = 8;
+    /* number of bits in a digit */
+    var UI64_DIGIT_BASE = 256;
+    /* the numerical base of a digit */
 
     /*  convert between individual digits and the UI64 representation  */
     var ui64_d2i = function (d7, d6, d5, d4, d3, d2, d1, d0) {
-        return [ d0, d1, d2, d3, d4, d5, d6, d7 ];
+        return [d0, d1, d2, d3, d4, d5, d6, d7];
     };
 
     /*  the zero represented as an UI64  */
@@ -751,8 +755,8 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         var carry = 0;
         for (var i = 0; i < UI64_DIGITS; i++) {
             carry += x[i] + y[i];
-            x[i]   = Math.floor(carry % UI64_DIGIT_BASE);
-            carry  = Math.floor(carry / UI64_DIGIT_BASE);
+            x[i] = Math.floor(carry % UI64_DIGIT_BASE);
+            carry = Math.floor(carry / UI64_DIGIT_BASE);
         }
         return carry;
     };
@@ -762,8 +766,8 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         var carry = 0;
         for (var i = 0; i < UI64_DIGITS; i++) {
             carry += x[i] * n;
-            x[i]   = Math.floor(carry % UI64_DIGIT_BASE);
-            carry  = Math.floor(carry / UI64_DIGIT_BASE);
+            x[i] = Math.floor(carry % UI64_DIGIT_BASE);
+            carry = Math.floor(carry / UI64_DIGIT_BASE);
         }
         return carry;
     };
@@ -789,7 +793,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             }
 
             /*  add carry to remaining digits in zx  */
-            for ( ; j < UI64_DIGITS + UI64_DIGITS - i; j++) {
+            for (; j < UI64_DIGITS + UI64_DIGITS - i; j++) {
                 carry += zx[i + j];
                 zx[i + j] = (carry % UI64_DIGIT_BASE);
                 carry /= UI64_DIGIT_BASE;
@@ -921,7 +925,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  bitwise rotate 32-bit number to the left  */
     var ui32_rol = function (num, cnt) {
         return (
-            ((num <<        cnt ) & 0xFFFFFFFF)
+            ((num << cnt) & 0xFFFFFFFF)
             | ((num >>> (32 - cnt)) & 0xFFFFFFFF)
         );
     };
@@ -929,7 +933,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  calculate the SHA-1 of an array of big-endian words, and a bit length  */
     var sha1_core = function (x, len) {
         /*  perform the appropriate triplet combination function for the current iteration  */
-        function sha1_ft (t, b, c, d) {
+        function sha1_ft(t, b, c, d) {
             if (t < 20) return (b & c) | ((~b) & d);
             if (t < 40) return b ^ c ^ d;
             if (t < 60) return (b & c) | (b & d) | (c & d);
@@ -937,9 +941,9 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         }
 
         /*  determine the appropriate additive constant for the current iteration  */
-        function sha1_kt (t) {
-            return (t < 20) ?  1518500249 :
-                (t < 40) ?  1859775393 :
+        function sha1_kt(t) {
+            return (t < 20) ? 1518500249 :
+                (t < 40) ? 1859775393 :
                     (t < 60) ? -1894007588 :
                         -899497514;
         }
@@ -949,10 +953,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         x[((len + 64 >> 9) << 4) + 15] = len;
 
         var w = Array(80);
-        var a =  1732584193;
-        var b =  -271733879;
+        var a = 1732584193;
+        var b = -271733879;
         var c = -1732584194;
-        var d =   271733878;
+        var d = 271733878;
         var e = -1009589776;
 
         for (var i = 0; i < x.length; i += 16) {
@@ -965,7 +969,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
                 if (j < 16)
                     w[j] = x[i + j];
                 else
-                    w[j] = ui32_rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+                    w[j] = ui32_rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
                 var t = ui32_add(
                     ui32_add(ui32_rol(a, 5), sha1_ft(j, b, c, d)),
                     ui32_add(ui32_add(e, w[j]), sha1_kt(j))
@@ -982,34 +986,38 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             d = ui32_add(d, oldd);
             e = ui32_add(e, olde);
         }
-        return [ a, b, c, d, e ];
+        return [a, b, c, d, e];
     };
 
     /*  calculate the SHA-1 of an octet string  */
     var sha1 = function (s) {
         return a2s(
             sha1_core(
-                s2a(s, { ibits: 8, obits: 32, obigendian: true }),
+                s2a(s, {ibits: 8, obits: 32, obigendian: true}),
                 s.length * 8),
-            { ibits: 32, ibigendian: true });
+            {ibits: 32, ibigendian: true});
     };
 
     /*  calculate the MD5 of an array of little-endian words, and a bit length  */
     var md5_core = function (x, len) {
         /*  basic operations the algorithm uses  */
-        function md5_cmn (q, a, b, x, s, t) {
+        function md5_cmn(q, a, b, x, s, t) {
             return ui32_add(ui32_rol(ui32_add(ui32_add(a, q), ui32_add(x, t)), s), b);
         }
-        function md5_ff (a, b, c, d, x, s, t) {
+
+        function md5_ff(a, b, c, d, x, s, t) {
             return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
         }
-        function md5_gg (a, b, c, d, x, s, t) {
+
+        function md5_gg(a, b, c, d, x, s, t) {
             return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
         }
-        function md5_hh (a, b, c, d, x, s, t) {
+
+        function md5_hh(a, b, c, d, x, s, t) {
             return md5_cmn(b ^ c ^ d, a, b, x, s, t);
         }
-        function md5_ii (a, b, c, d, x, s, t) {
+
+        function md5_ii(a, b, c, d, x, s, t) {
             return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
         }
 
@@ -1017,10 +1025,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         x[len >> 5] |= 0x80 << ((len) % 32);
         x[(((len + 64) >>> 9) << 4) + 14] = len;
 
-        var a =  1732584193;
-        var b =  -271733879;
+        var a = 1732584193;
+        var b = -271733879;
         var c = -1732584194;
-        var d =   271733878;
+        var d = 271733878;
 
         for (var i = 0; i < x.length; i += 16) {
             var olda = a;
@@ -1028,89 +1036,89 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             var oldc = c;
             var oldd = d;
 
-            a = md5_ff(a, b, c, d, x[i+ 0],  7,  -680876936);
-            d = md5_ff(d, a, b, c, x[i+ 1], 12,  -389564586);
-            c = md5_ff(c, d, a, b, x[i+ 2], 17,   606105819);
-            b = md5_ff(b, c, d, a, x[i+ 3], 22, -1044525330);
-            a = md5_ff(a, b, c, d, x[i+ 4],  7,  -176418897);
-            d = md5_ff(d, a, b, c, x[i+ 5], 12,  1200080426);
-            c = md5_ff(c, d, a, b, x[i+ 6], 17, -1473231341);
-            b = md5_ff(b, c, d, a, x[i+ 7], 22,   -45705983);
-            a = md5_ff(a, b, c, d, x[i+ 8],  7,  1770035416);
-            d = md5_ff(d, a, b, c, x[i+ 9], 12, -1958414417);
-            c = md5_ff(c, d, a, b, x[i+10], 17,      -42063);
-            b = md5_ff(b, c, d, a, x[i+11], 22, -1990404162);
-            a = md5_ff(a, b, c, d, x[i+12],  7,  1804603682);
-            d = md5_ff(d, a, b, c, x[i+13], 12,   -40341101);
-            c = md5_ff(c, d, a, b, x[i+14], 17, -1502002290);
-            b = md5_ff(b, c, d, a, x[i+15], 22,  1236535329);
+            a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
+            d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
+            c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
+            b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
+            a = md5_ff(a, b, c, d, x[i + 4], 7, -176418897);
+            d = md5_ff(d, a, b, c, x[i + 5], 12, 1200080426);
+            c = md5_ff(c, d, a, b, x[i + 6], 17, -1473231341);
+            b = md5_ff(b, c, d, a, x[i + 7], 22, -45705983);
+            a = md5_ff(a, b, c, d, x[i + 8], 7, 1770035416);
+            d = md5_ff(d, a, b, c, x[i + 9], 12, -1958414417);
+            c = md5_ff(c, d, a, b, x[i + 10], 17, -42063);
+            b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
+            a = md5_ff(a, b, c, d, x[i + 12], 7, 1804603682);
+            d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
+            c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
+            b = md5_ff(b, c, d, a, x[i + 15], 22, 1236535329);
 
-            a = md5_gg(a, b, c, d, x[i+ 1],  5,  -165796510);
-            d = md5_gg(d, a, b, c, x[i+ 6],  9, -1069501632);
-            c = md5_gg(c, d, a, b, x[i+11], 14,   643717713);
-            b = md5_gg(b, c, d, a, x[i+ 0], 20,  -373897302);
-            a = md5_gg(a, b, c, d, x[i+ 5],  5,  -701558691);
-            d = md5_gg(d, a, b, c, x[i+10],  9,    38016083);
-            c = md5_gg(c, d, a, b, x[i+15], 14,  -660478335);
-            b = md5_gg(b, c, d, a, x[i+ 4], 20,  -405537848);
-            a = md5_gg(a, b, c, d, x[i+ 9],  5,   568446438);
-            d = md5_gg(d, a, b, c, x[i+14],  9, -1019803690);
-            c = md5_gg(c, d, a, b, x[i+ 3], 14,  -187363961);
-            b = md5_gg(b, c, d, a, x[i+ 8], 20,  1163531501);
-            a = md5_gg(a, b, c, d, x[i+13],  5, -1444681467);
-            d = md5_gg(d, a, b, c, x[i+ 2],  9,   -51403784);
-            c = md5_gg(c, d, a, b, x[i+ 7], 14,  1735328473);
-            b = md5_gg(b, c, d, a, x[i+12], 20, -1926607734);
+            a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
+            d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
+            c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
+            b = md5_gg(b, c, d, a, x[i + 0], 20, -373897302);
+            a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
+            d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
+            c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
+            b = md5_gg(b, c, d, a, x[i + 4], 20, -405537848);
+            a = md5_gg(a, b, c, d, x[i + 9], 5, 568446438);
+            d = md5_gg(d, a, b, c, x[i + 14], 9, -1019803690);
+            c = md5_gg(c, d, a, b, x[i + 3], 14, -187363961);
+            b = md5_gg(b, c, d, a, x[i + 8], 20, 1163531501);
+            a = md5_gg(a, b, c, d, x[i + 13], 5, -1444681467);
+            d = md5_gg(d, a, b, c, x[i + 2], 9, -51403784);
+            c = md5_gg(c, d, a, b, x[i + 7], 14, 1735328473);
+            b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
 
-            a = md5_hh(a, b, c, d, x[i+ 5],  4,     -378558);
-            d = md5_hh(d, a, b, c, x[i+ 8], 11, -2022574463);
-            c = md5_hh(c, d, a, b, x[i+11], 16,  1839030562);
-            b = md5_hh(b, c, d, a, x[i+14], 23,   -35309556);
-            a = md5_hh(a, b, c, d, x[i+ 1],  4, -1530992060);
-            d = md5_hh(d, a, b, c, x[i+ 4], 11,  1272893353);
-            c = md5_hh(c, d, a, b, x[i+ 7], 16,  -155497632);
-            b = md5_hh(b, c, d, a, x[i+10], 23, -1094730640);
-            a = md5_hh(a, b, c, d, x[i+13],  4,   681279174);
-            d = md5_hh(d, a, b, c, x[i+ 0], 11,  -358537222);
-            c = md5_hh(c, d, a, b, x[i+ 3], 16,  -722521979);
-            b = md5_hh(b, c, d, a, x[i+ 6], 23,    76029189);
-            a = md5_hh(a, b, c, d, x[i+ 9],  4,  -640364487);
-            d = md5_hh(d, a, b, c, x[i+12], 11,  -421815835);
-            c = md5_hh(c, d, a, b, x[i+15], 16,   530742520);
-            b = md5_hh(b, c, d, a, x[i+ 2], 23,  -995338651);
+            a = md5_hh(a, b, c, d, x[i + 5], 4, -378558);
+            d = md5_hh(d, a, b, c, x[i + 8], 11, -2022574463);
+            c = md5_hh(c, d, a, b, x[i + 11], 16, 1839030562);
+            b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
+            a = md5_hh(a, b, c, d, x[i + 1], 4, -1530992060);
+            d = md5_hh(d, a, b, c, x[i + 4], 11, 1272893353);
+            c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
+            b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
+            a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
+            d = md5_hh(d, a, b, c, x[i + 0], 11, -358537222);
+            c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
+            b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
+            a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
+            d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
+            c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
+            b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
 
-            a = md5_ii(a, b, c, d, x[i+ 0],  6,  -198630844);
-            d = md5_ii(d, a, b, c, x[i+ 7], 10,  1126891415);
-            c = md5_ii(c, d, a, b, x[i+14], 15, -1416354905);
-            b = md5_ii(b, c, d, a, x[i+ 5], 21,   -57434055);
-            a = md5_ii(a, b, c, d, x[i+12],  6,  1700485571);
-            d = md5_ii(d, a, b, c, x[i+ 3], 10, -1894986606);
-            c = md5_ii(c, d, a, b, x[i+10], 15,    -1051523);
-            b = md5_ii(b, c, d, a, x[i+ 1], 21, -2054922799);
-            a = md5_ii(a, b, c, d, x[i+ 8],  6,  1873313359);
-            d = md5_ii(d, a, b, c, x[i+15], 10,   -30611744);
-            c = md5_ii(c, d, a, b, x[i+ 6], 15, -1560198380);
-            b = md5_ii(b, c, d, a, x[i+13], 21,  1309151649);
-            a = md5_ii(a, b, c, d, x[i+ 4],  6,  -145523070);
-            d = md5_ii(d, a, b, c, x[i+11], 10, -1120210379);
-            c = md5_ii(c, d, a, b, x[i+ 2], 15,   718787259);
-            b = md5_ii(b, c, d, a, x[i+ 9], 21,  -343485551);
+            a = md5_ii(a, b, c, d, x[i + 0], 6, -198630844);
+            d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
+            c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
+            b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
+            a = md5_ii(a, b, c, d, x[i + 12], 6, 1700485571);
+            d = md5_ii(d, a, b, c, x[i + 3], 10, -1894986606);
+            c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
+            b = md5_ii(b, c, d, a, x[i + 1], 21, -2054922799);
+            a = md5_ii(a, b, c, d, x[i + 8], 6, 1873313359);
+            d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
+            c = md5_ii(c, d, a, b, x[i + 6], 15, -1560198380);
+            b = md5_ii(b, c, d, a, x[i + 13], 21, 1309151649);
+            a = md5_ii(a, b, c, d, x[i + 4], 6, -145523070);
+            d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
+            c = md5_ii(c, d, a, b, x[i + 2], 15, 718787259);
+            b = md5_ii(b, c, d, a, x[i + 9], 21, -343485551);
 
             a = ui32_add(a, olda);
             b = ui32_add(b, oldb);
             c = ui32_add(c, oldc);
             d = ui32_add(d, oldd);
         }
-        return [ a, b, c, d ];
+        return [a, b, c, d];
     };
 
     /*  calculate the MD5 of an octet string  */
     var md5 = function (s) {
         return a2s(
             md5_core(
-                s2a(s, { ibits: 8, obits: 32, obigendian: false }),
+                s2a(s, {ibits: 8, obits: 32, obigendian: false}),
                 s.length * 8),
-            { ibits: 32, ibigendian: false });
+            {ibits: 32, ibigendian: false});
     };
 
     /*  PCG Pseudo-Random-Number-Generator (PRNG)
@@ -1122,9 +1130,9 @@ bindWebService("/ctdlasn", ceasnEndpoint);
 
     var PCG = function (seed) {
         /*  pre-load some "magic" constants  */
-        this.mul   = ui64_d2i(0x58, 0x51, 0xf4, 0x2d, 0x4c, 0x95, 0x7f, 0x2d);
-        this.inc   = ui64_d2i(0x14, 0x05, 0x7b, 0x7e, 0xf7, 0x67, 0x81, 0x4f);
-        this.mask  = ui64_d2i(0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff);
+        this.mul = ui64_d2i(0x58, 0x51, 0xf4, 0x2d, 0x4c, 0x95, 0x7f, 0x2d);
+        this.inc = ui64_d2i(0x14, 0x05, 0x7b, 0x7e, 0xf7, 0x67, 0x81, 0x4f);
+        this.mask = ui64_d2i(0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff);
 
         /*  generate an initial internal state  */
         this.state = ui64_clone(this.inc);
@@ -1176,7 +1184,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
 
     /*  internal state  */
     var time_last = 0;
-    var time_seq  = 0;
+    var time_seq = 0;
 
     /*  the API constructor  */
     var UUID = function () {
@@ -1237,14 +1245,22 @@ bindWebService("/ctdlasn", ceasnEndpoint);
 
             /*  store the 60 LSB of the time in the UUID  */
             var ov;
-            ov = ui64_rorn(t, 8); uuid[3] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[2] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[1] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[0] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[5] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[4] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[7] = (ov & 0xFF);
-            ov = ui64_rorn(t, 8); uuid[6] = (ov & 0x0F);
+            ov = ui64_rorn(t, 8);
+            uuid[3] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[2] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[1] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[0] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[5] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[4] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[7] = (ov & 0xFF);
+            ov = ui64_rorn(t, 8);
+            uuid[6] = (ov & 0x0F);
 
             /*  generate a random clock sequence  */
             var clock = prng(2, 255);
@@ -1304,10 +1320,14 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         }
         else if (type === undefined || type === "std") {
             arr = new Array(36);
-            a2hs(this,  0,  3, false, arr,  0); arr[ 8] = "-";
-            a2hs(this,  4,  5, false, arr,  9); arr[13] = "-";
-            a2hs(this,  6,  7, false, arr, 14); arr[18] = "-";
-            a2hs(this,  8,  9, false, arr, 19); arr[23] = "-";
+            a2hs(this, 0, 3, false, arr, 0);
+            arr[8] = "-";
+            a2hs(this, 4, 5, false, arr, 9);
+            arr[13] = "-";
+            a2hs(this, 6, 7, false, arr, 14);
+            arr[18] = "-";
+            a2hs(this, 8, 9, false, arr, 19);
+            arr[23] = "-";
             a2hs(this, 10, 15, false, arr, 24);
             str = arr.join("");
         }
@@ -1329,10 +1349,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             hs2a(str, 0, 35, this, 0);
         else if (type === undefined || type === "std") {
             var map = {
-                "nil":     "00000000-0000-0000-0000-000000000000",
-                "ns:DNS":  "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-                "ns:URL":  "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
-                "ns:OID":  "6ba7b812-9dad-11d1-80b4-00c04fd430c8",
+                "nil": "00000000-0000-0000-0000-000000000000",
+                "ns:DNS": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                "ns:URL": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+                "ns:OID": "6ba7b812-9dad-11d1-80b4-00c04fd430c8",
                 "ns:X500": "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
             };
             if (map[str] !== undefined)
@@ -1340,10 +1360,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             else if (!str.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/))
                 throw new Error("UUID: parse: invalid string representation " +
                     "(expected \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\")");
-            hs2a(str,  0,  7, this,  0);
-            hs2a(str,  9, 12, this,  4);
-            hs2a(str, 14, 17, this,  6);
-            hs2a(str, 19, 22, this,  8);
+            hs2a(str, 0, 7, this, 0);
+            hs2a(str, 9, 12, this, 4);
+            hs2a(str, 14, 17, this, 6);
+            hs2a(str, 19, 22, this, 8);
             hs2a(str, 24, 35, this, 10);
         }
         return this;
