@@ -238,7 +238,7 @@ fi
 
 echo -----
 echo Downloading CASS Repo...
-git clone --recursive https://github.com/cassproject/CASS -b $branch
+git clone --recurse-submodules https://github.com/cassproject/CASS -b $branch
 cd CASS
 echo Compiling CASS...
 mvn -q clean install
