@@ -136,7 +136,10 @@
     <script src="cass.example/js/foundation.min.js"></script>
     <script lang="text/javascript">
         if (location.protocol == "http:") {
-            $("#compus,#viewer,#editor").attr("title", "Global services require your server to run HTTPS. Click to navigate using default servers.").attr("disabled", true);
+            $("#compus").attr("title", "Global services require your server to run HTTPS. Click to navigate using default servers.").attr("disabled", true);
+
+            $("#viewer").attr("href", "cass-editor/index.html" + "?view=true&server=" + location.origin);
+            $("#editor").attr("href", "cass-editor/index.html" + "?server=" + location.origin);
         } else {
             $("#compus").attr("href", $("#compus").attr("href") + "?server=" + location.origin);
             $("#viewer").attr("href", $("#viewer").attr("href") + "?server=" + location.origin);
