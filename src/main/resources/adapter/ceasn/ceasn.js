@@ -213,16 +213,20 @@ function cassFrameworkAsCeasn() {
                 c.name = c.description;
                 delete c.description;
             }
-        if (c["ceterms:ctid"] == null) {
-            if (c.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                c["ceterms:ctid"] = c.getGuid();
-            else
-                c["ceterms:ctid"] = new UUID(3, "nil", f.shortId() + c.shortId()).format();
-        }
-        if (c["ceterms:ctid"].indexOf("ce-") != 0)
-            c["ceterms:ctid"] = "ce-" + c["ceterms:ctid"];
+
+        var guid = c.getGuid();
+        var uuid = new UUID(3, "nil", f.shortId() + c.shortId()).format();
+
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
 
+        if (competencies[id]["ceterms:ctid"] == null) {
+            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+                competencies[id]["ceterms:ctid"] = guid;
+            else
+                competencies[id]["ceterms:ctid"] = uuid;
+        }
+        if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
+            competencies[id]["ceterms:ctid"] = "ce-" + c["ceterms:ctid"];
         if (competencies[id]["ceasn:name"] != null) {
             competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
             delete competencies[id]["ceasn:name"];
@@ -242,20 +246,22 @@ function cassFrameworkAsCeasn() {
 
     if (f.description == null)
         f.description = f.name;
+    framework = f;
+    delete f.competency;
+    var guid = f.getGuid();
+    var uuid = new UUID(3, "nil", f.shortId()).format();
+    f = jsonLdCompact(f.toJson(), ctx);
+    if (f["ceasn:inLanguage"] == null)
+        f["ceasn:inLanguage"] = "en";
     if (f["ceterms:ctid"] == null) {
-        if (f.getGuid().matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-            f["ceterms:ctid"] = f.getGuid();
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+            f["ceterms:ctid"] = guid;
         else
-            f["ceterms:ctid"] = new UUID(3, "nil", f.shortId()).format();
+            f["ceterms:ctid"] = uuid;
     }
     if (f["ceterms:ctid"].indexOf("ce-") != 0)
         f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
-    framework = f;
-    delete f.competency;
-    f = jsonLdCompact(f.toJson(), ctx);
-    if (f["ceasn:inLanguage"] == null)
-        f["ceasn:inLanguage"] = "en";
     var results = [];
     for (var k in competencies) {
         var found = false;
