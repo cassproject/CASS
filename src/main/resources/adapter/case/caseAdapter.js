@@ -40,8 +40,16 @@ cfGetFramework = function (f) {
     result.copyFrom(f);
     return result;
 };
-
+var cfGetContext = function(){
+    if (this.cfContext == null)
+        this.cfContext = JSON.stringify(httpGet("http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"));
+    return this.cfContext;
+}
 cfGetCompetency = function (c) {
+    var cache = JSON.stringify(c)
+    if (this[cache] != null)
+        return this[cache];
+    this[cache] = null;
     var query = queryParse.call(this);
     var url = null;
     if (!EcObject.isObject(c)) {
@@ -68,7 +76,28 @@ cfGetCompetency = function (c) {
                 competency.copyFrom(result[0]);
             }
         }
+        if (competency == null) return null;
         var c = new EcCompetency();
+        c.copyFrom(competency);
+    }
+    this[cache] = c;
+    return c;
+};
+cfGetAlignment = function (c) {
+    var query = queryParse.call(this);
+    var url = null;
+    if (!EcObject.isObject(c)) {
+        url = c;
+        c = null;
+    }
+    if (c == null || c === undefined) {
+        var competency = null;
+        if (competency == null && url != null)
+            competency = EcAlignment.getBlocking(url);
+        if (competency == null && url != null)
+            competency = EcAlignment.getBlocking(thisEndpoint() + "data/" + EcCrypto.md5(url));
+        if (competency == null) return null;
+        var a = new EcAlignment();
         c.copyFrom(competency);
     }
     return c;
@@ -76,9 +105,22 @@ cfGetCompetency = function (c) {
 cfClean = function (o) {
     o = JSON.parse(JSON.stringify(o));
     for (var key in o) {
-        if (key.contains(":") || key.contains("@"))
+        if (key.contains("/"))
             delete o[key];
+        if (key.contains("case:")) {
+            o[key.replace("case:", "")] = o[key];
+            delete o[key];
+        }
     }
+
+    var ordered = {};
+    Object.keys(o).sort().forEach(function (key) {
+        ordered[key] = o[key];
+        delete o[key];
+    });
+    Object.keys(ordered).forEach(function (key) {
+        o[key] = ordered[key];
+    });
     return o;
 }
 
@@ -94,10 +136,14 @@ cfDocuments = function (f) {
     f = cfGetFramework.call(this, f);
     var name = f.getName();
     var guid = f.getGuid();
+    if (guid.startsWith("ce-"))
+        guid = guid.substring(3);
     f.context = "http://schema.cassproject.org/0.3/cass2case";
+    if (f["schema:identifier"] == null)
+        f["schema:identifier"] = guid;
     f = jsonLdExpand(f.toJson());
-    var f2 = jsonLdCompact(JSON.stringify(f), "http://schema.cassproject.org/0.3/sampleCase");
-    f2.identifier = guid;
+    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     f2.CFPackageURI = {
@@ -156,9 +202,14 @@ cfItems = function (f, fw) {
     result = {};
     var shortId = f.shortId();
     var guid = f.getGuid();
+    if (guid.startsWith("ce-"))
+        guid = guid.substring(3);
+    if (f["schema:identifier"] == null)
+        f["schema:identifier"] = guid;
     f.context = "http://schema.cassproject.org/0.3/cass2case";
     f = jsonLdExpand(f.toJson());
-    var f2 = jsonLdCompact(JSON.stringify(f), "http://schema.cassproject.org/0.3/sampleCase");
+    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
     if (f2.title != null)
         f2.fullStatement = f2.title;
@@ -184,7 +235,6 @@ cfItems = function (f, fw) {
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
-    f2.identifier = guid;
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
@@ -199,36 +249,33 @@ cfItems = function (f, fw) {
 */
 cfItemAssociations = function (f, fw) {
     var query = queryParse.call(this);
-    if (f == null || f === undefined) {
-        var framework = null;
-        if (framework == null)
-            framework = skyrepoGet.call(this, query);
-        f = new EcAlignment();
-        f.copyFrom(framework);
-    }
+    f = cfGetAlignment.call(this, f);
     result = {};
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
     var shortId = f.shortId();
     f.context = "http://schema.cassproject.org/0.3/cass2case";
     f = jsonLdExpand(f.toJson());
-//    f = jsonLdCompact(JSON.stringify(f),"http://schema.cassproject.org/0.3/cass2case");
-    var f2 = jsonLdCompact(JSON.stringify(f), "http://schema.cassproject.org/0.3/sampleCase");
-    f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2.relationType];
-    delete f2.relationType;
-    if (f2.destinationNodeURI == null) return null;
-    if (f2.originNodeURI == null) return null;
-    var destNode = cfGetCompetency(f2.destinationNodeURI.uri);
-    var t = destNode;
-    destNode = new EcCompetency();
-    destNode.copyFrom(t);
-    var sourceNode = cfGetCompetency(f2.originNodeURI.uri);
-    t = sourceNode;
-    sourceNode = new EcCompetency();
-    sourceNode.copyFrom(t);
+    var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
+    // console.log(JSON.stringify(f2,null,2));
+    f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2["case:relationType"]];
+    delete f2["case:relationType"];
+    if (f2["case:destinationNodeURI"] == null) return null;
+    if (f2["case:originNodeURI"] == null) return null;
+    if (f2["case:destinationNodeURI"].id == fw.id)
+        return null;
+    var destNode = cfGetCompetency(f2["case:destinationNodeURI"].id);
+    var sourceNode = cfGetCompetency(f2["case:originNodeURI"].id);
+    if (destNode == null) return null;
+    if (sourceNode == null) return null;
+    delete f2["case:destinationNodeURI"];
+    delete f2["case:originNodeURI"];
+    f2.destinationNodeURI = {};
     f2.destinationNodeURI.title = destNode.name;
     f2.destinationNodeURI.uri = JSON.parse(cfItems.call(this, destNode, fw)).uri;
     f2.destinationNodeURI.identifier = JSON.parse(cfItems.call(this, destNode, fw)).identifier;
+    f2.originNodeURI = {};
     f2.originNodeURI.title = sourceNode.name;
     f2.originNodeURI.uri = JSON.parse(cfItems.call(this, sourceNode, fw)).uri;
     f2.originNodeURI.identifier = JSON.parse(cfItems.call(this, sourceNode, fw)).identifier;
@@ -293,15 +340,19 @@ cfPackages = function (f) {
     var f2 = result;
     f = cfGetFramework.call(this, f);
 
+    result["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     result.CFDocument = JSON.parse(cfDocuments.call(this, f));
+    delete result.CFDocument["@context"];
     result.CFItems = [];
     if (f.competency != null)
         for (var i = 0; i < f.competency.length; i++) {
             var c = EcCompetency.getBlocking(f.competency[i]);
             if (c != null)
-                c= JSON.parse(cfItems(c, f));
-            if (c != null)
+                c = JSON.parse(cfItems(c, f));
+            if (c != null) {
+                delete c["@context"];
                 result.CFItems.push(c);
+            }
         }
     result.CFAssociations = [];
     if (f.relation != null)
@@ -309,8 +360,10 @@ cfPackages = function (f) {
             var a = EcAlignment.getBlocking(f.relation[i]);
             if (a != null)
                 a = JSON.parse(cfItemAssociations(a, f));
-            if (a != null)
+            if (a != null) {
+                delete a["@context"];
                 result.CFAssociations.push(a);
+            }
         }
     result.CFDefinitions = {CFConcepts: [], CFSubject: [], CFLicenses: [], CFItemTypes: [], CFAssociationGroupings: []};
     f2 = cfClean(f2);
