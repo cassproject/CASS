@@ -80,12 +80,10 @@ function cassFrameworkAsCeasn() {
     }
 
     for (var i = 0; i < f.relation.length; i++) {
-        //Workaround due to bug in 1.3.0
-        if (EcRepository.getBlocking(f.relation[i]) == null) continue;
         var r = EcAlignment.getBlocking(f.relation[i]);
         if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
-            if (f.competency.indexOf(r.target) == -1) {
+            if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
 
                 if (competencies[r.source] != null)
@@ -135,49 +133,48 @@ function cassFrameworkAsCeasn() {
             }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO)
-            if (r.target.indexOf("data") != 0 && r.source.indexOf("data") != 0) {
+        {
+            if (competencies[r.target] != null)
+                if (competencies[r.target]["ceasn:exactAlignment"] == null)
+                    competencies[r.target]["ceasn:exactAlignment"] = [];
 
-                if (competencies[r.target] != null)
-                    if (competencies[r.target].sameAs == null)
-                        competencies[r.target].sameAs = [];
+            if (competencies[r.source] != null)
+                if (competencies[r.source]["ceasn:exactAlignment"] == null)
+                    competencies[r.source]["ceasn:exactAlignment"] = [];
 
+            if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    if (competencies[r.source].sameAs == null)
-                        competencies[r.source].sameAs = [];
+                    competencies[r.target]["ceasn:exactAlignment"].push(competencies[r.source].id);
+                else
+                    competencies[r.target]["ceasn:exactAlignment"].push(r.source);
 
+            if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    if (competencies[r.source] != null)
-                        competencies[r.target].sameAs.push(competencies[r.source].id);
-                    else
-                        competencies[r.target].sameAs.push(r.source);
-
-                if (competencies[r.source] != null)
-                    if (competencies[r.target] != null)
-                        competencies[r.source].sameAs.push(competencies[r.target].id);
-                    else
-                        competencies[r.source].sameAs.push(r.target);
-            }
+                    competencies[r.source]["ceasn:exactAlignment"].push(competencies[r.target].id);
+                else
+                    competencies[r.source]["ceasn:exactAlignment"].push(r.target);
+        }
         if (r.relationType == Relation.IS_RELATED_TO) {
             EcArray.setRemove(f.competency, r.source);
             if (competencies[r.target] != null)
-                if (competencies[r.target]["ceasn:relatedMatch"] == null)
-                    competencies[r.target]["ceasn:relatedMatch"] = [];
+                if (competencies[r.target]["ceasn:minorAlignment"] == null)
+                    competencies[r.target]["ceasn:minorAlignment"] = [];
 
             if (competencies[r.source] != null)
-                if (competencies[r.source]["ceasn:relatedMatch"] == null)
-                    competencies[r.source]["ceasn:relatedMatch"] = [];
+                if (competencies[r.source]["ceasn:minorAlignment"] == null)
+                    competencies[r.source]["ceasn:minorAlignment"] = [];
 
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:relatedMatch"].push(competencies[r.source].id);
+                    competencies[r.target]["ceasn:minorAlignment"].push(competencies[r.source].id);
                 else
-                    competencies[r.target]["ceasn:relatedMatch"].push(r.source);
+                    competencies[r.target]["ceasn:minorAlignment"].push(r.source);
 
             if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    competencies[r.source]["ceasn:relatedMatch"].push(competencies[r.target].id);
+                    competencies[r.source]["ceasn:minorAlignment"].push(competencies[r.target].id);
                 else
-                    competencies[r.source]["ceasn:relatedMatch"].push(r.target);
+                    competencies[r.source]["ceasn:minorAlignment"].push(r.target);
         }
         if (r.relationType == Relation.REQUIRES) {
             EcArray.setRemove(f.competency, r.source);
@@ -226,7 +223,7 @@ function cassFrameworkAsCeasn() {
                 competencies[id]["ceterms:ctid"] = uuid;
         }
         if (competencies[id]["ceterms:ctid"].indexOf("ce-") != 0)
-            competencies[id]["ceterms:ctid"] = "ce-" + c["ceterms:ctid"];
+            competencies[id]["ceterms:ctid"] = "ce-" + competencies[id]["ceterms:ctid"];
         if (competencies[id]["ceasn:name"] != null) {
             competencies[id]["ceasn:competencyText"] = competencies[id]["ceasn:name"];
             delete competencies[id]["ceasn:name"];
@@ -311,6 +308,14 @@ function stripNonCe(f) {
         else
             delete f[k];
     }
+    var ordered = {};
+    Object.keys(f).sort().forEach(function(key) {
+        ordered[key] = f[key];
+        delete f[key];
+    });
+    Object.keys(ordered).forEach(function(key) {
+        f[key] = ordered[key];
+    });
     return f;
 }
 
