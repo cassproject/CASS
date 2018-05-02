@@ -134,8 +134,6 @@ embedCFPackageIntoFramework = function(f,document){
 }
 
 ingestCase = function () {
-    var repo = new EcRepository();
-    repo.selectedServer = thisEndpoint();
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl == null)
         return "Please specify caseEndpoint = <target server> -- we'll add the /ims/case/v1p0.";
@@ -147,7 +145,6 @@ ingestCase = function () {
         };
     else
         documents = caseInterface.CFDocuments.call(this);
-    console.log(JSON.stringify(documents));
     var dx;
     for (var i = 0; i < documents.CFDocuments.length; i++) {
         var document = documents.CFDocuments[i];
@@ -156,7 +153,12 @@ ingestCase = function () {
         for (var j = 0; j < listToSave.length; j++) {
             var internalId = stringToHex(md5(listToSave[j].id));
             var version = date(listToSave[j]["schema:dateModified"], null, true);
-            repo.saveTo(listToSave[j],console.log,console.log);
+            skyrepoPut.call(this, {
+                obj: listToSave[j].toJson(),
+                type: listToSave[j].getFullType().replace("http://", "").replaceAll("/", "."),
+                id: internalId,
+                version: version
+            });
         }
     }
     return JSON.stringify(dx, null, 2);
