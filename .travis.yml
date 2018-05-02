@@ -6,7 +6,9 @@ deploy:
   provider: releases
   api_key:
     secure: y0AeI/3KGRm/h1WSAFji1mzABE9qBiZYmX0jat2URQvPZNgz6QSA0KDe6ZO2OGLy3VO1fCgAi7Aw23SWHonE0FCUBxxzZW/+Gtj19IEsIHC2W19N22lBV0c44TPlKe+LoUOH6RhUPYYO7hCvo2+IE4CtylBYnVvVP+SOJIbRpdc7Ky+SjHdxbbK6XUEo8rfvDsZl/UQZiKTf+Ydezs6yktGFT3PRsPUU7YXqBm0OC/2G6LeADC70YByuXmlADWcDsiyaE44DN+1EbkAWRkXQ508ckvM8jyKQ5AeC1jcGdpbwXT3jYp2hTFYThtHuGaidU9tKlP+7UhuUm+iYPQXSIKdVe0yQjZkrWHzXfWFfQ2SkZiqTwLSsbejzB03ozPBtq/Fg7BA+epTXGgN6iKjjC/i5Rv2/9RbtxGqGmlEuxENPYw8KT2yt5AwgOoHbhDiXMcMDXrRY1STboskBY95tKYY3GXBDpWNITtxYl9qzWsfrxbDFu0KjEeZWmQhFC2LFRMzAKVH+rER8sWIyqvregvis75nw6u6izyLDaKcvp7hdbyykxCWnqge9zGw91J3wHEdM49wMUr6f/kTQRGzDv/79afNN97ZqCriqBo0HJg9eIwqyz3kYv7aKlkudjkjKqd0WbVFy7+caJRYKcPzG7O4pJGhEtIUCXcPtKV2iZgI=
-  file: target/cass.war
+  file:
+    - target/cass.war
+    - src/main/js/cass.js
   skip_cleanup: true
   on:
     repo: cassproject/CASS
