@@ -89,8 +89,23 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.eduworks</groupId>
-			<artifactId>ew.levr.ebac.skyid</artifactId>
-			<version>5.11.0</version>
+			<artifactId>ew.levr.security</artifactId>
+			<version>SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>ew.levr.net</artifactId>
+			<version>SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>ew.levr.base</artifactId>
+			<version>SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>ew.levr.rdf</artifactId>
+			<version>SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.websocket</groupId>
