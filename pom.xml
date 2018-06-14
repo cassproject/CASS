@@ -95,6 +95,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
+			<artifactId>ew.levr.db.mapdb</artifactId>
+			<version>${ew-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.net</artifactId>
 			<version>${ew-version}</version>
 		</dependency>

@@ -29,7 +29,7 @@ postData=#fileFromDatastream(name="data");
 postObject=postData.fileToString().toObject();
 afterSave=#object(
 	a=afterSave,
-	b=#wsBroadcast(obj=postObject.getByParam(param=#id())),
+	b=#wsBroadcast(obj=postObject.getByParam(param=#id())).call(background="true"),
 	c=#if(operator=postObject.getByParam(param=#type()),operand="Assertion",eq=postObject.openbadgeCheckId())
 );
 

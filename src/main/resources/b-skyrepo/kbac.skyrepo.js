@@ -494,8 +494,10 @@ var endpointData = function() {
         size = 50;
     if (start == null) 
         start = 0;
-    if (q != null) 
+    if (q != null) {
+        (beforeGet).call(this);
         return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores));
+    }
     var methodType = this.params.methodType;
     var parseParams = queryParse(urlRemainder);
     var id = (parseParams)["id"];
@@ -503,11 +505,12 @@ var endpointData = function() {
     var version = (parseParams)["version"];
     if (methodType == "DELETE") {
         (skyrepoDelete).call(this, id, version, type);
-        afterSave();
+        (afterSave).call(this);
         return null;
     } else if (methodType == "POST") {
         var o = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
         if (o == null || o == "") {
+            (beforeGet).call(this);
             o = (skyrepoGet).call(this, id, version, type, null);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
@@ -516,9 +519,10 @@ var endpointData = function() {
             return JSON.stringify(o);
         }
         (skyrepoPut).call(this, o, id, version, type);
-        afterSave();
+        (afterSave).call(this);
         return null;
     } else if (methodType == "GET") {
+        (beforeGet).call(this);
         var o = (skyrepoGet).call(this, id, version, type, null);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
