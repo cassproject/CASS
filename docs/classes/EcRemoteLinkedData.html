@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -865,6 +866,10 @@ permission controls, signing, identifying and locating the object.</p>
                                 <a href="#method_assignId">assignId</a>
 
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_assignId">assignId</a>
+
+                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_atIfy">atIfy</a>
 
@@ -1047,7 +1052,7 @@ permission controls, signing, identifying and locating the object.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l354"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:354</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l371"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:371</code></a>
         </p>
 
 
@@ -1102,7 +1107,7 @@ Note that this method invalidates all signatures.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l387"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:387</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:404</code></a>
         </p>
 
 
@@ -1161,6 +1166,75 @@ Note that this method invalidates all signatures.</p>
                 <p>
                 Defined in
         <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l189"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:189</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Will generate an identifier using the server URL provided (usually from
+an EcRepository) and unique identifier.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">server</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Base URL of the server's repository functionality.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">uniqueIdentifier</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Canonical identifier. Must contain a letter or symbol.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_assignId" class="method item">
+    <h3 class="name"><code>assignId</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>server</code>
+                </li>
+                <li class="arg">
+                        <code>uniqueIdentifier</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:206</code></a>
         </p>
 
 
@@ -1341,7 +1415,7 @@ front of appropriate fields.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l258"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:258</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l261"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:261</code></a>
         </p>
 
 
@@ -1409,7 +1483,7 @@ Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certific
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:244</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l275"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:275</code></a>
         </p>
 
 
@@ -1721,7 +1795,7 @@ the type to be defined in @context.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:478</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l495"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:495</code></a>
         </p>
 
 
@@ -1764,7 +1838,7 @@ the type to be defined in @context.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l500"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:500</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l517"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:517</code></a>
         </p>
 
 
@@ -1807,7 +1881,7 @@ the type to be defined in @context.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l489"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:489</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l506"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:506</code></a>
         </p>
 
 
@@ -1897,7 +1971,7 @@ the type to be defined in @context.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l226"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:226</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l243"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:243</code></a>
         </p>
 
 
@@ -1965,7 +2039,7 @@ Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certific
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l208"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:208</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l225"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:225</code></a>
         </p>
 
 
@@ -2027,7 +2101,7 @@ Homogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certific
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l420"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:420</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l437"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:437</code></a>
         </p>
 
 
@@ -2204,7 +2278,7 @@ provided type.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l457"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:457</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l474"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:474</code></a>
         </p>
 
 
@@ -2267,7 +2341,7 @@ Use this, as version information can make direct comparison difficult.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l371"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:371</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:388</code></a>
         </p>
 
 
@@ -2322,7 +2396,7 @@ Note that this method invalidates all signatures.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:404</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l421"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:421</code></a>
         </p>
 
 
@@ -2439,7 +2513,7 @@ Note that this method invalidates all signatures.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l468"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:468</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l485"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:485</code></a>
         </p>
 
 
@@ -2486,7 +2560,7 @@ Used to reference the latest version of an object.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l299"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:299</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:316</code></a>
         </p>
 
 
@@ -2579,7 +2653,7 @@ Does not check for ownership, objects signed with keys absent from @owner or @re
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:277</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l294"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:294</code></a>
         </p>
 
 
@@ -2686,7 +2760,7 @@ Warning: Will remove identifier if the identifier is composed solely of digits!!
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l449"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:449</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l454"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:454</code></a>
         </p>
 
 
@@ -2717,7 +2791,7 @@ Warning: Will remove identifier if the identifier is composed solely of digits!!
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l437"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:437</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l466"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:466</code></a>
         </p>
 
 
@@ -2781,7 +2855,7 @@ Warning: Will remove identifier if the identifier is composed solely of digits!!
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l318"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:318</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.general.js.html#l335"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.general.js:335</code></a>
         </p>
 
 

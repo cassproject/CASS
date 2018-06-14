@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -7733,7 +7734,7 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.encrypt = function(pk, plaintext) {
-        if ($ == null) {
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
             return rsaEncrypt(plaintext, pk.toPem());
         }
         return forge.util.encode64(pk.pk.encrypt(plaintext, &quot;RSA-OAEP&quot;));
@@ -7757,7 +7758,7 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
             }
         }
         var result;
-        if ($ == null) {
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
             result = rsaDecrypt(ciphertext, ppk.toPem());
         } else {
             result = ppk.ppk.decrypt(forge.util.decode64(ciphertext), &quot;RSA-OAEP&quot;);
@@ -7779,7 +7780,7 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.sign = function(ppk, text) {
-        if ($ == null) {
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
             return rsaSign(text, ppk.toPem());
         }
         var s = forge.md.sha1.create();
@@ -7814,7 +7815,7 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
      *  @method verify
      */
     constructor.verify = function(pk, text, signature) {
-        if ($ == null) {
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
             return rsaVerify(signature, pk.toPem(), text);
         }
         var s = forge.md.sha1.create();
@@ -7990,7 +7991,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.encrypt = function(plaintext, secret, iv) {
-        if ($ == null &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) 
+        if ((typeof httpStatus) != &quot;undefined&quot; &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) 
             return aesEncrypt(plaintext, iv, secret);
         var c = forge.cipher.createCipher(&quot;AES-CTR&quot;, forge.util.decode64(secret));
         c.start(new EcAesParameters(iv));
@@ -8017,7 +8018,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
             if (cacheGet != null) 
                 return cacheGet;
         }
-        if ($ == null &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) {
+        if ((typeof httpStatus) != &quot;undefined&quot; &amp;&amp; forge.util.decode64(secret).length == 16 &amp;&amp; forge.util.decode64(iv).length == 16) {
             var result = aesDecrypt(ciphertext, iv, secret);
             if (EcCrypto.caching) 
                 (EcCrypto.decryptionCache)[secret + iv + ciphertext] = result;
@@ -8393,7 +8394,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.encrypt(pk, text));
             return;
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.encrypt(pk, text, success, failure);
             return;
         }
@@ -8427,7 +8428,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.decrypt(ppk, text));
             return;
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.decrypt(ppk, text, success, failure);
             return;
         }
@@ -8453,7 +8454,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.sign(ppk, text));
             return;
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
             return;
         }
@@ -8479,7 +8480,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.signSha256(ppk, text));
             return;
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.sign(ppk, text, success, failure);
             return;
         }
@@ -8505,7 +8506,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             success(EcRsaOaep.verify(pk, text, signature));
             return;
         }
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (EcBrowserDetection.isIeOrEdge() || window == null || window.crypto == null || window.crypto.subtle == null) {
             EcRsaOaepAsyncWorker.verify(pk, text, signature, success, failure);
             return;
         }
@@ -8530,7 +8531,7 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
     constructor.encrypt = function(text, secret, iv, success, failure) {
-        if (window.crypto == null || window.crypto.subtle == null) {
+        if (window == null || window.crypto == null || window.crypto.subtle == null) {
             EcAesCtrAsyncWorker.encrypt(text, secret, iv, success, failure);
             return;
         }

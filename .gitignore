@@ -20,3 +20,5 @@ node_modules/
 etc/
 
 adapter\.xapi\.json
+
+npm-debug\.log

@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -853,7 +854,7 @@ function(context, type) {
     this.setContextAndType(context, type);
 };
 EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototype) {
-    constructor.atProperties = [&quot;id&quot;, &quot;type&quot;, &quot;schema&quot;, &quot;context&quot;, &quot;signature&quot;, &quot;owner&quot;, &quot;reader&quot;, &quot;encryptedType&quot;];
+    constructor.atProperties = [&quot;id&quot;, &quot;type&quot;, &quot;schema&quot;, &quot;context&quot;, &quot;signature&quot;, &quot;graph&quot;, &quot;owner&quot;, &quot;reader&quot;, &quot;encryptedType&quot;];
     /**
      *  JSON-LD @type field.
      * 
