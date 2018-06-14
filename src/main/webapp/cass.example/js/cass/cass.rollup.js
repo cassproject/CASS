@@ -1735,38 +1735,48 @@ NodeGraph = stjs.extend(NodeGraph, null, [], function(constructor, prototype) {
         }
     };
     prototype.createImpliedRelations = function() {
-        var relationsToAdd = new Array();
-        var nr;
-        for (var i = 0; i < this.relationList.length; i++) {
-            nr = this.relationList[i];
-            if (nr.getType() == RelationType.RELATION_TYPE.NARROWS) {
-                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
-            } else if (nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
-                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
-            } else if (nr.getType() == RelationType.RELATION_TYPE.BROADENS) {
-                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
-            } else if (nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
-                relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
+        try {
+            var relationsToAdd = new Array();
+            var nr;
+            for (var i = 0; i < this.relationList.length; i++) {
+                nr = this.relationList[i];
+                if (nr.getType() == RelationType.RELATION_TYPE.NARROWS) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.BROADENS));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.REQUIRES) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.IS_REQUIRED_BY));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.BROADENS) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.NARROWS));
+                } else if (nr.getType() == RelationType.RELATION_TYPE.IS_REQUIRED_BY) {
+                    relationsToAdd.push(new NodeRelation(nr.getTarget(), nr.getSource(), RelationType.RELATION_TYPE.REQUIRES));
+                }
             }
-        }
-        var nnr;
-        for (var i = 0; i < relationsToAdd.length; i++) {
-            nnr = relationsToAdd[i];
-            this.addRelation(nnr.getSource(), nnr.getTarget(), nnr.getType());
+            var nnr;
+            for (var i = 0; i < relationsToAdd.length; i++) {
+                nnr = relationsToAdd[i];
+                this.addRelation(nnr.getSource(), nnr.getTarget(), nnr.getType());
+            }
+        }catch (e) {
+             throw new Exception("createImpliedRelations: " + e.toString());
         }
     };
     prototype.addRelation = function(sourceNode, targetNode, relationType) {
-        var nodeRelationList;
-        if (this.nodeHasRelations(sourceNode)) 
-            nodeRelationList = this.getRelationListForNode(sourceNode);
-         else {
-            nodeRelationList = new Array();
-            this.relationMap[sourceNode.getId()] = nodeRelationList;
-        }
-        var newNodeRelation = new NodeRelation(sourceNode, targetNode, relationType);
-        if (!this.doesRelationAlreadyExist(newNodeRelation, nodeRelationList)) {
-            nodeRelationList.push(newNodeRelation);
-            this.relationList.push(newNodeRelation);
+        try {
+            if (sourceNode == null || targetNode == null) 
+                return;
+            var nodeRelationList;
+            if (this.nodeHasRelations(sourceNode)) 
+                nodeRelationList = this.getRelationListForNode(sourceNode);
+             else {
+                nodeRelationList = new Array();
+                this.relationMap[sourceNode.getId()] = nodeRelationList;
+            }
+            var newNodeRelation = new NodeRelation(sourceNode, targetNode, relationType);
+            if (!this.doesRelationAlreadyExist(newNodeRelation, nodeRelationList)) {
+                nodeRelationList.push(newNodeRelation);
+                this.relationList.push(newNodeRelation);
+            }
+        }catch (e) {
+             throw new Exception("addRelation: " + e.toString());
         }
     };
     prototype.getRelationListForNode = function(n) {
@@ -3762,11 +3772,18 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.addRelationshipsToFrameworkNodeGraph = function() {
         var rel;
         var type;
+        var sourceNode;
+        var targetNode;
         for (var i = 0; i < this.relationArray.length; i++) {
             rel = this.relationArray[i];
             type = this.getRelationType(rel.relationType);
-            if (type != null) 
-                this.frameworkNodeGraph.addRelation(this.competencyNodeMap[rel.source], this.competencyNodeMap[rel.target], type);
+            if (type != null) {
+                sourceNode = this.competencyNodeMap[rel.source];
+                targetNode = this.competencyNodeMap[rel.target];
+                if (sourceNode != null && targetNode != null) {
+                    this.frameworkNodeGraph.addRelation(sourceNode, targetNode, type);
+                }
+            }
         }
     };
     prototype.generateFrameworkNodeGraph = function() {

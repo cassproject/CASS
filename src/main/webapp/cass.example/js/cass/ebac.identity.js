@@ -101,8 +101,13 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      *  @method equals
      */
     prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcContact)) 
-            return this.pk == (obj).pk;
+        if (stjs.isInstanceOf(obj.constructor, EcContact)) {
+            if (this.pk == null) 
+                return false;
+            if ((obj).pk == null) 
+                return false;
+            return this.pk.toPem().equals((obj).pk.toPem());
+        }
         return Object.prototype.equals.call(this, obj);
     };
     /**
@@ -202,8 +207,13 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
         return i;
     };
     prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
+        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) {
+            if (this.ppk == null) 
+                return false;
+            if ((obj).ppk == null) 
+                return false;
             return this.ppk.toPem().equals((obj).ppk.toPem());
+        }
         return Object.prototype.equals.call(this, obj);
     };
     /**

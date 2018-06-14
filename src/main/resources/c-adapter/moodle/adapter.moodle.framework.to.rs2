@@ -1,0 +1,993 @@
+//-----FRAMEWORK UPDATING-----
+
+frameworkGuid=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-2"));
+frameworkLastModified=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-1")).toLong();
+moodleFrameworkLastModified=#toObject(obj="@moodleFramework").get(timemodified="").multiply(b="1000").toLong();
+
+moodleFramework=#toArray(obj="@moodleFrameworks").forEach(
+    array="true",
+    paramName="moodleFramework",threaded="false",
+    op=#if(
+	operator=#toObject(obj="@moodleFramework").get(idnumber=""),
+	operand=frameworkGuid,
+	eq=#toObject(obj="@moodleFramework")
+    )
+).getIndex(index="0");
+
+addFramework=#object(
+	a=#moodleCreateCompetencyFramework(
+		id=frameworkGuid,
+		name=#toObject(obj="@framework").get(name=""),
+		description=#toObject(obj="@framework").get(description=""),
+		lastModified=#divide(numerator=frameworkLastModified,denominator="1000").toLong()
+	),
+	b=#cassUpdateCompetencyFramework(
+		id=frameworkGuid,
+		name=#toObject(obj="@framework").get(name=""),
+		description=#toObject(obj="@framework").get(description=""),
+		lastModified=moodleFramework.cget(timecreated="").toLong().multiply(b="1000").toLong(),
+		ppk=#moodlePpk()
+	).call(
+		moodleFrameworks=#moodleListCompetencyFrameworks()
+	),
+	c=#idxSet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=frameworkGuid,
+		obj=frameworkLastModified
+	),
+	d=#variableSet(key=#add(a="cassNewer-",b=frameworkGuid), obj="true")
+).cget(a="");
+
+addFramework=#if(operator=#idxGet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=frameworkGuid
+	), 
+	operand="",
+	eq=addFramework
+);
+
+updateFramework=#object(
+	a=#moodleUpdateCompetencyFramework(
+		id=frameworkGuid,
+		internalId=#toObject(obj="@moodleFramework").get(id=""),
+		name=#toObject(obj="@framework").get(name=""),
+		description=#toObject(obj="@framework").get(description=""),
+	),
+	b=#cassUpdateCompetencyFramework(
+		id=frameworkGuid,
+		name=#toObject(obj="@framework").get(name=""),
+		description=#toObject(obj="@framework").get(description=""),
+		lastModified=moodleFramework.get(timemodified="").multiply(b="1000").toLong(),
+		ppk=#moodlePpk()
+	).call(
+		moodleFrameworks=#moodleListCompetencyFrameworks()
+	),
+	c=#variableSet(key=#add(a="cassNewer-",b=frameworkGuid), obj="true")
+).cget(a="");
+	
+checkDateFramework=#if(
+	operator=frameworkLastModified.debug(prefix="updating framework cass: "),
+	operand=moodleFrameworkLastModified.debug(prefix="updating framework mood: "),
+	gt=updateFramework,
+	le=#variableSet(key=#add(a="cassNewer-",b=frameworkGuid), obj="false")
+);
+
+checkFramework=#if(
+	operator=#toObject(obj="@moodleFramework"),
+	operand="",
+	eq=addFramework,
+	ne=checkDateFramework
+);
+
+cassToMoodleFrameworks=#getFrameworks(ppk=#moodlePpk()).forEach(
+	paramName="framework",threaded="false",
+	op=#toObject(obj="@framework").getByParam(param=#id())
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	threaded="false",threaded="false",
+	valueName="framework",
+	op=checkFramework.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+//-----COMPETENCY UPDATING-----
+
+competencyGuid=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-2"));
+competencyLastModified=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-1")).toLong();
+
+moodleCompetency=#toArray(obj="@moodleCompetencies").forEach(array="true",threaded="false",paramName="moodleCompetency",op=#if(
+	operator=#toObject(obj="@moodleCompetency").get(idnumber=""),
+	operand=competencyGuid,
+	eq=#toObject(obj="@moodleCompetency")
+)).getIndex(index="0");
+
+addCompetency=#object(
+	a=#moodleCreateCompetency(
+		id=competencyGuid,
+		name=#toObject(obj="@competency").get(name=""),
+		description=#toObject(obj="@competency").get(description="").string(op="trim"),
+		lastModified=#divide(numerator=competencyLastModified, denominator="1000").toLong()
+	),
+	b="added competency"
+).cget(
+	b=""
+);
+
+updateCompetency=#object(
+	a=#moodleUpdateCompetency(
+		id=competencyGuid,
+		internalId=#toObject(obj="@moodleCompetency").get(id=""),
+		name=#toObject(obj="@competency").get(name=""),
+		description=#toObject(obj="@competency").get(description="").string(op="trim"),
+		lastModified=#divide(numerator=competencyLastModified,denominator="1000").toLong()
+	),
+	b="updated competency"
+);
+
+checkDateCompetency=#if(
+	operator=competencyLastModified,
+	operand=#toObject(obj="@moodleCompetency").get(timemodified="").multiply(a="1000").toLong(),
+	gt=updateCompetency
+);
+
+checkCompetency=#if(
+	operator=#toObject(obj="@moodleCompetency"),
+	operand="",
+	eq=addCompetency,
+	ne=checkDateCompetency
+);
+
+checkCompetencies=#toObject(obj="@framework").get(competency="").forEach(
+	paramName="competencyShortId",threaded="false",
+	op=checkCompetency.call(
+		moodleCompetency=moodleCompetency
+	).call(
+		competencyId=#toObject(obj="@competency").getByParam(param=#id()).split(split="/")
+	).call(
+		competency=#getCompetencyById(id="@competencyShortId")
+	)
+).call(moodleCompetencies=#moodleListCompetencies()).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
+
+cassToMoodleCompetencies=#getFrameworks(ppk=#moodlePpk()).forEach(
+	paramName="framework",threaded="false",
+	op=#toObject(obj="@framework").getByParam(param=#id())
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="framework",
+	threaded="false",
+	op=#if(operator=#variableGet(key=#add(a="cassNewer-",b=frameworkGuid)), operand="true",
+		eq=checkCompetencies
+	).call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+//-----RELATION UPDATING-----
+
+competencyGuidFromShortId=#toArray(obj="@competencyId").getIndex(index=#toArray(obj="@competencyId").count().add(z="-1"));
+moodleCompetencyFromShortId=#toArray(obj="@moodleCompetencies").forEach(array="true",threaded="false",paramName="moodleCompetency",op=#if(
+	operator=#toObject(obj="@moodleCompetency").get(idnumber=""),
+	operand=competencyGuidFromShortId,
+	eq=#toObject(obj="@moodleCompetency")
+)).getIndex(index="0");
+
+relationNarrows=#moodleUpdateCompetencyParent(
+	internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+	parentId=#toObject(obj="@moodleCompetencyTarget").get(id="")
+);
+
+checkRelationNarrows=#if(
+	operator=#toObject(obj="@moodleCompetencySource").get(parentid=""),
+	operand=#toObject(obj="@moodleCompetencyTarget").get(id=""),
+	ne=relationNarrows
+);
+
+shortId=#toArray(obj="@splitId").removeFromArray(item=#toArray(obj="@splitId").getIndex(index=#toArray(obj="@splitId").count().add(z="-1"))).flatten(_delimiter="/");
+
+startSection=#object(
+	a=#moodleUpdateCompetency(
+		id=#toObject(obj="@moodleCompetencySource").get(idnumber=""),
+		internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+		description="@newDescription",
+		name=#toObject(obj="@moodleCompetencySource").get(shortname=""),
+		lastModified=#add(a=#toObject(obj="@moodleCompetencySource").get(timemodified=""), b="1")
+	),
+	b=#add(a="Started new Section (", b="@sectionName", c=") ")
+).ccall(
+	newDescription=#add(
+		a="@description",
+		b=#if(operator="@description", operand="",
+			ne=#if(operator=#string(
+					op="split", 
+					str="@description", 
+					regex="\|"
+				).toArray().removeDuplicates().count(),
+				operand="1",
+				le="<br />",
+				gt=""
+			),
+			eq=""
+		),
+		c="<br />|",
+		d="@sectionName",
+		e=": ",
+		f="@sectionAddition",
+		g=";"
+	)
+);
+
+updateDescription=#object(
+	a=#moodleUpdateCompetencyDescription(
+		internalId=#toObject(obj="@moodleCompetencySource").get(id=""),
+		description="@updatedDesc",
+	),
+	b=#add(a="Updated Description '", b="@updatedDesc", c="'").debug()
+).call(
+	updatedDesc=#if(operator=#cendsWith(string1="@description", string2="<br /><br />"),
+		operand="true",
+		ne="@description",
+		eq=#string(
+			str="@description", 
+			op="trim", 
+			begin="0", 
+			end=#add(
+				a=#count(obj="@description"), 
+				b="-12"
+			)
+		)
+	)
+);
+
+replaceInSection = #object(
+	a=#string(op="replace", str="@section", regex="@oldAddition", with="@sectionAddition"),
+	b=#idxSet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+		obj="@sectionAddition"
+	)
+).get(a="");
+
+addToSection = #object(
+	a=#add(
+		a="@section",
+		b=" ",
+		c="@sectionAddition",
+		d=";",
+	),
+	b=#idxSet(
+		databaseName="adapter.moodle.sync.db",
+		indexDir=".",
+		index=#moodleWsToken(),
+		key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+		obj="@sectionAddition"
+	)
+).get(a="");
+
+checkSectionHasAddition=#if(operator=#indexOf(str="@section", substr=#add(a="@sectionAddition", b=";")),
+	operand="0",
+	lt=#if(operator="@oldAddition", operand="",
+		eq=addToSection,
+		ne=#if(operator=#indexOf(str="@section", substr=#add(a="@oldAddition", b=";")), 
+			operand="0",
+			ge=replaceInSection,
+			lt=addToSection
+		)
+	).ccall(
+		oldAddition=#idxGet(
+			databaseName="adapter.moodle.sync.db",
+			indexDir=".",
+			index=#moodleWsToken(),
+			key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/"))
+		)
+	),
+	ge="@section"
+);
+
+checkSection=#if(operator=#indexOf(str="@section", substr="@sectionName"),
+	operand="0",
+	eq=checkSectionHasAddition.ccall(
+		section=#creplace(obj="@section", replace="<br\s/>", with="")
+	),
+	ne=#if(operator=#endsWith(string1="@section", string2="<br /><br />"), operand="true",
+		ne="@section",
+		eq=#string(
+			str="@description", 
+			op="trim", 
+			begin="0", 
+			end=#add(
+				a=#count(obj="@description"), 
+				b="-6"
+			)
+		)
+	)
+);
+
+checkAndUpdateSection=#string(
+	op="split", 
+	str="@description", 
+	regex="<br\s/>\|"
+).toArray().removeDuplicates().forEach(
+	op=checkSection,
+	paramName="section",threaded="false",
+	array="true"
+).toArray().cforEach(
+	op=#if(operator="@i", operand="0",
+		eq=#if(operator="@section", operand="",
+			eq=".",
+			ne="@section"
+		),
+		ne="@section"
+	),
+	paramName="section",threaded="false",
+	array="true"	
+).toArray().removeDuplicates().flatten(_delimiter="<br />|", _trimLeadingPunctuation="true").toParameter(
+	op=#if(operator="@newDescription", operand="@description",
+		ne=updateDescription.ccall(
+			description="@newDescription"
+		)
+	), 
+	paramName="newDescription",threaded="false"
+);
+
+checkDescriptionHasSection=#if(operator=#indexOf(str="@description", substr=#add(a="|", b="@sectionName")), 
+	operand="0",
+	ge=#if(operator="@sectionAddition", operand=#idxGet(
+				databaseName="adapter.moodle.sync.db",
+				indexDir=".",
+				index=#moodleWsToken(),
+				key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/"))
+			),
+		eq=#if(operator=#moodleAdapterMoodleToCassEnabled(), operand="true",
+			eq="Description not updated",
+			ne=checkAndUpdateSection,
+		),
+		ne=checkAndUpdateSection,
+	),
+	lt=#object(
+		a=startSection,
+		b=#idxSet(
+			databaseName="adapter.moodle.sync.db",
+			indexDir=".",
+			index=#moodleWsToken(),
+			key=shortId.ccall(splitId=#toObject(obj="@object").getByParam(param=#id()).split(split="/")),
+			obj="@sectionAddition"
+		)
+	).cget(a="")
+);
+
+checkRelationRequires=checkDescriptionHasSection.call(
+	description=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")).get(description=""),
+	sectionName="Required Competencies",
+	sectionAddition=#toObject(obj="@moodleCompetencyTarget").get(shortname=""),
+	moodleCompetencySource=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")),
+	object=#toObject(obj="@relation")
+);
+
+checkRelation=#if(
+	operator=#toObject(obj="@relation").get(relationType=""),
+	operand="narrows",
+	eq=checkRelationNarrows,
+	ne=#if(
+		operator=#toObject(obj="@relation").get(relationType=""),
+		operand="requires",
+		eq=checkRelationRequires,
+	)
+).call(
+	moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(source="").split(split="/")),
+	moodleCompetencyTarget=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@relation").get(target="").split(split="/"))
+);
+
+checkRelations=#toObject(obj="@framework").get(relation="").forEach(
+	paramName="relationShortId",
+	threaded="false",
+	op=checkRelation.call(
+		moodleCompetencies=#moodleListCompetencies(),
+		relation=#getRelationById(id="@relationShortId")
+	)
+).call(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""));
+
+cassToMoodleRelations=#getFrameworks(ppk=#moodlePpk()).forEach(
+	paramName="framework",
+	threaded="false",
+	op=#toObject(obj="@framework").getByParam(param=#id())
+).pivot().forEach(
+	valueName="array",
+	threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="framework",
+	threaded="false",
+	op=#if(operator=#variableGet(key=#add(a="cassNewer-",b=frameworkGuid)), operand="true",
+		eq=checkRelations
+	).call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+
+//-----CREATIVE WORKS--------
+
+frameworkShortId=#toArray(obj="@frameworkId").removeFromArray(item=#toArray(obj="@frameworkId").getIndex(index=#toArray(obj="@frameworkId").count().add(z="-1"))).flatten(_delimiter="/");
+
+checkDescriptionHasSection = #object(
+	a=#debug(obj=#add(
+		a="Checking Description: ",
+		b="@description",
+		c="\n in Section: ",
+		d="@sectionName",
+		e="\n adding: ",
+		f="@sectionAddition"
+	)),   
+	b=checkDescriptionHasSection	
+).cget(b="");
+
+checkCreativeWorkInDescription=checkDescriptionHasSection.call(
+	description=#toObject(obj="@moodleCompetencySource").get(description=""),
+	sectionName=#add(a=#toObject(obj="@creativeWork").get(educationalUse=""), b="s"),
+	sectionAddition=#if(operator=#toObject(obj="@creativeWork").get(educationalUse=""), operand="Reference",
+		eq=#add(
+			a='<a href="',
+			b=#toObject(obj="@creativeWork").get(url="").replace(replace="&",with="&amp;",simple="true"),
+			c='">',
+			d=#toObject(obj="@creativeWork").get(name="").replace(replace=";",with=",",simple="true").replace(replace="&",with="&amp;",simple="true"),
+			e='</a>'
+		),
+		ne=#toObject(obj="@creativeWork").get(name="").replace(replace=";",with=",",simple="true").replace(replace="&",with="&amp;",simple="true")
+	),
+	moodleCompetencySource=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetencySource").get(id="")),
+	object=#toObject(obj="@creativeWork")
+);
+
+
+checkCreativeWork=#if(operator="@creativeWork", operand="",
+	ne=#if(operator=#toObject(obj="@creativeWork").count(), operand="0",
+		gt=checkCreativeWorkInDescription.ccall(
+			moodleCompetencySource=moodleCompetencyFromShortId.call(competencyId=#toObject(obj="@creativeWork").get(educationalAlignment="").get(targetUrl="").split(split="/"))
+		),
+		le="No Creative Works Related to this Framework"
+	),
+	eq="No Creative Works Related to this Framework"
+);
+
+checkFrameworkWorks=#getFrameworkCreativeWorks(frameworkId=frameworkShortId).forEach(
+	paramName="creativework",
+	threaded="false",
+	op=#toObject(obj="@creativework").getByParam(param=#id())
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="creativeWork",
+	threaded="false",
+	op=checkCreativeWork.call(
+		moodleCompetencies=#moodleListCompetencies()
+	),
+);
+
+checkCreativeWorks=#if(operator="@result",
+	operand="",
+	eq="No Creative Works Related to this Framework",
+	ne=#toObject(obj="@result")
+).call(
+	result=checkFrameworkWorks.ccall(
+		competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
+	)
+);
+
+cassToMoodleCreativeWorks=#getFrameworks(ppk=#moodlePpk()).forEach(
+	paramName="framework",threaded="false",
+	op=#toObject(obj="@framework").getByParam(param=#id())
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="framework",
+	threaded="false",
+	op=checkCreativeWorks.call(moodleFramework=moodleFramework).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+).call(moodleFrameworks=#moodleListCompetencyFrameworks());
+
+
+
+
+//-----FRAMEWORK DELETING -----
+
+checkFrameworkExists=#if(operator="@shortFramework", operand="",
+	eq=#if(operator="@longFramework", operand="",
+			ne=#object(
+				a=#moodleDeleteCompetencyFramework(competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")),
+				b="true"
+			).cget(b=""),
+			eq="false"
+		),
+	ne="false"
+).ccall(
+	shortFramework=#cassGetFramework(frameworkId=#toObject(obj="@moodleFramework").get(idnumber=""), ppk=#moodlePpk()),
+	longFramework=#cassGetFramework(
+		frameworkId=#toObject(obj="@moodleFramework").get(idnumber=""), 
+		frameworkVersion=moodleFrameworkLastModified, 
+		ppk=#moodlePpk()
+	)
+);
+
+cassToMoodleDeleteFrameworks=#moodleListCompetencyFrameworks().forEach(
+	paramName="moodleFramework",
+	threaded="false",
+	op=#add(
+		a=#toObject(obj="@moodleFramework").cget(shortname=""),
+		b=" (",
+		c=#toObject(obj="@moodleFramework").cget(idnumber=""),
+		d=")"
+		
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleFramework",
+	threaded="false",
+	op=checkFrameworkExists
+).call(frameworks=#getFrameworks());
+
+//-----COMPETENCY DELETING -----
+
+removeCompetency=#moodleDeleteCompetency(competencyid=#toObject(obj="@moodleCompetency").get(id=""));
+
+checkExists=#if(operator=#has(obj="@guidArray", has=#toObject(obj="@moodleCompetency").get(idnumber="")), operand="true",
+	ne=removeCompetency
+).ccall(
+	guidArray=#toObject(obj="@framework").get(competency="").forEach(threaded="false",paramName="competencyId", op=#split(obj="@competencyId", split="/"), array="true").forEach(threaded="false",paramName="competencyId", op=competencyGuidFromShortId, array="true")
+);
+
+compareCompetencies=#moodleListCompetencies(competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")).forEach(
+	paramName="moodleCompetency",threaded="false",
+	op=checkExists
+);
+
+checkFrameworkCompetencies=#if(operator=#variableGet(key=#add(a="cassNewer-",b=frameworkGuid)), operand="true",
+	eq=compareCompetencies
+).call(
+	frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
+).call(
+	framework=#toArray(obj="@frameworks").forEach(
+		array="true",
+		threaded="false",
+		paramName="framework",
+		op=#if(
+			operator=#toObject(obj="@moodleFramework").get(idnumber=""),
+			operand=frameworkGuid,
+			eq=#toObject(obj="@framework")
+		).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+	).getIndex(index="0")
+);
+
+cassToMoodleDeleteCompetencies=#moodleListCompetencyFrameworks().forEach(
+	paramName="framework",threaded="false",
+	op=#add(
+		a=#toObject(obj="@framework").get(shortname=""),
+		b=" (",
+		c=#toObject(obj="@framework").get(idnumber=""),
+		d=")"
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleFramework",threaded="false",
+	op=checkFrameworkCompetencies,
+).call(frameworks=#getFrameworks());
+
+
+//-----RELATION DELETING -----
+
+
+checkExistsInCass=#if(operator=#toObject(obj="@relationsByGuid").getByParam(param=#toObject(obj="@moodleCompetency").get(idnumber="")), operand="",
+	eq=#object(
+		a=#moodleUpdateCompetencyParent(
+			internalId=#toObject(obj="@moodleCompetency").get(id=""),
+			parentId="0"
+		),
+		b="Narrow Relation Removed from Moodle"
+	),
+	ne="Narrow Relation Still Exists in CASS"
+);
+
+checkHasParent=#if(operator=#toObject(obj="@moodleCompetency").get(parentid=""), operand="0",
+	gt=checkExistsInCass,
+	eq="No Parent in Moodle"
+);
+
+
+
+findCompetency = #if(operator=#indexOf(
+		str=#toObject(obj="@relation").cget(source=""), 
+		substr=#toObject(obj="@moodleCompetency").cget(idnumber="")
+	), 
+	operand="0",
+	lt="false",
+	ge="@targetName"
+);
+
+checkRequiredRelationExists=#if(operator=#toObject(obj="@relationsByTargetName").keySet().has(has=#string(str="@targetName", op="trim")), operand="true",
+	eq=#if(operator="@requires", operand="",
+		eq="false",
+		ne=#if(operator=#indexOf(str="@requires", substr="["), operand="0",
+			eq=#if(operator=#toArray(obj="@requires").forEach(
+					op=findCompetency,
+					paramName="relation",threaded="false",
+					array="true"
+				).chas(has="@targetName"), operand="true",
+				ne="false",
+				eq="@targetName"	
+			),
+			ne=findCompetency.ccall(
+				relation=#toObject(obj="@requires")
+			)
+		),
+	).call(
+		requires=#toObject(obj="@relationsByTargetName").getByParam(param=#string(str="@targetName", op="trim"))
+	),
+	ne="false"
+);
+
+iterateRequiredSection=#string(
+	op="split", 
+	str=#string(
+		op="split", 
+		str="@section", 
+		regex=":"
+	).toArray().removeFromArray(_index="0").flatten(_delimiter=":"),
+	regex=";"
+).toArray().forEach(
+	op=checkRequiredRelationExists,
+	paramName="targetName",threaded="false",
+	array="true"
+).toArray().removeDuplicates().removeFromArray(item="false").flatten(_delimiter=";");
+
+checkForRequiredSection=#if(operator=#indexOf(str="@section", substr="Required Competencies"), operand="0",
+	ne="@section",
+	eq=#if(operator="@newSection", operand="",
+		eq="false",
+		ne=#add(
+			a="Required Competencies:",
+			b="@newSection"
+		)
+	).ccall(
+		newSection=#add(
+			a=iterateRequiredSection,
+			b=";"
+		)
+	)
+);
+
+checkRequiredSection = #string(
+	op="split", 
+	str="@description", 
+	regex="<br\s/>\|"
+).toArray().removeDuplicates().forEach(
+	op=checkForRequiredSection,
+	paramName="section", threaded="false",
+	array="true"
+).toArray().removeFromArray(item="false").cforEach(
+	op=#if(operator="@i", operand="0",
+		eq=#if(operator="@section", operand="",
+			eq=".",
+			ne="@section"
+		),
+		ne="@section"
+	),
+	paramName="section",threaded="false",
+	array="true"	
+).toArray().removeDuplicates().flatten(_delimiter="<br />|", _trimLeadingPunctuation="true").toParameter(
+	op=updateDescription.call(
+		moodleCompetencySource="@moodleCompetency",
+		description="@newDescription"
+	),
+	paramName="newDescription",threaded="false"
+);
+		
+checkDescription=#if(operator=#indexOf(str="@description", substr=#add(a="|", b="@sectionName")), operand="0",
+	lt="false",
+	ge="@description"
+).ccall(
+	description=#if(operator="@description", operand="",
+		eq="false",
+		ne="@description"
+	).ccall(
+		description=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetency").cget(id="")).cget(description="")
+	)
+);
+		
+checkRequiredRelationships=#if(operator="@description", operand="false",
+	ne=checkRequiredSection,
+	eq="No required relationships in Moodle"
+).ccall(
+	description=checkDescription.ccall(sectionName="Required Competencies")
+);
+
+checkMoodleRelations=#moodleListCompetencies(
+	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
+).forEach(
+	paramName="competency",threaded="false",
+	op=#add(
+		a=#toObject(obj="@competency").get(shortname=""),
+		b=" (",
+		c=#toObject(obj="@competency").get(idnumber=""),
+		d=")"
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleCompetency",threaded="false",
+	op=#object(
+		a_narrows=checkHasParent,
+		b_requires=checkRequiredRelationships
+	),
+);
+
+checkMoodleRelations=checkMoodleRelations.call(
+	relationsByGuid=#toArray(obj="@relations").forEach(
+		paramName="relation",threaded="false",
+		array="true",
+		op=#if(
+			operator=#toObject(obj="@relation").get(relationType=""),
+			operand="narrows",
+			eq=#toObject(obj="@relation").put(
+				competencySourceGuid=#toArray(obj="@competencySource").getIndex(index=#toArray(obj="@competencySource").count().add(z="-1"))
+			).call(
+				competencySource=#toObject(obj="@relation").get(source="").split(split="/"),
+				competencyTarget=#toObject(obj="@relation").get(target="").split(split="/")
+			)
+		)
+	).collapse(keyKey="competencySourceGuid",accumulate="false"),
+	relationsByTargetName=#toArray(obj="@relations").forEach(
+		paramName="relation",threaded="false",
+		array="true",
+		op=#if(
+			operator=#toObject(obj="@relation").get(relationType=""),
+			operand="requires",
+			eq=#toObject(obj="@relation").put(
+				competencyTargetName=#string(str=#toObject(obj="@competencyTarget").cget(name=""), op="trim")
+			).call(
+				competencyTarget=#getCompetencyById(id=#toObject(obj="@relation").get(target=""))
+			)
+		)
+	).collapse(keyKey="competencyTargetName"),
+	moodleCompetencies=#moodleListCompetencies(competencyframeworkid=#toObject(obj="@moodleFramework").get(id=""))
+).call(
+	relations=#toObject(obj="@framework").get(relation="").forEach(
+		paramName="relationId",threaded="false",
+		array="true",
+		op=#getRelationById(id="@relationId")
+	),
+	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
+);
+
+cassToMoodleDeleteRelations=#moodleListCompetencyFrameworks().forEach(
+	paramName="framework",threaded="false",
+	op=#add(
+		a=#toObject(obj="@framework").get(shortname=""),
+		b=" (",
+		c=#toObject(obj="@framework").get(idnumber=""),
+		d=")"
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleFramework",threaded="false",
+	op=#if(operator=#variableGet(key=#add(a="cassNewer-",b=frameworkGuid)), operand="true",
+		eq=checkMoodleRelations
+	).call(
+		frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
+	).call(
+		framework=#toArray(obj="@frameworks").forEach(
+			array="true",
+			threaded="false",
+			paramName="framework",
+			op=#if(
+				operator=#toObject(obj="@moodleFramework").get(idnumber=""),
+				operand=frameworkGuid,
+				eq=#toObject(obj="@framework")
+			).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+		).getIndex(index="0")
+	)
+).call(frameworks=#getFrameworks());
+
+//-----DELETE CREATIVE WORKS--------
+
+findCreativeWork = #if(operator=#getCreativeWork(
+		frameworkId=shortId.ccall(
+			splitId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
+		),
+		name=#string(str="@targetName", op="trim")
+	).count(), 
+	operand="0",
+	le="false",
+	gt="@targetName"
+);
+
+findReferenceName = #string(
+	str="@targetName",
+	op="substr",
+	begin=#indexOf(
+		str="@targetName",
+		substr=">"
+	),
+	end=#add(
+		a=#count(obj="@targetName"),
+		b="-4"
+	)
+);
+
+checkCreativeWorkExists=#if(operator=findCreativeWork.ccall(
+		targetName=#if(operator="@educationalUse", operand="Reference",
+			ne="@targetName",
+			eq=findReferenceName
+		)
+	), 
+	operand="false",
+	ne="@targetName",
+	eq="false"
+);
+
+iterateCreativeWorkSection=#string(
+	op="split", 
+	str=#string(
+		op="split", 
+		str="@section", 
+		regex=":"
+	).toArray().removeFromArray(_index="0").flatten(_delimiter=":"),
+	regex=";"
+).toArray().forEach(
+	op=checkCreativeWorkExists,
+	paramName="targetName",threaded="false",
+	array="true"
+).toArray().removeDuplicates().removeFromArray(item="false").flatten(_delimiter=";");
+
+checkForCreativeWorkSection=#if(operator=#indexOf(str="@section", substr="@sectionName"), operand="0",
+	ne="@section",
+	eq=#if(operator="@newSection", operand="",
+		eq="false",
+		ne=#add(
+			a="@sectionName",
+			b=":",
+			c="@newSection",
+			d=";"
+		)
+	).ccall(
+		newSection=iterateCreativeWorkSection
+	)
+);
+
+checkCreativeWorkSection = #string(
+	op="split", 
+	str="@description", 
+	regex="<br\s/>\|"
+).toArray().removeDuplicates().forEach(
+	op=checkForCreativeWorkSection,
+	paramName="section", threaded="false",
+	array="true"
+).toArray().removeFromArray(item="false").cforEach(
+	op=#if(operator="@i", operand="0",
+		eq=#if(operator="@section", operand="",
+			eq=".",
+			ne="@section"
+		),
+		ne="@section"
+	),
+	paramName="section",threaded="false",
+	array="true"	
+).toArray().removeDuplicates().flatten(_delimiter="<br />|", _trimLeadingPunctuation="true").toParameter(
+	op=updateDescription.call(
+		moodleCompetencySource="@moodleCompetency",
+		description="@newDescription"
+	),
+	paramName="newDescription",threaded="false",
+);
+
+checkForSections=#object(
+	a_checkAssessments=#if(operator=checkDescription.ccall(sectionName="Assessments"), operand="false",
+		eq="No Assessments in Description",
+		ne=checkCreativeWorkSection.ccall(sectionName="Assessments", educationalUse="Assessment")
+	),
+	b_checkReferences=#if(operator=checkDescription.ccall(sectionName="References"), operand="false",
+		eq="No References in Description",
+		ne=checkCreativeWorkSection.ccall(sectionName="References", educationalUse="Reference")
+	)
+);
+	
+		
+checkSectionsInDescription=#if(operator="@description", operand="false",
+	ne=checkForSections,
+	eq="No required relationships in Moodle"
+).ccall(
+	description=#if(operator="@description", operand="",
+		eq="false",
+		ne="@description"
+	).ccall(
+		description=#moodleGetCompetency(internalId=#toObject(obj="@moodleCompetency").cget(id="")).cget(description="")
+	)
+);
+
+checkMoodleDeleteCreativeWorks=#moodleListCompetencies(
+	competencyframeworkid=#toObject(obj="@moodleFramework").get(id="")
+).forEach(
+	paramName="competency",threaded="false",
+	op=#add(
+		a=#toObject(obj="@competency").get(shortname=""),
+		b=" (",
+		c=#toObject(obj="@competency").get(idnumber=""),
+		d=")"
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleCompetency",threaded="false",
+	op=checkSectionsInDescription,
+);
+
+cassToMoodleDeleteCreativeWorks=#moodleListCompetencyFrameworks().forEach(
+	paramName="framework",threaded="false",
+	op=#add(
+		a=#toObject(obj="@framework").get(shortname=""),
+		b=" (",
+		c=#toObject(obj="@framework").get(idnumber=""),
+		d=")"
+	),
+).pivot().forEach(
+	valueName="array",threaded="false",
+	op=#toArray(obj="@array").getIndex(index="0")
+).forEach(
+	valueName="moodleFramework",threaded="false",
+	op=checkMoodleDeleteCreativeWorks.call(
+		frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/")
+	).call(
+		framework=#toArray(obj="@frameworks").forEach(
+			array="true",
+			threaded="false",
+			paramName="framework",
+			op=#if(
+				operator=#toObject(obj="@moodleFramework").get(idnumber=""),
+				operand=frameworkGuid,
+				eq=#toObject(obj="@framework")
+			).call(frameworkId=#toObject(obj="@framework").getByParam(param=#id()).split(split="/"))
+		).getIndex(index="0")
+	)
+).call(frameworks=#getFrameworks());
+
+
+
+
+//-----CONTROL FUNCTIONS-----
+
+cassToMoodle=#object(
+	a_frameworks=cassToMoodleFrameworks,
+	b_competencies=cassToMoodleCompetencies,
+	c_relations=cassToMoodleRelations,
+	d_creativeWorks=cassToMoodleCreativeWorks,
+	e_delete_frameworks=cassToMoodleDeleteFrameworks,
+	f_delete_competencies=cassToMoodleDeleteCompetencies,
+	g_delete_relations=cassToMoodleDeleteRelations,
+	h_delete_creativeWorks=cassToMoodleDeleteCreativeWorks
+);
+
+
+
+cassToMoodleDebug=cassToMoodle.displayJson(_collapse="true");
+
+cassToMoodleIf=#if(
+	operator=#moodleAdapterCassToMoodleEnabled(),
+	operand="true",
+	eq=cassToMoodleDebug
+);
+
+#cassToMoodle=cassToMoodleIf;
+
+/moodle/cassToMoodle=cassToMoodleIf;

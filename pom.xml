@@ -9,7 +9,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>2.0.0</ec-version>
+		<ec-version>SNAPSHOT</ec-version>
+		<ew-version>SNAPSHOT</ew-version>
 	</properties>
 
 	<developers>
@@ -90,27 +91,38 @@
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.security</artifactId>
-			<version>SNAPSHOT</version>
+			<version>${ew-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.net</artifactId>
-			<version>SNAPSHOT</version>
+			<version>${ew-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.base</artifactId>
-			<version>SNAPSHOT</version>
+			<version>${ew-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.eduworks</groupId>
 			<artifactId>ew.levr.rdf</artifactId>
-			<version>SNAPSHOT</version>
+			<version>${ew-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>ew.db.mapdb</artifactId>
+			<version>${ew-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.eduworks</groupId>
+			<artifactId>kbac.skyrepo</artifactId>
+			<version>${ec-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -198,8 +210,21 @@
 						</goals>
 						<configuration>
 							<includes>*.js</includes>
-							<excludes>skyrepo.backup.js,formdata.js,jvm-npm.js</excludes>
+							<excludes>*skyrepo*.js,formdata.js,jvm-npm.js</excludes>
 							<outputDirectory>src/main/js/cass</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+					<execution>
+						<id>unpack-js-server</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includes>*skyrepo*.js</includes>
+							<outputDirectory>src/main/resources/b-skyrepo</outputDirectory>
 							<overWriteReleases>true</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
 						</configuration>
@@ -223,6 +248,13 @@
 							<includes>
 								<include>cass/*</include>
 								<include>cass.*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>src/main/resources/b-skyrepo</directory>
+							<includes>
+								<include>*</include>
 							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
@@ -315,6 +347,7 @@
 							<roots>
 								<root>src/main/js</root>
 								<root>src/main/webapp/cass.example/js</root>
+								<root>src/main/resources</root>
 							</roots>
 							<includes>
 								<include>**/cass*.js</include>
@@ -327,8 +360,8 @@
 								<include>org.*.js</include>
 								<include>**/Rollup*.js</include>
 								<include>Rollup*.js</include>
-								<include>**/skyrepo.*.js</include>
-								<include>skyrepo.*.js</include>
+								<include>**/*skyrepo.*.js</include>
+								<include>*skyrepo.*.js</include>
 							</includes>
 							<excludes>
 								<exclude>**/xml2json.js</exclude>

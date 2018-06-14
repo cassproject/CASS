@@ -889,13 +889,6 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
-        },
-        "src/main/js/cass/skyrepo.helper.js": {
-            "name": "src/main/js/cass/skyrepo.helper.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
         }
     },
     "modules": {
@@ -65727,22 +65720,6 @@
             "api": "private",
             "class": "",
             "module": "org.w3.skos"
-        },
-        {
-            "file": "src/main/js/cass/skyrepo.helper.js",
-            "line": 22,
-            "description": "Helper function to flatten any string-language objects (Objects \nwith @value and @lang fields only) into an elasticsearch\nfriendly type",
-            "params": [
-                {
-                    "name": "jsonLd",
-                    "description": "object to flatten"
-                }
-            ],
-            "return": {
-                "description": "flattened jsonLd object as String"
-            },
-            "class": "",
-            "module": "org.w3.skos"
         }
     ],
     "warnings": [
@@ -66685,10 +66662,6 @@
         {
             "message": "unknown tag: api",
             "line": " src/main/js/cass/pem-jwk.js:25935"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/skyrepo.helper.js:22"
         },
         {
             "message": "Missing item type\nCreated by fray on 11/29/17.",
@@ -68153,10 +68126,6 @@
         {
             "message": "Missing item type\nChecks `localStorage` for boolean values for the given `name`.",
             "line": " src/main/js/cass/pem-jwk.js:25935"
-        },
-        {
-            "message": "Missing item type\nHelper function to flatten any string-language objects (Objects \nwith @value and @lang fields only) into an elasticsearch\nfriendly type",
-            "line": " src/main/js/cass/skyrepo.helper.js:22"
         }
     ]
 }

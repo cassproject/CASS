@@ -325,7 +325,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         var v = new EcEncryptedValue();
         v.copyFrom(this.subject);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.subject);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString == null) 
             return null;
         return EcPk.fromPem(decryptedString);
@@ -360,19 +366,30 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.subject);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt subject.");
              else 
                 success(EcPk.fromPem(decryptedString));
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.subject, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getAgent = function() {
         if (this.agent == null) 
             return null;
         var v = new EcEncryptedValue();
         v.copyFrom(this.agent);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.agent);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString == null) 
             return null;
         return EcPk.fromPem(decryptedString);
@@ -387,12 +404,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.agent);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt agent.");
              else 
                 success(EcPk.fromPem(decryptedString));
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.agent, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getSubjectName = function() {
         if (this.subject == null) 
@@ -461,7 +483,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         var v = new EcEncryptedValue();
         v.copyFrom(this.assertionDate);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.assertionDate);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString == null) 
             return null;
         return Long.parseLong(decryptedString);
@@ -476,19 +504,30 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.assertionDate);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt assertion date.");
              else 
                 success(Long.parseLong(decryptedString));
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.assertionDate, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getExpirationDate = function() {
         if (this.expirationDate == null) 
             return null;
         var v = new EcEncryptedValue();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
         v.copyFrom(this.expirationDate);
-        var decryptedString = v.decryptIntoString();
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.expirationDate);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString == null) 
             return null;
         return Long.parseLong(decryptedString);
@@ -503,12 +542,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.expirationDate);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt expiration date.");
              else 
                 success(Long.parseLong(decryptedString));
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.expirationDate, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getEvidenceCount = function() {
         if (this.evidence == null) 
@@ -520,7 +564,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             return null;
         var v = new EcEncryptedValue();
         v.copyFrom(this.evidence[index]);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.evidence[index]);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         return decryptedString;
     };
     prototype.getEvidenceAsync = function(index, success, failure) {
@@ -530,19 +580,30 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.evidence[index]);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt evidence.");
              else 
                 success(decryptedString);
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.evidence[index], decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getDecayFunction = function() {
         if (this.decayFunction == null) 
             return null;
         var v = new EcEncryptedValue();
         v.copyFrom(this.decayFunction);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.decayFunction);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString == null) 
             return null;
         return decryptedString;
@@ -557,19 +618,30 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.decayFunction);
-        v.decryptIntoStringAsync(function(decryptedString) {
+        var decrypted = function(decryptedString) {
             if (decryptedString == null) 
                 failure("Could not decrypt decay function.");
              else 
                 success(decryptedString);
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.decayFunction, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.getNegative = function() {
         if (this.negative == null) 
             return false;
         var v = new EcEncryptedValue();
         v.copyFrom(this.negative);
-        var decryptedString = v.decryptIntoString();
+        var codebook = Assertion.getCodebook(this);
+        var decryptedString;
+        if (codebook != null) 
+            decryptedString = v.decryptIntoStringUsingSecret(codebook.negative);
+         else {
+            decryptedString = v.decryptIntoString();
+        }
         if (decryptedString != null) 
             decryptedString.toLowerCase();
         return "true".equals(decryptedString);
@@ -584,15 +656,21 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         var v = new EcEncryptedValue();
         v.copyFrom(this.negative);
-        v.decryptIntoStringAsync(function(decryptedString) {
-            if (decryptedString == null) {
-                failure("Could not decrypt negative.");
-                return;
-            }
+        var decrypted = function(decryptedString) {
+            if (decryptedString == null) 
+                if (decryptedString == null) {
+                    failure("Could not decrypt negative.");
+                    return;
+                }
             if (decryptedString != null) 
                 decryptedString.toLowerCase();
             success("true".equals(decryptedString));
-        }, failure);
+        };
+        var codebook = Assertion.getCodebook(this);
+        if (codebook != null) 
+            v.decryptIntoStringUsingSecretAsync(codebook.negative, decrypted, failure);
+         else 
+            v.decryptIntoStringAsync(decrypted, failure);
     };
     prototype.setCompetency = function(competencyUrl) {
         this.competency = competencyUrl;
@@ -665,64 +743,50 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.addReader = function(newReader) {
         if (this.agent != null) {
-            this.agent = EcEncryptedValue.revive(this.agent);
             this.agent.addReader(newReader);
         }
         if (this.assertionDate != null) {
-            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
             this.assertionDate.addReader(newReader);
         }
         if (this.decayFunction != null) {
-            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
             this.decayFunction.addReader(newReader);
         }
         if (this.evidence != null) 
             for (var i = 0; i < this.evidence.length; i++) {
-                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
                 this.evidence[i].addReader(newReader);
             }
         if (this.expirationDate != null) {
-            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
             this.expirationDate.addReader(newReader);
         }
         if (this.negative != null) {
-            this.negative = EcEncryptedValue.revive(this.negative);
             this.negative.addReader(newReader);
         }
         if (this.subject != null) {
-            this.subject = EcEncryptedValue.revive(this.subject);
             this.subject.addReader(newReader);
         }
         EcRemoteLinkedData.prototype.addReader.call(this, newReader);
     };
     prototype.removeReader = function(newReader) {
         if (this.agent != null) {
-            this.agent = EcEncryptedValue.revive(this.agent);
             this.agent.removeReader(newReader);
         }
         if (this.assertionDate != null) {
-            this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
             this.assertionDate.removeReader(newReader);
         }
         if (this.decayFunction != null) {
-            this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
             this.decayFunction.removeReader(newReader);
         }
         if (this.evidence != null) 
             for (var i = 0; i < this.evidence.length; i++) {
-                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
                 this.evidence[i].removeReader(newReader);
             }
         if (this.expirationDate != null) {
-            this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
             this.expirationDate.removeReader(newReader);
         }
         if (this.negative != null) {
-            this.negative = EcEncryptedValue.revive(this.negative);
             this.negative.removeReader(newReader);
         }
         if (this.subject != null) {
-            this.subject = EcEncryptedValue.revive(this.subject);
             this.subject.removeReader(newReader);
         }
         EcRemoteLinkedData.prototype.removeReader.call(this, newReader);
@@ -730,7 +794,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.getSearchStringByTypeAndCompetency = function(competency) {
         return "(" + this.getSearchStringByType() + " AND competency:\"" + competency.shortId() + "\")";
     };
-}, {subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
+}, {codebooks: "Object", subject: "EcEncryptedValue", agent: "EcEncryptedValue", evidence: {name: "Array", arguments: ["EcEncryptedValue"]}, assertionDate: "EcEncryptedValue", expirationDate: "EcEncryptedValue", decayFunction: "EcEncryptedValue", negative: "EcEncryptedValue", contributor: "Object", reviews: "Review", audience: "Audience", timeRequired: "Duration", publication: "PublicationEvent", contentLocation: "Place", temporalCoverage: "Object", isBasedOn: "Object", fileFormat: "Object", interactionStatistic: "InteractionCounter", recordedAt: "Event", isPartOf: "CreativeWork", exampleOfWork: "CreativeWork", dateCreated: "Object", releasedEvent: "PublicationEvent", publisher: "Object", encoding: "MediaObject", creator: "Object", hasPart: "CreativeWork", license: "Object", translator: "Object", offers: "Offer", schemaVersion: "Object", review: "Review", position: "Object", genre: "Object", character: "Person", producer: "Object", editor: "Person", locationCreated: "Place", about: "Thing", audio: "AudioObject", encodings: "MediaObject", funder: "Object", accountablePerson: "Person", material: "Object", author: "Object", sourceOrganization: "Organization", sponsor: "Object", provider: "Object", copyrightHolder: "Object", comment: "Comment", spatialCoverage: "Place", aggregateRating: "AggregateRating", educationalAlignment: "AlignmentObject", video: "VideoObject", version: "Object", mainEntity: "Thing", associatedMedia: "MediaObject", workExample: "CreativeWork", mentions: "Thing", citation: "Object", dateModified: "Object", inLanguage: "Object", isBasedOnUrl: "Object", identifier: "Object", image: "Object", potentialAction: "Action", mainEntityOfPage: "Object", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  Implementation of a Rollup Rule object with methods for interacting with CASS
  *  services on a server.

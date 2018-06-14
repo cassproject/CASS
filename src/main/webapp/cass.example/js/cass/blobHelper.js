@@ -1,3 +1,4 @@
+
 function base64ToBlob(base64Data, contentType) {
     contentType = contentType || '';
     var sliceSize = 1024;

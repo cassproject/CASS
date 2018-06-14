@@ -1,0 +1,49 @@
+getCompetencyById=#httpGet(obj=#add(a="@id",b="?noExternal=true")).toObject();
+
+#getCompetencyById=getCompetencyById;
+
+competency=#object(
+	name="@name",
+	description="@description"
+);
+
+competency=competency.put(_key=#context(),_value="http://schema.cassproject.org/0.2/");
+competency=competency.put(_key=#type(),_value="Competency");
+competency=competency.put(_key=#id(),_value=#repoEndpoint().add(p="data/",q="@type",r="/",s="@id",t="/",u="@lastModified"));
+competency=competency.put(_key=#owner(),_value=#rsaPpkToPk(obj="@ppk").toArray(_wrap="true"));
+
+competencySave=#cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=competency.skyrepoPut(
+		type="@type",
+		id="@id",
+		version="@lastModified"
+	)
+).call(type="schema.cassproject.org.0.2.Competency");
+
+#cassCreateCompetency=competencySave;
+
+findBase=#toArray(obj="@splitId").csubArray(start="0", count=#add(a="-1", b=#toArray(obj="@splitId").count())).flatten(_delimiter="/");
+
+baseId = findBase.ccall(
+	splitId=#toObject(obj="@competency").getByParam(param=#id()).split(split="/")
+);
+
+competencyUpdate = #cassSignatureSheet(
+).toDatastream(
+	paramName="signatureSheet",
+	op=#toObject(obj="@competency").put(
+		name="@name",
+		description="@description",
+	).put(
+		_key=#id(),
+		_value=#add(a=baseId, b="/", c="@lastModified")
+	).skyrepoPut(
+		type="schema.cassproject.org.0.2.Competency",
+		id="@id",
+		version="@lastModified"
+	)
+);
+
+#cassUpdateCompetency=competencyUpdate;

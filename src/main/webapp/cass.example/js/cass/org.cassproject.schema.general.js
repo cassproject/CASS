@@ -142,7 +142,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.generateId = function(server) {
         this.id = server;
-        if (!this.id.endsWith("/")) 
+        if (!this.id.endsWith("/") && !this.id.endsWith("ce-")) 
             this.id += "/";
         this.id += "data/";
         this.id += this.getDottedType();
@@ -160,7 +160,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.generateShortId = function(server) {
         this.id = server;
-        if (!this.id.endsWith("/")) 
+        if (!this.id.endsWith("/") && !this.id.endsWith("ce-")) 
             this.id += "/";
         this.id += generateUUID();
     };
@@ -185,6 +185,23 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += uniqueIdentifier;
         this.id += "/";
         this.id += new Date().getTime();
+    };
+    /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository) and unique identifier.
+     * 
+     *  @param {string} server Base URL of the server's repository functionality.
+     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
+     *  @method assignId
+     */
+    constructor.veryShortId = function(server, uniqueIdentifier) {
+        var id;
+        id = server;
+        if (!id.endsWith("/")) 
+            id += "/";
+        id += "data/";
+        id += uniqueIdentifier;
+        return id;
     };
     /**
      *  Will generate an identifier using the server URL provided (usually from

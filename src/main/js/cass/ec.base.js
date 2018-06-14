@@ -17,6 +17,18 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+var EcBrowserDetection = function() {};
+EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
+    constructor.isIeOrEdge = function() {
+        if (window == null) 
+            return false;
+        if (window.navigator == null) 
+            return false;
+        if (window.navigator.appName == null) 
+            return false;
+        return window.navigator.appName == "Microsoft Internet Explorer" || (window.navigator.appName == "Netscape" && window.navigator.appVersion.indexOf("Edge") > -1);
+    };
+}, {}, {});
 /**
  *  Object to hold a triple, used in graph.
  * 
@@ -750,7 +762,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), failure);
     };
     /**
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
@@ -768,10 +780,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingString = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, success, failure);
     };
     constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
-        EcRemote.postInner(server, service, fd, headers, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, headers, success, failure);
     };
     constructor.postInner = function(server, service, fd, headers, successCallback, failureCallback) {
         var url = server;
@@ -781,9 +793,19 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         if (service != null) {
             url += service;
         }
-        var p = {};
-        p.method = "POST";
-        p.url = url;
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = null;
+        if ((typeof httpStatus) == "undefined") {
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 && xhrx.status == 200) 
+                    successCallback(xhrx.responseText);
+                 else if (xhrx.readyState == 4) 
+                    failureCallback(xhrx.responseText);
+            };
+        }
         if ((fd)["_streams"] != null) {
             var chunks = (fd)["_streams"];
             var all = "";
@@ -795,32 +817,17 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             }
             all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
-            if (headers == null || headers == undefined) 
-                headers = new Object();
-            p.headers = headers;
-            p.headers["Content-Type"] = "multipart/form-data; boundary=" + (fd)["_boundary"];
-            p.data = all;
+            if ((typeof httpStatus) == "undefined") 
+                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
+            fd = all;
+        } else {}
+        if (EcRemote.async) 
+            (xhr)["timeout"] = EcRemote.timeout;
+        if ((typeof httpStatus) != "undefined") {
+            var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + (fd)["_boundary"], "false", (fd)["_boundary"]));
+            successCallback(result);
         } else {
-            p.mimeType = "multipart/form-data";
-            p.data = fd;
-            if (headers != null && headers != undefined) 
-                p.headers = headers;
-        }
-        (p)["contentType"] = false;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.success = successCallback;
-        p.error = failureCallback;
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            var o = new Object();
-            (o)["status"] = 200;
-            (o)["responseText"] = JSON.stringify(httpPost(p.data, p.url, "multipart/form-data; boundary=" + (fd)["_boundary"], "false", (fd)["_boundary"]));
-            successCallback(null, null, o);
-        } else {
-            $.ajax(p);
+            xhr.send(fd);
         }
     };
     /**
@@ -837,23 +844,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
-        var url = EcRemote.urlAppend(server, service);
-        var p = {};
-        p.method = "GET";
-        p.url = url;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.dataType = "json";
-        p.success = EcRemote.getSuccessJSONCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpGet(p.url));
-        } else {
-            $.ajax(p);
-        }
+        EcRemote.getExpectingString(server, service, EcRemote.getSuccessJSONCallback(success, failure), failure);
     };
     /**
      *  GETs something from a remote endpoint. Composed of a server endpoint
@@ -870,19 +861,21 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      */
     constructor.getExpectingString = function(server, service, success, failure) {
         var url = EcRemote.urlAppend(server, service);
-        var p = {};
-        p.method = "GET";
-        p.url = url;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.success = EcRemote.getSuccessCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpGet(p.url));
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, EcRemote.async);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) 
+                success(xhr.responseText);
+             else if (xhr.readyState == 4) 
+                failure(xhr.responseText);
+        };
+        if (EcRemote.async) 
+            (xhr)["timeout"] = EcRemote.timeout;
+        if ((typeof httpStatus) != "undefined") {
+            success(JSON.stringify(httpGet(url)));
         } else {
-            $.ajax(p);
+            xhr.send();
         }
     };
     constructor.urlAppend = function(server, service) {
@@ -909,93 +902,51 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor._delete = function(url, signatureSheet, success, failure) {
-        var p = {};
-        p.method = "DELETE";
-        p.url = url;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.headers = new Object();
-        p.headers["signatureSheet"] = signatureSheet;
-        p.success = EcRemote.getSuccessCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpDelete(p.url));
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", url, EcRemote.async);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) 
+                success(xhr.responseText);
+             else if (xhr.readyState == 4) 
+                failure(xhr.responseText);
+        };
+        if (EcRemote.async) 
+            (xhr)["timeout"] = EcRemote.timeout;
+        xhr.setRequestHeader("signatureSheet", signatureSheet);
+        if ((typeof httpStatus) != "undefined") {
+            success(httpDelete(url));
         } else {
-            $.ajax(p);
+            xhr.send();
         }
     };
-    constructor.upgradeHttpToHttps = function(p) {
+    constructor.upgradeHttpToHttps = function(url) {
         if (window != null) {
             if (window.location != null) {
-                if (p.url.indexOf(window.location.protocol) == -1) {
+                if (url.indexOf(window.location.protocol) == -1) {
                     if (window.location.protocol.startsWith("https")) {
-                        if (!p.url.startsWith("https:")) {
-                            p.url = p.url.replace("http:", "https:");
+                        if (!url.startsWith("https:")) {
+                            url = url.replace("http:", "https:");
                         }
                     }
                 }
             }
         }
-    };
-    constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
-        if (failure != null) {
-            if (paramP1 != null) {
-                if (paramP1.responseText != null) {
-                    failure(paramP1.responseText);
-                } else if (paramP1.statusText != null) {
-                    failure(paramP1.statusText.toString());
-                } else {
-                    failure("General error in AJAX request.");
-                }
-            } else if (paramP2 != null) {
-                failure(paramP2);
-            } else if (paramP3 != null) {
-                failure(paramP3);
-            } else {
-                failure("General error in AJAX request.");
-            }
-        }
-    };
-    constructor.getSuccessCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) {
-                if (failure != null) 
-                    failure("Error with code: " + arg2.status);
-            } else if (success != null) {
-                success(arg2.responseText);
-            }
-        };
+        return url;
     };
     constructor.getSuccessJSONCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status > 300 || arg2.status < 200) {
-                if (failure != null) 
-                    failure("Error with code: " + arg2.status);
-            } else if (success != null) {
-                try {
-                    if (EcObject.isObject(arg2.responseText)) 
-                        success(arg2.responseText);
-                     else if (EcArray.isArray(arg2.responseText)) 
-                        success(arg2.responseText);
-                     else 
-                        success(JSON.parse(arg2.responseText));
-                }catch (ex) {
-                    if (ex != null) {
-                        if (failure != null) 
-                            if ((ex)["getMessage"] != null) {
-                                failure(ex.getMessage());
-                            } else {
-                                failure(ex);
-                            }
-                    }
-                }
+        return function(s) {
+            var o;
+            try {
+                o = JSON.parse(s);
+            }catch (ex) {
+                if (ex == null) 
+                    failure("An unspecified error occurred during a network request.");
+                 else 
+                    failure(ex);
+                return;
             }
-        };
-    };
-    constructor.getFailureCallback = function(failure) {
-        return function(paramP1, paramP2, paramP3) {
-            EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
+            success(o);
         };
     };
 }, {}, {});

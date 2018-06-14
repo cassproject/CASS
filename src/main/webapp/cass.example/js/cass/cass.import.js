@@ -966,11 +966,18 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  @private
      *  @static
      */
-    constructor.transformId = function(oldId, newObject, selectedServer) {
+    constructor.transformId = function(oldId, newObject, selectedServer, repo) {
         if (oldId == null || oldId == "") 
             newObject.assignId(selectedServer, oldId);
          else if (oldId.indexOf("http") != -1) {
-            newObject.id = oldId;
+            if (EcCompetency.getBlocking(oldId) == null) 
+                newObject.id = oldId;
+             else {
+                if (repo == null || repo.selectedServer.indexOf(selectedServer) != -1) 
+                    newObject.generateId(selectedServer);
+                 else 
+                    newObject.generateShortId(selectedServer);
+            }
         }
     };
     /**
@@ -1037,7 +1044,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     competency.scope = tabularData[i][scopeIndex];
                 if ((uniquify == undefined || uniquify == null || uniquify == false) && idIndex != null && idIndex >= 0) {
                     competency.id = tabularData[i][idIndex];
-                    CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
+                    CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl, repo);
                 } else {
                     if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
                         competency.generateId(serverUrl);
@@ -1311,7 +1318,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var fileId = data.id;
                 if (idIndex != undefined && idIndex != null && idIndex >= 0) {
                     data.id = tabularData[i][idIndex];
-                    CSVImport.transformId(tabularData[i][idIndex], data, serverUrl);
+                    CSVImport.transformId(tabularData[i][idIndex], data, serverUrl, repo);
                 } else {
                     if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
                         data.generateId(serverUrl);
