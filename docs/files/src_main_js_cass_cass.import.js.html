@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -1782,11 +1783,18 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  @private
      *  @static
      */
-    constructor.transformId = function(oldId, newObject, selectedServer) {
+    constructor.transformId = function(oldId, newObject, selectedServer, repo) {
         if (oldId == null || oldId == &quot;&quot;) 
             newObject.assignId(selectedServer, oldId);
          else if (oldId.indexOf(&quot;http&quot;) != -1) {
-            newObject.id = oldId;
+            if (EcCompetency.getBlocking(oldId) == null) 
+                newObject.id = oldId;
+             else {
+                if (repo == null || repo.selectedServer.indexOf(selectedServer) != -1) 
+                    newObject.generateId(selectedServer);
+                 else 
+                    newObject.generateShortId(selectedServer);
+            }
         }
     };
     /**
@@ -1853,7 +1861,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     competency.scope = tabularData[i][scopeIndex];
                 if ((uniquify == undefined || uniquify == null || uniquify == false) &amp;&amp; idIndex != null &amp;&amp; idIndex &gt;= 0) {
                     competency.id = tabularData[i][idIndex];
-                    CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl);
+                    CSVImport.transformId(tabularData[i][idIndex], competency, serverUrl, repo);
                 } else {
                     if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
                         competency.generateId(serverUrl);
@@ -2127,7 +2135,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                 var fileId = data.id;
                 if (idIndex != undefined &amp;&amp; idIndex != null &amp;&amp; idIndex &gt;= 0) {
                     data.id = tabularData[i][idIndex];
-                    CSVImport.transformId(tabularData[i][idIndex], data, serverUrl);
+                    CSVImport.transformId(tabularData[i][idIndex], data, serverUrl, repo);
                 } else {
                     if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
                         data.generateId(serverUrl);

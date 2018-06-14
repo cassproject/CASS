@@ -407,7 +407,7 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
      *  @property expiry
      *  @type long
      */
-    prototype.expiry = 0.0;
+    prototype.expiry = null;
     /**
      *  The signature of this object, having signed the object, having been
      *  encoded in JSON with no space or tabs in ASCII sort order, having no

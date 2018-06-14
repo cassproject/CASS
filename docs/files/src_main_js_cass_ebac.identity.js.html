@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -917,8 +918,13 @@ EcContact = stjs.extend(EcContact, null, [], function(constructor, prototype) {
      *  @method equals
      */
     prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcContact)) 
-            return this.pk == (obj).pk;
+        if (stjs.isInstanceOf(obj.constructor, EcContact)) {
+            if (this.pk == null) 
+                return false;
+            if ((obj).pk == null) 
+                return false;
+            return this.pk.toPem().equals((obj).pk.toPem());
+        }
         return Object.prototype.equals.call(this, obj);
     };
     /**
@@ -1018,8 +1024,13 @@ EcIdentity = stjs.extend(EcIdentity, null, [], function(constructor, prototype) 
         return i;
     };
     prototype.equals = function(obj) {
-        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) 
+        if (stjs.isInstanceOf(obj.constructor, EcIdentity)) {
+            if (this.ppk == null) 
+                return false;
+            if ((obj).ppk == null) 
+                return false;
             return this.ppk.toPem().equals((obj).ppk.toPem());
+        }
         return Object.prototype.equals.call(this, obj);
     };
     /**

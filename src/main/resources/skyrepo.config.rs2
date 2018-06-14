@@ -1,11 +1,3 @@
-urlBase=#add(
-	a="http://localhost:9200"
-);
-#urlBase=urlBase;
-
-indexBase=#add(a="data");
-#indexBase=indexBase;
-
 // Interval between adapter runs between get requests (in seconds)
 beforeGetInterval=#string(str="1800");
 
@@ -37,7 +29,7 @@ postData=#fileFromDatastream(name="data");
 postObject=postData.fileToString().toObject();
 afterSave=#object(
 	a=afterSave,
-	b=#wsBroadcast(obj=postObject.getByParam(param=#id())),
+	b=#wsBroadcast(obj=postObject.getByParam(param=#id())).call(background="true"),
 	c=#if(operator=postObject.getByParam(param=#type()),operand="Assertion",eq=postObject.openbadgeCheckId())
 );
 

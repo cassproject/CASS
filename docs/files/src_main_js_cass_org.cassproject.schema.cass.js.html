@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -846,8 +847,20 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_2 = &quot;http://schema.eduworks.com/cass/0.2&quot;;
     constructor.context_0_3 = &quot;http://schema.cassproject.org/0.2&quot;;
     constructor.context_0_4 = &quot;http://schema.cassproject.org/0.3&quot;;
+    constructor.context_0_5 = &quot;http://schema.cassproject.org/0.4&quot;;
     constructor.context = Cass.context_0_4;
 }, {}, {});
+var AssertionCodebook = function() {};
+AssertionCodebook = stjs.extend(AssertionCodebook, null, [], function(constructor, prototype) {
+    prototype.agent = null;
+    prototype.subject = null;
+    prototype.assertionDate = null;
+    prototype.expirationDate = null;
+    prototype.decayFunction = null;
+    prototype.negative = null;
+    prototype.evidence = null;
+    prototype.assertionShortId = null;
+}, {agent: &quot;EbacEncryptedSecret&quot;, subject: &quot;EbacEncryptedSecret&quot;, assertionDate: &quot;EbacEncryptedSecret&quot;, expirationDate: &quot;EbacEncryptedSecret&quot;, decayFunction: &quot;EbacEncryptedSecret&quot;, negative: &quot;EbacEncryptedSecret&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EbacEncryptedSecret&quot;]}}, {});
 /**
  *  Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.
  * 
@@ -1147,7 +1160,7 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
      *  Equivalent relations define two objects that are effectively equivalent.
      *  Equivalent relations are bidirectional.
      * 
-     *  @property IS_RELATED_TO
+     *  @property IS_EQUIVALENT_TO
      *  @static
      *  @type string
      */
@@ -1239,6 +1252,7 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     constructor.TYPE_0_3 = &quot;http://schema.cassproject.org/0.2/Assertion&quot;;
     constructor.TYPE_0_4 = &quot;http://schema.cassproject.org/0.3/Assertion&quot;;
     constructor.myType = Assertion.TYPE_0_4;
+    constructor.codebooks = null;
     /**
      *  URL of the competency.
      * 
@@ -1490,6 +1504,16 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
         if (Assertion.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, Assertion.TYPE_0_4);
         }
+        this.agent = EcEncryptedValue.revive(this.agent);
+        this.subject = EcEncryptedValue.revive(this.subject);
+        this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
+        this.expirationDate = EcEncryptedValue.revive(this.expirationDate);
+        this.decayFunction = EcEncryptedValue.revive(this.decayFunction);
+        this.negative = EcEncryptedValue.revive(this.negative);
+        if (this.evidence != null) 
+            for (var i = 0; i &lt; this.evidence.length; i++) {
+                this.evidence[i] = EcEncryptedValue.revive(this.evidence[i]);
+            }
     };
     prototype.getTypes = function() {
         var a = new Array();
@@ -1499,7 +1523,219 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
         a.push(Assertion.TYPE_0_1);
         return a;
     };
-}, {subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+    constructor.getCodebook = function(assertion) {
+        if (Assertion.codebooks == null) 
+            Assertion.codebooks = new Object();
+        return (Assertion.codebooks)[assertion.id];
+    };
+}, {codebooks: &quot;Object&quot;, subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+/**
+ *  Container for storing assertions and the secrets used to decrypt those assertions.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class AssertionEnvelope
+ *  @extends CreativeWork
+ *  @module org.cassproject
+ */
+var AssertionEnvelope = function() {
+    CreativeWork.call(this);
+    this.setContextAndType(Cass.context_0_5, AssertionEnvelope.myType);
+};
+AssertionEnvelope = stjs.extend(AssertionEnvelope, CreativeWork, [], function(constructor, prototype) {
+    constructor.TYPE_0_5 = &quot;http://schema.cassproject.org/0.4/AssertionEnvelope&quot;;
+    constructor.myType = AssertionEnvelope.TYPE_0_5;
+    /**
+     *  List of assertions to pack in the envelope.
+     * 
+     *  @property assertion
+     *  @type Assertion[]
+     */
+    prototype.assertion = null;
+    /**
+     *  List of secrets found in assertions to the objects necessary to decrypt the assertion data.
+     * 
+     *  @property codebook
+     *  @type AssertionCodebook[]
+     */
+    prototype.codebook = null;
+    prototype.length = function() {
+        if (this.assertion != null) 
+            return this.assertion.length;
+        return 0;
+    };
+    /**
+     *  Removes an assertion from the envelope
+     *  @param assertionShortIdToRemove
+     *  @method removeAssertionByShortId
+     */
+    prototype.removeAssertionByShortId = function(assertionShortIdToRemove) {
+        if (this.assertion != null) {
+            for (var i = 0; i &lt; this.assertion.length; i++) {
+                if (this.getAssertion(i).shortId().equals(assertionShortIdToRemove)) {
+                    this.assertion.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        if (this.codebook != null) {
+            for (var i = 0; i &lt; this.codebook.length; i++) {
+                if (this.codebook[i].assertionShortId.equals(assertionShortIdToRemove)) {
+                    this.codebook.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    };
+    /**
+     *  Returns the assertion indexed at position @index.
+     *  @param index
+     *  @method getAssertion
+     *  @return
+     */
+    prototype.getAssertion = function(index) {
+        if (this.assertion != null) 
+            if (index &lt; this.assertion.length) {
+                if (Assertion.codebooks == null) 
+                    Assertion.codebooks = new Object();
+                var a = new Assertion();
+                a.copyFrom(this.assertion[index]);
+                (Assertion.codebooks)[a.id] = this.codebook[index];
+                return a;
+            }
+        return null;
+    };
+    /**
+     *  Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.
+     *  @param a Assertion to add.
+     *  @method addAssertion
+     */
+    prototype.addAssertion = function(a) {
+        var me = this;
+        var ac = new AssertionCodebook();
+        if (this.assertion == null) 
+            this.assertion = new Array();
+        this.assertion.push(a);
+        if (this.codebook == null) 
+            this.codebook = new Array();
+        this.codebook.push(ac);
+        if (a.shortId() != null) 
+            ac.assertionShortId = a.shortId();
+        if (a.agent != null) 
+            ac.agent = a.agent.decryptSecret();
+        if (a.subject != null) 
+            ac.subject = a.subject.decryptSecret();
+        if (a.assertionDate != null) 
+            ac.assertionDate = a.assertionDate.decryptSecret();
+        if (a.expirationDate != null) 
+            ac.expirationDate = a.expirationDate.decryptSecret();
+        if (a.decayFunction != null) 
+            ac.decayFunction = a.decayFunction.decryptSecret();
+        if (a.negative != null) 
+            ac.negative = a.negative.decryptSecret();
+        if (a.evidence != null) 
+            for (var i = 0; i &lt; a.evidence.length; i++) {
+                if (ac.evidence == null) 
+                    ac.evidence = new Array();
+                var ecEncryptedValue = a.evidence[i];
+                ac.evidence.push(ecEncryptedValue.decryptSecret());
+            }
+    };
+    /**
+     *  Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.
+     *  @param a Assertion to add.
+     *  @param success Event to call when success occurs.
+     *  @param failure Event to call when failure occurs.
+     *  @method addAssertionAsync
+     */
+    prototype.addAssertionAsync = function(a, success, failure) {
+        var me = this;
+        var ac = new AssertionCodebook();
+        if (this.assertion == null) 
+            this.assertion = new Array();
+        this.assertion.push(a);
+        if (this.codebook == null) 
+            this.codebook = new Array();
+        this.codebook.push(ac);
+        var thingsToRun = new Array();
+        var eah = new EcAsyncHelper();
+        if (a.agent != null) 
+            thingsToRun.push(function(finished) {
+                a.agent.decryptSecretAsync(function(secret) {
+                    ac.agent = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.subject != null) 
+            thingsToRun.push(function(finished) {
+                a.subject.decryptSecretAsync(function(secret) {
+                    ac.subject = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.assertionDate != null) 
+            thingsToRun.push(function(finished) {
+                a.assertionDate.decryptSecretAsync(function(secret) {
+                    ac.assertionDate = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.expirationDate != null) 
+            thingsToRun.push(function(finished) {
+                a.expirationDate.decryptSecretAsync(function(secret) {
+                    ac.expirationDate = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.decayFunction != null) 
+            thingsToRun.push(function(finished) {
+                a.decayFunction.decryptSecretAsync(function(secret) {
+                    ac.decayFunction = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.negative != null) 
+            thingsToRun.push(function(finished) {
+                a.negative.decryptSecretAsync(function(secret) {
+                    ac.negative = secret;
+                    finished();
+                }, failure);
+            });
+        if (a.evidence != null) 
+            thingsToRun.push(function(finished) {
+                var eah = new EcAsyncHelper();
+                eah.each(a.evidence, function(ecEncryptedValue, callback0) {
+                    ecEncryptedValue.decryptSecretAsync(function(ebacEncryptedSecret) {
+                        if (ebacEncryptedSecret != null) {
+                            if (ac.evidence == null) 
+                                ac.evidence = new Array();
+                            ac.evidence.push(ebacEncryptedSecret);
+                        }
+                        callback0();
+                    }, failure);
+                }, function(strings) {
+                    finished();
+                });
+            });
+        eah.each(thingsToRun, function(theThingToDo, callback0) {
+            theThingToDo(callback0);
+        }, function(strings) {
+            success();
+        });
+    };
+    /**
+     *  Validates that all assertions have not been tampered with (are authentic).
+     *  Does not validate the sources of assertions.
+     *  @return True IFF assertions are authentic.
+     *  @method validate
+     */
+    prototype.validate = function() {
+        if (this.assertion != null) 
+            for (var i = 0; i &lt; this.assertion.length; i++) 
+                if (this.assertion[i].invalid()) 
+                    return false;
+        return true;
+    };
+}, {assertion: {name: &quot;Array&quot;, arguments: [&quot;Assertion&quot;]}, codebook: {name: &quot;Array&quot;, arguments: [&quot;AssertionCodebook&quot;]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>

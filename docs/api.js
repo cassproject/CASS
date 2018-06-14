@@ -39,6 +39,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Article",
         "AskAction",
         "Assertion",
+        "AssertionEnvelope",
         "AssertionProcessor",
         "AssessAction",
         "Assessment",

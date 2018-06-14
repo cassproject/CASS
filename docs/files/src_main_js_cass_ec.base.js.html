@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -833,6 +834,18 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+var EcBrowserDetection = function() {};
+EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(constructor, prototype) {
+    constructor.isIeOrEdge = function() {
+        if (window == null) 
+            return false;
+        if (window.navigator == null) 
+            return false;
+        if (window.navigator.appName == null) 
+            return false;
+        return window.navigator.appName == &quot;Microsoft Internet Explorer&quot; || (window.navigator.appName == &quot;Netscape&quot; &amp;&amp; window.navigator.appVersion.indexOf(&quot;Edge&quot;) &gt; -1);
+    };
+}, {}, {});
 /**
  *  Object to hold a triple, used in graph.
  * 
@@ -1566,7 +1579,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingObject = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessJSONCallback(success, failure), failure);
     };
     /**
      *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
@@ -1584,10 +1597,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.postExpectingString = function(server, service, fd, success, failure) {
-        EcRemote.postInner(server, service, fd, null, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, null, success, failure);
     };
     constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
-        EcRemote.postInner(server, service, fd, headers, EcRemote.getSuccessCallback(success, failure), EcRemote.getFailureCallback(failure));
+        EcRemote.postInner(server, service, fd, headers, success, failure);
     };
     constructor.postInner = function(server, service, fd, headers, successCallback, failureCallback) {
         var url = server;
@@ -1597,9 +1610,19 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         if (service != null) {
             url += service;
         }
-        var p = {};
-        p.method = &quot;POST&quot;;
-        p.url = url;
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = null;
+        if ((typeof httpStatus) == &quot;undefined&quot;) {
+            xhr = new XMLHttpRequest();
+            xhr.open(&quot;POST&quot;, url, EcRemote.async);
+            var xhrx = xhr;
+            xhr.onreadystatechange = function() {
+                if (xhrx.readyState == 4 &amp;&amp; xhrx.status == 200) 
+                    successCallback(xhrx.responseText);
+                 else if (xhrx.readyState == 4) 
+                    failureCallback(xhrx.responseText);
+            };
+        }
         if ((fd)[&quot;_streams&quot;] != null) {
             var chunks = (fd)[&quot;_streams&quot;];
             var all = &quot;&quot;;
@@ -1611,32 +1634,17 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             }
             all = all + &quot;\r\n\r\n--&quot; + (fd)[&quot;_boundary&quot;] + &quot;--&quot;;
-            if (headers == null || headers == undefined) 
-                headers = new Object();
-            p.headers = headers;
-            p.headers[&quot;Content-Type&quot;] = &quot;multipart/form-data; boundary=&quot; + (fd)[&quot;_boundary&quot;];
-            p.data = all;
+            if ((typeof httpStatus) == &quot;undefined&quot;) 
+                xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + (fd)[&quot;_boundary&quot;]);
+            fd = all;
+        } else {}
+        if (EcRemote.async) 
+            (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
+            var result = JSON.stringify(httpPost(fd, url, &quot;multipart/form-data; boundary=&quot; + (fd)[&quot;_boundary&quot;], &quot;false&quot;, (fd)[&quot;_boundary&quot;]));
+            successCallback(result);
         } else {
-            p.mimeType = &quot;multipart/form-data&quot;;
-            p.data = fd;
-            if (headers != null &amp;&amp; headers != undefined) 
-                p.headers = headers;
-        }
-        (p)[&quot;contentType&quot;] = false;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.success = successCallback;
-        p.error = failureCallback;
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            var o = new Object();
-            (o)[&quot;status&quot;] = 200;
-            (o)[&quot;responseText&quot;] = JSON.stringify(httpPost(p.data, p.url, &quot;multipart/form-data; boundary=&quot; + (fd)[&quot;_boundary&quot;], &quot;false&quot;, (fd)[&quot;_boundary&quot;]));
-            successCallback(null, null, o);
-        } else {
-            $.ajax(p);
+            xhr.send(fd);
         }
     };
     /**
@@ -1653,23 +1661,7 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.getExpectingObject = function(server, service, success, failure) {
-        var url = EcRemote.urlAppend(server, service);
-        var p = {};
-        p.method = &quot;GET&quot;;
-        p.url = url;
-        p.cache = false;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.dataType = &quot;json&quot;;
-        p.success = EcRemote.getSuccessJSONCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpGet(p.url));
-        } else {
-            $.ajax(p);
-        }
+        EcRemote.getExpectingString(server, service, EcRemote.getSuccessJSONCallback(success, failure), failure);
     };
     /**
      *  GETs something from a remote endpoint. Composed of a server endpoint
@@ -1686,19 +1678,21 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      */
     constructor.getExpectingString = function(server, service, success, failure) {
         var url = EcRemote.urlAppend(server, service);
-        var p = {};
-        p.method = &quot;GET&quot;;
-        p.url = url;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.processData = false;
-        p.success = EcRemote.getSuccessCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpGet(p.url));
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = new XMLHttpRequest();
+        xhr.open(&quot;GET&quot;, url, EcRemote.async);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) 
+                success(xhr.responseText);
+             else if (xhr.readyState == 4) 
+                failure(xhr.responseText);
+        };
+        if (EcRemote.async) 
+            (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
+            success(JSON.stringify(httpGet(url)));
         } else {
-            $.ajax(p);
+            xhr.send();
         }
     };
     constructor.urlAppend = function(server, service) {
@@ -1725,93 +1719,51 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor._delete = function(url, signatureSheet, success, failure) {
-        var p = {};
-        p.method = &quot;DELETE&quot;;
-        p.url = url;
-        p.async = EcRemote.async;
-        p.timeout = EcRemote.timeout;
-        p.headers = new Object();
-        p.headers[&quot;signatureSheet&quot;] = signatureSheet;
-        p.success = EcRemote.getSuccessCallback(success, failure);
-        p.error = EcRemote.getFailureCallback(failure);
-        EcRemote.upgradeHttpToHttps(p);
-        if ($ == null) {
-            success(httpDelete(p.url));
+        url = EcRemote.upgradeHttpToHttps(url);
+        var xhr = new XMLHttpRequest();
+        xhr.open(&quot;DELETE&quot;, url, EcRemote.async);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) 
+                success(xhr.responseText);
+             else if (xhr.readyState == 4) 
+                failure(xhr.responseText);
+        };
+        if (EcRemote.async) 
+            (xhr)[&quot;timeout&quot;] = EcRemote.timeout;
+        xhr.setRequestHeader(&quot;signatureSheet&quot;, signatureSheet);
+        if ((typeof httpStatus) != &quot;undefined&quot;) {
+            success(httpDelete(url));
         } else {
-            $.ajax(p);
+            xhr.send();
         }
     };
-    constructor.upgradeHttpToHttps = function(p) {
+    constructor.upgradeHttpToHttps = function(url) {
         if (window != null) {
             if (window.location != null) {
-                if (p.url.indexOf(window.location.protocol) == -1) {
+                if (url.indexOf(window.location.protocol) == -1) {
                     if (window.location.protocol.startsWith(&quot;https&quot;)) {
-                        if (!p.url.startsWith(&quot;https:&quot;)) {
-                            p.url = p.url.replace(&quot;http:&quot;, &quot;https:&quot;);
+                        if (!url.startsWith(&quot;https:&quot;)) {
+                            url = url.replace(&quot;http:&quot;, &quot;https:&quot;);
                         }
                     }
                 }
             }
         }
-    };
-    constructor.handleFailure = function(failure, paramP1, paramP2, paramP3) {
-        if (failure != null) {
-            if (paramP1 != null) {
-                if (paramP1.responseText != null) {
-                    failure(paramP1.responseText);
-                } else if (paramP1.statusText != null) {
-                    failure(paramP1.statusText.toString());
-                } else {
-                    failure(&quot;General error in AJAX request.&quot;);
-                }
-            } else if (paramP2 != null) {
-                failure(paramP2);
-            } else if (paramP3 != null) {
-                failure(paramP3);
-            } else {
-                failure(&quot;General error in AJAX request.&quot;);
-            }
-        }
-    };
-    constructor.getSuccessCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status &gt; 300 || arg2.status &lt; 200) {
-                if (failure != null) 
-                    failure(&quot;Error with code: &quot; + arg2.status);
-            } else if (success != null) {
-                success(arg2.responseText);
-            }
-        };
+        return url;
     };
     constructor.getSuccessJSONCallback = function(success, failure) {
-        return function(arg0, arg1, arg2) {
-            if (arg2.status &gt; 300 || arg2.status &lt; 200) {
-                if (failure != null) 
-                    failure(&quot;Error with code: &quot; + arg2.status);
-            } else if (success != null) {
-                try {
-                    if (EcObject.isObject(arg2.responseText)) 
-                        success(arg2.responseText);
-                     else if (EcArray.isArray(arg2.responseText)) 
-                        success(arg2.responseText);
-                     else 
-                        success(JSON.parse(arg2.responseText));
-                }catch (ex) {
-                    if (ex != null) {
-                        if (failure != null) 
-                            if ((ex)[&quot;getMessage&quot;] != null) {
-                                failure(ex.getMessage());
-                            } else {
-                                failure(ex);
-                            }
-                    }
-                }
+        return function(s) {
+            var o;
+            try {
+                o = JSON.parse(s);
+            }catch (ex) {
+                if (ex == null) 
+                    failure(&quot;An unspecified error occurred during a network request.&quot;);
+                 else 
+                    failure(ex);
+                return;
             }
-        };
-    };
-    constructor.getFailureCallback = function(failure) {
-        return function(paramP1, paramP2, paramP3) {
-            EcRemote.handleFailure(failure, paramP1, paramP2, paramP3);
+            success(o);
         };
     };
 }, {}, {});

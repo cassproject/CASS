@@ -76,6 +76,7 @@
                                 <li><a href="../classes/AskAction.html">AskAction</a></li>
                                 <li><a href="../classes/ASNImport.html">ASNImport</a></li>
                                 <li><a href="../classes/Assertion.html">Assertion</a></li>
+                                <li><a href="../classes/AssertionEnvelope.html">AssertionEnvelope</a></li>
                                 <li><a href="../classes/AssertionProcessor.html">AssertionProcessor</a></li>
                                 <li><a href="../classes/AssessAction.html">AssessAction</a></li>
                                 <li><a href="../classes/Assessment.html">Assessment</a></li>
@@ -958,7 +959,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.generateId = function(server) {
         this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;)) 
+        if (!this.id.endsWith(&quot;/&quot;) &amp;&amp; !this.id.endsWith(&quot;ce-&quot;)) 
             this.id += &quot;/&quot;;
         this.id += &quot;data/&quot;;
         this.id += this.getDottedType();
@@ -976,7 +977,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.generateShortId = function(server) {
         this.id = server;
-        if (!this.id.endsWith(&quot;/&quot;)) 
+        if (!this.id.endsWith(&quot;/&quot;) &amp;&amp; !this.id.endsWith(&quot;ce-&quot;)) 
             this.id += &quot;/&quot;;
         this.id += generateUUID();
     };
@@ -1001,6 +1002,23 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += uniqueIdentifier;
         this.id += &quot;/&quot;;
         this.id += new Date().getTime();
+    };
+    /**
+     *  Will generate an identifier using the server URL provided (usually from
+     *  an EcRepository) and unique identifier.
+     * 
+     *  @param {string} server Base URL of the server&#x27;s repository functionality.
+     *  @param {string} uniqueIdentifier Canonical identifier. Must contain a letter or symbol.
+     *  @method assignId
+     */
+    constructor.veryShortId = function(server, uniqueIdentifier) {
+        var id;
+        id = server;
+        if (!id.endsWith(&quot;/&quot;)) 
+            id += &quot;/&quot;;
+        id += &quot;data/&quot;;
+        id += uniqueIdentifier;
+        return id;
     };
     /**
      *  Will generate an identifier using the server URL provided (usually from
