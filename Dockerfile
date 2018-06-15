@@ -1,3 +1,4 @@
+
 FROM ubuntu:16.04
 ARG VERSION=master
 RUN apt-get update;apt-get install -qqy wget curl software-properties-common sudo gawk
