@@ -683,6 +683,8 @@ var skyIdCommit = function() {
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
     var get = (skyrepoGet).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    if (get == null) 
+        error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["token"] != token) 
         error("An error in synchronization has occurred. Please re-login and try again.", 403);
@@ -712,7 +714,11 @@ var skyIdLogin = function() {
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
     var get = (skyrepoGet).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    if (get == null) 
+        error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
+    if ((get)["password"] != saltedPassword) 
+        error("Invalid password.", 403);
     (get)["token"] = randomString(20);
     delete (get)["password"];
     var encryptedPayload = new EcEncryptedValue();
