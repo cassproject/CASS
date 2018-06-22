@@ -1,5 +1,23 @@
-alignments=#add(a='(@type:"CreativeWork") AND (url:"',q="@obj",r='")').httpPost(contentType="text/plain",name="data",url=#repoEndpoint().add(p='sky/repo/search?noExternal=true')).toArray();
+alignments=#httpGet(obj=#httpGet(obj="http://adltla.usalearning.net:8085/endpoints").get(activity_index="").get(endpoint="")).debug().toArray();
 
-alignments=alignments.forEach(paramName="result",array="true",op=#toObject(obj="@result").get(educationalAlignment="").toArray(_wrap="true").getIndex(index="0").get(targetUrl="")).removeDuplicates();
+alignments=alignments.forEach(
+	paramName="result",
+	array="true",
+	op=#toObject().put(
+		_key=#toObject(obj="@result").get(identifier=""),
+		_value=#toObject(obj="@result").get(educationalAlignment="").forEach(
+			paramName="edA",
+			array="true",
+			op=#if(
+				operator=#toObject(obj="@edA").get(alignmentType="").toLower(),
+				operand="assesses",
+				eq=#toObject(obj="@edA").get(targetUrl="")
+			)
+		)
+	)
+).union().forEach(valueName="obj",op=#toArray(obj="@obj").reduce());
 
 #getAlignedCompetency=alignments;
+
+alignmentsDisplay = alignments.displayJson(_collapse="true");
+/alignments=alignmentsDisplay;

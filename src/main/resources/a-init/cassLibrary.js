@@ -63,3 +63,6 @@ console = {
         print(s);
     }
 };
+
+var repo = new EcRepository();
+repo.selectedServer = "http://localhost:8080/api/";

@@ -21,9 +21,7 @@ EcIdentityManager.addIdentity(asnIdentity);
 //asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
 
 function cassFrameworkAsAsn() {
-    EcRepository.cache = {};
-    var repo = new EcRepository();
-    repo.selectedServer = repoEndpoint();
+    EcRepository.cache = new Object();
 
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
@@ -62,7 +60,7 @@ function cassFrameworkAsAsn() {
     ids = ids.concat(f.competency);
     ids = ids.concat(f.relation);
 
-    repo.multiget(ids, function (results) {}, print, function (results) {});
+    repo.precache(ids, function (results) {});
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};

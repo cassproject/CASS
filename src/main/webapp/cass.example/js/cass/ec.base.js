@@ -806,6 +806,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                     failureCallback(xhrx.responseText);
             };
         }
+        console.log(fd);
+        console.log(JSON.stringify(fd));
+        var theBoundary = null;
         if ((fd)["_streams"] != null) {
             var chunks = (fd)["_streams"];
             var all = "";
@@ -817,14 +820,16 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 }
             }
             all = all + "\r\n\r\n--" + (fd)["_boundary"] + "--";
+            theBoundary = (fd)["_boundary"];
             if ((typeof httpStatus) == "undefined") 
                 xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
             fd = all;
         } else {}
         if (EcRemote.async) 
             (xhr)["timeout"] = EcRemote.timeout;
+        console.log(fd);
         if ((typeof httpStatus) != "undefined") {
-            var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + (fd)["_boundary"], "false", (fd)["_boundary"]));
+            var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + theBoundary, "false", theBoundary));
             successCallback(result);
         } else {
             xhr.send(fd);

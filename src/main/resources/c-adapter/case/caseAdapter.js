@@ -265,8 +265,8 @@ cfItemAssociations = function (f, fw) {
     if (f2["case:originNodeURI"] == null) return null;
     if (f2["case:destinationNodeURI"].id == fw.id)
         return null;
-    var destNode = cfGetCompetency(f2["case:destinationNodeURI"].id);
-    var sourceNode = cfGetCompetency(f2["case:originNodeURI"].id);
+    var destNode = cfGetCompetency.call(this,f2["case:destinationNodeURI"].id);
+    var sourceNode = cfGetCompetency.call(this,f2["case:originNodeURI"].id);
     if (destNode == null) return null;
     if (sourceNode == null) return null;
     delete f2["case:destinationNodeURI"];
@@ -348,7 +348,7 @@ cfPackages = function (f) {
         for (var i = 0; i < f.competency.length; i++) {
             var c = EcCompetency.getBlocking(f.competency[i]);
             if (c != null)
-                c = JSON.parse(cfItems(c, f));
+                c = JSON.parse(cfItems.call(this,c, f));
             if (c != null) {
                 delete c["@context"];
                 result.CFItems.push(c);
@@ -359,7 +359,7 @@ cfPackages = function (f) {
         for (var i = 0; i < f.relation.length; i++) {
             var a = EcAlignment.getBlocking(f.relation[i]);
             if (a != null)
-                a = JSON.parse(cfItemAssociations(a, f));
+                a = JSON.parse(cfItemAssociations.call(this,a, f));
             if (a != null) {
                 delete a["@context"];
                 result.CFAssociations.push(a);

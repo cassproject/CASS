@@ -308,7 +308,15 @@ var skyrepoGetInternal = function(id, version, type) {
     }
     return null;
 };
-var skyrepoGet = function(id, version, type) {
+var skyrepoGet = function(parseParams) {
+    if (parseParams == null && EcObject.isObject(this.params.obj)) 
+        parseParams = this.params.obj;
+    var id = (parseParams)["id"];
+    var type = (parseParams)["type"];
+    var version = (parseParams)["version"];
+    return (skyrepoGetParsed).call(this, id, type, version, null);
+};
+var skyrepoGetParsed = function(id, version, type) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
     if (result == null) 
         return null;
@@ -326,7 +334,7 @@ var skyrepoPut = function(o, id, version, type) {
     skyrepoPutInternal(o, id, version, type);
 };
 var validateSignatures = function(id, version, type, errorMessage) {
-    var oldGet = (skyrepoGet).call(this, id, version, type, null);
+    var oldGet = (skyrepoGetParsed).call(this, id, version, type, null);
     if (oldGet == null) 
         return;
     var oldObj = new EcRemoteLinkedData(null, null);
@@ -432,6 +440,8 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
     return (filterResults).call(this, searchResults, null);
 };
 var queryParse = function(urlRemainder) {
+    if (urlRemainder == null && this.params.urlRemainder != null) 
+        urlRemainder = this.params.urlRemainder;
     if (urlRemainder == null) 
         error("No resource specified.", 404);
     var split = urlRemainder.split("/");
@@ -453,9 +463,9 @@ var tryFormatOutput = function(o, expand) {
         accept = (hdrs)["accept"];
     if (accept == null) 
         if (expand == true) 
-            return jsonLdExpand(o);
+            return JSON.stringify(jsonLdExpand(o));
          else 
-            return o;
+            return JSON.stringify(o);
     if (accept == "text/n4" || accept == "application/rdf+n4") 
         return jsonLdToNQuads(o);
     if (accept == "application/rdf+json") 
@@ -464,7 +474,7 @@ var tryFormatOutput = function(o, expand) {
         return jsonLdToRdfXml(o);
     if (accept == "application/x-turtle" || accept == "text/turtle") 
         return jsonLdToTurtle(o);
-    return o;
+    return JSON.stringify(o);
 };
 var endpointData = function() {
     var q = this.params.q;
@@ -499,7 +509,7 @@ var endpointData = function() {
         return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores));
     }
     var methodType = this.params.methodType;
-    var parseParams = queryParse(urlRemainder);
+    var parseParams = (queryParse).call(this, urlRemainder, null);
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
@@ -511,42 +521,46 @@ var endpointData = function() {
         var o = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
         if (o == null || o == "") {
             (beforeGet).call(this);
-            o = (skyrepoGet).call(this, id, version, type, null);
+            o = (skyrepoGetParsed).call(this, id, version, type, null);
             if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
             o = (tryFormatOutput).call(this, o, expand, null);
-            return JSON.stringify(o);
+            return o;
         }
         (skyrepoPut).call(this, o, id, version, type);
         (afterSave).call(this);
         return null;
     } else if (methodType == "GET") {
         (beforeGet).call(this);
-        var o = (skyrepoGet).call(this, id, version, type, null);
+        var o = (skyrepoGetParsed).call(this, id, version, type, null);
         if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
         o = (tryFormatOutput).call(this, o, expand, null);
-        return JSON.stringify(o);
+        return o;
     }
     return null;
 };
 var endpointMultiGet = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
+    console.log(JSON.stringify(ary));
     var results = new Array();
-    for (var i = 0; i < ary.length; i++) {
-        var urlRemainder = ary[i];
-        var parseParams = queryParse(urlRemainder);
-        var id = (parseParams)["id"];
-        var type = (parseParams)["type"];
-        var version = (parseParams)["version"];
-        try {
-            var o = (skyrepoGet).call(this, id, version, type, null);
-            var expand = this.params.expand != null;
-            results.push((tryFormatOutput).call(this, o, expand, null));
-        }catch (ex) {}
-    }
+    if (ary != null) 
+        for (var i = 0; i < ary.length; i++) {
+            var urlRemainder = ary[i];
+            if (urlRemainder != null) 
+                urlRemainder = urlRemainder.replace("custom/", "").replace("data/", "");
+            var parseParams = (queryParse).call(this, urlRemainder, null);
+            var id = (parseParams)["id"];
+            var type = (parseParams)["type"];
+            var version = (parseParams)["version"];
+            try {
+                var o = (skyrepoGetParsed).call(this, id, version, type, null);
+                var expand = this.params.expand != null;
+                results.push(JSON.parse((tryFormatOutput).call(this, o, expand, null)));
+            }catch (ex) {}
+        }
     return JSON.stringify(results);
 };
 var skyRepoSearch = function() {
@@ -637,7 +651,7 @@ var skyIdCreate = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
-    var get = (skyrepoGet).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
         get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     var encryptedPayload = new EcEncryptedValue();
@@ -682,7 +696,7 @@ var skyIdCommit = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
-    var get = (skyrepoGet).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
@@ -713,18 +727,18 @@ var skyIdLogin = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
-    var get = (skyrepoGet).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["password"] != saltedPassword) 
         error("Invalid password.", 403);
     (get)["token"] = randomString(20);
-    delete (get)["password"];
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
     (skyrepoPut).call(this, encryptedPayload.toJson(), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+    delete (get)["password"];
     return JSON.stringify(get);
 };
 (function() {

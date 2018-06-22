@@ -26,10 +26,7 @@ ceasnIdentity.displayName = "CEASN Server Identity";
 EcIdentityManager.addIdentity(ceasnIdentity);
 
 function cassFrameworkAsCeasn() {
-    EcRepository.cache = {};
-    var repo = new EcRepository();
-    repo.selectedServer = repoEndpoint();
-
+    EcRepository.cache = new Object();
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
     var query = queryParse.call(this);
@@ -65,15 +62,14 @@ function cassFrameworkAsCeasn() {
     var all = [];
     all = all.concat(f.competency);
     all = all.concat(f.relation);
-    repo.precache(all, null, null);
+
+    repo.precache(all, function (results) {});
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
 
     for (var i = 0; i < f.competency.length; i++) {
-        var c = null;
-        if (c == null)
-            c = EcCompetency.getBlocking(f.competency[i]);
+        var c = EcCompetency.getBlocking(f.competency[i]);
         competencies[f.competency[i]] = competencies[c.id] = c;
         if (competencies[c.id] == null)
             error("Competency not found.", 404);

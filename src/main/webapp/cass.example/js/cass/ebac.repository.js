@@ -1052,7 +1052,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcRemote.async = oldAsync;
         var result = (EcRepository.cache)[originalUrl];
         if (!EcRepository.caching) {
-            (EcRepository.cache)[originalUrl] = null;
+            delete (EcRepository.cache)[originalUrl];
         }
         return result;
     };
@@ -1355,11 +1355,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         var cacheUrls = new Array();
+        console.log(JSON.stringify(urls));
         for (var i = 0; i < urls.length; i++) {
             var url = urls[i];
             if ((EcRepository.cache)[url] != null) {} else if (url.startsWith(this.selectedServer)) {
                 cacheUrls.push(url.replace(this.selectedServer, "").replace("custom/", ""));
-            } else if (!EcRepository.shouldTryUrl(url)) {
+            } else {
                 cacheUrls.push("data/" + EcCrypto.md5(url));
             }
         }
@@ -1369,6 +1370,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }
             return;
         }
+        console.log(JSON.stringify(cacheUrls));
         var fd = new FormData();
         fd.append("data", JSON.stringify(cacheUrls));
         var me = this;
