@@ -1,5 +1,5 @@
 var skyrepoDebug = false;
-var elasticEndpoint = "http://localhost:9200/";
+var elasticEndpoint = "http://localhost:9200";
 var owner = function() {
     return "@owner";
 };
@@ -259,53 +259,52 @@ var skyrepoGetIndex = function(id, version, type) {
         var result = skyrepoGetIndexInternal(type.toLowerCase(), id, version, type);
         return result;
     } else {
-        var settings = (elasticSettings).call(this);
-        var keys = EcObject.keys(settings);
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "permanent") 
-                continue;
-            var result = skyrepoGetIndexInternal(keys[i], id, version, type);
-            if ((result)["found"] == true) 
-                return result;
-        }
+        var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
+        var microSearch = httpGet(microSearchUrl);
+        if (skyrepoDebug) 
+            console.log(microSearchUrl);
+        var hitshits = (microSearch)["hits"];
+        var hits = (hitshits)["hits"];
+        if (hits.length == 0) 
+            return null;
+        var hit = hits[0];
+        return hit;
     }
-    return null;
 };
 var skyrepoGetPermanent = function(id, version, type) {
     var result = skyrepoGetIndexInternal("permanent", id, version, type);
     return result;
 };
 var skyrepoGetInternal = function(id, version, type) {
-    var i = 0;
-     while (i++ < 50){
-        var versionRetrievalObject = null;
-        if (version == null) {
-            versionRetrievalObject = (skyrepoGetIndex).call(this, id, version, type, null);
-            if (versionRetrievalObject == null) 
-                continue;
-            version = (versionRetrievalObject)["_version"];
-        }
-        var result = skyrepoGetPermanent(id, version, type);
-        if (result == null) 
-            continue;
-        if ((result)["error"] != null) 
-            return null;
-        if ((result)["found"] == true) 
-            return JSON.parse(((result)["_source"])["data"]);
-        if (skyrepoDebug) 
-            console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
+    var versionRetrievalObject = null;
+    if (version == null) {
+        versionRetrievalObject = (skyrepoGetIndex).call(this, id, version, type, null);
         if (versionRetrievalObject != null) 
-            result = versionRetrievalObject;
-         else 
-            result = (skyrepoGetIndex).call(this, id, version, type, null);
-        if (result == null) 
-            continue;
-        if ((result)["error"] != null) 
-            return null;
-        if ((result)["found"] == true) 
-            return (result)["_source"];
-        return null;
+            version = (versionRetrievalObject)["_version"];
+        if (versionRetrievalObject != null) 
+            type = (versionRetrievalObject)["_type"];
     }
+    if (version == null) 
+        return null;
+    var result = skyrepoGetPermanent(id, version, type);
+    if (result == null) 
+        return null;
+    if ((result)["error"] != null) 
+        return null;
+    if ((result)["found"] == true) 
+        return JSON.parse(((result)["_source"])["data"]);
+    if (skyrepoDebug) 
+        console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
+    if (versionRetrievalObject != null) 
+        result = versionRetrievalObject;
+     else 
+        result = (skyrepoGetIndex).call(this, id, version, type, null);
+    if (result == null) 
+        return null;
+    if ((result)["error"] != null) 
+        return null;
+    if ((result)["found"] == true || (result)["_source"] != null) 
+        return (result)["_source"];
     return null;
 };
 var skyrepoGet = function(parseParams) {
@@ -314,7 +313,7 @@ var skyrepoGet = function(parseParams) {
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
-    return (skyrepoGetParsed).call(this, id, type, version, null);
+    return (skyrepoGetParsed).call(this, id, version, type, null);
 };
 var skyrepoGetParsed = function(id, version, type) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
@@ -544,23 +543,21 @@ var endpointData = function() {
 };
 var endpointMultiGet = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
-    console.log(JSON.stringify(ary));
     var results = new Array();
-    if (ary != null) 
+    if (ary != null) {
         for (var i = 0; i < ary.length; i++) {
             var urlRemainder = ary[i];
-            if (urlRemainder != null) 
-                urlRemainder = urlRemainder.replace("custom/", "").replace("data/", "");
             var parseParams = (queryParse).call(this, urlRemainder, null);
             var id = (parseParams)["id"];
             var type = (parseParams)["type"];
             var version = (parseParams)["version"];
             try {
                 var o = (skyrepoGetParsed).call(this, id, version, type, null);
-                var expand = this.params.expand != null;
-                results.push(JSON.parse((tryFormatOutput).call(this, o, expand, null)));
+                if (o != null) 
+                    results.push(o);
             }catch (ex) {}
         }
+    }
     return JSON.stringify(results);
 };
 var skyRepoSearch = function() {
