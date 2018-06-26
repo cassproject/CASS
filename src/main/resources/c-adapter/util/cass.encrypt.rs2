@@ -44,7 +44,10 @@ signatureSheet=#object(
 				expiry=#date(_raw="true").add(z="10000").toLong()
 			).put(
 				_key=#type(),
-				_value="http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature"
+				_value="TimeLimitedSignature"
+			).put(
+				_key=#context(),
+				_value="http://schema.cassproject.org/kbac/0.2/"
 			).put(
 				_key=#owner(),
 				_value=#rsaPpkToPk(obj="@ppk")

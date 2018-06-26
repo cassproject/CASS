@@ -9,8 +9,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>SNAPSHOT</ec-version>
-		<ew-version>SNAPSHOT</ew-version>
+		<ec-version>2.2.3</ec-version>
+		<ew-version>5.13.0</ew-version>
 	</properties>
 
 	<developers>

@@ -111,7 +111,7 @@ var filterResults = function(o) {
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            (o)[key] = (filterResults).call(this, (o)[key], null);
+            (rld)[key] = (filterResults).call(this, (o)[key], null);
         }
         return rld.atIfy();
     } else 
@@ -121,14 +121,10 @@ var skyrepoUrlType = function(o) {
     return getTypeFromObject(o);
 };
 var elasticMapping = function() {
-    if ((this)["elasticMapping"] == null) 
-        (this)["elasticMapping"] = httpGet(elasticEndpoint + "/_mapping");
-    return (this)["elasticMapping"];
+    return httpGet(elasticEndpoint + "/_mapping");
 };
 var elasticSettings = function() {
-    if ((this)["elasticSettings"] == null) 
-        (this)["elasticSettings"] = httpGet(elasticEndpoint + "/_settings");
-    return (this)["elasticSettings"];
+    return httpGet(elasticEndpoint + "/_settings");
 };
 var inferTypeFromObj = function(o, atType) {
     if (atType != null) 
@@ -242,7 +238,10 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
     return JSON.stringify(out);
 };
 var skyrepoPutInternal = function(o, id, version, type) {
-    skyrepoPutInternalIndex(o, id, version, type);
+    var obj = skyrepoPutInternalIndex(o, id, version, type);
+    if (skyrepoDebug) 
+        console.log(JSON.stringify(obj));
+    version = (obj)["_version"];
     skyrepoPutInternalPermanent(o, id, version, type);
 };
 var skyRepoPutInternal = function(o, id, version, type) {
@@ -310,6 +309,16 @@ var skyrepoGetInternal = function(id, version, type) {
 var skyrepoGet = function(parseParams) {
     if (parseParams == null && EcObject.isObject(this.params.obj)) 
         parseParams = this.params.obj;
+    if (parseParams == null) {
+        parseParams = new Object();
+        (parseParams)["id"] = this.params.id;
+        (parseParams)["type"] = this.params.type;
+        (parseParams)["version"] = this.params.version;
+    }
+    if (skyrepoDebug) 
+        console.log(JSON.stringify(parseParams));
+    if (skyrepoDebug) 
+        console.log(JSON.stringify(this.params.obj));
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
@@ -326,7 +335,29 @@ var skyrepoGetParsed = function(id, version, type) {
         return null;
     return filtered;
 };
-var skyrepoPut = function(o, id, version, type) {
+var skyrepoPut = function(parseParams) {
+    if (parseParams == null && this.params.id != null && this.params.id != "") {
+        parseParams = new Object();
+        (parseParams)["id"] = this.params.id;
+        (parseParams)["type"] = this.params.type;
+        (parseParams)["version"] = this.params.version;
+        (parseParams)["obj"] = this.params.obj;
+    }
+    if (skyrepoDebug) 
+        console.log("put pp:" + JSON.stringify(parseParams));
+    if (skyrepoDebug) 
+        console.log("put obj:" + JSON.stringify(this.params.obj));
+    if (parseParams == null && EcObject.isObject(this.params.obj)) 
+        parseParams = this.params.obj;
+    var obj = (parseParams)["obj"];
+    if (!EcObject.isObject(obj)) 
+        obj = JSON.parse(obj);
+    var id = (parseParams)["id"];
+    var type = (parseParams)["type"];
+    var version = (parseParams)["version"];
+    return (skyrepoPutParsed).call(this, obj, id, version, type, null);
+};
+var skyrepoPutParsed = function(o, id, version, type) {
     if (o == null) 
         return;
     (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.");
@@ -380,8 +411,13 @@ var searchObj = function(q, start, size, sort, track_scores) {
     (bool)["must"] = must;
     var query_string = new Object();
     (must)["query_string"] = query_string;
-    (query_string)["query"] = q;
     var signatures = (signatureSheet).call(this);
+    var concern = false;
+    if (q.indexOf("*") != -1 && q.trim() != "*") 
+        concern = true;
+    if (q.indexOf("@reader") != -1) 
+        concern = true;
+    (query_string)["query"] = q;
     if (signatures != null && signatures.length > 0) {
         var q2 = "";
         for (var i = 0; i < signatures.length; i++) {
@@ -395,8 +431,6 @@ var searchObj = function(q, start, size, sort, track_scores) {
         (should)["query_string"] = query_string2;
         (query_string2)["query"] = q2;
     }
-    if (signatures.length == 0 && q.indexOf("@reader") != -1) 
-        error("Readers only exist in encrypted data. Please provide signatures to allow access to resources.", null);
     return s;
 };
 var searchUrl = function(urlRemainder) {
@@ -426,17 +460,38 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
                 error(reason, (results)["status"]);
         }
     }
-    var hits = (results)["hits"];
-    hits = (hits)["hits"];
-    var searchResults = hits;
-    for (var i = 0; i < searchResults.length; i++) {
-        var searchResult = searchResults[i];
+    var hits = ((results)["hits"])["hits"];
+    var searchResults = new Array();
+    for (var i = 0; i < hits.length; i++) {
+        var searchResult = hits[i];
         var type = inferTypeFromObj((searchResult)["_source"], null);
         var id = (searchResult)["_id"];
         var version = (searchResult)["_version"];
-        searchResults[i] = (skyrepoGetInternal).call(this, id, version, type, null);
+        searchResult = (skyrepoGetInternal).call(this, id, version, type, null);
+        if (searchResult == null) 
+            continue;
+        var preLength = JSON.stringify(searchResult).length;
+        if (skyrepoDebug) 
+            console.log("pre filter length:" + preLength);
+        searchResult = (filterResults).call(this, searchResult, null);
+        if (searchResult == null) 
+            continue;
+        if (skyrepoDebug) 
+            console.log("post filter length:" + JSON.stringify(searchResult).length);
+        if (preLength != JSON.stringify(searchResult).length) {
+            var signatures = (signatureSheet).call(this);
+            for (var j = 0; j < signatures.length; j++) {
+                if (JSON.stringify(searchResult).indexOf(signatures[j].owner) != -1) {
+                    if (skyrepoDebug) 
+                        console.log("Matched signature:" + signatures[j].owner);
+                    searchResults.push(searchResult);
+                    break;
+                }
+            }
+        } else 
+            searchResults.push(searchResult);
     }
-    return (filterResults).call(this, searchResults, null);
+    return searchResults;
 };
 var queryParse = function(urlRemainder) {
     if (urlRemainder == null && this.params.urlRemainder != null) 
@@ -527,7 +582,7 @@ var endpointData = function() {
             o = (tryFormatOutput).call(this, o, expand, null);
             return o;
         }
-        (skyrepoPut).call(this, o, id, version, type);
+        (skyrepoPutParsed).call(this, o, id, version, type);
         (afterSave).call(this);
         return null;
     } else if (methodType == "GET") {
@@ -571,7 +626,7 @@ var skyRepoSearch = function() {
         size = parseInt(this.params.size);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
-    var searchParams = fileToString((fileFromDatastream).call(this, "searchParams", null));
+    var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "searchParams", null)));
     if (searchParams != null) {
         if ((searchParams)["q"] != null) 
             q = (searchParams)["q"];
@@ -617,7 +672,10 @@ var usernameSalt = null;
 var passwordSalt = null;
 var secretSalt = null;
 var skyIdSalt = null;
-var skyIdSecret = null;
+var skyIdSecretStr = null;
+var skyIdSecret = function() {
+    return skyIdSecretStr;
+};
 var skyIdSecretKey = null;
 var skyIdPem = null;
 var cachedSalts = new Object();
@@ -655,7 +713,7 @@ var skyIdCreate = function() {
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     if (get == null) 
-        (skyrepoPut).call(this, encryptedPayload.toJson(), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+        (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
      else 
         error("Cannot create, account already exists.", 422);
     return null;
@@ -699,7 +757,7 @@ var skyIdCommit = function() {
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     if ((get)["token"] != token) 
         error("An error in synchronization has occurred. Please re-login and try again.", 403);
-    (skyrepoPut).call(this, encryptedPayload.toJson(), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+    (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     return null;
 };
 var skyIdLogin = function() {
@@ -734,7 +792,7 @@ var skyIdLogin = function() {
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(get), skyIdSecretKey, saltedId);
-    (skyrepoPut).call(this, encryptedPayload.toJson(), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
+    (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     delete (get)["password"];
     return JSON.stringify(get);
 };
@@ -762,8 +820,8 @@ var skyIdLogin = function() {
     skyIdSalt = fileToString(fileLoad("skyId.salt"));
     if (!fileExists("skyId.secret")) 
         fileSave(randomString(2048), "skyId.secret");
-    skyIdSecret = fileToString(fileLoad("skyId.secret"));
-    skyIdSecretKey = forge.util.encode64(forge.pkcs5.pbkdf2(skyIdSecret, skyIdSalt, 10000, 16));
+    skyIdSecretStr = fileToString(fileLoad("skyId.secret"));
+    skyIdSecretKey = forge.util.encode64(forge.pkcs5.pbkdf2(skyIdSecretStr, skyIdSalt, 10000, 16));
     if (!fileExists("skyId.pem")) 
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyId.pem");
     skyIdPem = EcPpk.fromPem(fileToString(fileLoad("skyId.pem")));

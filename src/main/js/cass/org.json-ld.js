@@ -311,7 +311,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         if (this.context != null && this.type != null) {
             if (!EcObject.isObject(this.context)) {
                 var context = (!this.context.endsWith("/") ? this.context + "/" : this.context);
-                a.push(context + this.type);
+                if (this.type.indexOf(context) == 0) 
+                    a.push(this.type);
+                 else 
+                    a.push(context + this.type);
             }
         }
         return a;

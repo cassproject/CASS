@@ -70,7 +70,7 @@ skyrepoBackup = function(){
 		size:"50",
 		sort:"_doc"
 	};
-	var firstQueryUrl = urlBase() + "/_search?scroll=1m&version";
+	var firstQueryUrl = elasticEndpoint + "/_search?scroll=1m&version";
 	var results = httpPost(JSON.stringify(firstQueryPost),firstQueryUrl,"application/json","false");
 	var scroll = results["_scroll_id"];
 	while (results != null && scroll != null && scroll != "")
@@ -89,7 +89,7 @@ skyrepoBackup = function(){
 			if (backup.indexed[key] == null)
 				backup.indexed[key]=hits[i]["_source"];
 		}
-		results = httpGet(urlBase() + "/_search/scroll?scroll=1m&scroll_id="+scroll);
+		results = httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id="+scroll);
 	}
 	return JSON.stringify(backup,null,2);
 }
@@ -131,7 +131,7 @@ skyrepoPurge = function(){
 	var types = [];
 	for (var i = 0;i < indices.length;i++){
 		types = types.concat(EcObject.keys(settings[indices[i]].mappings));
-		log.push(httpDelete(urlBase()+"/"+indices[i]));
+		log.push(httpDelete(elasticEndpoint+"/"+indices[i]));
 	}
 	return JSON.stringify(log,null,2);
 }
