@@ -159,6 +159,8 @@ if (f.relation != null)
         if (c == null) continue;
         var id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2asn";
+        if (c.type == null) //Already done / referred to by another name.
+            continue;
         competencies[id] = JSON.parse(jsonLdToRdfJson(c.toJson()))[id];
     }
 

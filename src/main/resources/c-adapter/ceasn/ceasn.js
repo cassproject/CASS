@@ -206,7 +206,8 @@ function cassFrameworkAsCeasn() {
                 c.name = c.description;
                 delete c.description;
             }
-
+        if (c.type == null) //Already done / referred to by another name.
+            continue;
         var guid = c.getGuid();
         var uuid = new UUID(3, "nil", f.shortId() + c.shortId()).format();
 
