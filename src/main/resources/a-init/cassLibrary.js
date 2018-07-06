@@ -47,6 +47,10 @@ EcIdentityManager.async = false;
 console = {
     log: function (s) {
         print(s);
+    },
+
+    error: function (s) {
+        print("error:"+s);
     }
 };
 
