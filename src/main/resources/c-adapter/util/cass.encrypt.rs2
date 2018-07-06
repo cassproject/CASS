@@ -50,7 +50,7 @@ signatureSheet=#object(
 				_value="http://schema.cassproject.org/kbac/0.2/"
 			).put(
 				_key=#owner(),
-				_value=#rsaPpkToPk(obj="@ppk")
+				_value=#rsaPpkToPk(obj="@ppk").replace(regex="true",replace="\r?\n",with="")
 			)
 		)
 	).valueSet().toString()
