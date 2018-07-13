@@ -77,6 +77,7 @@ function cassFrameworkAsCeasn() {
 
     for (var i = 0; i < f.relation.length; i++) {
         var r = EcAlignment.getBlocking(f.relation[i]);
+        if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
             if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
@@ -119,13 +120,13 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.target] != null)
                     if (competencies[r.target]["ceasn:hasChild"] == null)
-                        competencies[r.target]["ceasn:hasChild"] = [];
+                        competencies[r.target]["ceasn:hasChild"] = {"@list":[]};
 
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
-                        competencies[r.target]["ceasn:hasChild"].push(competencies[r.source].id);
+                        competencies[r.target]["ceasn:hasChild"]["@list"].push(competencies[r.source].id);
                     else
-                        competencies[r.target]["ceasn:hasChild"].push(r.source);
+                        competencies[r.target]["ceasn:hasChild"]["@list"].push(r.source);
             }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO)
@@ -197,8 +198,8 @@ function cassFrameworkAsCeasn() {
         if (c["ceasn:isChildOf"] == null) {
             c["ceasn:isTopChildOf"] = f.id;
             if (f["ceasn:hasTopChild"] == null)
-                f["ceasn:hasTopChild"] = [];
-            f["ceasn:hasTopChild"].push(c.id);
+                f["ceasn:hasTopChild"] = {"@list":[]};
+            f["ceasn:hasTopChild"]["@list"].push(c.id);
         }
         f.competency.push(c.id);
         if (c.name == null || c.name == "")
@@ -287,6 +288,7 @@ function stripNonCe(f) {
                                 if (k.indexOf("ceasn:derivedFrom") != 0)
                                     if (k.indexOf("ceasn:isTopChildOf") != 0)
                                         if (k.indexOf("ceasn:isPartOf") != 0)
+                                            if (k.indexOf("ceasn:conceptKeywords") != 0)
                                             if (k.indexOf("ceasn:listID") != 0)
                                                 if (k.indexOf("ceasn:dateCopyrighted") != 0)
                                                     if (k.indexOf("ceasn:repositoryDate") != 0)
