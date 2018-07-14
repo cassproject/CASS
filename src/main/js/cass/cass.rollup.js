@@ -2418,12 +2418,15 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     };
     prototype.buildAssertionSearchQuery = function(ip, competency) {
         var result = null;
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) 
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            if (ip.rule.indexOf("AND ") == 0) 
+                ip.rule = ip.rule.replace("AND ", "");
             result = "(" + new EcAssertion().getSearchStringByType() + ") AND (" + ip.rule + ")";
-         else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
             result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
         for (var i = 0; i < ip.subject.length; i++) 
             result += " AND (\\*@reader:\"" + ip.subject[i].toPem() + "\")";
+        this.log(ip, "Search Query: " + result);
         if (result != null) 
             return result;
          throw new RuntimeException("Trying to build an assertion search query on an unsupported type: " + ip.type);

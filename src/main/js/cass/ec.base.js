@@ -95,6 +95,8 @@ EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
      *  @method isArray
      */
     constructor.isObject = function(o) {
+        if (o == null) 
+            return false;
         return (typeof o) == "object";
     };
     /**
@@ -204,55 +206,6 @@ EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, pro
         ((s)["removeItem"])(key);
     };
 }, {}, {});
-/**
- *  Created by fray on 7/5/17.
- */
-var Task = function() {};
-Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 10;
-    constructor.lastFrame = null;
-    constructor.tasks = new Array();
-    constructor.delayedFunctions = 0;
-    constructor.immediateFunctions = 0;
-    constructor.asyncImmediateFunctions = 0;
-    constructor.runningAsyncFunctions = 0;
-    constructor.immediate = function(c) {
-        var currentMs = Date.now();
-        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        if (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs) 
-            return setTimeout(function() {
-                Task.delayedFunctions++;
-                Task.lastFrame = Date.now();
-                c();
-            }, 0);
-         else {
-            Task.immediateFunctions++;
-            c();
-        }
-        return null;
-    };
-    constructor.asyncImmediate = function(c) {
-        Task.tasks.push(c);
-        Task.asyncImmediateFunctions++;
-        if (Task.runningAsyncFunctions < 20) {
-            Task.runningAsyncFunctions++;
-            return setTimeout(function() {
-                Task.asyncContinue();
-            }, 0);
-        }
-        return null;
-    };
-    constructor.asyncContinue = function() {
-        var keepGoing = function() {
-            Task.asyncContinue();
-        };
-        if (Task.tasks.length > 0) {
-            var c = Task.tasks.pop();
-            c(keepGoing);
-        } else 
-            Task.runningAsyncFunctions--;
-    };
-}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
 /**
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
  *  set of hyperedges of type <code>E</code> which connect the vertices. This is
@@ -713,12 +666,6 @@ Hypergraph = stjs.extend(Hypergraph, null, [], function(constructor, prototype) 
      */
     prototype.getSuccessors = function(vertex) {};
 }, {}, {});
-var EcDate = function() {};
-EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
-    constructor.toISOString = function(obj) {
-        return ((obj)["toISOString"])();
-    };
-}, {}, {});
 /**
  *  Wrapper to handle all remote web service invocations.
  * 
@@ -800,10 +747,13 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             xhr.open("POST", url, EcRemote.async);
             var xhrx = xhr;
             xhr.onreadystatechange = function() {
-                if (xhrx.readyState == 4 && xhrx.status == 200) 
-                    successCallback(xhrx.responseText);
-                 else if (xhrx.readyState == 4) 
-                    failureCallback(xhrx.responseText);
+                if (xhrx.readyState == 4 && xhrx.status == 200) {
+                    if (successCallback != null) 
+                        successCallback(xhrx.responseText);
+                } else if (xhrx.readyState == 4) {
+                    if (failureCallback != null) 
+                        failureCallback(xhrx.responseText);
+                }
             };
         }
         var theBoundary = null;
@@ -827,7 +777,8 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
             (xhr)["timeout"] = EcRemote.timeout;
         if ((typeof httpStatus) != "undefined") {
             var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + theBoundary, "false", theBoundary));
-            successCallback(result);
+            if (successCallback != null) 
+                successCallback(result);
         } else {
             xhr.send(fd);
         }
@@ -908,16 +859,20 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         var xhr = new XMLHttpRequest();
         xhr.open("DELETE", url, EcRemote.async);
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) 
-                success(xhr.responseText);
-             else if (xhr.readyState == 4) 
-                failure(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                if (success != null) 
+                    success(xhr.responseText);
+            } else if (xhr.readyState == 4) {
+                if (failure != null) 
+                    failure(xhr.responseText);
+            }
         };
         if (EcRemote.async) 
             (xhr)["timeout"] = EcRemote.timeout;
         xhr.setRequestHeader("signatureSheet", signatureSheet);
         if ((typeof httpStatus) != "undefined") {
-            success(httpDelete(url));
+            if (success != null) 
+                success(httpDelete(url));
         } else {
             xhr.send();
         }
@@ -952,60 +907,10 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
     };
 }, {}, {});
-/**
- *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
- *  Will iterate over all items in an array and perform 'each(item,callback)'.
- *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
- *  When all callbacks have been called, 'after(array)' is called.
- * 
- *  @author fritz.ray@eduworks.com
- *  @module com.eduworks.ec
- *  @class EcAsyncHelper
- */
-var EcAsyncHelper = function() {};
-EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
-    constructor.scriptPath = null;
-    /**
-     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
-     * 
-     *  @property counter
-     *  @type integer
-     */
-    prototype.counter = null;
-    /**
-     *  "Each" method. See class description.
-     * 
-     *  @param {Array}                   array Array to iterate over.
-     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
-     *  @param {function(array)}         after Method invoked when all callbacks are called.
-     *  @method each
-     */
-    prototype.each = function(array, each, after) {
-        var me = this;
-        this.counter = array.length;
-        if (array.length == 0) 
-            after(array);
-        for (var i = 0; i < array.length; i++) {
-            if (this.counter > 0) 
-                this.execute(array, each, after, me, i);
-        }
-    };
-    prototype.execute = function(array, each, after, me, i) {
-        Task.immediate(function() {
-            each(array[i], function() {
-                me.counter--;
-                if (me.counter == 0) 
-                    after(array);
-            });
-        });
-    };
-    /**
-     *  Will prevent 'after' from being called.
-     * 
-     *  @method stop
-     */
-    prototype.stop = function() {
-        this.counter = -1;
+var EcDate = function() {};
+EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    constructor.toISOString = function(obj) {
+        return ((obj)["toISOString"])();
     };
 }, {}, {});
 /**
@@ -1231,6 +1136,55 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
      */
     prototype.getOpposite = function(vertex, edge) {};
 }, {}, {});
+/**
+ *  Created by fray on 7/5/17.
+ */
+var Task = function() {};
+Task = stjs.extend(Task, null, [], function(constructor, prototype) {
+    constructor.desiredFps = 10;
+    constructor.lastFrame = null;
+    constructor.tasks = new Array();
+    constructor.delayedFunctions = 0;
+    constructor.immediateFunctions = 0;
+    constructor.asyncImmediateFunctions = 0;
+    constructor.runningAsyncFunctions = 0;
+    constructor.immediate = function(c) {
+        var currentMs = Date.now();
+        var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
+        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) 
+            return setTimeout(function() {
+                Task.delayedFunctions++;
+                Task.lastFrame = Date.now();
+                c();
+            }, 0);
+         else {
+            Task.immediateFunctions++;
+            c();
+        }
+        return null;
+    };
+    constructor.asyncImmediate = function(c) {
+        Task.tasks.push(c);
+        Task.asyncImmediateFunctions++;
+        if (Task.runningAsyncFunctions < 20) {
+            Task.runningAsyncFunctions++;
+            return setTimeout(function() {
+                Task.asyncContinue();
+            }, 0);
+        }
+        return null;
+    };
+    constructor.asyncContinue = function() {
+        var keepGoing = function() {
+            Task.asyncContinue();
+        };
+        if (Task.tasks.length > 0) {
+            var c = Task.tasks.pop();
+            c(keepGoing);
+        } else 
+            Task.runningAsyncFunctions--;
+    };
+}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
@@ -1518,3 +1472,59 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
         return null;
     };
 }, {edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
+/**
+ *  Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.
+ *  Will iterate over all items in an array and perform 'each(item,callback)'.
+ *  Every 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.
+ *  When all callbacks have been called, 'after(array)' is called.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @module com.eduworks.ec
+ *  @class EcAsyncHelper
+ */
+var EcAsyncHelper = function() {};
+EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, prototype) {
+    constructor.scriptPath = null;
+    /**
+     *  Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.
+     * 
+     *  @property counter
+     *  @type integer
+     */
+    prototype.counter = null;
+    /**
+     *  "Each" method. See class description.
+     * 
+     *  @param {Array}                   array Array to iterate over.
+     *  @param {function(item,callback)} each Method that gets invoked per item in the array.
+     *  @param {function(array)}         after Method invoked when all callbacks are called.
+     *  @method each
+     */
+    prototype.each = function(array, each, after) {
+        var me = this;
+        this.counter = array.length;
+        if (array.length == 0) 
+            after(array);
+        for (var i = 0; i < array.length; i++) {
+            if (this.counter > 0) 
+                this.execute(array, each, after, me, i);
+        }
+    };
+    prototype.execute = function(array, each, after, me, i) {
+        Task.immediate(function() {
+            each(array[i], function() {
+                me.counter--;
+                if (me.counter == 0) 
+                    after(array);
+            });
+        });
+    };
+    /**
+     *  Will prevent 'after' from being called.
+     * 
+     *  @method stop
+     */
+    prototype.stop = function() {
+        this.counter = -1;
+    };
+}, {}, {});

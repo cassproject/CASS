@@ -834,11 +834,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var originalUrl = url;
         if (EcRemote.async == false) {
             var result = EcRepository.getBlocking(url);
-            if (result == null) 
+            if (result == null) {
                 if (failure != null) 
                     failure("Could not locate object. May be due to EcRepository.alwaysTryUrl flag.");
-                 else if (success != null) 
-                    success(result);
+            } else if (success != null) 
+                success(result);
             return;
         }
         if (EcRepository.caching) {
@@ -1399,7 +1399,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 var d = new EcRemoteLinkedData(null, null);
                 d.copyFrom(results[i]);
                 results[i] = d;
-                if (EcRepository.caching) {
+                if (EcRepository.caching && d.id != null) {
                     if (!EcRepository.shouldTryUrl(d.id)) {
                         var md5 = EcCrypto.md5(d.id);
                         for (var j = 0; j < cacheUrls.length; j++) {

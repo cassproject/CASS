@@ -60,8 +60,10 @@ function cassFrameworkAsCeasn() {
     if (f.relation == null) f.relation = [];
 
     var all = [];
-    all = all.concat(f.competency);
-    all = all.concat(f.relation);
+    if (f.competency != null)
+        all = all.concat(f.competency);
+    if (f.relation != null)
+        all = all.concat(f.relation);
 
     repo.precache(all, function (results) {});
 

@@ -86,6 +86,8 @@ var filterResults = function(o) {
     if (EcArray.isArray(o)) {
         var ary = o;
         for (var i = 0; i < ary.length; i++) {
+            if (ary[i] == null) 
+                continue;
             var result = (filterResults).call(this, ary[i], null);
             if (result == null) {
                 ary.splice(i, 1);
@@ -435,11 +437,13 @@ var searchObj = function(q, start, size, sort, track_scores) {
 };
 var searchUrl = function(urlRemainder) {
     var url = elasticEndpoint;
-    if (urlRemainder != null && urlRemainder != "") 
-        url += urlRemainder;
+    if (urlRemainder != null && urlRemainder != "" && urlRemainder != "/") 
+        url += urlRemainder.toLowerCase();
      else 
         url += "/*,-permanent";
-    url += "/_search";
+    if (!url.endsWith("/")) 
+        url += "/";
+    url += "_search";
     if (skyrepoDebug) 
         console.log(url);
     return url;
