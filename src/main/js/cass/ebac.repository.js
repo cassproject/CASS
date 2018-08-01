@@ -1399,7 +1399,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 var d = new EcRemoteLinkedData(null, null);
                 d.copyFrom(results[i]);
                 results[i] = d;
-                if (EcRepository.caching && d.id != null) {
+                if (EcRepository.caching) {
                     if (!EcRepository.shouldTryUrl(d.id)) {
                         var md5 = EcCrypto.md5(d.id);
                         for (var j = 0; j < cacheUrls.length; j++) {
@@ -1858,12 +1858,12 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var hostnames = new Array();
         var servicePrefixes = new Array();
-        if (this.selectedServer != null) {
+        if (this.selectedServer != null && window != undefined && window.document != undefined) {
             var e = window.document.createElement("a");
             (e)["href"] = this.selectedServer;
             hostnames.push((e)["host"]);
             servicePrefixes.push((e)["pathname"]);
-        } else {
+        } else if (window != undefined && window.location != undefined) {
             if (window.location.host != null) {
                 hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");
             }
