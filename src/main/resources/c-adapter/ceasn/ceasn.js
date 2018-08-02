@@ -260,6 +260,8 @@ function cassFrameworkAsCeasn() {
         f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
     var results = [];
+    f = stripNonCe(f);
+    results.push(f);
     for (var k in competencies) {
         var found = false;
         for (var j = 0; j < results.length; j++)
@@ -270,8 +272,6 @@ function cassFrameworkAsCeasn() {
         if (found) continue;
         results.push(competencies[k]);
     }
-    f = stripNonCe(f);
-    results.push(f);
     delete f["@context"];
     var r = {};
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
