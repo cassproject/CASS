@@ -305,6 +305,13 @@ function stripNonCe(f) {
                                                                                         if (k.indexOf("ceasn:competencyText") != 0)
                                                                                             if (EcArray.isArray(f[k]) == false)
                                                                                                 f[k] = [f[k]];
+        //For properties that allow many per language, force it into an array with even just 1 value.
+        if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment") {
+            Object.keys(f[k]).forEach(function(key) {
+                if (EcArray.isArray(f[k][key]) == false)
+                    f[k][key] = [f[k][key]];
+            });
+        }
         if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0)
             ;
         else
