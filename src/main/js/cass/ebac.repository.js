@@ -1858,12 +1858,14 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var hostnames = new Array();
         var servicePrefixes = new Array();
-        if (this.selectedServer != null && window != undefined && window.document != undefined) {
+        if (this.selectedServer != null && window != null && window.document != null) {
             var e = window.document.createElement("a");
-            (e)["href"] = this.selectedServer;
-            hostnames.push((e)["host"]);
-            servicePrefixes.push((e)["pathname"]);
-        } else if (window != undefined && window.location != undefined) {
+            if (e != null) {
+                (e)["href"] = this.selectedServer;
+                hostnames.push((e)["host"]);
+                servicePrefixes.push((e)["pathname"]);
+            }
+        } else if (window != null && window.location != null) {
             if (window.location.host != null) {
                 hostnames.push(window.location.host, window.location.host.replace(".", ".service."), window.location.host + ":8080", window.location.host.replace(".", ".service.") + ":8080");
             }
@@ -1871,7 +1873,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 hostnames.push(window.location.hostname, window.location.hostname.replace(".", ".service."), window.location.hostname + ":8080", window.location.hostname.replace(".", ".service.") + ":8080");
             }
         }
-        servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/", "/" + window.location.pathname.split("/")[1] + "/api/custom/", "/", "/service/", "/api/", "/api/custom/");
+        if (window != null) {
+            if (window.location != null) {
+                servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/");
+                servicePrefixes.push("/" + window.location.pathname.split("/")[1] + "/api/custom/");
+            }
+        }
+        if (hostnames.length == 0) {
+            hostnames.push("localhost", "localhost:8080");
+        }
+        servicePrefixes.push("/");
+        servicePrefixes.push("/service/");
+        servicePrefixes.push("/api/");
+        servicePrefixes.push("/api/custom/");
         for (var j = 0; j < hostnames.length; j++) {
             for (var k = 0; k < servicePrefixes.length; k++) {
                 for (var i = 0; i < protocols.length; i++) {

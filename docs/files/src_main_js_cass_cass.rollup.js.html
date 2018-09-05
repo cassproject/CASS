@@ -3235,12 +3235,15 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
     };
     prototype.buildAssertionSearchQuery = function(ip, competency) {
         var result = null;
-        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) 
+        if (InquiryPacket.IPType.ROLLUPRULE.equals(ip.type)) {
+            if (ip.rule.indexOf(&quot;AND &quot;) == 0) 
+                ip.rule = ip.rule.replace(&quot;AND &quot;, &quot;&quot;);
             result = &quot;(&quot; + new EcAssertion().getSearchStringByType() + &quot;) AND (&quot; + ip.rule + &quot;)&quot;;
-         else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
+        } else if (InquiryPacket.IPType.COMPETENCY.equals(ip.type)) 
             result = new EcAssertion().getSearchStringByTypeAndCompetency(competency);
         for (var i = 0; i &lt; ip.subject.length; i++) 
             result += &quot; AND (\\*@reader:\&quot;&quot; + ip.subject[i].toPem() + &quot;\&quot;)&quot;;
+        this.log(ip, &quot;Search Query: &quot; + result);
         if (result != null) 
             return result;
          throw new RuntimeException(&quot;Trying to build an assertion search query on an unsupported type: &quot; + ip.type);
@@ -4680,7 +4683,7 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             ip.result = InquiryPacket.ResultType.FALSE;
         } else if (this.transferIndeterminateOptimistically &amp;&amp; ip.anyIndeterminantChildPackets()) {
             ip.result = InquiryPacket.ResultType.TRUE;
-        } else if (ip.allChildPacketsAreTrue()) {
+        } else if (!(ip.anyChildPacketsAreFalse() || ip.anyChildPacketsAreUnknown())) {
             ip.result = InquiryPacket.ResultType.TRUE;
         } else {
             ip.result = InquiryPacket.ResultType.UNKNOWN;

@@ -3866,7 +3866,7 @@ OptimisticQuadnaryAssertionProcessor = stjs.extend(OptimisticQuadnaryAssertionPr
             ip.result = InquiryPacket.ResultType.FALSE;
         } else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) {
             ip.result = InquiryPacket.ResultType.TRUE;
-        } else if (ip.allChildPacketsAreTrue()) {
+        } else if (!(ip.anyChildPacketsAreFalse() || ip.anyChildPacketsAreUnknown())) {
             ip.result = InquiryPacket.ResultType.TRUE;
         } else {
             ip.result = InquiryPacket.ResultType.UNKNOWN;

@@ -137,8 +137,9 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         var keys = new Array();
         var me = (o);
         for (var key in me) {
-            if (EcLinkedData.isAtProperty(key)) 
-                key = "@" + key;
+            if (me["type"] != null) 
+                if (EcLinkedData.isAtProperty(key)) 
+                    key = "@" + key;
             keys.push(key);
         }
         keys.sort(function(a, b) {

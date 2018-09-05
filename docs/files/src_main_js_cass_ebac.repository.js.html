@@ -1651,11 +1651,11 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var originalUrl = url;
         if (EcRemote.async == false) {
             var result = EcRepository.getBlocking(url);
-            if (result == null) 
+            if (result == null) {
                 if (failure != null) 
                     failure(&quot;Could not locate object. May be due to EcRepository.alwaysTryUrl flag.&quot;);
-                 else if (success != null) 
-                    success(result);
+            } else if (success != null) 
+                success(result);
             return;
         }
         if (EcRepository.caching) {
@@ -1869,7 +1869,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         EcRemote.async = oldAsync;
         var result = (EcRepository.cache)[originalUrl];
         if (!EcRepository.caching) {
-            (EcRepository.cache)[originalUrl] = null;
+            delete (EcRepository.cache)[originalUrl];
         }
         return result;
     };
@@ -2176,7 +2176,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             var url = urls[i];
             if ((EcRepository.cache)[url] != null) {} else if (url.startsWith(this.selectedServer)) {
                 cacheUrls.push(url.replace(this.selectedServer, &quot;&quot;).replace(&quot;custom/&quot;, &quot;&quot;));
-            } else if (!EcRepository.shouldTryUrl(url)) {
+            } else {
                 cacheUrls.push(&quot;data/&quot; + EcCrypto.md5(url));
             }
         }
@@ -2190,60 +2190,51 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         fd.append(&quot;data&quot;, JSON.stringify(cacheUrls));
         var me = this;
         if (EcRepository.unsigned) {
-            EcRemote.postExpectingObject(me.selectedServer, &quot;sky/repo/multiGet&quot;, fd, function(p1) {
-                var results = p1;
-                for (var i = 0; i &lt; results.length; i++) {
-                    var d = new EcRemoteLinkedData(null, null);
-                    d.copyFrom(results[i]);
-                    results[i] = d;
-                    if (EcRepository.caching) {
-                        if (!EcRepository.shouldTryUrl(d.id)) {
-                            var md5 = EcCrypto.md5(d.id);
-                            for (var j = 0; j &lt; urls.length; j++) {
-                                var url = urls[j];
-                                if (url.indexOf(md5) != -1) {
-                                    (EcRepository.cache)[url] = d;
-                                    break;
-                                }
-                            }
-                        }
-                        (EcRepository.cache)[d.shortId()] = d;
-                        (EcRepository.cache)[d.id] = d;
-                    }
-                }
-                if (success != null) {
-                    success();
-                }
-            }, null);
-        } else 
+            this.precachePost(success, cacheUrls, fd, me);
+        } else {
             EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
                 fd.append(&quot;signatureSheet&quot;, p1);
-                EcRemote.postExpectingObject(me.selectedServer, &quot;sky/repo/multiGet&quot;, fd, function(p1) {
-                    var results = p1;
-                    for (var i = 0; i &lt; results.length; i++) {
-                        var d = new EcRemoteLinkedData(null, null);
-                        d.copyFrom(results[i]);
-                        results[i] = d;
-                        if (EcRepository.caching) {
-                            if (!EcRepository.shouldTryUrl(d.id)) {
-                                var md5 = EcCrypto.md5(d.id);
-                                for (var j = 0; j &lt; urls.length; j++) {
-                                    var url = urls[j];
-                                    if (url.indexOf(md5) != -1) {
-                                        (EcRepository.cache)[url] = d;
-                                        break;
-                                    }
-                                }
+                me.precachePost(success, cacheUrls, fd, me);
+            }, null);
+        }
+    };
+    /**
+     *  Retrieves data from the server and caches it for use later during the
+     *  application. This should be called before the data is needed if possible,
+     *  so loading displays can be faster.
+     * 
+     *  @param {String[]}  urls List of Data ID Urls that should be precached
+     *  @param {Callback0} success Callback triggered once all of the data has
+     *                     been retrieved
+     *  @memberOf EcRepository
+     *  @method precachePost
+     */
+    prototype.precachePost = function(success, cacheUrls, fd, me) {
+        EcRemote.postExpectingObject(me.selectedServer, &quot;sky/repo/multiGet&quot;, fd, function(p1) {
+            var results = p1;
+            for (var i = 0; i &lt; results.length; i++) {
+                var d = new EcRemoteLinkedData(null, null);
+                d.copyFrom(results[i]);
+                results[i] = d;
+                if (EcRepository.caching) {
+                    if (!EcRepository.shouldTryUrl(d.id)) {
+                        var md5 = EcCrypto.md5(d.id);
+                        for (var j = 0; j &lt; cacheUrls.length; j++) {
+                            var url = cacheUrls[j];
+                            if (url.indexOf(md5) != -1) {
+                                (EcRepository.cache)[url] = d;
+                                break;
                             }
-                            (EcRepository.cache)[d.shortId()] = d;
-                            (EcRepository.cache)[d.id] = d;
                         }
                     }
-                    if (success != null) {
-                        success();
-                    }
-                }, null);
-            }, null);
+                    (EcRepository.cache)[d.shortId()] = d;
+                    (EcRepository.cache)[d.id] = d;
+                }
+            }
+            if (success != null) {
+                success();
+            }
+        }, null);
     };
     /**
      *  Gets a JSON-LD object from the place designated by the URI.
@@ -2684,12 +2675,14 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var hostnames = new Array();
         var servicePrefixes = new Array();
-        if (this.selectedServer != null) {
+        if (this.selectedServer != null &amp;&amp; window != null &amp;&amp; window.document != null) {
             var e = window.document.createElement(&quot;a&quot;);
-            (e)[&quot;href&quot;] = this.selectedServer;
-            hostnames.push((e)[&quot;host&quot;]);
-            servicePrefixes.push((e)[&quot;pathname&quot;]);
-        } else {
+            if (e != null) {
+                (e)[&quot;href&quot;] = this.selectedServer;
+                hostnames.push((e)[&quot;host&quot;]);
+                servicePrefixes.push((e)[&quot;pathname&quot;]);
+            }
+        } else if (window != null &amp;&amp; window.location != null) {
             if (window.location.host != null) {
                 hostnames.push(window.location.host, window.location.host.replace(&quot;.&quot;, &quot;.service.&quot;), window.location.host + &quot;:8080&quot;, window.location.host.replace(&quot;.&quot;, &quot;.service.&quot;) + &quot;:8080&quot;);
             }
@@ -2697,7 +2690,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 hostnames.push(window.location.hostname, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;), window.location.hostname + &quot;:8080&quot;, window.location.hostname.replace(&quot;.&quot;, &quot;.service.&quot;) + &quot;:8080&quot;);
             }
         }
-        servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/&quot;, &quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;, &quot;/&quot;, &quot;/service/&quot;, &quot;/api/&quot;, &quot;/api/custom/&quot;);
+        if (window != null) {
+            if (window.location != null) {
+                servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/&quot;);
+                servicePrefixes.push(&quot;/&quot; + window.location.pathname.split(&quot;/&quot;)[1] + &quot;/api/custom/&quot;);
+            }
+        }
+        if (hostnames.length == 0) {
+            hostnames.push(&quot;localhost&quot;, &quot;localhost:8080&quot;);
+        }
+        servicePrefixes.push(&quot;/&quot;);
+        servicePrefixes.push(&quot;/service/&quot;);
+        servicePrefixes.push(&quot;/api/&quot;);
+        servicePrefixes.push(&quot;/api/custom/&quot;);
         for (var j = 0; j &lt; hostnames.length; j++) {
             for (var k = 0; k &lt; servicePrefixes.length; k++) {
                 for (var i = 0; i &lt; protocols.length; i++) {

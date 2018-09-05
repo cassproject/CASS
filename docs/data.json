@@ -89,9 +89,9 @@
                 "EcArray": 1,
                 "Hypergraph": 1,
                 "EcRemote": 1,
-                "EcAsyncHelper": 1,
                 "Graph": 1,
-                "EcDirectedGraph": 1
+                "EcDirectedGraph": 1,
+                "EcAsyncHelper": 1
             },
             "fors": {},
             "namespaces": {}
@@ -965,9 +965,9 @@
                 "EcArray": 1,
                 "Hypergraph": 1,
                 "EcRemote": 1,
-                "EcAsyncHelper": 1,
                 "Graph": 1,
                 "EcDirectedGraph": 1,
+                "EcAsyncHelper": 1,
                 "EcPk": 1,
                 "EcAes": 1,
                 "EcRsaOaep": 1,
@@ -2098,7 +2098,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2106,
+            "line": 2111,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2143,7 +2143,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 116,
+            "line": 118,
             "description": "Array Helper Functions",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2158,7 +2158,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 256,
+            "line": 209,
             "description": "A hypergraph, consisting of a set of vertices of type <code>V</code> and a\nset of hyperedges of type <code>E</code> which connect the vertices. This is\nthe base interface for all JUNG graph types.\n<p>\nThis interface permits, but does not enforce, any of the following common\nvariations of graphs:\n<ul>\n<li/>hyperedges (edges which connect a set of vertices of any size)\n<li/>edges (these have have exactly two endpoints, which may or may not be\ndistinct)\n<li/>self-loops (edges which connect exactly one vertex)\n<li>directed and undirected edges\n<li>vertices and edges with attributes (for example, weighted edges)\n<li>vertices and edges with different constraints or properties (for example,\nbipartite or multimodal graphs)\n<li>parallel edges (multiple edges which connect a single set of vertices)\n<li>internal representations as matrices or as adjacency lists or adjacency\nmaps\n</ul>\nExtensions or implementations of this interface may enforce or disallow any\nor all of these variations.\n<p>\n<b>Notes</b>:\n<ul>\n<li/>The collections returned by <code>Hypergraph</code> instances should be\ntreated in general as if read-only. While they are not contractually\nguaranteed (or required) to be immutable, this interface does not define the\noutcome if they are mutated. Mutations should be done via\n<code>{add,remove}{Edge,Vertex}</code>, or in the constructor.\n<li/>\n</ul>",
             "author": "Tom Buskirk (tom.buskirk@eduworks.com)"
         },
@@ -2173,24 +2173,9 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 722,
+            "line": 669,
             "description": "Wrapper to handle all remote web service invocations.",
             "author": "devlin.junker@eduworks.com"
-        },
-        "EcAsyncHelper": {
-            "name": "EcAsyncHelper",
-            "shortname": "EcAsyncHelper",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "com.eduworks.ec",
-            "namespace": "",
-            "file": "src/main/js/cass/ec.base.js",
-            "line": 953,
-            "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'.\nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.\nWhen all callbacks have been called, 'after(array)' is called.",
-            "author": "fritz.ray@eduworks.com"
         },
         "Graph": {
             "name": "Graph",
@@ -2203,7 +2188,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1009,
+            "line": 916,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints\nmust be distinct depends on the implementation.\n<p>\nThis interface permits, but does not enforce, any of the following\ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite\nor multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul>\nExtensions or implementations of this interface\nmay enforce or disallow any or all of these variations.\n<p>\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed\nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code>\n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an\noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "author": "Tom Buskirk (tom.buskirk@eduworks.com)",
             "extends": "Hypergraph"
@@ -2219,7 +2204,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1232,
+            "line": 1188,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "params": [
                 {
@@ -2233,6 +2218,21 @@
             ],
             "author": "fray",
             "extends": "Graph"
+        },
+        "EcAsyncHelper": {
+            "name": "EcAsyncHelper",
+            "shortname": "EcAsyncHelper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "com.eduworks.ec",
+            "namespace": "",
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 1475,
+            "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'.\nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.\nWhen all callbacks have been called, 'after(array)' is called.",
+            "author": "fritz.ray@eduworks.com"
         },
         "EcPk": {
             "name": "EcPk",
@@ -16370,14 +16370,14 @@
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 3961,
+            "line": 3964,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "AssertionProcessor",
             "module": "org.cassproject"
         },
         {
             "file": "src/main/js/cass/cass.rollup.js",
-            "line": 4141,
+            "line": 4144,
             "description": "IF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
             "class": "AssertionProcessor",
             "module": "org.cassproject"
@@ -18322,7 +18322,29 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1431,
+            "line": 1384,
+            "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
+            "params": [
+                {
+                    "name": "urls",
+                    "description": "List of Data ID Urls that should be precached",
+                    "type": "String[]"
+                },
+                {
+                    "name": "success",
+                    "description": "Callback triggered once all of the data has\n                   been retrieved",
+                    "type": "Callback0"
+                }
+            ],
+            "memberof": "EcRepository",
+            "itemtype": "method",
+            "name": "precachePost",
+            "class": "EcRepository",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ebac.repository.js",
+            "line": 1422,
             "description": "Gets a JSON-LD object from the place designated by the URI.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18350,7 +18372,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1508,
+            "line": 1499,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18382,7 +18404,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1526,
+            "line": 1517,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18402,7 +18424,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1540,
+            "line": 1531,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18439,7 +18461,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1650,
+            "line": 1641,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18464,7 +18486,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1765,
+            "line": 1756,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -18474,7 +18496,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1839,
+            "line": 1830,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -18484,7 +18506,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1896,
+            "line": 1901,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -18507,7 +18529,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1940,
+            "line": 1945,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -18530,7 +18552,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1981,
+            "line": 1986,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -18552,7 +18574,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2001,
+            "line": 2006,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -18579,7 +18601,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2013,
+            "line": 2018,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -18606,7 +18628,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2025,
+            "line": 2030,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -18633,7 +18655,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2037,
+            "line": 2042,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -18666,7 +18688,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2074,
+            "line": 2079,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -18688,7 +18710,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2119,
+            "line": 2124,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -18720,7 +18742,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2141,
+            "line": 2146,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -18748,7 +18770,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2175,
+            "line": 2180,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -18793,7 +18815,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2224,
+            "line": 2229,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -18815,7 +18837,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2245,
+            "line": 2250,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -18907,7 +18929,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 100,
+            "line": 102,
             "description": "Returns keys on the object",
             "params": [
                 {
@@ -18927,7 +18949,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 125,
+            "line": 127,
             "description": "Returns true if the result is an array.",
             "params": [
                 {
@@ -18947,7 +18969,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 136,
+            "line": 138,
             "description": "Removes values IFF the values == one another.",
             "params": [
                 {
@@ -18964,7 +18986,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 152,
+            "line": 154,
             "description": "Adds a value if the array does not have the value already.",
             "params": [
                 {
@@ -18986,7 +19008,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 170,
+            "line": 172,
             "description": "Removes a value from the array.",
             "params": [
                 {
@@ -19008,7 +19030,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 184,
+            "line": 186,
             "description": "Returns true if the array has the value already.",
             "params": [
                 {
@@ -19030,14 +19052,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 207,
-            "description": "Created by fray on 7/5/17.",
-            "class": "EcArray",
-            "module": "com.eduworks.ec"
-        },
-        {
-            "file": "src/main/js/cass/ec.base.js",
-            "line": 299,
+            "line": 252,
             "description": "Returns a view of all edges in this graph. In general, this obeys the\n<code>Array</code> contract, and therefore makes no guarantees about the\nordering of the vertices within the set.",
             "return": {
                 "description": "a <code>Array</code> view of all edges in this graph"
@@ -19049,7 +19064,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 308,
+            "line": 261,
             "description": "Returns a view of all vertices in this graph. In general, this obeys the\n<code>Array</code> contract, and therefore makes no guarantees about the\nordering of the vertices within the set.",
             "return": {
                 "description": "a <code>Array</code> view of all vertices in this graph"
@@ -19061,7 +19076,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 317,
+            "line": 270,
             "description": "Returns true if this graph's vertex collection contains\n<code>vertex</code>. Equivalent to\n<code>getVertices().contains(vertex)</code>.",
             "params": [
                 {
@@ -19079,7 +19094,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 327,
+            "line": 280,
             "description": "Returns true if this graph's edge collection contains <code>edge</code>.\nEquivalent to <code>getEdges().contains(edge)</code>.",
             "params": [
                 {
@@ -19097,7 +19112,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 336,
+            "line": 289,
             "description": "Returns the number of edges in this graph.",
             "return": {
                 "description": "the number of edges in this graph"
@@ -19109,7 +19124,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 343,
+            "line": 296,
             "description": "Returns the number of vertices in this graph.",
             "return": {
                 "description": "the number of vertices in this graph"
@@ -19121,7 +19136,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 350,
+            "line": 303,
             "description": "Returns the collection of vertices which are connected to\n<code>vertex</code> via any edges in this graph. If <code>vertex</code>\nis connected to itself with a self-loop, then it will be included in the\ncollection returned.",
             "params": [
                 {
@@ -19139,7 +19154,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 363,
+            "line": 316,
             "description": "Returns the collection of edges in this graph which are connected to\n<code>vertex</code>.",
             "params": [
                 {
@@ -19157,7 +19172,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 374,
+            "line": 327,
             "description": "Returns the collection of vertices in this graph which are connected to\n<code>edge</code>. Note that for some graph types there are guarantees\nabout the size of this collection (i.e., some graphs contain edges that\nhave exactly two endpoints, which may or may not be distinct).\nImplementations for those graph types may provide alternate methods that\nprovide more convenient access to the vertices.",
             "params": [
                 {
@@ -19175,7 +19190,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 389,
+            "line": 342,
             "description": "Returns an edge that connects this vertex to <code>v</code>. If this edge\nis not uniquely defined (that is, if the graph contains more than one\nedge connecting <code>v1</code> to <code>v2</code>), any of these edges\nmay be returned. <code>findEdgeSet(v1, v2)</code> may be used to return\nall such edges. Returns null if either of the following is true:\n<ul>\n<li/><code>v2</code> is not connected to <code>v1</code>\n<li/>either <code>v1</code> or <code>v2</code> are not present in this\ngraph\n</ul>\n<p>\n<b>Note</b>: for purposes of this method, <code>v1</code> is only\nconsidered to be connected to <code>v2</code> via a given <i>directed</i>\nedge <code>e</code> if\n<code>v1 == e.getSource() && v2 == e.getDest()</code> evaluates to\n<code>true</code>. (<code>v1</code> and <code>v2</code> are connected by\nan undirected edge <code>u</code> if <code>u</code> is incident to both\n<code>v1</code> and <code>v2</code>.)",
             "params": [
                 {
@@ -19201,7 +19216,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 418,
+            "line": 371,
             "description": "Returns all edges that connects this vertex to <code>v</code>. If this\nedge is not uniquely defined (that is, if the graph contains more than\none edge connecting <code>v1</code> to <code>v2</code>), any of these\nedges may be returned. <code>findEdgeSet(v1, v2)</code> may be used to\nreturn all such edges. Returns null if <code>v2</code> is not connected\nto <code>v1</code>. <br/>\nReturns an empty collection if either <code>v1</code> or <code>v2</code>\nare not present in this graph.\n<p>\n<p>\n<b>Note</b>: for purposes of this method, <code>v1</code> is only\nconsidered to be connected to <code>v2</code> via a given <i>directed</i>\nedge <code>d</code> if\n<code>v1 == d.getSource() && v2 == d.getDest()</code> evaluates to\n<code>true</code>. (<code>v1</code> and <code>v2</code> are connected by\nan undirected edge <code>u</code> if <code>u</code> is incident to both\n<code>v1</code> and <code>v2</code>.)",
             "params": [
                 {
@@ -19227,7 +19242,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 446,
+            "line": 399,
             "description": "Adds <code>vertex</code> to this graph. Fails if <code>vertex</code> is\nnull or already in the graph.",
             "params": [
                 {
@@ -19248,7 +19263,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 457,
+            "line": 410,
             "description": "Adds <code>edge</code> to this graph. Fails under the following\ncircumstances:\n<ul>\n<li/><code>edge</code> is already an element of the graph\n<li/>either <code>edge</code> or <code>vertices</code> is\n<code>null</code>\n<li/><code>vertices</code> has the wrong number of vertices for the graph\ntype\n<li/><code>vertices</code> are already connected by another edge in this\ngraph, and this graph does not accept parallel edges\n</ul>",
             "params": [
                 {
@@ -19273,7 +19288,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 481,
+            "line": 434,
             "description": "Removes <code>vertex</code> from this graph. As a side effect, removes\nany edges <code>e</code> incident to <code>vertex</code> if the removal\nof <code>vertex</code> would cause <code>e</code> to be incident to an\nillegal number of vertices. (Thus, for example, incident hyperedges are\nnot removed, but incident edges--which must be connected to a vertex at\nboth endpoints--are removed.)\n<p>\n<p>\nFails under the following circumstances:\n<ul>\n<li/><code>vertex</code> is not an element of this graph\n<li/><code>vertex</code> is <code>null</code>\n</ul>",
             "params": [
                 {
@@ -19291,7 +19306,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 502,
+            "line": 455,
             "description": "Removes <code>edge</code> from this graph. Fails if <code>edge</code> is\nnull, or is otherwise not an element of this graph.",
             "params": [
                 {
@@ -19309,7 +19324,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 512,
+            "line": 465,
             "description": "Returns <code>true</code> if <code>v1</code> and <code>v2</code> share an\nincident edge. Equivalent to <code>getNeighbors(v1).contains(v2)</code>.",
             "params": [
                 {
@@ -19331,7 +19346,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 523,
+            "line": 476,
             "description": "Returns <code>true</code> if <code>vertex</code> and <code>edge</code>\nare incident to each other. Equivalent to\n<code>getIncidentEdges(vertex).contains(edge)</code> and to\n<code>getIncidentVertices(edge).contains(vertex)</code>.",
             "params": [
                 {
@@ -19353,7 +19368,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 536,
+            "line": 489,
             "description": "Returns the number of edges incident to <code>vertex</code>. Special\ncases of interest:\n<ul>\n<li/>Incident self-loops are counted once.\n<li>If there is only one edge that connects this vertex to each of its\nneighbors (and vice versa), then the value returned will also be equal to\nthe number of neighbors that this vertex has (that is, the output of\n<code>getNeighborCount</code>).\n<li>If the graph is directed, then the value returned will be the sum of\nthis vertex's indegree (the number of edges whose destination is this\nvertex) and its outdegree (the number of edges whose source is this\nvertex), minus the number of incident self-loops (to avoid\ndouble-counting).\n</ul>\n<p>\nEquivalent to <code>getIncidentEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19374,7 +19389,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 560,
+            "line": 513,
             "description": "Returns the number of vertices that are adjacent to <code>vertex</code>\n(that is, the number of vertices that are incident to edges in\n<code>vertex</code>'s incident edge set).\n<p>\n<p>\nEquivalent to <code>getNeighbors(vertex).size()</code>.",
             "params": [
                 {
@@ -19392,7 +19407,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 573,
+            "line": 526,
             "description": "Returns the number of vertices that are incident to <code>edge</code>.\nFor hyperedges, this can be any nonnegative integer; for edges this must\nbe 2 (or 1 if self-loops are permitted).\n<p>\n<p>\nEquivalent to <code>getIncidentVertices(edge).size()</code>.",
             "params": [
                 {
@@ -19410,7 +19425,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 586,
+            "line": 539,
             "description": "Returns the edge type of <code>edge</code> in this graph.",
             "params": [
                 {
@@ -19428,7 +19443,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 595,
+            "line": 548,
             "description": "Returns the default edge type for this graph.",
             "return": {
                 "description": "the default edge type for this graph"
@@ -19440,7 +19455,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 602,
+            "line": 555,
             "description": "Returns the collection of edges in this graph which are of type\n<code>edge_type</code>.",
             "params": [
                 {
@@ -19461,7 +19476,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 614,
+            "line": 567,
             "description": "Returns the number of edges of type <code>edge_type</code> in this graph.",
             "params": [
                 {
@@ -19479,7 +19494,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 622,
+            "line": 575,
             "description": "Returns a <code>Array</code> view of the incoming edges incident to\n<code>vertex</code> in this graph.",
             "params": [
                 {
@@ -19497,7 +19512,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 632,
+            "line": 585,
             "description": "Returns a <code>Array</code> view of the outgoing edges incident to\n<code>vertex</code> in this graph.",
             "params": [
                 {
@@ -19515,7 +19530,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 642,
+            "line": 595,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19533,7 +19548,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 651,
+            "line": 604,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19551,7 +19566,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 660,
+            "line": 613,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns\nthe source; otherwise returns <code>null</code>. The source of a directed\nedge <code>d</code> is defined to be the vertex for which <code>d</code>\nis an outgoing edge. <code>directed_edge</code> is guaranteed to be a\ndirected edge if its <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -19569,7 +19584,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 673,
+            "line": 626,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns\nthe destination; otherwise returns <code>null</code>. The destination of\na directed edge <code>d</code> is defined to be the vertex incident to\n<code>d</code> for which <code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if its\n<code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -19587,7 +19602,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 687,
+            "line": 640,
             "description": "Returns a <code>Array</code> view of the predecessors of\n<code>vertex</code> in this graph. A predecessor of <code>vertex</code>\nis defined as a vertex <code>v</code> which is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an\noutgoing edge of <code>v</code> and an incoming edge of\n<code>vertex</code>.",
             "params": [
                 {
@@ -19605,7 +19620,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 701,
+            "line": 654,
             "description": "Returns a <code>Array</code> view of the successors of\n<code>vertex</code> in this graph. A successor of <code>vertex</code> is\ndefined as a vertex <code>v</code> which is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an\nincoming edge of <code>v</code> and an outgoing edge of\n<code>vertex</code>.",
             "params": [
                 {
@@ -19623,7 +19638,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 732,
+            "line": 679,
             "description": "Turn this property off to cause all remote web service calls to be\nsynchronous. Can be useful for test scripts, blocking calls, etc.",
             "itemtype": "property",
             "name": "async",
@@ -19634,7 +19649,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 741,
+            "line": 688,
             "description": "Timeout for AJAX requests",
             "itemtype": "property",
             "name": "async",
@@ -19645,7 +19660,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 749,
+            "line": 696,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -19682,7 +19697,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 767,
+            "line": 714,
             "description": "POSTs a request to a remote endpoint. Composed of a server endpoint (root\nURL) and a service (service path). Sends form data as a multi-part mime\nrequest.",
             "params": [
                 {
@@ -19719,7 +19734,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 833,
+            "line": 786,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19751,7 +19766,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 849,
+            "line": 802,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19783,7 +19798,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 891,
+            "line": 844,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19815,52 +19830,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 966,
-            "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
-            "itemtype": "property",
-            "name": "counter",
-            "type": "integer",
-            "class": "EcAsyncHelper",
-            "module": "com.eduworks.ec"
-        },
-        {
-            "file": "src/main/js/cass/ec.base.js",
-            "line": 973,
-            "description": "\"Each\" method. See class description.",
-            "params": [
-                {
-                    "name": "array",
-                    "description": "Array to iterate over.",
-                    "type": "Array"
-                },
-                {
-                    "name": "each",
-                    "description": "Method that gets invoked per item in the array.",
-                    "type": "Function(item,callback)"
-                },
-                {
-                    "name": "after",
-                    "description": "Method invoked when all callbacks are called.",
-                    "type": "Function(array)"
-                }
-            ],
-            "itemtype": "method",
-            "name": "each",
-            "class": "EcAsyncHelper",
-            "module": "com.eduworks.ec"
-        },
-        {
-            "file": "src/main/js/cass/ec.base.js",
-            "line": 1000,
-            "description": "Will prevent 'after' from being called.",
-            "itemtype": "method",
-            "name": "stop",
-            "class": "EcAsyncHelper",
-            "module": "com.eduworks.ec"
-        },
-        {
-            "file": "src/main/js/cass/ec.base.js",
-            "line": 1052,
+            "line": 959,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -19878,7 +19848,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1062,
+            "line": 969,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -19896,7 +19866,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1072,
+            "line": 979,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code>\nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of\n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "params": [
                 {
@@ -19914,7 +19884,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1085,
+            "line": 992,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code>\nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of\n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "params": [
                 {
@@ -19932,7 +19902,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1098,
+            "line": 1005,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19950,7 +19920,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1107,
+            "line": 1014,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19968,7 +19938,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1116,
+            "line": 1023,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "params": [
                 {
@@ -19990,7 +19960,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1126,
+            "line": 1033,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "params": [
                 {
@@ -20012,7 +19982,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1136,
+            "line": 1043,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "params": [
                 {
@@ -20030,7 +20000,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1145,
+            "line": 1052,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "params": [
                 {
@@ -20048,7 +20018,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1154,
+            "line": 1061,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source;\notherwise returns <code>null</code>.\nThe source of a directed edge <code>d</code> is defined to be the vertex for which\n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -20066,7 +20036,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1167,
+            "line": 1074,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination;\notherwise returns <code>null</code>.\nThe destination of a directed edge <code>d</code> is defined to be the vertex\nincident to <code>d</code> for which\n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -20084,7 +20054,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1181,
+            "line": 1088,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -20106,7 +20076,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1191,
+            "line": 1098,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -20126,7 +20096,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1200,
+            "line": 1107,
             "description": "Adds edge <code>e</code> to this graph such that it connects\nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>,\nor both, implementations may choose to either silently add\nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "params": [
                 {
@@ -20160,7 +20130,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1221,
+            "line": 1128,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "params": [
                 {
@@ -20181,8 +20151,60 @@
             "module": "com.eduworks.ec"
         },
         {
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 1139,
+            "description": "Created by fray on 7/5/17.",
+            "class": "Graph",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 1488,
+            "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
+            "itemtype": "property",
+            "name": "counter",
+            "type": "integer",
+            "class": "EcAsyncHelper",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 1495,
+            "description": "\"Each\" method. See class description.",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Array to iterate over.",
+                    "type": "Array"
+                },
+                {
+                    "name": "each",
+                    "description": "Method that gets invoked per item in the array.",
+                    "type": "Function(item,callback)"
+                },
+                {
+                    "name": "after",
+                    "description": "Method invoked when all callbacks are called.",
+                    "type": "Function(array)"
+                }
+            ],
+            "itemtype": "method",
+            "name": "each",
+            "class": "EcAsyncHelper",
+            "module": "com.eduworks.ec"
+        },
+        {
+            "file": "src/main/js/cass/ec.base.js",
+            "line": 1522,
+            "description": "Will prevent 'after' from being called.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "EcAsyncHelper",
+            "module": "com.eduworks.ec"
+        },
+        {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 30,
+            "line": 20,
             "author": "Fritz",
             "class": "EcPk",
             "module": "com.eduworks.ec"
@@ -52551,7 +52573,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 165,
+            "line": 166,
             "description": "Uses the object's fully qualified type name and compares it to the\nprovided type.",
             "params": [
                 {
@@ -52571,7 +52593,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 177,
+            "line": 178,
             "description": "Uses the object's fully qualified type name and compares it to the\nprovided type.",
             "params": [
                 {
@@ -52591,7 +52613,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 194,
+            "line": 195,
             "description": "Gets the fully qualified type name, as JSON-LD allows the \"namespace\" of\nthe type to be defined in @context.",
             "return": {
                 "description": "Fully qualified type name.",
@@ -52604,7 +52626,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 223,
+            "line": 224,
             "description": "Also could be called \"upcast\", for those in the know.\n<p>\nGhetto method of copying properties from some other object. As freshly\ndeserialized javascript objects do not inherently attach the functions of\ntheir type, it is this or factory hell.",
             "params": [
                 {
@@ -52619,7 +52641,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 276,
+            "line": 277,
             "description": "Upgrades the object to the latest version, performing transforms and the like.",
             "itemtype": "method",
             "name": "upgrade",
@@ -52628,7 +52650,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 282,
+            "line": 283,
             "description": "Removes the @ symbol from properties in order to make them more\naccessible in Javascript.",
             "return": {
                 "description": "This object, with @ properties converted to @-less properties.",
@@ -52642,7 +52664,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 303,
+            "line": 304,
             "description": "Gets all versions of JSON-LD type strings for this type of object.",
             "return": {
                 "description": "Array of URIs.",
@@ -66555,91 +66577,95 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1431"
+            "line": " src/main/js/cass/ebac.repository.js:1384"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1508"
+            "line": " src/main/js/cass/ebac.repository.js:1422"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/ebac.repository.js:1499"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1526"
+            "line": " src/main/js/cass/ebac.repository.js:1517"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1526"
+            "line": " src/main/js/cass/ebac.repository.js:1517"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1540"
+            "line": " src/main/js/cass/ebac.repository.js:1531"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1650"
+            "line": " src/main/js/cass/ebac.repository.js:1641"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1650"
+            "line": " src/main/js/cass/ebac.repository.js:1641"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1765"
+            "line": " src/main/js/cass/ebac.repository.js:1756"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1839"
+            "line": " src/main/js/cass/ebac.repository.js:1830"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1896"
+            "line": " src/main/js/cass/ebac.repository.js:1901"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1940"
+            "line": " src/main/js/cass/ebac.repository.js:1945"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1981"
+            "line": " src/main/js/cass/ebac.repository.js:1986"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2001"
+            "line": " src/main/js/cass/ebac.repository.js:2006"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2013"
+            "line": " src/main/js/cass/ebac.repository.js:2018"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2025"
+            "line": " src/main/js/cass/ebac.repository.js:2030"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2037"
+            "line": " src/main/js/cass/ebac.repository.js:2042"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2074"
+            "line": " src/main/js/cass/ebac.repository.js:2079"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2119"
+            "line": " src/main/js/cass/ebac.repository.js:2124"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2141"
+            "line": " src/main/js/cass/ebac.repository.js:2146"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2175"
+            "line": " src/main/js/cass/ebac.repository.js:2180"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2224"
+            "line": " src/main/js/cass/ebac.repository.js:2229"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2245"
+            "line": " src/main/js/cass/ebac.repository.js:2250"
         },
         {
             "message": "unknown tag: memberof",
@@ -66807,7 +66833,7 @@
         },
         {
             "message": "unknown tag: internal",
-            "line": " src/main/js/cass/org.json-ld.js:282"
+            "line": " src/main/js/cass/org.json-ld.js:283"
         },
         {
             "message": "unknown tag: memberof",
@@ -66883,11 +66909,11 @@
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:3961"
+            "line": " src/main/js/cass/cass.rollup.js:3964"
         },
         {
             "message": "Missing item type\nIF IP type is COMPETENCY|ROLLUPRULE: assertionResult = ( IF number of\npositive assertions > 0 && number of negative assertions = 0 THEN\nassertionResult = TRUE IF number of positive assertions = 0 && number of\nnegative assertions > 0 THEN assertionResult = FALSE IF number of\npositive assertions > 0 && number of negative assertions > 0 THEN\nassertionResult = INDETERMINANT IF number of positive assertions = 0 &&\nnumber of negative assertions = 0 THEN assertionResult = UNKNOWN )\n<p>\nIF assertionResult = INDETERMINANT THEN INDETERMINANT ELSE IF any\nequivalent packets = INDETERMINANT THEN INDETERMINANT ELSE IF any sub\npackets = INDETERMINANT THEN INDETERMINANT\n<p>\nELSE IF assertionResult = UNKNOWN: IF all equivalent packets = UNKNOWN IF\nall sub packets = UNKNOWN THEN UNKNOWN IF all sub packets = TRUE|UNKNOWN\nTHEN TRUE IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE IF all equivalent packets = TRUE|UNKNOWN IF all sub packets =\nTRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE IF all equivalent packets = FALSE|UNKNOWN IF all sub packets =\nFALSE|UNKNOWN THEN FALSE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\n<p>\nELSE IF assertionResult = TRUE: IF all equivalent packets = TRUE|UNKNOWN\nIF all sub packets = TRUE|UNKNOWN THEN TRUE ELSE INDETERMINANT\n<p>\nELSE INDETERMINANT\n<p>\nELSE IF assertionResult = FALSE: IF all equivalent packets =\nFALSE|UNKNOWN IF all sub packets = FALSE|UNKNOWN THEN FALSE ELSE\nINDETERMINANT\n<p>\nELSE INDETERMINANT",
-            "line": " src/main/js/cass/cass.rollup.js:4141"
+            "line": " src/main/js/cass/cass.rollup.js:4144"
         },
         {
             "message": "Missing item type\nCreated by fray on 5/9/17.",
@@ -66902,16 +66928,16 @@
             "line": " src/main/js/cass/ebac.identity.js:1258"
         },
         {
-            "message": "Missing item type\nCreated by fray on 7/5/17.",
-            "line": " src/main/js/cass/ec.base.js:207"
+            "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
+            "line": " src/main/js/cass/ec.base.js:1098"
         },
         {
-            "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1191"
+            "message": "Missing item type\nCreated by fray on 7/5/17.",
+            "line": " src/main/js/cass/ec.base.js:1139"
         },
         {
             "message": "Missing item type",
-            "line": " src/main/js/cass/ec.crypto.js:30"
+            "line": " src/main/js/cass/ec.crypto.js:20"
         },
         {
             "message": "Missing item type\nSecure Hash Algorithm with 256-bit digest (SHA-256) implementation.\n\nSee FIPS 180-2 for details.",

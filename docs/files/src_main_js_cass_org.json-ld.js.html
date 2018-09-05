@@ -954,8 +954,9 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         var keys = new Array();
         var me = (o);
         for (var key in me) {
-            if (EcLinkedData.isAtProperty(key)) 
-                key = &quot;@&quot; + key;
+            if (me[&quot;type&quot;] != null) 
+                if (EcLinkedData.isAtProperty(key)) 
+                    key = &quot;@&quot; + key;
             keys.push(key);
         }
         keys.sort(function(a, b) {
@@ -1128,7 +1129,10 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         if (this.context != null &amp;&amp; this.type != null) {
             if (!EcObject.isObject(this.context)) {
                 var context = (!this.context.endsWith(&quot;/&quot;) ? this.context + &quot;/&quot; : this.context);
-                a.push(context + this.type);
+                if (this.type.indexOf(context) == 0) 
+                    a.push(this.type);
+                 else 
+                    a.push(context + this.type);
             }
         }
         return a;
