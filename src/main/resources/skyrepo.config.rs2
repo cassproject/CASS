@@ -59,3 +59,6 @@ beforeGet=#if(
 );
 
 #beforeGet=beforeGet;
+
+autoDetect=#repoAutoDetect();
+#autoDetectAutoExecute=autoDetect;
