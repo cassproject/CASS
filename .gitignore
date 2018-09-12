@@ -19,6 +19,8 @@ node_modules/
 
 etc/
 
+.idea/
+
 adapter\.xapi\.json
 
 npm-debug\.log

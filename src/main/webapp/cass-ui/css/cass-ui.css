@@ -1,0 +1,56 @@
+html,
+body {
+    /* Dynamically resize for large screens */
+    font-size: calc(12px + .25vw);
+    /* Scale background to fit the screen */
+    min-height: 100%;
+    min-width: 100%;
+}
+
+body.login {
+    background-color: #137499;
+    background: -moz-radial-gradient(center, ellipse cover, #137499 38%, #004c68 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, #137499 38%, #004c68 100%);
+    background: radial-gradient(ellipse at center, #137499 38%, #004c68 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#137499', endColorstr='#004c68', GradientType=1);
+}
+
+/* ---- UTILITY ---- */
+
+.centerText {
+    text-align: center;
+}
+
+.rightText {
+    text-align: right;
+}
+
+.cassUiError {
+    font-size: 3rem;
+    color: #F78D05;
+}
+
+.cassUiBusyImg {
+    height: 7rem;
+    width: auto;
+}
+
+/* ---- LOGIN PAGE ---- */
+
+#cassUiLoginContainer {
+    margin-top: 5%;
+    color:#fff;
+}
+
+#cassUiLoginContainer label {
+    color: white;
+}
+
+.loginHeaderImg {
+    height: 1em;
+    vertical-align: baseline;
+}
+
+#cassUiLoginBtn {
+    margin-top: 1.75em;
+}
