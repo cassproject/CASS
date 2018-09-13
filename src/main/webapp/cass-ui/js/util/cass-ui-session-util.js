@@ -1,16 +1,20 @@
 //**************************************************************************************************
 // CASS UI Session Utilities
 //**************************************************************************************************
-//TODO loadCassUiSessionState check for invalid session state
 //TODO loadCassUiSessionState build contact maps???
 
 //**************************************************************************************************
 // Constants
+
+const CASSUI_SESSION_TIMEOUT_MS = 1800000; //30 minutes
+
 const SES_STR_SELSERVER_KEY = "sessionCassUiSelServer";
 const SES_STR_IDNAME_KEY = "sessionCassUiIdName";
 const SES_STR_PPKPEM_KEY = "sessionCassUiPpkPEM";
+const SES_STR_LAST_SESSION_LOAD_KEY = "sessionCassUiLastSessionLoadTime";
 
 const CASSUI_AFTER_LOGOUT_PAGE = "cass-ui-login.html";
+const CASSUI_SES_EXP_QSP = "sessionExpired";
 
 //**************************************************************************************************
 // Variables
@@ -57,32 +61,54 @@ function initSessionIdentity() {
 // Session Storage Management
 //**************************************************************************************************
 
+function updateCassUiLastSessionLoadTime() {
+    var d = new Date();
+    sessionStorage.setItem(SES_STR_LAST_SESSION_LOAD_KEY,d.getTime());
+}
+
 function saveCassUiSessionState() {
     debugMessage("Saving session state...");
     sessionStorage.clear();
     sessionStorage.setItem(SES_STR_SELSERVER_KEY,selectedServer);
     sessionStorage.setItem(SES_STR_IDNAME_KEY,loggedInIdentityName);
     sessionStorage.setItem(SES_STR_PPKPEM_KEY,loggedInPpkPem);
+    updateCassUiLastSessionLoadTime();
     debugMessage("Session state saved.");
 }
 
-//TODO loadCassUiSessionState check for invalid session state
-//TODO loadCassUiSessionState build contact maps???
-function loadCassUiSessionState() {
-    debugMessage("Loading session state...");
-    selectedServer = sessionStorage.getItem(SES_STR_SELSERVER_KEY);
-    initRepo();
-    loggedInIdentityName  = sessionStorage.getItem(SES_STR_IDNAME_KEY);
-    loggedInPpkPem = sessionStorage.getItem(SES_STR_PPKPEM_KEY);
-    initSessionIdentity();
-    debugMessage("Session state loaded.");
+function isCassUiSessionTimedOut() {
+    var lslt = sessionStorage.getItem(SES_STR_LAST_SESSION_LOAD_KEY);
+    var cd = new Date();
+    if (lslt + CASSUI_SESSION_TIMEOUT_MS >= cd.getTime()) return false;
+    else return true;
 }
 
-//**************************************************************************************************
-// Logout
-//**************************************************************************************************
+function isCassUiSessionStateValid() {
+    if (sessionStorage.getItem(SES_STR_SELSERVER_KEY) == null) return false;
+    else if (sessionStorage.getItem(SES_STR_IDNAME_KEY) == null) return false;
+    else if (sessionStorage.getItem(SES_STR_PPKPEM_KEY) == null) return false;
+    else return !isCassUiSessionTimedOut();
+}
 
-function logoutCassUi() {
+//TODO loadCassUiSessionState build contact maps???
+function loadCassUiSessionState() {
+    if (isCassUiSessionStateValid()) {
+        debugMessage("Loading session state...");
+        selectedServer = sessionStorage.getItem(SES_STR_SELSERVER_KEY);
+        initRepo();
+        loggedInIdentityName  = sessionStorage.getItem(SES_STR_IDNAME_KEY);
+        loggedInPpkPem = sessionStorage.getItem(SES_STR_PPKPEM_KEY);
+        initSessionIdentity();
+        updateCassUiLastSessionLoadTime();
+        debugMessage("Session state loaded.");
+    }
+    else {
+        debugMessage("Session state is invalid");
+        goToCassUISessionExpired();
+    }
+}
+
+function clearCassUiSession() {
     repo = null;
     selectedServer = null;
     loggedInIdentityName = null;
@@ -93,5 +119,18 @@ function logoutCassUi() {
         EcIdentityManager.clearIdentities();
     }
     sessionStorage.clear();
+}
+
+function goToCassUISessionExpired() {
+    clearCassUiSession();
+    location.replace(CASSUI_AFTER_LOGOUT_PAGE + "?" + CASSUI_SES_EXP_QSP + "=true");
+}
+
+//**************************************************************************************************
+// Logout
+//**************************************************************************************************
+
+function logoutCassUi() {
+    clearCassUiSession();
     location.replace(CASSUI_AFTER_LOGOUT_PAGE);
 }

@@ -16,15 +16,6 @@ body.login {
 }
 
 /* ---- UTILITY ---- */
-
-.centerText {
-    text-align: center;
-}
-
-.rightText {
-    text-align: right;
-}
-
 .cassUiError {
     font-size: 3rem;
     color: #F78D05;
@@ -33,6 +24,31 @@ body.login {
 .cassUiBusyImg {
     height: 7rem;
     width: auto;
+}
+
+
+/* ---- MENU ---- */
+
+#main-menu .top-bar,
+#main-menu .top-bar ul {
+    background-color: #333;
+    color: #eee;
+}
+
+#main-menu .top-bar a {
+    color: #eee;
+}
+
+#main-menu .top-bar a::after {
+    border-color: #999 transparent;
+}
+
+#section-sub-menu {
+    background-color: #ddd;
+}
+
+#page-tools {
+    float: right;
 }
 
 /* ---- LOGIN PAGE ---- */
@@ -53,4 +69,28 @@ body.login {
 
 #cassUiLoginBtn {
     margin-top: 1.75em;
+}
+
+/* ---- HOME PAGE ---- */
+.cassHomeLogo {
+    background-color: #137499;
+    background: -moz-radial-gradient(center, ellipse cover, #137499 38%, #004c68 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, #137499 38%, #004c68 100%);
+    background: radial-gradient(ellipse at center, #137499 38%, #004c68 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#137499', endColorstr='#004c68', GradientType=1);
+    padding: 1.5rem;
+}
+
+.cassHomeIntro {
+    color: #4B4B4B;
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+
+.cassHomeNav {
+    margin-top: 3rem;
+}
+
+.cassHomeNavBtn {
+    width: 17rem;
 }

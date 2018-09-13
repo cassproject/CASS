@@ -8,6 +8,9 @@
 const DEBUG_CONSOLE = true;
 const DEBUG_ALERT = false;
 
+const CASSUI_HOME_PAGE = "cass-ui-home.html";
+const CASSUI_MAIN_MENU_USERNAME = "#cassUiLoggedInName";
+
 //**************************************************************************************************
 // Utility Functions
 //**************************************************************************************************
@@ -65,6 +68,19 @@ if ( typeof String.prototype.endsWith != 'function' ) {
 };
 
 //**************************************************************************************************
+// Global Main Menu Functions
+//**************************************************************************************************
+
+function setCassUiMainMenuUserName() {
+    $(CASSUI_MAIN_MENU_USERNAME).html(loggedInIdentityName);
+}
+
+function goToCassUiHomePage() {
+    location.replace(CASSUI_HOME_PAGE);
+}
+
+
+//**************************************************************************************************
 // JQuery Functions
 //**************************************************************************************************
 
@@ -74,3 +90,9 @@ jQuery.fn.scrollTo = function (elem, speed) {
     }, speed == undefined ? 1000 : speed);
     return this;
 };
+
+//**************************************************************************************************
+// Foundation
+//**************************************************************************************************
+
+$(document).foundation();

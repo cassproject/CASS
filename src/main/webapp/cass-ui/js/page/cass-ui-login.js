@@ -36,7 +36,7 @@ function handleFetchIdentitySuccess(obj) {
     hideLoginBusy();
     hideLoginErrorMessage();
     enableAllLoginInputs();
-    //buildContactsMaps();
+    clearLoginInputs();
     doAfterLoginSuccess();
 }
 
@@ -91,6 +91,11 @@ function enableAllLoginInputs() {
     $(CASSUI_LOGIN_PW).removeAttr("readonly");
 }
 
+function clearLoginInputs() {
+    $(CASSUI_LOGIN_UN).val("");
+    $(CASSUI_LOGIN_PW).val("");
+}
+
 function hideLoginBusy() {
     $(CASSUI_LOGIN_BUSY_CTR).hide();
 }
@@ -115,7 +120,7 @@ function areLoginParamsValid() {
     var un = $(CASSUI_LOGIN_UN).val().trim();
     var pw = $(CASSUI_LOGIN_PW).val().trim();
     if (!srv || srv == null || !un || un == null || un.length == 0 || !pw || pw == null || pw.length == 0) {
-        showLoginErrorMessage("Server, username, and password are required");
+        showLoginErrorMessage("Username, password, and server are all required");
         return false;
     }
     return true;
@@ -138,3 +143,23 @@ function attemptCassUiLogin() {
         initIdentity();
     }
 }
+
+function checkForSessionExpiredWarning() {
+    var qsp = new URLSearchParams(window.location.search);
+    if (qsp.has(CASSUI_SES_EXP_QSP)) {
+        clearLoginInputs();
+        showLoginErrorMessage("Session Expired");
+    }
+}
+
+function init() {
+    checkForSessionExpiredWarning();
+}
+
+//**************************************************************************************************
+// Document on ready
+//**************************************************************************************************
+
+$(document).ready(function () {
+    init();
+});
