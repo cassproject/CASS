@@ -15,7 +15,12 @@ body.login {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#137499', endColorstr='#004c68', GradientType=1);
 }
 
-/* ---- MENU ---- */
+/* ---- iFRAME ---- */
+
+.cassUiIframeContainer {
+    height: calc(100vh - 70px);
+}
+
 .cassUiIframe {
     border: 0px;
     width: 100%;
