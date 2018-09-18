@@ -12,6 +12,15 @@
 // Page Functions
 //**************************************************************************************************
 
+function sendIdentityInitializeMessage() {
+    $("iframe")[0].contentWindow.postMessage(JSON.stringify({
+        action: "initIdentity",
+        serverParm: selectedServer,
+        nameParm: loggedInIdentityName,
+        pemParm: loggedInPpkPem
+    }), window.location.origin);
+}
+
 function init() {
     loadCassUiSessionState();
     setCassUiMainMenuUserName();

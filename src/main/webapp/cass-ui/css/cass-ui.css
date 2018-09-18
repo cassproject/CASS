@@ -15,6 +15,13 @@ body.login {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#137499', endColorstr='#004c68', GradientType=1);
 }
 
+/* ---- MENU ---- */
+.cassUiIframe {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+}
+
 /* ---- UTILITY ---- */
 .cassUiError {
     font-size: 3rem;
@@ -25,7 +32,6 @@ body.login {
     height: 7rem;
     width: auto;
 }
-
 
 /* ---- MENU ---- */
 

@@ -48,8 +48,21 @@
 
     <!--CONTENTS-->
     <div class="grid-x">
-        <div class="cell large-2"></div>
-        <div class="cell large-10">Framework Explorer</div>
+        <!--<div class="cell large-2"></div>-->
+        <!--<div class="cell large-10">Framework Explorer</div>-->
+        <div class="cell large-12">
+            <iframe class="cassUiIframe"></iframe>
+        </div>
+        <script>
+            $("iframe").ready(function() {
+                $(window).on("message", function(event) {
+                    if (event.originalEvent.data.message == "waiting") {
+                        sendIdentityInitializeMessage();
+                    };
+                });
+            });
+            $("iframe").attr("src", "cass-viewer/cass-ui-framework-exp.html?user=wait&origin=" + window.location.origin);
+        </script>
     </div>
     <!--END CONTENTS-->
 
