@@ -72,9 +72,9 @@ function cassFrameworkAsCeasn() {
 
     for (var i = 0; i < f.competency.length; i++) {
         var c = EcCompetency.getBlocking(f.competency[i]);
-        competencies[f.competency[i]] = competencies[c.id] = c;
-        if (competencies[c.id] == null)
-            error("Competency not found.", 404);
+        if (c != null) {
+            competencies[f.competency[i]] = competencies[c.id] = c;
+        }
     }
 
     for (var i = 0; i < f.relation.length; i++) {
