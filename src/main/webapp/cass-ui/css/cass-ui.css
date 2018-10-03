@@ -15,6 +15,7 @@ body.login {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#137499', endColorstr='#004c68', GradientType=1);
 }
 
+<<<<<<< HEAD
 canvas {
   background: #333;
 }
@@ -129,6 +130,18 @@ canvas {
 										drop-shadow(0 3px 1px rgba(0, 0, 0, 0.14))
 										drop-shadow(0 1px 5px rgba(0, 0, 0, 0.12))
 										drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
+=======
+/* ---- iFRAME ---- */
+
+.cassUiIframeContainer {
+    height: calc(100vh - 70px);
+}
+
+.cassUiIframe {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+>>>>>>> 6596afd930e0af0ca4c5a65c180afbc0aa5aabc6
 }
 
 /* ---- UTILITY ---- */
@@ -141,7 +154,6 @@ canvas {
     height: 7rem;
     width: auto;
 }
-
 
 /* ---- MENU ---- */
 

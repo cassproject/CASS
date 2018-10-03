@@ -5,9 +5,9 @@
 //**************************************************************************************************
 // Constants
 
-const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp.html";
-const CASSUI_PRF_EXP_PAGE = "cass-ui-profile-exp.html";
-const CASSUI_GAP_ANL_PAGE = "cass-ui-gap-analysis.html";
+const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
+const CASSUI_PRF_EXP_PAGE = "cass-ui-profile-exp-ctr.html";
+const CASSUI_GAP_ANL_PAGE = "cass-ui-gap-analysis-ctr.html";
 
 //**************************************************************************************************
 // Variables
