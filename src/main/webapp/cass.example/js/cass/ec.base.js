@@ -773,8 +773,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                 xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + (fd)["_boundary"]);
             fd = all;
         } else {}
-        if (EcRemote.async) 
-            (xhr)["timeout"] = EcRemote.timeout;
+        if (xhr != null) 
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
         if ((typeof httpStatus) != "undefined") {
             var result = JSON.stringify(httpPost(fd, url, "multipart/form-data; boundary=" + theBoundary, "false", theBoundary));
             if (successCallback != null) 
@@ -823,8 +824,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
              else if (xhr.readyState == 4) 
                 failure(xhr.responseText);
         };
-        if (EcRemote.async) 
-            (xhr)["timeout"] = EcRemote.timeout;
+        if (xhr != null) 
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
         if ((typeof httpStatus) != "undefined") {
             success(JSON.stringify(httpGet(url)));
         } else {
@@ -867,8 +869,9 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
                     failure(xhr.responseText);
             }
         };
-        if (EcRemote.async) 
-            (xhr)["timeout"] = EcRemote.timeout;
+        if (xhr != null) 
+            if (EcRemote.async) 
+                (xhr)["timeout"] = EcRemote.timeout;
         xhr.setRequestHeader("signatureSheet", signatureSheet);
         if ((typeof httpStatus) != "undefined") {
             if (success != null) 
