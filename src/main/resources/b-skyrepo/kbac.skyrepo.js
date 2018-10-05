@@ -264,7 +264,11 @@ var skyrepoGetIndex = function(id, version, type) {
         var microSearch = httpGet(microSearchUrl);
         if (skyrepoDebug) 
             console.log(microSearchUrl);
+        if (microSearch == null) 
+            return null;
         var hitshits = (microSearch)["hits"];
+        if (hitshits == null) 
+            return null;
         var hits = (hitshits)["hits"];
         if (hits.length == 0) 
             return null;
