@@ -46,100 +46,103 @@
     </div>
     <!--END MAIN MENU -->
 
-  
+
     <!--CONTENTS-->
     <div class="grid-x" id="weclcome-container">
-      <canvas width="500" height="500"></canvas>
-      
-      <div class="grid-container fluid" style="width:100% !important;" id="welcome-overlay" >
-        
-        <div class="grid-x grid-margin-x">
-          <div id="welcome-header-wrapper" class="two-dp-shadow large-5 medium-6 small-8 cell">
-            <h1 class="welcome-header">CaSS</h1>
-          </div>
-        </div>
-        
-        <div class="grid-x grid-margin-x" style="justify-content: center;">
-          <div id="welcome-header-introduction" class="large-9 medium-12 small-12 cell">
-            <p> An introduction about CaSS and how to use these tools.  Something nice that we would want people to read before just throwing buttons at them.  Maybe it's just Welcome to CaSS, select one of the three options below to begin closing the skills gap!</p>
-          </div>
-        </div>
-        
-        <div class="grid-x grid-margin-x" style="justify-content: center; height:100%;">
-          <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
-            <div class="welcome-card-header-wrapper">
-              <div class="dblq">
-                <div class="i-wrapper blue">
-                <i class="fa fa-user-circle"></i>
-              </div>
-              </div>
-              <div class="dbl3"><h2> CaSS Profiles</h2></div>
-            </div>
-            <div class="welcome-card-body">
-              <p> CaSS Profile Explorer provides unique and detailed view of an individual.</p>
-              <ul>
-                <li>Build CaSS Profiles</li>
-                <li>Validate Skills Assertions</li>
-                <li>Analyze Profile</li>
-                <li>Export and Share</li>
-              </ul>
-            </div>
-            <div class="welcome-card-button-wrapper">
-              <div class="welcome-card-button two-dp-shadow">
-                <p> EXPLORE </p>
-              </div>
+        <canvas width="500" height="500"></canvas>
+
+        <div class="grid-container fluid" style="width:100% !important;" id="welcome-overlay">
+
+            <div class="grid-x grid-margin-x">
+                <div id="welcome-header-wrapper" class="two-dp-shadow large-5 medium-6 small-8 cell">
+                    <h1 class="welcome-header">CaSS</h1>
+                </div>
             </div>
 
-          </div>
-  
-          <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
-            <div class="welcome-card-header-wrapper">
-              <div class="dblq">
-                  <div class="i-wrapper maroon">
-                      <i class="fa fa-sitemap"></i>
-                    </div>
-                    </div>
-              <div class="dbl3"><h2> CaSS Frameworks</h2></div>
-            </div>
-            <div class="welcome-card-body">
-              <p> CaSS Frameworks Explorer provides opportunities  to align  sklls from framework to framework.</p>
-              <ul>
-                <li>Define CaSS Frameworks</li>
-                <li>Define framework alignments</li>
-                <li>Assess skills confidence</li>
-                <li>Export and share frameworks</li>
-              </ul>
-            </div>
-            <div class="welcome-card-button two-dp-shadow">
-              <p> EXPLORE </p>
-            </div>
-          </div>          
-          <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
-            <div class="welcome-card-header-wrapper">
-              <div class="dblq">
-                  <div class="i-wrapper teal">
-                    <i class="fa fa-pie-chart"></i>
-                  </div>
+            <div class="grid-x grid-margin-x" style="justify-content: center;">
+                <div id="welcome-header-introduction" class="large-9 medium-12 small-12 cell">
+                    <p> An introduction about CaSS and how to use these tools. Something nice that we would want people
+                        to read before just throwing buttons at them. Maybe it's just Welcome to CaSS, select one of the
+                        three options below to begin closing the skills gap!</p>
                 </div>
-              <div class="dbl3"><h2> CaSS Gap Analysis</h2></div>
             </div>
-            <div class="welcome-card-body">
-              <p> CaSS Gap Analysis Explorer allows you to explore missing skills withing your teams.</p>
-              <ul>
-                <li>Forms teams of CaSS Profiles</li>
-                <li>Identify missing training</li>
-                <li>Determine closest to goal individuals</li>
-                <li>Assess overall team qualifications</li>
-              </ul>
+
+            <div class="grid-x grid-margin-x" style="justify-content: center; height:100%;">
+                <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
+                    <div class="welcome-card-header-wrapper">
+                        <div class="dblq">
+                            <div class="i-wrapper blue">
+                                <i class="fa fa-user-circle"></i>
+                            </div>
+                        </div>
+                        <div class="dbl3"><h2> CaSS Profiles</h2></div>
+                    </div>
+                    <div class="welcome-card-body">
+                        <p> CaSS Profile Explorer provides unique and detailed view of an individual.</p>
+                        <ul>
+                            <li>Build CaSS Profiles</li>
+                            <li>Validate Skills Assertions</li>
+                            <li>Analyze Profile</li>
+                            <li>Export and Share</li>
+                        </ul>
+                    </div>
+                    <div class="welcome-card-button-wrapper" onclick="goToProfileExplorer()">
+                        <div class="welcome-card-button two-dp-shadow">
+                            <p> EXPLORE </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
+                    <div class="welcome-card-header-wrapper">
+                        <div class="dblq">
+                            <div class="i-wrapper maroon">
+                                <i class="fa fa-sitemap"></i>
+                            </div>
+                        </div>
+                        <div class="dbl3"><h2> CaSS Frameworks</h2></div>
+                    </div>
+                    <div class="welcome-card-body">
+                        <p> CaSS Frameworks Explorer provides opportunities to align sklls from framework to
+                            framework.</p>
+                        <ul>
+                            <li>Define CaSS Frameworks</li>
+                            <li>Define framework alignments</li>
+                            <li>Assess skills confidence</li>
+                            <li>Export and share frameworks</li>
+                        </ul>
+                    </div>
+                    <div class="welcome-card-button two-dp-shadow" onclick="goToFrameworkExplorer()">
+                        <p> EXPLORE </p>
+                    </div>
+                </div>
+                <div id="welcome-intro-card" class="two-dp-shadow small-12 medium-4 large-3 cell">
+                    <div class="welcome-card-header-wrapper">
+                        <div class="dblq">
+                            <div class="i-wrapper teal">
+                                <i class="fa fa-pie-chart"></i>
+                            </div>
+                        </div>
+                        <div class="dbl3"><h2> CaSS Gap Analysis</h2></div>
+                    </div>
+                    <div class="welcome-card-body">
+                        <p> CaSS Gap Analysis Explorer allows you to explore missing skills withing your teams.</p>
+                        <ul>
+                            <li>Forms teams of CaSS Profiles</li>
+                            <li>Identify missing training</li>
+                            <li>Determine closest to goal individuals</li>
+                            <li>Assess overall team qualifications</li>
+                        </ul>
+                    </div>
+                    <div class="welcome-card-button two-dp-shadow" onclick="goToGapAnalysis()">
+                        <p> EXPLORE </p>
+                    </div>
+                </div>
             </div>
-            <div class="welcome-card-button two-dp-shadow">
-              <p> EXPLORE </p>
-            </div>
-          </div>
+
         </div>
-        
-      </div>
-        
+
     </div>
 
   
