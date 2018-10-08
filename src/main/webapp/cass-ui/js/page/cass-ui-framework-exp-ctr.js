@@ -8,7 +8,10 @@
 const FWK_EXP_IFRAME = "#fwkExpIFrame";
 const FWK_EXP_IFRAME_SOURCE = "../cass-viewer/cass-ui-framework-exp.html?user=wait&origin=";
 
+const WAITING_MESSAGE = "waiting";
 const ALIGN_MESSAGE = "gotoAlign";
+
+const INIT_IDENTITY_ACTION = "initIdentity";
 
 const CASSUI_RES_ALN_PAGE = "cass-ui-resource-aln-ctr.html";
 
@@ -33,8 +36,8 @@ function handleAlignmentMessage(messageData) {
 }
 
 function sendIdentityInitializeMessage() {
-    $("iframe")[0].contentWindow.postMessage(JSON.stringify({
-        action: "initIdentity",
+    $(FWK_EXP_IFRAME)[0].contentWindow.postMessage(JSON.stringify({
+        action: INIT_IDENTITY_ACTION,
         serverParm: selectedServer,
         nameParm: loggedInIdentityName,
         pemParm: loggedInPpkPem
@@ -43,7 +46,7 @@ function sendIdentityInitializeMessage() {
 
 $(FWK_EXP_IFRAME).ready(function() {
     $(window).on("message", function(event) {
-        if (event.originalEvent.data.message == "waiting") {
+        if (event.originalEvent.data.message == WAITING_MESSAGE) {
             sendIdentityInitializeMessage();
         }
         else if (event.originalEvent.data.message == ALIGN_MESSAGE) {

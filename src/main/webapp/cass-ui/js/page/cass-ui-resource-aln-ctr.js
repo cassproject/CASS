@@ -8,6 +8,12 @@
 const RES_ALN_IFRAME = "#resAlnIFrame";
 const COMP_ALN_IFRAME_SOURCE = "../cass-align/cass-ui-framework-aln.html?user=wait&origin=";
 
+const WAITING_MESSAGE = "waiting";
+const INIT_ALIGN_MESSAGE = "initAlign";
+
+const INIT_IDENTITY_ACTION = "initIdentity";
+const SET_FWK_ALIGN_PARMS_ACTION = "setFwkAlignParams";
+
 //**************************************************************************************************
 // Variables
 
@@ -15,10 +21,23 @@ const COMP_ALN_IFRAME_SOURCE = "../cass-align/cass-ui-framework-aln.html?user=wa
 // Page Functions
 //**************************************************************************************************
 
+function handleInitAlignmentMessage() {
+    var alignInfo = retrieveAlignmentInfo();
+    if (alignInfo.alignType == FWK_TO_FWK_ALIGN_TYPE) {
+        $(RES_ALN_IFRAME)[0].contentWindow.postMessage(JSON.stringify({
+            action: SET_FWK_ALIGN_PARMS_ACTION,
+            fw1Id: alignInfo.fw1Id,
+            fw2Id: alignInfo.fw2Id
+        }), window.location.origin);
+    }
+    else {
+        debugMessage("!!! handleInitAlignmentMessage UNKNOWN ALIGNMENT TYPE: " + alignInfo.alignType);
+    }
+}
+
 function sendIdentityInitializeMessage() {
-    debugMessage("cass-ui-resource-aln-ctr.js -> sendIdentityInitializeMessage");
-    $("iframe")[0].contentWindow.postMessage(JSON.stringify({
-        action: "initIdentity",
+    $(RES_ALN_IFRAME)[0].contentWindow.postMessage(JSON.stringify({
+        action: INIT_IDENTITY_ACTION,
         serverParm: selectedServer,
         nameParm: loggedInIdentityName,
         pemParm: loggedInPpkPem
@@ -27,12 +46,12 @@ function sendIdentityInitializeMessage() {
 
 $(RES_ALN_IFRAME).ready(function() {
     $(window).on("message", function(event) {
-        if (event.originalEvent.data.message == "waiting") {
+        if (event.originalEvent.data.message == WAITING_MESSAGE) {
             sendIdentityInitializeMessage();
         }
-        // else if (event.originalEvent.data.message == ALIGN_MESSAGE) {
-        //     handleAlignmentMessage(event.originalEvent.data);
-        // }
+        else if (event.originalEvent.data.message == INIT_ALIGN_MESSAGE) {
+            handleInitAlignmentMessage();
+        }
     });
 });
 
