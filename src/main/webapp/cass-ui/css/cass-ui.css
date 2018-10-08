@@ -19,6 +19,11 @@ canvas {
   background: #333;
 }
 
+
+.whiteImage {
+    filter: brightness(0) invert(1);
+}
+
 #welcome-container {
   position: relative;
 }
