@@ -5,10 +5,8 @@
 //**************************************************************************************************
 // Constants
 
-const RES_ALN_IFRAME = "#fwkExpIFrame";
+const RES_ALN_IFRAME = "#resAlnIFrame";
 const COMP_ALN_IFRAME_SOURCE = "../cass-align/cass-ui-framework-aln.html?user=wait&origin=";
-
-const FWK_TO_FWK_ALIGN_TYPE = "fwkToFwk";
 
 //**************************************************************************************************
 // Variables
@@ -17,11 +15,8 @@ const FWK_TO_FWK_ALIGN_TYPE = "fwkToFwk";
 // Page Functions
 //**************************************************************************************************
 
-function handleAlignmentMessage(messageData) {
-    debugMessage("Received: " + JSON.stringify(messageData));
-}
-
 function sendIdentityInitializeMessage() {
+    debugMessage("cass-ui-resource-aln-ctr.js -> sendIdentityInitializeMessage");
     $("iframe")[0].contentWindow.postMessage(JSON.stringify({
         action: "initIdentity",
         serverParm: selectedServer,
@@ -30,7 +25,7 @@ function sendIdentityInitializeMessage() {
     }), window.location.origin);
 }
 
-$(FWK_EXP_IFRAME).ready(function() {
+$(RES_ALN_IFRAME).ready(function() {
     $(window).on("message", function(event) {
         if (event.originalEvent.data.message == "waiting") {
             sendIdentityInitializeMessage();
@@ -40,7 +35,8 @@ $(FWK_EXP_IFRAME).ready(function() {
         // }
     });
 });
-$(FWK_EXP_IFRAME).attr("src", FWK_EXP_IFRAME_SOURCE + window.location.origin);
+
+$(RES_ALN_IFRAME).attr("src", COMP_ALN_IFRAME_SOURCE + window.location.origin);
 
 function init() {
     loadCassUiSessionState();

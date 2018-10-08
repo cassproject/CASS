@@ -21,10 +21,10 @@ const CASSUI_RES_ALN_PAGE = "cass-ui-resource-aln-ctr.html";
 
 function handleAlignmentMessage(messageData) {
     debugMessage("Received: " + JSON.stringify(messageData));
-    var alignType = data.alignType;
+    var alignType = messageData.alignType;
     if (alignType == FWK_TO_FWK_ALIGN_TYPE) {
         debugMessage("Handling framework to framework alignment");
-        storeFrameworkToFrameworkAlignmentInfo(alignType,data.framework1Id,data.framework2Id);
+        storeFrameworkToFrameworkAlignmentInfo(alignType,messageData.framework1Id,messageData.framework2Id);
         location.replace(CASSUI_RES_ALN_PAGE);
     }
     else {
