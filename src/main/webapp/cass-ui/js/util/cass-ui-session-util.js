@@ -13,6 +13,11 @@ const SES_STR_IDNAME_KEY = "sessionCassUiIdName";
 const SES_STR_PPKPEM_KEY = "sessionCassUiPpkPEM";
 const SES_STR_LAST_SESSION_LOAD_KEY = "sessionCassUiLastSessionLoadTime";
 
+const ALIGN_TYPE_KEY = "cassUiAlignType";
+const FWK_TO_FWK_ALIGN_TYPE = "fwkToFwk";
+const FTF_ALN_FW1ID_KEY = "cassUiFwkToFwkFw1Id";
+const FTF_ALN_FW2ID_KEY = "cassUiFwkToFwkFw2Id";
+
 const CASSUI_AFTER_LOGOUT_PAGE = "cass-ui-login.html";
 const CASSUI_SES_EXP_QSP = "sessionExpired";
 
@@ -29,6 +34,30 @@ var loggedInPpkPem;
 var contactsByNameMap;
 var contactsByPkPemMap = {};
 var contactDisplayList;
+
+//**************************************************************************************************
+// Page to Page Transfer - Misc Info
+//**************************************************************************************************
+function storeFrameworkToFrameworkAlignmentInfo(alignType,fw1Id,fw2Id) {
+    debugMessage("Saving framework to framework info...");
+    sessionStorage.setItem(ALIGN_TYPE_KEY,alignType);
+    sessionStorage.setItem(FTF_ALN_FW1ID_KEY,fw1Id);
+    sessionStorage.setItem(FTF_ALN_FW2ID_KEY,fw2Id);
+    updateCassUiLastSessionLoadTime();
+    debugMessage("Framework to framework info saved.");
+}
+
+function retrieveAlignmentInfo() {
+    var alignType = sessionStorage.getItem(ALIGN_TYPE_KEY);
+    if (!alignType) return null;
+    var rai = {};
+    rai.alignType = alignType;
+    if (alignType == FWK_TO_FWK_ALIGN_TYPE) {
+        rai.fw1Id = sessionStorage.getItem(FTF_ALN_FW1ID_KEY);
+        rai.fw2Id = sessionStorage.getItem(FTF_ALN_FW2ID_KEY);
+    }
+    return rai;
+}
 
 //**************************************************************************************************
 // Repository Intialization
