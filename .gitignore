@@ -30,3 +30,5 @@ skyrepoOld\.p
 skyrepoOld\.t
 
 adapter\.amqp\.json
+
+out\.log

@@ -211,8 +211,26 @@ var skyrepoPutInternalTypeCheck = function(typeChecked, o, type) {
         return null;
     return inferTypeFromObj(o, type);
 };
+var flattenLangstrings = function(o) {
+    if (EcObject.isObject(o)) {
+        var keys = EcObject.keys(o);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            if (key == "@value") 
+                return (o)["key"];
+            (o)[key] = flattenLangstrings((o)[key]);
+        }
+    } else if (EcArray.isArray(o)) {
+        var a = o;
+        for (var i = 0; i < a.length; i++) {
+            a[i] = flattenLangstrings(a[i]);
+        }
+    }
+    return o;
+};
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
+    o = flattenLangstrings(o);
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
     return httpPost(o, url, "application/json", false);

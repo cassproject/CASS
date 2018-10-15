@@ -239,8 +239,12 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         }
         var you = (that);
         for (var key in you) {
-            if ((typeof you[key]) != "function") 
-                me[key.replace("@", "")] = you[key];
+            if ((typeof you[key]) != "function") {
+                if (you["@type"] != null) 
+                    me[key.replace("@", "")] = you[key];
+                 else 
+                    me[key] = you[key];
+            }
         }
         var stripNamespace = null;
         var newContext = null;
@@ -290,13 +294,24 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
      */
     prototype.deAtify = function() {
         var me = (this);
+        var typeFound = false;
+        if (me["@type"] != null) 
+            typeFound = true;
         for (var key in me) {
             if (me[key] == null) {
-                var value = me[key];
-                if (value != null) 
-                    if (stjs.isInstanceOf(value.constructor, EcLinkedData)) 
-                        value = (value).deAtify();
-                me[key.replace("@", "")] = value;
+                if (typeFound) {
+                    var value = me[key];
+                    if (value != null) 
+                        if (stjs.isInstanceOf(value.constructor, EcLinkedData)) 
+                            value = (value).deAtify();
+                    me[key.replace("@", "")] = value;
+                } else {
+                    var value = me[key];
+                    if (value != null) 
+                        if (stjs.isInstanceOf(value.constructor, EcLinkedData)) 
+                            value = (value).deAtify();
+                    me[key] = value;
+                }
             }
         }
         return this;
