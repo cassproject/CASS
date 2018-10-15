@@ -7,6 +7,7 @@
 
 const FWK_EXP_IFRAME = "#fwkExpIFrame";
 const FWK_EXP_IFRAME_SOURCE = "../cass-viewer/cass-ui-framework-exp.html?user=wait&origin=";
+const FWK_EXP_IFRAME_SOURCE_FWK_ID_PARAM = "&frameworkId=";
 
 const WAITING_MESSAGE = "waiting";
 const ALIGN_MESSAGE = "gotoAlign";
@@ -44,6 +45,14 @@ function sendIdentityInitializeMessage() {
     }), window.location.origin);
 }
 
+function getFrameworkExplorerIframeSourceLink() {
+    var frameworkId = retrieveFrameworkToExploreInfo();
+    var ifs = FWK_EXP_IFRAME_SOURCE + window.location.origin;
+    if (frameworkId && frameworkId != "") ifs += FWK_EXP_IFRAME_SOURCE_FWK_ID_PARAM + frameworkId;
+    debugMessage("Opening framework explorer iFrame with: " + ifs);
+    return ifs;
+}
+
 $(FWK_EXP_IFRAME).ready(function() {
     $(window).on("message", function(event) {
         if (event.originalEvent.data.message == WAITING_MESSAGE) {
@@ -54,7 +63,8 @@ $(FWK_EXP_IFRAME).ready(function() {
         }
     });
 });
-$(FWK_EXP_IFRAME).attr("src", FWK_EXP_IFRAME_SOURCE + window.location.origin);
+
+$(FWK_EXP_IFRAME).attr("src", getFrameworkExplorerIframeSourceLink());
 
 function init() {
     loadCassUiSessionState();

@@ -10,9 +10,12 @@ const COMP_ALN_IFRAME_SOURCE = "../cass-align/cass-ui-framework-aln.html?user=wa
 
 const WAITING_MESSAGE = "waiting";
 const INIT_ALIGN_MESSAGE = "initAlign";
+const INIT_FWK_EXP_MESSAGE = "initFrameworkExplorer";
 
 const INIT_IDENTITY_ACTION = "initIdentity";
 const SET_FWK_ALIGN_PARMS_ACTION = "setFwkAlignParams";
+
+const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
 
 //**************************************************************************************************
 // Variables
@@ -20,6 +23,12 @@ const SET_FWK_ALIGN_PARMS_ACTION = "setFwkAlignParams";
 //**************************************************************************************************
 // Page Functions
 //**************************************************************************************************
+
+function handleInitFrameworkExplorerMessage(frameworkId) {
+    debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
+    storeFrameworkToExploreInfo(frameworkId);
+    location.replace(CASSUI_FWK_EXP_PAGE);
+}
 
 function handleInitAlignmentMessage() {
     var alignInfo = retrieveAlignmentInfo();
@@ -51,6 +60,9 @@ $(RES_ALN_IFRAME).ready(function() {
         }
         else if (event.originalEvent.data.message == INIT_ALIGN_MESSAGE) {
             handleInitAlignmentMessage();
+        }
+        else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
+            handleInitFrameworkExplorerMessage(event.originalEvent.data.frameworkId);
         }
     });
 });

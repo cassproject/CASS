@@ -18,6 +18,8 @@ const FWK_TO_FWK_ALIGN_TYPE = "fwkToFwk";
 const FTF_ALN_FW1ID_KEY = "cassUiFwkToFwkFw1Id";
 const FTF_ALN_FW2ID_KEY = "cassUiFwkToFwkFw2Id";
 
+const FWK_TO_EXP_KEY = "frameworkToExplore";
+
 const CASSUI_AFTER_LOGOUT_PAGE = "cass-ui-login.html";
 const CASSUI_SES_EXP_QSP = "sessionExpired";
 
@@ -30,14 +32,31 @@ var loggedInIdentityName;
 var loggedInPkPem;
 var loggedInPpkPem;
 
-//TODO build these???
-var contactsByNameMap;
-var contactsByPkPemMap = {};
-var contactDisplayList;
+// //TODO build these???
+// var contactsByNameMap;
+// var contactsByPkPemMap = {};
+// var contactDisplayList;
 
 //**************************************************************************************************
 // Page to Page Transfer - Misc Info
 //**************************************************************************************************
+function storeFrameworkToExploreInfo(frameworkId) {
+    debugMessage("Saving framework to explore info...");
+    sessionStorage.setItem(FWK_TO_EXP_KEY,frameworkId);
+    updateCassUiLastSessionLoadTime();
+    debugMessage("Framework to explore info saved.");
+}
+
+function retrieveFrameworkToExploreInfo() {
+    updateCassUiLastSessionLoadTime();
+    var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
+    if (fwkId && fwkId != "") {
+        sessionStorage.setItem(FWK_TO_EXP_KEY,"");
+        return fwkId;
+    }
+    else return null;
+}
+
 function storeFrameworkToFrameworkAlignmentInfo(alignType,fw1Id,fw2Id) {
     debugMessage("Saving framework to framework info...");
     sessionStorage.setItem(ALIGN_TYPE_KEY,alignType);
