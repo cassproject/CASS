@@ -293,19 +293,20 @@ function stripNonCe(f) {
                                             if (k.indexOf("ceasn:conceptKeywords") != 0)
                                                 if (k.indexOf("ceasn:listID") != 0)
                                                     if (k.indexOf("ceasn:isVersionOf") != 0)
-                                                if (k.indexOf("ceasn:dateCopyrighted") != 0)
-                                                    if (k.indexOf("ceasn:repositoryDate") != 0)
-                                                        if (k.indexOf("ceasn:dateCreated") != 0)
-                                                            if (k.indexOf("ceasn:dateValidFrom") != 0)
-                                                                if (k.indexOf("ceasn:rights") != 0)
-                                                                    if (k.indexOf("ceasn:dateValidUntil") != 0)
-                                                                        if (k.indexOf("ceasn:license") != 0)
-                                                                            if (k.indexOf("ceasn:rightsHolder") != 0)
-                                                                                if (k.indexOf("ceasn:publicationStatusType") != 0)
-                                                                                    if (k.indexOf("ceasn:codedNotation") != 0)
-                                                                                        if (k.indexOf("ceasn:competencyText") != 0)
-                                                                                            if (EcArray.isArray(f[k]) == false)
-                                                                                                f[k] = [f[k]];
+                                                        if (k.indexOf("ceasn:dateCopyrighted") != 0)
+                                                            if (k.indexOf("ceasn:repositoryDate") != 0)
+                                                                if (k.indexOf("ceasn:dateCreated") != 0)
+                                                                    if (k.indexOf("ceasn:dateModified") != 0)
+                                                                    if (k.indexOf("ceasn:dateValidFrom") != 0)
+                                                                        if (k.indexOf("ceasn:rights") != 0)
+                                                                            if (k.indexOf("ceasn:dateValidUntil") != 0)
+                                                                                if (k.indexOf("ceasn:license") != 0)
+                                                                                    if (k.indexOf("ceasn:rightsHolder") != 0)
+                                                                                        if (k.indexOf("ceasn:publicationStatusType") != 0)
+                                                                                            if (k.indexOf("ceasn:codedNotation") != 0)
+                                                                                                if (k.indexOf("ceasn:competencyText") != 0)
+                                                                                                    if (EcArray.isArray(f[k]) == false)
+                                                                                                        f[k] = [f[k]];
         //For properties that allow many per language, force it into an array with even just 1 value.
         if (k === "ceasn:publisherName" || k === "ceasn:conceptKeyword" || k === "ceasn:comment") {
             Object.keys(f[k]).forEach(function(key) {
@@ -330,20 +331,9 @@ function stripNonCe(f) {
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
+    EcRemote.async = false;
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
-
-    var asnToCassFrameworkContext = JSON.parse(JSON.stringify(asnContext));
-    asnToCassFrameworkContext["@vocab"] = "http://schema.cassproject.org/0.3/";
-    asnToCassFrameworkContext["ceasn:CompetencyFramework"] = "http://schema.cassproject.org/0.3/Framework";
-    asnToCassFrameworkContext["ceasn:name"] = "http://schema.org/name";
-    asnToCassFrameworkContext["ceasn:description"] = "http://schema.org/description";
-    asnToCassFrameworkContext["ceasn:exactAlignment"] = "http://schema.org/sameAs";
-
-    var asnToCassCompetencyContext = JSON.parse(JSON.stringify(asnContext));
-    asnToCassCompetencyContext["ceasn:Competency"] = "http://schema.cassproject.org/0.3/Competency";
-    asnToCassCompetencyContext["ceasn:description"] = "http://schema.org/name";
-    asnToCassCompetencyContext["ceasn:exactAlignment"] = "http://schema.org/sameAs";
 
     var cassCompetencies = [];
     var cassRelationships = [];
@@ -356,7 +346,8 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var asnComp = competencyList[idx];
 
         var compGuid = stringToHex(md5(asnComp["@id"]));
-        print(compGuid);
+        print("guid: "+compGuid);
+        print(JSON.stringify(asnComp,null,2));
         var compVersion = date(null, null, true);
 
         var canonicalId = asnComp["@id"];
@@ -364,18 +355,19 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         cassCompetencies.push(canonicalId);
 
         var childComps = asnComp["ceasn:hasChild"];
-        if (childComps != undefined && childComps.length != undefined) {
-            for (var idx in childComps) {
+        if (childComps != null && childComps.length != null) {
+            for (var i = 0;i < childComps.length;i++){
                 var r = new EcAlignment();
-                r.source = childComps[idx]["@id"];
+                r.source = childComps[i];
                 r.target = canonicalId;
                 r.relationType = Relation.NARROWS;
                 r.generateId(repoEndpoint());
                 r.addOwner(ceasnIdentity.ppk.toPk());
+                //print(JSON.stringify(r,null,2));
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
-                    r.save(null, print);
+                    repo.saveTo(r,print, print);
                     cassRelationships.push(r.id);
                 }
             }
@@ -384,28 +376,23 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var newComp = JSON.parse(JSON.stringify(asnComp));
         delete newComp["ceasn:hasChild"];
 
-        newComp["@context"] = asnToCassCompetencyContext;
-
+        newComp["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
         var expandedComp = jsonLdExpand(JSON.stringify(newComp));
 
+        print(JSON.stringify(expandedComp,null,2));
         var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
 
         delete compactedComp["ceasn:isChildOf"];
+        delete compactedComp["ceasn:hasChild"];
 
         var c = new EcCompetency();
         c.copyFrom(compactedComp);
         c.addOwner(ceasnIdentity.ppk.toPk());
-        EcIdentityManager.sign(c);
-        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(c.owner, 60000, c.id)));
-        skyrepoPut.call(this, {
-            obj: c.toJson(),
-            type: c.getFullType().replace("http://", "").replaceAll("/", "."),
-            id: compGuid,
-            version: compVersion
-        });
+        print(JSON.stringify(c,null,2));
+        repo.saveTo(c,print,print);
 
-        if (asnComp["ceasn:isChildOf"] != undefined && asnComp["ceasn:isChildOf"] != "") {
-            var parentId = asnComp["ceasn:isChildOf"]["@id"];
+        if (asnComp["ceasn:isChildOf"] != null && asnComp["ceasn:isChildOf"] != "") {
+            var parentId = asnComp["ceasn:isChildOf"];
             if (parentId != frameworkObj["@id"]) {
                 var r = new EcAlignment();
                 r.source = compactedComp["@id"];
@@ -417,7 +404,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
-                    r.save(null, print);
+                    repo.saveTo(r,print, print);
                     cassRelationships.push(r.id);
                 }
             }
@@ -428,28 +415,27 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var guid = stringToHex(md5(frameworkObj["@id"]));
         var version = date(null, null, true);
 
-        frameworkObj["@context"] = asnToCassFrameworkContext;
+        print(JSON.stringify(frameworkObj,null,2));
+        frameworkObj["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
+        var expanded = jsonLdExpand(JSON.stringify(frameworkObj));
+        print(JSON.stringify(expanded,null,2));
 
-        var expanded = jsonLdExpand(JSON.stringify(frameworkObj))[0];
-
-        var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+        var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3");
+        print(JSON.stringify(compacted,null,2));
 
         delete compacted["ceasn:hasChild"];
+        delete compacted["ceasn:hasTopChild"];
 
         compacted["competency"] = cassCompetencies;
         compacted["relation"] = cassRelationships;
+        //delete compacted["@context"];
+        //delete compacted["@type"];
 
         var f = new EcFramework();
         f.copyFrom(compacted);
         f.addOwner(ceasnIdentity.ppk.toPk());
-        EcIdentityManager.sign(f);
-        this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(f.owner, 60000, f.id)));
-        skyrepoPut.call(this, {
-            obj: f.toJson(),
-            type: f.getFullType().replace("http://", "").replaceAll("/", "."),
-            id: guid,
-            version: version
-        });
+        print(JSON.stringify(f,null,2));
+        repo.saveTo(f,print,print);
 
         return repoEndpoint() + "ctdlasn/" + guid;
     } // end if frameworkObj != null
@@ -491,8 +477,10 @@ function ceasnFrameworkToCass() {
             var graphObj = graph[idx];
 
             if (graphObj["@type"] == "ceasn:CompetencyFramework") {
+                graphObj["@context"]=jsonLd["@context"];
                 frameworkObj = graphObj;
             } else if (graphObj["@type"] == "ceasn:Competency") { //&& graphObj["asn:statementLabel"] != undefined && (graphObj["asn:statementLabel"] == "Competency" || graphObj["asn:statementLabel"]["@value"] == "Competency")){
+                graphObj["@context"]=jsonLd["@context"];
                 competencyList.push(graphObj);
             }
         }
@@ -511,7 +499,7 @@ function ceasnEndpoint() {
     if (this.params.methodType == "GET")
         return cassFrameworkAsCeasn.call(this);
     else if (this.params.methodType == "POST" || this.params.methodType == "PUT")
-        error("Not Yet Implemented.", "405");
+        return ceasnFrameworkToCass.call(this);
     else if (this.params.methodType == "DELETE")
         error("Not Yet Implemented.", "405");
     else
