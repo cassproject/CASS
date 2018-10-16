@@ -217,7 +217,7 @@ var flattenLangstrings = function(o) {
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             if (key == "@value") 
-                return (o)["key"];
+                return (o)[key];
             (o)[key] = flattenLangstrings((o)[key]);
         }
     } else if (EcArray.isArray(o)) {
