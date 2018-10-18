@@ -167,7 +167,6 @@ function checkForSessionExpiredWarning() {
     var qsp = new URLSearchParams(window.location.search);
     if (qsp.has(CASSUI_SES_EXP_QSP)) {
         clearLoginInputs();
-        showLoginErrorMessage("Session Expired");
     }
 }
 
