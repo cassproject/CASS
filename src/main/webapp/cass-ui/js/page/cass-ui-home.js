@@ -8,6 +8,7 @@
 const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
 const CASSUI_PRF_EXP_PAGE = "cass-ui-profile-exp-ctr.html";
 const CASSUI_GAP_ANL_PAGE = "cass-ui-gap-analysis-ctr.html";
+const CASSUI_VLRC_PAGE = "cass-ui-vlrc-exp-ctr.html";
 
 //**************************************************************************************************
 // Variables
@@ -26,6 +27,10 @@ function goToProfileExplorer() {
 
 function goToGapAnalysis() {
     location.replace(CASSUI_GAP_ANL_PAGE);
+}
+
+function goToVLRC() {
+    location.replace(CASSUI_VLRC_PAGE);
 }
 
 function init() {
