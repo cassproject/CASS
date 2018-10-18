@@ -14,7 +14,7 @@ const ALIGN_MESSAGE = "gotoAlign";
 
 const INIT_IDENTITY_ACTION = "initIdentity";
 
-const CASSUI_RES_ALN_PAGE = "index.html";
+const CASSUI_RES_ALN_PAGE = "cass-ui-resource-aln-ctr.html";
 
 //**************************************************************************************************
 // Variables

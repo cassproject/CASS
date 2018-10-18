@@ -8,7 +8,7 @@
 const DEBUG_CONSOLE = true;
 const DEBUG_ALERT = false;
 
-const CASSUI_HOME_PAGE = "index.html";
+const CASSUI_HOME_PAGE = "cass-ui-home.html";
 const CASSUI_MAIN_MENU_USERNAME = "#cassUiLoggedInName";
 
 //**************************************************************************************************

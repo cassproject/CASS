@@ -20,7 +20,7 @@ const FTF_ALN_FW2ID_KEY = "cassUiFwkToFwkFw2Id";
 
 const FWK_TO_EXP_KEY = "frameworkToExplore";
 
-const CASSUI_AFTER_LOGOUT_PAGE = "cass-ui-login.html";
+const CASSUI_AFTER_LOGOUT_PAGE = "index.html";
 const CASSUI_SES_EXP_QSP = "sessionExpired";
 
 //**************************************************************************************************

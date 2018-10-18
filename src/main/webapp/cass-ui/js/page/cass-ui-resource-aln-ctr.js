@@ -15,7 +15,7 @@ const INIT_FWK_EXP_MESSAGE = "initFrameworkExplorer";
 const INIT_IDENTITY_ACTION = "initIdentity";
 const SET_FWK_ALIGN_PARMS_ACTION = "setFwkAlignParams";
 
-const CASSUI_FWK_EXP_PAGE = "index.html";
+const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
 
 //**************************************************************************************************
 // Variables
