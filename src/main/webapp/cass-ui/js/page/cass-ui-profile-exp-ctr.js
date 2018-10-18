@@ -6,7 +6,7 @@
 // Constants
 
 const PRF_EXP_IFRAME = "#prfExpIFrame";
-const PRF_EXP_IFRAME_SOURCE = "../cass-profile/cass-ui-profile-exp.html?user=wait&origin=";
+const PRF_EXP_IFRAME_SOURCE = "../cass-profile/index.html?user=wait&origin=";
 
 const WAITING_MESSAGE = "waiting";
 
