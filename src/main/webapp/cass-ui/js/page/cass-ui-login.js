@@ -13,7 +13,7 @@ const CASSUI_LOGIN_BUSY_CTR = "#cassUiLoginBusyCtr";
 const CASSUI_LOGIN_ERR_CTR = "#cassUiLoginErrorCtr";
 const CASSUI_LOGIN_ERR_TXT = "#cassUiLoginErrorText";
 
-const CASSUI_AFTER_LOGIN_PAGE = "cass-ui-home.html";
+const CASSUI_AFTER_LOGIN_PAGE = "index.html";
 
 //**************************************************************************************************
 // Variables
