@@ -27,6 +27,20 @@ var ecIdentMgr;
 //**************************************************************************************************
 
 function handleFetchIdentitySuccess(obj) {
+    if (EcIdentityManager.ids.length == 0) {
+        debugMessage("Creating Identity.");
+        var ident = new EcIdentity();
+        ident.displayName = "You";
+        ident.ppk = EcPpk.generateKey();
+        EcIdentityManager.addIdentity(ident);
+        debugMessage("Created Identity.");
+        ecIdentMgr.commit(handleFetchIdentitySuccess2, handleFetchIdentityFailure);
+    }
+    else
+        handleFetchIdentitySuccess2(obj);
+}
+
+function handleFetchIdentitySuccess2(obj) {
     debugMessage("handleFetchIdentitySuccess: ");
     loggedInIdentityName = EcIdentityManager.ids[0].displayName.trim();
     debugMessage("Display Name: " + loggedInIdentityName);
@@ -42,7 +56,12 @@ function handleFetchIdentitySuccess(obj) {
 
 function handleFetchIdentityFailure(failMsg) {
     debugMessage("handleFetchIdentityFailure: " + failMsg);
-    showLoginErrorMessage("Identity fetch failed: " + failMsg);
+    if (failMsg.trim() == "User does not exist.") {
+        ecIdentMgr.create(handleFetchIdentitySuccess, handleFetchIdentityFailure);
+    }
+    else {
+        showLoginErrorMessage("Identity fetch failed: " + failMsg);
+    }
 }
 
 function handleConfigureFromServerSuccess(obj) {
@@ -148,7 +167,6 @@ function checkForSessionExpiredWarning() {
     var qsp = new URLSearchParams(window.location.search);
     if (qsp.has(CASSUI_SES_EXP_QSP)) {
         clearLoginInputs();
-        showLoginErrorMessage("Session Expired");
     }
 }
 

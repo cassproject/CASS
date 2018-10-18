@@ -1843,7 +1843,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 25,
+            "line": 26,
             "description": "Base class for all importers, can hold helper functions\nthat are useful for all importers",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1858,7 +1858,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 43,
+            "line": 44,
             "description": "Base class for all exporters, can hold helper functions\nthat are useful for all exporters",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1873,7 +1873,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 54,
+            "line": 55,
             "description": "Export methods to handle exporting two CSV file , one of competencies\nand one of relationships representing a framework",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1888,7 +1888,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 206,
+            "line": 207,
             "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1903,7 +1903,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 565,
+            "line": 566,
             "description": "Importer methods to copy or link to competencies that already\nexist in another framework in a CASS instance.",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1918,7 +1918,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 742,
+            "line": 743,
             "description": "Importer methods to create competencies based on a\nMedbiquitous competency XML file",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1933,7 +1933,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 909,
+            "line": 910,
             "description": "Import methods to handle an CSV file of competencies and a\nCSV file of relationships and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2188,7 +2188,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 916,
+            "line": 932,
             "description": "A graph consisting of a set of vertices of type <code>V</code>\nset and a set of edges of type <code>E</code>.  Edges of this\ngraph type have exactly two endpoints; whether these endpoints\nmust be distinct depends on the implementation.\n<p>\nThis interface permits, but does not enforce, any of the following\ncommon variations of graphs:\n<ul>\n<li> directed and undirected edges\n<li> vertices and edges with attributes (for example, weighted edges)\n<li> vertices and edges of different types (for example, bipartite\nor multimodal graphs)\n<li> parallel edges (multiple edges which connect a single set of vertices)\n<li> representations as matrices or as adjacency lists or adjacency maps\n</ul>\nExtensions or implementations of this interface\nmay enforce or disallow any or all of these variations.\n<p>\n<p>Definitions (with respect to a given vertex <code>v</code>):\n<ul>\n<li/><b>incoming edge</b> of <code>v</code>: an edge that can be traversed\nfrom a neighbor of <code>v</code> to reach <code>v</code>\n<li/><b>outgoing edge</b> of <code>v</code>: an edge that can be traversed\nfrom <code>v</code> to reach some neighbor of <code>v</code>\n<li/><b>predecessor</b> of <code>v</code>: a vertex at the other end of an\nincoming edge of <code>v</code>\n<li/><b>successor</b> of <code>v</code>: a vertex at the other end of an\noutgoing edge of <code>v</code>\n<li/>\n</ul>",
             "author": "Tom Buskirk (tom.buskirk@eduworks.com)",
             "extends": "Hypergraph"
@@ -2204,7 +2204,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1188,
+            "line": 1204,
             "description": "A directed implementation of {{#crossLink \"Graph\"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.",
             "params": [
                 {
@@ -2230,7 +2230,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1475,
+            "line": 1491,
             "description": "Pattern (probably similar to Promise) that provides fine grained control over asynchronous execution.\nWill iterate over all items in an array and perform 'each(item,callback)'.\nEvery 'each' needs to call the callback. This callback can be passed down through several asynchronous calls.\nWhen all callbacks have been called, 'after(array)' is called.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -15156,7 +15156,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 76,
+            "line": 77,
             "description": "Method to export the CSV files of competencies and relationships for a framework",
             "params": [
                 {
@@ -15184,7 +15184,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 232,
+            "line": 233,
             "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts\nthe number of competencies and relationships that it finds",
             "params": [
                 {
@@ -15209,7 +15209,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 264,
+            "line": 265,
             "description": "Does the actual legwork of looking for competencies and relationships.\n<p>\nThis function finds the framework information, and pulls out the competency\nobjects array to be scanned by asnJsonPrime",
             "params": [
                 {
@@ -15229,7 +15229,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 298,
+            "line": 299,
             "description": "Analyzes an ASN File for competencies and relationships.\n<p>\nThis should be called before import, the success callback returns an object\nindicating the number of competencies and relationships found.",
             "params": [
                 {
@@ -15258,7 +15258,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 342,
+            "line": 343,
             "description": "Method to import the competencies from an ASN JSON file,\nshould be called after analyzing the file",
             "params": [
                 {
@@ -15302,7 +15302,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 388,
+            "line": 389,
             "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "params": [
                 {
@@ -15343,7 +15343,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 456,
+            "line": 457,
             "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "params": [
                 {
@@ -15393,7 +15393,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 527,
+            "line": 528,
             "description": "Handles creating the framework if the createFramework flag was set",
             "params": [
                 {
@@ -15428,7 +15428,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 583,
+            "line": 584,
             "description": "Copies or links competencies that exist in one framework in a CASS instance,\nto another different framework in the same CASS instance.",
             "params": [
                 {
@@ -15477,7 +15477,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 761,
+            "line": 762,
             "description": "Does the legwork of looking for competencies in the XML",
             "params": [
                 {
@@ -15497,7 +15497,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 780,
+            "line": 781,
             "description": "Does the legwork of parsing the competencies out of the parsed XML",
             "params": [
                 {
@@ -15517,7 +15517,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 809,
+            "line": 810,
             "description": "Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process",
             "params": [
                 {
@@ -15546,7 +15546,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 848,
+            "line": 849,
             "description": "Method for actually creating the competencies in the CASS repository after a\nMedbiquitous XML file has been parsed. Must be called after analyzeFile",
             "params": [
                 {
@@ -15586,7 +15586,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 926,
+            "line": 927,
             "description": "Analyzes a CSV File to return the column names to the user for specifying\nwhich columns contain which data. This should be called before import.",
             "params": [
                 {
@@ -15615,7 +15615,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 955,
+            "line": 956,
             "description": "Helper function to transform a competencies oldID to match the new server url",
             "params": [
                 {
@@ -15645,7 +15645,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 983,
+            "line": 984,
             "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "params": [
                 {
@@ -15734,7 +15734,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1110,
+            "line": 1111,
             "description": "Handles actually importing the relationships from the relationship CSV file",
             "params": [
                 {
@@ -19734,7 +19734,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 786,
+            "line": 787,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19766,7 +19766,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 802,
+            "line": 803,
             "description": "GETs something from a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19798,7 +19798,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 844,
+            "line": 851,
             "description": "DELETEs something at a remote endpoint. Composed of a server endpoint\n(root URL) and a service (service path).",
             "params": [
                 {
@@ -19830,7 +19830,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 959,
+            "line": 975,
             "description": "Returns a <code>Collection</code> view of the incoming edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -19848,7 +19848,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 969,
+            "line": 985,
             "description": "Returns a <code>Collection</code> view of the outgoing edges incident to <code>vertex</code>\nin this graph.",
             "params": [
                 {
@@ -19866,7 +19866,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 979,
+            "line": 995,
             "description": "Returns a <code>Collection</code> view of the predecessors of <code>vertex</code>\nin this graph.  A predecessor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an outgoing edge of\n<code>v</code> and an incoming edge of <code>vertex</code>.",
             "params": [
                 {
@@ -19884,7 +19884,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 992,
+            "line": 1008,
             "description": "Returns a <code>Collection</code> view of the successors of <code>vertex</code>\nin this graph.  A successor of <code>vertex</code> is defined as a vertex <code>v</code>\nwhich is connected to\n<code>vertex</code> by an edge <code>e</code>, where <code>e</code> is an incoming edge of\n<code>v</code> and an outgoing edge of <code>vertex</code>.",
             "params": [
                 {
@@ -19902,7 +19902,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1005,
+            "line": 1021,
             "description": "Returns the number of incoming edges incident to <code>vertex</code>.\nEquivalent to <code>getInEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19920,7 +19920,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1014,
+            "line": 1030,
             "description": "Returns the number of outgoing edges incident to <code>vertex</code>.\nEquivalent to <code>getOutEdges(vertex).size()</code>.",
             "params": [
                 {
@@ -19938,7 +19938,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1023,
+            "line": 1039,
             "description": "Returns <code>true</code> if <code>v1</code> is a predecessor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getPredecessors().contains(v2)</code>.",
             "params": [
                 {
@@ -19960,7 +19960,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1033,
+            "line": 1049,
             "description": "Returns <code>true</code> if <code>v1</code> is a successor of <code>v2</code> in this graph.\nEquivalent to <code>v1.getSuccessors().contains(v2)</code>.",
             "params": [
                 {
@@ -19982,7 +19982,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1043,
+            "line": 1059,
             "description": "Returns the number of predecessors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getPredecessors().size()</code>.",
             "params": [
                 {
@@ -20000,7 +20000,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1052,
+            "line": 1068,
             "description": "Returns the number of successors that <code>vertex</code> has in this graph.\nEquivalent to <code>vertex.getSuccessors().size()</code>.",
             "params": [
                 {
@@ -20018,7 +20018,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1061,
+            "line": 1077,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the source;\notherwise returns <code>null</code>.\nThe source of a directed edge <code>d</code> is defined to be the vertex for which\n<code>d</code> is an outgoing edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -20036,7 +20036,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1074,
+            "line": 1090,
             "description": "If <code>directed_edge</code> is a directed edge in this graph, returns the destination;\notherwise returns <code>null</code>.\nThe destination of a directed edge <code>d</code> is defined to be the vertex\nincident to <code>d</code> for which\n<code>d</code> is an incoming edge.\n<code>directed_edge</code> is guaranteed to be a directed edge if\nits <code>EdgeType</code> is <code>DIRECTED</code>.",
             "params": [
                 {
@@ -20054,7 +20054,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1088,
+            "line": 1104,
             "description": "Returns <code>true</code> if <code>vertex</code> is the source of <code>edge</code>.\nEquivalent to <code>getSource(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -20076,7 +20076,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1098,
+            "line": 1114,
             "description": "Returns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
             "params": [
                 {
@@ -20096,7 +20096,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1107,
+            "line": 1123,
             "description": "Adds edge <code>e</code> to this graph such that it connects\nvertex <code>v1</code> to <code>v2</code>.\nEquivalent to <code>addEdge(e, new Pair<V>(v1, v2))</code>.\nIf this graph does not contain <code>v1</code>, <code>v2</code>,\nor both, implementations may choose to either silently add\nthe vertices to the graph or throw an <code>IllegalArgumentException</code>.\nIf this graph assigns edge types to its edges, the edge type of\n<code>e</code> will be the default for this graph.\nSee <code>Hypergraph.addEdge()</code> for a listing of possible reasons\nfor failure.",
             "params": [
                 {
@@ -20130,7 +20130,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1128,
+            "line": 1144,
             "description": "Returns the vertex at the other end of <code>edge</code> from <code>vertex</code>.\n(That is, returns the vertex incident to <code>edge</code> which is not <code>vertex</code>.)",
             "params": [
                 {
@@ -20152,14 +20152,14 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1139,
+            "line": 1155,
             "description": "Created by fray on 7/5/17.",
             "class": "Graph",
             "module": "com.eduworks.ec"
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1488,
+            "line": 1504,
             "description": "Counter that counts down when each callback is called. Lots of tricks can be done to cause after to proc in different ways.",
             "itemtype": "property",
             "name": "counter",
@@ -20169,7 +20169,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1495,
+            "line": 1511,
             "description": "\"Each\" method. See class description.",
             "params": [
                 {
@@ -20195,7 +20195,7 @@
         },
         {
             "file": "src/main/js/cass/ec.base.js",
-            "line": 1522,
+            "line": 1538,
             "description": "Will prevent 'after' from being called.",
             "itemtype": "method",
             "name": "stop",
@@ -52641,7 +52641,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 277,
+            "line": 281,
             "description": "Upgrades the object to the latest version, performing transforms and the like.",
             "itemtype": "method",
             "name": "upgrade",
@@ -52650,7 +52650,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 283,
+            "line": 287,
             "description": "Removes the @ symbol from properties in order to make them more\naccessible in Javascript.",
             "return": {
                 "description": "This object, with @ properties converted to @-less properties.",
@@ -52664,7 +52664,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 304,
+            "line": 319,
             "description": "Gets all versions of JSON-LD type strings for this type of object.",
             "return": {
                 "description": "Array of URIs.",
@@ -66181,79 +66181,79 @@
         },
         {
             "message": "unknown tag: abstract",
-            "line": " src/main/js/cass/cass.import.js:25"
+            "line": " src/main/js/cass/cass.import.js:26"
         },
         {
             "message": "unknown tag: abstract",
-            "line": " src/main/js/cass/cass.import.js:43"
+            "line": " src/main/js/cass/cass.import.js:44"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:76"
+            "line": " src/main/js/cass/cass.import.js:77"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:232"
+            "line": " src/main/js/cass/cass.import.js:233"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:264"
+            "line": " src/main/js/cass/cass.import.js:265"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:298"
+            "line": " src/main/js/cass/cass.import.js:299"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:342"
+            "line": " src/main/js/cass/cass.import.js:343"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:388"
+            "line": " src/main/js/cass/cass.import.js:389"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:456"
+            "line": " src/main/js/cass/cass.import.js:457"
         },
         {
             "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:527"
+            "line": " src/main/js/cass/cass.import.js:528"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:583"
+            "line": " src/main/js/cass/cass.import.js:584"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:761"
+            "line": " src/main/js/cass/cass.import.js:762"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:780"
+            "line": " src/main/js/cass/cass.import.js:781"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:809"
+            "line": " src/main/js/cass/cass.import.js:810"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:848"
+            "line": " src/main/js/cass/cass.import.js:849"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:926"
+            "line": " src/main/js/cass/cass.import.js:927"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:955"
+            "line": " src/main/js/cass/cass.import.js:956"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:983"
+            "line": " src/main/js/cass/cass.import.js:984"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1110"
+            "line": " src/main/js/cass/cass.import.js:1111"
         },
         {
             "message": "unknown tag: internal",
@@ -66833,7 +66833,7 @@
         },
         {
             "message": "unknown tag: internal",
-            "line": " src/main/js/cass/org.json-ld.js:283"
+            "line": " src/main/js/cass/org.json-ld.js:287"
         },
         {
             "message": "unknown tag: memberof",
@@ -66929,11 +66929,11 @@
         },
         {
             "message": "Missing item type\nReturns <code>true</code> if <code>vertex</code> is the destination of <code>edge</code>.\nEquivalent to <code>getDest(edge).equals(vertex)</code>.",
-            "line": " src/main/js/cass/ec.base.js:1098"
+            "line": " src/main/js/cass/ec.base.js:1114"
         },
         {
             "message": "Missing item type\nCreated by fray on 7/5/17.",
-            "line": " src/main/js/cass/ec.base.js:1139"
+            "line": " src/main/js/cass/ec.base.js:1155"
         },
         {
             "message": "Missing item type",

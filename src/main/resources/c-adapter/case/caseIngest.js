@@ -133,6 +133,11 @@ embedCFPackageIntoFramework = function(f,document){
 	return results;
 }
 
+var caseIdentity = new EcIdentity();
+caseIdentity.ppk = EcPpk.fromPem(casePpk());
+caseIdentity.displayName = "CASE Server Identity";
+EcIdentityManager.addIdentity(caseIdentity);
+
 ingestCase = function () {
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl == null)
@@ -153,6 +158,7 @@ ingestCase = function () {
         for (var j = 0; j < listToSave.length; j++) {
             var internalId = stringToHex(md5(listToSave[j].id));
             var version = date(listToSave[j]["schema:dateModified"], null, true);
+            listToSave[j].addOwner(caseIdentity.ppk.toPk());
             skyrepoPut.call(this, {
                 obj: listToSave[j].toJson(),
                 type: listToSave[j].getFullType().replace("http://", "").replaceAll("/", "."),

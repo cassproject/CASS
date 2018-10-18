@@ -1,0 +1,11 @@
+ppk=#fileLoad(path="adapter.case.private.pem").fileToString();
+ppk=#if(
+	operator=#fileExists(path="adapter.case.private.pem"),
+	operand="false",
+	eq=#object(
+		a=#fileSave(obj=#rsaGenerate(),path="adapter.case.private.pem"),
+		b=ppk
+	).cget(b=""),
+	ne=ppk
+).cache(name="adapter.case.private.pem");
+#casePpk=ppk;

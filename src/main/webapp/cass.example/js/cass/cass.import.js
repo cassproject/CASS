@@ -20,6 +20,7 @@
 var PapaParseParams = function() {};
 PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, prototype) {
     prototype.complete = null;
+    prototype.header = null;
     prototype.error = null;
 }, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 /**
@@ -1373,3 +1374,173 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         });
     };
 }, {importCsvLookup: "Object", progressObject: "Object"}, {});
+var CTDLASNCSVImport = function() {};
+CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor, prototype) {
+    constructor.analyzeFile = function(file, success, failure) {
+        if (file == null) {
+            failure("No file to analyze");
+            return;
+        }
+        if ((file)["name"] == null) {
+            failure("Invalid file");
+        } else if (!((file)["name"]).endsWith(".csv")) {
+            failure("Invalid file type");
+        }
+        Papa.parse(file, {complete: function(results) {
+            var tabularData = (results)["data"];
+            var colNames = tabularData[0];
+            var nameToCol = new Object();
+            for (var i = 0; i < colNames.length; i++) 
+                (nameToCol)[colNames[i]] = i;
+            var frameworkCounter = 0;
+            var competencyCounter = 0;
+            var typeCol = (nameToCol)["@type"];
+            if (typeCol == null) {
+                this.error("No @type in CSV.");
+                return;
+            }
+            for (var i = 0; i < tabularData.length; i++) {
+                if (i == 0) 
+                    continue;
+                var col = tabularData[i];
+                if (col[typeCol] == "ceasn:CompetencyFramework") 
+                    frameworkCounter++;
+                 else if (col[typeCol] == "ceasn:Competency") 
+                    competencyCounter++;
+                 else if (col[typeCol] == null || col[typeCol] == "") 
+                    continue;
+                 else {
+                    this.error("Found unknown type:" + col[typeCol]);
+                    return;
+                }
+            }
+            success(frameworkCounter, competencyCounter);
+        }, error: failure});
+    };
+    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo) {
+        if (file == null) {
+            failure("No file to analyze");
+            return;
+        }
+        if ((file)["name"] == null) {
+            failure("Invalid file");
+        } else if (!((file)["name"]).endsWith(".csv")) {
+            failure("Invalid file type");
+        }
+        Papa.parse(file, {header: true, complete: function(results) {
+            var tabularData = (results)["data"];
+            var frameworks = new Object();
+            var frameworkArray = new Array();
+            var frameworkRows = new Object();
+            var competencies = new Array();
+            var competencyRows = new Object();
+            var relations = new Array();
+            var relationById = new Object();
+            for (var i = 0; i < tabularData.length; i++) {
+                var e = tabularData[i];
+                if ((e)["@type"] == "ceasn:CompetencyFramework") {
+                    var f = new EcFramework();
+                    if ((e)["@owner"] != null) {
+                        var id = new EcIdentity();
+                        id.ppk = EcPpk.fromPem((e)["@owner"]);
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
+                        f.addOwner(id.ppk.toPk());
+                        EcIdentityManager.addIdentityQuietly(id);
+                    }
+                    f.id = (e)["@id"];
+                    (frameworks)[f.id] = f;
+                    (frameworkRows)[f.id] = e;
+                    frameworkArray.push(f);
+                    f.competency = new Array();
+                    f.relation = new Array();
+                    f.name = (e)["ceasn:name"];
+                    if ((e)["ceasn:creator"] != null) 
+                        (e)["ceasn:creator"] = ((e)["ceasn:creator"]).toLowerCase();
+                    (f)["schema:creator"] = (e)["ceasn:creator"];
+                    (f)["ceasn:derivedFrom"] = (e)["ceasn:derivedFrom"];
+                    (f)["dc:source"] = (e)["ceasn:source"];
+                } else if ((e)["@type"] == "ceasn:Competency") {
+                    var f = new EcCompetency();
+                    if ((e)["@id"] == null) 
+                        continue;
+                    f.id = (e)["@id"];
+                    if ((e)["ceasn:isPartOf"] != null) {
+                        ((frameworks)[(e)["ceasn:isPartOf"]]).competency.push(f.shortId());
+                    } else {
+                        var parent = e;
+                        var done = false;
+                         while (!done && parent != null){
+                            if ((parent)["ceasn:isChildOf"] != null && (parent)["ceasn:isChildOf"] != "") {
+                                parent = (competencyRows)[(parent)["ceasn:isChildOf"]];
+                            } else if ((parent)["ceasn:isTopChildOf"] != null && (parent)["ceasn:isTopChildOf"] != "") {
+                                parent = (frameworkRows)[(parent)["ceasn:isTopChildOf"]];
+                                done = true;
+                            }
+                        }
+                        if (!done) {
+                            this.error("Could not find framework:" + (e)["@type"]);
+                            return;
+                        }
+                        if (parent != null) {
+                            if ((parent)["@type"] == "ceasn:CompetencyFramework") {
+                                (e)["ceasn:isPartOf"] = (parent)["@id"];
+                                ((frameworks)[(parent)["@id"]]).competency.push(f.shortId());
+                            } else {
+                                this.error("Object cannot trace to framework:" + (e)["@type"]);
+                                return;
+                            }
+                        } else {
+                            this.error("Object has no framework:" + (e)["@type"]);
+                            return;
+                        }
+                    }
+                    if ((e)["@owner"] == null) {
+                        if (((frameworkRows)[(e)["ceasn:isPartOf"]])["@owner"] != null) 
+                            (e)["@owner"] = ((frameworkRows)[(e)["ceasn:isPartOf"]])["@owner"];
+                    }
+                    var id = new EcIdentity();
+                    if ((e)["@owner"] != null) {
+                        id.ppk = EcPpk.fromPem((e)["@owner"]);
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
+                        if (id.ppk != null) 
+                            f.addOwner(id.ppk.toPk());
+                        EcIdentityManager.addIdentityQuietly(id);
+                    }
+                    f.name = (e)["ceasn:competencyText"];
+                    if (f.name == null || f.name == "") 
+                        f.name = (e)["ceasn:name"];
+                    if ((e)["ceasn:comment"] != null) 
+                        f.description = (e)["ceasn:comment"];
+                    (f)["schema:creator"] = (e)["ceasn:creator"];
+                    (f)["ceasn:codedNotation"] = (e)["ceasn:codedNotation"];
+                    (f)["ceasn:listID"] = (e)["ceasn:listID"];
+                    if ((e)["ceasn:isChildOf"] != null) {
+                        var r = new EcAlignment();
+                        r.generateId(repo.selectedServer);
+                        if (ceo != null) 
+                            r.addOwner(ceo.ppk.toPk());
+                        if (id.ppk != null) 
+                            r.addOwner(id.ppk.toPk());
+                        r.source = (e)["@id"];
+                        r.relationType = Relation.NARROWS;
+                        r.target = (e)["ceasn:isChildOf"];
+                        relations.push(r);
+                        (relationById)[r.shortId()] = r;
+                        ((frameworks)[(e)["ceasn:isPartOf"]]).relation.push(r.shortId());
+                    }
+                    (f)["ceasn:derivedFrom"] = (e)["ceasn:derivedFrom"];
+                    competencies.push(f);
+                    (competencyRows)[f.id] = e;
+                } else if ((e)["@type"] == null || (e)["@type"] == "") 
+                    continue;
+                 else {
+                    this.error("Found unknown type:" + (e)["@type"]);
+                    return;
+                }
+            }
+            success(frameworkArray, competencies, relations);
+        }, error: failure});
+    };
+}, {}, {});

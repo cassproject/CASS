@@ -6,7 +6,7 @@
 // Constants
 
 const FWK_EXP_IFRAME = "#fwkExpIFrame";
-const FWK_EXP_IFRAME_SOURCE = "../cass-viewer/cass-ui-framework-exp.html?user=wait&origin=";
+const FWK_EXP_IFRAME_SOURCE = "../cass-viewer/index.html?user=wait&origin=";
 const FWK_EXP_IFRAME_SOURCE_FWK_ID_PARAM = "&frameworkId=";
 
 const WAITING_MESSAGE = "waiting";

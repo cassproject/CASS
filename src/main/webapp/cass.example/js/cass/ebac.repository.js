@@ -1440,61 +1440,20 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }
             return;
         }
-        if (EcRepository.caching) {
-            var cachedVals = [];
-            for (var i = 0; i < urls.length; i++) {
-                if ((EcRepository.cache)[urls[i]] != null) {
-                    cachedVals.push((EcRepository.cache)[urls[i]]);
-                }
-            }
-            if (cachedValues != null) 
-                cachedValues(cachedVals);
-        }
-        var onServer = new Array();
-        for (var i = 0; i < urls.length; i++) {
-            var url = urls[i];
-            if (url.startsWith(this.selectedServer)) {
-                onServer.push(url.replace(this.selectedServer, "").replace("custom/", ""));
-            }
-        }
-        var fd = new FormData();
-        fd.append("data", JSON.stringify(onServer));
-        var me = this;
-        if (EcRepository.unsigned == true) 
-            EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
-                var results = p1;
-                for (var i = 0; i < results.length; i++) {
-                    var d = new EcRemoteLinkedData(null, null);
-                    d.copyFrom(results[i]);
-                    results[i] = d;
-                    if (EcRepository.caching) {
-                        (EcRepository.cache)[d.shortId()] = d;
-                        (EcRepository.cache)[d.id] = d;
-                    }
-                }
-                if (success != null) {
-                    success(results);
-                }
-            }, failure);
-         else 
-            EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
-                fd.append("signatureSheet", p1);
-                EcRemote.postExpectingObject(me.selectedServer, "sky/repo/multiGet", fd, function(p1) {
-                    var results = p1;
-                    for (var i = 0; i < results.length; i++) {
-                        var d = new EcRemoteLinkedData(null, null);
-                        d.copyFrom(results[i]);
-                        results[i] = d;
-                        if (EcRepository.caching) {
-                            (EcRepository.cache)[d.shortId()] = d;
-                            (EcRepository.cache)[d.id] = d;
-                        }
-                    }
-                    if (success != null) {
-                        success(results);
-                    }
-                }, failure);
-            }, failure);
+        var results = new Array();
+        this.precache(urls, function() {
+            var eah = new EcAsyncHelper();
+            eah.each(urls, function(url, done) {
+                EcRepository.get(url, function(result) {
+                    results.push(result);
+                    done();
+                }, function(s) {
+                    done();
+                });
+            }, function(urls) {
+                success(results);
+            });
+        });
     };
     /**
      *  Search a repository for JSON-LD compatible data.
