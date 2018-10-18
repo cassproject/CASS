@@ -7,3 +7,6 @@
 [submodule "src/main/webapp/cass-align"]
 	path = src/main/webapp/cass-align
 	url = https://github.com/cassproject/cass-align
+[submodule "src/main/webapp/cass-profile"]
+	path = src/main/webapp/cass-profile
+	url = https://github.com/cassproject/cass-profile
