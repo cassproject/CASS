@@ -20,6 +20,14 @@ canvas {
 }
 
 
+.reveal {
+    overflow-y: visible;
+}
+
+.sticky {
+    z-index: 500;
+}
+
 .whiteImage {
     filter: brightness(0) invert(1);
 }
