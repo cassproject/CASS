@@ -81,6 +81,8 @@ function retrieveAlignmentInfo() {
 // Repository Intialization
 //**************************************************************************************************
 function initRepo() {
+	if (repo != null)
+		return;
 	debugMessage("Initializing repository...");
 	repo = new EcRepository();
 	if (selectedServer == "autoDetect") {
