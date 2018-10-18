@@ -83,7 +83,7 @@ function retrieveAlignmentInfo() {
 function initRepo() {
 	debugMessage("Initializing repository...");
 	repo = new EcRepository();
-	if (selectedServer = "autoDetect") {
+	if (selectedServer == "autoDetect") {
 		repo.autoDetectRepository();
 		selectedServer = repo.selectedServer;
 	} else {
