@@ -56,9 +56,11 @@ $(RES_ALN_IFRAME).ready(function () {
 	$(window).on("message", function (event) {
 		if (event.originalEvent.data.message == WAITING_MESSAGE) {
 			sendIdentityInitializeMessage();
-		} else if (event.originalEvent.data.message == INIT_ALIGN_MESSAGE) {
+		}
+		else if (event.originalEvent.data.message == INIT_ALIGN_MESSAGE) {
 			handleInitAlignmentMessage();
-		} else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
+		}
+		else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
 			handleInitFrameworkExplorerMessage(event.originalEvent.data.frameworkId);
 		}
 	});
