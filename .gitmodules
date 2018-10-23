@@ -10,3 +10,6 @@
 [submodule "src/main/webapp/cass-profile"]
 	path = src/main/webapp/cass-profile
 	url = https://github.com/cassproject/cass-profile
+[submodule "src/main/webapp/cass-vlrc"]
+	path = src/main/webapp/cass-vlrc
+	url = https://github.com/cassproject/cass-vlrc

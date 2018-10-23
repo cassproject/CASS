@@ -106,13 +106,23 @@ canvas {
 }
 
 .welcome-card-header-wrapper .fa-sitemap {
-  display: block;
-  font-size: 26px !important;
-  margin: auto;
-  color:white;
-  text-align:center;
-  line-height: 40px;
-  margin-left: 2px;
+    display: block;
+    font-size: 26px !important;
+    margin: auto;
+    color:white;
+    text-align:center;
+    line-height: 40px;
+    margin-left: 2px;
+}
+
+.welcome-card-header-wrapper .fa-book {
+    display: block;
+    font-size: 26px !important;
+    margin: auto;
+    color:white;
+    text-align:center;
+    line-height: 40px;
+    margin-left: 2px;
 }
 
 .welcome-card-header-wrapper .fa-pie-chart {

@@ -50,13 +50,18 @@ console = {
     },
 
     error: function (s) {
-        print("error:"+s);
+        print("error:" + s);
     }
 };
+
+var setTimeout = function (f, time) {
+    if (f != null)
+        f();
+}
 
 var repo = new EcRepository();
 repo.selectedServer = "http://localhost:8080/api/";
 
-function repoAutoDetect(){
+function repoAutoDetect() {
     repo.autoDetectRepository();
 }

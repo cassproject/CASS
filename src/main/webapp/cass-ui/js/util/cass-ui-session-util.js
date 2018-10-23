@@ -32,6 +32,21 @@ var loggedInIdentityName;
 var loggedInPkPem;
 var loggedInPpkPem;
 
+queryParams = function () {
+    if (window.document.location.search == null)
+        return {};
+    var hashSplit = (window.document.location.search.split("?"));
+    if (hashSplit.length > 1) {
+        var o = {};
+        var paramString = hashSplit[1];
+        var parts = (paramString).split("&");
+        for (var i = 0; i < parts.length; i++)
+            o[parts[i].split("=")[0]] = decodeURIComponent(parts[i].replace(parts[i].split("=")[0] + "=", ""));
+        return o;
+    }
+    return {};
+};
+queryParams = queryParams();
 // //TODO build these???
 // var contactsByNameMap;
 // var contactsByPkPemMap = {};
@@ -49,7 +64,10 @@ function storeFrameworkToExploreInfo(frameworkId) {
 
 function retrieveFrameworkToExploreInfo() {
 	updateCassUiLastSessionLoadTime();
-	var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
+	if (queryParams.frameworkId != null)
+        var fwkId = queryParams.frameworkId;
+	else
+		var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
 	if (fwkId && fwkId != "") {
 		sessionStorage.setItem(FWK_TO_EXP_KEY, "");
 		return fwkId;
@@ -81,6 +99,8 @@ function retrieveAlignmentInfo() {
 // Repository Intialization
 //**************************************************************************************************
 function initRepo() {
+	if (repo != null)
+		return;
 	debugMessage("Initializing repository...");
 	repo = new EcRepository();
 	if (selectedServer == "autoDetect") {

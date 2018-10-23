@@ -77,6 +77,7 @@ function handleConfigureFromServerFail(failMsg) {
 }
 
 function initIdentity() {
+    initRepo();
     ecIdentMgr = new EcRemoteIdentityManager();
     ecIdentMgr.server = selectedServer; //Sets the identity server endpoint
     ecIdentMgr.configureFromServer(handleConfigureFromServerSuccess, handleConfigureFromServerFail); //This retrieves username and password salts from the serve
