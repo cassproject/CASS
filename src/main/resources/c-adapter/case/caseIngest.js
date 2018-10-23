@@ -139,6 +139,7 @@ caseIdentity.displayName = "CASE Server Identity";
 EcIdentityManager.addIdentity(caseIdentity);
 
 ingestCase = function () {
+    EcRemote.async = false;
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl == null)
         return "Please specify caseEndpoint = <target server> -- we'll add the /ims/case/v1p0.";
@@ -156,15 +157,8 @@ ingestCase = function () {
         var f = convertCFDocumentToFramework(document);
         var listToSave = embedCFPackageIntoFramework(f, document);
         for (var j = 0; j < listToSave.length; j++) {
-            var internalId = stringToHex(md5(listToSave[j].id));
-            var version = date(listToSave[j]["schema:dateModified"], null, true);
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
-            skyrepoPut.call(this, {
-                obj: listToSave[j].toJson(),
-                type: listToSave[j].getFullType().replace("http://", "").replaceAll("/", "."),
-                id: internalId,
-                version: version
-            });
+            repo.saveTo(listToSave[j],function(success){},function(failure){});
         }
     }
     return JSON.stringify(dx, null, 2);
