@@ -939,35 +939,30 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             }
             if (d.owner != null) {
                 new EcAsyncHelper().each(d.owner, function(pk, arg1) {
-                    var eSecret = new EbacEncryptedSecret();
-                    eSecret.iv = newIv;
-                    eSecret.secret = newSecret;
-                    if (v.secret == null) {
-                        v.secret = new Array();
-                    }
-                    EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
-                        v.secret.push(encryptedSecret);
-                        arg1();
-                    }, failure);
+                    EcEncryptedValue.insertSecret(pk, arg1, newIv, newSecret, v, failure);
                 }, function(arg0) {
                     if (d.reader != null) {
                         new EcAsyncHelper().each(d.reader, function(pk, arg1) {
-                            var eSecret = new EbacEncryptedSecret();
-                            eSecret.iv = newIv;
-                            eSecret.secret = newSecret;
-                            if (v.secret == null) {
-                                v.secret = new Array();
-                            }
-                            EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
-                                v.secret.push(encryptedSecret);
-                                arg1();
-                            }, failure);
+                            EcEncryptedValue.insertSecret(pk, arg1, newIv, newSecret, v, failure);
                         }, function(arg0) {
                             success(v);
                         });
-                    }
+                    } else 
+                        success(v);
                 });
             }
+        }, failure);
+    };
+    constructor.insertSecret = function(pk, success, newIv, newSecret, v, failure) {
+        var eSecret = new EbacEncryptedSecret();
+        eSecret.iv = newIv;
+        eSecret.secret = newSecret;
+        if (v.secret == null) {
+            v.secret = new Array();
+        }
+        EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
+            v.secret.push(encryptedSecret);
+            success();
         }, failure);
     };
     /**
@@ -2257,61 +2252,34 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }
             return;
         }
-        if (EcRepository.caching) {
-            var cachedVals = [];
-            for (var i = 0; i &lt; urls.length; i++) {
-                if ((EcRepository.cache)[urls[i]] != null) {
-                    cachedVals.push((EcRepository.cache)[urls[i]]);
-                }
-            }
-            if (cachedValues != null) 
-                cachedValues(cachedVals);
-        }
-        var onServer = new Array();
-        for (var i = 0; i &lt; urls.length; i++) {
-            var url = urls[i];
-            if (url.startsWith(this.selectedServer)) {
-                onServer.push(url.replace(this.selectedServer, &quot;&quot;).replace(&quot;custom/&quot;, &quot;&quot;));
-            }
-        }
-        var fd = new FormData();
-        fd.append(&quot;data&quot;, JSON.stringify(onServer));
-        var me = this;
-        if (EcRepository.unsigned == true) 
-            EcRemote.postExpectingObject(me.selectedServer, &quot;sky/repo/multiGet&quot;, fd, function(p1) {
-                var results = p1;
-                for (var i = 0; i &lt; results.length; i++) {
-                    var d = new EcRemoteLinkedData(null, null);
-                    d.copyFrom(results[i]);
-                    results[i] = d;
-                    if (EcRepository.caching) {
-                        (EcRepository.cache)[d.shortId()] = d;
-                        (EcRepository.cache)[d.id] = d;
-                    }
-                }
-                if (success != null) {
+        var results = new Array();
+        if (EcRepository.caching) 
+            this.precache(urls, function() {
+                var eah = new EcAsyncHelper();
+                eah.each(urls, function(url, done) {
+                    EcRepository.get(url, function(result) {
+                        results.push(result);
+                        done();
+                    }, function(s) {
+                        done();
+                    });
+                }, function(urls) {
                     success(results);
-                }
-            }, failure);
-         else 
-            EcIdentityManager.signatureSheetAsync(60000, this.selectedServer, function(p1) {
-                fd.append(&quot;signatureSheet&quot;, p1);
-                EcRemote.postExpectingObject(me.selectedServer, &quot;sky/repo/multiGet&quot;, fd, function(p1) {
-                    var results = p1;
-                    for (var i = 0; i &lt; results.length; i++) {
-                        var d = new EcRemoteLinkedData(null, null);
-                        d.copyFrom(results[i]);
-                        results[i] = d;
-                        if (EcRepository.caching) {
-                            (EcRepository.cache)[d.shortId()] = d;
-                            (EcRepository.cache)[d.id] = d;
-                        }
-                    }
-                    if (success != null) {
-                        success(results);
-                    }
-                }, failure);
-            }, failure);
+                });
+            });
+         else {
+            var eah = new EcAsyncHelper();
+            eah.each(urls, function(url, done) {
+                EcRepository.get(url, function(result) {
+                    results.push(result);
+                    done();
+                }, function(s) {
+                    done();
+                });
+            }, function(urls) {
+                success(results);
+            });
+        }
     };
     /**
      *  Search a repository for JSON-LD compatible data.

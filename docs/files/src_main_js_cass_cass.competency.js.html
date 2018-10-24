@@ -1162,9 +1162,11 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
      */
     prototype.setSubject = function(pk) {
         var owners = new Array();
-        var readers = this.reader;
-        if (readers == null) 
+        var readers = null;
+        if (this.reader == null) 
             readers = new Array();
+         else 
+            readers = JSON.parse(JSON.stringify(this.reader));
         if (this.subject != null) {
             if (this.subject.owner != null) 
                 owners.concat(this.subject.owner);

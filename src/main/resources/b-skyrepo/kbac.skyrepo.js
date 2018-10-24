@@ -88,7 +88,13 @@ var filterResults = function(o) {
         for (var i = 0; i < ary.length; i++) {
             if (ary[i] == null) 
                 continue;
-            var result = (filterResults).call(this, ary[i], null);
+            var result = null;
+            try {
+                result = (filterResults).call(this, ary[i], null);
+            }catch (ex) {
+                if (ex.getMessage() != "Signature Violation") 
+                     throw ex;
+            }
             if (result == null) {
                 ary.splice(i, 1);
                 i--;
@@ -99,7 +105,7 @@ var filterResults = function(o) {
     } else if (EcObject.isObject(o)) {
         var rld = new EcRemoteLinkedData(null, null);
         rld.copyFrom(o);
-        if (isEncryptedType(rld)) {
+        if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
             for (var i = 0; i < signatures.length; i++) 
@@ -108,12 +114,17 @@ var filterResults = function(o) {
                     break;
                 }
             if (!foundSignature) 
-                return null;
+                 throw new RuntimeException("Signature Violation");
         }
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            (rld)[key] = (filterResults).call(this, (o)[key], null);
+            var result = null;
+            result = (filterResults).call(this, (o)[key], null);
+            if (result != null) 
+                (rld)[key] = result;
+             else 
+                (rld)[key] = null;
         }
         return rld.atIfy();
     } else 
@@ -352,7 +363,13 @@ var skyrepoGetParsed = function(id, version, type) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
     if (result == null) 
         return null;
-    var filtered = (filterResults).call(this, result, null);
+    var filtered = null;
+    try {
+        filtered = (filterResults).call(this, result, null);
+    }catch (ex) {
+        if (ex.getMessage() != "Signature Violation") 
+             throw ex;
+    }
     if (filtered == null) 
         return null;
     if (EcObject.keys(filtered).length == 0) 
@@ -493,30 +510,13 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
         var type = inferTypeFromObj((searchResult)["_source"], null);
         var id = (searchResult)["_id"];
         var version = (searchResult)["_version"];
-        searchResult = (skyrepoGetInternal).call(this, id, version, type, null);
-        if (searchResult == null) 
-            continue;
-        var preLength = JSON.stringify(searchResult).length;
-        if (skyrepoDebug) 
-            console.log("pre filter length:" + preLength);
-        searchResult = (filterResults).call(this, searchResult, null);
-        if (searchResult == null) 
-            continue;
-        if (skyrepoDebug) 
-            console.log("post filter length:" + JSON.stringify(searchResult).length);
-        if (preLength != JSON.stringify(searchResult).length) {
-            var signatures = (signatureSheet).call(this);
-            for (var j = 0; j < signatures.length; j++) {
-                if (JSON.stringify(searchResult).indexOf(signatures[j].owner) != -1) {
-                    if (skyrepoDebug) 
-                        console.log("Matched signature:" + signatures[j].owner);
-                    searchResults.push(searchResult);
-                    break;
-                }
-            }
-        } else 
-            searchResults.push(searchResult);
+        var hit = "data/";
+        if (type != null) 
+            hit += type + "/";
+        hit += id + "/" + version;
+        hits[i] = hit;
     }
+    searchResults = (forEach).call(this, hits, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
     return searchResults;
 };
 var queryParse = function(urlRemainder) {
@@ -629,20 +629,20 @@ var endpointMultiGet = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
     var results = new Array();
     if (ary != null) {
-        for (var i = 0; i < ary.length; i++) {
-            var urlRemainder = ary[i];
-            var parseParams = (queryParse).call(this, urlRemainder, null);
-            var id = (parseParams)["id"];
-            var type = (parseParams)["type"];
-            var version = (parseParams)["version"];
-            try {
-                var o = (skyrepoGetParsed).call(this, id, version, type, null);
-                if (o != null) 
-                    results.push(o);
-            }catch (ex) {}
-        }
+        results = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
     }
     return JSON.stringify(results);
+};
+var endpointSingleGet = function() {
+    var urlRemainder = this.params.obj;
+    var parseParams = (queryParse).call(this, urlRemainder, null);
+    var id = (parseParams)["id"];
+    var type = (parseParams)["type"];
+    var version = (parseParams)["version"];
+    var o = (skyrepoGetParsed).call(this, id, version, type, null);
+    if (o != null) 
+        return JSON.parse((o).toJson());
+    return null;
 };
 var skyRepoSearch = function() {
     var q = this.params.q;
