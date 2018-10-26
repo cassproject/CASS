@@ -61,6 +61,8 @@ var setTimeout = function (f, time) {
 
 var repo = new EcRepository();
 repo.selectedServer = "http://localhost:8080/api/";
+thisEndpoint=function(){return repo.selectedServer;}
+repoEndpoint=function(){return repo.selectedServer;}
 
 function repoAutoDetect() {
     repo.autoDetectRepository();
