@@ -34,8 +34,8 @@ platformDebian=`cat /etc/*release | grep debian | wc -l`
 if [ "$platformDebian" -ne 0 ];
  then
  echo Debian based platform found...
- platformVersion16=`lsb_release -r | grep 16.04`
- platformVersion18=`lsb_release -r | grep 18.04`
+ platformVersion16=`lsb_release -r | grep 16.04 | wc -l`
+ platformVersion18=`lsb_release -r | grep 18.04 | wc -l`
 fi
 if [ "$platformFedora" -ne 0 ];
  then
