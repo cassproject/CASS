@@ -1,5 +1,5 @@
 
-configFilePath=#string(str="adapter.xapi.json");
+configFilePath=#string(str="etc/adapter.xapi.json");
 
 
 postData=#fileFromDatastream(name="config");

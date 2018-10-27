@@ -21,7 +21,7 @@ var asnContext = {
 };
 
 var ceasnIdentity = new EcIdentity();
-ceasnIdentity.ppk = EcPpk.fromPem(ceasnPpk());
+ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
 ceasnIdentity.displayName = "CEASN Server Identity";
 EcIdentityManager.addIdentity(ceasnIdentity);
 

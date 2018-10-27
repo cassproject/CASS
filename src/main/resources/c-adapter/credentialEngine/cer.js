@@ -6,7 +6,7 @@ registerElementWithCer = function (element, boolDelete) {
         alg: 'RS256',
         typ: 'JWT'
     });
-    var prvKey = KEYUTIL.getKey(EcPpk.fromPem(cerPpk()).toPkcs8Pem());
+    var prvKey = KEYUTIL.getKey(EcPpk.fromPem(keyFor("adapter.cer.private")).toPkcs8Pem());
 
     var e = new EcRemoteLinkedData();
     e.copyFrom(element);
@@ -30,12 +30,12 @@ registerElementWithCer = function (element, boolDelete) {
         package.delete_token = sJWT;
         package.delete_token_format = "json";
         package.delete_token_encoding = "jwt";
-        package.delete_token_public_key = forge.pki.publicKeyToPem(EcPpk.fromPem(cerPpk()).toPk().pk);
+        package.delete_token_public_key = forge.pki.publicKeyToPem(EcPpk.fromPem(keyFor("adapter.cer.private")).toPk().pk);
     } else {
         package.resource = sJWT;
         package.resource_format = "json";
         package.resource_encoding = "jwt";
-        package.resource_public_key = forge.pki.publicKeyToPem(EcPpk.fromPem(cerPpk()).toPk().pk);
+        package.resource_public_key = forge.pki.publicKeyToPem(EcPpk.fromPem(keyFor("adapter.cer.private")).toPk().pk);
     }
     var result = {
         a: httpPost(JSON.stringify(package), "http://lr-staging.learningtapestry.com/resources/", "application/json", "false"),

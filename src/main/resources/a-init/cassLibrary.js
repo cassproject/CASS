@@ -60,9 +60,30 @@ var setTimeout = function (f, time) {
 }
 
 var repo = new EcRepository();
-repo.selectedServer = "http://localhost:8080/api/";
+if (java.lang.System.getenv("CASS_LOOPBACK") != null)
+    repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK")
+else
+    repo.selectedServer = "http://localhost:8080/api/";
+
+if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+    elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
+console.log("Loopback: " + repo.selectedServer);
+console.log("Elasticsearch Endpoint: " + elasticEndpoint);
+
 thisEndpoint=function(){return repo.selectedServer;}
 repoEndpoint=function(){return repo.selectedServer;}
+
+var keyFor = function(filename){
+    if (fileExists(filename+".pem"))
+        return fileLoad(filename+".pem",false,true);
+    if (fileExists("etc/"+filename+".pem"))
+        return fileLoad(filename+".pem",false,true);
+    if (!fileExists("etc"))
+        createDirectory("etc");
+    fileSave(EcPpk.generatePpk().toPem(),"etc/"+filename+".pem");
+    return fileLoad(filename+".pem",false,true);
+}
 
 function repoAutoDetect() {
     repo.autoDetectRepository();
