@@ -77,13 +77,13 @@ repoEndpoint = function () {
 
 var keyFor = function (filename) {
     if (fileExists(filename + ".pem"))
-        return fileLoad(filename + ".pem", false, true);
+        return fileToString(fileLoad(filename + ".pem", false, true));
     if (fileExists("etc/" + filename + ".pem"))
-        return fileLoad("etc/" + filename + ".pem", false, true);
+        return fileToString(fileLoad("etc/" + filename + ".pem", false, true));
     if (!fileExists("etc"))
         createDirectory("etc");
     fileSave(EcPpk.generateKey().toPem(), "etc/" + filename + ".pem");
-    return fileLoad("etc/" + filename + ".pem", false, true);
+    return fileToString(fileLoad("etc/" + filename + ".pem", false, true));
 }
 
 function repoAutoDetect() {
