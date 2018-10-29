@@ -1,20 +1,20 @@
-mboxSalt = #fileLoad(path="adapter.xapi.private.lookup.salt").fileToString();
+mboxSalt = #fileLoad(path="etc/adapter.xapi.private.lookup.salt").fileToString();
 mboxSalt = #if(
-	operator=#fileExists(path="adapter.xapi.private.lookup.salt"),
+	operator=#fileExists(path="etc/adapter.xapi.private.lookup.salt"),
 	operand="false",
 	eq=#object(
-		a=#fileSave(obj=#randomString(length="2048"),path="adapter.xapi.private.lookup.salt"),
+		a=#fileSave(obj=#randomString(length="2048"),path="etc/adapter.xapi.private.lookup.salt"),
 		b=mboxSalt
 	).cget(b=""),
 	ne=mboxSalt
-).cache(name="adapter.xapi.private.lookup.salt");
+).cache(name="etc/adapter.xapi.private.lookup.salt");
 
-mboxSecret=#fileLoad(path="adapter.xapi.private.lookup.secret").fileToString();
+mboxSecret=#fileLoad(path="etc/adapter.xapi.private.lookup.secret").fileToString();
 mboxSecret=#if(
-	operator=#fileExists(path="adapter.xapi.private.lookup.secret"),
+	operator=#fileExists(path="etc/adapter.xapi.private.lookup.secret"),
 	operand="false",
 	eq=#object(
-		a=#fileSave(obj=#randomString(length="2048"),path="adapter.xapi.private.lookup.secret"),
+		a=#fileSave(obj=#randomString(length="2048"),path="etc/adapter.xapi.private.lookup.secret"),
 		b=mboxSecret
 	).cget(b=""),
 	ne=mboxSecret
@@ -27,12 +27,12 @@ mboxSecret=#pbkdf2(
 	hashLength="16"
 ).cache(name="adapter.xapi.private.lookup.secret");
 
-ppk=#fileLoad(path="adapter.xapi.private.lookup.pem").fileToString();
+ppk=#fileLoad(path="etc/adapter.xapi.private.lookup.pem").fileToString();
 ppk=#if(
-	operator=#fileExists(path="adapter.xapi.private.lookup.pem"),
+	operator=#fileExists(path="etc/adapter.xapi.private.lookup.pem"),
 	operand="false",
 	eq=#object(
-		a=#fileSave(obj=#rsaGenerate(),path="adapter.xapi.private.lookup.pem"),
+		a=#fileSave(obj=#rsaGenerate(),path="etc/adapter.xapi.private.lookup.pem"),
 		b=ppk
 	).cget(b=""),
 	ne=ppk

@@ -15,11 +15,13 @@ badgeSetup = function () {
     }
     EcRepository.caching = false;
     var identity = new EcIdentity();
-    identity.ppk = EcPpk.fromPem(openbadgesPpk());
+    identity.ppk = EcPpk.fromPem(keyFor("adapter.openbadges.private"));
     identity.displayName = "OpenBadges Internal Identity";
     EcIdentityManager.addIdentity(identity);
-
 }
+
+badgeKey=function(){EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();}
+bindWebService("/badge/pk",badgeKey);
 
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);

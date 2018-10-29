@@ -1,5 +1,5 @@
 
-configFilePath=#string(str="adapter.moodle.json");
+configFilePath=#string(str="etc/adapter.moodle.json");
 
 postData=#fileFromDatastream(name="config");
 postObject=postData.fileToString().toObject();
