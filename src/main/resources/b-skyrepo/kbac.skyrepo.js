@@ -682,7 +682,7 @@ var endpointMultiGet = function() {
     if (ary != null) {
         var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
         for (var i = 0; i < forEachResults.length; i++) 
-            results.push(JSON.parse(forEachResults[i]));
+            results.push(forEachResults[i]);
     }
     return JSON.stringify(results);
 };
