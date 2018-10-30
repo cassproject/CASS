@@ -21,56 +21,56 @@ var signature = function() {
 var getTypeFromObject = function(o) {
     var type = (o)["@type"];
     var context = (o)["@context"];
-    if (type == null)
+    if (type == null) 
         return null;
-    if (type.indexOf("http") != -1)
+    if (type.indexOf("http") != -1) 
         return type;
-    if (context == null)
+    if (context == null) 
         return type;
-    if (context.endsWith("/"))
+    if (context.endsWith("/")) 
         return context + type;
-    else
+     else 
         return context + "/" + type;
 };
 /**
  *  Validate the signature sheet. Blow up if it is incorrect.
- *
+ * 
  *  @return
  */
 var signatureSheet = function() {
     var sigSheet = null;
     sigSheet = (this)["signatureSheet"];
-    if (sigSheet != null)
+    if (sigSheet != null) 
         return sigSheet;
     sigSheet = new Array();
     var fromDatastream = (fileFromDatastream).call(this, "signatureSheet", null);
     var stringFromDatastream = fileToString(fromDatastream);
-    if (stringFromDatastream != null)
+    if (stringFromDatastream != null) 
         try {
             sigSheet = sigSheet.concat(JSON.parse(stringFromDatastream));
         }catch (ex) {}
     var hdrs = (headers).call(this);
     var camelcaseSignatureSheet = (hdrs)["signatureSheet"];
     var lowercaseSignatureSheet = (hdrs)["signaturesheet"];
-    if (camelcaseSignatureSheet != null)
+    if (camelcaseSignatureSheet != null) 
         sigSheet = sigSheet.concat(JSON.parse(camelcaseSignatureSheet));
-    if (lowercaseSignatureSheet != null)
+    if (lowercaseSignatureSheet != null) 
         sigSheet = sigSheet.concat(JSON.parse(lowercaseSignatureSheet));
     for (var i = 0; i < sigSheet.length; i++) {
         var signature = new EbacSignature();
         signature.copyFrom(sigSheet[i]);
-        if (signature == null)
+        if (signature == null) 
             error("Missing Signature.", 496);
-        if (getTypeFromObject(sigSheet[i]) != "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature")
+        if (getTypeFromObject(sigSheet[i]) != "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature") 
             error("Invalid Signature Version.", 422);
-        if (signature.expiry == null)
+        if (signature.expiry == null) 
             error("Missing expiry date.", 422);
         var now = date(null, null, true);
-        if (signature.expiry < now)
+        if (signature.expiry < now) 
             error("A Signature is Expired. My time is " + now + " and the signature expires at " + signature.expiry, 419);
         var signBytes = signature.signature;
         signature.signature = null;
-        if (!EcRsaOaep.verify(EcPk.fromPem(signature.owner), signature.toJson(), signBytes))
+        if (!EcRsaOaep.verify(EcPk.fromPem(signature.owner), signature.toJson(), signBytes)) 
             error("Invalid Signature Detected: " + signature.toJson(), 451);
         sigSheet[i] = signature;
     }
@@ -81,24 +81,24 @@ var isEncryptedType = function(obj) {
     return obj.isAny(new EbacEncryptedValue().getTypes());
 };
 var filterResults = function(o) {
-    if (o == null)
+    if (o == null) 
         return o;
     if (EcArray.isArray(o)) {
         var ary = o;
         for (var i = 0; i < ary.length; i++) {
-            if (ary[i] == null)
+            if (ary[i] == null) 
                 continue;
             var result = null;
             try {
                 result = (filterResults).call(this, ary[i], null);
             }catch (ex) {
-                if (ex.getMessage() != "Signature Violation")
-                    throw ex;
+                if (ex.getMessage() != "Signature Violation") 
+                     throw ex;
             }
             if (result == null) {
                 ary.splice(i, 1);
                 i--;
-            } else
+            } else 
                 ary[i] = result;
         }
         return ary;
@@ -108,26 +108,26 @@ var filterResults = function(o) {
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
-            for (var i = 0; i < signatures.length; i++)
+            for (var i = 0; i < signatures.length; i++) 
                 if (rld.toJson().indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
                 }
-            if (!foundSignature)
-                throw new RuntimeException("Signature Violation");
+            if (!foundSignature) 
+                 throw new RuntimeException("Signature Violation");
         }
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var result = null;
             result = (filterResults).call(this, (o)[key], null);
-            if (result != null)
+            if (result != null) 
                 (rld)[key] = result;
-            else
+             else 
                 (rld)[key] = null;
         }
         return rld.atIfy();
-    } else
+    } else 
         return o;
 };
 var skyrepoUrlType = function(o) {
@@ -140,7 +140,7 @@ var elasticSettings = function() {
     return httpGet(elasticEndpoint + "/_settings");
 };
 var inferTypeFromObj = function(o, atType) {
-    if (atType != null)
+    if (atType != null) 
         return atType;
     var fullType = skyrepoUrlType(o);
     fullType = fullType.replace("http://", "");
@@ -151,53 +151,54 @@ var inferTypeFromObj = function(o, atType) {
     return fullType;
 };
 var inferTypeWithoutObj = function(atType) {
-    if (atType != null)
+    if (atType != null) 
         return atType;
     return "_all";
 };
 var putUrl = function(o, id, version, type) {
     var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
-    if (version == null || version == "")
+    if (version == null || version == "") {
         versionPart = "?refresh=true";
-    else
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
     url += "/" + typeFromObj;
     url += "/" + urlEncode(id) + versionPart;
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("Put:" + url);
     return url;
 };
 var putPermanentUrl = function(o, id, version, type) {
-    var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
-    if (version == null || version == "")
+    if (version == null || version == "") {
         versionPart = "?refresh=true";
-    else
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
     url += "/" + urlEncode(id) + "." + version + versionPart;
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("PutPermanent:" + url);
     return url;
 };
 var putPermanentBaseUrl = function(o, id, version, type) {
-    var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
-    if (version == null || version == "")
+    if (version == null || version == "") {
         versionPart = "?refresh=true";
-    else
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
     url += "/permanent";
     url += "/permanent";
     url += "/" + urlEncode(id) + "." + versionPart;
-    if (skyrepoDebug)
-        console.log("PutPermanent:" + url);
+    if (skyrepoDebug) 
+        console.log("PutPermanentBase:" + url);
     return url;
 };
 var getUrl = function(index, id, version, type) {
@@ -206,20 +207,19 @@ var getUrl = function(index, id, version, type) {
     if (version == null || version == "") {
         versionPart = "";
         version = "";
-    }
-    else
+    } else 
         versionPart = "?version=" + version + "&version_type=external";
     var url = elasticEndpoint;
     url += "/" + index;
-    if (index == "permanent")
+    if (index == "permanent") 
         url += "/permanent";
-    else
+     else 
         url += "/" + typeFromObj;
-    if (index == "permanent")
+    if (index == "permanent") 
         url += "/" + urlEncode(id) + "." + version;
-    else
+     else 
         url += "/" + urlEncode(id);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("Get:" + url);
     return url;
 };
@@ -230,12 +230,21 @@ var deleteUrl = function(id, version, type) {
     url += "/" + typeFromObj;
     url += "/" + urlEncode(id);
     url += "?refresh=true";
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("Delete:" + url);
     return url;
 };
+var deletePermanentBaseUrl = function(id, version, type) {
+    var url = elasticEndpoint;
+    url += "/permanent";
+    url += "/permanent";
+    url += "/" + urlEncode(id) + ".";
+    if (skyrepoDebug) 
+        console.log("DeletePermanentBase:" + url);
+    return url;
+};
 var skyrepoPutInternalTypeCheck = function(typeChecked, o, type) {
-    if (typeChecked)
+    if (typeChecked) 
         return null;
     return inferTypeFromObj(o, type);
 };
@@ -244,7 +253,7 @@ var flattenLangstrings = function(o) {
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            if (key == "@value")
+            if (key == "@value") 
                 return (o)[key];
             (o)[key] = flattenLangstrings((o)[key]);
         }
@@ -259,7 +268,7 @@ var flattenLangstrings = function(o) {
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
     o = flattenLangstrings(o);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(o));
     return httpPost(o, url, "application/json", false);
 };
@@ -273,7 +282,7 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
         (permNoIndex)["permanent"] = doc;
         (doc)["enabled"] = false;
         var result = httpPut(mappings, elasticEndpoint + "/permanent", "application/json");
-        if (skyrepoDebug)
+        if (skyrepoDebug) 
             console.log(JSON.stringify(result));
         permanentCreated = true;
     }
@@ -281,17 +290,17 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
     (data)["data"] = JSON.stringify(o);
     var url = putPermanentBaseUrl(o, id, version, type);
     var out = httpPost(data, url, "application/json", false);
-    if (version != null) {
+    if (version != null && version != "") {
         url = putPermanentUrl(o, id, version, type);
         out = httpPost(data, url, "application/json", false);
     }
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(out));
     return JSON.stringify(out);
 };
 var skyrepoPutInternal = function(o, id, version, type) {
     var obj = skyrepoPutInternalIndex(o, id, version, type);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
     version = (obj)["_version"];
     skyrepoPutInternalPermanent(o, id, version, type);
@@ -300,7 +309,7 @@ var skyRepoPutInternal = function(o, id, version, type) {
     skyrepoPutInternal(o, id, version, type);
 };
 var skyrepoGetIndexInternal = function(index, id, version, type) {
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("Fetching from " + index + " : " + type + " / " + id + " / " + version);
     var result = httpGet(getUrl(index, id, version, type));
     return result;
@@ -312,15 +321,15 @@ var skyrepoGetIndex = function(id, version, type) {
     } else {
         var microSearchUrl = elasticEndpoint + "/_search?version&q=_id:" + id + "";
         var microSearch = httpGet(microSearchUrl);
-        if (skyrepoDebug)
+        if (skyrepoDebug) 
             console.log(microSearchUrl);
-        if (microSearch == null)
+        if (microSearch == null) 
             return null;
         var hitshits = (microSearch)["hits"];
-        if (hitshits == null)
+        if (hitshits == null) 
             return null;
         var hits = (hitshits)["hits"];
-        if (hits.length == 0)
+        if (hits.length == 0) 
             return null;
         var hit = hits[0];
         return hit;
@@ -332,38 +341,29 @@ var skyrepoGetPermanent = function(id, version, type) {
 };
 var skyrepoGetInternal = function(id, version, type) {
     var versionRetrievalObject = null;
-    // if (version == null) {
-    //     versionRetrievalObject = (skyrepoGetIndex).call(this, id, version, type, null);
-    //     if (versionRetrievalObject != null)
-    //         version = (versionRetrievalObject)["_version"];
-    //     if (versionRetrievalObject != null)
-    //         type = (versionRetrievalObject)["_type"];
-    // }
-    // if (version == null)
-    //     return null;
     var result = skyrepoGetPermanent(id, version, type);
-    if (result == null)
+    if (result == null) 
         return null;
-    if ((result)["error"] != null)
+    if ((result)["error"] != null) 
         return null;
-    if ((result)["found"] == true)
+    if ((result)["found"] == true) 
         return JSON.parse(((result)["_source"])["data"]);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("Failed to find " + type + "/" + id + "/" + version + " -- trying degraded form from search index.");
-    if (versionRetrievalObject != null)
+    if (versionRetrievalObject != null) 
         result = versionRetrievalObject;
-    else
+     else 
         result = (skyrepoGetIndex).call(this, id, version, type, null);
-    if (result == null)
+    if (result == null) 
         return null;
-    if ((result)["error"] != null)
+    if ((result)["error"] != null) 
         return null;
-    if ((result)["found"] == true || (result)["_source"] != null)
+    if ((result)["found"] == true || (result)["_source"] != null) 
         return (result)["_source"];
     return null;
 };
 var skyrepoGet = function(parseParams) {
-    if (parseParams == null && EcObject.isObject(this.params.obj))
+    if (parseParams == null && EcObject.isObject(this.params.obj)) 
         parseParams = this.params.obj;
     if (parseParams == null) {
         parseParams = new Object();
@@ -371,9 +371,9 @@ var skyrepoGet = function(parseParams) {
         (parseParams)["type"] = this.params.type;
         (parseParams)["version"] = this.params.version;
     }
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(parseParams));
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(this.params.obj));
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
@@ -382,18 +382,18 @@ var skyrepoGet = function(parseParams) {
 };
 var skyrepoGetParsed = function(id, version, type) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
-    if (result == null)
+    if (result == null) 
         return null;
     var filtered = null;
     try {
         filtered = (filterResults).call(this, result, null);
     }catch (ex) {
-        if (ex.getMessage() != "Signature Violation")
-            throw ex;
+        if (ex.getMessage() != "Signature Violation") 
+             throw ex;
     }
-    if (filtered == null)
+    if (filtered == null) 
         return null;
-    if (EcObject.keys(filtered).length == 0)
+    if (EcObject.keys(filtered).length == 0) 
         return null;
     return filtered;
 };
@@ -405,14 +405,14 @@ var skyrepoPut = function(parseParams) {
         (parseParams)["version"] = this.params.version;
         (parseParams)["obj"] = this.params.obj;
     }
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("put pp:" + JSON.stringify(parseParams));
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log("put obj:" + JSON.stringify(this.params.obj));
-    if (parseParams == null && EcObject.isObject(this.params.obj))
+    if (parseParams == null && EcObject.isObject(this.params.obj)) 
         parseParams = this.params.obj;
     var obj = (parseParams)["obj"];
-    if (!EcObject.isObject(obj))
+    if (!EcObject.isObject(obj)) 
         obj = JSON.parse(obj);
     var id = (parseParams)["id"];
     var type = (parseParams)["type"];
@@ -420,14 +420,14 @@ var skyrepoPut = function(parseParams) {
     return (skyrepoPutParsed).call(this, obj, id, version, type, null);
 };
 var skyrepoPutParsed = function(o, id, version, type) {
-    if (o == null)
+    if (o == null) 
         return;
     (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.");
     skyrepoPutInternal(o, id, version, type);
 };
 var validateSignatures = function(id, version, type, errorMessage) {
     var oldGet = (skyrepoGetParsed).call(this, id, version, type, null);
-    if (oldGet == null)
+    if (oldGet == null) 
         return;
     var oldObj = new EcRemoteLinkedData(null, null);
     oldObj.copyFrom(oldGet);
@@ -440,7 +440,7 @@ var validateSignatures = function(id, version, type, errorMessage) {
                 break;
             }
         }
-        if (!success)
+        if (!success) 
             error(errorMessage, 401);
     }
 };
@@ -449,7 +449,8 @@ var skyrepoDeleteInternalIndex = function(id, version, type) {
     return httpDelete(url);
 };
 var skyrepoDeleteInternalPermanent = function(id, version, type) {
-    return null;
+    var url = deletePermanentBaseUrl(id, version, type);
+    return httpDelete(url);
 };
 var skyrepoDelete = function(id, version, type) {
     (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
@@ -458,11 +459,11 @@ var skyrepoDelete = function(id, version, type) {
 };
 var searchObj = function(q, start, size, sort, track_scores) {
     var s = new Object();
-    if (start != null)
+    if (start != null) 
         (s)["from"] = start;
-    if (size != null)
+    if (size != null) 
         (s)["size"] = size;
-    if (sort != null)
+    if (sort != null) 
         (s)["sort"] = JSON.parse(sort);
     (s)["version"] = true;
     var query = new Object();
@@ -475,15 +476,15 @@ var searchObj = function(q, start, size, sort, track_scores) {
     (must)["query_string"] = query_string;
     var signatures = (signatureSheet).call(this);
     var concern = false;
-    if (q.indexOf("*") != -1 && q.trim() != "*")
+    if (q.indexOf("*") != -1 && q.trim() != "*") 
         concern = true;
-    if (q.indexOf("@reader") != -1)
+    if (q.indexOf("@reader") != -1) 
         concern = true;
     (query_string)["query"] = q;
     if (signatures != null && signatures.length > 0) {
         var q2 = "";
         for (var i = 0; i < signatures.length; i++) {
-            if (i > 0)
+            if (i > 0) 
                 q2 += " OR ";
             q2 += "\"" + signatures[i].owner + "\"";
         }
@@ -497,30 +498,30 @@ var searchObj = function(q, start, size, sort, track_scores) {
 };
 var searchUrl = function(urlRemainder) {
     var url = elasticEndpoint;
-    if (urlRemainder != null && urlRemainder != "" && urlRemainder != "/")
+    if (urlRemainder != null && urlRemainder != "" && urlRemainder != "/") 
         url += urlRemainder.toLowerCase();
-    else
+     else 
         url += "/*,-permanent";
-    if (!url.endsWith("/"))
+    if (!url.endsWith("/")) 
         url += "/";
     url += "_search";
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(url);
     return url;
 };
 var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
     var searchParameters = (searchObj).call(this, q, start, size, sort, track_scores);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(searchParameters));
     var results = httpPost(searchParameters, searchUrl(urlRemainder), "application/json", false);
-    if (skyrepoDebug)
+    if (skyrepoDebug) 
         console.log(JSON.stringify(results));
     if ((results)["error"] != null) {
         var root_cause = ((results)["error"])["root_cause"];
         if (root_cause.length > 0) {
             var reasonObj = root_cause[0];
             var reason = (reasonObj)["reason"];
-            if (reason != null)
+            if (reason != null) 
                 error(reason, (results)["status"]);
         }
     }
@@ -532,7 +533,7 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
         var id = (searchResult)["_id"];
         var version = (searchResult)["_version"];
         var hit = "data/";
-        if (type != null)
+        if (type != null) 
             hit += type + "/";
         hit += id + "/" + version;
         hits[i] = hit;
@@ -541,39 +542,39 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
     return searchResults;
 };
 var queryParse = function(urlRemainder) {
-    if (urlRemainder == null && this.params.urlRemainder != null)
+    if (urlRemainder == null && this.params.urlRemainder != null) 
         urlRemainder = this.params.urlRemainder;
-    if (urlRemainder == null)
+    if (urlRemainder == null) 
         error("No resource specified.", 404);
     var split = urlRemainder.split("/");
     var result = new Object();
-    if (split.length >= 2)
+    if (split.length >= 2) 
         (result)["id"] = split[1];
     if (split.length >= 3) {
         (result)["type"] = split[1];
         (result)["id"] = split[2];
     }
-    if (split.length == 4)
+    if (split.length == 4) 
         (result)["version"] = split[3];
     return result;
 };
 var tryFormatOutput = function(o, expand) {
     var hdrs = (headers).call(this);
     var accept = (hdrs)["Accept"];
-    if (accept == null)
+    if (accept == null) 
         accept = (hdrs)["accept"];
-    if (accept == null)
-        if (expand == true)
+    if (accept == null) 
+        if (expand == true) 
             return JSON.stringify(jsonLdExpand(o));
-        else
+         else 
             return JSON.stringify(o);
-    if (accept == "text/n4" || accept == "application/rdf+n4")
+    if (accept == "text/n4" || accept == "application/rdf+n4") 
         return jsonLdToNQuads(o);
-    if (accept == "application/rdf+json")
+    if (accept == "application/rdf+json") 
         return jsonLdToRdfJson(o);
-    if (accept == "application/rdf+xml")
+    if (accept == "application/rdf+xml") 
         return jsonLdToRdfXml(o);
-    if (accept == "application/x-turtle" || accept == "text/turtle")
+    if (accept == "application/x-turtle" || accept == "text/turtle") 
         return jsonLdToTurtle(o);
     return JSON.stringify(o);
 };
@@ -581,32 +582,32 @@ var endpointData = function() {
     var q = this.params.q;
     var urlRemainder = this.params.urlRemainder;
     var start = 0;
-    if (this.params.start != null)
+    if (this.params.start != null) 
         start = parseInt(this.params.start);
     var size = 50;
-    if (this.params.size != null)
+    if (this.params.size != null) 
         size = parseInt(this.params.size);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var searchParams = (fileFromDatastream).call(this, "searchParams", null);
     if (searchParams != null) {
         searchParams = fileToString(searchParams);
-        if (searchParams != null)
+        if (searchParams != null) 
             searchParams = JSON.parse(searchParams);
-        if ((searchParams)["q"] != null)
+        if ((searchParams)["q"] != null) 
             q = (searchParams)["q"];
-        if ((searchParams)["start"] != null)
+        if ((searchParams)["start"] != null) 
             start = (searchParams)["start"];
-        if ((searchParams)["size"] != null)
+        if ((searchParams)["size"] != null) 
             size = (searchParams)["size"];
-        if ((searchParams)["sort"] != null)
+        if ((searchParams)["sort"] != null) 
             sort = (searchParams)["sort"];
-        if ((searchParams)["track_scores"] != null)
+        if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
     }
-    if (size == null)
+    if (size == null) 
         size = 50;
-    if (start == null)
+    if (start == null) 
         start = 0;
     if (q != null) {
         (beforeGet).call(this);
@@ -626,7 +627,7 @@ var endpointData = function() {
         if (o == null || o == "") {
             (beforeGet).call(this);
             o = (skyrepoGetParsed).call(this, id, version, type, null);
-            if (o == null)
+            if (o == null) 
                 error("Object not found or you did not supply sufficient permissions to access the object.", 404);
             var expand = this.params.expand != null;
             o = (tryFormatOutput).call(this, o, expand, null);
@@ -638,7 +639,7 @@ var endpointData = function() {
     } else if (methodType == "GET") {
         (beforeGet).call(this);
         var o = (skyrepoGetParsed).call(this, id, version, type, null);
-        if (o == null)
+        if (o == null) 
             error("Object not found or you did not supply sufficient permissions to access the object.", 404);
         var expand = this.params.expand != null;
         o = (tryFormatOutput).call(this, o, expand, null);
@@ -648,41 +649,40 @@ var endpointData = function() {
 };
 var endpointMultiGet = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
-    var lookup = {};
-    var mget = {};
-    var docs = [];
-    mget.docs = docs;
-    for (var i = 0;i < ary.length;i++)
-    {
+    var lookup = new Object();
+    var mget = new Object();
+    var docs = new Array();
+    (mget)["docs"] = docs;
+    for (var i = 0; i < ary.length; i++) {
         var urlRemainder = ary[i];
         var parseParams = (queryParse).call(this, urlRemainder, null);
         var id = (parseParams)["id"];
-        lookup[id] = urlRemainder;
+        (lookup)[id] = urlRemainder;
         var type = (parseParams)["type"];
         var version = (parseParams)["version"];
-        var p = {
-            "_index":"permanent",
-            "_type":"permanent",
-            "_id":id + "." + (version == null ? "" : version)
-        };
+        var p = new Object();
+        (p)["_index"] = "permanent";
+        (p)["_type"] = "permanent";
+        (p)["_id"] = id + "." + (version == null ? "" : version);
         docs.push(p);
     }
-    var response = httpPost(mget, elasticEndpoint+"/_mget", "application/json", false);
-    var results = [];
-    for (var i = 0;i < response.docs.length;i++) {
-        if (response.docs[i].found) {
-            delete lookup[response.docs[i]._id.substr(0,response.docs[i]._id.length-1)];
-            results.push(JSON.parse(response.docs[i]._source.data));
+    var response = httpPost(mget, elasticEndpoint + "/_mget", "application/json", false);
+    var resultDocs = (response)["docs"];
+    var results = new Array();
+    for (var i = 0; i < resultDocs.length; i++) {
+        var doc = resultDocs[i];
+        if ((doc)["found"]) {
+            delete (lookup)[((doc)["_id"]).substring(0, ((doc)["_id"]).length - 1)];
+            results.push(JSON.parse(((doc)["_source"])["data"]));
         }
     }
-    //Backup
-    var ary = EcObject.keys(lookup);
-    for (var i = 0;i < ary.length;i++)
-        ary[i] = lookup[ary[i]];
+    ary = EcObject.keys(lookup);
+    for (var i = 0; i < ary.length; i++) 
+        ary[i] = (lookup)[ary[i]];
     if (ary != null) {
-        var threaded = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
-        for (var i = 0;i < threaded.length;i++)
-            results.push(threaded[i]);
+        var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
+        for (var i = 0; i < forEachResults.length; i++) 
+            results.push(JSON.parse(forEachResults[i]));
     }
     return JSON.stringify(results);
 };
@@ -693,7 +693,7 @@ var endpointSingleGet = function() {
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
     var o = (skyrepoGetParsed).call(this, id, version, type, null);
-    if (o != null)
+    if (o != null) 
         return JSON.parse((o).toJson());
     return null;
 };
@@ -701,30 +701,30 @@ var skyRepoSearch = function() {
     var q = this.params.q;
     var urlRemainder = this.params.urlRemainder;
     var start = 0;
-    if (this.params.start != null)
+    if (this.params.start != null) 
         start = parseInt(this.params.start);
     var size = 50;
-    if (this.params.size != null)
+    if (this.params.size != null) 
         size = parseInt(this.params.size);
     var sort = this.params.sort;
     var track_scores = this.params.track_scores;
     var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "searchParams", null)));
     if (searchParams != null) {
-        if ((searchParams)["q"] != null)
+        if ((searchParams)["q"] != null) 
             q = (searchParams)["q"];
-        if ((searchParams)["start"] != null)
+        if ((searchParams)["start"] != null) 
             start = (searchParams)["start"];
-        if ((searchParams)["size"] != null)
+        if ((searchParams)["size"] != null) 
             size = (searchParams)["size"];
-        if ((searchParams)["sort"] != null)
+        if ((searchParams)["sort"] != null) 
             sort = (searchParams)["sort"];
-        if ((searchParams)["track_scores"] != null)
+        if ((searchParams)["track_scores"] != null) 
             track_scores = (searchParams)["track_scores"];
     }
     var data = fileToString((fileFromDatastream).call(this, "data", null));
-    if (data != null && data != "")
+    if (data != null && data != "") 
         q = data;
-    if (q == null || q == "")
+    if (q == null || q == "") 
         q = "*";
     return JSON.stringify((skyrepoSearch).call(this, q, urlRemainder, start, size, sort, track_scores));
 };
@@ -735,7 +735,7 @@ var endpointAdmin = function() {
     return JSON.stringify(skyrepoAdminList());
 };
 var skyrepoAdminPpk = function() {
-    if (!fileExists("skyAdmin.pem"))
+    if (!fileExists("skyAdmin.pem")) 
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyAdmin.pem");
     return fileToString(fileLoad("skyAdmin.pem"));
 };
@@ -770,16 +770,16 @@ var skyIdCreate = function() {
     var credentials = null;
     var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "credentialCommit", null)));
     if (searchParams != null) {
-        if ((searchParams)["username"] != null)
+        if ((searchParams)["username"] != null) 
             id = (searchParams)["username"];
-        if ((searchParams)["password"] != null)
+        if ((searchParams)["password"] != null) 
             password = (searchParams)["password"];
-        if ((searchParams)["credentials"] != null)
+        if ((searchParams)["credentials"] != null) 
             credentials = (searchParams)["credentials"];
     }
-    if (id == null)
+    if (id == null) 
         error("Missing username.", 422);
-    if (password == null)
+    if (password == null) 
         error("Missing password.", 422);
     var payload = credentials;
     var saltedPassword = forge.util.encode64(forge.pkcs5.pbkdf2(password, skyIdSalt, 10000, 64));
@@ -789,14 +789,14 @@ var skyIdCreate = function() {
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
-    if (get != null)
+    if (get != null) 
         get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     var encryptedPayload = new EcEncryptedValue();
     encryptedPayload.addOwner(skyIdPem.toPk());
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
-    if (get == null)
+    if (get == null) 
         (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
-    else
+     else 
         error("Cannot create, account already exists.", 422);
     return null;
 };
@@ -807,20 +807,20 @@ var skyIdCommit = function() {
     var credentials = null;
     var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "credentialCommit", null)));
     if (searchParams != null) {
-        if ((searchParams)["username"] != null)
+        if ((searchParams)["username"] != null) 
             id = (searchParams)["username"];
-        if ((searchParams)["password"] != null)
+        if ((searchParams)["password"] != null) 
             password = (searchParams)["password"];
-        if ((searchParams)["token"] != null)
+        if ((searchParams)["token"] != null) 
             token = (searchParams)["token"];
-        if ((searchParams)["credentials"] != null)
+        if ((searchParams)["credentials"] != null) 
             credentials = (searchParams)["credentials"];
     }
-    if (id == null)
+    if (id == null) 
         error("Missing username.", 422);
-    if (password == null)
+    if (password == null) 
         error("Missing password.", 422);
-    if (token == null)
+    if (token == null) 
         error("Missing token.", 422);
     var payload = credentials;
     (payload)["token"] = token;
@@ -834,10 +834,10 @@ var skyIdCommit = function() {
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
-    if (get == null)
+    if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
-    if ((get)["token"] != token)
+    if ((get)["token"] != token) 
         error("An error in synchronization has occurred. Please re-login and try again.", 403);
     (skyrepoPutParsed).call(this, JSON.parse(encryptedPayload.toJson()), saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue");
     return null;
@@ -848,16 +848,16 @@ var skyIdLogin = function() {
     var credentials = null;
     var searchParams = JSON.parse(fileToString((fileFromDatastream).call(this, "credentialRequest", null)));
     if (searchParams != null) {
-        if ((searchParams)["username"] != null)
+        if ((searchParams)["username"] != null) 
             id = (searchParams)["username"];
-        if ((searchParams)["password"] != null)
+        if ((searchParams)["password"] != null) 
             password = (searchParams)["password"];
-        if ((searchParams)["credentials"] != null)
+        if ((searchParams)["credentials"] != null) 
             credentials = (searchParams)["credentials"];
     }
-    if (id == null)
+    if (id == null) 
         error("Missing username.", 422);
-    if (password == null)
+    if (password == null) 
         error("Missing password.", 422);
     var saltedPassword = forge.util.encode64(forge.pkcs5.pbkdf2(password, skyIdSalt, 10000, 64));
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
@@ -865,10 +865,10 @@ var skyIdLogin = function() {
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     (this)["signatureSheet"] = signatureSheet;
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
-    if (get == null)
+    if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
-    if ((get)["password"] != saltedPassword)
+    if ((get)["password"] != saltedPassword) 
         error("Invalid password.", 403);
     (get)["token"] = randomString(20);
     var encryptedPayload = new EcEncryptedValue();
@@ -879,13 +879,13 @@ var skyIdLogin = function() {
     return JSON.stringify(get);
 };
 (function() {
-    if (!fileExists("skyId.username.public.salt"))
+    if (!fileExists("skyId.username.public.salt")) 
         fileSave(randomString(2048), "skyId.username.public.salt");
     usernameSalt = fileToString(fileLoad("skyId.username.public.salt"));
-    if (!fileExists("skyId.password.public.salt"))
+    if (!fileExists("skyId.password.public.salt")) 
         fileSave(randomString(2048), "skyId.password.public.salt");
     passwordSalt = fileToString(fileLoad("skyId.password.public.salt"));
-    if (!fileExists("skyId.secret.public.salt"))
+    if (!fileExists("skyId.secret.public.salt")) 
         fileSave(randomString(2048), "skyId.secret.public.salt");
     secretSalt = fileToString(fileLoad("skyId.secret.public.salt"));
     (cachedSalts)["usernameSalt"] = usernameSalt;
@@ -897,14 +897,14 @@ var skyIdLogin = function() {
     (cachedSalts)["secretSalt"] = secretSalt;
     (cachedSalts)["secretIterations"] = 5000;
     (cachedSalts)["secretLength"] = 64;
-    if (!fileExists("skyId.salt"))
+    if (!fileExists("skyId.salt")) 
         fileSave(randomString(2048), "skyId.salt");
     skyIdSalt = fileToString(fileLoad("skyId.salt"));
-    if (!fileExists("skyId.secret"))
+    if (!fileExists("skyId.secret")) 
         fileSave(randomString(2048), "skyId.secret");
     skyIdSecretStr = fileToString(fileLoad("skyId.secret"));
     skyIdSecretKey = forge.util.encode64(forge.pkcs5.pbkdf2(skyIdSecretStr, skyIdSalt, 10000, 16));
-    if (!fileExists("skyId.pem"))
+    if (!fileExists("skyId.pem")) 
         fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyId.pem");
     skyIdPem = EcPpk.fromPem(fileToString(fileLoad("skyId.pem")));
     bindWebService("/sky/id/salts", salts);

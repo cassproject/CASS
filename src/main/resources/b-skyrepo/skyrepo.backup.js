@@ -55,6 +55,43 @@ skyrepoMigrate = function(){
 };
 var skyrepoMigrateAutoExecute = skyrepoMigrate;
 
+skyrepoReindex = function(){
+    skyrepoDebug = true;
+    if (this.params.secret != skyIdSecret())
+        error("You must provide secret=`cat skyId.secret` to invoke reindex.",401);
+
+    var firstQueryPost = {
+        query:{
+            query_string:{query:"*:*"}
+        },
+        explain:"false",
+        size:"50",
+        sort:"_doc"
+    };
+    var firstQueryUrl = elasticEndpoint + "/_search?scroll=1m&version";
+    var results = httpPost(JSON.stringify(firstQueryPost),firstQueryUrl,"application/json","false");
+    var scroll = results["_scroll_id"];
+    var counter = 0;
+    while (results != null && scroll != null && scroll != "")
+    {
+        scroll = results["_scroll_id"];
+        var hits = results.hits.hits;
+        if (hits.length == 0)
+            break;
+        for (var i = 0;i < hits.length;i++)
+        {
+            if (++counter % 1000 == 0)
+                console.log("Reindexed " + counter + " records.");
+            if (hits[i]["_type"] == "permanent") {
+                skyrepoPutInternalPermanent(JSON.parse(hits[i]["_source"].data),hits[i]["_id"].split(".")[0],hits[i]["_version"],hits[i]["_type"]);
+            }
+        }
+        results = httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id="+scroll);
+    }
+    skyrepoDebug = false;
+}
+bindWebService("/util/reindex",skyrepoReindex);
+
 skyrepoBackup = function(){
 	if (this.params.secret != skyIdSecret())
 		error("You must provide secret=`cat skyId.secret` to invoke backup.",401);
