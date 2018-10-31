@@ -16,3 +16,9 @@
 [submodule "src/main/webapp/cass-gap-analysis"]
 	path = src/main/webapp/cass-gap-analysis
 	url = https://github.com/cassproject/cass-gap-analysis
+[submodule "ew"]
+	path = ew
+	url = http://github.com/eduworks/ew.git
+[submodule "ec"]
+	path = ec
+	url = http://github.com/eduworks/ec
