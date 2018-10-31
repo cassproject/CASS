@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ec-version>2.5.2</ec-version>
-		<ew-version>5.14.1</ew-version>
+		<ew-version>5.14.2</ew-version>
 	</properties>
 
 	<developers>
@@ -173,9 +173,10 @@
 				<artifactId>maven-invoker-plugin</artifactId>
 				<version>3.1.0</version>
 				<configuration>
-					<projectsDirectory>ew</projectsDirectory>
+					<projectsDirectory>.</projectsDirectory>
 					<pomIncludes>
-						<pomInclude>pom.xml</pomInclude>
+						<pomInclude>ew/pom.xml</pomInclude>
+						<pomInclude>ec/pom.xml</pomInclude>
 					</pomIncludes>
 					<parallelThreads>4</parallelThreads>
 					<properties>
@@ -183,39 +184,13 @@
 						<gpg.skip>true</gpg.skip>
 					</properties>
 					<goals>
+						<goal>clean</goal>
 						<goal>install</goal>
 					</goals>
 				</configuration>
 				<executions>
 					<execution>
-						<id>ew-install</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-invoker-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<projectsDirectory>ec</projectsDirectory>
-					<pomIncludes>
-						<pomInclude>pom.xml</pomInclude>
-					</pomIncludes>
-					<parallelThreads>4</parallelThreads>
-					<properties>
-						<skipTests>true</skipTests>
-						<gpg.skip>true</gpg.skip>
-					</properties>
-					<goals>
-						<goal>install</goal>
-					</goals>
-				</configuration>
-				<executions>
-					<execution>
-						<id>ec-install</id>
+						<id>sub-install</id>
 						<phase>initialize</phase>
 						<goals>
 							<goal>run</goal>

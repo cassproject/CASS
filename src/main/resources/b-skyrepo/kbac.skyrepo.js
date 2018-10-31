@@ -103,13 +103,13 @@ var filterResults = function(o) {
         }
         return ary;
     } else if (EcObject.isObject(o)) {
-        var rld = new EcRemoteLinkedData(null, null);
-        rld.copyFrom(o);
+        var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
+        rld.reader = (o)["@reader"];
         if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
             for (var i = 0; i < signatures.length; i++) 
-                if (rld.toJson().indexOf(signatures[i].owner) != -1) {
+                if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
                 }
@@ -122,11 +122,11 @@ var filterResults = function(o) {
             var result = null;
             result = (filterResults).call(this, (o)[key], null);
             if (result != null) 
-                (rld)[key] = result;
+                (o)[key] = result;
              else 
-                (rld)[key] = null;
+                delete (o)[key];
         }
-        return rld.atIfy();
+        return o;
     } else 
         return o;
 };
@@ -676,6 +676,7 @@ var endpointMultiGet = function() {
             results.push(JSON.parse(((doc)["_source"])["data"]));
         }
     }
+    (filterResults).call(this, results, null);
     ary = EcObject.keys(lookup);
     for (var i = 0; i < ary.length; i++) 
         ary[i] = (lookup)[ary[i]];
@@ -694,7 +695,7 @@ var endpointSingleGet = function() {
     var version = (parseParams)["version"];
     var o = (skyrepoGetParsed).call(this, id, version, type, null);
     if (o != null) 
-        return JSON.parse((o).toJson());
+        return o;
     return null;
 };
 var skyRepoSearch = function() {
