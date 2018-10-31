@@ -180,6 +180,7 @@
 					<parallelThreads>4</parallelThreads>
 					<properties>
 						<skipTests>true</skipTests>
+						<gpg.skip>true</gpg.skip>
 					</properties>
 					<goals>
 						<goal>install</goal>
@@ -206,6 +207,7 @@
 					<parallelThreads>4</parallelThreads>
 					<properties>
 						<skipTests>true</skipTests>
+						<gpg.skip>true</gpg.skip>
 					</properties>
 					<goals>
 						<goal>install</goal>
