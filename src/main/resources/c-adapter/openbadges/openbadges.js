@@ -21,7 +21,8 @@ badgeSetup = function () {
 }
 
 badgeKey=function(){EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();}
-bindWebService("/badge/pk",badgeKey);
+openbadgesPpk=badgeKey;
+bindWebService("/badge/pk",openbadgesPpk);
 
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);
