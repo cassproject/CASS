@@ -178,11 +178,12 @@
 						<pomInclude>ew/pom.xml</pomInclude>
 						<pomInclude>ec/pom.xml</pomInclude>
 					</pomIncludes>
-					<parallelThreads>4</parallelThreads>
+					<parallelThreads>2</parallelThreads>
 					<properties>
 						<skipTests>true</skipTests>
 						<gpg.skip>true</gpg.skip>
 					</properties>
+					<noLog>true</noLog>
 					<goals>
 						<goal>clean</goal>
 						<goal>install</goal>
