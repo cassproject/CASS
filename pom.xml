@@ -178,7 +178,6 @@
 						<pomInclude>ew/pom.xml</pomInclude>
 						<pomInclude>ec/pom.xml</pomInclude>
 					</pomIncludes>
-					<parallelThreads>2</parallelThreads>
 					<properties>
 						<skipTests>true</skipTests>
 						<gpg.skip>true</gpg.skip>
