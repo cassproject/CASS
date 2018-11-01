@@ -83,7 +83,7 @@ skyrepoReindex = function(){
             if (++counter % 1000 == 0)
                 console.log("Reindexed " + counter + " records.");
             if (hits[i]["_type"] == "permanent") {
-                skyrepoPutInternalPermanent(JSON.parse(hits[i]["_source"].data),hits[i]["_id"].replace("."+hits[i]["_version"],"").replace(/.$/,""),hits[i]["_version"],hits[i]["_type"]);
+                skyrepoPutInternalPermanent(JSON.parse(hits[i]["_source"].data),hits[i]["_id"].replace("."+hits[i]["_version"],"").replace(/\.$/,""),hits[i]["_version"],hits[i]["_type"]);
             }
         }
         results = httpGet(elasticEndpoint + "/_search/scroll?scroll=1m&scroll_id="+scroll);
