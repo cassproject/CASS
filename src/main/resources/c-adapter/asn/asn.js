@@ -14,7 +14,7 @@ var asnContext = {
 };
 
 var asnIdentity = new EcIdentity();
-asnIdentity.ppk = EcPpk.fromPem(asnPpk());
+asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
 asnIdentity.displayName = "ASN Server Identity";
 EcIdentityManager.addIdentity(asnIdentity);
 

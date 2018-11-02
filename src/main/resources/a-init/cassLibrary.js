@@ -46,11 +46,11 @@ EcIdentityManager.async = false;
 
 console = {
     log: function (s) {
-        print(s);
+        debug(s);
     },
 
     error: function (s) {
-        print("error:" + s);
+        debug("error:" + s);
     }
 };
 
@@ -62,6 +62,39 @@ var setTimeout = function (f, time) {
 var repo = new EcRepository();
 repo.selectedServer = "http://localhost:8080/api/";
 
+if (java.lang.System.getenv("CASS_LOOPBACK") != null)
+    repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK")
+
+if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+    elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
+thisEndpoint = function () {
+    return repo.selectedServer;
+}
+repoEndpoint = function () {
+    return repo.selectedServer;
+}
+
+var keyFor = function (filename) {
+    if (fileExists(filename + ".pem"))
+        return fileToString(fileLoad(filename + ".pem", false, true));
+    if (fileExists("etc/" + filename + ".pem"))
+        return fileToString(fileLoad("etc/" + filename + ".pem", false, true));
+    if (!fileExists("etc"))
+        createDirectory("etc");
+    fileSave(EcPpk.generateKey().toPem(), "etc/" + filename + ".pem");
+    return fileToString(fileLoad("etc/" + filename + ".pem", false, true));
+}
+
 function repoAutoDetect() {
-    repo.autoDetectRepository();
+    if (java.lang.System.getenv("CASS_LOOPBACK") != null)
+        repo.selectedServer = java.lang.System.getenv("CASS_LOOPBACK");
+    else
+        repo.autoDetectRepository();
+
+    if (java.lang.System.getenv("ELASTICSEARCH_ENDPOINT") != null)
+        elasticEndpoint = java.lang.System.getenv("ELASTICSEARCH_ENDPOINT");
+
+    console.log("Loopback: " + repo.selectedServer);
+    console.log("Elasticsearch Endpoint: " + elasticEndpoint);
 }

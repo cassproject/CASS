@@ -1,18 +1,24 @@
 [submodule "src/main/webapp/cass-editor"]
 	path = src/main/webapp/cass-editor
-	url = https://github.com/cassproject/cass-editor
+	url = https://github.com/cassproject/cass-editor.git
 [submodule "src/main/webapp/cass-viewer"]
 	path = src/main/webapp/cass-viewer
 	url = https://github.com/cassproject/cass-viewer.git
 [submodule "src/main/webapp/cass-align"]
 	path = src/main/webapp/cass-align
-	url = https://github.com/cassproject/cass-align
+	url = https://github.com/cassproject/cass-align.git
 [submodule "src/main/webapp/cass-profile"]
 	path = src/main/webapp/cass-profile
-	url = https://github.com/cassproject/cass-profile
+	url = https://github.com/cassproject/cass-profile.git
 [submodule "src/main/webapp/cass-vlrc"]
 	path = src/main/webapp/cass-vlrc
-	url = https://github.com/cassproject/cass-vlrc
+	url = https://github.com/cassproject/cass-vlrc.git
 [submodule "src/main/webapp/cass-gap-analysis"]
 	path = src/main/webapp/cass-gap-analysis
-	url = https://github.com/cassproject/cass-gap-analysis
+	url = https://github.com/cassproject/cass-gap-analysis.git
+[submodule "ew"]
+	path = ew
+	url = https://github.com/eduworks/ew.git
+[submodule "ec"]
+	path = ec
+	url = https://github.com/eduworks/ec.git

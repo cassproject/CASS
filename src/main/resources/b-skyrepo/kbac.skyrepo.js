@@ -88,7 +88,13 @@ var filterResults = function(o) {
         for (var i = 0; i < ary.length; i++) {
             if (ary[i] == null) 
                 continue;
-            var result = (filterResults).call(this, ary[i], null);
+            var result = null;
+            try {
+                result = (filterResults).call(this, ary[i], null);
+            }catch (ex) {
+                if (ex.getMessage() != "Signature Violation") 
+                     throw ex;
+            }
             if (result == null) {
                 ary.splice(i, 1);
                 i--;
@@ -97,25 +103,30 @@ var filterResults = function(o) {
         }
         return ary;
     } else if (EcObject.isObject(o)) {
-        var rld = new EcRemoteLinkedData(null, null);
-        rld.copyFrom(o);
-        if (isEncryptedType(rld)) {
+        var rld = new EcRemoteLinkedData((o)["@context"], (o)["@type"]);
+        rld.reader = (o)["@reader"];
+        if ((rld.reader != null && rld.reader.length != 0) || isEncryptedType(rld)) {
             var signatures = (signatureSheet).call(this);
             var foundSignature = false;
             for (var i = 0; i < signatures.length; i++) 
-                if (rld.toJson().indexOf(signatures[i].owner) != -1) {
+                if (JSON.stringify(o).indexOf(signatures[i].owner) != -1) {
                     foundSignature = true;
                     break;
                 }
             if (!foundSignature) 
-                return null;
+                 throw new RuntimeException("Signature Violation");
         }
         var keys = EcObject.keys(o);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            (rld)[key] = (filterResults).call(this, (o)[key], null);
+            var result = null;
+            result = (filterResults).call(this, (o)[key], null);
+            if (result != null) 
+                (o)[key] = result;
+             else 
+                delete (o)[key];
         }
-        return rld.atIfy();
+        return o;
     } else 
         return o;
 };
@@ -147,9 +158,10 @@ var inferTypeWithoutObj = function(atType) {
 var putUrl = function(o, id, version, type) {
     var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
-    if (version == null || version == "") 
-        versionPart = "?refresh=wait_for";
-     else 
+    if (version == null || version == "") {
+        versionPart = "?refresh=true";
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
     url += "/" + typeFromObj.toLowerCase();
@@ -160,11 +172,11 @@ var putUrl = function(o, id, version, type) {
     return url;
 };
 var putPermanentUrl = function(o, id, version, type) {
-    var typeFromObj = inferTypeFromObj(o, type);
     var versionPart = null;
-    if (version == null || version == "") 
+    if (version == null || version == "") {
         versionPart = "?refresh=true";
-     else 
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
     url += "/permanent";
@@ -174,12 +186,28 @@ var putPermanentUrl = function(o, id, version, type) {
         console.log("PutPermanent:" + url);
     return url;
 };
+var putPermanentBaseUrl = function(o, id, version, type) {
+    var versionPart = null;
+    if (version == null || version == "") {
+        versionPart = "?refresh=true";
+        version = "";
+    } else 
+        versionPart = "?version=" + version + "&version_type=external&refresh=true";
+    var url = elasticEndpoint;
+    url += "/permanent";
+    url += "/permanent";
+    url += "/" + urlEncode(id) + "." + versionPart;
+    if (skyrepoDebug) 
+        console.log("PutPermanentBase:" + url);
+    return url;
+};
 var getUrl = function(index, id, version, type) {
     var typeFromObj = inferTypeWithoutObj(type);
     var versionPart = null;
-    if (version == null || version == "") 
+    if (version == null || version == "") {
         versionPart = "";
-     else 
+        version = "";
+    } else 
         versionPart = "?version=" + version + "&version_type=external";
     var url = elasticEndpoint;
     url += "/" + index;
@@ -204,6 +232,15 @@ var deleteUrl = function(id, version, type) {
     url += "?refresh=true";
     if (skyrepoDebug) 
         console.log("Delete:" + url);
+    return url;
+};
+var deletePermanentBaseUrl = function(id, version, type) {
+    var url = elasticEndpoint;
+    url += "/permanent";
+    url += "/permanent";
+    url += "/" + urlEncode(id) + ".";
+    if (skyrepoDebug) 
+        console.log("DeletePermanentBase:" + url);
     return url;
 };
 var skyrepoPutInternalTypeCheck = function(typeChecked, o, type) {
@@ -251,8 +288,12 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
     }
     var data = new Object();
     (data)["data"] = JSON.stringify(o);
-    var url = putPermanentUrl(o, id, version, type);
+    var url = putPermanentBaseUrl(o, id, version, type);
     var out = httpPost(data, url, "application/json", false);
+    if (version != null && version != "") {
+        url = putPermanentUrl(o, id, version, type);
+        out = httpPost(data, url, "application/json", false);
+    }
     if (skyrepoDebug) 
         console.log(JSON.stringify(out));
     return JSON.stringify(out);
@@ -300,15 +341,6 @@ var skyrepoGetPermanent = function(id, version, type) {
 };
 var skyrepoGetInternal = function(id, version, type) {
     var versionRetrievalObject = null;
-    if (version == null) {
-        versionRetrievalObject = (skyrepoGetIndex).call(this, id, version, type, null);
-        if (versionRetrievalObject != null) 
-            version = (versionRetrievalObject)["_version"];
-        if (versionRetrievalObject != null) 
-            type = (versionRetrievalObject)["_type"];
-    }
-    if (version == null) 
-        return null;
     var result = skyrepoGetPermanent(id, version, type);
     if (result == null) 
         return null;
@@ -352,7 +384,13 @@ var skyrepoGetParsed = function(id, version, type) {
     var result = (skyrepoGetInternal).call(this, id, version, type, null);
     if (result == null) 
         return null;
-    var filtered = (filterResults).call(this, result, null);
+    var filtered = null;
+    try {
+        filtered = (filterResults).call(this, result, null);
+    }catch (ex) {
+        if (ex.getMessage() != "Signature Violation") 
+             throw ex;
+    }
     if (filtered == null) 
         return null;
     if (EcObject.keys(filtered).length == 0) 
@@ -411,7 +449,8 @@ var skyrepoDeleteInternalIndex = function(id, version, type) {
     return httpDelete(url);
 };
 var skyrepoDeleteInternalPermanent = function(id, version, type) {
-    return null;
+    var url = deletePermanentBaseUrl(id, version, type);
+    return httpDelete(url);
 };
 var skyrepoDelete = function(id, version, type) {
     (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
@@ -493,30 +532,13 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
         var type = inferTypeFromObj((searchResult)["_source"], null);
         var id = (searchResult)["_id"];
         var version = (searchResult)["_version"];
-        searchResult = (skyrepoGetInternal).call(this, id, version, type, null);
-        if (searchResult == null) 
-            continue;
-        var preLength = JSON.stringify(searchResult).length;
-        if (skyrepoDebug) 
-            console.log("pre filter length:" + preLength);
-        searchResult = (filterResults).call(this, searchResult, null);
-        if (searchResult == null) 
-            continue;
-        if (skyrepoDebug) 
-            console.log("post filter length:" + JSON.stringify(searchResult).length);
-        if (preLength != JSON.stringify(searchResult).length) {
-            var signatures = (signatureSheet).call(this);
-            for (var j = 0; j < signatures.length; j++) {
-                if (JSON.stringify(searchResult).indexOf(signatures[j].owner) != -1) {
-                    if (skyrepoDebug) 
-                        console.log("Matched signature:" + signatures[j].owner);
-                    searchResults.push(searchResult);
-                    break;
-                }
-            }
-        } else 
-            searchResults.push(searchResult);
+        var hit = "data/";
+        if (type != null) 
+            hit += type + "/";
+        hit += id + "/" + version;
+        hits[i] = hit;
     }
+    searchResults = (forEach).call(this, hits, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
     return searchResults;
 };
 var queryParse = function(urlRemainder) {
@@ -627,22 +649,54 @@ var endpointData = function() {
 };
 var endpointMultiGet = function() {
     var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
+    var lookup = new Object();
+    var mget = new Object();
+    var docs = new Array();
+    (mget)["docs"] = docs;
+    for (var i = 0; i < ary.length; i++) {
+        var urlRemainder = ary[i];
+        var parseParams = (queryParse).call(this, urlRemainder, null);
+        var id = (parseParams)["id"];
+        (lookup)[id] = urlRemainder;
+        var type = (parseParams)["type"];
+        var version = (parseParams)["version"];
+        var p = new Object();
+        (p)["_index"] = "permanent";
+        (p)["_type"] = "permanent";
+        (p)["_id"] = id + "." + (version == null ? "" : version);
+        docs.push(p);
+    }
+    var response = httpPost(mget, elasticEndpoint + "/_mget", "application/json", false);
+    var resultDocs = (response)["docs"];
     var results = new Array();
-    if (ary != null) {
-        for (var i = 0; i < ary.length; i++) {
-            var urlRemainder = ary[i];
-            var parseParams = (queryParse).call(this, urlRemainder, null);
-            var id = (parseParams)["id"];
-            var type = (parseParams)["type"];
-            var version = (parseParams)["version"];
-            try {
-                var o = (skyrepoGetParsed).call(this, id, version, type, null);
-                if (o != null) 
-                    results.push(o);
-            }catch (ex) {}
+    for (var i = 0; i < resultDocs.length; i++) {
+        var doc = resultDocs[i];
+        if ((doc)["found"]) {
+            delete (lookup)[((doc)["_id"]).substring(0, ((doc)["_id"]).length - 1)];
+            results.push(JSON.parse(((doc)["_source"])["data"]));
         }
     }
+    (filterResults).call(this, results, null);
+    ary = EcObject.keys(lookup);
+    for (var i = 0; i < ary.length; i++) 
+        ary[i] = (lookup)[ary[i]];
+    if (ary != null) {
+        var forEachResults = (forEach).call(this, ary, "obj", null, com.eduworks.levr.servlet.impl.LevrResolverServlet.resolvableFunctions.get("endpointSingleGet"), true, true, false, true, false);
+        for (var i = 0; i < forEachResults.length; i++) 
+            results.push(forEachResults[i]);
+    }
     return JSON.stringify(results);
+};
+var endpointSingleGet = function() {
+    var urlRemainder = this.params.obj;
+    var parseParams = (queryParse).call(this, urlRemainder, null);
+    var id = (parseParams)["id"];
+    var type = (parseParams)["type"];
+    var version = (parseParams)["version"];
+    var o = (skyrepoGetParsed).call(this, id, version, type, null);
+    if (o != null) 
+        return o;
+    return null;
 };
 var skyRepoSearch = function() {
     var q = this.params.q;

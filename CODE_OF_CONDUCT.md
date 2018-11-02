@@ -20,6 +20,7 @@ Be careful in the words that you choose. We are a community of professionals, an
  - Harassment and other exclusionary behavior are not acceptable. 
 
 Unacceptable behavior includes, but is not limited to:
+
  - Violent threats or language directed against another person.
  - Discriminatory jokes and language.
  - Posting sexually explicit or violent material.

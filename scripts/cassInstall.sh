@@ -34,6 +34,8 @@ platformDebian=`cat /etc/*release | grep debian | wc -l`
 if [ "$platformDebian" -ne 0 ];
  then
  echo Debian based platform found...
+ platformVersion16=`lsb_release -r | grep 16.04 | wc -l`
+ platformVersion18=`lsb_release -r | grep 18.04 | wc -l`
 fi
 if [ "$platformFedora" -ne 0 ];
  then
@@ -110,7 +112,7 @@ sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 yum install -y -q apache-maven
 fi
 
-if [ "$platformDebian" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
 echo Installing Tomcat 7...
@@ -120,6 +122,17 @@ mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
 fi
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ] && [ ! -e "/etc/init.d/tomcat8" ];
+ then
+echo -----
+echo Installing Tomcat 8...
+apt-get -qqy install tomcat8
+echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat8
+mkdir /var/lib/tomcat8/backup
+chown tomcat8:tomcat8 /var/lib/tomcat8/backup
+chown tomcat8:tomcat8 /var/lib/tomcat8
+fi
+
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/tomcat7" ];
  then
 echo -----
@@ -137,10 +150,15 @@ sleep 3s
 echo -----
 echo Removing Old Versions of CASS...
 
-if [ "$platformDebian" -ne 0 ]
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
  then
 rm -rf /var/lib/tomcat7/webapps/levr*
 rm -rf /var/lib/tomcat7/webapps/cass*
+fi
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+ then
+rm -rf /var/lib/tomcat8/webapps/levr*
+rm -rf /var/lib/tomcat8/webapps/cass*
 fi
 if [ "$platformFedora" -ne 0 ]
  then
@@ -243,9 +261,13 @@ cd CASS
 echo Compiling CASS...
 mvn -q clean install
 echo Deploying CASS...
-if [ "$platformDebian" -ne 0 ];
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
  then
  cp target/cass.war /var/lib/tomcat7/webapps
+fi
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+ then
+ cp target/cass.war /var/lib/tomcat8/webapps
 fi
 if [ "$platformFedora" -ne 0 ];
  then
@@ -336,9 +358,13 @@ fi
 
 echo -----
 echo Starting Tomcat...
-if [ "$platformDebian" -ne 0 ];
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
  then
  service tomcat7 start
+fi
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+ then
+ service tomcat8 start
 fi
 if [ "$platformFedora" -ne 0 ];
  then

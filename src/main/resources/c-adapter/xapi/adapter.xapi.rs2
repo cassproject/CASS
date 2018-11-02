@@ -1,9 +1,9 @@
-ppk=#fileLoad(path="xapiAdapter.pem").fileToString();
+ppk=#fileLoad(path="etc/xapiAdapter.pem").fileToString();
 ppk=#if(
-	operator=#fileExists(path="xapiAdapter.pem"),
+	operator=#fileExists(path="etc/xapiAdapter.pem"),
 	operand="false",
 	eq=#object(
-		a=#fileSave(obj=#rsaGenerate(),path="xapiAdapter.pem"),
+		a=#fileSave(obj=#rsaGenerate(),path="etc/xapiAdapter.pem"),
 		b=ppk
 	).cget(b=""),
 	ne=ppk

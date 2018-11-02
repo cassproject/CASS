@@ -122,35 +122,30 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             }
             if (d.owner != null) {
                 new EcAsyncHelper().each(d.owner, function(pk, arg1) {
-                    var eSecret = new EbacEncryptedSecret();
-                    eSecret.iv = newIv;
-                    eSecret.secret = newSecret;
-                    if (v.secret == null) {
-                        v.secret = new Array();
-                    }
-                    EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
-                        v.secret.push(encryptedSecret);
-                        arg1();
-                    }, failure);
+                    EcEncryptedValue.insertSecret(pk, arg1, newIv, newSecret, v, failure);
                 }, function(arg0) {
                     if (d.reader != null) {
                         new EcAsyncHelper().each(d.reader, function(pk, arg1) {
-                            var eSecret = new EbacEncryptedSecret();
-                            eSecret.iv = newIv;
-                            eSecret.secret = newSecret;
-                            if (v.secret == null) {
-                                v.secret = new Array();
-                            }
-                            EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
-                                v.secret.push(encryptedSecret);
-                                arg1();
-                            }, failure);
+                            EcEncryptedValue.insertSecret(pk, arg1, newIv, newSecret, v, failure);
                         }, function(arg0) {
                             success(v);
                         });
-                    }
+                    } else 
+                        success(v);
                 });
             }
+        }, failure);
+    };
+    constructor.insertSecret = function(pk, success, newIv, newSecret, v, failure) {
+        var eSecret = new EbacEncryptedSecret();
+        eSecret.iv = newIv;
+        eSecret.secret = newSecret;
+        if (v.secret == null) {
+            v.secret = new Array();
+        }
+        EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(encryptedSecret) {
+            v.secret.push(encryptedSecret);
+            success();
         }, failure);
     };
     /**
@@ -1441,7 +1436,21 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             return;
         }
         var results = new Array();
-        this.precache(urls, function() {
+        if (EcRepository.caching) 
+            this.precache(urls, function() {
+                var eah = new EcAsyncHelper();
+                eah.each(urls, function(url, done) {
+                    EcRepository.get(url, function(result) {
+                        results.push(result);
+                        done();
+                    }, function(s) {
+                        done();
+                    });
+                }, function(urls) {
+                    success(results);
+                });
+            });
+         else {
             var eah = new EcAsyncHelper();
             eah.each(urls, function(url, done) {
                 EcRepository.get(url, function(result) {
@@ -1453,7 +1462,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }, function(urls) {
                 success(results);
             });
-        });
+        }
     };
     /**
      *  Search a repository for JSON-LD compatible data.

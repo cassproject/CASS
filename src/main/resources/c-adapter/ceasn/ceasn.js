@@ -21,7 +21,7 @@ var asnContext = {
 };
 
 var ceasnIdentity = new EcIdentity();
-ceasnIdentity.ppk = EcPpk.fromPem(ceasnPpk());
+ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
 ceasnIdentity.displayName = "CEASN Server Identity";
 EcIdentityManager.addIdentity(ceasnIdentity);
 
@@ -298,8 +298,8 @@ function stripNonCe(f) {
                                                                 if (k.indexOf("ceasn:dateCreated") != 0)
                                                                     if (k.indexOf("ceasn:dateModified") != 0)
                                                                     if (k.indexOf("ceasn:dateValidFrom") != 0)
-                                                                        if (k.indexOf("ceasn:rights") != 0)
                                                                             if (k.indexOf("ceasn:dateValidUntil") != 0)
+                                                                                if (k.indexOf("ceasn:rights") != 0)
                                                                                 if (k.indexOf("ceasn:license") != 0)
                                                                                     if (k.indexOf("ceasn:rightsHolder") != 0)
                                                                                         if (k.indexOf("ceasn:publicationStatusType") != 0)

@@ -134,7 +134,7 @@ embedCFPackageIntoFramework = function(f,document){
 }
 
 var caseIdentity = new EcIdentity();
-caseIdentity.ppk = EcPpk.fromPem(casePpk());
+caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
 caseIdentity.displayName = "CASE Server Identity";
 EcIdentityManager.addIdentity(caseIdentity);
 

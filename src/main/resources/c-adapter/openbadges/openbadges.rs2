@@ -1,17 +1,3 @@
-ppk=#fileLoad(path="adapter.openbadges.private.pem").fileToString();
-ppk=#if(
-	operator=#fileExists(path="adapter.openbadges.private.pem"),
-	operand="false",
-	eq=#object(
-		a=#fileSave(obj=#rsaGenerate(),path="adapter.openbadges.private.pem"),
-		b=ppk
-	).cget(b=""),
-	ne=ppk
-).cache(name="adapter.openbadges.private.pem");
-#openbadgesPpk=ppk;
-pk=ppk.rsaPpkToPk();
-/badge/pk=pk;
-
 badgeSendEmail=#sendEmail(
 	html="true",
 	_smtpHost=#badgeSMTPHost(),

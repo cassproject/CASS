@@ -36,3 +36,7 @@ skyrepoOld\.t
 adapter\.amqp\.json
 
 out\.log
+
+alpine\.sh
+
+alpineRun\.sh
