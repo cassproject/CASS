@@ -180,5 +180,36 @@ function init() {
 //**************************************************************************************************
 
 $(document).ready(function () {
-    init();
+
+if (Keycloak)
+{
+    var keycloak = Keycloak({
+      "realm": "master",
+      "url": window.location.origin+"/auth",
+      "clientId": "cass"
+    });
+    var userCredentials = null;
+    keycloak.init({
+        onLoad: 'login-required',
+        flow: 'implicit'
+    }).success(function (authenticated) {
+        userCredentials = authenticated;
+        keycloak.loadUserProfile().then(
+            function(profile){
+                $("#cassUiLoginUsername").val(keycloak.subject);
+                if (profile.attributes.cass_secret != null)
+                    $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
+                init();
+            }
+        ,console.error);
+        init();
+    }).error(function (error) {
+        alert('Failed to initialize authentication');
+        console.log("Keycloak sign-in error");
+        console.log(error);
+    });
+    }
+    else
+        init();
+
 });
