@@ -43,6 +43,12 @@ body.login {
   margin-top:32px;
   margin-bottom:32px;
 }
+
+#profile-card:hover, #framework-card:hover, #gap-card:hover, #vlrc-card:hover #welcome-header-wrapper {
+  background-color: rgba(255,255,255, 1);
+
+}
+
 #welcome-header-wrapper {
   background-color: rgba(255,255,255, 0.8);
   height: 25%;
@@ -321,6 +327,7 @@ li {
     margin:  8px auto 8px auto;
     padding: 0px;
   }
+
   .welcome-card-header-wrapper {
     height: auto;
   }
