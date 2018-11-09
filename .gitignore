@@ -40,3 +40,5 @@ out\.log
 alpine\.sh
 
 alpineRun\.sh
+
+ecs-params\.yml

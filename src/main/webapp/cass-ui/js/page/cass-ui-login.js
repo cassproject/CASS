@@ -201,6 +201,7 @@ if (Keycloak)
                 {
                     $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
                     init();
+                    $(".credentials").hide();
                     attemptCassUiLogin();
                 }
                 else

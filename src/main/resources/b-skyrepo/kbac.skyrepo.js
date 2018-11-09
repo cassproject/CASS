@@ -669,11 +669,13 @@ var endpointMultiGet = function() {
     var response = httpPost(mget, elasticEndpoint + "/_mget", "application/json", false);
     var resultDocs = (response)["docs"];
     var results = new Array();
-    for (var i = 0; i < resultDocs.length; i++) {
-        var doc = resultDocs[i];
-        if ((doc)["found"]) {
-            delete (lookup)[((doc)["_id"]).substring(0, ((doc)["_id"]).length - 1)];
-            results.push(JSON.parse(((doc)["_source"])["data"]));
+    if (resultDocs != null) {
+        for (var i = 0; i < resultDocs.length; i++) {
+            var doc = resultDocs[i];
+            if ((doc)["found"]) {
+                delete (lookup)[((doc)["_id"]).substring(0, ((doc)["_id"]).length - 1)];
+                results.push(JSON.parse(((doc)["_source"])["data"]));
+            }
         }
     }
     (filterResults).call(this, results, null);

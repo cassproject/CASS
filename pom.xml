@@ -177,6 +177,12 @@
 					<pomIncludes>
 						<pomInclude>ew/pom.xml</pomInclude>
 						<pomInclude>ec/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-editor/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-viewer/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-profile/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-align/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-vlrc/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-gap-analysis/pom.xml</pomInclude>
 					</pomIncludes>
 					<properties>
 						<skipTests>true</skipTests>
@@ -184,7 +190,6 @@
 					</properties>
 					<noLog>true</noLog>
 					<goals>
-						<goal>clean</goal>
 						<goal>install</goal>
 					</goals>
 				</configuration>
