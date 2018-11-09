@@ -57,7 +57,7 @@ function handleFetchIdentitySuccess2(obj) {
 function handleFetchIdentityFailure(failMsg) {
     debugMessage("handleFetchIdentityFailure: " + failMsg);
     if (failMsg.trim() == "User does not exist.") {
-        ecIdentMgr.create(handleFetchIdentitySuccess, handleFetchIdentityFailure);
+        ecIdentMgr.create(handleConfigureFromServerSuccess, handleFetchIdentityFailure);
     }
     else {
         showLoginErrorMessage("Identity fetch failed: " + failMsg);
@@ -198,8 +198,13 @@ if (Keycloak)
             function(profile){
                 $("#cassUiLoginUsername").val(keycloak.subject);
                 if (profile.attributes.cass_secret != null)
+                {
                     $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
-                init();
+                    init();
+                    attemptCassUiLogin();
+                }
+                else
+                    init();
             }
         ,console.error);
         init();
