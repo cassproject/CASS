@@ -5,10 +5,13 @@ body {
     /* Scale background to fit the screen */
     min-height: 100%;
     min-width: 100%;
-    background-color: #333;
     --main-body-font: 'assistant';
     font-family: var(--main-body-font);
     --main-header-font: 'Oswald';
+}
+
+body {
+  background-color: #333;
 }
 
 body.login {
@@ -119,6 +122,17 @@ canvas {
   margin-right: 1px;
 }
 
+span.icon-span {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+.card-link-icon {
+  color: orange;
+  text-align: right;
+  float: right;
+  margin-bottom: 8px;
+}
 .welcome-card-header-wrapper .fa-sitemap {
     display: block;
     font-size: 26px !important;
@@ -207,6 +221,7 @@ canvas {
 li {
   list-style-type: none;
   font-weight: 600;
+  font-size: .9rem;
 }
 
 .two-dp-shadow {
