@@ -881,16 +881,24 @@ var skyIdLogin = function() {
     delete (get)["password"];
     return JSON.stringify(get);
 };
+var loadConfigurationFile = function(path, dflt) {
+    if (fileExists(path)) 
+        return fileToString(fileLoad(path));
+    if (fileExists("etc/" + path)) 
+        return fileToString(fileLoad("etc/" + path));
+    fileSave(dflt(), "etc/" + path);
+    return fileToString(fileLoad("etc/" + path));
+};
 (function() {
-    if (!fileExists("skyId.username.public.salt")) 
-        fileSave(randomString(2048), "skyId.username.public.salt");
-    usernameSalt = fileToString(fileLoad("skyId.username.public.salt"));
-    if (!fileExists("skyId.password.public.salt")) 
-        fileSave(randomString(2048), "skyId.password.public.salt");
-    passwordSalt = fileToString(fileLoad("skyId.password.public.salt"));
-    if (!fileExists("skyId.secret.public.salt")) 
-        fileSave(randomString(2048), "skyId.secret.public.salt");
-    secretSalt = fileToString(fileLoad("skyId.secret.public.salt"));
+    usernameSalt = loadConfigurationFile("skyId.username.public.salt", function() {
+        return randomString(2048);
+    });
+    passwordSalt = loadConfigurationFile("skyId.password.public.salt", function() {
+        return randomString(2048);
+    });
+    secretSalt = loadConfigurationFile("skyId.secret.public.salt", function() {
+        return randomString(2048);
+    });
     (cachedSalts)["usernameSalt"] = usernameSalt;
     (cachedSalts)["usernameIterations"] = 5000;
     (cachedSalts)["usernameLength"] = 64;
@@ -900,16 +908,16 @@ var skyIdLogin = function() {
     (cachedSalts)["secretSalt"] = secretSalt;
     (cachedSalts)["secretIterations"] = 5000;
     (cachedSalts)["secretLength"] = 64;
-    if (!fileExists("skyId.salt")) 
-        fileSave(randomString(2048), "skyId.salt");
-    skyIdSalt = fileToString(fileLoad("skyId.salt"));
-    if (!fileExists("skyId.secret")) 
-        fileSave(randomString(2048), "skyId.secret");
-    skyIdSecretStr = fileToString(fileLoad("skyId.secret"));
+    skyIdSalt = loadConfigurationFile("skyId.salt", function() {
+        return randomString(2048);
+    });
+    skyIdSecretStr = loadConfigurationFile("skyId.secret", function() {
+        return randomString(2048);
+    });
     skyIdSecretKey = forge.util.encode64(forge.pkcs5.pbkdf2(skyIdSecretStr, skyIdSalt, 10000, 16));
-    if (!fileExists("skyId.pem")) 
-        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyId.pem");
-    skyIdPem = EcPpk.fromPem(fileToString(fileLoad("skyId.pem")));
+    skyIdPem = EcPpk.fromPem(loadConfigurationFile("skyId.pem", function() {
+        return EcPpk.fromPem(rsaGenerate()).toPem();
+    }));
     bindWebService("/sky/id/salts", salts);
     bindWebService("/sky/id/create", skyIdCreate);
     bindWebService("/sky/id/commit", skyIdCommit);
