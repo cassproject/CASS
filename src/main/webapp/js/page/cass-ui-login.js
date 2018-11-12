@@ -181,8 +181,7 @@ function init() {
 
 $(document).ready(function () {
 
-if (Keycloak)
-{
+if (typeof Keycloak !== 'undefined' && Keycloak) {
     var keycloak = Keycloak({
       "realm": "master",
       "url": window.location.origin+"/auth",
@@ -214,8 +213,7 @@ if (Keycloak)
         console.log("Keycloak sign-in error");
         console.log(error);
     });
-    }
-    else
-        init();
+}
+else init();
 
 });
