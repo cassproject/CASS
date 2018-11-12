@@ -186,7 +186,6 @@ body.login {
 
 #welcome-header-wrapper {
 	background-color: rgba(255, 255, 255, 0.8);
-	height: 25%;
 	margin: 56px auto;
 	height: 100px;
 	border-radius: 10px;
@@ -236,12 +235,16 @@ canvas {
 #docs-card,
 #devdocs-card {
 	background-color: rgba(255, 255, 255, 0.8);
-	height: 320px;
+	height: 330px;
 	cursor: pointer;
-	margin: 16px;
 
 }
 
+.link-icon-container {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
 .i-wrapper {
 	width: 40px;
 	height: 40px;
@@ -279,7 +282,8 @@ span.icon-span {
 
 .card-link-icon {
 	color: orange;
-	text-align: right;
+  padding: 8px 8px 16px 0px;
+  text-align: right;
 	float: right;
 	margin-bottom: 8px;
 }
@@ -381,8 +385,9 @@ span.icon-span {
 }
 
 .welcome-card-body {
-	height: 64%;
+	height: 250px;
 	margin: 12px;
+  position: relative;
 }
 
 .welcome-card-body p {
@@ -390,7 +395,7 @@ span.icon-span {
 }
 
 .welcome-card-body ul {
-	margin: 8px 0px 8px 16px;
+	margin: 8px 8px 8px 8px;
 	line-height: 1.6;
 	font-weight: 400;
 }
@@ -497,12 +502,42 @@ li {
 }
 
 
+@media screen and (max-width: 1023px) {
+ 	#welcome-header-wrapper {
+		margin: 7%;
+    width: 86%;
+	} 
+  #profile-card,
+	#framework-card,
+	#gap-card,
+	#vlrc-card,
+  #editor-card,
+  #docs-card, 
+  #devdocs-card {
+		height: 250px;
+		margin: 8px auto 8px auto;
+		padding: 0px;
+	}
+
+	.welcome-card-header-wrapper {
+		height: 72px;
+	}
+	.welcome-card-body {
+		height: 178px;
+	}
+	.i-wrapper {
+		margin: auto;
+	}
+}
+
+
 @media screen and (max-width: 639px) {
 	canvas {
 		max-width: 100%;
 	}
 	#welcome-header-wrapper {
-		margin: 16px auto;
+		margin: 4%;
+    width: 92%;
 	}
 	#welcome-header-introduction p {
 		margin: 8px;
@@ -510,17 +545,20 @@ li {
 	#profile-card,
 	#framework-card,
 	#gap-card,
-	#vlrc-card {
-		height: auto;
+	#vlrc-card,
+  #editor-card,
+  #docs-card, 
+  #devdocs-card {
+		height: 220px;
 		margin: 8px auto 8px auto;
 		padding: 0px;
 	}
 
 	.welcome-card-header-wrapper {
-		height: auto;
+		height: 72px;;
 	}
 	.welcome-card-body {
-		height: auto;
+		height: 148px;
 	}
 	.i-wrapper {
 		margin: auto;
