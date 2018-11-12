@@ -187,7 +187,7 @@ body.login {
 #welcome-header-wrapper {
 	background-color: rgba(255, 255, 255, 0.8);
 	height: 25%;
-	margin: 56px auto;
+	margin: 61px auto;
 	height: 100px;
 	border-radius: 10px;
 	-webkit-filter: blur(1px);
@@ -406,7 +406,7 @@ li {
 }
 
 .cassUiIframeContainer {
-	height: calc(100vh - 56px);
+	height: calc(100vh - 61px);
 }
 
 .cassUiIframe {
