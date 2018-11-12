@@ -4,7 +4,7 @@ services:
     image: httpd:2.4
     container_name: apache2
     volumes:
-      - ./docker-configure.apache2.config:/usr/local/apache2/conf/httpd.conf
+      - ./docker/distributed/apache2/docker-configure.apache2.config:/usr/local/apache2/conf/httpd.conf
     ports:
       - 80:80
     restart: always
@@ -19,13 +19,15 @@ services:
       dockerfile: docker/distributed/tomcat-alpine/Dockerfile
     container_name: cass
     environment:
-      - CASS_LOOPBACK=http://172.17.0.1/api/
+      - TOMCAT_HTTP_PORT=80
+      - CASS_LOOPBACK=http://apache2/api/
       - ELASTICSEARCH_ENDPOINT=http://elasticsearch:9200
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
+      - ./docker/distributed/tomcat-alpine/server.xml:/usr/local/tomcat/conf/server.xml
       - etc:/usr/local/tomcat/etc/
     networks:
       - esnet
@@ -88,7 +90,7 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: cass
       KEYCLOAK_PASSWORD: cass
-      KEYCLOAK_HOSTNAME: 172.17.0.1
+      KEYCLOAK_HOSTNAME: localhost
       KEYCLOAK_HTTP_PORT: 80
     depends_on:
       - mysql-keycloak
