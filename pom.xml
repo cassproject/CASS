@@ -177,6 +177,12 @@
 					<pomIncludes>
 						<pomInclude>ew/pom.xml</pomInclude>
 						<pomInclude>ec/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-editor/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-viewer/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-profile/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-align/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-vlrc/pom.xml</pomInclude>
+						<pomInclude>src/main/webapp/cass-gap-analysis/pom.xml</pomInclude>
 					</pomIncludes>
 					<properties>
 						<skipTests>true</skipTests>
@@ -184,14 +190,13 @@
 					</properties>
 					<noLog>true</noLog>
 					<goals>
-						<goal>clean</goal>
 						<goal>install</goal>
 					</goals>
 				</configuration>
 				<executions>
 					<execution>
 						<id>sub-install</id>
-						<!--<phase>initialize</phase>-->
+						<phase>initialize</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
@@ -279,14 +284,6 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/cass.example/js</directory>
-							<includes>
-								<include>cass/*</include>
-								<include>cass.*</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-						<fileset>
 							<directory>src/main/resources/b-skyrepo</directory>
 							<includes>
 								<include>*</include>
@@ -313,7 +310,7 @@
 							</cssSourceFiles>
 							<jsSourceDir>.</jsSourceDir>
 							<jsSourceFiles>
-								<jsSourceFile>src/main/webapp/cass.example/forge/forge.min.js</jsSourceFile>
+								<jsSourceFile>src/main/webapp/cass-editor/forge/forge.min.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/require.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/papaparse.js</jsSourceFile>
 								<jsSourceFile>src/main/js/cass/FileSaver.js</jsSourceFile>
@@ -381,7 +378,6 @@
 							<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 							<roots>
 								<root>src/main/js</root>
-								<root>src/main/webapp/cass.example/js</root>
 								<root>src/main/resources</root>
 							</roots>
 							<includes>
@@ -411,27 +407,6 @@
 								<exclude>**/base64x-1.1.js</exclude>
 								<exclude>**/base64toArrayBuffer.js</exclude>
 							</excludes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/src/main/webapp/cass.example/js</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/main/js</directory>
-								</resource>
-							</resources>
 						</configuration>
 					</execution>
 				</executions>

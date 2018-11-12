@@ -1,7 +1,10 @@
 var navigator = {};
-load("https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.4/jsrsasign-all-min.js");
+var loadedCer = false;
 
 registerElementWithCer = function (element, boolDelete) {
+    if (!loadedCer)
+        load("https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.4/jsrsasign-all-min.js");
+    loadedCer = true;
     var sHeader = JSON.stringify({
         alg: 'RS256',
         typ: 'JWT'
