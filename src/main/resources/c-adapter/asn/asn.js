@@ -129,10 +129,12 @@ if (f.relation != null)
                 else
                     competencies[r.target]["skos:relatedMatch"].push(r.source);
             if (competencies[r.source] != null)
+                if (competencies[r.source]["skos:relatedMatch"] == null)
+                    competencies[r.source]["skos:relatedMatch"] = [];
+            if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
                     competencies[r.source]["skos:relatedMatch"].push(competencies[r.target].id);
                 else
-
                     competencies[r.source]["skos:relatedMatch"].push(r.target);
         }
         if (r.relationType == Relation.REQUIRES) {
