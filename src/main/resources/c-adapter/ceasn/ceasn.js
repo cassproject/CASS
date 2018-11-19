@@ -20,11 +20,6 @@ var asnContext = {
     "xsd": "http://www.w3.org/2001/XMLSchema#"
 };
 
-var ceasnIdentity = new EcIdentity();
-ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
-ceasnIdentity.displayName = "CEASN Server Identity";
-EcIdentityManager.addIdentity(ceasnIdentity);
-
 function cassFrameworkAsCeasn() {
     EcRepository.cache = new Object();
     if (false && repoEndpoint().contains("localhost"))
@@ -331,6 +326,11 @@ function stripNonCe(f) {
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
+    var ceasnIdentity = new EcIdentity();
+    ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
+    ceasnIdentity.displayName = "CEASN Server Identity";
+    EcIdentityManager.addIdentity(ceasnIdentity);
+
     EcRemote.async = false;
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
