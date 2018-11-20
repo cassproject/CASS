@@ -19,6 +19,7 @@ const FTF_ALN_FW1ID_KEY = "cassUiFwkToFwkFw1Id";
 const FTF_ALN_FW2ID_KEY = "cassUiFwkToFwkFw2Id";
 
 const FWK_TO_EXP_KEY = "frameworkToExplore";
+const PRF_TO_EXP_KEY = "profileToExplore";
 
 const CASSUI_AFTER_LOGOUT_PAGE = "index.html";
 const CASSUI_SES_EXP_QSP = "sessionExpired";
@@ -55,6 +56,24 @@ queryParams = queryParams();
 //**************************************************************************************************
 // Page to Page Transfer - Misc Info
 //**************************************************************************************************
+function storeProfileToExploreInfo(profilePem) {
+    debugMessage("Saving profile to explore info...");
+    sessionStorage.setItem(PRF_TO_EXP_KEY, profilePem);
+    updateCassUiLastSessionLoadTime();
+    debugMessage("Profile to explore info saved.");
+}
+
+function retrieveProfileToExploreInfo() {
+    updateCassUiLastSessionLoadTime();
+    if (queryParams.profilePem != null) var prfPem = queryParams.profilePem;
+    else var prfPem = sessionStorage.getItem(PRF_TO_EXP_KEY);
+    if (prfPem && prfPem != "") {
+        sessionStorage.setItem(PRF_TO_EXP_KEY, "");
+        return prfPem;
+    }
+    else return null;
+}
+
 function storeFrameworkToExploreInfo(frameworkId) {
 	debugMessage("Saving framework to explore info...");
 	sessionStorage.setItem(FWK_TO_EXP_KEY, frameworkId);
@@ -64,14 +83,13 @@ function storeFrameworkToExploreInfo(frameworkId) {
 
 function retrieveFrameworkToExploreInfo() {
 	updateCassUiLastSessionLoadTime();
-	if (queryParams.frameworkId != null)
-        var fwkId = queryParams.frameworkId;
-	else
-		var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
+	if (queryParams.frameworkId != null) var fwkId = queryParams.frameworkId;
+	else var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
 	if (fwkId && fwkId != "") {
 		sessionStorage.setItem(FWK_TO_EXP_KEY, "");
 		return fwkId;
-	} else return null;
+	}
+	else return null;
 }
 
 function storeFrameworkToFrameworkAlignmentInfo(alignType, fw1Id, fw2Id) {
