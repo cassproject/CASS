@@ -639,9 +639,9 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.transformId = function(oldId, newObject, selectedServer, repo) {
-        if (oldId == null || oldId == "") 
+        if (oldId == null || oldId == "" || oldId.indexOf("http") == -1) 
             newObject.assignId(selectedServer, oldId);
-         else if (oldId.indexOf("http") != -1) {
+         else {
             if (EcCompetency.getBlocking(oldId) == null) 
                 newObject.id = oldId;
              else {

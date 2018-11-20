@@ -133,12 +133,12 @@ embedCFPackageIntoFramework = function(f,document){
 	return results;
 }
 
-var caseIdentity = new EcIdentity();
-caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
-caseIdentity.displayName = "CASE Server Identity";
-EcIdentityManager.addIdentity(caseIdentity);
-
 ingestCase = function () {
+    var caseIdentity = new EcIdentity();
+    caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
+    caseIdentity.displayName = "CASE Server Identity";
+    EcIdentityManager.addIdentity(caseIdentity);
+
     EcRemote.async = false;
     var targetUrl = this.params.caseEndpoint;
     if (targetUrl == null)

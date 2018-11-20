@@ -63,9 +63,9 @@ xapiImportAutoExecute=#if(
 
 /xapi/tick=xapiImportAutoExecute;
 
-xapiImportAutoExecute=#add(a=#thisEndpoint(),b="xapi/tick").httpGet();
+//xapiImportAutoExecute=#add(a=#thisEndpoint(),b="xapi/tick").httpGet();
 
-#xapiImportAutoExecute=xapiImportAutoExecute;
+//#xapiImportAutoExecute=xapiImportAutoExecute;
 
 xapiAdapterEmail=#sendEmail(
 	_from="",

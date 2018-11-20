@@ -13,11 +13,6 @@ var asnContext = {
     xsd: "http://www.w3.org/2001/XMLSchema#"
 };
 
-var asnIdentity = new EcIdentity();
-asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
-asnIdentity.displayName = "ASN Server Identity";
-EcIdentityManager.addIdentity(asnIdentity);
-
 //asnContext["@vocab"] = "http://schema.cassproject.org/0.2/cass2asn";
 
 function cassFrameworkAsAsn() {
@@ -134,10 +129,12 @@ if (f.relation != null)
                 else
                     competencies[r.target]["skos:relatedMatch"].push(r.source);
             if (competencies[r.source] != null)
+                if (competencies[r.source]["skos:relatedMatch"] == null)
+                    competencies[r.source]["skos:relatedMatch"] = [];
+            if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
                     competencies[r.source]["skos:relatedMatch"].push(competencies[r.target].id);
                 else
-
                     competencies[r.source]["skos:relatedMatch"].push(r.target);
         }
         if (r.relationType == Relation.REQUIRES) {
@@ -274,6 +271,11 @@ function fixScalars(jsonLd) {
  * 
  */
 function importFrameworkToCass(frameworkObj, competencyList) {
+    var asnIdentity = new EcIdentity();
+    asnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.asn.private"));
+    asnIdentity.displayName = "ASN Server Identity";
+    EcIdentityManager.addIdentity(asnIdentity);
+
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
 
@@ -294,7 +296,6 @@ function importFrameworkToCass(frameworkObj, competencyList) {
     var relationshipMap = {};
     var parentMap = {};
 
-    EcIdentityManager.addIdentity(asnIdentity);
     EcRemote.async = false;
 
     for (var idx in competencyList) {
