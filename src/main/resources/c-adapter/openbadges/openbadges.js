@@ -238,7 +238,7 @@ openbadgeCheckId = function(){
 	if (a.subject["@reader"] == null)
 		return debug("Badge not generated for assertion: Assertion has no readers.");
 
-	if (!EcArray.has(a.subject["@reader"],EcPpk.fromPem(openbadgesPpk()).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(openbadgesPpk()).toPk()))
+	if (!EcArray.has(a.subject["@reader"],EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk().toPem()) && !a.hasOwner(EcPpk.fromPem(EcPpk.fromPem(keyFor("adapter.openbadges.private"))).toPk()))
 		return debug("Badge not generated for assertion: Badge Adapter is not an owner nor reader.");
 
 	if (repoEndpoint().contains("localhost"))
