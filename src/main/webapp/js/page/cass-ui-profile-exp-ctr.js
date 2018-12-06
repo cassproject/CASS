@@ -26,7 +26,9 @@ const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
 function handleInitFrameworkExplorerMessage(frameworkId) {
 	debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
 	storeFrameworkToExploreInfo(frameworkId);
-	location.replace(CASSUI_FWK_EXP_PAGE);
+    var lson = copySessionStateToLocalStorage();
+	//location.replace(CASSUI_FWK_EXP_PAGE);
+    window.open(CASSUI_FWK_EXP_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 }
 
 function sendIdentityInitializeMessage() {

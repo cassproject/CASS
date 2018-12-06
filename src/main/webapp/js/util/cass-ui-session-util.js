@@ -6,6 +6,8 @@
 //**************************************************************************************************
 // Constants
 
+
+
 const CASSUI_SESSION_TIMEOUT_MS = 1800000; //30 minutes
 
 const SES_STR_SELSERVER_KEY = "sessionCassUiSelServer";
@@ -23,6 +25,9 @@ const PRF_TO_EXP_KEY = "profileToExplore";
 
 const CASSUI_AFTER_LOGOUT_PAGE = "index.html";
 const CASSUI_SES_EXP_QSP = "sessionExpired";
+
+const CASS_CONT_PARAM_NAME = "cassCont";
+const LCL_STR_PREFIX = "CASS_CONT_";
 
 //**************************************************************************************************
 // Variables
@@ -48,17 +53,13 @@ queryParams = function () {
     return {};
 };
 queryParams = queryParams();
-// //TODO build these???
-// var contactsByNameMap;
-// var contactsByPkPemMap = {};
-// var contactDisplayList;
 
 //**************************************************************************************************
-// Page to Page Transfer - Misc Info
+// Page to Page Transfer - Misc Info (Goes in local storage since new page will be opened up in new tab)
 //**************************************************************************************************
 function storeProfileToExploreInfo(profilePem) {
     debugMessage("Saving profile to explore info...");
-    sessionStorage.setItem(PRF_TO_EXP_KEY, profilePem);
+    localStorage.setItem(PRF_TO_EXP_KEY, profilePem);
     updateCassUiLastSessionLoadTime();
     debugMessage("Profile to explore info saved.");
 }
@@ -66,9 +67,9 @@ function storeProfileToExploreInfo(profilePem) {
 function retrieveProfileToExploreInfo() {
     updateCassUiLastSessionLoadTime();
     if (queryParams.profilePem != null) var prfPem = queryParams.profilePem;
-    else var prfPem = sessionStorage.getItem(PRF_TO_EXP_KEY);
+    else var prfPem = localStorage.getItem(PRF_TO_EXP_KEY);
     if (prfPem && prfPem != "") {
-        sessionStorage.setItem(PRF_TO_EXP_KEY, "");
+        localStorage.removeItem(PRF_TO_EXP_KEY);
         return prfPem;
     }
     else return null;
@@ -76,7 +77,7 @@ function retrieveProfileToExploreInfo() {
 
 function storeFrameworkToExploreInfo(frameworkId) {
 	debugMessage("Saving framework to explore info...");
-	sessionStorage.setItem(FWK_TO_EXP_KEY, frameworkId);
+    localStorage.setItem(FWK_TO_EXP_KEY, frameworkId);
 	updateCassUiLastSessionLoadTime();
 	debugMessage("Framework to explore info saved.");
 }
@@ -84,9 +85,9 @@ function storeFrameworkToExploreInfo(frameworkId) {
 function retrieveFrameworkToExploreInfo() {
 	updateCassUiLastSessionLoadTime();
 	if (queryParams.frameworkId != null) var fwkId = queryParams.frameworkId;
-	else var fwkId = sessionStorage.getItem(FWK_TO_EXP_KEY);
+	else var fwkId = localStorage.getItem(FWK_TO_EXP_KEY);
 	if (fwkId && fwkId != "") {
-		sessionStorage.setItem(FWK_TO_EXP_KEY, "");
+        localStorage.removeItem(FWK_TO_EXP_KEY);
 		return fwkId;
 	}
 	else return null;
@@ -94,22 +95,25 @@ function retrieveFrameworkToExploreInfo() {
 
 function storeFrameworkToFrameworkAlignmentInfo(alignType, fw1Id, fw2Id) {
 	debugMessage("Saving framework to framework info...");
-	sessionStorage.setItem(ALIGN_TYPE_KEY, alignType);
-	sessionStorage.setItem(FTF_ALN_FW1ID_KEY, fw1Id);
-	sessionStorage.setItem(FTF_ALN_FW2ID_KEY, fw2Id);
+    localStorage.setItem(ALIGN_TYPE_KEY, alignType);
+    localStorage.setItem(FTF_ALN_FW1ID_KEY, fw1Id);
+    localStorage.setItem(FTF_ALN_FW2ID_KEY, fw2Id);
 	updateCassUiLastSessionLoadTime();
 	debugMessage("Framework to framework info saved.");
 }
 
 function retrieveAlignmentInfo() {
-	var alignType = sessionStorage.getItem(ALIGN_TYPE_KEY);
+	var alignType = localStorage.getItem(ALIGN_TYPE_KEY);
 	if (!alignType) return null;
 	var rai = {};
 	rai.alignType = alignType;
 	if (alignType == FWK_TO_FWK_ALIGN_TYPE) {
-		rai.fw1Id = sessionStorage.getItem(FTF_ALN_FW1ID_KEY);
-		rai.fw2Id = sessionStorage.getItem(FTF_ALN_FW2ID_KEY);
+		rai.fw1Id = localStorage.getItem(FTF_ALN_FW1ID_KEY);
+		rai.fw2Id = localStorage.getItem(FTF_ALN_FW2ID_KEY);
+        localStorage.removeItem(FTF_ALN_FW1ID_KEY);
+        localStorage.removeItem(FTF_ALN_FW2ID_KEY);
 	}
+    localStorage.removeItem(ALIGN_TYPE_KEY);
 	return rai;
 }
 
@@ -142,7 +146,7 @@ function initSessionIdentity() {
 	eci.ppk = eciPpk;
 	EcIdentityManager.ids.push(eci);
 	loggedInPkPem = EcIdentityManager.ids[0].ppk.toPk().toPem();
-	debugMessage("Identity intialized:");
+	debugMessage("Identity initialized:");
 	debugMessage("Display Name: " + EcIdentityManager.ids[0].displayName);
 	debugMessage("Public Key: " + loggedInPkPem);
 }
@@ -152,8 +156,7 @@ function initSessionIdentity() {
 //**************************************************************************************************
 
 function updateCassUiLastSessionLoadTime() {
-	var d = new Date();
-	sessionStorage.setItem(SES_STR_LAST_SESSION_LOAD_KEY, d.getTime());
+	sessionStorage.setItem(SES_STR_LAST_SESSION_LOAD_KEY, Date.now());
 }
 
 function saveCassUiSessionState() {
@@ -166,10 +169,20 @@ function saveCassUiSessionState() {
 	debugMessage("Session state saved.");
 }
 
+function copySessionStateToLocalStorage() {
+    var localStorageObjectName = LCL_STR_PREFIX + Date.now();
+    var sso = {};
+    sso[SES_STR_SELSERVER_KEY] =  selectedServer;
+    sso[SES_STR_IDNAME_KEY] =  loggedInIdentityName;
+    sso[SES_STR_PPKPEM_KEY] =  loggedInPpkPem;
+    sso[SES_STR_LAST_SESSION_LOAD_KEY] = Date.now();
+    localStorage.setItem(localStorageObjectName,JSON.stringify(sso));
+    return localStorageObjectName;
+}
+
 function isCassUiSessionTimedOut() {
 	var lslt = sessionStorage.getItem(SES_STR_LAST_SESSION_LOAD_KEY);
-	var cd = new Date();
-	if (lslt + CASSUI_SESSION_TIMEOUT_MS >= cd.getTime()) return false;
+	if (!lslt || lslt.trim() == "" || (lslt + CASSUI_SESSION_TIMEOUT_MS >= Date.now())) return false;
 	else return true;
 }
 
@@ -180,21 +193,48 @@ function isCassUiSessionStateValid() {
 	else return !isCassUiSessionTimedOut();
 }
 
-//TODO loadCassUiSessionState build contact maps???
-function loadCassUiSessionState() {
-	if (isCassUiSessionStateValid()) {
-		debugMessage("Loading session state...");
-		selectedServer = sessionStorage.getItem(SES_STR_SELSERVER_KEY);
-		initRepo();
-		loggedInIdentityName = sessionStorage.getItem(SES_STR_IDNAME_KEY);
-		loggedInPpkPem = sessionStorage.getItem(SES_STR_PPKPEM_KEY);
-		initSessionIdentity();
-		updateCassUiLastSessionLoadTime();
-		debugMessage("Session state loaded.");
-	} else {
-		debugMessage("Session state is invalid");
-		goToCassUISessionExpired();
+function loadCassUiSessionStateFromSessionStorage() {
+    if (isCassUiSessionStateValid()) {
+        debugMessage("Loading session state...");
+        selectedServer = sessionStorage.getItem(SES_STR_SELSERVER_KEY);
+        initRepo();
+        loggedInIdentityName = sessionStorage.getItem(SES_STR_IDNAME_KEY);
+        loggedInPpkPem = sessionStorage.getItem(SES_STR_PPKPEM_KEY);
+        initSessionIdentity();
+        updateCassUiLastSessionLoadTime();
+        debugMessage("Session state loaded.");
+    }
+    else {
+        debugMessage("Session state is invalid");
+        goToCassUISessionExpired();
+    }
+}
+
+function setCassSessionStateFromLocalStorage(cassContId) {
+    try {
+		var sso = JSON.parse(localStorage.getItem(cassContId));
+        sessionStorage.setItem(SES_STR_SELSERVER_KEY,sso[SES_STR_SELSERVER_KEY]);
+        sessionStorage.setItem(SES_STR_IDNAME_KEY,sso[SES_STR_IDNAME_KEY]);
+        sessionStorage.setItem(SES_STR_PPKPEM_KEY,sso[SES_STR_PPKPEM_KEY]);
+        sessionStorage.setItem(SES_STR_LAST_SESSION_LOAD_KEY,sso[SES_STR_LAST_SESSION_LOAD_KEY]);
+
 	}
+	catch(e) {
+        debugMessage("Could not find CASS continue state in local storage: " + cassContId);
+	}
+    localStorage.removeItem(cassContId);
+}
+
+function loadCassUiSessionStateFromLocalStorage(cassContId) {
+    debugMessage("Loading session state from local storage...");
+	setCassSessionStateFromLocalStorage(cassContId);
+    loadCassUiSessionStateFromSessionStorage();
+}
+
+function loadCassUiSessionState() {
+	var cassContId = queryParams[CASS_CONT_PARAM_NAME];
+	if (cassContId && cassContId.trim() != "") loadCassUiSessionStateFromLocalStorage(cassContId);
+	else loadCassUiSessionStateFromSessionStorage();
 }
 
 function clearCassUiSession() {
