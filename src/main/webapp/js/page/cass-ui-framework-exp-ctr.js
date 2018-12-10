@@ -29,8 +29,11 @@ function handleAlignmentMessage(messageData) {
 	if (alignType == FWK_TO_FWK_ALIGN_TYPE) {
 		debugMessage("Handling framework to framework alignment");
 		storeFrameworkToFrameworkAlignmentInfo(alignType, messageData.framework1Id, messageData.framework2Id);
-		location.replace(CASSUI_RES_ALN_PAGE);
-	} else {
+        var lson = copySessionStateToLocalStorage();
+		//location.replace(CASSUI_RES_ALN_PAGE);
+        window.open(CASSUI_RES_ALN_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
+	}
+	else {
 		debugMessage("UNKNOWN ALIGNMENT TYPE REQUEST: " + alignType);
 	}
 }

@@ -7,6 +7,7 @@
 
 const PRF_EXP_IFRAME = "#prfExpIFrame";
 const PRF_EXP_IFRAME_SOURCE = "cass-profile/index.html?user=wait&origin=";
+const PRF_EXP_IFRAME_SOURCE_PRF_PEM_PARAM = "&profilePem=";
 
 const WAITING_MESSAGE = "waiting";
 const INIT_FWK_EXP_MESSAGE = "initFrameworkExplorer";
@@ -25,7 +26,9 @@ const CASSUI_FWK_EXP_PAGE = "cass-ui-framework-exp-ctr.html";
 function handleInitFrameworkExplorerMessage(frameworkId) {
 	debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
 	storeFrameworkToExploreInfo(frameworkId);
-	location.replace(CASSUI_FWK_EXP_PAGE);
+    var lson = copySessionStateToLocalStorage();
+	//location.replace(CASSUI_FWK_EXP_PAGE);
+    window.open(CASSUI_FWK_EXP_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 }
 
 function sendIdentityInitializeMessage() {
@@ -37,17 +40,26 @@ function sendIdentityInitializeMessage() {
 	}), window.location.origin);
 }
 
+function getProfileExplorerIframeSourceLink() {
+    var prfPem = retrieveProfileToExploreInfo();
+    var ifs = PRF_EXP_IFRAME_SOURCE + window.location.origin;
+    if (prfPem && prfPem != "") ifs += PRF_EXP_IFRAME_SOURCE_PRF_PEM_PARAM + prfPem;
+    debugMessage("Opening profile explorer iFrame with: " + ifs);
+    return ifs;
+}
+
 $(PRF_EXP_IFRAME).ready(function () {
 	$(window).on("message", function (event) {
 		if (event.originalEvent.data.message == WAITING_MESSAGE) {
 			sendIdentityInitializeMessage();
-		} else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
+		}
+		else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
 			handleInitFrameworkExplorerMessage(event.originalEvent.data.frameworkId);
 		}
 	});
 });
 
-$(PRF_EXP_IFRAME).attr("src", PRF_EXP_IFRAME_SOURCE + window.location.origin);
+$(PRF_EXP_IFRAME).attr("src", getProfileExplorerIframeSourceLink());
 
 function init() {
 	loadCassUiSessionState();

@@ -9,16 +9,21 @@ const GAP_ANL_IFRAME = "#gapAnalysisIFrame";
 const GAP_ANL_IFRAME_SOURCE = "cass-gap-analysis/index.html?user=wait&origin=";
 
 const WAITING_MESSAGE = "waiting";
+const INIT_PRF_EXP_MESSAGE = "initProfileExplorer";
 
 const INIT_IDENTITY_ACTION = "initIdentity";
+
+const CASSUI_PRF_EXP_PAGE = "cass-ui-profile-exp-ctr.html";
 
 //**************************************************************************************************
 // Variables
 
-function handleInitFrameworkExplorerMessage(frameworkId) {
-	debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
-	storeFrameworkToExploreInfo(frameworkId);
-	location.replace(CASSUI_FWK_EXP_PAGE);
+function handleInitProfileExplorerMessage(profilePem) {
+	debugMessage("handleInitProfileExplorerMessage storing profile pem: " + profilePem);
+	storeProfileToExploreInfo(profilePem);
+    var lson = copySessionStateToLocalStorage();
+	//location.replace(CASSUI_PRF_EXP_PAGE);
+    window.open(CASSUI_PRF_EXP_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 }
 
 function sendIdentityInitializeMessage() {
@@ -34,8 +39,9 @@ $(GAP_ANL_IFRAME).ready(function () {
 	$(window).on("message", function (event) {
 		if (event.originalEvent.data.message == WAITING_MESSAGE) {
 			sendIdentityInitializeMessage();
-		} else if (event.originalEvent.data.message == INIT_FWK_EXP_MESSAGE) {
-			handleInitFrameworkExplorerMessage(event.originalEvent.data.frameworkId);
+		}
+		else if (event.originalEvent.data.message == INIT_PRF_EXP_MESSAGE) {
+			handleInitProfileExplorerMessage(event.originalEvent.data.profilePem);
 		}
 	});
 });

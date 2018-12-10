@@ -19,36 +19,48 @@ const CASSUI_EDITOR_PAGE = "cass-ui-editor-ctr.html";
 //**************************************************************************************************
 
 function goToFrameworkExplorer() {
-	location.replace(CASSUI_FWK_EXP_PAGE);
+    location.replace(CASSUI_FWK_EXP_PAGE);
 }
 
 function goToProfileExplorer() {
-	location.replace(CASSUI_PRF_EXP_PAGE);
+    location.replace(CASSUI_PRF_EXP_PAGE);
 }
 
 function goToGapAnalysis() {
-	location.replace(CASSUI_GAP_ANL_PAGE);
+    location.replace(CASSUI_GAP_ANL_PAGE);
 }
 
 function goToVLRC() {
-	location.replace(CASSUI_VLRC_PAGE);
+    location.replace(CASSUI_VLRC_PAGE);
 }
 
 function goToEditor() {
-	location.replace(CASSUI_EDITOR_PAGE);
+    location.replace(CASSUI_EDITOR_PAGE);
 }
 
 function goToDocs() {
-	location.replace("https://docs.cassproject.org");
+    location.replace("https://docs.cassproject.org");
 }
 
 function goToDevdocs() {
-	location.replace("https://devs.cassproject.org");
+    location.replace("https://devs.cassproject.org");
 }
 
 function init() {
-	loadCassUiSessionState();
-	setCassUiMainMenuUserName();
+    setUpBokehEffect();
+    loadCassUiSessionState();
+    setCassUiMainMenuUserName();
+}
+
+function setUpBokehEffect() {
+    var bokehContainer = $('#bokehEffect');
+    var $newSpan;
+    bokehContainer.hide();
+    for (var i = 0; i < 20; i++) {
+        $newSpan = $('<span></span>');
+        bokehContainer.append($newSpan);
+    }
+    bokehContainer.fadeIn(2000);
 }
 
 //**************************************************************************************************
@@ -56,5 +68,5 @@ function init() {
 //**************************************************************************************************
 
 $(document).ready(function () {
-	init();
+    init();
 });
