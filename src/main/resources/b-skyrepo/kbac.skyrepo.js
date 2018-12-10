@@ -267,7 +267,7 @@ var flattenLangstrings = function(o) {
 };
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
-    o = flattenLangstrings(o);
+    o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
     return httpPost(o, url, "application/json", false);
