@@ -238,9 +238,10 @@ cfItems = function (f, fw) {
         f2.CFItemType = null;
         f2.CFItemTypeURI = null;
     }
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = JSON.parse(skyRepoSearch({q: "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""}));
+        var parent = skyrepoSearch("competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         t = parent[0];
@@ -252,7 +253,6 @@ cfItems = function (f, fw) {
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
 }
