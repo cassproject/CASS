@@ -12,20 +12,6 @@ if [ "$EUID" -ne 0 ];
   exit
 fi
 
-md5Local=`cat cassInstall.sh | md5sum`
-md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
-if [ "$md5Local" != "$md5Remote" ]
- then
- read -p "Update script has changed. Update from Github? [default=yes]" result
- result=${result:-yes}
- if [ "$result" == "yes" ]
-  then
-  curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh > cassInstall.sh
-  echo Updated. Please re run.
-  exit 0
- fi
-fi
-
 echo -----
 echo Detecting Platform...
 
@@ -53,11 +39,26 @@ echo Updating Repositories...
 if [ "$platformDebian" -ne 0 ];
  then
 apt-get -qqy update
-apt-get -qqy install curl software-properties-common
+apt-get -qqy install curl software-properties-common lsb-core sudo vim
 fi
 if [ "$platformFedora" -ne 0 ];
  then
 yum -y -q update
+fi
+
+md5Local=`cat cassInstall.sh | md5sum`
+md5Remote=`curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh | md5sum`
+if [ "$md5Local" != "$md5Remote" ]
+ then
+ echo -----
+ read -p "Update script has changed. Update from Github? [default=yes]" result
+ result=${result:-yes}
+ if [ "$result" == "yes" ]
+  then
+  curl -s https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassInstall.sh > cassInstall.sh
+  echo Updated. Please re run.
+  exit 0
+ fi
 fi
 
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/lib/jvm/java-8-oracle" ];
@@ -305,6 +306,23 @@ if [ "$platformDebian" -ne 0 ];
   echo "ProxyPassReverse  /  http://localhost:8080/cass/" >> /etc/apache2/sites-enabled/000-default.conf
  fi
  a2enmod proxy_http ssl proxy_wstunnel
+fi
+
+if [ "$platformDebian" -ne 0 ];
+ then
+ echo -----
+ echo Configuring Tomcat...
+ num=`grep CASS_LOOPBACK /usr/share/tomcat7/bin/setclasspath.sh | wc -l`
+ if [ "$num" -eq 0 ]
+  then
+  echo -----
+  echo
+
+  read -p "What is the intended endpoint of this server? [default=http://localhost/api/]" loopback
+  loopback=${loopback:-http://localhost/api/}
+  echo "" >> /usr/share/tomcat7/bin/setclasspath.sh
+  echo "export CASS_LOOPBACK $loopback" >> /usr/share/tomcat7/bin/setclasspath.sh
+ fi
 fi
 
 if [ "$platformFedora" -ne 0 ];
