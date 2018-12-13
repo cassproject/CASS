@@ -94,12 +94,14 @@ cfGetAlignment = function (c) {
     }
     if (c == null || c === undefined) {
         var competency = null;
+        if (competency == null)
+            competency = skyrepoGet.call(this, query);
         if (competency == null && url != null)
             competency = EcAlignment.getBlocking(url);
         if (competency == null && url != null)
             competency = EcAlignment.getBlocking(thisEndpoint() + "data/" + EcCrypto.md5(url));
         if (competency == null) return null;
-        var a = new EcAlignment();
+        c = new EcAlignment();
         c.copyFrom(competency);
     }
     return c;
@@ -274,6 +276,17 @@ cfItemAssociations = function (f, fw) {
     f.context = "http://schema.cassproject.org/0.3/cass2case";
     f = jsonLdExpand(f.toJson());
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
+    if (fw == null) {
+        var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
+        if (parent.length == 0)
+            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
+        t = parent[0];
+        fw = new EcFramework();
+        fw.copyFrom(t);
+    }
+    else
+        parent = [fw];
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     // console.log(JSON.stringify(f2,null,2));
     f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2["case:relationType"]];
@@ -297,22 +310,11 @@ cfItemAssociations = function (f, fw) {
     f2.originNodeURI.uri = JSON.parse(cfItems.call(this, sourceNode, fw)).uri;
     f2.originNodeURI.identifier = JSON.parse(cfItems.call(this, sourceNode, fw)).identifier;
     f2.CFDocumentURI = {};
-    if (fw == null) {
-        var parent = JSON.parse(skyRepoSearch({q: "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\""}));
-        if (parent.length == 0)
-            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
-        t = parent[0];
-        parent[0] = new EcFramework();
-        parent[0].copyFrom(t);
-    }
-    else
-        parent = [fw];
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
     f2.lastChangeDateTime = date(timestamp, "yyyy-MM-dd'T'HH:mm:ssXXX");
     f2.identifier = guid;
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
 }
