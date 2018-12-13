@@ -37,7 +37,7 @@ cfGetFramework = function (f) {
         }
     }
     if (f == null)
-        return null;
+        cfError(404,"failure","error","Framework not found.","uuid","unknownobject");
     var result = new EcFramework();
     result.copyFrom(f);
     return result;
@@ -78,7 +78,8 @@ cfGetCompetency = function (c) {
                 competency.copyFrom(result[0]);
             }
         }
-        if (competency == null) return null;
+        if (competency == null)
+            cfError(404,"failure","error","Competency not found.","uuid","unknownobject");
         var c = new EcCompetency();
         c.copyFrom(competency);
     }
@@ -100,7 +101,8 @@ cfGetAlignment = function (c) {
             competency = EcAlignment.getBlocking(url);
         if (competency == null && url != null)
             competency = EcAlignment.getBlocking(thisEndpoint() + "data/" + EcCrypto.md5(url));
-        if (competency == null) return null;
+        if (competency == null)
+            cfError(404,"failure","error","Alignment not found.","uuid","unknownobject");
         c = new EcAlignment();
         c.copyFrom(competency);
     }
