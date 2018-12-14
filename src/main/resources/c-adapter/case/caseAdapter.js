@@ -167,13 +167,13 @@ cfDocuments = function (f) {
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
+    f2 = cfClean(f2);
     f2.CFPackageURI = {
         title: name,
         identifier: guid,
         uri: thisEndpoint() + "ims/case/v1p0/CFPackages/" + guid
-    }
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
-    f2 = cfClean(f2);
+    };
     return JSON.stringify(f2, null, 2);
 }
 /*Errors:
