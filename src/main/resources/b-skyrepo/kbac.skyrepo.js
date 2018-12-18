@@ -738,9 +738,9 @@ var endpointAdmin = function() {
     return JSON.stringify(skyrepoAdminList());
 };
 var skyrepoAdminPpk = function() {
-    if (!fileExists("skyAdmin.pem")) 
-        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyAdmin.pem");
-    return fileToString(fileLoad("skyAdmin.pem"));
+    if (!fileExists("etc/skyAdmin.pem")) 
+        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin.pem");
+    return fileToString(fileLoad("etc/skyAdmin.pem"));
 };
 var skyrepoAdminList = function() {
     var array = new Array();
@@ -751,7 +751,7 @@ var skyrepoAdminList = function() {
     bindWebService("/data", endpointData);
     bindWebService("/sky/repo/search", skyRepoSearch);
     bindWebService("/sky/repo/multiGet", endpointMultiGet);
-    bindWebService("/sky/repo/admin", endpointAdmin);
+    bindWebService("/sky/admin", endpointAdmin);
 })();
 var usernameSalt = null;
 var passwordSalt = null;
