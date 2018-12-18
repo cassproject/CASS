@@ -321,7 +321,7 @@ if [ "$platformDebian" -ne 0 ];
   read -p "What is the intended endpoint of this server? [default=http://localhost/api/]" loopback
   loopback=${loopback:-http://localhost/api/}
   echo "" >> /usr/share/tomcat7/bin/setclasspath.sh
-  echo "export CASS_LOOPBACK $loopback" >> /usr/share/tomcat7/bin/setclasspath.sh
+  echo "export CASS_LOOPBACK=$loopback" >> /usr/share/tomcat7/bin/setclasspath.sh
  fi
 fi
 
