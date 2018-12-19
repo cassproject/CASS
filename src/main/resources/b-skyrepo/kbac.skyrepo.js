@@ -267,7 +267,7 @@ var flattenLangstrings = function(o) {
 };
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
-    o = flattenLangstrings(o);
+    o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
     return httpPost(o, url, "application/json", false);
@@ -738,9 +738,9 @@ var endpointAdmin = function() {
     return JSON.stringify(skyrepoAdminList());
 };
 var skyrepoAdminPpk = function() {
-    if (!fileExists("skyAdmin.pem")) 
-        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "skyAdmin.pem");
-    return fileToString(fileLoad("skyAdmin.pem"));
+    if (!fileExists("etc/skyAdmin.pem")) 
+        fileSave(EcPpk.fromPem(rsaGenerate()).toPem(), "etc/skyAdmin.pem");
+    return fileToString(fileLoad("etc/skyAdmin.pem"));
 };
 var skyrepoAdminList = function() {
     var array = new Array();
@@ -751,7 +751,7 @@ var skyrepoAdminList = function() {
     bindWebService("/data", endpointData);
     bindWebService("/sky/repo/search", skyRepoSearch);
     bindWebService("/sky/repo/multiGet", endpointMultiGet);
-    bindWebService("/sky/repo/admin", endpointAdmin);
+    bindWebService("/sky/admin", endpointAdmin);
 })();
 var usernameSalt = null;
 var passwordSalt = null;

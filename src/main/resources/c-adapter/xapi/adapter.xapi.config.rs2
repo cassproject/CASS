@@ -5,18 +5,24 @@ configFilePath=#string(str="etc/adapter.xapi.json");
 postData=#fileFromDatastream(name="config");
 postObject=postData.fileToString().toObject();
 
-configObject=#if(operator=#cfileExists(path=configFilePath), operand="true",
-	eq=#fileToString(obj=#cfileLoad(path=configFilePath)).toObject(),
+configFile=#fileToString(obj=#fileLoad(path=configFilePath)).toObject();
+
+configObject=#if(operator=#fileExists(path=configFilePath), operand="true",
+	eq=configFile,
 	ne=#object(
-		xapiEndpoint="",
-		xapiHostName="",
-		xapiAuth="",
-		enabled=#false()
+		a=#object(
+			xapiEndpoint="",
+			xapiHostName="",
+			xapiAuth="",
+			enabled=#false()
+		).toString().fileSave(path=configFilePath),
+		b=configFile
 	)
 );
 
 configVal=configObject.getByParam(param="@key");
 #xapiConfigVal=configVal;
+#xapiConfigAutoExecute=configObject;
 
 isSkyAdmin=#if(operator=#signatureSheet().intersect(a=#append(a=#skyrepoAdminPpk().rsaPpkToPk().replace(replace="\r?\n", with=""))).count(),
 	operand="0",

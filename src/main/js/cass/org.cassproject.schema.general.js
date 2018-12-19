@@ -469,7 +469,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @method updateTimestamp
      */
     prototype.getTimestamp = function() {
-        return Integer.parseInt(this.id.substring(this.id.lastIndexOf("/")));
+        return Integer.parseInt(this.id.substring(this.id.lastIndexOf("/") + 1));
     };
     /**
      *  Returns true if the provided ID represents this object.

@@ -138,6 +138,9 @@ AssertionCoprocessor = stjs.extend(AssertionCoprocessor, null, [], function(cons
     prototype.collectAssertions = function(ip, listOfCompetencies, success) {
         success(new Array());
     };
+    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
+        success();
+    };
 }, {assertionProcessor: "AssertionProcessor"}, {});
 /**
  *  Data structure used to hold data relevant to a request to determine the competence of an individual.
@@ -1485,11 +1488,17 @@ RelationshipPacketGenerator = stjs.extend(RelationshipPacketGenerator, null, [],
         this.log("Relationship found (" + alignment.relationType + ") source: " + alignment.source + " target: " + alignment.target);
         ip.numberOfQueriesRunning++;
         var rpg = this;
-        EcCompetency.get(relatedCompetencyId, function(p1) {
-            rpg.processGetRelatedCompetencySuccess(p1, alignment);
-        }, function(p1) {
-            rpg.processEventFailure(p1, ip);
-        });
+        if (!ip.context.isId(alignment.source) && !ip.context.isId(alignment.target)) {
+            EcCompetency.get(relatedCompetencyId, function(p1) {
+                rpg.processGetRelatedCompetencySuccess(p1, alignment);
+            }, function(p1) {
+                rpg.processEventFailure(p1, ip);
+            });
+        } else {
+            this.numberOfRelationsProcessed++;
+            ip.numberOfQueriesRunning--;
+            this.checkForFinish();
+        }
     };
     /**
      *  Method to invoke to begin relation processing.
@@ -1802,6 +1811,29 @@ CompetencyGraph = stjs.extend(CompetencyGraph, null, [], function(constructor, p
         this.negativeAssertions = negativeAssertions;
     };
 }, {nodes: {name: "Array", arguments: [null]}, edges: {name: "Array", arguments: ["CgEdge"]}, positiveAssertions: {name: "Array", arguments: ["SimpleAssertion"]}, negativeAssertions: {name: "Array", arguments: ["SimpleAssertion"]}, nodeMap: {name: "Map", arguments: [null, null]}, edgeMap: {name: "Map", arguments: [null, null]}}, {});
+var TrustCoprocessor = function() {
+    AssertionCoprocessor.call(this);
+};
+TrustCoprocessor = stjs.extend(TrustCoprocessor, AssertionCoprocessor, [], function(constructor, prototype) {
+    prototype.agent = null;
+    prototype.multiplier = 1.0;
+    prototype.removeNoConfidence = false;
+    prototype.mutateAssertions = function(ip, listOfCompetencies, success) {
+        var keys = EcObject.keys(this.assertionProcessor.assertions);
+        for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+            var ary = (this.assertionProcessor.assertions)[keys[keyIndex]];
+            for (var i = 0; i < ary.length; i++) {
+                var a = ary[i];
+                if (a.getAgent().toPem() == this.agent.toPem()) {
+                    a.confidence = a.confidence * this.multiplier;
+                    if (this.removeNoConfidence && a.confidence == 0.0) 
+                        ary.splice(i--, 1);
+                }
+            }
+        }
+        success();
+    };
+}, {agent: "EcPk", assertionProcessor: "AssertionProcessor"}, {});
 var PapDependencyDefinitions = function() {
     this.dependencyDefinitionMap = {};
 };
@@ -2308,7 +2340,13 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
                     callback00();
                 });
             }, function(strings) {
-                success(ip);
+                var eah3 = new EcAsyncHelper();
+                eah3.each(me.coprocessors, function(ac, callback000) {
+                    ac.assertionProcessor = me;
+                    ac.mutateAssertions(ip, listOfActivatedCompetencies, callback000);
+                }, function(strings) {
+                    success(ip);
+                });
             });
         });
     };
@@ -2510,6 +2548,79 @@ AssertionProcessor = stjs.extend(AssertionProcessor, null, [], function(construc
             this.collectCompetencies(ip.subPackets[i], listOfActivatedCompetencies, listOfVisitedPackets);
     };
 }, {repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
+var OpenBadgeCoprocessor = function() {
+    AssertionCoprocessor.call(this);
+};
+OpenBadgeCoprocessor = stjs.extend(OpenBadgeCoprocessor, AssertionCoprocessor, [], function(constructor, prototype) {
+    prototype.email = null;
+    prototype.badgePluginIdentifier = null;
+    prototype.confidenceOfBadges = 1.0;
+    prototype.collectAssertions = function(ip, listOfCompetencies, success) {
+        if (listOfCompetencies.length == 0) {
+            AssertionCoprocessor.prototype.collectAssertions.call(this, ip, listOfCompetencies, success);
+            return;
+        }
+        var assertions = new Array();
+        var me = this;
+        var eah = new EcAsyncHelper();
+        eah.each(me.assertionProcessor.repositories, function(currentRepository, callback0) {
+            var searchQuery = "@type:\"BadgeClass\"";
+            for (var i = 0; i < listOfCompetencies.length; i++) {
+                if (i == 0) 
+                    searchQuery += " AND (";
+                if (i > 0) 
+                    searchQuery += " OR ";
+                searchQuery += "alignment.targetUrl:\"" + listOfCompetencies[i] + "\"";
+            }
+            if (listOfCompetencies.length > 0) 
+                searchQuery += ")";
+            me.assertionProcessor.log(ip, "Querying repositories for badges regarding " + listOfCompetencies.length + " query: " + searchQuery);
+            var params = new Object();
+            (params)["size"] = 5000;
+            currentRepository.searchWithParams(searchQuery, params, null, function(p1) {
+                me.assertionProcessor.log(ip, p1.length + " badgeClasses found.");
+                var badgeClassHelper = new EcAsyncHelper();
+                badgeClassHelper.each(p1, function(badgeClass, badgeClassDone) {
+                    currentRepository.search("@context:\"https://w3id.org/openbadges/v2\" AND @type:Assertion AND badge:\"" + badgeClass.id + "\"", null, function(badgeAssertions) {
+                        for (var j = 0; j < badgeAssertions.length; j++) {
+                            var hash = EcCrypto.sha256(me.email + ((badgeAssertions[j])["recipient"])["salt"]);
+                            if ("sha256$" + hash.toLowerCase() != ((badgeAssertions[j])["recipient"])["identity"]) {
+                                me.assertionProcessor.log(ip, me.email + " hashed with salt != " + ((badgeAssertions[j])["recipient"])["identity"]);
+                                badgeAssertions.splice(j--, 1);
+                            } else 
+                                me.assertionProcessor.log(ip, me.email + " hashed with salt == " + ((badgeAssertions[j])["recipient"])["identity"]);
+                        }
+                        for (var j = 0; j < badgeAssertions.length; j++) {
+                            var alignments = (badgeClass)["alignment"];
+                            if (alignments != null) 
+                                for (var k = 0; k < alignments.length; k++) {
+                                    var alignment = alignments[k];
+                                    var a = new Assertion();
+                                    a.addOwner(ip.subject[0]);
+                                    a.setSubject(ip.subject[0]);
+                                    a.setAgent(me.badgePluginIdentifier);
+                                    a.competency = (alignment)["targetUrl"];
+                                    me.assertionProcessor.log(ip, "Generating Assertion for competency: " + (alignment)["targetUrl"]);
+                                    a.framework = (alignment)["targetFramework"];
+                                    a.confidence = me.confidenceOfBadges;
+                                    var evidence = new Array();
+                                    evidence.push(badgeAssertions[j].id);
+                                    a.setEvidence(evidence);
+                                    a.setAssertionDate(new Date((badgeAssertions[j])["issuedOn"]).getTime());
+                                    assertions.push(a);
+                                }
+                        }
+                        badgeClassDone();
+                    }, ip.failure);
+                }, function(strings) {
+                    callback0();
+                });
+            }, ip.failure);
+        }, function(strings) {
+            success(assertions);
+        });
+    };
+}, {badgePluginIdentifier: "EcPk", assertionProcessor: "AssertionProcessor"}, {});
 var RollupRuleProcessor = function(ip, ep) {
     this.ip = ip;
     this.rollupRulePacketGenerator = new RollupRulePacketGenerator(ip, ep);
@@ -3733,20 +3844,24 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     };
     prototype.parseCompetencies = function(rlda) {
         this.competencyArray = new Array();
-        var rld;
+        var c;
         for (var i = 0; i < rlda.length; i++) {
-            rld = rlda[i];
-            if ("competency".equalsIgnoreCase(rld.type)) 
-                this.competencyArray.push(rld);
+            if ("competency".equalsIgnoreCase(rlda[i].type)) {
+                c = new EcCompetency();
+                c.copyFrom(rlda[i]);
+                this.competencyArray.push(c);
+            }
         }
     };
     prototype.parseRelationships = function(rlda) {
         this.relationArray = new Array();
-        var rld;
+        var r;
         for (var i = 0; i < rlda.length; i++) {
-            rld = rlda[i];
-            if ("relation".equalsIgnoreCase(rld.type)) 
-                this.relationArray.push(rld);
+            if ("relation".equalsIgnoreCase(rlda[i].type)) {
+                r = new EcAlignment();
+                r.copyFrom(rlda[i]);
+                this.relationArray.push(r);
+            }
         }
     };
     prototype.addCompetenciesToFrameworkNodeGraph = function() {
@@ -3756,8 +3871,8 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
         for (var i = 0; i < this.competencyArray.length; i++) {
             cmp = this.competencyArray[i];
             n = new Node(cmp.shortId());
-            n.setName(cmp.name);
-            n.setDescription(cmp.description);
+            n.setName(cmp.getName());
+            n.setDescription(cmp.getDescription());
             this.frameworkNodeGraph.addNode(n);
             this.competencyNodeMap[cmp.shortId()] = n;
         }

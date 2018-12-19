@@ -36,11 +36,13 @@ cfGetFramework = function (f) {
             }
         }
     }
+    if (f == null)
+        cfError(404,"failure","error","Framework not found.","uuid","unknownobject");
     var result = new EcFramework();
     result.copyFrom(f);
     return result;
 };
-var cfGetContext = function(){
+var cfGetContext = function () {
     if (this.cfContext == null)
         this.cfContext = JSON.stringify(httpGet("http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"));
     return this.cfContext;
@@ -76,7 +78,8 @@ cfGetCompetency = function (c) {
                 competency.copyFrom(result[0]);
             }
         }
-        if (competency == null) return null;
+        if (competency == null)
+            cfError(404,"failure","error","Competency not found.","uuid","unknownobject");
         var c = new EcCompetency();
         c.copyFrom(competency);
     }
@@ -92,12 +95,15 @@ cfGetAlignment = function (c) {
     }
     if (c == null || c === undefined) {
         var competency = null;
+        if (competency == null)
+            competency = skyrepoGet.call(this, query);
         if (competency == null && url != null)
             competency = EcAlignment.getBlocking(url);
         if (competency == null && url != null)
             competency = EcAlignment.getBlocking(thisEndpoint() + "data/" + EcCrypto.md5(url));
-        if (competency == null) return null;
-        var a = new EcAlignment();
+        if (competency == null)
+            cfError(404,"failure","error","Alignment not found.","uuid","unknownobject");
+        c = new EcAlignment();
         c.copyFrom(competency);
     }
     return c;
@@ -134,7 +140,22 @@ cfClean = function (o) {
 */
 cfDocuments = function (f) {
     f = cfGetFramework.call(this, f);
+    if (f == null) {
+        var aggResults = [];
+        var me = this;
+        EcFramework.search(repo, "*", function (frameworks) {
+            for (var i = 0;i < frameworks.length;i++) {
+                var fw = cfDocuments.call(me,frameworks[i]);
+                if (fw != null)
+                aggResults.push(JSON.parse(fw));
+            }
+        }, function (error) {
+            error(error, 500);
+        }, {size: 5000});
+        return JSON.stringify(aggResults, null, 2);
+    }
     var name = f.getName();
+    if (f.id == null) return null;
     var guid = f.getGuid();
     if (guid.startsWith("ce-"))
         guid = guid.substring(3);
@@ -146,13 +167,13 @@ cfDocuments = function (f) {
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     f2.subjectURI = [];
     if (f2.subject != null && !EcArray.isArray(f2.subject)) f2.subject = [f2.subject];
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
+    f2 = cfClean(f2);
     f2.CFPackageURI = {
         title: name,
         identifier: guid,
         uri: thisEndpoint() + "ims/case/v1p0/CFPackages/" + guid
-    }
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFDocuments/" + guid;
-    f2 = cfClean(f2);
+    };
     return JSON.stringify(f2, null, 2);
 }
 /*Errors:
@@ -221,9 +242,10 @@ cfItems = function (f, fw) {
         f2.CFItemType = null;
         f2.CFItemTypeURI = null;
     }
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2.CFDocumentURI = {};
     if (fw == null) {
-        var parent = JSON.parse(skyRepoSearch({q: "competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\""}));
+        var parent = skyrepoSearch("competency:\"" + f2.uri + "\" OR competency:\"" + shortId + "\" OR competency:\"" + guid + "\" OR competency:\"" + EcCrypto.md5(f2.uri) + "\"");
         if (parent.length == 0)
             cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFItem.', '1337');
         t = parent[0];
@@ -235,7 +257,6 @@ cfItems = function (f, fw) {
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFItems/" + guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
 }
@@ -257,6 +278,17 @@ cfItemAssociations = function (f, fw) {
     f.context = "http://schema.cassproject.org/0.3/cass2case";
     f = jsonLdExpand(f.toJson());
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
+    f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
+    if (fw == null) {
+        var parent = skyrepoSearch("relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\"");
+        if (parent.length == 0)
+            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
+        t = parent[0];
+        fw = new EcFramework();
+        fw.copyFrom(t);
+    }
+    else
+        parent = [fw];
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
     // console.log(JSON.stringify(f2,null,2));
     f2.associationType = {"isEquivalentTo": "exactMatchOf", "narrows": "isChildOf"}[f2["case:relationType"]];
@@ -265,8 +297,8 @@ cfItemAssociations = function (f, fw) {
     if (f2["case:originNodeURI"] == null) return null;
     if (f2["case:destinationNodeURI"].id == fw.id)
         return null;
-    var destNode = cfGetCompetency.call(this,f2["case:destinationNodeURI"].id);
-    var sourceNode = cfGetCompetency.call(this,f2["case:originNodeURI"].id);
+    var destNode = cfGetCompetency.call(this, f2["case:destinationNodeURI"].id);
+    var sourceNode = cfGetCompetency.call(this, f2["case:originNodeURI"].id);
     if (destNode == null) return null;
     if (sourceNode == null) return null;
     delete f2["case:destinationNodeURI"];
@@ -280,22 +312,11 @@ cfItemAssociations = function (f, fw) {
     f2.originNodeURI.uri = JSON.parse(cfItems.call(this, sourceNode, fw)).uri;
     f2.originNodeURI.identifier = JSON.parse(cfItems.call(this, sourceNode, fw)).identifier;
     f2.CFDocumentURI = {};
-    if (fw == null) {
-        var parent = JSON.parse(skyRepoSearch({q: "relation:\"" + f2.uri + "\" OR relation:\"" + shortId + "\" OR relation:\"" + guid + "\" OR relation:\"" + EcCrypto.md5(f2.uri) + "\""}));
-        if (parent.length == 0)
-            cfError(400, '400', 'failure/error', 'Could not find CFDocument for this CFAssociation.', '1337');
-        t = parent[0];
-        parent[0] = new EcFramework();
-        parent[0].copyFrom(t);
-    }
-    else
-        parent = [fw];
     f2.CFDocumentURI.uri = JSON.parse(cfDocuments.call(this, parent[0])).uri;
     f2.CFDocumentURI.title = parent[0].name;
     f2.CFDocumentURI.identifier = JSON.parse(cfDocuments.call(this, parent[0])).identifier;
     f2.lastChangeDateTime = date(timestamp, "yyyy-MM-dd'T'HH:mm:ssXXX");
     f2.identifier = guid;
-    f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;
     f2 = cfClean(f2);
     return JSON.stringify(f2, null, 2);
 }
@@ -348,7 +369,7 @@ cfPackages = function (f) {
         for (var i = 0; i < f.competency.length; i++) {
             var c = EcCompetency.getBlocking(f.competency[i]);
             if (c != null)
-                c = JSON.parse(cfItems.call(this,c, f));
+                c = JSON.parse(cfItems.call(this, c, f));
             if (c != null) {
                 delete c["@context"];
                 result.CFItems.push(c);
@@ -359,7 +380,7 @@ cfPackages = function (f) {
         for (var i = 0; i < f.relation.length; i++) {
             var a = EcAlignment.getBlocking(f.relation[i]);
             if (a != null)
-                a = JSON.parse(cfItemAssociations.call(this,a, f));
+                a = JSON.parse(cfItemAssociations.call(this, a, f));
             if (a != null) {
                 delete a["@context"];
                 result.CFAssociations.push(a);

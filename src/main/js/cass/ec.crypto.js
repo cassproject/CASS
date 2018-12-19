@@ -864,6 +864,11 @@ EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
         m.update(s);
         return m.digest().toHex();
     };
+    constructor.sha256 = function(s) {
+        var m = forge.md.sha256.create();
+        m.update(s, "utf8");
+        return m.digest().toHex();
+    };
 }, {decryptionCache: "Object"}, {});
 /**
  *  Helper classes for dealing with RSA Public Keys.
