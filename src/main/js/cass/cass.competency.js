@@ -612,18 +612,6 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     constructor.getNameByPk = function(success, failure, dflt) {
         return function(pk) {
-            var identity = EcIdentityManager.getIdentity(pk);
-            if (identity != null && identity.displayName != null) 
-                if (identity.displayName != "You" && identity.displayName.indexOf("Alias") != -1) {
-                    success(identity.displayName + " (You)");
-                    return;
-                }
-            var contact = EcIdentityManager.getContact(pk);
-            if (contact != null && contact.displayName != null) 
-                if (contact.displayName != "You" && contact.displayName.indexOf("Alias") != -1) {
-                    success(contact.displayName);
-                    return;
-                }
             var repoHelper = new EcAsyncHelper();
             repoHelper.each(EcRepository.repos, function(ecRepository, callback0) {
                 var url = ecRepository.selectedServer;
@@ -664,19 +652,21 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
                     callback0();
                 });
             }, function(strings) {
+                var identity = EcIdentityManager.getIdentity(pk);
+                if (identity != null && identity.displayName != null) {
+                    success(identity.displayName + " (You)");
+                    return;
+                }
+                var contact = EcIdentityManager.getContact(pk);
+                if (contact != null && contact.displayName != null) {
+                    success(contact.displayName);
+                    return;
+                }
                 success(dflt);
             });
         };
     };
     constructor.getNameByPkBlocking = function(agentPk) {
-        var identity = EcIdentityManager.getIdentity(agentPk);
-        if (identity != null && identity.displayName != null) 
-            if (identity.displayName != "You" && identity.displayName.indexOf("Alias") != -1) 
-                return identity.displayName + " (You)";
-        var contact = EcIdentityManager.getContact(agentPk);
-        if (contact != null && contact.displayName != null) 
-            if (contact.displayName != "You" && contact.displayName.indexOf("Alias") != -1) 
-                return contact.displayName;
         for (var i = 0; i < EcRepository.repos.length; i++) {
             var url = EcRepository.repos[i].selectedServer;
             if (url == null) 
@@ -698,6 +688,12 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             if (name != null) 
                 return name;
         }
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null && identity.displayName != null) 
+            return identity.displayName + " (You)";
+        var contact = EcIdentityManager.getContact(agentPk);
+        if (contact != null && contact.displayName != null) 
+            return contact.displayName;
         return null;
     };
     prototype.getAssertionDate = function() {

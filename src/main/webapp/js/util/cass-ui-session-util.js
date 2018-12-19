@@ -161,7 +161,6 @@ function updateCassUiLastSessionLoadTime() {
 
 function saveCassUiSessionState() {
 	debugMessage("Saving session state...");
-	sessionStorage.clear();
 	sessionStorage.setItem(SES_STR_SELSERVER_KEY, selectedServer);
 	sessionStorage.setItem(SES_STR_IDNAME_KEY, loggedInIdentityName);
 	sessionStorage.setItem(SES_STR_PPKPEM_KEY, loggedInPpkPem);
