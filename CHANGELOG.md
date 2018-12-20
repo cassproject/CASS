@@ -1,5 +1,25 @@
 # Change Log
 
+## [0.4.23-RC1](https://github.com/cassproject/cass/tree/0.4.23-RC1) (2018-12-20)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.22-UNSTABLE...0.4.23-RC1)
+
+**Implemented enhancements:**
+
+- Install script should prompt for a URL for the final endpoint of the server. [\#103](https://github.com/cassproject/CASS/issues/103)
+
+**Fixed bugs:**
+
+- Error with CASE Harvest [\#101](https://github.com/cassproject/CASS/issues/101)
+- Prerequisites to external competencies/frameworks are not published as part of CTDL+ASN export. [\#62](https://github.com/cassproject/CASS/issues/62)
+
+**Closed issues:**
+
+- CASS UI Verify All Sub Modules are Running correct EC/CASS version [\#110](https://github.com/cassproject/CASS/issues/110)
+- CASS UI Alter Window Redirects to Open in a New Tab [\#108](https://github.com/cassproject/CASS/issues/108)
+- Generate xAPI configuration file on startup if it doesn't exist. [\#105](https://github.com/cassproject/CASS/issues/105)
+- CFPackages URI gives error when exporting a CASE framework [\#104](https://github.com/cassproject/CASS/issues/104)
+- Export individual CTDL-ASN competencies. [\#82](https://github.com/cassproject/CASS/issues/82)
+
 ## [0.4.22-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.22-UNSTABLE) (2018-11-15)
 [Full Changelog](https://github.com/cassproject/cass/compare/0.4.20-UNSTABLE...0.4.22-UNSTABLE)
 
