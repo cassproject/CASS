@@ -47,6 +47,11 @@ function handleFetchIdentitySuccess2(obj) {
     var loggedInPkPem = EcIdentityManager.ids[0].ppk.toPk().toPem();
     debugMessage("Public Key: " + loggedInPkPem);
     loggedInPpkPem = EcIdentityManager.ids[0].ppk.toPem();
+    sessionStorage.setItem("usernameWithSalt",ecIdentMgr.usernameWithSalt);
+    sessionStorage.setItem("passwordWithSalt",ecIdentMgr.passwordWithSalt);
+    sessionStorage.setItem("secretWithSalt",ecIdentMgr.secretWithSalt);
+    sessionStorage.setItem("pad",ecIdentMgr.pad);
+    sessionStorage.setItem("token",ecIdentMgr.token);
     hideLoginBusy();
     hideLoginErrorMessage();
     enableAllLoginInputs();

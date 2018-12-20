@@ -879,6 +879,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     return;
                 }
                 if (EcRepository.caching) {
+                    (EcRepository.cache)[finalUrl] = d;
                     (EcRepository.cache)[d.id] = d;
                     (EcRepository.cache)[d.shortId()] = d;
                 }
@@ -903,6 +904,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         return;
                     }
                     if (EcRepository.caching) {
+                        (EcRepository.cache)[finalUrl] = d;
                         (EcRepository.cache)[d.id] = d;
                         (EcRepository.cache)[d.shortId()] = d;
                     }
