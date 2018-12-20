@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cassproject/CaSS.svg?branch=master)](https://travis-ci.org/cassproject/CaSS)
+[![Build Status](https://travis-ci.org/cassproject/CASS.svg?branch=master)](https://travis-ci.org/cassproject/CASS)
 # CaSS
 Competency and Skills Service -- Competency Management
 
