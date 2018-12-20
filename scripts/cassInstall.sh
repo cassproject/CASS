@@ -20,8 +20,6 @@ platformDebian=`cat /etc/*release | grep debian | wc -l`
 if [ "$platformDebian" -ne 0 ];
  then
  echo Debian based platform found...
- platformVersion16=`lsb_release -r | grep 16.04 | wc -l`
- platformVersion18=`lsb_release -r | grep 18.04 | wc -l`
 fi
 if [ "$platformFedora" -ne 0 ];
  then
@@ -38,8 +36,10 @@ echo Updating Repositories...
 
 if [ "$platformDebian" -ne 0 ];
  then
-apt-get -qqy update
-apt-get -qqy install curl software-properties-common lsb-core sudo vim
+ apt-get -qqy update
+ apt-get -qqy install curl software-properties-common lsb-core sudo vim systemd gawk
+ platformVersion16=`lsb_release -r | grep 16.04 | wc -l`
+ platformVersion18=`lsb_release -r | grep 18.04 | wc -l`
 fi
 if [ "$platformFedora" -ne 0 ];
  then
@@ -67,7 +67,9 @@ echo -----
 echo Installing Oracle Java...
 add-apt-repository ppa:webupd8team/java
 apt-get -qqy update
-apt-get -qqy remove tomcat7 maven
+apt-get -qqy remove tomcat7
+apt-get -qqy remove tomcat8
+apt-get -qqy remove maven
 apt-get -qqy autoremove
 apt-get -qqy install oracle-java8-installer
 fi
@@ -127,7 +129,7 @@ if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ] && [ ! -e "/etc
  then
 echo -----
 echo Installing Tomcat 8...
-apt-get -qqy install tomcat8
+apt-get -qqy install systemd tomcat8
 echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat8
 mkdir /var/lib/tomcat8/backup
 chown tomcat8:tomcat8 /var/lib/tomcat8/backup
@@ -146,6 +148,7 @@ fi
 
 sleep 3s
 service tomcat7 stop
+service tomcat8 stop
 sleep 3s
 
 echo -----
@@ -179,6 +182,7 @@ apt-get -qqy install elasticsearch
 update-rc.d elasticsearch defaults 95 10
 systemctl enable elasticsearch.service
 fi
+
 if [ "$platformFedora" -ne 0 ] && [ ! -e "/etc/init.d/elasticsearch" ]
  then
 echo -----
@@ -308,7 +312,7 @@ if [ "$platformDebian" -ne 0 ];
  a2enmod proxy_http ssl proxy_wstunnel
 fi
 
-if [ "$platformDebian" -ne 0 ];
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ];
  then
  echo -----
  echo Configuring Tomcat...
@@ -322,6 +326,22 @@ if [ "$platformDebian" -ne 0 ];
   loopback=${loopback:-http://localhost/api/}
   echo "" >> /usr/share/tomcat7/bin/setclasspath.sh
   echo "export CASS_LOOPBACK=$loopback" >> /usr/share/tomcat7/bin/setclasspath.sh
+ fi
+fi
+if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ];
+ then
+ echo -----
+ echo Configuring Tomcat...
+ num=`grep CASS_LOOPBACK /usr/share/tomcat8/bin/setclasspath.sh | wc -l`
+ if [ "$num" -eq 0 ]
+  then
+  echo -----
+  echo
+
+  read -p "What is the intended endpoint of this server? [default=http://localhost/api/]" loopback
+  loopback=${loopback:-http://localhost/api/}
+  echo "" >> /usr/share/tomcat8/bin/setclasspath.sh
+  echo "export CASS_LOOPBACK=$loopback" >> /usr/share/tomcat8/bin/setclasspath.sh
  fi
 fi
 
