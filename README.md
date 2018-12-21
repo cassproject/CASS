@@ -3,7 +3,7 @@
 Competency and Skills Service -- Competency Management
 
 Stable: 0.3.x  
-Release Candidate: 0.4.x  
+Release Candidate: 0.4.23-RC1  
 Development: master
 
 [High level documentation](https://docs.cassproject.org)  
