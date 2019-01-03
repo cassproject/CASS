@@ -2,9 +2,9 @@ badgeSetup = function () {
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
     
-    if (this.setup != true){
-    print("classpath:forge/forge.bundle.js");
-    load("classpath:forge/forge.bundle.js");
+    if (forge == null){
+        print("classpath:forge/forge.bundle.js");
+        load("classpath:forge/forge.bundle.js");
     }
     this.setup = true;
 
