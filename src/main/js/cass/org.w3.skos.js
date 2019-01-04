@@ -2,7 +2,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,30 @@
  * limitations under the License.
  * --END_LICENSE--
  */
+/**
+ *  www.w3.org/2004/02/skos/core/Collection
+ *  A meaningful collection of concepts.
+ *  Labelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy.
+ *  @author w3.org
+ *  @class Collection
+ *  @module org.w3.skos
+ */
+var Collection = /**
+ *  Constructor, automatically sets @context and @type.
+ *  @constructor
+ */
+function() {
+    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "Collection");
+};
+Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
+    /**
+     *  www.w3.org/2004/02/skos/core/member
+     *  Relates a collection to one of its members.
+     *  @property member
+     *  @type N0e403dc85fe548d1b3d2f3d1ded36d20
+     */
+    prototype.member = null;
+}, {member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/Concept
  *  An idea or notion; a unit of thought.
@@ -73,30 +97,6 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
      */
     prototype.hasTopConcept = null;
 }, {hasTopConcept: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
-/**
- *  www.w3.org/2004/02/skos/core/Collection
- *  A meaningful collection of concepts.
- *  Labelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy.
- *  @author w3.org
- *  @class Collection
- *  @module org.w3.skos
- */
-var Collection = /**
- *  Constructor, automatically sets @context and @type.
- *  @constructor
- */
-function() {
-    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "Collection");
-};
-Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
-    /**
-     *  www.w3.org/2004/02/skos/core/member
-     *  Relates a collection to one of its members.
-     *  @property member
-     *  @type N0e403dc85fe548d1b3d2f3d1ded36d20
-     */
-    prototype.member = null;
-}, {member: {name: "Array", arguments: ["Object"]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/OrderedCollection
  *  An ordered collection of concepts, where both the grouping and the ordering are meaningful.
