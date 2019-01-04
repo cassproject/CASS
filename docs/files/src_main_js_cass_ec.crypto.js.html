@@ -819,7 +819,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -844,6 +844,11 @@ EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
     constructor.md5 = function(s) {
         var m = forge.md.md5.create();
         m.update(s);
+        return m.digest().toHex();
+    };
+    constructor.sha256 = function(s) {
+        var m = forge.md.sha256.create();
+        m.update(s, &quot;utf8&quot;);
         return m.digest().toHex();
     };
 }, {decryptionCache: &quot;Object&quot;}, {});

@@ -819,7 +819,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -1286,7 +1286,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @method updateTimestamp
      */
     prototype.getTimestamp = function() {
-        return Integer.parseInt(this.id.substring(this.id.lastIndexOf(&quot;/&quot;)));
+        return Integer.parseInt(this.id.substring(this.id.lastIndexOf(&quot;/&quot;) + 1));
     };
     /**
      *  Returns true if the provided ID represents this object.

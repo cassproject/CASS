@@ -819,7 +819,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -1239,63 +1239,119 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         if (this.subject == null) 
             return &quot;Nobody&quot;;
         var subjectPk = this.getSubject();
-        var identity = EcIdentityManager.getIdentity(subjectPk);
-        if (identity != null &amp;&amp; identity.displayName != null) 
-            return identity.displayName + &quot; (You)&quot;;
-        var contact = EcIdentityManager.getContact(subjectPk);
-        if (contact == null || contact.displayName == null) 
-            return &quot;Unknown Subject&quot;;
-        return contact.displayName;
+        var name = EcAssertion.getNameByPkBlocking(subjectPk);
+        if (name != null) 
+            return name;
+        return &quot;Unknown Subject&quot;;
     };
     prototype.getSubjectNameAsync = function(success, failure) {
         if (this.subject == null) {
             success(&quot;Nobody&quot;);
             return;
         }
-        this.getSubjectAsync(function(subjectPk) {
-            var identity = EcIdentityManager.getIdentity(subjectPk);
-            if (identity != null &amp;&amp; identity.displayName != null) {
-                success(identity.displayName + &quot; (You)&quot;);
-                return;
-            }
-            var contact = EcIdentityManager.getContact(subjectPk);
-            if (contact == null || contact.displayName == null) {
-                success(&quot;Unknown Subject&quot;);
-                return;
-            }
-            success(contact.displayName);
-        }, failure);
+        this.getSubjectAsync(EcAssertion.getNameByPk(success, failure, &quot;Unknown Subject&quot;), failure);
     };
     prototype.getAgentName = function() {
         if (this.agent == null) 
             return &quot;Nobody&quot;;
         var agentPk = this.getAgent();
-        var identity = EcIdentityManager.getIdentity(agentPk);
-        if (identity != null &amp;&amp; identity.displayName != null) 
-            return identity.displayName + &quot; (You)&quot;;
-        var contact = EcIdentityManager.getContact(agentPk);
-        if (contact == null || contact.displayName == null) 
-            return &quot;Unknown Agent&quot;;
-        return contact.displayName;
+        var name = EcAssertion.getNameByPkBlocking(agentPk);
+        if (name != null) 
+            return name;
+        return &quot;Unknown Agent&quot;;
     };
     prototype.getAgentNameAsync = function(success, failure) {
         if (this.subject == null) {
             success(&quot;Nobody&quot;);
             return;
         }
-        this.getAgentAsync(function(subjectPk) {
-            var identity = EcIdentityManager.getIdentity(subjectPk);
-            if (identity != null &amp;&amp; identity.displayName != null) {
-                success(identity.displayName + &quot; (You)&quot;);
-                return;
+        this.getAgentAsync(EcAssertion.getNameByPk(success, failure, &quot;Unknown Agent&quot;), failure);
+    };
+    constructor.getNameByPk = function(success, failure, dflt) {
+        return function(pk) {
+            var repoHelper = new EcAsyncHelper();
+            repoHelper.each(EcRepository.repos, function(ecRepository, callback0) {
+                var url = ecRepository.selectedServer;
+                if (url == null) {
+                    callback0();
+                    return;
+                }
+                if (url.endsWith(&quot;/&quot;) == false) 
+                    url += &quot;/&quot;;
+                url += &quot;data/&quot; + pk.fingerprint();
+                EcRepository.get(url, function(personOrOrganization) {
+                    var e = new EcEncryptedValue();
+                    if (personOrOrganization.isAny(e.getTypes())) {
+                        e.copyFrom(personOrOrganization);
+                        e.decryptIntoObjectAsync(function(decryptedPersonOrOrganization) {
+                            var name = Thing.getDisplayStringFrom((decryptedPersonOrOrganization)[&quot;name&quot;]);
+                            if (name != null &amp;&amp; repoHelper.counter != -1) {
+                                success(name);
+                                repoHelper.stop();
+                            } else {
+                                callback0();
+                                return;
+                            }
+                        }, function(s) {
+                            callback0();
+                        });
+                    } else {
+                        var name = Thing.getDisplayStringFrom((personOrOrganization)[&quot;name&quot;]);
+                        if (name != null &amp;&amp; repoHelper.counter != -1) {
+                            success(name);
+                            repoHelper.stop();
+                        } else {
+                            callback0();
+                            return;
+                        }
+                    }
+                }, function(s) {
+                    callback0();
+                });
+            }, function(strings) {
+                var identity = EcIdentityManager.getIdentity(pk);
+                if (identity != null &amp;&amp; identity.displayName != null) {
+                    success(identity.displayName + &quot; (You)&quot;);
+                    return;
+                }
+                var contact = EcIdentityManager.getContact(pk);
+                if (contact != null &amp;&amp; contact.displayName != null) {
+                    success(contact.displayName);
+                    return;
+                }
+                success(dflt);
+            });
+        };
+    };
+    constructor.getNameByPkBlocking = function(agentPk) {
+        for (var i = 0; i &lt; EcRepository.repos.length; i++) {
+            var url = EcRepository.repos[i].selectedServer;
+            if (url == null) 
+                continue;
+            if (url.endsWith(&quot;/&quot;) == false) 
+                url += &quot;/&quot;;
+            url += &quot;data/&quot; + agentPk.fingerprint();
+            var personOrOrganization = EcRepository.getBlocking(url);
+            if (personOrOrganization == null) 
+                continue;
+            var e = new EcEncryptedValue();
+            if (personOrOrganization.isAny(e.getTypes())) {
+                e.copyFrom(personOrOrganization);
+                var decryptedPersonOrOrganization = e.decryptIntoObject();
+                if (decryptedPersonOrOrganization != null) 
+                    personOrOrganization = decryptedPersonOrOrganization;
             }
-            var contact = EcIdentityManager.getContact(subjectPk);
-            if (contact == null || contact.displayName == null) {
-                success(&quot;Unknown Agent&quot;);
-                return;
-            }
-            success(contact.displayName);
-        }, failure);
+            var name = Thing.getDisplayStringFrom((personOrOrganization)[&quot;name&quot;]);
+            if (name != null) 
+                return name;
+        }
+        var identity = EcIdentityManager.getIdentity(agentPk);
+        if (identity != null &amp;&amp; identity.displayName != null) 
+            return identity.displayName + &quot; (You)&quot;;
+        var contact = EcIdentityManager.getContact(agentPk);
+        if (contact != null &amp;&amp; contact.displayName != null) 
+            return contact.displayName;
+        return null;
     };
     prototype.getAssertionDate = function() {
         if (this.assertionDate == null) 

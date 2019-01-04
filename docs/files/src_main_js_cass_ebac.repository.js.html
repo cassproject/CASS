@@ -819,7 +819,7 @@
  * --BEGIN_LICENSE--
  * Competency and Skills System
  * -----
- * Copyright (C) 2015 - 2018 Eduworks Corporation and other contributing parties.
+ * Copyright (C) 2015 - 2019 Eduworks Corporation and other contributing parties.
  * -----
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -1696,6 +1696,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     return;
                 }
                 if (EcRepository.caching) {
+                    (EcRepository.cache)[finalUrl] = d;
                     (EcRepository.cache)[d.id] = d;
                     (EcRepository.cache)[d.shortId()] = d;
                 }
@@ -1720,6 +1721,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         return;
                     }
                     if (EcRepository.caching) {
+                        (EcRepository.cache)[finalUrl] = d;
                         (EcRepository.cache)[d.id] = d;
                         (EcRepository.cache)[d.shortId()] = d;
                     }
@@ -2232,18 +2234,19 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }, null);
     };
     /**
-     *  Gets a JSON-LD object from the place designated by the URI.
+     *  Returns an array of JSON-LD objects from the places designated by the given URIs.
      *  &lt;p&gt;
      *  Uses a signature sheet gathered from {@link EcIdentityManager}.
      * 
-     *  @param {String}                               url URL of the remote object.
-     *  @param {Callback1&lt;EcRemoteLinkedData&gt;}success Event to call upon
+     *  @param {Array&lt;String&gt;}                        urls URLs of the remote objects.
+     *  @param {Callback1&lt;Array&lt;EcRemoteLinkedData&gt;&gt;} success Event to call upon
      *                                                successful retrieval.
      *  @param {Callback1&lt;String&gt;}                    failure Event to call upon spectacular
      *                                                failure.
+     *  @param {Callback1&lt;Array&lt;EcRemoteLinkedData&gt;&gt;} cachedValues Event to call upon
+     *                                                successful retrieval from cache.
      *  @memberOf EcRepository
-     *  @method get
-     *  @static
+     *  @method multiget
      */
     prototype.multiget = function(urls, success, failure, cachedValues) {
         if (urls == null || urls.length == 0) {
