@@ -42,3 +42,5 @@ alpine\.sh
 alpineRun\.sh
 
 ecs-params\.yml
+
+nb-configuration\.xml
