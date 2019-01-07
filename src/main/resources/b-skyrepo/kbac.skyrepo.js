@@ -39,7 +39,7 @@ var getTypeFromObject = function(o) {
  */
 var signatureSheet = function() {
     var sigSheet = null;
-    sigSheet = (this)["signatureSheet"];
+    sigSheet = this.ctx.get("signatureSheet");
     if (sigSheet != null) 
         return sigSheet;
     sigSheet = new Array();
@@ -74,7 +74,7 @@ var signatureSheet = function() {
             error("Invalid Signature Detected: " + signature.toJson(), 451);
         sigSheet[i] = signature;
     }
-    (this)["signatureSheet"] = sigSheet;
+    this.ctx.put("signatureSheet", sigSheet);
     return sigSheet;
 };
 var isEncryptedType = function(obj) {
@@ -790,7 +790,7 @@ var skyIdCreate = function() {
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
-    (this)["signatureSheet"] = signatureSheet;
+    this.ctx.put("signatureSheet", signatureSheet);
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
         get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
@@ -835,7 +835,7 @@ var skyIdCommit = function() {
     encryptedPayload.payload = EcAesCtr.encrypt(JSON.stringify(payload), skyIdSecretKey, saltedId);
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
-    (this)["signatureSheet"] = signatureSheet;
+    this.ctx.put("signatureSheet", signatureSheet);
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
@@ -866,7 +866,7 @@ var skyIdLogin = function() {
     var saltedId = forge.util.encode64(forge.pkcs5.pbkdf2(id, skyIdSalt, 10000, 16));
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
-    (this)["signatureSheet"] = signatureSheet;
+    this.ctx.put("signatureSheet", signatureSheet);
     var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);

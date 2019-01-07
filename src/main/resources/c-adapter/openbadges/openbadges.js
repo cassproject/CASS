@@ -2,9 +2,9 @@ badgeSetup = function () {
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
     
-    if (this.setup != true){
-    print("classpath:forge/forge.bundle.js");
-    load("classpath:forge/forge.bundle.js");
+    if (forge == null){
+        print("classpath:forge/forge.bundle.js");
+        load("classpath:forge/forge.bundle.js");
     }
     this.setup = true;
 
@@ -20,9 +20,10 @@ badgeSetup = function () {
     EcIdentityManager.addIdentity(identity);
 }
 
-badgeKey=function(){EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();}
-openbadgesPpk=badgeKey;
-bindWebService("/badge/pk",openbadgesPpk);
+badgeKey = function () {
+    return EcPpk.fromPem(keyFor("adapter.openbadges.private")).toPk().toPem();
+}
+bindWebService("/badge/pk", badgeKey);
 
 badgeGetPerson = function (fingerprint) {
     var person = EcRepository.getBlocking(repoEndpoint() + "data/" + fingerprint);
