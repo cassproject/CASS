@@ -39,11 +39,11 @@ function goToEditor() {
 }
 
 function goToDocs() {
-    location.replace("https://docs.cassproject.org");
+    location.assign("https://docs.cassproject.org");
 }
 
 function goToDevdocs() {
-    location.replace("https://devs.cassproject.org");
+    location.assign("https://devs.cassproject.org");
 }
 
 function init() {
