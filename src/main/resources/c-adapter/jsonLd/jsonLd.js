@@ -5,18 +5,18 @@ function importJsonLd(){
 	var jsonLd, text;
 
 	if(this.params.url != undefined && this.params.url != ""){
-		text = httpGet(this.params.url)
+		text = httpGet(this.params.url);
 	}else if(this.params.path != undefined && this.params.path  != ""){
 		text = fileToString(fileLoad(this.params.path));
 	}else if(this.params.text != undefined && this.params.text != ""){
-		text = this.params.text
+		text = this.params.text;
 	}else{
-		var file = getFileFromPost();
+		var file = getFileFromPost.call(this);
 
 		if(file == undefined || file == null){
 			error("Unable to find ASN to Convert");
 		}else if(file.length != undefined){
-			var data = getFileFromPost("data");
+			var data = getFileFromPost.call(this, "data");
 			if(data != undefined && data != null){
 				text = fileToString(data);
 			}else if(file.length != 0){
