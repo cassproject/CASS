@@ -480,13 +480,11 @@ function importJsonLdGraph(graph, context) {
             var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
         }
 
-        compacted["sameAs"] = compacted["@id"];
-
         var type = compacted["@type"]
-        var guid = generateUUID();
+        var guid = EcCrypto.md5(compacted["@id"]);
         var version = date(null, null, true);
 
-        compacted["@id"] = repoEndpoint() + "data/" + guid + "/" + version;
+        //compacted["@id"] = repoEndpoint() + "data/" + guid + "/" + version;
 
         debug(skyrepoPut({
             "obj": JSON.stringify(compacted),

@@ -11,37 +11,18 @@ function importJsonLd(){
 	}else if(this.params.text != undefined && this.params.text != ""){
 		text = this.params.text;
 	}else{
-		var file = getFileFromPost.call(this);
-
-		if(file == undefined || file == null){
-			error("Unable to find ASN to Convert");
-		}else if(file.length != undefined){
-			var data = getFileFromPost.call(this, "data");
-			if(data != undefined && data != null){
-				text = fileToString(data);
-			}else if(file.length != 0){
-				text = fileToString(file[0]);
-			}else{
-				error("No File Found");
-			}
-		}else{
-			text = fileToString(file);
-		}
+		var files = (fileFromDatastream).call(this);
+		text = fileToString.call(this,files)[0];
 	}
 
 	try{
 		jsonLd = JSON.parse(text);
 	}catch(e){
-		debug("Not json")
-
+		debug("Not json");
 		jsonLd = rdfToJsonLd(text);
 	}
 
-	//print(JSON.stringify(jsonLd));
-
 	jsonLd = fixScalars(jsonLd);
-
-	//print(JSON.stringify(jsonLd));
 
 	var frameworkObj = undefined;
 	var competencyList = [];
@@ -79,16 +60,9 @@ function importJsonLd(){
 				obj["@id"] = idx;
 
 			var expanded = jsonLdExpand(JSON.stringify(obj));
-
-			//print(JSON.stringify(expanded));
-
 			var graphObj = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
 
-			//print(JSON.stringify(graphObj));
-
 			if(graphObj["rdf:type"] != undefined && graphObj["@type"] == undefined){
-				//print(JSON.stringify(graphObj["rdf:type"]));
-				//print(Object.keys(graphObj["rdf:type"]));
 				if(graphObj["rdf:type"]["@id"] == undefined){
 					graphObj["@type"] = graphObj["rdf:type"]
 				}else{
