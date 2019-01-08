@@ -484,13 +484,11 @@ function importJsonLdGraph(graph, context) {
         var guid = EcCrypto.md5(compacted["@id"]);
         var version = date(null, null, true);
 
-        //compacted["@id"] = repoEndpoint() + "data/" + guid + "/" + version;
-
-        debug(skyrepoPut({
+        skyrepoPut({
             "obj": JSON.stringify(compacted),
             "id": guid,
             "version": version
-        }));
+        });
     }
 }
 
