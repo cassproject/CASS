@@ -472,7 +472,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         print(JSON.stringify(f, null, 2));
         repo.saveTo(f, print, print);
 
-        return repoEndpoint() + "ctdlasn/" + guid;
+        return repoEndpoint() + "data/" + guid;
     } // end if frameworkObj != null
 }
 
