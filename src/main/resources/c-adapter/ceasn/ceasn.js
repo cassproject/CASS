@@ -23,7 +23,7 @@ var asnContext = {
 var ceasnExportUriPrefix = null;
 var ceasnExportUriPrefixGraph = null;
 
-function ceasnExportUriTransform(uri,frameworkUri) {
+function ceasnExportUriTransform(uri, frameworkUri) {
     if (ceasnExportUriPrefix == null)
         return uri;
     if (uri.startsWith(ceasnExportUriPrefix))
@@ -112,9 +112,9 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.source] != null)
                     if (competencies[r.target] != null)
-                        competencies[r.source]["ceasn:broadAlignment"].push(ceasnExportUriTransform(competencies[r.target].id,f.id));
+                        competencies[r.source]["ceasn:broadAlignment"].push(ceasnExportUriTransform(competencies[r.target].id, f.id));
                     else
-                        competencies[r.source]["ceasn:broadAlignment"].push(ceasnExportUriTransform(r.target,f.id));
+                        competencies[r.source]["ceasn:broadAlignment"].push(ceasnExportUriTransform(r.target, f.id));
 
                 if (competencies[r.target] != null)
                     if (competencies[r.target]["ceasn:narrowAlignment"] == null)
@@ -122,9 +122,9 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
-                        competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(competencies[r.source].id,f.id));
+                        competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                     else
-                        competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(r.source,f.id));
+                        competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(r.source, f.id));
             }
             else {
                 EcArray.setRemove(f.competency, r.target);
@@ -137,9 +137,9 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.source] != null)
                     if (competencies[r.target] != null)
-                        competencies[r.source]["ceasn:isChildOf"].push(ceasnExportUriTransform(competencies[r.target].id,f.id));
+                        competencies[r.source]["ceasn:isChildOf"].push(ceasnExportUriTransform(competencies[r.target].id, f.id));
                     else
-                        competencies[r.source]["ceasn:isChildOf"].push(ceasnExportUriTransform(r.target,f.id));
+                        competencies[r.source]["ceasn:isChildOf"].push(ceasnExportUriTransform(r.target, f.id));
 
                 if (competencies[r.target] != null)
                     if (competencies[r.target]["ceasn:hasChild"] == null)
@@ -147,9 +147,9 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
-                        competencies[r.target]["ceasn:hasChild"]["@list"].push(ceasnExportUriTransform(competencies[r.source].id,f.id));
+                        competencies[r.target]["ceasn:hasChild"]["@list"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                     else
-                        competencies[r.target]["ceasn:hasChild"]["@list"].push(ceasnExportUriTransform(r.source,f.id));
+                        competencies[r.target]["ceasn:hasChild"]["@list"].push(ceasnExportUriTransform(r.source, f.id));
             }
         }
         if (r.relationType == Relation.IS_EQUIVALENT_TO) {
@@ -163,15 +163,15 @@ function cassFrameworkAsCeasn() {
 
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:exactAlignment"].push(ceasnExportUriTransform(competencies[r.source].id,f.id));
+                    competencies[r.target]["ceasn:exactAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                 else
-                    competencies[r.target]["ceasn:exactAlignment"].push(ceasnExportUriTransform(r.source,f.id));
+                    competencies[r.target]["ceasn:exactAlignment"].push(ceasnExportUriTransform(r.source, f.id));
 
             if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    competencies[r.source]["ceasn:exactAlignment"].push(ceasnExportUriTransform(competencies[r.target].id,f.id));
+                    competencies[r.source]["ceasn:exactAlignment"].push(ceasnExportUriTransform(competencies[r.target].id, f.id));
                 else
-                    competencies[r.source]["ceasn:exactAlignment"].push(ceasnExportUriTransform(r.target,f.id));
+                    competencies[r.source]["ceasn:exactAlignment"].push(ceasnExportUriTransform(r.target, f.id));
         }
         if (r.relationType == Relation.IS_RELATED_TO) {
             EcArray.setRemove(f.competency, r.source);
@@ -185,15 +185,15 @@ function cassFrameworkAsCeasn() {
 
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:minorAlignment"].push(ceasnExportUriTransform(competencies[r.source].id,f.id));
+                    competencies[r.target]["ceasn:minorAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                 else
-                    competencies[r.target]["ceasn:minorAlignment"].push(ceasnExportUriTransform(r.source,f.id));
+                    competencies[r.target]["ceasn:minorAlignment"].push(ceasnExportUriTransform(r.source, f.id));
 
             if (competencies[r.source] != null)
                 if (competencies[r.target] != null)
-                    competencies[r.source]["ceasn:minorAlignment"].push(ceasnExportUriTransform(competencies[r.target].id,f.id));
+                    competencies[r.source]["ceasn:minorAlignment"].push(ceasnExportUriTransform(competencies[r.target].id, f.id));
                 else
-                    competencies[r.source]["ceasn:minorAlignment"].push(ceasnExportUriTransform(r.target,f.id));
+                    competencies[r.source]["ceasn:minorAlignment"].push(ceasnExportUriTransform(r.target, f.id));
         }
         if (r.relationType == Relation.REQUIRES) {
             EcArray.setRemove(f.competency, r.source);
@@ -203,9 +203,9 @@ function cassFrameworkAsCeasn() {
 
             if (competencies[r.target] != null)
                 if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(competencies[r.source].id,f.id));
+                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                 else
-                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(r.source,f.id));
+                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(r.source, f.id));
         }
     }
 
@@ -221,9 +221,9 @@ function cassFrameworkAsCeasn() {
             c["ceasn:isTopChildOf"] = ceasnExportUriTransform(f.id);
             if (f["ceasn:hasTopChild"] == null)
                 f["ceasn:hasTopChild"] = {"@list": []};
-            f["ceasn:hasTopChild"]["@list"].push(ceasnExportUriTransform(c.id,f.id));
+            f["ceasn:hasTopChild"]["@list"].push(ceasnExportUriTransform(c.id, f.id));
         }
-        f.competency.push(ceasnExportUriTransform(c.id,f.id));
+        f.competency.push(ceasnExportUriTransform(c.id, f.id));
         if (c.name == null || c.name == "")
             if (c.description != null && c.description != "") {
                 c.name = c.description;
@@ -279,10 +279,24 @@ function cassFrameworkAsCeasn() {
     if (f["ceterms:ctid"].indexOf("ce-") != 0)
         f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
+    if (f["@id"] != ceasnExportUriTransform(f["@id"])) {
+        if (f["ceasn:identifier"] != null)
+            if (EcArray.isArray(f["ceasn:identifier"])) {
+                f["ceasn:identifier"].push(f["@id"]);
+            }
+            else {
+                f["ceasn:identifier"] = [f["ceasn:identifier"], f["@id"]];
+            }
+        else
+            f["ceasn:identifier"] = f["@id"];
+    }
+    f["@id"] = ceasnExportUriTransform(f["@id"]);
+
     var results = [];
     f = stripNonCe(f);
     results.push(f);
     for (var k in competencies) {
+        var c = competencies[k];
         var found = false;
         for (var j = 0; j < results.length; j++)
             if (results[j]["@id"] == competencies[k]["@id"]) {
@@ -290,13 +304,23 @@ function cassFrameworkAsCeasn() {
                 break;
             }
         if (found) continue;
-        competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"],f["@id"]);
+        if (c["@id"] != ceasnExportUriTransform(c["@id"])) {
+            if (c["ceasn:identifier"] != null)
+                if (EcArray.isArray(c["ceasn:identifier"])) {
+                    c["ceasn:identifier"].push(c["@id"]);
+                }
+                else {
+                    c["ceasn:identifier"] = [c["ceasn:identifier"], c["@id"]];
+                }
+            else
+                c["ceasn:identifier"] = c["@id"];
+        }
+        competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"], f["@id"]);
         results.push(competencies[k]);
         if (competency != null)
             if (competency.id == competencies[k]["@id"])
                 return JSON.stringify(competencies[k], null, 2);
     }
-    f["@id"] = ceasnExportUriTransform(f["@id"]);
     delete f["@context"];
     var r = {};
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
