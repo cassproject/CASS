@@ -82,9 +82,9 @@ function importJsonLd(){
 	}
 
 	if(frameworkObj == undefined && competencyList.length != Object.keys(graph).length){
-		importJsonLdGraph(graph, context);
+		importJsonLdGraph.call(this,graph, context);
 	}else{
-		importFrameworkToCass(frameworkObj, competencyList)
+		importFrameworkToCass(this,frameworkObj, competencyList)
 	}
 }
 

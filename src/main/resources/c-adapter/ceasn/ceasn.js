@@ -29,10 +29,8 @@ function ceasnExportUriTransform(uri, frameworkUri) {
     if (uri.startsWith(ceasnExportUriPrefix))
         return uri;
     var uuid = null;
-    {
-        var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
-        uuid = parts[parts.length - 1];
-    }
+    var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
+    uuid = parts[parts.length - 1];
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
         uuid = new UUID(3, "nil", EcRemoteLinkedData.trimVersionFromUrl(uri)).format();
     return ceasnExportUriPrefix + uuid;
@@ -216,7 +214,9 @@ function cassFrameworkAsCeasn() {
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
+        console.log(f.id);
         c["ceasn:isPartOf"] = ceasnExportUriTransform(f.id);
+        console.log(c["ceasn:isPartOf"]);
         if (c["ceasn:isChildOf"] == null) {
             c["ceasn:isTopChildOf"] = ceasnExportUriTransform(f.id);
             if (f["ceasn:hasTopChild"] == null)
@@ -385,6 +385,9 @@ function stripNonCe(f) {
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
+
+    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+
     var ceasnIdentity = new EcIdentity();
     ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
     ceasnIdentity.displayName = "CEASN Server Identity";
@@ -422,7 +425,9 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
                 r.relationType = Relation.NARROWS;
                 r.generateId(repoEndpoint());
                 r.addOwner(ceasnIdentity.ppk.toPk());
-                //print(JSON.stringify(r,null,2));
+
+                if (owner != null)
+                    r.addOwner(EcPk.fromPem(owner));
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
@@ -447,6 +452,10 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var c = new EcCompetency();
         c.copyFrom(compactedComp);
         c.addOwner(ceasnIdentity.ppk.toPk());
+
+        if (owner != null)
+            c.addOwner(EcPk.fromPem(owner));
+
         print(JSON.stringify(c, null, 2));
         repo.saveTo(c, print, print);
 
@@ -460,6 +469,9 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
                 r.relationType = Relation.NARROWS;
                 r.generateId(repoEndpoint());
                 r.addOwner(ceasnIdentity.ppk.toPk());
+
+                if (owner != null)
+                    r.addOwner(EcPk.fromPem(owner));
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
@@ -493,6 +505,10 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var f = new EcFramework();
         f.copyFrom(compacted);
         f.addOwner(ceasnIdentity.ppk.toPk());
+
+        if (owner != null)
+            f.addOwner(EcPk.fromPem(owner));
+
         print(JSON.stringify(f, null, 2));
         repo.saveTo(f, print, print);
 
@@ -547,7 +563,7 @@ function ceasnFrameworkToCass() {
         if (frameworkObj == undefined && competencyList.length != Object.keys(graph).length) {
             return importJsonLdGraph.call(this, graph, jsonLd["@context"]);
         } else {
-            return importCeFrameworkToCass.call(this, frameworkObj, competencyList)
+            return importCeFrameworkToCass.call(this, frameworkObj, competencyList);
         }
     } else {
         error("no @graph created, unsure how to parse");

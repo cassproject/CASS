@@ -134,6 +134,8 @@ embedCFPackageIntoFramework = function(f,document){
 }
 
 ingestCase = function () {
+    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+
     var caseIdentity = new EcIdentity();
     caseIdentity.ppk = EcPpk.fromPem(keyFor("adapter.case.private"));
     caseIdentity.displayName = "CASE Server Identity";
@@ -158,6 +160,9 @@ ingestCase = function () {
         var listToSave = embedCFPackageIntoFramework(f, document);
         for (var j = 0; j < listToSave.length; j++) {
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
+            if (owner != null)
+                listToSave[j].addOwner(EcPk.fromPem(owner));
+
             repo.saveTo(listToSave[j],function(success){},function(failure){});
         }
     }
