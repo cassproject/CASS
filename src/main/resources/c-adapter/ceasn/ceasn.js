@@ -280,15 +280,15 @@ function cassFrameworkAsCeasn() {
         f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
     if (f["@id"] != ceasnExportUriTransform(f["@id"])) {
-        if (f["ceasn:identifier"] != null)
-            if (EcArray.isArray(f["ceasn:identifier"])) {
-                f["ceasn:identifier"].push(f["@id"]);
+        if (f["ceasn:exactAlignment"] != null)
+            if (EcArray.isArray(f["ceasn:exactAlignment"])) {
+                f["ceasn:exactAlignment"].push(f["@id"]);
             }
             else {
-                f["ceasn:identifier"] = [f["ceasn:identifier"], f["@id"]];
+                f["ceasn:exactAlignment"] = [f["ceasn:exactAlignment"], f["@id"]];
             }
         else
-            f["ceasn:identifier"] = f["@id"];
+            f["ceasn:exactAlignment"] = f["@id"];
     }
     f["@id"] = ceasnExportUriTransform(f["@id"]);
 
@@ -305,15 +305,15 @@ function cassFrameworkAsCeasn() {
             }
         if (found) continue;
         if (c["@id"] != ceasnExportUriTransform(c["@id"])) {
-            if (c["ceasn:identifier"] != null)
-                if (EcArray.isArray(c["ceasn:identifier"])) {
-                    c["ceasn:identifier"].push(c["@id"]);
+            if (c["ceasn:exactAlignment"] != null)
+                if (EcArray.isArray(c["ceasn:exactAlignment"])) {
+                    c["ceasn:exactAlignment"].push(c["@id"]);
                 }
                 else {
-                    c["ceasn:identifier"] = [c["ceasn:identifier"], c["@id"]];
+                    c["ceasn:exactAlignment"] = [c["ceasn:exactAlignment"], c["@id"]];
                 }
             else
-                c["ceasn:identifier"] = c["@id"];
+                c["ceasn:exactAlignment"] = c["@id"];
         }
         competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"], f["@id"]);
         results.push(competencies[k]);
