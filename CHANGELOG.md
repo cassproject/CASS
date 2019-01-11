@@ -1,5 +1,23 @@
 # Change Log
 
+## [1.0.0-UNSTABLE](https://github.com/cassproject/cass/tree/1.0.0-UNSTABLE) (2019-01-10)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24...1.0.0-UNSTABLE)
+
+## [0.4.24](https://github.com/cassproject/cass/tree/0.4.24) (2019-01-07)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24-RC2...0.4.24)
+
+**Implemented enhancements:**
+
+- Ubuntu 17.10 doesn't have Tomcat7 in the package manager, can't install CASS. [\#43](https://github.com/cassproject/CASS/issues/43)
+
+**Closed issues:**
+
+- Can't return to home page from documentation [\#115](https://github.com/cassproject/CASS/issues/115)
+
+**Merged pull requests:**
+
+- Allow user to return to prev page from docs & devdocs \#115 [\#118](https://github.com/cassproject/CASS/pull/118) ([woodkri](https://github.com/woodkri))
+
 ## [0.4.24-RC2](https://github.com/cassproject/cass/tree/0.4.24-RC2) (2019-01-04)
 [Full Changelog](https://github.com/cassproject/cass/compare/0.4.23-RC1...0.4.24-RC2)
 
