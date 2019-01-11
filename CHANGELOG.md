@@ -1,5 +1,43 @@
 # Change Log
 
+## [1.0.0-UNSTABLE](https://github.com/cassproject/cass/tree/1.0.0-UNSTABLE) (2019-01-10)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24...1.0.0-UNSTABLE)
+
+## [0.4.24](https://github.com/cassproject/cass/tree/0.4.24) (2019-01-07)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24-RC2...0.4.24)
+
+**Implemented enhancements:**
+
+- Ubuntu 17.10 doesn't have Tomcat7 in the package manager, can't install CASS. [\#43](https://github.com/cassproject/CASS/issues/43)
+
+**Closed issues:**
+
+- Can't return to home page from documentation [\#115](https://github.com/cassproject/CASS/issues/115)
+
+**Merged pull requests:**
+
+- Allow user to return to prev page from docs & devdocs \#115 [\#118](https://github.com/cassproject/CASS/pull/118) ([woodkri](https://github.com/woodkri))
+
+## [0.4.24-RC2](https://github.com/cassproject/cass/tree/0.4.24-RC2) (2019-01-04)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.23-RC1...0.4.24-RC2)
+
+**Implemented enhancements:**
+
+- Pushing the CASS button in the top left corner should take you home. [\#112](https://github.com/cassproject/CASS/issues/112)
+
+**Fixed bugs:**
+
+- Username does not stay attached to Person [\#117](https://github.com/cassproject/CASS/issues/117)
+- Scrolling in pages that iframe other pages is a bit wonky. [\#113](https://github.com/cassproject/CASS/issues/113)
+- Case - CFAssociations TypeError [\#89](https://github.com/cassproject/CASS/issues/89)
+- Case - CFItems TypeError [\#87](https://github.com/cassproject/CASS/issues/87)
+- Case - CFDocuments Endpoint gives error message [\#86](https://github.com/cassproject/CASS/issues/86)
+
+**Closed issues:**
+
+- Searching for assertions does not always return them all. [\#116](https://github.com/cassproject/CASS/issues/116)
+- Update Readme.MD for all projects. [\#111](https://github.com/cassproject/CASS/issues/111)
+
 ## [0.4.23-RC1](https://github.com/cassproject/cass/tree/0.4.23-RC1) (2018-12-20)
 [Full Changelog](https://github.com/cassproject/cass/compare/0.4.22-UNSTABLE...0.4.23-RC1)
 
