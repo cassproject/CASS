@@ -691,7 +691,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 return;
             }
         }
-        this.reader.push(pem);
+        EcArray.setAdd(this.reader, pem);
         var payloadSecret = this.decryptSecret();
         if (payloadSecret == null) {
             console.error("Cannot add a Reader if you don't know the secret");
@@ -707,15 +707,84 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  @method removeReader
      */
     prototype.removeReader = function(oldReader) {
+        var payloadSecret = this.decryptSecret();
         var pem = oldReader.toPem();
-        if (this.reader == null) {
-            this.reader = new Array();
+        if (this.reader != null) {
+            EcArray.setRemove(this.reader, pem);
         }
-        for (var i = 0; i < this.reader.length; i++) {
-            if (this.reader[i] == pem) {
-                this.reader.splice(i, 1);
+        if (payloadSecret == null) {
+            console.error("Cannot remove a Reader if you don't know the secret");
+            return;
+        }
+        this.secret = new Array();
+        if (this.owner != null) 
+            for (var i = 0; i < this.owner.length; i++) 
+                EcArray.setAdd(this.secret, EcRsaOaep.encrypt(EcPk.fromPem(this.owner[i]), payloadSecret.toEncryptableJson()));
+        if (this.reader != null) 
+            for (var i = 0; i < this.reader.length; i++) 
+                EcArray.setAdd(this.secret, EcRsaOaep.encrypt(EcPk.fromPem(this.reader[i]), payloadSecret.toEncryptableJson()));
+    };
+    /**
+     *  Adds a reader to the object, if the reader does not exist.
+     * 
+     *  @param {EcPk} newReader PK of the new reader.
+     *  @param {Callback0} success   Callback triggered after successful encryption
+     *  @param {Callback1<String>}   failure Callback triggered if error during secret decryption
+     *  @memberOf EcEncryptedValue
+     *  @method addReaderAsync
+     */
+    prototype.addReaderAsync = function(newReader, success, failure) {
+        this.decryptSecretAsync(function(payloadSecret) {
+            EcRsaOaepAsync.encrypt(newReader, payloadSecret.toEncryptableJson(), function(s) {
+                var pem = newReader.toPem();
+                if (this.reader == null) {
+                    this.reader = new Array();
+                }
+                for (var i = 0; i < this.reader.length; i++) {
+                    if (this.reader[i] == pem) {
+                        return;
+                    }
+                }
+                EcArray.setAdd(this.reader, pem);
+                EcArray.setAdd(this.secret, s);
+                success();
+            }, failure);
+        }, failure);
+    };
+    /**
+     *  Removes a reader from the object, if the reader does exist.
+     * 
+     *  @param {EcPk} oldReader PK of the old reader.
+     *  @param {Callback0} success   Callback triggered after successful encryption
+     *  @param {Callback1<String>}   failure Callback triggered if error during secret decryption
+     *  @memberOf EcEncryptedValue
+     *  @method removeReaderAsync
+     */
+    prototype.removeReaderAsync = function(oldReader, success, failure) {
+        var me = this;
+        this.decryptSecretAsync(function(payloadSecret) {
+            var pem = oldReader.toPem();
+            if (me.reader != null) {
+                EcArray.setRemove(me.reader, pem);
             }
-        }
+            var ary = new Array();
+            if (this.owner != null) 
+                for (var i = 0; i < this.owner.length; i++) 
+                    EcArray.setAdd(ary, EcPk.fromPem(this.owner[i]));
+            if (this.reader != null) 
+                for (var i = 0; i < this.reader.length; i++) 
+                    EcArray.setAdd(ary, EcPk.fromPem(this.reader[i]));
+            me.secret = new Array();
+            var eah = new EcAsyncHelper();
+            eah.each(ary, function(ecPk, callback0) {
+                EcRsaOaepAsync.encrypt(oldReader, payloadSecret.toEncryptableJson(), function(secret) {
+                    EcArray.setRemove(me.secret, secret);
+                    callback0();
+                }, failure);
+            }, function(strings) {
+                success();
+            });
+        }, failure);
     };
 }, {encryptOnSaveMap: {name: "Map", arguments: [null, null]}, secret: {name: "Array", arguments: [null]}, owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**

@@ -807,7 +807,7 @@ var skyIdCreate = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get != null) 
         get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
     var encryptedPayload = new EcEncryptedValue();
@@ -852,7 +852,7 @@ var skyIdCommit = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
@@ -883,7 +883,7 @@ var skyIdLogin = function() {
     var signatureSheet = new Array();
     signatureSheet.push(EcIdentityManager.createSignature(60000, null, skyIdPem));
     this.ctx.put("signatureSheet", signatureSheet);
-    var get = (skyrepoGetParsed).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
+    var get = (skyrepoGetInternal).call(this, saltedId, null, "schema.cassproject.org.kbac.0.2.EncryptedValue", null);
     if (get == null) 
         error("User does not exist.", 404);
     get = JSON.parse(EcAesCtr.decrypt((get)["payload"], skyIdSecretKey, saltedId));
