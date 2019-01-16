@@ -19,6 +19,3 @@
 [submodule "ew"]
 	path = ew
 	url = https://github.com/eduworks/ew.git
-[submodule "ec"]
-	path = ec
-	url = https://github.com/eduworks/ec.git
