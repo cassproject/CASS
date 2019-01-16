@@ -412,10 +412,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         var pem = newReader.toPem();
         if (this.reader == null) 
             this.reader = new Array();
-        for (var i = 0; i < this.reader.length; i++) 
-            if (this.reader[i] == pem) 
-                return;
-        this.reader.push(pem);
+        EcArray.setAdd(this.reader, pem);
         this.signature = null;
     };
     /**
@@ -429,9 +426,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         var pem = oldReader.toPem();
         if (this.reader == null) 
             this.reader = new Array();
-        for (var i = 0; i < this.reader.length; i++) 
-            if (this.reader[i] == pem) 
-                this.reader.splice(i, 1);
+        EcArray.setRemove(this.reader, pem);
         this.signature = null;
     };
     /**

@@ -18,6 +18,89 @@
  * --END_LICENSE--
  */
 /**
+ *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
+ *  a display function that loads HTML into the container element on the page and then finally calls the callback once
+ *  the view has been completely initialized
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class EcView
+ */
+var EcView = function() {};
+EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
+    /**
+     *  Function to be defined in subclasses that returns the location of the main html file associated with this view
+     * 
+     *  @return {String}
+     *  The string path to an html file
+     *  @memberOf EcView
+     *  @method getHtmlLocation
+     *  @abstract
+     */
+    prototype.getHtmlLocation = function() {};
+    /**
+     *  Display function to override (usually in JavaScript) that will set up any event handlers
+     * 
+     *  @param {String} containerId
+     *  @memberOf EcView
+     *  @method display
+     */
+    prototype.display = function(containerId) {
+        console.error("Not Implemented");
+    };
+    /**
+     *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
+     *  current type of the view
+     * 
+     *  @memberOf EcView
+     *  @method as
+     *  @param {Class} _interface
+     *  			Class type that the instance should be converted to
+     *  @return {Object}
+     *  			The converted instance of the type passed in
+     */
+    prototype.as = function(_interface) {
+        var prototype = (this)["__proto__"];
+        var constructor = (prototype)["constructor"];
+        var inherits = (constructor)["$inherit"];
+        if (inherits != null) 
+            for (var i = 0; i < inherits.length; i++) {
+                if (inherits[i] == _interface) {
+                    return this;
+                }
+            }
+        return null;
+    };
+    /**
+     *  Event that is called when the view is deleted, removed, or found to have no applicable selector.
+     *  Called upon screen change or when replacing a view with the same selector.
+     * 
+     *  @memberOf EcView
+     *  @method onClose
+     *  @return {Boolean} True if the view finished cleaning up after itself. False otherwise.
+     */
+    prototype.onClose = function() {
+        return true;
+    };
+    /**
+     *  Display this alert on the view.
+     * 
+     *  @memberOf EcView
+     *  @method displayAlert
+     *  @param {String} Error to display.
+     *  @param {String} Type of error.
+     */
+    prototype.displayAlert = function(err, type) {};
+    /**
+     *  Clear the alert.
+     * 
+     *  @memberOf EcView
+     *  @method clearAlert
+     *  @param {String} Type of error.
+     */
+    prototype.clearAlert = function(type) {};
+}, {}, {});
+/**
  *  Parent class of all view manager classes, stores a cache of the views and
  *  their corresponding DOM selectors and provides functions for setting a view
  *  to correspond to a selector and displaying a view after it has been added to
@@ -170,89 +253,6 @@ HistoryClosure = stjs.extend(HistoryClosure, null, [], function(constructor, pro
     prototype.screenParameters = null;
 }, {screen: "EcScreen", screenParameters: "Object"}, {});
 /**
- *  Class that represents a "view" that can be displayed in an container element on the page. The View should define
- *  a display function that loads HTML into the container element on the page and then finally calls the callback once
- *  the view has been completely initialized
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class EcView
- */
-var EcView = function() {};
-EcView = stjs.extend(EcView, null, [], function(constructor, prototype) {
-    /**
-     *  Function to be defined in subclasses that returns the location of the main html file associated with this view
-     * 
-     *  @return {String}
-     *  The string path to an html file
-     *  @memberOf EcView
-     *  @method getHtmlLocation
-     *  @abstract
-     */
-    prototype.getHtmlLocation = function() {};
-    /**
-     *  Display function to override (usually in JavaScript) that will set up any event handlers
-     * 
-     *  @param {String} containerId
-     *  @memberOf EcView
-     *  @method display
-     */
-    prototype.display = function(containerId) {
-        console.error("Not Implemented");
-    };
-    /**
-     *  Function that will convert a view to a certain other view class as long as it the converted type inherits the
-     *  current type of the view
-     * 
-     *  @memberOf EcView
-     *  @method as
-     *  @param {Class} _interface
-     *  			Class type that the instance should be converted to
-     *  @return {Object}
-     *  			The converted instance of the type passed in
-     */
-    prototype.as = function(_interface) {
-        var prototype = (this)["__proto__"];
-        var constructor = (prototype)["constructor"];
-        var inherits = (constructor)["$inherit"];
-        if (inherits != null) 
-            for (var i = 0; i < inherits.length; i++) {
-                if (inherits[i] == _interface) {
-                    return this;
-                }
-            }
-        return null;
-    };
-    /**
-     *  Event that is called when the view is deleted, removed, or found to have no applicable selector.
-     *  Called upon screen change or when replacing a view with the same selector.
-     * 
-     *  @memberOf EcView
-     *  @method onClose
-     *  @return {Boolean} True if the view finished cleaning up after itself. False otherwise.
-     */
-    prototype.onClose = function() {
-        return true;
-    };
-    /**
-     *  Display this alert on the view.
-     * 
-     *  @memberOf EcView
-     *  @method displayAlert
-     *  @param {String} Error to display.
-     *  @param {String} Type of error.
-     */
-    prototype.displayAlert = function(err, type) {};
-    /**
-     *  Clear the alert.
-     * 
-     *  @memberOf EcView
-     *  @method clearAlert
-     *  @param {String} Type of error.
-     */
-    prototype.clearAlert = function(type) {};
-}, {}, {});
-/**
  *  STJS Wrapper for the Browser Native History Object
  * 
  *  @author devlin.junker@eduworks.com
@@ -262,6 +262,34 @@ HistoryObject = stjs.extend(HistoryObject, null, [], function(constructor, proto
     prototype.name = null;
     prototype.parameters = null;
 }, {parameters: "Object"}, {});
+/**
+ *  View Subclass representing modal views that are displayed in the modal container
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class EcModal
+ *  @extends EcView
+ */
+var EcModal = function() {
+    EcView.call(this);
+};
+EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
+    /**
+     *  To be overrided in subclasses, lets the developer define the size of the modal
+     *  (Possible: tiny, small, medium, large, xlarge)
+     * 
+     *  @property modalSize
+     *  @type String
+     */
+    prototype.modalSize = "small";
+    /**
+     *  @return tiny, small, medium, large, or full depending on how large the modal should be
+     *  @memberOf EcModal
+     *  @method getModalSize
+     *  @abstract
+     */
+    prototype.getModalSize = function() {};
+}, {}, {});
 /**
  *  View Manager sub class that manages loading "modal"s and has a few helper functions to make sure that
  *  they work properly
@@ -354,34 +382,6 @@ ModalManager = stjs.extend(ModalManager, ViewManager, [], function(constructor, 
         return result;
     });
 })();
-/**
- *  View Subclass representing modal views that are displayed in the modal container
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class EcModal
- *  @extends EcView
- */
-var EcModal = function() {
-    EcView.call(this);
-};
-EcModal = stjs.extend(EcModal, EcView, [], function(constructor, prototype) {
-    /**
-     *  To be overrided in subclasses, lets the developer define the size of the modal
-     *  (Possible: tiny, small, medium, large, xlarge)
-     * 
-     *  @property modalSize
-     *  @type String
-     */
-    prototype.modalSize = "small";
-    /**
-     *  @return tiny, small, medium, large, or full depending on how large the modal should be
-     *  @memberOf EcModal
-     *  @method getModalSize
-     *  @abstract
-     */
-    prototype.getModalSize = function() {};
-}, {}, {});
 /**
  *  Subclass of view that is specific for a screen, providing a display name that
  *  will be shown in the URL bar and that can be used on startup to check if the
@@ -579,6 +579,19 @@ EcScreen = stjs.extend(EcScreen, EcView, [], function(constructor, prototype) {
         });
     };
 }, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
+/**
+ *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
+ *  in the URL bar and in the history so the page can be loaded on back button or startup
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module com.eduworks.ec.ui
+ *  @class EcOverlay
+ *  @extends EcScreen
+ */
+var EcOverlay = function() {
+    EcScreen.call(this);
+};
+EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 /**
  *  View Manager child class that manages loading "screen"s and saving screen history. This is the main view type
  *  in an application and represents a view that takes up (mostly) the entire browser page. History is tracked in the
@@ -960,19 +973,6 @@ ScreenManager = stjs.extend(ScreenManager, ViewManager, [], function(constructor
         return true;
     });
 })();
-/**
- *  Subclass of view for an overlay, extends EcScreen because overlays should have a display name that can be used
- *  in the URL bar and in the history so the page can be loaded on back button or startup
- * 
- *  @author devlin.junker@eduworks.com
- *  @module com.eduworks.ec.ui
- *  @class EcOverlay
- *  @extends EcScreen
- */
-var EcOverlay = function() {
-    EcScreen.call(this);
-};
-EcOverlay = stjs.extend(EcOverlay, EcScreen, [], null, {failure: {name: "Callback1", arguments: [null]}, nameToTemplate: "Object"}, {});
 var URLParams = function() {};
 URLParams = stjs.extend(URLParams, null, [], function(constructor, prototype) {
     /**
