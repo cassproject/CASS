@@ -9,7 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ec-version>2.6.3</ec-version>
+		<ec-version>2.6.4</ec-version>
 		<ew-version>5.14.5</ew-version>
 	</properties>
 
@@ -175,8 +175,6 @@
 				<configuration>
 					<projectsDirectory>.</projectsDirectory>
 					<pomIncludes>
-						<pomInclude>ew/pom.xml</pomInclude>
-						<pomInclude>ec/pom.xml</pomInclude>
 						<pomInclude>src/main/webapp/cass-editor/pom.xml</pomInclude>
 						<pomInclude>src/main/webapp/cass-viewer/pom.xml</pomInclude>
 						<pomInclude>src/main/webapp/cass-profile/pom.xml</pomInclude>

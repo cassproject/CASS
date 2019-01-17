@@ -30,6 +30,149 @@ EcBrowserDetection = stjs.extend(EcBrowserDetection, null, [], function(construc
     };
 }, {}, {});
 /**
+ *  Object to hold a triple, used in graph.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class Triple
+ *  @module com.eduworks.ec
+ */
+var Triple = function() {};
+Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
+    /**
+     *  Source vertex.
+     * 
+     *  @property source
+     *  @type any
+     */
+    prototype.source = null;
+    /**
+     *  Destination vertex.
+     * 
+     *  @property destination
+     *  @type any
+     */
+    prototype.destination = null;
+    /**
+     *  Object to hold in the edge.
+     * 
+     *  @property edge
+     *  @type any
+     */
+    prototype.edge = null;
+    /**
+     *  Returns true IFF sources, destinations, and edges match.
+     * 
+     *  @param {Edge} obj
+     *  @return {boolean} true IFF <see method definition>
+     *  @method equals
+     */
+    prototype.equals = function(obj) {
+        if (Object.prototype.equals.call(this, obj)) 
+            return true;
+        if (stjs.isInstanceOf(obj.constructor, Triple)) {
+            var t = obj;
+            if (this.source == t.source && this.destination == t.destination && this.edge == t.edge) 
+                return true;
+        }
+        return false;
+    };
+}, {}, {});
+/**
+ *  Array Helper Functions
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class EcArray
+ *  @module com.eduworks.ec
+ */
+var EcArray = function() {};
+EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+    /**
+     *  Returns true if the result is an array.
+     * 
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an array.
+     *  @static
+     *  @method isArray
+     */
+    constructor.isArray = function(o) {
+        return Object.prototype.toString.call(o) == "[object Array]";
+    };
+    /**
+     *  Removes values IFF the values == one another.
+     * 
+     *  @param a {Array} Array to remove duplicates from.
+     *  @static
+     *  @method removeDuplicates
+     */
+    constructor.removeDuplicates = function(a) {
+        for (var i = 0; i < a.length; i++) 
+            for (var j = i; j < a.length; j++) {
+                if (j == i) 
+                    continue;
+                if (a[i] == a[j]) 
+                    a.splice(j, 1);
+            }
+    };
+    /**
+     *  Adds a value if the array does not have the value already.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     */
+    constructor.setAdd = function(a, o) {
+        var inThere = false;
+        for (var i = 0; i < a.length; i++) 
+            if (a[i] == o) {
+                inThere = true;
+                break;
+            }
+        if (!inThere) 
+            a.push(o);
+    };
+    /**
+     *  Removes a value from the array.
+     * 
+     *  @param a {Array} Array to add to.
+     *  @param o {Object} Object to add to the array if it isn't in there already.
+     *  @static
+     *  @method setAdd
+     */
+    constructor.setRemove = function(a, o) {
+        for (var i = 0; i < a.length; i++) 
+             while (a[i] == o){
+                a.splice(i, 1);
+            }
+    };
+    /**
+     *  Returns true if the array has the value already.
+     * 
+     *  @param a {Array} Array.
+     *  @param o {Object} Object to sample for.
+     *  @static
+     *  @method has
+     */
+    constructor.has = function(a, o) {
+        var inThere = false;
+        for (var i = 0; i < a.length; i++) 
+            if (a[i] == o) {
+                return true;
+            }
+        return false;
+    };
+}, {}, {});
+var Callback5 = function() {};
+Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
+    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
+}, {}, {});
+var EcLocalStorage = function() {};
+EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
+    constructor.removeItem = function(s, key) {
+        ((s)["removeItem"])(key);
+    };
+}, {}, {});
+/**
  *  A hypergraph, consisting of a set of vertices of type <code>V</code> and a
  *  set of hyperedges of type <code>E</code> which connect the vertices. This is
  *  the base interface for all JUNG graph types.
@@ -746,54 +889,6 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
         };
     };
 }, {}, {});
-/**
- *  Object to hold a triple, used in graph.
- * 
- *  @author fritz.ray@eduworks.com
- *  @class Triple
- *  @module com.eduworks.ec
- */
-var Triple = function() {};
-Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
-    /**
-     *  Source vertex.
-     * 
-     *  @property source
-     *  @type any
-     */
-    prototype.source = null;
-    /**
-     *  Destination vertex.
-     * 
-     *  @property destination
-     *  @type any
-     */
-    prototype.destination = null;
-    /**
-     *  Object to hold in the edge.
-     * 
-     *  @property edge
-     *  @type any
-     */
-    prototype.edge = null;
-    /**
-     *  Returns true IFF sources, destinations, and edges match.
-     * 
-     *  @param {Edge} obj
-     *  @return {boolean} true IFF <see method definition>
-     *  @method equals
-     */
-    prototype.equals = function(obj) {
-        if (Object.prototype.equals.call(this, obj)) 
-            return true;
-        if (stjs.isInstanceOf(obj.constructor, Triple)) {
-            var t = obj;
-            if (this.source == t.source && this.destination == t.destination && this.edge == t.edge) 
-                return true;
-        }
-        return false;
-    };
-}, {}, {});
 var EcDate = function() {};
 EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
     constructor.toISOString = function(obj) {
@@ -801,99 +896,40 @@ EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
- *  Array Helper Functions
+ *  Object Helper Functions
  * 
  *  @author fritz.ray@eduworks.com
- *  @class EcArray
+ *  @class EcObject
  *  @module com.eduworks.ec
  */
-var EcArray = function() {};
-EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
     /**
-     *  Returns true if the result is an array.
+     *  Returns true if the result is an object.
      * 
      *  @param {any} o Object to test.
-     *  @return true iff the object is an array.
+     *  @return true iff the object is an object.
      *  @static
      *  @method isArray
      */
-    constructor.isArray = function(o) {
-        return Object.prototype.toString.call(o) == "[object Array]";
+    constructor.isObject = function(o) {
+        if (EcArray.isArray(o)) 
+            return false;
+        if (o == null) 
+            return false;
+        return (typeof o) == "object";
     };
     /**
-     *  Removes values IFF the values == one another.
+     *  Returns keys on the object
      * 
-     *  @param a {Array} Array to remove duplicates from.
+     *  @param {any} o Object to test.
+     *  @return List of keys
      *  @static
-     *  @method removeDuplicates
+     *  @method keys
      */
-    constructor.removeDuplicates = function(a) {
-        for (var i = 0; i < a.length; i++) 
-            for (var j = i; j < a.length; j++) {
-                if (j == i) 
-                    continue;
-                if (a[i] == a[j]) 
-                    a.splice(j, 1);
-            }
+    constructor.keys = function(o) {
+        return ecKeys(o);
     };
-    /**
-     *  Adds a value if the array does not have the value already.
-     * 
-     *  @param a {Array} Array to add to.
-     *  @param o {Object} Object to add to the array if it isn't in there already.
-     *  @static
-     *  @method setAdd
-     */
-    constructor.setAdd = function(a, o) {
-        var inThere = false;
-        for (var i = 0; i < a.length; i++) 
-            if (a[i] == o) {
-                inThere = true;
-                break;
-            }
-        if (!inThere) 
-            a.push(o);
-    };
-    /**
-     *  Removes a value from the array.
-     * 
-     *  @param a {Array} Array to add to.
-     *  @param o {Object} Object to add to the array if it isn't in there already.
-     *  @static
-     *  @method setAdd
-     */
-    constructor.setRemove = function(a, o) {
-        for (var i = 0; i < a.length; i++) 
-             while (a[i] == o){
-                a.splice(i, 1);
-            }
-    };
-    /**
-     *  Returns true if the array has the value already.
-     * 
-     *  @param a {Array} Array.
-     *  @param o {Object} Object to sample for.
-     *  @static
-     *  @method has
-     */
-    constructor.has = function(a, o) {
-        var inThere = false;
-        for (var i = 0; i < a.length; i++) 
-            if (a[i] == o) {
-                return true;
-            }
-        return false;
-    };
-}, {}, {});
-var EcLocalStorage = function() {};
-EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
-    constructor.removeItem = function(s, key) {
-        ((s)["removeItem"])(key);
-    };
-}, {}, {});
-var Callback5 = function() {};
-Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
-    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
 }, {}, {});
 /**
  *  A graph consisting of a set of vertices of type <code>V</code>
@@ -1167,42 +1203,6 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
             Task.runningAsyncFunctions--;
     };
 }, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
-/**
- *  Object Helper Functions
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcObject
- *  @module com.eduworks.ec
- */
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    /**
-     *  Returns true if the result is an object.
-     * 
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an object.
-     *  @static
-     *  @method isArray
-     */
-    constructor.isObject = function(o) {
-        if (EcArray.isArray(o)) 
-            return false;
-        if (o == null) 
-            return false;
-        return (typeof o) == "object";
-    };
-    /**
-     *  Returns keys on the object
-     * 
-     *  @param {any} o Object to test.
-     *  @return List of keys
-     *  @static
-     *  @method keys
-     */
-    constructor.keys = function(o) {
-        return ecKeys(o);
-    };
-}, {}, {});
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
