@@ -1,7 +1,13 @@
 # Change Log
 
-## [1.0.0-UNSTABLE](https://github.com/cassproject/cass/tree/1.0.0-UNSTABLE) (2019-01-10)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24...1.0.0-UNSTABLE)
+## [1.0.1](https://github.com/cassproject/cass/tree/1.0.1) (2019-01-16)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.25...1.0.1)
+
+## [0.4.25](https://github.com/cassproject/cass/tree/0.4.25) (2019-01-16)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.0...0.4.25)
+
+## [1.0.0](https://github.com/cassproject/cass/tree/1.0.0) (2019-01-10)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24...1.0.0)
 
 ## [0.4.24](https://github.com/cassproject/cass/tree/0.4.24) (2019-01-07)
 [Full Changelog](https://github.com/cassproject/cass/compare/0.4.24-RC2...0.4.24)
