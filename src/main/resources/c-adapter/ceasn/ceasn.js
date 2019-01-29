@@ -402,8 +402,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     var relationshipMap = {};
     var parentMap = {};
 
-    EcIdentityManager.addIdentity(ceasnIdentity);
-
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
 
