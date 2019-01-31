@@ -5,8 +5,11 @@
 //**************************************************************************************************
 // Constants
 
+const ADD_CEASN_DATA_FIELDS = false;
+const CEASN_FIELD_TOGGLE = "ceasnDataFields=true";
+
 const PRF_EXP_IFRAME = "#prfExpIFrame";
-const PRF_EXP_IFRAME_SOURCE = "cass-editor/index.html?user=wait&origin=";
+const PRF_EXP_IFRAME_SOURCE = "cass-editor/index.html?user=wait";
 
 const WAITING_MESSAGE = "waiting";
 const INIT_FWK_EXP_MESSAGE = "initFrameworkExplorer";
@@ -45,10 +48,17 @@ $(PRF_EXP_IFRAME).ready(function () {
 	});
 });
 
+function getEditorIframeSourceLink() {
+	var ifs = PRF_EXP_IFRAME_SOURCE;
+	if (ADD_CEASN_DATA_FIELDS) ifs += "&" + CEASN_FIELD_TOGGLE;
+	ifs += "&origin="+ window.location.origin + "&server=" + selectedServer;
+	debugMessage("Opening cass editor iFrame with: " + ifs);
+	return ifs;
+}
+
 function init() {
 	loadCassUiSessionState();
-	$(PRF_EXP_IFRAME).attr("src", PRF_EXP_IFRAME_SOURCE + window.location.origin + "&server=" + selectedServer);
-
+	$(PRF_EXP_IFRAME).attr("src", getEditorIframeSourceLink());
 	setCassUiMainMenuUserName();
 }
 
