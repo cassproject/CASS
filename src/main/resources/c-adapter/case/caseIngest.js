@@ -65,7 +65,7 @@ convertCFDocumentToFramework = function (document) {
     document["@type"] = "CFDocument";
     document["@context"] = caseToCassSchema;
     document = jsonLdExpand(JSON.stringify(document));
-    document = jsonLdCompact(JSON.stringify(document), "http://schema.cassproject.org/0.3");
+    document = jsonLdCompact(JSON.stringify(document), cassContext);
     f.copyFrom(document);
     return f;
 }
@@ -77,7 +77,7 @@ convertCFAssociationIntoRelation = function (a) {
     a.destinationNodeURI = a.destinationNodeURI.uri;
     delete a.CFDocumentURI;
     a = jsonLdExpand(JSON.stringify(a));
-    a = jsonLdCompact(JSON.stringify(a), "http://schema.cassproject.org/0.3");
+    a = jsonLdCompact(JSON.stringify(a), cassContext);
     a.relationType = {
         "exactMatchOf": Relation.IS_EQUIVALENT_TO,
         "isChildOf": Relation.NARROWS
@@ -103,7 +103,7 @@ convertCFItemIntoCompetency = function (a) {
                 };
         }
     a = jsonLdExpand(JSON.stringify(a));
-    a = jsonLdCompact(JSON.stringify(a), "http://schema.cassproject.org/0.3");
+    a = jsonLdCompact(JSON.stringify(a), cassContext);
     var r = new EcCompetency();
     r.copyFrom(a);
     return r;
@@ -133,7 +133,9 @@ embedCFPackageIntoFramework = function(f,document){
 	return results;
 }
 
+var cassContext = null;
 ingestCase = function () {
+    cassContext = JSON.stringify(httpGet("http://schema.cassproject.org/0.3/")["@context"]);
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
     var caseIdentity = new EcIdentity();
