@@ -402,6 +402,15 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     var relationshipMap = {};
     var parentMap = {};
 
+    if (frameworkObj != null) {
+        var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
+        if (topChild != null && topChild.length != null) {
+            for (var i = 0; i < topChild.length; i++) {
+                cassCompetencies.push(topChild[i]);
+            }
+        }
+    }
+
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
 
@@ -411,8 +420,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var compVersion = date(null, null, true);
 
         var canonicalId = asnComp["@id"];
-
-        cassCompetencies.push(canonicalId);
 
         var childComps = asnComp["ceasn:hasChild"];
         if (childComps != null && childComps.length != null) {
@@ -431,6 +438,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
                     relationshipMap[r.source + r.target] = true;
                     repo.saveTo(r, print, print);
                     cassRelationships.push(r.id);
+                    cassCompetencies.push(r.source);
                 }
             }
         }
@@ -457,27 +465,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         print(JSON.stringify(c, null, 2));
         repo.saveTo(c, print, print);
 
-        if (asnComp["ceasn:isChildOf"] != null && asnComp["ceasn:isChildOf"] != "") {
-            var parentId = asnComp["ceasn:isChildOf"];
-            if (parentId != frameworkObj["@id"]) {
-                var r = new EcAlignment();
-                r.source = compactedComp["@id"];
-
-                r.target = parentId;
-                r.relationType = Relation.NARROWS;
-                r.generateId(repoEndpoint());
-                r.addOwner(ceasnIdentity.ppk.toPk());
-
-                if (owner != null)
-                    r.addOwner(EcPk.fromPem(owner));
-
-                if (relationshipMap[r.source + r.target] != true) {
-                    relationshipMap[r.source + r.target] = true;
-                    repo.saveTo(r, print, print);
-                    cassRelationships.push(r.id);
-                }
-            }
-        }
     } // end for each competency in  competencyList
 
     if (frameworkObj != null) {
