@@ -1,5 +1,25 @@
 # Change Log
 
+## [1.0.4](https://github.com/cassproject/cass/tree/1.0.4) (2019-02-01)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.3...1.0.4)
+
+**Closed issues:**
+
+- No Profile Data being generated [\#119](https://github.com/cassproject/CASS/issues/119)
+
+## [1.0.3](https://github.com/cassproject/cass/tree/1.0.3) (2019-02-01)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.26...1.0.3)
+
+**Implemented enhancements:**
+
+- CASS UI Build Initial Gap Analysis Tool [\#96](https://github.com/cassproject/CASS/issues/96)
+
+## [0.4.26](https://github.com/cassproject/cass/tree/0.4.26) (2019-01-18)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.2...0.4.26)
+
+## [1.0.2](https://github.com/cassproject/cass/tree/1.0.2) (2019-01-17)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.1...1.0.2)
+
 ## [1.0.1](https://github.com/cassproject/cass/tree/1.0.1) (2019-01-16)
 [Full Changelog](https://github.com/cassproject/cass/compare/0.4.25...1.0.1)
 
