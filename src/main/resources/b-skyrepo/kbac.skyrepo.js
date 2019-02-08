@@ -763,7 +763,14 @@ var skyrepoAdminList = function() {
     array.push(skyrepoAdminPpk());
     return array;
 };
+var pingWithTime = function() {
+    var o = new Object();
+    (o)["ping"] = "pong";
+    (o)["time"] = new Date().getTime();
+    return JSON.stringify(o);
+};
 (function() {
+    bindWebService("/ping", pingWithTime);
     bindWebService("/data", endpointData);
     bindWebService("/sky/repo/search", skyRepoSearch);
     bindWebService("/sky/repo/multiGet", endpointMultiGet);

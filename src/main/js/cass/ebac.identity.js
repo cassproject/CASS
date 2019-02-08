@@ -1402,8 +1402,7 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      */
     prototype.startLogin = function(username, password) {
         if (!this.configured) {
-            alert("Remote Identity not configured.");
-            return;
+             throw new RuntimeException("Remote Identity not configured.");
         }
         this.usernameWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
         this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(password, this.passwordSalt, this.passwordIterations, this.passwordWidth));
@@ -1431,13 +1430,11 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
     prototype.changePassword = function(username, oldPassword, newPassword) {
         var usernameHash = forge.util.encode64(forge.pkcs5.pbkdf2(username, this.usernameSalt, this.usernameIterations, this.usernameWidth));
         if (this.usernameWithSalt != usernameHash) {
-            alert("Username does not match. Aborting password change.");
-            return false;
+             throw new RuntimeException("Username does not match. Aborting password change.");
         }
         var oldPasswordHash = forge.util.encode64(forge.pkcs5.pbkdf2(oldPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
         if (this.passwordWithSalt != oldPasswordHash) {
-            alert("Old password does not match. Aborting password change.");
-            return false;
+             throw new RuntimeException("Old password does not match. Aborting password change.");
         }
         this.passwordWithSalt = forge.util.encode64(forge.pkcs5.pbkdf2(newPassword, this.passwordSalt, this.passwordIterations, this.passwordWidth));
         var arys = new Array();
@@ -1543,10 +1540,9 @@ EcRemoteIdentityManager = stjs.extend(EcRemoteIdentityManager, null, [RemoteIden
      */
     prototype.sendCredentials = function(success, failure, service) {
         if (!this.configured) 
-            alert("Remote Identity not configured.");
+             throw new RuntimeException("Remote Identity not configured.");
         if (this.usernameWithSalt == null || this.passwordWithSalt == null || this.secretWithSalt == null) {
-            alert("Please log in before performing this operation.");
-            return;
+             throw new RuntimeException("Please log in before performing this operation.");
         }
         var credentials = new Array();
         var contacts = new Array();

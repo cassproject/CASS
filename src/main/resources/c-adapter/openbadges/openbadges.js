@@ -88,8 +88,7 @@ badgeSubject = function (fingerprint) {
 
     if (person.email != null) {
         var sha = forge.md.sha256.create();
-        var salt = EcAes.newIv(16);
-	salt = fingerprint;
+        var salt = fingerprint;
         sha.update(person.email + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
@@ -101,8 +100,7 @@ badgeSubject = function (fingerprint) {
     }
     if (person.url != null) {
         var sha = forge.md.sha256.create();
-        var salt = EcAes.newIv(16);
-	salt = fingerprint;
+        var salt = fingerprint;
         sha.update(person.url + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({
@@ -114,8 +112,7 @@ badgeSubject = function (fingerprint) {
     }
     if (person.telephone != null) {
         var sha = forge.md.sha256.create();
-        var salt = EcAes.newIv(16);
-	salt = fingerprint;
+        var salt = fingerprint;
         sha.update(person.telephone + salt);
         var hashed = "sha256$" + sha.digest().toHex();
         return JSON.stringify({

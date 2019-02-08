@@ -22,6 +22,7 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
     prototype.complete = null;
     prototype.header = null;
     prototype.error = null;
+    prototype.encoding = null;
 }, {complete: {name: "Callback1", arguments: ["Object"]}, error: {name: "Callback1", arguments: ["Object"]}}, {});
 /**
  *  Base class for all importers, can hold helper functions
@@ -339,7 +340,7 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 success(ASNImport.jsonCompetencies);
             }
         };
-        reader.readAsText(file);
+        reader.readAsText(file, "UTF-8");
     };
     /**
      *  Method to import the competencies from an ASN JSON file,
@@ -415,13 +416,15 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 comp.name = (((jsonComp)["http://purl.org/dc/terms/description"])["0"])["value"];
              else 
                 comp.name = (((jsonComp)["http://purl.org/dc/elements/1.1/title"])["0"])["value"];
-            comp.sameAs = key;
             if ((jsonComp)["http://purl.org/dc/terms/description"] != null) 
                 comp.description = (((jsonComp)["http://purl.org/dc/terms/description"])["0"])["value"];
-            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                comp.generateId(serverUrl);
-             else 
-                comp.generateShortId(serverUrl);
+            comp.id = key;
+            if (comp.id == null) {
+                if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                    comp.generateId(serverUrl);
+                 else 
+                    comp.generateShortId(serverUrl);
+            }
             if (owner != null) 
                 comp.addOwner(owner.ppk.toPk());
             if (ASNImport.importedFramework != null) 
@@ -487,8 +490,8 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             for (var j = 0; j < children.length; j++) {
                 if (nodeId != null) {
                     var relation = new EcAlignment();
-                    relation.target = ASNImport.competencies[nodeId].shortId();
-                    relation.source = ASNImport.competencies[(children[j])["value"]].shortId();
+                    relation.target = ASNImport.competencies[nodeId].id;
+                    relation.source = ASNImport.competencies[(children[j])["value"]].id;
                     relation.relationType = "narrows";
                     relation.name = "";
                     relation.description = "";
@@ -545,11 +548,13 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.createFramework = function(serverUrl, owner, success, failure, repo) {
         ASNImport.importedFramework.name = (((ASNImport.jsonFramework)["http://purl.org/dc/elements/1.1/title"])["0"])["value"];
         ASNImport.importedFramework.description = (((ASNImport.jsonFramework)["http://purl.org/dc/terms/description"])["0"])["value"];
-        if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-            ASNImport.importedFramework.generateId(serverUrl);
-         else 
-            ASNImport.importedFramework.generateShortId(serverUrl);
-        ASNImport.importedFramework.sameAs = ASNImport.frameworkUrl;
+        ASNImport.importedFramework.id = ASNImport.frameworkUrl;
+        if (ASNImport.importedFramework.id == null) {
+            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                ASNImport.importedFramework.generateId(serverUrl);
+             else 
+                ASNImport.importedFramework.generateShortId(serverUrl);
+        }
         if (owner != null) 
             ASNImport.importedFramework.addOwner(owner.ppk.toPk());
         ASNImport.importedFramework.save(function(p1) {
@@ -845,7 +850,7 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         reader.onerror = function(p1) {
             failure("Error Reading File");
         };
-        reader.readAsText(file);
+        reader.readAsText(file, "UTF-8");
     };
     /**
      *  Method for actually creating the competencies in the CASS repository after a
@@ -949,7 +954,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         } else if (!((file)["name"]).endsWith(".csv")) {
             failure("Invalid file type");
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             success(tabularData);
         }, error: failure});
@@ -1028,7 +1033,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             return;
         }
         var competencies = [];
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             var colNames = tabularData[0];
             for (var i = 1; i < tabularData.length; i++) {
@@ -1151,7 +1156,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             failure("Destination Index not Set");
             return;
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             for (var i = 1; i < tabularData.length; i++) {
                 var alignment = new EcAlignment();
@@ -1264,7 +1269,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         var hasAssignedContext = assignedContext != undefined && assignedContext != null && assignedContext.trim() != "";
         var hasAssignedType = assignedType != undefined && assignedType != null && assignedType.trim() != "";
         CSVImport.importCsvLookup = new Object();
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             var colNames = tabularData[0];
             var contextIdx = -1;
@@ -1387,7 +1392,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
         } else if (!((file)["name"]).endsWith(".csv")) {
             failure("Invalid file type");
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             var colNames = tabularData[0];
             var nameToCol = new Object();
@@ -1428,7 +1433,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
         } else if (!((file)["name"]).endsWith(".csv")) {
             failure("Invalid file type");
         }
-        Papa.parse(file, {header: true, complete: function(results) {
+        Papa.parse(file, {header: true, encoding: "UTF-8", complete: function(results) {
             var tabularData = (results)["data"];
             var frameworks = new Object();
             var frameworkArray = new Array();
