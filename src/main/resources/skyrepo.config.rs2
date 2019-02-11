@@ -27,6 +27,7 @@ afterSave=#if(
 
 postData=#fileFromDatastream(name="data");
 postObject=postData.fileToString().toObject();
+postObject=#if(operator=postObject,operand="",eq=#toObject(obj="@obj"),ne=postObject);
 afterSave=#object(
 	a=afterSave,
 	b=#wsBroadcast(obj=postObject.getByParam(param=#id())).call(background="true"),
