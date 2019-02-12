@@ -43,6 +43,8 @@ alpineRun\.sh
 
 ecs-params\.yml
 
+\.m2/
+
 nb-configuration\.xml
 
 pom\.xml\.versionsBackup
