@@ -6,6 +6,6 @@ RUN wget https://raw.githubusercontent.com/cassproject/CASS/master/scripts/cassI
 RUN chmod +x cassInstall.sh
 RUN echo $VERSION && /cassInstall.sh $VERSION && rm -rf ~/.m2
 RUN echo 'JAVA_OPTS="-Djava.awt.headless=true -Xmx1g -XX:+UseConcMarkSweepGC"' >> /etc/default/tomcat8
-CMD service elasticsearch start;service tomcat7 start;service apache2 start;/bin/bash
-VOLUME ["/var/lib/tomcat7","/var/log/tomcat7","/var/lib/elasticsearch","/etc/default","/etc/apache2/"]
+CMD service elasticsearch start;service tomcat7 start;service apache2 start;tail -F /var/lib/tomcat7/logs/catalina.out
+VOLUME ["/var/lib/tomcat7/etc","/var/log/tomcat7","/var/log/elasticsearch","/var/lib/elasticsearch","/etc/default","/etc/apache2/"]
 EXPOSE 80
