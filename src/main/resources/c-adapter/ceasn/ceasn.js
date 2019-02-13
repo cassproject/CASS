@@ -192,7 +192,6 @@ function cassFrameworkAsCeasn() {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
     f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
@@ -217,7 +216,7 @@ function cassFrameworkAsCeasn() {
         var guid = c.getGuid();
         var uuid = new UUID(3, "nil", f.shortId() + c.shortId()).format();
 
-        competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
+        competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), "http://credreg.net/ctdlasn/schema/context/json");
 
         if (competencies[id]["ceterms:ctid"] == null) {
             if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
@@ -250,7 +249,7 @@ function cassFrameworkAsCeasn() {
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
-    f = jsonLdCompact(f.toJson(), ctx);
+    f = jsonLdCompact(f.toJson(), "http://credreg.net/ctdlasn/schema/context/json");
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
     if (f["ceterms:ctid"] == null) {

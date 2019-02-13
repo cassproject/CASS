@@ -81,7 +81,17 @@
   },
   {
 	"Content-Location": "http://credreg.net/ctdlasn/schema/context/json",
-	"X-Classpath": "schema/ctdlasn",
+	"X-Classpath": "schema/ctdlasn.json",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld",
+	"X-Classpath": "schema/imscasev1p0_context_v1p0.jsonld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "null",
+	"X-Classpath": "schema/empty.jsonld",
 	"Content-Type": "application/ld+json"
   }
 ]
