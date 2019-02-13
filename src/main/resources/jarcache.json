@@ -78,5 +78,10 @@
 	"Content-Location": "http://schema.cassproject.org/0.2/cass2asn",
 	"X-Classpath": "schema/0.2/cass2asn",
 	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://credreg.net/ctdlasn/schema/context/json",
+	"X-Classpath": "schema/ctdlasn",
+	"Content-Type": "application/ld+json"
   }
 ]
