@@ -43,9 +43,7 @@ cfGetFramework = function (f) {
     return result;
 };
 var cfGetContext = function () {
-    if (this.cfContext == null)
-        this.cfContext = JSON.stringify(httpGet("http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld"));
-    return this.cfContext;
+    return "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
 }
 cfGetCompetency = function (c) {
     var cache = JSON.stringify(c)
