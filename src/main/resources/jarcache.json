@@ -1,0 +1,82 @@
+[
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/",
+	"X-Classpath": "schema/0.3/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3",
+	"X-Classpath": "schema/0.3/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/case2cass",
+	"X-Classpath": "schema/0.3/case2cass",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/cass2asn",
+	"X-Classpath": "schema/0.3/cass2asn",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/cass2case",
+	"X-Classpath": "schema/0.3/cass2case",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/cass2ceasn",
+	"X-Classpath": "schema/0.3/cass2ceasn",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/ceasn2cass",
+	"X-Classpath": "schema/0.3/ceasn2cass",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/sampleCase",
+	"X-Classpath": "schema/0.3/sampleCase",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/skos",
+	"X-Classpath": "schema/0.3/skos/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.3/skos/",
+	"X-Classpath": "schema/0.3/skos/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.4/",
+	"X-Classpath": "schema/0.4/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.4",
+	"X-Classpath": "schema/0.4/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/coerceToCtdl",
+	"X-Classpath": "schema/coerceToCtdl",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.2",
+	"X-Classpath": "schema/0.2/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.2/",
+	"X-Classpath": "schema/0.2/index.json-ld",
+	"Content-Type": "application/ld+json"
+  },
+  {
+	"Content-Location": "http://schema.cassproject.org/0.2/cass2asn",
+	"X-Classpath": "schema/0.2/cass2asn",
+	"Content-Type": "application/ld+json"
+  }
+]

@@ -16,3 +16,6 @@
 [submodule "src/main/webapp/cass-gap-analysis"]
 	path = src/main/webapp/cass-gap-analysis
 	url = https://github.com/cassproject/cass-gap-analysis.git
+[submodule "src/main/resources/schema"]
+	path = src/main/resources/schema
+	url = https://github.com/cassproject/schema.cassproject.org
