@@ -318,7 +318,7 @@ function cassFrameworkAsCeasn() {
         competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"], f["@id"]);
         results.push(competencies[k]);
         if (competency != null)
-            if (competency.id == competencies[k]["@id"])
+            if (competency.id == competencies[k]["@id"]||ceasnExportUriTransform(competency.id, f["@id"]) == competencies[k]["@id"])
                 return JSON.stringify(competencies[k], null, 2);
     }
     delete f["@context"];
