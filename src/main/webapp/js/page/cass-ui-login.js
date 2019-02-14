@@ -198,7 +198,7 @@ if (typeof Keycloak !== 'undefined' && Keycloak) {
         flow: 'implicit'
     }).success(function (authenticated) {
         userCredentials = authenticated;
-        keycloak.loadUserProfile().then(
+        keycloak.loadUserProfile().success(
             function(profile){
                 $("#cassUiLoginUsername").val(keycloak.subject);
                 if (profile.attributes.cass_secret != null)
