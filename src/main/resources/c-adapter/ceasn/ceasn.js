@@ -454,6 +454,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
         delete compactedComp["ceasn:isChildOf"];
         delete compactedComp["ceasn:hasChild"];
+        delete compactedComp["ceasn:isPartOf"];
 
         var c = new EcCompetency();
         c.copyFrom(compactedComp);
