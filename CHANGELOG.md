@@ -1,5 +1,25 @@
 # Change Log
 
+## [1.0.6](https://github.com/cassproject/cass/tree/1.0.6) (2019-02-15)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.28...1.0.6)
+
+## [0.4.28](https://github.com/cassproject/cass/tree/0.4.28) (2019-02-13)
+[Full Changelog](https://github.com/cassproject/cass/compare/0.4.27...0.4.28)
+
+**Closed issues:**
+
+- CEASN Export should not create exactAlignment if @id == what we would exactAlignment to. [\#125](https://github.com/cassproject/CASS/issues/125)
+
+## [0.4.27](https://github.com/cassproject/cass/tree/0.4.27) (2019-02-12)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.5...0.4.27)
+
+## [1.0.5](https://github.com/cassproject/cass/tree/1.0.5) (2019-02-08)
+[Full Changelog](https://github.com/cassproject/cass/compare/1.0.4...1.0.5)
+
+**Closed issues:**
+
+- ce-ce- and /graphs/ in CTDL-ASN export. [\#122](https://github.com/cassproject/CASS/issues/122)
+
 ## [1.0.4](https://github.com/cassproject/cass/tree/1.0.4) (2019-02-01)
 [Full Changelog](https://github.com/cassproject/cass/compare/1.0.3...1.0.4)
 
