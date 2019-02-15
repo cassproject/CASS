@@ -444,7 +444,7 @@ var skyrepoPutParsed = function(o, id, version, type) {
 var validateSignatures = function(id, version, type, errorMessage) {
     var oldGet = (skyrepoGetParsed).call(this, id, version, type, null);
     if (oldGet == null) 
-        return;
+        return null;
     var oldObj = new EcRemoteLinkedData(null, null);
     oldObj.copyFrom(oldGet);
     if (oldObj.owner != null && oldObj.owner.length > 0) {
@@ -459,6 +459,7 @@ var validateSignatures = function(id, version, type, errorMessage) {
         if (!success) 
             error(errorMessage, 401);
     }
+    return oldObj;
 };
 var skyrepoDeleteInternalIndex = function(id, version, type) {
     var url = deleteUrl(id, version, type);
@@ -469,9 +470,10 @@ var skyrepoDeleteInternalPermanent = function(id, version, type) {
     return httpDelete(url);
 };
 var skyrepoDelete = function(id, version, type) {
-    (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
+    var oldObj = (validateSignatures).call(this, id, version, type, "Only an owner of an object may delete it.");
     skyrepoDeleteInternalIndex(id, version, type);
     skyrepoDeleteInternalPermanent(id, version, type);
+    return oldObj;
 };
 var searchObj = function(q, start, size, sort, track_scores) {
     var s = new Object();
@@ -547,7 +549,7 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
         var searchResult = hits[i];
         var type = inferTypeFromObj((searchResult)["_source"], null);
         var id = (searchResult)["_id"];
-        var version = (searchResult)["_version"];
+        var version = "";
         var hit = "data/";
         if (type != null) 
             hit += type + "/";
@@ -635,8 +637,10 @@ var endpointData = function() {
     var type = (parseParams)["type"];
     var version = (parseParams)["version"];
     if (methodType == "DELETE") {
-        (skyrepoDelete).call(this, id, version, type);
-        (afterSave).call(this);
+        var oldObj = (skyrepoDelete).call(this, id, version, type);
+        var cast = new Object();
+        (cast)["obj"] = oldObj.toJson();
+        (afterSave).call(this, cast);
         return null;
     } else if (methodType == "POST") {
         var o = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
