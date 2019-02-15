@@ -11,6 +11,7 @@ RUN cd CASS && \
 mvn -o install -Dmaven.repo.local="./.m2" && \
 rm -rf /usr/local/tomcat/webapps/ROOT && \
 mv target/cass.war /usr/local/tomcat/webapps/ROOT.war && \
+cd .. && \
 rm -rf ~/.m2 && \
 rm -rf CASS && \
 mkdir /usr/local/tomcat/etc && \
