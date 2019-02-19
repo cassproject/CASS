@@ -465,11 +465,15 @@ function asnFrameworkToCass() {
  */
 function importJsonLdGraph(graph, context) {
     debug("importing jsonld graph")
+    var conceptSchemeGuid;
 
     for (var idx in graph) {
         var graphObj = graph[idx];
 
         if (context != undefined) {
+            if (context == "http://credreg.net/ctdlasn/schema/context/json") {
+                context = "https://schema.cassproject.org/0.3/ceasn2cassConcepts";
+            }
             if (context["schema"] == undefined) {
                 context["schema"] = "http://schema.org";
             }
@@ -477,7 +481,7 @@ function importJsonLdGraph(graph, context) {
             graphObj["@context"] = context;
 
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
-            var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+            var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos");
         }
 
         var type = compacted["@type"]
@@ -489,6 +493,9 @@ function importJsonLdGraph(graph, context) {
             "id": guid,
             "version": version
         });
+    }
+    if (conceptSchemeGuid) {
+        return repoEndpoint() + "data/" + conceptSchemeGuid;
     }
 }
 
