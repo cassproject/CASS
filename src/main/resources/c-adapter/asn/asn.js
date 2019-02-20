@@ -472,7 +472,7 @@ function importJsonLdGraph(graph, context) {
 
         if (context != undefined) {
             if (context == "http://credreg.net/ctdlasn/schema/context/json") {
-                context = "http://localhost:8001/0.3/ceasn2cassConcepts";
+                context = "http://schema.cassproject.org/0.3/ceasn2cassConcepts";
             }
             if (context["schema"] == undefined) {
                 context["schema"] = "http://schema.org";
@@ -483,7 +483,7 @@ function importJsonLdGraph(graph, context) {
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
             var compacted;
             if (graphObj["@type"].indexOf("Concept") != -1) {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "http://localhost:8001/0.3/skos/index.json-ld");
+                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos");
             }
             else {
                 compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
