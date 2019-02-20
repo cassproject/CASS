@@ -472,7 +472,7 @@ function importJsonLdGraph(graph, context) {
 
         if (context != undefined) {
             if (context == "http://credreg.net/ctdlasn/schema/context/json") {
-                context = "https://schema.cassproject.org/0.3/ceasn2cassConcepts";
+                context = "http://localhost:8001/0.3/ceasn2cassConcepts";
             }
             if (context["schema"] == undefined) {
                 context["schema"] = "http://schema.org";
@@ -481,19 +481,33 @@ function importJsonLdGraph(graph, context) {
             graphObj["@context"] = context;
 
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
-            var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos");
+            var compacted;
+            if (graphObj["@type"].indexOf("Concept") != -1) {
+                compacted = jsonLdCompact(JSON.stringify(expanded), "http://localhost:8001/0.3/skos/index.json-ld");
+            }
+            else {
+                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+            }
         }
 
         var type = compacted["@type"]
         var guid = EcCrypto.md5(compacted["@id"]);
         var version = date(null, null, true);
+        var objToSave = compacted;
 
         if (type == "ConceptScheme") {
             conceptSchemeGuid = guid;
+            objToSave = new EcConceptScheme();
+            objToSave.copyFrom(compacted);
+        }
+        else if (type == "Concept") {
+            objToSave = new EcConcept();
+            objToSave.copyFrom(compacted);
         }
 
         skyrepoPut({
-            "obj": JSON.stringify(compacted),
+            "obj": objToSave.toJson(),
+            "type": objToSave.getFullType(),
             "id": guid,
             "version": version
         });
