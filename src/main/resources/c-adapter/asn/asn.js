@@ -488,6 +488,10 @@ function importJsonLdGraph(graph, context) {
         var guid = EcCrypto.md5(compacted["@id"]);
         var version = date(null, null, true);
 
+        if (type == "ConceptScheme") {
+            conceptSchemeGuid = guid;
+        }
+
         skyrepoPut({
             "obj": JSON.stringify(compacted),
             "id": guid,
