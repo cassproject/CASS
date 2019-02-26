@@ -4,7 +4,7 @@ services:
     image: httpd:2.4
     container_name: apache2
     volumes:
-      - ./docker/distributed/apache2/docker-configure.apache2.config:/usr/local/apache2/conf/httpd.conf
+      - ./docker/dev/apache2/docker-configure.apache2.config:/usr/local/apache2/conf/httpd.conf
     ports:
       - 80:80
       - 8080:80
