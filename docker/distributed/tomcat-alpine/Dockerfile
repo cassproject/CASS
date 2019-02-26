@@ -153,3 +153,5 @@ echo Done.
 VOLUME /usr/local/tomcat/etc
 
 EXPOSE 80
+
+CMD catalina.sh start && tail -F /usr/local/tomcat/logs/catalina.out
