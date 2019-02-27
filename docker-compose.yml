@@ -17,7 +17,7 @@ services:
   cass:
     build:
       context: .
-      dockerfile: docker/distributed/tomcat-alpine/Dockerfile
+      dockerfile: docker/dev/tomcat-alpine/Dockerfile
     container_name: cass
     environment:
       - TOMCAT_HTTP_PORT=80
@@ -97,6 +97,62 @@ services:
       - mysql-keycloak
     networks:
       - esnet
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    container_name: mariadb
+    environment:
+      - MARIADB_USER=bn_moodle
+      - MARIADB_DATABASE=bitnami_moodle
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'mariadb_data:/bitnami'
+    networks:
+      - esnet
+  moodle:
+    image: 'bitnami/moodle:latest'
+    container_name: moodle
+    environment:
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=bn_moodle
+      - MOODLE_DATABASE_NAME=bitnami_moodle
+      - ALLOW_EMPTY_PASSWORD=yes
+    labels:
+      kompose.service.type: nodeport
+    volumes:
+      - 'moodle_data:/bitnami'
+    depends_on:
+      - mariadb
+    networks:
+      - esnet
+  lrs:
+    image: dirichlet/lrs
+    ports:
+      - "8081:8080"
+    links:
+      - postgres
+    environment:
+      - LRS_ADMIN_NAME=
+      - LRS_ADMIN_PASS=
+      - LRS_ADMIN_MAIL=
+      - LRS_SECRET_KEY=
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=lrs
+    networks:
+      - esnet
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=lrs
+    volumes:
+      - psql_data:/var/lib/postgresql/data/pgdata
+    networks:
+      - esnet
 volumes:
   etc:
     driver: local
@@ -105,6 +161,12 @@ volumes:
   esdata2:
     driver: local
   mysql_data:
+    driver: local
+  mariadb_data:
+    driver: local
+  moodle_data:
+    driver: local
+  psql_data:
     driver: local
 
 networks:
