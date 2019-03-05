@@ -35,8 +35,16 @@ function handleFetchIdentitySuccess(obj) {
         EcIdentityManager.addIdentity(ident);
         debugMessage("Created Identity.");
         ecIdentMgr.commit(handleFetchIdentitySuccess2, handleFetchIdentityFailure);
-    }
-    else
+        var p = new Person();
+        p.assignId(repo.selectedServer, ident.ppk.toPk().fingerprint());
+        p.addOwner(ident.ppk.toPk());
+        if (ssoName == null)
+            p.name = "Unknown Person.";
+        else
+            p.name = ssoName;
+        p.email = ssoEmail;
+        EcRepository.save(p, console.log, console.error);
+    } else
         handleFetchIdentitySuccess2(obj);
 }
 
@@ -47,11 +55,11 @@ function handleFetchIdentitySuccess2(obj) {
     var loggedInPkPem = EcIdentityManager.ids[0].ppk.toPk().toPem();
     debugMessage("Public Key: " + loggedInPkPem);
     loggedInPpkPem = EcIdentityManager.ids[0].ppk.toPem();
-    sessionStorage.setItem("usernameWithSalt",ecIdentMgr.usernameWithSalt);
-    sessionStorage.setItem("passwordWithSalt",ecIdentMgr.passwordWithSalt);
-    sessionStorage.setItem("secretWithSalt",ecIdentMgr.secretWithSalt);
-    sessionStorage.setItem("pad",ecIdentMgr.pad);
-    sessionStorage.setItem("token",ecIdentMgr.token);
+    sessionStorage.setItem("usernameWithSalt", ecIdentMgr.usernameWithSalt);
+    sessionStorage.setItem("passwordWithSalt", ecIdentMgr.passwordWithSalt);
+    sessionStorage.setItem("secretWithSalt", ecIdentMgr.secretWithSalt);
+    sessionStorage.setItem("pad", ecIdentMgr.pad);
+    sessionStorage.setItem("token", ecIdentMgr.token);
     hideLoginBusy();
     hideLoginErrorMessage();
     enableAllLoginInputs();
@@ -63,8 +71,7 @@ function handleFetchIdentityFailure(failMsg) {
     debugMessage("handleFetchIdentityFailure: " + failMsg);
     if (failMsg.trim() == "User does not exist.") {
         ecIdentMgr.create(handleConfigureFromServerSuccess, handleFetchIdentityFailure);
-    }
-    else {
+    } else {
         showLoginErrorMessage("Identity fetch failed: " + failMsg);
     }
 }
@@ -184,41 +191,66 @@ function init() {
 // Document on ready
 //**************************************************************************************************
 
-$(document).ready(function () {
+var ssoName = null;
+var ssoEmail = null;
 
-if (typeof Keycloak !== 'undefined' && Keycloak) {
-    var keycloak = Keycloak({
-      "realm": "master",
-      "url": window.location.origin+"/auth",
-      "clientId": "cass"
-    });
-    var userCredentials = null;
-    keycloak.init({
-        onLoad: 'login-required',
-        flow: 'implicit'
-    }).success(function (authenticated) {
-        userCredentials = authenticated;
-        keycloak.loadUserProfile().success(
-            function(profile){
-                $("#cassUiLoginUsername").val(keycloak.subject);
-                if (profile.attributes.cass_secret != null)
-                {
-                    $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
-                    init();
-                    $(".credentials").hide();
-                    attemptCassUiLogin();
-                }
-                else
-                    init();
-            }
-        ,console.error);
-        init();
-    }).error(function (error) {
-        alert('Failed to initialize authentication');
-        console.log("Keycloak sign-in error");
-        console.log(error);
+$(document).ready(function () {
+    $.get("api/sso", null, function (data, textStatus, jqXHR) {
+        if (!EcObject.isObject(data))
+            data = JSON.parse(data);
+        if (data.jsLocation != null)
+            injectScript(data.jsLocation)
+                .then(() => {
+                    if (typeof Keycloak !== 'undefined' && Keycloak) {
+                        var keycloak = Keycloak({
+                            "realm": data.realm,
+                            "url": data.url,
+                            "clientId": data.clientId
+                        });
+                        var userCredentials = null;
+                        keycloak.init({
+                            onLoad: 'login-required',
+                            flow: 'implicit',
+                            checkLoginIframe: false
+                        }).success(function (authenticated) {
+                            userCredentials = authenticated;
+                            keycloak.loadUserProfile().success(
+                                function (profile) {
+                                    $("#cassUiLoginUsername").val(profile.username);
+                                    ssoName = profile.firstName + " " + profile.lastName;
+                                    ssoEmail = profile.email;
+                                    if (profile.attributes.cass_secret != null) {
+                                        $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
+                                        init();
+                                        $(".credentials").hide();
+                                        attemptCassUiLogin();
+                                    } else
+                                        init();
+                                }, console.error);
+                            init();
+                        }).error(function (error) {
+                            alert('Failed to initialize authentication');
+                            console.log("Keycloak sign-in error");
+                            console.log(error);
+                        });
+                    }
+                    else
+                        init();
+
+                }).catch(error => {
+                console.log(error);
+            });
+    }, "json");
+});
+
+function injectScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = src;
+        script.addEventListener('load', resolve);
+        script.addEventListener('error', () => reject('Error loading script.'));
+        script.addEventListener('abort', () => reject('Script loading aborted.'));
+        document.head.appendChild(script);
     });
 }
-else init();
-
-});
