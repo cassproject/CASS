@@ -93,15 +93,15 @@ var xapiStatement = function (s) {
     if (!EcObject.isObject(s)) return;
     if (s.result == null) return;
     var negative = false;
-    if (s.result.success != null) {
-        var scaled = 1.0;
-        if (s.result.success == true)
+    if (s.result.score != null) {
+        var scaled = s.result.score.scaled;
+        if (scaled > 0.7)
             negative = false;
         else
             negative = true;
-    } else if (s.result.score != null) {
-        var scaled = s.result.score.scaled;
-        if (scaled > 0.7)
+    } else if (s.result.success != null) {
+        var scaled = 1.0;
+        if (s.result.success == true)
             negative = false;
         else
             negative = true;
@@ -126,7 +126,8 @@ var xapiStatement = function (s) {
         a.setAgent(authorityPk);
         a.competency = alignedCompetencies[i].targetUrl;
         a.framework = alignedCompetencies[i].educationalFramework;
-        if (alreadyAligned[a.competency + a.framework] == true) continue;
+        if (alreadyAligned[a.competency + a.framework] == true)
+            continue;
         alreadyAligned[a.competency + a.framework] = true;
         a.setEvidence([JSON.stringify(s)]);
         a.setAssertionDate(date(s.timestamp, null, true));
@@ -142,6 +143,7 @@ var xapiStatementListener = function () {
     data = JSON.parse(data);
     xapiStatement(data);
 }
+
 var ident = new EcIdentity();
 ident.displayName = "xAPI Adapter";
 ident.ppk = EcPpk.fromPem(xapiMePpk);
@@ -149,7 +151,6 @@ EcIdentityManager.addIdentity(ident);
 bindWebService("/xapi/statement", xapiStatementListener);
 
 var xapiLoop = function () {
-
     var ident = new EcIdentity();
     ident.displayName = "xAPI Adapter";
     ident.ppk = EcPpk.fromPem(xapiMePpk);
