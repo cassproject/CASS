@@ -44,6 +44,9 @@ function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = skyrepoGet.call(this, query);
+    if (framework["@type"].contains("oncept")) {
+        return cassConceptSchemeAsCeasn(framework);
+    }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
         framework = null;
     if (framework == null)
@@ -382,6 +385,131 @@ function stripNonCe(f) {
         f[key] = ordered[key];
     });
     return f;
+}
+
+function cassConceptSchemeAsCeasn(framework) {
+    if (framework == null)
+        error("Concept Scheme not found.", 404);
+
+    var cs = new EcConceptScheme();
+    cs.copyFrom(framework);
+    if (cs["skos:hasTopConcept"] == null) {
+        cs["skos:hasTopConcept"] = [];
+    }
+
+    var concepts = {};
+    var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
+
+    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
+        var c = EcConcept.getBlocking(cs["skos:hasTopConcept"][i]);
+        if (c != null) {
+            concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
+            if (c["skos:narrower"]) {
+                function getSubConcepts(c) {
+                    for (var j = 0; j < c["skos:narrower"].length; j++) {
+                        var subC = EcConcept.getBlocking(c["skos:narrower"][j]);
+                        concepts[subC.id] = subC;
+                        allConcepts.push(subC.id);
+                        if (subC["skos:narrower"]) {
+                            getSubConcepts(subC);
+                        }
+                    }
+                    
+                }
+                getSubConcepts(c);
+            }
+        }
+    }
+
+    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    
+    cs["skos:hasTopConcept"] = [];
+    for (var i = 0; i < allConcepts.length; i++) {
+        var c = concepts[allConcepts[i]];
+        delete concepts[allConcepts[i]];
+        var id = c.id;
+        c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+        c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
+        if (c["skos:topConceptOf"] != null) {
+            c["skos:topConceptOf"] = ceasnExportUriTransform(cs.id);
+        }
+        if (c.type == null) //Already done / referred to by another name.
+            continue;
+        var guid = c.getGuid();
+        var uuid = new UUID(3, "nil", c.shortId()).format();
+        concepts[allConcepts[i]] = concepts[id] = jsonLdCompact(c.toJson(), ctx);
+
+        if (concepts[id]["ceterms:ctid"] == null) {
+            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+                concepts[id]["ceterms:ctid"] = guid;
+            }
+            else {
+                concepts[id]["ceterms:ctid"] = uuid;
+            }
+        }
+
+        if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
+            concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
+        }
+        if (concepts[id]["skos:inLanguage"] == null) {
+            concepts[id]["skos:inLanguage"] = "en";
+        }
+        delete concepts[id]["@context"];
+        //competencies[id] = stripNonCe(competencies[id]);
+    }
+
+    cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+
+    framework = cs;
+    delete cs["skos:hasTopConcept"];
+    var guid = cs.getGuid();
+    var uuid = new UUID(3, "nil", cs.shortId()).format();
+    cs = jsonLdCompact(cs.toJson(), ctx);
+    if (cs["ceasn:inLanguage"] == null) {
+        cs["ceasn:inLanguage"] = "en";
+    }
+    if (cs["ceterms:ctid"] == null) {
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+            cs["ceterms:ctid"] = guid;
+        }
+        else {
+            cs["ceterms:ctid"] = uuid;
+        }
+    }
+    if (cs["ceterms:ctid"].indexOf("ce-") != 0) {
+        cs["ceterms:ctid"] = "ce-" + cs["ceterms:ctid"];
+    }
+
+    cs["@id"] = ceasnExportUriTransform(cs["@id"]);
+
+    var results = [];
+    //cs = stripNonCe(cs);
+    results.push(cs);
+    for (var k in concepts) {
+        var c = concepts[k];
+        var found = false;
+        for (var j = 0; j < results.length; j++) {
+            if (results[j]["@id"] == concepts[k]["@id"]) {
+                found = true;
+                break;
+            }
+        }
+        if (found) continue;
+        concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"], cs["@id"]);
+        results.push(concepts[k]);
+        
+        delete cs["@context"];
+        var r = {};
+        r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+        if (ceasnExportUriPrefixGraph != null)
+            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+                r["@id"] = ceasnExportUriPrefixGraph + guid;
+            else
+                r["@id"] = ceasnExportUriPrefixGraph + uuid;
+        r["@graph"] = results;
+    }
+
+    return JSON.stringify(r, null, 2);
 }
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
