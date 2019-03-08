@@ -376,15 +376,19 @@ function stripNonCe(f) {
         else
             delete f[k];
     }
+    return orderFields(f);
+}
+
+function orderFields(object) {
     var ordered = {};
-    Object.keys(f).sort().forEach(function (key) {
-        ordered[key] = f[key];
-        delete f[key];
+    Object.keys(object).sort().forEach(function (key) {
+        ordered[key] = object[key];
+        delete object[key];
     });
     Object.keys(ordered).forEach(function (key) {
-        f[key] = ordered[key];
+        object[key] = ordered[key];
     });
-    return f;
+    return object;
 }
 
 function cassConceptSchemeAsCeasn(framework) {
@@ -455,7 +459,7 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[id]["skos:inLanguage"] = "en";
         }
         delete concepts[id]["@context"];
-        //competencies[id] = stripNonCe(competencies[id]);
+        concepts[id] = orderFields(concepts[id]);
     }
 
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
@@ -483,7 +487,7 @@ function cassConceptSchemeAsCeasn(framework) {
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
 
     var results = [];
-    //cs = stripNonCe(cs);
+    cs = orderFields(cs);
     results.push(cs);
     for (var k in concepts) {
         var c = concepts[k];
