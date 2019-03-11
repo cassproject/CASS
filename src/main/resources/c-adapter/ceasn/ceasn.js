@@ -427,7 +427,6 @@ function cassConceptSchemeAsCeasn(framework) {
 
     var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
     
-    cs["skos:hasTopConcept"] = [];
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
@@ -465,7 +464,6 @@ function cassConceptSchemeAsCeasn(framework) {
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
 
     framework = cs;
-    delete cs["skos:hasTopConcept"];
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
     cs = jsonLdCompact(cs.toJson(), ctx);
