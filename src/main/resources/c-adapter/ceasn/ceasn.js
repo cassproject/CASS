@@ -431,6 +431,11 @@ function cassConceptSchemeAsCeasn(framework) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
         var id = c.id;
+        
+        concepts[id] = c;
+        delete concepts[id]["owner"];
+        delete concepts[id]["signature"];
+
         c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
         c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
         if (c["skos:topConceptOf"] != null) {
@@ -458,8 +463,7 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[id]["skos:inLanguage"] = "en";
         }
         delete concepts[id]["@context"];
-        delete concepts[id]["@owner"];
-        delete concepts[id]["@signature"];
+
         concepts[id] = orderFields(concepts[id]);
     }
 
@@ -468,6 +472,8 @@ function cassConceptSchemeAsCeasn(framework) {
     framework = cs;
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
+    delete cs["owner"];
+    delete cs["signature"];
     cs = jsonLdCompact(cs.toJson(), ctx);
     if (cs["ceasn:inLanguage"] == null) {
         cs["ceasn:inLanguage"] = "en";
@@ -485,8 +491,6 @@ function cassConceptSchemeAsCeasn(framework) {
     }
 
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
-    delete cs["@owner"];
-    delete cs["@signature"];
 
     var results = [];
     cs = orderFields(cs);
