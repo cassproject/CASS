@@ -431,7 +431,6 @@ function cassConceptSchemeAsCeasn(framework) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
         var id = c.id;
-        
         concepts[id] = c;
         delete concepts[id]["owner"];
         delete concepts[id]["signature"];
@@ -507,17 +506,17 @@ function cassConceptSchemeAsCeasn(framework) {
         if (found) continue;
         concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"], cs["@id"]);
         results.push(concepts[k]);
-        
-        delete cs["@context"];
-        var r = {};
-        r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
-        if (ceasnExportUriPrefixGraph != null)
-            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                r["@id"] = ceasnExportUriPrefixGraph + guid;
-            else
-                r["@id"] = ceasnExportUriPrefixGraph + uuid;
-        r["@graph"] = results;
     }
+        
+    delete cs["@context"];
+    var r = {};
+    r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+    if (ceasnExportUriPrefixGraph != null)
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+            r["@id"] = ceasnExportUriPrefixGraph + guid;
+        else
+            r["@id"] = ceasnExportUriPrefixGraph + uuid;
+    r["@graph"] = results;
 
     return JSON.stringify(r, null, 2);
 }
