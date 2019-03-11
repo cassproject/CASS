@@ -458,6 +458,8 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[id]["skos:inLanguage"] = "en";
         }
         delete concepts[id]["@context"];
+        delete concepts[id]["@owner"];
+        delete concepts[id]["@signature"];
         concepts[id] = orderFields(concepts[id]);
     }
 
@@ -483,6 +485,8 @@ function cassConceptSchemeAsCeasn(framework) {
     }
 
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
+    delete cs["@owner"];
+    delete cs["@signature"];
 
     var results = [];
     cs = orderFields(cs);
