@@ -428,11 +428,14 @@ function cassConceptSchemeAsCeasn(framework) {
 
     var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
     
-    cs["skos:hasTopConcept"] = [];
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
         var id = c.id;
+        concepts[id] = c;
+        delete concepts[id]["owner"];
+        delete concepts[id]["signature"];
+
         c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
         c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
         if (c["skos:topConceptOf"] != null) {
@@ -460,15 +463,17 @@ function cassConceptSchemeAsCeasn(framework) {
             concepts[id]["skos:inLanguage"] = "en";
         }
         delete concepts[id]["@context"];
+
         concepts[id] = orderFields(concepts[id]);
     }
 
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
 
     framework = cs;
-    delete cs["skos:hasTopConcept"];
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
+    delete cs["owner"];
+    delete cs["signature"];
     cs = jsonLdCompact(cs.toJson(), ctx);
     if (cs["ceasn:inLanguage"] == null) {
         cs["ceasn:inLanguage"] = "en";
@@ -502,17 +507,17 @@ function cassConceptSchemeAsCeasn(framework) {
         if (found) continue;
         concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"], cs["@id"]);
         results.push(concepts[k]);
-        
-        delete cs["@context"];
-        var r = {};
-        r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
-        if (ceasnExportUriPrefixGraph != null)
-            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-                r["@id"] = ceasnExportUriPrefixGraph + guid;
-            else
-                r["@id"] = ceasnExportUriPrefixGraph + uuid;
-        r["@graph"] = results;
     }
+        
+    delete cs["@context"];
+    var r = {};
+    r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+    if (ceasnExportUriPrefixGraph != null)
+        if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
+            r["@id"] = ceasnExportUriPrefixGraph + guid;
+        else
+            r["@id"] = ceasnExportUriPrefixGraph + uuid;
+    r["@graph"] = results;
 
     return JSON.stringify(r, null, 2);
 }
