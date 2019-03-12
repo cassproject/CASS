@@ -214,6 +214,7 @@ function cassFrameworkAsCeasn() {
     f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
+        if (c == null) continue;
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
