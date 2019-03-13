@@ -392,6 +392,41 @@ function orderFields(object) {
     return object;
 }
 
+function conceptArrays(object) {
+    for (var k in object) {
+        if (EcObject.isObject(object[k]) == false)
+            if (k.indexOf("@") != 0)
+                if (k.indexOf("ceterms:ctid") != 0)
+                    if (k.indexOf("ceasn:description") != 0)
+                        if (k.indexOf("ceasn:name") != 0)
+                            if (k.indexOf("ceasn:dateCopyrighted") != 0)
+                                if (k.indexOf("ceasn:dateCreated") != 0)
+                                    if (k.indexOf("ceasn:dateModified") != 0)
+                                        if (k.indexOf("ceasn:license") != 0)
+                                            if (k.indexOf("ceasn:publicationStatusType") != 0)
+                                                if (k.indexOf("ceasn:publisher") != 0)
+                                                    if (k.indexOf("ceasn:publisherName") != 0)
+                                                        if (k.indexOf("ceasn:rights") != 0)
+                                                            if (k.indexOf("ceasn:source") != 0)
+                                                                if (k.indexOf("skos:broader") != 0)
+                                                                    if (k.indexOf("skos:definition") != 0)
+                                                                        if (k.indexOf("skos:inScheme") != 0)
+                                                                            if (k.indexOf("skos:notation") != 0)
+                                                                                if (k.indexOf("skos:prefLabel") != 0)
+                                                                                    if (k.indexOf("skos:topConceptOf") != 0)
+                                                                                        if (EcArray.isArray(object[k]) == false)
+                                                                                            object[k] = [object[k]];
+        //For properties that allow many per language, force it into an array with even just 1 value.
+        if (k === "skos:changeNote" || k === "ceasn:conceptKeyword" || k === "skos:note" || k === "skos:hiddenLabel" || k === "skos:altLabel") {
+            Object.keys(object[k]).forEach(function (key) {
+                if (EcArray.isArray(object[k][key]) == false)
+                    object[k][key] = [object[k][key]];
+            });
+        }
+    }
+    return orderFields(object);
+}
+
 function cassConceptSchemeAsCeasn(framework) {
     if (framework == null)
         error("Concept Scheme not found.", 404);
@@ -464,7 +499,7 @@ function cassConceptSchemeAsCeasn(framework) {
         }
         delete concepts[id]["@context"];
 
-        concepts[id] = orderFields(concepts[id]);
+        concepts[id] = conceptArrays(concepts[id]);
     }
 
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
@@ -493,7 +528,8 @@ function cassConceptSchemeAsCeasn(framework) {
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
 
     var results = [];
-    cs = orderFields(cs);
+
+    cs = conceptArrays(cs);
     results.push(cs);
     for (var k in concepts) {
         var c = concepts[k];
