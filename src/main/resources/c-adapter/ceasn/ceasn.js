@@ -317,7 +317,7 @@ function cassFrameworkAsCeasn() {
                     c["ceasn:exactAlignment"] = [c["ceasn:exactAlignment"], c["@id"]];
                 }
             else
-                c["ceasn:exactAlignment"] = c["@id"];
+                c["ceasn:exactAlignment"] = [c["@id"]];
         }
         competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"], f["@id"]);
         results.push(competencies[k]);
