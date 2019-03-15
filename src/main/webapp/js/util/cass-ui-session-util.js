@@ -141,10 +141,14 @@ function initSessionIdentity() {
 	debugMessage("Initializing identity...");
 	var eci = new EcIdentity();
 	eci.source = selectedServer;
-	eci.displayName = loggedInIdentityName;
 	var eciPpk = EcPpk.fromPem(loggedInPpkPem);
-	eci.ppk = eciPpk;
-	EcIdentityManager.ids.push(eci);
+    eci.ppk = eciPpk;
+    EcIdentityManager.ids.push(eci);
+	var person = EcPerson.getByPkBlocking(repo,eciPpk.toPk());
+	if (person != null)
+		if (person.name != null)
+			loggedInIdentityName = person.getName();
+    eci.displayName = loggedInIdentityName;
 	loggedInPkPem = EcIdentityManager.ids[0].ppk.toPk().toPem();
 	debugMessage("Identity initialized:");
 	debugMessage("Display Name: " + EcIdentityManager.ids[0].displayName);
