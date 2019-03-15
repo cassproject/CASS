@@ -974,17 +974,10 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.transformId = function(oldId, newObject, selectedServer, repo) {
-        if (oldId == null || oldId == "" || oldId.indexOf("http") == -1) 
+        if (oldId == null || oldId == "" || oldId.toLowerCase().indexOf("http") == -1) 
             newObject.assignId(selectedServer, oldId);
          else {
-            if (EcCompetency.getBlocking(oldId) == null) 
-                newObject.id = oldId;
-             else {
-                if (repo == null || repo.selectedServer.indexOf(selectedServer) != -1) 
-                    newObject.generateId(selectedServer);
-                 else 
-                    newObject.generateShortId(selectedServer);
-            }
+            newObject.id = oldId;
         }
     };
     /**
@@ -1070,6 +1063,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] == null) 
                         (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
                 }
+                (CSVImport.importCsvLookup)[competency.getName()] = competency.shortId();
                 for (var idx = 0; idx < tabularData[i].length; idx++) {
                     var name = colNames[idx];
                     if (name == null || name.trim() == "" || name.startsWith("@") || name.indexOf(".") != -1 || tabularData[i][idx].trim() == "" || idx == nameIndex || idx == descriptionIndex || idx == scopeIndex || idx == idIndex) {
