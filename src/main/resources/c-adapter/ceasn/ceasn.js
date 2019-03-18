@@ -694,6 +694,9 @@ function ceasnFrameworkToCass() {
     } else {
         text = fileToString(file);
     }
+    if (text[0] != "{") {
+        text = text.slice(1);
+    }
 
     try {
         jsonLd = JSON.parse(text);
