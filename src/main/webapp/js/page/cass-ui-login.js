@@ -216,7 +216,10 @@ $(document).ready(function () {
                             userCredentials = authenticated;
                             keycloak.loadUserProfile().success(
                                 function (profile) {
-                                    $("#cassUiLoginUsername").val(profile.username);
+                                    if (profile.attributes.cass_username != null)
+                                        $("#cassUiLoginUsername").val(profile.attributes.cass_username[0]);
+                                    else
+                                        $("#cassUiLoginUsername").val(profile.username);
                                     ssoName = profile.firstName + " " + profile.lastName;
                                     ssoEmail = profile.email;
                                     if (profile.attributes.cass_secret != null) {
