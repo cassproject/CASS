@@ -448,10 +448,12 @@ function cassConceptSchemeAsCeasn(framework) {
                 function getSubConcepts(c) {
                     for (var j = 0; j < c["skos:narrower"].length; j++) {
                         var subC = EcConcept.getBlocking(c["skos:narrower"][j]);
-                        concepts[subC.id] = subC;
-                        allConcepts.push(subC.id);
-                        if (subC["skos:narrower"]) {
-                            getSubConcepts(subC);
+                        if (subC != null) {
+                            concepts[subC.id] = subC;
+                            allConcepts.push(subC.id);
+                            if (subC["skos:narrower"]) {
+                                getSubConcepts(subC);
+                            }
                         }
                     }
                     
@@ -466,40 +468,42 @@ function cassConceptSchemeAsCeasn(framework) {
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
-        var id = c.id;
-        concepts[id] = c;
-        delete concepts[id]["owner"];
-        delete concepts[id]["signature"];
+        if (c != null && c.id != null) {
+            var id = c.id;
+            concepts[id] = c;
+            delete concepts[id]["owner"];
+            delete concepts[id]["signature"];
 
-        c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
-        c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
-        if (c["skos:topConceptOf"] != null) {
-            c["skos:topConceptOf"] = ceasnExportUriTransform(cs.id);
-        }
-        if (c.type == null) //Already done / referred to by another name.
-            continue;
-        var guid = c.getGuid();
-        var uuid = new UUID(3, "nil", c.shortId()).format();
-        concepts[allConcepts[i]] = concepts[id] = jsonLdCompact(c.toJson(), ctx);
-
-        if (concepts[id]["ceterms:ctid"] == null) {
-            if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
-                concepts[id]["ceterms:ctid"] = guid;
+            c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+            c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
+            if (c["skos:topConceptOf"] != null) {
+                c["skos:topConceptOf"] = ceasnExportUriTransform(cs.id);
             }
-            else {
-                concepts[id]["ceterms:ctid"] = uuid;
+            if (c.type == null) //Already done / referred to by another name.
+                continue;
+            var guid = c.getGuid();
+            var uuid = new UUID(3, "nil", c.shortId()).format();
+            concepts[allConcepts[i]] = concepts[id] = jsonLdCompact(c.toJson(), ctx);
+
+            if (concepts[id]["ceterms:ctid"] == null) {
+                if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+                    concepts[id]["ceterms:ctid"] = guid;
+                }
+                else {
+                    concepts[id]["ceterms:ctid"] = uuid;
+                }
             }
-        }
 
-        if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
-            concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
-        }
-        if (concepts[id]["skos:inLanguage"] == null) {
-            concepts[id]["skos:inLanguage"] = "en";
-        }
-        delete concepts[id]["@context"];
+            if (concepts[id]["ceterms:ctid"].indexOf("ce-") != 0) {
+                concepts[id]["ceterms:ctid"] = "ce-" + concepts[id]["ceterms:ctid"];
+            }
+            if (concepts[id]["skos:inLanguage"] == null) {
+                concepts[id]["skos:inLanguage"] = "en";
+            }
+            delete concepts[id]["@context"];
 
-        concepts[id] = conceptArrays(concepts[id]);
+            concepts[id] = conceptArrays(concepts[id]);
+        }
     }
 
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
