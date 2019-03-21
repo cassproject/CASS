@@ -44,7 +44,7 @@ function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = skyrepoGet.call(this, query);
-    if (framework["@type"].contains("oncept")) {
+    if (framework != null && framework["@type"].contains("oncept")) {
         return cassConceptSchemeAsCeasn(framework);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
