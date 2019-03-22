@@ -2101,10 +2101,16 @@ var EcFrameworkGraph = function() {
     EcDirectedGraph.call(this);
     this.metaVerticies = new Object();
     this.metaEdges = new Object();
+    this.competencyMap = new Object();
+    this.edgeMap = new Object();
+    this.dontTryAnyMore = new Object();
 };
 EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(constructor, prototype) {
     prototype.metaVerticies = null;
     prototype.metaEdges = null;
+    prototype.competencyMap = null;
+    prototype.edgeMap = null;
+    prototype.dontTryAnyMore = null;
     prototype.addFramework = function(framework, repo, success, failure) {
         var me = this;
         repo.multiget(framework.competency.concat(framework.relation), function(data) {
@@ -2202,32 +2208,62 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
         ((metaState)[key]).push(value);
     };
     prototype.getMetaStateCompetency = function(c) {
-        if (this.containsVertex(c) == false) 
-            return null;
-        if (this.metaVerticies[c.shortId()] == null) 
-            this.metaVerticies[c.shortId()] = new Object();
-        return this.metaVerticies[c.shortId()];
+        var result = this.metaVerticies[c.shortId()];
+        if (result == null) {
+            if (this.containsVertex(c) == false) 
+                return null;
+            if (this.metaVerticies[c.shortId()] == null) 
+                this.metaVerticies[c.shortId()] = result = new Object();
+        }
+        return result;
     };
     prototype.getMetaStateAlignment = function(a) {
-        if (this.containsEdge(a) == false) 
-            return null;
-        if (this.metaEdges[a.shortId()] == null) 
-            this.metaEdges[a.shortId()] = new Object();
-        return this.metaEdges[a.shortId()];
+        var result = this.metaEdges[a.shortId()];
+        if (result == null) {
+            if (this.containsEdge(a) == false) 
+                return null;
+            if (this.metaEdges[a.shortId()] == null) 
+                this.metaEdges[a.shortId()] = result = new Object();
+        }
+        return result;
+    };
+    prototype.containsVertex = function(competency) {
+        return (this.competencyMap)[competency.shortId()] != null;
+    };
+    prototype.containsEdge = function(competency) {
+        return (this.edgeMap)[competency.shortId()] != null;
     };
     prototype.addCompetency = function(competency) {
         if (competency == null) 
             return false;
+        if (this.containsVertex(competency)) 
+            return false;
+        (this.competencyMap)[competency.shortId()] = competency;
+        (this.competencyMap)[competency.id] = competency;
         return this.addVertex(competency);
     };
     prototype.addRelation = function(alignment) {
         if (alignment == null) 
             return false;
-        var source = EcCompetency.getBlocking(alignment.source);
-        var target = EcCompetency.getBlocking(alignment.target);
+        if (this.containsEdge(alignment)) 
+            return false;
+        var source = (this.competencyMap)[alignment.source];
+        if (source == null && (this.dontTryAnyMore)[alignment.source] != null) 
+            return false;
+        if (source == null) 
+            source = EcCompetency.getBlocking(alignment.source);
+        if (source == null) 
+            (this.dontTryAnyMore)[alignment.source] = "";
+        var target = (this.competencyMap)[alignment.target];
+        if (target == null && (this.dontTryAnyMore)[alignment.target] != null) 
+            return false;
+        if (target == null) 
+            target = EcCompetency.getBlocking(alignment.target);
+        if (target == null) 
+            (this.dontTryAnyMore)[alignment.target] = "";
         if (source == null || target == null) 
             return false;
-        return this.addEdge(alignment, source, target);
+        return this.addEdgeUnsafely(alignment, source, target);
     };
     prototype.addHyperEdge = function(edge, vertices) {
          throw new RuntimeException("Don't do this.");
@@ -2238,7 +2274,7 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.getDefaultEdgeType = function() {
         return EcAlignment.NARROWS;
     };
-}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
+}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, competencyMap: "Object", edgeMap: "Object", dontTryAnyMore: "Object", edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
 var NodePacketGraph = function() {
     this.nodePacketList = new Array();
     this.nodePacketMap = {};

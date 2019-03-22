@@ -1319,6 +1319,10 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
         return results;
     };
     prototype.addVertex = function(vertex) {
+        this.verticies.push(vertex);
+        return true;
+    };
+    prototype.addVertexSafely = function(vertex) {
         if (EcArray.has(this.verticies, vertex)) 
             return false;
         this.verticies.push(vertex);
@@ -1487,8 +1491,26 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
         return false;
     };
     prototype.addEdge = function(e, v1, v2) {
-        this.addVertex(v1);
-        this.addVertex(v2);
+        this.addVertexSafely(v1);
+        this.addVertexSafely(v2);
+        var t = new Triple();
+        t.source = v1;
+        t.destination = v2;
+        t.edge = e;
+        this.edges.push(t);
+        return true;
+    };
+    prototype.addEdgeUnsafely = function(e, v1, v2) {
+        var t = new Triple();
+        t.source = v1;
+        t.destination = v2;
+        t.edge = e;
+        this.edges.push(t);
+        return true;
+    };
+    prototype.addEdgeSafely = function(e, v1, v2) {
+        this.addVertexSafely(v1);
+        this.addVertexSafely(v2);
         var t = new Triple();
         t.source = v1;
         t.destination = v2;

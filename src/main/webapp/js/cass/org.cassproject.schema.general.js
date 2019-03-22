@@ -433,6 +433,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @method updateTimestamp
      */
     prototype.updateTimestamp = function() {
+        if (this.getTimestamp() == null) 
+            return;
         var rawId = this.id.substring(0, this.id.lastIndexOf("/"));
         if (rawId.endsWith("/") == false) 
             rawId += "/";
@@ -446,7 +448,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      */
     prototype.getTimestamp = function() {
         var timestamp = this.id.substring(this.id.lastIndexOf("/") + 1);
-        if (timestamp.matches("\\/[0-9]+")) {
+        if (timestamp.matches("[0-9]+")) {
             return Integer.parseInt(timestamp);
         } else {
             return null;

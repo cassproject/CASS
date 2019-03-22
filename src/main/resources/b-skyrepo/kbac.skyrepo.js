@@ -284,6 +284,15 @@ var flattenLangstrings = function(o) {
 var skyrepoPutInternalIndex = function(o, id, version, type) {
     var url = putUrl(o, id, version, type);
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
+    try {
+        (o)["@version"] = parseInt(version);
+    }catch (ex) {
+        (o)["@version"] = new Date().getTime();
+    }
+    if (type != null && type.indexOf("EncryptedValue") != -1) {
+        delete (o)["payload"];
+        delete (o)["secret"];
+    }
     if (skyrepoDebug) 
         console.log(JSON.stringify(o));
     return httpPost(o, url, "application/json", false);
