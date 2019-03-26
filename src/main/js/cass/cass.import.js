@@ -1084,7 +1084,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.saveCompetency = function(comp, incremental, competencies, relations, success, serverUrl, owner, sourceIndex, relationTypeIndex, destIndex, failure, repo) {
         Task.asyncImmediate(function(o) {
             var keepGoing = o;
-            comp.save(function(results) {
+            var saveDone = function(results) {
                 CSVImport.saved++;
                 if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) {
                     if (CSVImport.progressObject == null) 
@@ -1099,13 +1099,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                         CSVImport.importRelations(serverUrl, owner, relations, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental, repo);
                 }
                 keepGoing();
-            }, function(results) {
-                failure("Failed to save competency");
-                for (var j = 0; j < competencies.length; j++) {
-                    competencies[j]._delete(null, null, null);
-                }
-                keepGoing();
-            }, repo);
+            };
+            comp.save(saveDone, saveDone, repo);
         });
     };
     /**

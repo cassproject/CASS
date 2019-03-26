@@ -22,6 +22,10 @@ var getTypeFromObject = function(o) {
     var type = (o)["@type"];
     var context = (o)["@context"];
     if (type == null) 
+        type = (o)["type"];
+    if (context == null) 
+        context = (o)["context"];
+    if (type == null) 
         return null;
     if (type.indexOf("http") != -1) 
         return type;
@@ -160,7 +164,6 @@ var putUrl = function(o, id, version, type) {
     var versionPart = null;
     if (version == null || version == "") {
         versionPart = "?refresh=true";
-        version = "";
     } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
@@ -190,7 +193,6 @@ var putPermanentBaseUrl = function(o, id, version, type) {
     var versionPart = null;
     if (version == null || version == "") {
         versionPart = "?refresh=true";
-        version = "";
     } else 
         versionPart = "?version=" + version + "&version_type=external&refresh=true";
     var url = elasticEndpoint;
@@ -286,6 +288,8 @@ var skyrepoPutInternalIndex = function(o, id, version, type) {
     o = flattenLangstrings(JSON.parse(JSON.stringify(o)));
     try {
         (o)["@version"] = parseInt(version);
+        if (isNaN((o)["@version"])) 
+            (o)["@version"] = new Date().getTime();
     }catch (ex) {
         (o)["@version"] = new Date().getTime();
     }
@@ -323,15 +327,28 @@ var skyrepoPutInternalPermanent = function(o, id, version, type) {
         console.log(JSON.stringify(out));
     return JSON.stringify(out);
 };
-var skyrepoPutInternal = function(o, id, version, type) {
+var skyrepoPutInternal = function(o, id, version, type, oldObj) {
+    if (oldObj != null) {
+        var oldType = inferTypeFromObj(oldObj, null);
+        if (oldType != type && type != null && (version == null || version == "")) {
+            var perm = skyrepoGetPermanent(id, null, oldType);
+            version = ((((perm)["_version"]) + 1)).toString();
+        }
+    }
     var obj = skyrepoPutInternalIndex(o, id, version, type);
     if (skyrepoDebug) 
         console.log(JSON.stringify(obj));
     version = (obj)["_version"];
     skyrepoPutInternalPermanent(o, id, version, type);
+    if (oldObj != null) {
+        var oldType = inferTypeFromObj(oldObj, null);
+        if (oldType != type && type != null) {
+            skyrepoDeleteInternalIndex(id, null, oldType);
+        }
+    }
 };
 var skyRepoPutInternal = function(o, id, version, type) {
-    skyrepoPutInternal(o, id, version, type);
+    skyrepoPutInternal(o, id, version, type, null);
 };
 var skyrepoGetIndexInternal = function(index, id, version, type) {
     if (skyrepoDebug) 
@@ -447,11 +464,11 @@ var skyrepoPut = function(parseParams) {
 var skyrepoPutParsed = function(o, id, version, type) {
     if (o == null) 
         return;
-    (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.");
-    skyrepoPutInternal(o, id, version, type);
+    var oldObj = (validateSignatures).call(this, id, version, type, "Only an owner of an object may change it.", null, null);
+    skyrepoPutInternal(o, id, version, type, oldObj);
 };
 var validateSignatures = function(id, version, type, errorMessage) {
-    var oldGet = (skyrepoGetParsed).call(this, id, version, type, null);
+    var oldGet = (skyrepoGetInternal).call(this, id, version, type, null);
     if (oldGet == null) 
         return null;
     var oldObj = new EcRemoteLinkedData(null, null);
