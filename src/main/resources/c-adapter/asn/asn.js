@@ -471,7 +471,7 @@ function importJsonLdGraph(graph, context) {
         var graphObj = graph[idx];
 
         if (context != undefined) {
-            if (context == "http://credreg.net/ctdlasn/schema/context/json") {
+            if (context == "http://credreg.net/ctdlasn/schema/context/json"||context == "http://credreg.net/ctdl/schema/context/json") {
                 context = "http://schema.cassproject.org/0.3/ceasn2cassConcepts";
             }
             if (context["schema"] == undefined) {
@@ -480,10 +480,12 @@ function importJsonLdGraph(graph, context) {
 
             graphObj["@context"] = context;
 
+            print(JSON.stringify(graphObj));
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
+            print(JSON.stringify(expanded));
             var compacted;
             if (graphObj["@type"].indexOf("Concept") != -1) {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos");
+                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos/");
             }
             else {
                 compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
@@ -497,20 +499,19 @@ function importJsonLdGraph(graph, context) {
 
         if (type == "ConceptScheme") {
             conceptSchemeGuid = guid;
+            objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
             objToSave = new EcConceptScheme();
             objToSave.copyFrom(compacted);
+            print(objToSave.toJson());
+            repo.saveTo(objToSave,print,print);
         }
         else if (type == "Concept") {
+            objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
             objToSave = new EcConcept();
             objToSave.copyFrom(compacted);
+            print(objToSave.toJson());
+            repo.saveTo(objToSave,print,print);
         }
-
-        skyrepoPut({
-            "obj": objToSave.toJson(),
-            "type": objToSave.getFullType(),
-            "id": guid,
-            "version": version
-        });
     }
     if (conceptSchemeGuid) {
         return repoEndpoint() + "data/" + conceptSchemeGuid;
