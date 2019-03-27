@@ -465,6 +465,14 @@ function asnFrameworkToCass() {
  */
 function importJsonLdGraph(graph, context) {
     debug("importing jsonld graph")
+
+    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+
+    var skosIdentity = new EcIdentity();
+    skosIdentity.ppk = EcPpk.fromPem(keyFor("adapter.skos.private"));
+    skosIdentity.displayName = "SKOS Server Identity";
+    EcIdentityManager.addIdentity(skosIdentity);
+
     var conceptSchemeGuid;
 
     for (var idx in graph) {
@@ -480,9 +488,7 @@ function importJsonLdGraph(graph, context) {
 
             graphObj["@context"] = context;
 
-            print(JSON.stringify(graphObj));
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
-            print(JSON.stringify(expanded));
             var compacted;
             if (graphObj["@type"].indexOf("Concept") != -1) {
                 compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos/");
@@ -502,14 +508,20 @@ function importJsonLdGraph(graph, context) {
             objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
             objToSave = new EcConceptScheme();
             objToSave.copyFrom(compacted);
-            print(objToSave.toJson());
+            objToSave.addOwner(skosIdentity.ppk.toPk());
+            if (owner != null)
+                objToSave.addOwner(EcPk.fromPem(owner));
+
             repo.saveTo(objToSave,print,print);
         }
         else if (type == "Concept") {
             objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
             objToSave = new EcConcept();
             objToSave.copyFrom(compacted);
-            print(objToSave.toJson());
+            objToSave.addOwner(skosIdentity.ppk.toPk());
+            if (owner != null)
+                objToSave.addOwner(EcPk.fromPem(owner));
+
             repo.saveTo(objToSave,print,print);
         }
     }
