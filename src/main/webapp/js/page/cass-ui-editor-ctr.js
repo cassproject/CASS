@@ -9,7 +9,7 @@ const ADD_CEASN_DATA_FIELDS = false;
 const CEASN_FIELD_TOGGLE = "ceasnDataFields=true";
 
 const PRF_EXP_IFRAME = "#prfExpIFrame";
-const PRF_EXP_IFRAME_SOURCE = "cass-editor/index.html?tlaProfile=true&user=wait";
+const PRF_EXP_IFRAME_SOURCE = "cass-editor/index.html?tlaProfile=true&user=wait&editIframe=true";
 
 const WAITING_MESSAGE = "waiting";
 const INIT_FWK_EXP_MESSAGE = "initFrameworkExplorer";
