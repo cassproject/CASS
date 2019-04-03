@@ -488,6 +488,11 @@ function importJsonLdGraph(graph, context) {
 
             graphObj["@context"] = context;
 
+            if (graphObj["rdfs:comment"] != null && graphObj["rdfs:comment"] !== undefined) {
+                delete graphObj["dct:description"];
+                delete graphObj["dcterms:description"];
+            }
+
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
             var compacted;
             if (graphObj["@type"].indexOf("Concept") != -1) {
