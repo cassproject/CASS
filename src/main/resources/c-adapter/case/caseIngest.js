@@ -40,7 +40,7 @@ var caseInterface = {
 }
 
 stripCassNamespace = function (o) {
-    if (o["@context"].indexOf("http://schema.cassproject.org") == -1)
+    if (typeof o["@context"] === "string" && o["@context"].indexOf("http://schema.cassproject.org") == -1)
         return o;
     var keys = EcObject.keys(o);
     for (var i = 0; i < keys.length; i++) {
@@ -135,7 +135,7 @@ embedCFPackageIntoFramework = function(f,document){
 
 var cassContext = null;
 ingestCase = function () {
-    cassContext = JSON.stringify(httpGet("http://schema.cassproject.org/0.3/")["@context"]);
+    cassContext = JSON.stringify(JSON.parse(httpGet("http://schema.cassproject.org/0.3/"))["@context"]);
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
     var caseIdentity = new EcIdentity();
