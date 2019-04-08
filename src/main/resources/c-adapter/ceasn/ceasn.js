@@ -475,6 +475,18 @@ function cassConceptSchemeAsCeasn(framework) {
             delete concepts[id]["signature"];
 
             c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+            if (c.id != ceasnExportUriTransform(c.id)) {
+                if (c["skos:exactMatch"] != null)
+                    if (EcArray.isArray(c["skos:exactMatch"])) {
+                        c["skos:exactMatch"].push(c.id);
+                    }
+                    else {
+                        c["skos:exactMatch"] = [c["skos:exactMatch"], c.id];
+                    }
+                else
+                    c["skos:exactMatch"] = [c.id];
+            }
+            c.id = ceasnExportUriTransform(c.id, cs.id);
             c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
             if (c["skos:topConceptOf"] != null) {
                 c["skos:topConceptOf"] = ceasnExportUriTransform(cs.id);
