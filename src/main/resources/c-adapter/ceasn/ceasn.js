@@ -44,19 +44,19 @@ function cassFrameworkAsCeasn() {
     var framework = null;
     if (framework == null)
         framework = skyrepoGet.call(this, query);
-    if (framework != null && framework["@type"].contains("oncept")) {
+    if (framework != null && framework["@type"] != null && framework["@type"].contains("oncept")) {
         return cassConceptSchemeAsCeasn(framework);
     }
     if (framework == null || framework["@type"] == null || !framework["@type"].contains("ramework"))
         framework = null;
-    if (framework == null)
+    if (framework == null && urlDecode(this.params.id) != null)
         framework = EcFramework.getBlocking(urlDecode(this.params.id));
     var competency = null;
     if (framework == null) {
         competency = skyrepoGet.call(this, query);
-        if (competency == null)
+        if (competency == null && urlDecode(this.params.id) != null)
             competency = EcCompetency.getBlocking(urlDecode(this.params.id));
-        else {
+        else if (competency != null) {
             var c = new EcCompetency();
             c.copyFrom(competency);
             competency = c;
@@ -73,7 +73,7 @@ function cassFrameworkAsCeasn() {
         }
     }
     if (framework == null)
-        error("Framework not found.", 404);
+        error("Object not found or you did not supply sufficient permissions to access the object.", 404);
 
     f = new EcFramework();
     f.copyFrom(framework);
