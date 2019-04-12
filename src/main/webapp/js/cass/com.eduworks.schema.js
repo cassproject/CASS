@@ -426,6 +426,9 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
     constructor.getByPkBlocking = function(repo, pk, success, failure) {
         return EcPerson.getBlocking(repo.selectedServer + (repo.selectedServer.endsWith("/") ? "" : "/") + "data/" + pk.fingerprint());
     };
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a person from it's server asynchronously
      * 

@@ -397,6 +397,22 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "RELATION_AND", "RELATION_OR", "RELATION_NARROWS", "RELATION_BROADENS", "RELATION_REQUIRES", "RELATION_ISREQUIREDBY");
     constructor.ResultType = stjs.enumeration("TRUE", "FALSE", "UNKNOWN", "INDETERMINANT");
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = "";
+        if (idList.length > 1) 
+            searchQuery = "(";
+        for (var i = 0; i < idList.length; i++) {
+            if (i > 0) 
+                searchQuery += " OR ";
+            searchQuery += "(\\*@id:\"" + idList[i] + "\")";
+        }
+        if (idList.length > 1) 
+            searchQuery += ")";
+        return searchQuery;
+    };
+}, {}, {});
 var NodePacket = function() {
     this.nodeList = new Array();
     this.nodeMap = {};
@@ -2113,10 +2129,15 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.edgeMap = null;
     prototype.dontTryAnyMore = null;
     prototype.frameworks = null;
+    prototype.addFrameworkSuccessCallback = null;
+    prototype.addFrameworkFailureCallback = null;
+    prototype.repo = null;
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
+        console.log("addFramework about to multiget: " + Date.now());
         repo.multiget(framework.competency.concat(framework.relation), function(data) {
+            console.log("Multiget complete: " + Date.now());
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
             for (var i = 0; i < data.length; i++) {
@@ -2134,12 +2155,23 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             success();
         }, failure);
     };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            for (var i = 0; i < ecaa.length; i++) {
+                var a = ecaa[i];
+                me.addRelation(a);
+                me.addToMetaStateArray(me.getMetaStateAlignment(a), "framework", framework);
+            }
+            me.addFrameworkSuccessCallback();
+        }, me.addFrameworkFailureCallback, null);
+    };
     prototype.processAssertionsBoolean = function(assertions, success, failure) {
         var me = this;
         var eah = new EcAsyncHelper();
         eah.each(assertions, function(assertion, done) {
-            var competency = EcCompetency.getBlocking(assertion.competency);
-            if (!me.containsVertex(competency)) {
+            var competency = me.getCompetency(assertion.competency);
+            if (competency == null || !me.containsVertex(competency)) {
                 done();
                 return;
             }
@@ -2161,18 +2193,20 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             var metaState = this.getMetaStateCompetency(competency);
             this.addToMetaStateArray(metaState, "negativeAssertion", assertion);
             new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.target);
                 if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else 
                     callback0();
             }, function(strings) {
                 new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.source);
                     if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else 
                         callback0();
                 }, function(strings) {
@@ -2183,18 +2217,20 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             var metaState = this.getMetaStateCompetency(competency);
             this.addToMetaStateArray(metaState, "positiveAssertion", assertion);
             new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.source);
                 if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else 
                     callback0();
             }, function(strings) {
                 new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.target);
                     if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else 
                         callback0();
                 }, function(strings) {
@@ -2236,6 +2272,13 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.containsEdge = function(competency) {
         return (this.edgeMap)[competency.shortId()] != null;
     };
+    prototype.getCompetency = function(competencyId) {
+        var c = null;
+        c = (this.competencyMap)[competencyId];
+        if (c == null) 
+            c = EcCompetency.getBlocking(competencyId);
+        return c;
+    };
     prototype.addCompetency = function(competency) {
         if (competency == null) 
             return false;
@@ -2254,14 +2297,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
         if (source == null && (this.dontTryAnyMore)[alignment.source] != null) 
             return false;
         if (source == null) 
-            source = EcCompetency.getBlocking(alignment.source);
+            source = this.getCompetency(alignment.source);
         if (source == null) 
             (this.dontTryAnyMore)[alignment.source] = "";
         var target = (this.competencyMap)[alignment.target];
         if (target == null && (this.dontTryAnyMore)[alignment.target] != null) 
             return false;
         if (target == null) 
-            target = EcCompetency.getBlocking(alignment.target);
+            target = this.getCompetency(alignment.target);
         if (target == null) 
             (this.dontTryAnyMore)[alignment.target] = "";
         if (source == null || target == null) 
@@ -2277,7 +2320,7 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.getDefaultEdgeType = function() {
         return EcAlignment.NARROWS;
     };
-}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, competencyMap: "Object", edgeMap: "Object", dontTryAnyMore: "Object", frameworks: {name: "Array", arguments: ["EcFramework"]}, edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
+}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, competencyMap: "Object", edgeMap: "Object", dontTryAnyMore: "Object", frameworks: {name: "Array", arguments: ["EcFramework"]}, addFrameworkSuccessCallback: "Callback0", addFrameworkFailureCallback: {name: "Callback1", arguments: [null]}, repo: "EcRepository", edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
 var NodePacketGraph = function() {
     this.nodePacketList = new Array();
     this.nodePacketMap = {};
@@ -4197,6 +4240,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
 }, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var FrameworkCollapser = function() {};
 FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(constructor, prototype) {
+    prototype.repo = null;
     prototype.framework = null;
     prototype.createImpliedRelations = false;
     prototype.competencyArray = null;
@@ -4206,44 +4250,6 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.collapsedFrameworkNodePacketGraph = null;
     prototype.successCallback = null;
     prototype.failureCallback = null;
-    prototype.buildFrameworkUrlLookups = function() {
-        var urlArray = new Array();
-        var cid;
-        var rid;
-        for (var i = 0; i < this.framework.competency.length; i++) {
-            cid = this.framework.competency[i];
-            urlArray.push(cid);
-        }
-        if (this.framework.relation != null && this.framework.relation.length > 0) {
-            for (var i = 0; i < this.framework.relation.length; i++) {
-                rid = this.framework.relation[i];
-                urlArray.push(rid);
-            }
-        }
-        return urlArray;
-    };
-    prototype.parseCompetencies = function(rlda) {
-        this.competencyArray = new Array();
-        var c;
-        for (var i = 0; i < rlda.length; i++) {
-            if (rlda[i].isAny(new EcCompetency().getTypes())) {
-                c = new EcCompetency();
-                c.copyFrom(rlda[i]);
-                this.competencyArray.push(c);
-            }
-        }
-    };
-    prototype.parseRelationships = function(rlda) {
-        this.relationArray = new Array();
-        var r;
-        for (var i = 0; i < rlda.length; i++) {
-            if (rlda[i].isAny(new EcAlignment().getTypes())) {
-                r = new EcAlignment();
-                r.copyFrom(rlda[i]);
-                this.relationArray.push(r);
-            }
-        }
-    };
     prototype.addCompetenciesToFrameworkNodeGraph = function() {
         var cmp;
         var n;
@@ -4295,9 +4301,7 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
         var cgc = new CyclicGraphCollapser();
         this.collapsedFrameworkNodePacketGraph = cgc.collapseGraph(this.frameworkNodeGraph);
     };
-    prototype.continueFrameworkCollapse = function(rlda) {
-        this.parseCompetencies(rlda);
-        this.parseRelationships(rlda);
+    prototype.continueFrameworkCollapse = function() {
         try {
             this.generateFrameworkNodeGraph();
             try {
@@ -4310,6 +4314,13 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
             this.failureCallback("Framework node graph generation failed: " + e.toString());
         }
     };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            me.relationArray = ecaa;
+            me.continueFrameworkCollapse();
+        }, me.failureCallback, null);
+    };
     prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
         if (framework == null) 
             failure("Framework is null or undefined");
@@ -4318,17 +4329,20 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
          else if (repo == null) 
             failure("Repo is null or undefined");
          else {
+            this.repo = repo;
             this.framework = framework;
             this.createImpliedRelations = createImpliedRelations;
             this.successCallback = success;
             this.failureCallback = failure;
-            var fc = this;
-            repo.multiget(this.buildFrameworkUrlLookups(), function(rlda) {
-                fc.continueFrameworkCollapse(rlda);
-            }, fc.failureCallback);
+            var me = this;
+            var fwkParam = framework;
+            EcCompetency.search(repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.competency), function(ecca) {
+                me.competencyArray = ecca;
+                me.fetchFrameworkAlignments(fwkParam);
+            }, me.failureCallback, null);
         }
     };
-}, {framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
+}, {repo: "EcRepository", framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };

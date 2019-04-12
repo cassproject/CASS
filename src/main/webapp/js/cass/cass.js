@@ -31921,23 +31921,36 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
  */
 var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 10;
+    constructor.desiredFps = 2;
     constructor.lastFrame = null;
     constructor.tasks = new Array();
     constructor.delayedFunctions = 0;
     constructor.immediateFunctions = 0;
+    constructor.calledFunctions = 0;
     constructor.asyncImmediateFunctions = 0;
     constructor.runningAsyncFunctions = 0;
+    constructor.updateFrameHandle = null;
+    constructor.updateFrame = function() {
+        Task.updateFrameHandle = setTimeout(function() {
+            Task.lastFrame = Date.now();
+            if (Task.calledFunctions - Task.delayedFunctions - Task.immediateFunctions == 0) {
+                Task.updateFrameHandle = null;
+            } else 
+                Task.updateFrame();
+        }, 100);
+    };
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) 
+        Task.calledFunctions++;
+        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) {
+            if (Task.updateFrameHandle == null) 
+                Task.updateFrame();
             return setTimeout(function() {
                 Task.delayedFunctions++;
-                Task.lastFrame = Date.now();
                 c();
             }, 0);
-         else {
+        } else {
             Task.immediateFunctions++;
             c();
         }
@@ -31964,7 +31977,10 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
         } else 
             Task.runningAsyncFunctions--;
     };
-}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
+}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}, updateFrameHandle: "Object"}, {});
+(function() {
+    Task.updateFrame();
+})();
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
@@ -32339,10 +32355,18 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
         this.counter = -1;
     };
     /**
+     *  Will allow 'after' to be called.
+     * 
+     *  @method stop
+     */
+    prototype.finish = function() {
+        this.counter = 1;
+    };
+    /**
      *  Is preventing 'after' from being called?
      * 
-     *  @method isStopped
      *  @return whether it is stopped.
+     *  @method isStopped
      */
     prototype.isStopped = function() {
         return this.counter <= -1;
@@ -32448,7 +32472,9 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
  */
 var EcPk = function() {};
 EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
+    constructor.cache = null;
     prototype.pk = null;
+    prototype.defaultPem = null;
     prototype.jwk = null;
     prototype.key = null;
     prototype.signKey = null;
@@ -32462,12 +32488,16 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.fromPem = function(pem) {
-        var pk = new EcPk();
+        var pk = (EcPk.cache)[pem];
+        if (pk != null) 
+            return pk;
+        pk = new EcPk();
         try {
             pk.pk = forge.pki.publicKeyFromPem(pem);
         }catch (ex) {
             return null;
         }
+        (EcPk.cache)[pem] = pk;
         return pk;
     };
     /**
@@ -32490,7 +32520,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPem
      */
     prototype.toPem = function() {
-        return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+        if (this.defaultPem == null) 
+            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+        return this.defaultPem;
     };
     /**
      *  Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.
@@ -32531,7 +32563,11 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
     };
-}, {pk: "forge.pk", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey"}, {});
+}, {cache: "Object", pk: "forge.pk", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey"}, {});
+(function() {
+    if (EcPk.cache == null) 
+        EcPk.cache = new Object();
+})();
 var CryptoKey = function() {};
 CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 /**
@@ -39418,10 +39454,13 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
  */
 var EcPpk = function() {};
 EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
+    constructor.cache = null;
+    prototype.defaultPem = null;
     prototype.jwk = null;
     prototype.key = null;
     prototype.signKey = null;
     prototype.ppk = null;
+    prototype.defaultPk = null;
     /**
      *  Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
@@ -39432,12 +39471,16 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.fromPem = function(pem) {
-        var pk = new EcPpk();
+        var pk = (EcPpk.cache)[pem];
+        if (pk != null) 
+            return pk;
+        pk = new EcPpk();
         try {
             pk.ppk = forge.pki.privateKeyFromPem(pem);
         }catch (ex) {
             return null;
         }
+        (EcPpk.cache)[pem] = pk;
         return pk;
     };
     /**
@@ -39494,7 +39537,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPem
      */
     prototype.toPem = function() {
-        return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+        if (this.defaultPem == null) 
+            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+        return this.defaultPem;
     };
     /**
      *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
@@ -39531,7 +39576,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPk
      */
     prototype.toPk = function() {
-        var pk = new EcPk();
+        if (this.defaultPk != null) 
+            return this.defaultPk;
+        var pk = this.defaultPk = new EcPk();
         pk.pk = forge.pki.rsa.setPublicKey(this.ppk.n, this.ppk.e);
         return pk;
     };
@@ -39549,7 +39596,11 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         }
         return false;
     };
-}, {jwk: "Object", key: "CryptoKey", signKey: "CryptoKey", ppk: "forge.ppk"}, {});
+}, {cache: "Object", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey", ppk: "forge.ppk", defaultPk: "EcPk"}, {});
+(function() {
+    if (EcPpk.cache == null) 
+        EcPpk.cache = new Object();
+})();
 /**
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
@@ -40855,6 +40906,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @type string (URL)
      */
     prototype.id = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
@@ -65842,6 +65896,9 @@ EcPerson = stjs.extend(EcPerson, Person, [], function(constructor, prototype) {
     constructor.getByPkBlocking = function(repo, pk, success, failure) {
         return EcPerson.getBlocking(repo.selectedServer + (repo.selectedServer.endsWith("/") ? "" : "/") + "data/" + pk.fingerprint());
     };
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a person from it's server asynchronously
      * 
@@ -66655,7 +66712,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             EcIdentityManager.createSignatureAsync(finalDuration, server, ppk, function(p1) {
                 signatures.push(p1.atIfy());
                 incrementalSuccess();
-            }, failure);
+            }, function(s) {
+                failure(s);
+                incrementalSuccess();
+            });
         }, function(pks) {
             var cache = null;
             var stringified = JSON.stringify(signatures);
@@ -68138,10 +68198,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                     estimatedIndex = estimatedIndices[i];
             me.decryptSecretByKeyAsync(decryptionKey, estimatedIndex, function(p1) {
                 if (helper.counter == -1) {
+                    countdown();
                     return;
                 }
                 helper.stop();
                 success(p1);
+                countdown();
             }, function(arg0) {
                 countdown();
             });
@@ -70157,6 +70219,9 @@ var EcAssertion = function() {
     Assertion.call(this);
 };
 EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var assertion = new EcAssertion();
@@ -70501,6 +70566,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             decryptedString = v.decryptIntoString();
         }
         return decryptedString;
+    };
+    prototype.getEvidencesAsync = function(success, failure) {
+        var results = new Array();
+        new EcAsyncHelper().each(this.evidence, function(e, callback0) {
+            e.decryptIntoStringAsync(function(str) {
+                results.push(str);
+                callback0();
+            }, callback0);
+        }, function(strings) {
+            success(results);
+        });
     };
     prototype.getEvidenceAsync = function(index, success, failure) {
         if (this.evidence[index] == null) {
@@ -72185,6 +72261,9 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     constructor.relDone = {};
     constructor.levelDone = {};
     constructor.template = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a framework from the server, specified by the ID
      * 
@@ -72990,6 +73069,22 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     constructor.IPType = stjs.enumeration("COMPETENCY", "ROLLUPRULE", "RELATION_AND", "RELATION_OR", "RELATION_NARROWS", "RELATION_BROADENS", "RELATION_REQUIRES", "RELATION_ISREQUIREDBY");
     constructor.ResultType = stjs.enumeration("TRUE", "FALSE", "UNKNOWN", "INDETERMINANT");
 }, {subject: {name: "Array", arguments: ["EcPk"]}, competency: {name: "Array", arguments: ["EcCompetency"]}, context: "EcFramework", success: {name: "Callback1", arguments: ["InquiryPacket"]}, ask: {name: "Function1", arguments: [null, null]}, failure: {name: "Callback1", arguments: [null]}, level: {name: "Array", arguments: ["EcLevel"]}, equivalentPackets: {name: "Array", arguments: ["InquiryPacket"]}, subPackets: {name: "Array", arguments: ["InquiryPacket"]}, positive: {name: "Array", arguments: ["EcAssertion"]}, negative: {name: "Array", arguments: ["EcAssertion"]}, type: {name: "Enum", arguments: ["InquiryPacket.IPType"]}, result: {name: "Enum", arguments: ["InquiryPacket.ResultType"]}}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = "";
+        if (idList.length > 1) 
+            searchQuery = "(";
+        for (var i = 0; i < idList.length; i++) {
+            if (i > 0) 
+                searchQuery += " OR ";
+            searchQuery += "(\\*@id:\"" + idList[i] + "\")";
+        }
+        if (idList.length > 1) 
+            searchQuery += ")";
+        return searchQuery;
+    };
+}, {}, {});
 var NodePacket = function() {
     this.nodeList = new Array();
     this.nodeMap = {};
@@ -74706,10 +74801,15 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.edgeMap = null;
     prototype.dontTryAnyMore = null;
     prototype.frameworks = null;
+    prototype.addFrameworkSuccessCallback = null;
+    prototype.addFrameworkFailureCallback = null;
+    prototype.repo = null;
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
+        console.log("addFramework about to multiget: " + Date.now());
         repo.multiget(framework.competency.concat(framework.relation), function(data) {
+            console.log("Multiget complete: " + Date.now());
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
             for (var i = 0; i < data.length; i++) {
@@ -74727,12 +74827,23 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             success();
         }, failure);
     };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            for (var i = 0; i < ecaa.length; i++) {
+                var a = ecaa[i];
+                me.addRelation(a);
+                me.addToMetaStateArray(me.getMetaStateAlignment(a), "framework", framework);
+            }
+            me.addFrameworkSuccessCallback();
+        }, me.addFrameworkFailureCallback, null);
+    };
     prototype.processAssertionsBoolean = function(assertions, success, failure) {
         var me = this;
         var eah = new EcAsyncHelper();
         eah.each(assertions, function(assertion, done) {
-            var competency = EcCompetency.getBlocking(assertion.competency);
-            if (!me.containsVertex(competency)) {
+            var competency = me.getCompetency(assertion.competency);
+            if (competency == null || !me.containsVertex(competency)) {
                 done();
                 return;
             }
@@ -74754,18 +74865,20 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             var metaState = this.getMetaStateCompetency(competency);
             this.addToMetaStateArray(metaState, "negativeAssertion", assertion);
             new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.target);
                 if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else 
                     callback0();
             }, function(strings) {
                 new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.source);
                     if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else 
                         callback0();
                 }, function(strings) {
@@ -74776,18 +74889,20 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             var metaState = this.getMetaStateCompetency(competency);
             this.addToMetaStateArray(metaState, "positiveAssertion", assertion);
             new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.source);
                 if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.source), callback0, visited);
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                  else 
                     callback0();
             }, function(strings) {
                 new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.target);
                     if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, EcCompetency.getBlocking(alignment.target), callback0, visited);
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
                      else 
                         callback0();
                 }, function(strings) {
@@ -74829,6 +74944,13 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.containsEdge = function(competency) {
         return (this.edgeMap)[competency.shortId()] != null;
     };
+    prototype.getCompetency = function(competencyId) {
+        var c = null;
+        c = (this.competencyMap)[competencyId];
+        if (c == null) 
+            c = EcCompetency.getBlocking(competencyId);
+        return c;
+    };
     prototype.addCompetency = function(competency) {
         if (competency == null) 
             return false;
@@ -74847,14 +74969,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
         if (source == null && (this.dontTryAnyMore)[alignment.source] != null) 
             return false;
         if (source == null) 
-            source = EcCompetency.getBlocking(alignment.source);
+            source = this.getCompetency(alignment.source);
         if (source == null) 
             (this.dontTryAnyMore)[alignment.source] = "";
         var target = (this.competencyMap)[alignment.target];
         if (target == null && (this.dontTryAnyMore)[alignment.target] != null) 
             return false;
         if (target == null) 
-            target = EcCompetency.getBlocking(alignment.target);
+            target = this.getCompetency(alignment.target);
         if (target == null) 
             (this.dontTryAnyMore)[alignment.target] = "";
         if (source == null || target == null) 
@@ -74870,7 +74992,7 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.getDefaultEdgeType = function() {
         return EcAlignment.NARROWS;
     };
-}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, competencyMap: "Object", edgeMap: "Object", dontTryAnyMore: "Object", frameworks: {name: "Array", arguments: ["EcFramework"]}, edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
+}, {metaVerticies: {name: "Map", arguments: [null, "Object"]}, metaEdges: {name: "Map", arguments: [null, "Object"]}, competencyMap: "Object", edgeMap: "Object", dontTryAnyMore: "Object", frameworks: {name: "Array", arguments: ["EcFramework"]}, addFrameworkSuccessCallback: "Callback0", addFrameworkFailureCallback: {name: "Callback1", arguments: [null]}, repo: "EcRepository", edges: {name: "Array", arguments: [{name: "Triple", arguments: ["V", "V", "E"]}]}, verticies: {name: "Array", arguments: ["V"]}}, {});
 var NodePacketGraph = function() {
     this.nodePacketList = new Array();
     this.nodePacketMap = {};
@@ -76790,6 +76912,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
 }, {relationLookup: "Object", repositories: {name: "Array", arguments: ["EcRepository"]}, logFunction: {name: "Callback1", arguments: ["Object"]}, assertions: "Object", coprocessors: {name: "Array", arguments: ["AssertionCoprocessor"]}, processedEquivalencies: {name: "Map", arguments: [null, null]}, context: "EcFramework"}, {});
 var FrameworkCollapser = function() {};
 FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(constructor, prototype) {
+    prototype.repo = null;
     prototype.framework = null;
     prototype.createImpliedRelations = false;
     prototype.competencyArray = null;
@@ -76799,44 +76922,6 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.collapsedFrameworkNodePacketGraph = null;
     prototype.successCallback = null;
     prototype.failureCallback = null;
-    prototype.buildFrameworkUrlLookups = function() {
-        var urlArray = new Array();
-        var cid;
-        var rid;
-        for (var i = 0; i < this.framework.competency.length; i++) {
-            cid = this.framework.competency[i];
-            urlArray.push(cid);
-        }
-        if (this.framework.relation != null && this.framework.relation.length > 0) {
-            for (var i = 0; i < this.framework.relation.length; i++) {
-                rid = this.framework.relation[i];
-                urlArray.push(rid);
-            }
-        }
-        return urlArray;
-    };
-    prototype.parseCompetencies = function(rlda) {
-        this.competencyArray = new Array();
-        var c;
-        for (var i = 0; i < rlda.length; i++) {
-            if (rlda[i].isAny(new EcCompetency().getTypes())) {
-                c = new EcCompetency();
-                c.copyFrom(rlda[i]);
-                this.competencyArray.push(c);
-            }
-        }
-    };
-    prototype.parseRelationships = function(rlda) {
-        this.relationArray = new Array();
-        var r;
-        for (var i = 0; i < rlda.length; i++) {
-            if (rlda[i].isAny(new EcAlignment().getTypes())) {
-                r = new EcAlignment();
-                r.copyFrom(rlda[i]);
-                this.relationArray.push(r);
-            }
-        }
-    };
     prototype.addCompetenciesToFrameworkNodeGraph = function() {
         var cmp;
         var n;
@@ -76888,9 +76973,7 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
         var cgc = new CyclicGraphCollapser();
         this.collapsedFrameworkNodePacketGraph = cgc.collapseGraph(this.frameworkNodeGraph);
     };
-    prototype.continueFrameworkCollapse = function(rlda) {
-        this.parseCompetencies(rlda);
-        this.parseRelationships(rlda);
+    prototype.continueFrameworkCollapse = function() {
         try {
             this.generateFrameworkNodeGraph();
             try {
@@ -76903,6 +76986,13 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
             this.failureCallback("Framework node graph generation failed: " + e.toString());
         }
     };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            me.relationArray = ecaa;
+            me.continueFrameworkCollapse();
+        }, me.failureCallback, null);
+    };
     prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
         if (framework == null) 
             failure("Framework is null or undefined");
@@ -76911,17 +77001,20 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
          else if (repo == null) 
             failure("Repo is null or undefined");
          else {
+            this.repo = repo;
             this.framework = framework;
             this.createImpliedRelations = createImpliedRelations;
             this.successCallback = success;
             this.failureCallback = failure;
-            var fc = this;
-            repo.multiget(this.buildFrameworkUrlLookups(), function(rlda) {
-                fc.continueFrameworkCollapse(rlda);
-            }, fc.failureCallback);
+            var me = this;
+            var fwkParam = framework;
+            EcCompetency.search(repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.competency), function(ecca) {
+                me.competencyArray = ecca;
+                me.fetchFrameworkAlignments(fwkParam);
+            }, me.failureCallback, null);
         }
     };
-}, {framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
+}, {repo: "EcRepository", framework: "EcFramework", competencyArray: {name: "Array", arguments: ["EcCompetency"]}, competencyNodeMap: {name: "Map", arguments: [null, "Node"]}, relationArray: {name: "Array", arguments: ["EcAlignment"]}, frameworkNodeGraph: "NodeGraph", collapsedFrameworkNodePacketGraph: "NodePacketGraph", successCallback: {name: "Callback2", arguments: [null, "NodePacketGraph"]}, failureCallback: {name: "Callback1", arguments: [null]}}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };

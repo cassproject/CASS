@@ -22,6 +22,21 @@ var document = null;
 var window = {};
 var localStorage = {};
 
+var setTimeout = function (f, time) {
+    if (f != null)
+        f();
+}
+
+console = {
+    log: function (s) {
+        debug(s);
+    },
+
+    error: function (s) {
+        debug("error:" + s);
+    }
+};
+
 load("classpath:stjs.js");
 load("classpath:blobHelper.js");
 load("classpath:formdata.js");
@@ -43,21 +58,6 @@ load("classpath:cass.rollup.js");
 EcRepository.caching = true;
 EcRemote.async = false;
 EcIdentityManager.async = false;
-
-console = {
-    log: function (s) {
-        debug(s);
-    },
-
-    error: function (s) {
-        debug("error:" + s);
-    }
-};
-
-var setTimeout = function (f, time) {
-    if (f != null)
-        f();
-}
 
 var repo = new EcRepository();
 repo.selectedServer = "http://localhost:8080/api/";

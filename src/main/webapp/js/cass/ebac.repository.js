@@ -567,10 +567,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                     estimatedIndex = estimatedIndices[i];
             me.decryptSecretByKeyAsync(decryptionKey, estimatedIndex, function(p1) {
                 if (helper.counter == -1) {
+                    countdown();
                     return;
                 }
                 helper.stop();
                 success(p1);
+                countdown();
             }, function(arg0) {
                 countdown();
             });

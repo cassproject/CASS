@@ -673,7 +673,10 @@ EcIdentityManager = stjs.extend(EcIdentityManager, null, [], function(constructo
             EcIdentityManager.createSignatureAsync(finalDuration, server, ppk, function(p1) {
                 signatures.push(p1.atIfy());
                 incrementalSuccess();
-            }, failure);
+            }, function(s) {
+                failure(s);
+                incrementalSuccess();
+            });
         }, function(pks) {
             var cache = null;
             var stringified = JSON.stringify(signatures);

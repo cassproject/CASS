@@ -285,6 +285,9 @@ var EcAssertion = function() {
     Assertion.call(this);
 };
 EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var assertion = new EcAssertion();
@@ -629,6 +632,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
             decryptedString = v.decryptIntoString();
         }
         return decryptedString;
+    };
+    prototype.getEvidencesAsync = function(success, failure) {
+        var results = new Array();
+        new EcAsyncHelper().each(this.evidence, function(e, callback0) {
+            e.decryptIntoStringAsync(function(str) {
+                results.push(str);
+                callback0();
+            }, callback0);
+        }, function(strings) {
+            success(results);
+        });
     };
     prototype.getEvidenceAsync = function(index, success, failure) {
         if (this.evidence[index] == null) {
@@ -2313,6 +2327,9 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     constructor.relDone = {};
     constructor.levelDone = {};
     constructor.template = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a framework from the server, specified by the ID
      * 

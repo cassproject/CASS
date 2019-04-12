@@ -86,6 +86,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @type string (URL)
      */
     prototype.id = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will

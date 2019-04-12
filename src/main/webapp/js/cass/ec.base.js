@@ -1175,23 +1175,36 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
  */
 var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 10;
+    constructor.desiredFps = 2;
     constructor.lastFrame = null;
     constructor.tasks = new Array();
     constructor.delayedFunctions = 0;
     constructor.immediateFunctions = 0;
+    constructor.calledFunctions = 0;
     constructor.asyncImmediateFunctions = 0;
     constructor.runningAsyncFunctions = 0;
+    constructor.updateFrameHandle = null;
+    constructor.updateFrame = function() {
+        Task.updateFrameHandle = setTimeout(function() {
+            Task.lastFrame = Date.now();
+            if (Task.calledFunctions - Task.delayedFunctions - Task.immediateFunctions == 0) {
+                Task.updateFrameHandle = null;
+            } else 
+                Task.updateFrame();
+        }, 100);
+    };
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) 
+        Task.calledFunctions++;
+        if (EcRemote.async == true && (Task.lastFrame == null || currentMs > Task.lastFrame + nextFrameMs)) {
+            if (Task.updateFrameHandle == null) 
+                Task.updateFrame();
             return setTimeout(function() {
                 Task.delayedFunctions++;
-                Task.lastFrame = Date.now();
                 c();
             }, 0);
-         else {
+        } else {
             Task.immediateFunctions++;
             c();
         }
@@ -1218,7 +1231,10 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
         } else 
             Task.runningAsyncFunctions--;
     };
-}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}}, {});
+}, {tasks: {name: "Array", arguments: ["CallbackOrFunction"]}, updateFrameHandle: "Object"}, {});
+(function() {
+    Task.updateFrame();
+})();
 /**
  *  A directed implementation of {{#crossLink "Graph"}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
@@ -1593,10 +1609,18 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
         this.counter = -1;
     };
     /**
+     *  Will allow 'after' to be called.
+     * 
+     *  @method stop
+     */
+    prototype.finish = function() {
+        this.counter = 1;
+    };
+    /**
      *  Is preventing 'after' from being called?
      * 
-     *  @method isStopped
      *  @return whether it is stopped.
+     *  @method isStopped
      */
     prototype.isStopped = function() {
         return this.counter <= -1;

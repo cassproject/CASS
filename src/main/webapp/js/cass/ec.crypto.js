@@ -35,7 +35,9 @@ AlgorithmIdentifier = stjs.extend(AlgorithmIdentifier, null, [], function(constr
  */
 var EcPk = function() {};
 EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
+    constructor.cache = null;
     prototype.pk = null;
+    prototype.defaultPem = null;
     prototype.jwk = null;
     prototype.key = null;
     prototype.signKey = null;
@@ -49,12 +51,16 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.fromPem = function(pem) {
-        var pk = new EcPk();
+        var pk = (EcPk.cache)[pem];
+        if (pk != null) 
+            return pk;
+        pk = new EcPk();
         try {
             pk.pk = forge.pki.publicKeyFromPem(pem);
         }catch (ex) {
             return null;
         }
+        (EcPk.cache)[pem] = pk;
         return pk;
     };
     /**
@@ -77,7 +83,9 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
      *  @method toPem
      */
     prototype.toPem = function() {
-        return forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+        if (this.defaultPem == null) 
+            this.defaultPem = forge.pki.publicKeyToPem(this.pk).replaceAll("\r?\n", "");
+        return this.defaultPem;
     };
     /**
      *  Encodes the public key into a PEM encoded RSAPublicKey (PKCS#1) formatted RSA Public Key.
@@ -118,7 +126,11 @@ EcPk = stjs.extend(EcPk, null, [], function(constructor, prototype) {
     prototype.verify = function(bytes, decode64) {
         return this.pk.verify(bytes, decode64);
     };
-}, {pk: "forge.pk", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey"}, {});
+}, {cache: "Object", pk: "forge.pk", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey"}, {});
+(function() {
+    if (EcPk.cache == null) 
+        EcPk.cache = new Object();
+})();
 var CryptoKey = function() {};
 CryptoKey = stjs.extend(CryptoKey, null, [], null, {}, {});
 /**
@@ -7005,10 +7017,13 @@ EcRsaOaep = stjs.extend(EcRsaOaep, null, [], function(constructor, prototype) {
  */
 var EcPpk = function() {};
 EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
+    constructor.cache = null;
+    prototype.defaultPem = null;
     prototype.jwk = null;
     prototype.key = null;
     prototype.signKey = null;
     prototype.ppk = null;
+    prototype.defaultPk = null;
     /**
      *  Decodes a PEM encoded PrivateKeyInfo (PKCS#8) or RSAPrivateKey (PKCS#1) formatted RSA Public Key.
      *  (In case you were curious.)
@@ -7019,12 +7034,16 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.fromPem = function(pem) {
-        var pk = new EcPpk();
+        var pk = (EcPpk.cache)[pem];
+        if (pk != null) 
+            return pk;
+        pk = new EcPpk();
         try {
             pk.ppk = forge.pki.privateKeyFromPem(pem);
         }catch (ex) {
             return null;
         }
+        (EcPpk.cache)[pem] = pk;
         return pk;
     };
     /**
@@ -7081,7 +7100,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPem
      */
     prototype.toPem = function() {
-        return forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+        if (this.defaultPem == null) 
+            this.defaultPem = forge.pki.privateKeyToPem(this.ppk).replaceAll("\r?\n", "");
+        return this.defaultPem;
     };
     /**
      *  Encodes the private key into a PEM encoded RSAPrivateKey (PKCS#1) formatted RSA Public Key.
@@ -7118,7 +7139,9 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
      *  @method toPk
      */
     prototype.toPk = function() {
-        var pk = new EcPk();
+        if (this.defaultPk != null) 
+            return this.defaultPk;
+        var pk = this.defaultPk = new EcPk();
         pk.pk = forge.pki.rsa.setPublicKey(this.ppk.n, this.ppk.e);
         return pk;
     };
@@ -7136,7 +7159,11 @@ EcPpk = stjs.extend(EcPpk, null, [], function(constructor, prototype) {
         }
         return false;
     };
-}, {jwk: "Object", key: "CryptoKey", signKey: "CryptoKey", ppk: "forge.ppk"}, {});
+}, {cache: "Object", jwk: "Object", key: "CryptoKey", signKey: "CryptoKey", ppk: "forge.ppk", defaultPk: "EcPk"}, {});
+(function() {
+    if (EcPpk.cache == null) 
+        EcPpk.cache = new Object();
+})();
 /**
  *  Encrypts data synchronously using AES-256-CTR. Requires secret and iv to be 32 bytes.
  *  Output is encoded in base64 for easier handling.
