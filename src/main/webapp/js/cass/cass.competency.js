@@ -822,7 +822,7 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         var me = this;
         var encryptedValues = new Array();
         new EcAsyncHelper().each(evidences, function(s, callback0) {
-            EcEncryptedValue.encryptValueAsync(s, this.id, this.subject.owner, this.subject.reader, function(ecEncryptedValue) {
+            EcEncryptedValue.encryptValueAsync(s, me.id, me.subject.owner, me.subject.reader, function(ecEncryptedValue) {
                 encryptedValues.push(ecEncryptedValue);
                 callback0();
             }, callback0);
