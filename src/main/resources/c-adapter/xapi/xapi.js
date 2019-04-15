@@ -4,12 +4,12 @@ var xapiConfig = function () {
     if (this.xapiConfig != null) return this.xapiConfig;
     var xapiConfigFilePath = "etc/adapter.xapi.json";
     if (!fileExists(xapiConfigFilePath))
-        fileSave(xapiConfigFilePath, JSON.stringify({
+        fileSave(JSON.stringify({
             xapiEndpoint: "",
             xapiHostname: "",
             xapiAuth: "",
             enabled: false
-        }));
+        }),xapiConfigFilePath);
     this.xapiConfig = JSON.parse(fileToString(fileLoad(xapiConfigFilePath)));
     return this.xapiConfig;
 }
