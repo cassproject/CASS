@@ -215,6 +215,56 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         return v;
     };
     /**
+     *  Encrypts a text value with the owners and readers provided
+     * 
+     *  @param {String}   text Text to encrypt
+     *  @param {String}   id ID of the value to encrypt
+     *  @param {String[]} owners Owner keys to encrypt value with
+     *  @param {String[]} readers Reader keys to encrypt value with
+     *  @return {EcEncryptedValue} Encrypted value
+     *  @memberOf EcEncryptedValue
+     *  @method encryptValue
+     *  @static
+     */
+    constructor.encryptValueAsync = function(text, id, owners, readers, success, failure) {
+        var v = new EcEncryptedValue();
+        var newIv = EcAes.newIv(16);
+        var newSecret = EcAes.newIv(16);
+        v.payload = EcAesCtr.encrypt(text, newSecret, newIv);
+        if (owners != null) {
+            for (var i = 0; i < owners.length; i++) {
+                v.addOwner(EcPk.fromPem(owners[i]));
+            }
+        }
+        if (readers != null) {
+            for (var i = 0; i < readers.length; i++) {
+                v.addReaderBasic(EcPk.fromPem(readers[i]));
+            }
+        }
+        var pks = new Array();
+        if (owners != null) 
+            if (v.owner != null) 
+                pks = pks.concat(v.owner);
+        if (readers != null) 
+            if (v.reader != null) 
+                pks = pks.concat(v.reader);
+        new EcAsyncHelper().each(pks, function(pk, callback0) {
+            var eSecret = new EbacEncryptedSecret();
+            eSecret.id = forge.util.encode64(forge.pkcs5.pbkdf2(id, "", 1, 8));
+            eSecret.iv = newIv;
+            eSecret.secret = newSecret;
+            if (v.secret == null) {
+                v.secret = new Array();
+            }
+            EcRsaOaepAsync.encrypt(EcPk.fromPem(pk), eSecret.toEncryptableJson(), function(s) {
+                v.secret.push(s);
+                callback0();
+            }, callback0);
+        }, function(pks) {
+            success(v);
+        });
+    };
+    /**
      *  Encrypt a value with a specific IV and secret
      * 
      *  @param {String}   iv Initialization Vector for encryption
@@ -665,6 +715,22 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
      *  @method addReader
      */
     prototype.addReader = function(newReader) {
+        this.addReaderBasic(newReader);
+        var payloadSecret = this.decryptSecret();
+        if (payloadSecret == null) {
+            console.error("Cannot add a Reader if you don't know the secret");
+            return;
+        }
+        EcArray.setAdd(this.secret, EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
+    };
+    /**
+     *  Adds a reader to the object, if the reader does not exist.
+     * 
+     *  @param {EcPk} newReader PK of the new reader.
+     *  @memberOf EcEncryptedValue
+     *  @method addReader
+     */
+    prototype.addReaderBasic = function(newReader) {
         var pem = newReader.toPem();
         if (this.reader == null) {
             this.reader = new Array();
@@ -675,12 +741,6 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
             if (EcArray.has(this.owner, pem)) 
                 return;
         EcArray.setAdd(this.reader, pem);
-        var payloadSecret = this.decryptSecret();
-        if (payloadSecret == null) {
-            console.error("Cannot add a Reader if you don't know the secret");
-            return;
-        }
-        EcArray.setAdd(this.secret, EcRsaOaep.encrypt(newReader, payloadSecret.toEncryptableJson()));
     };
     /**
      *  Removes a reader from the object, if the reader does exist.

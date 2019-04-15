@@ -363,6 +363,28 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         readers.push(pk.toPem());
         this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
     };
+    prototype.setSubjectAsync = function(pk, success, failure) {
+        var me = this;
+        var owners = new Array();
+        var readers = null;
+        if (this.reader == null) 
+            readers = new Array();
+         else 
+            readers = JSON.parse(JSON.stringify(this.reader));
+        if (this.subject != null) {
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
+        }
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        EcEncryptedValue.encryptValueAsync(pk.toPem(), this.id, owners, readers, function(subject) {
+            me.subject = subject;
+            success();
+        }, failure);
+    };
     prototype.getSubjectAsync = function(success, failure) {
         if (this.subject == null) {
             success(null);
@@ -400,6 +422,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.setAgent = function(pk) {
         this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, this.subject.owner, this.subject.reader);
+    };
+    prototype.setAgentAsync = function(pk, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(pk.toPem(), this.id, this.subject.owner, this.subject.reader, function(agent) {
+            me.agent = agent;
+            success();
+        }, failure);
     };
     prototype.getAgentAsync = function(success, failure) {
         if (this.agent == null) {
@@ -557,6 +586,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setAssertionDate = function(assertionDateMs) {
         this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
     };
+    prototype.setAssertionDateAsync = function(assertionDateMs, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader, function(assertionDate) {
+            me.assertionDate = assertionDate;
+            success();
+        }, failure);
+    };
     prototype.getAssertionDateAsync = function(success, failure) {
         if (this.assertionDate == null) {
             success(null);
@@ -594,6 +630,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.setExpirationDate = function(expirationDateMs) {
         this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
+    prototype.setExpirationDateAsync = function(expirationDateMs, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader, function(expirationDate) {
+            me.expirationDate = expirationDate;
+            success();
+        }, failure);
     };
     prototype.getExpirationDateAsync = function(success, failure) {
         if (this.expirationDate == null) {
@@ -635,14 +678,17 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.getEvidencesAsync = function(success, failure) {
         var results = new Array();
-        new EcAsyncHelper().each(this.evidence, function(e, callback0) {
-            e.decryptIntoStringAsync(function(str) {
-                results.push(str);
-                callback0();
-            }, callback0);
-        }, function(strings) {
+        if (this.evidence != null) 
+            new EcAsyncHelper().each(this.evidence, function(e, callback0) {
+                e.decryptIntoStringAsync(function(str) {
+                    results.push(str);
+                    callback0();
+                }, callback0);
+            }, function(strings) {
+                success(results);
+            });
+         else 
             success(results);
-        });
     };
     prototype.getEvidenceAsync = function(index, success, failure) {
         if (this.evidence[index] == null) {
@@ -682,6 +728,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setDecayFunction = function(decayFunctionText) {
         this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, this.subject.owner, this.subject.reader);
     };
+    prototype.setDecayFunctionAsync = function(decayFunctionText, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(decayFunctionText, this.id, this.subject.owner, this.subject.reader, function(decayFunction) {
+            me.decayFunction = decayFunction;
+            success();
+        }, failure);
+    };
     prototype.getDecayFunctionAsync = function(success, failure) {
         if (this.decayFunction == null) {
             success(null);
@@ -720,6 +773,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setNegative = function(negativeB) {
         this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, this.subject.owner, this.subject.reader);
     };
+    prototype.setNegativeAsync = function(negativeB, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(negativeB.toString(), this.id, this.subject.owner, this.subject.reader, function(negative) {
+            me.negative = negative;
+            success();
+        }, failure);
+    };
     prototype.getNegativeAsync = function(success, failure) {
         if (this.negative == null) {
             success(null);
@@ -757,6 +817,19 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         for (var i = 0; i < evidences.length; i++) 
             encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, this.subject.owner, this.subject.reader));
         this.evidence = encryptedValues;
+    };
+    prototype.setEvidenceAsync = function(evidences, success, failure) {
+        var me = this;
+        var encryptedValues = new Array();
+        new EcAsyncHelper().each(evidences, function(s, callback0) {
+            EcEncryptedValue.encryptValueAsync(s, this.id, this.subject.owner, this.subject.reader, function(ecEncryptedValue) {
+                encryptedValues.push(ecEncryptedValue);
+                callback0();
+            }, callback0);
+        }, function(strings) {
+            me.evidence = encryptedValues;
+            success();
+        });
     };
     prototype.save = function(success, failure, repo) {
         if (this.competency == null || this.competency == "") {
