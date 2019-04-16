@@ -2,40 +2,40 @@ var caseToCassSchema = "http://schema.cassproject.org/0.3/case2cass";
 
 var caseInterface = {
     CFDocuments: function () {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments");
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments",{"Accept":"application/json"});
     },
     CFDocument: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFDocuments/" + sourcedId,{"Accept":"application/json"});
     },
     CFPackages: function (sourcedId) {
-        return httpGet(debug(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId));
+        return httpGet(debug(this.targetUrl + "/ims/case/v1p0/CFPackages/" + sourcedId),{"Accept":"application/json"});
     },
     CFItems: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItems/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItems/" + sourcedId,{"Accept":"application/json"});
     },
     CFAssociations: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociations/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociations/" + sourcedId,{"Accept":"application/json"});
     },
     CFItemAssociations: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItemAssociations/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItemAssociations/" + sourcedId,{"Accept":"application/json"});
     },
     CFAssociationGroupings: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociationGroupings/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFAssociationGroupings/" + sourcedId,{"Accept":"application/json"});
     },
     CFConcepts: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFConcepts/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFConcepts/" + sourcedId,{"Accept":"application/json"});
     },
     CFItemTypes: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItemTypes/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFItemTypes/" + sourcedId,{"Accept":"application/json"});
     },
     CFLicenses: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFLicenses/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFLicenses/" + sourcedId,{"Accept":"application/json"});
     },
     CFSubjects: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFSubjects/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFSubjects/" + sourcedId,{"Accept":"application/json"});
     },
     CFRubrics: function (sourcedId) {
-        return httpGet(this.targetUrl + "/ims/case/v1p0/CFRubrics/" + sourcedId);
+        return httpGet(this.targetUrl + "/ims/case/v1p0/CFRubrics/" + sourcedId,{"Accept":"application/json"});
     }
 }
 
@@ -111,7 +111,7 @@ convertCFItemIntoCompetency = function (a) {
 
 //Returns array of objects to save.
 embedCFPackageIntoFramework = function(f,document){
-	var p = httpGet(document.CFPackageURI.uri);
+	var p = httpGet(document.CFPackageURI.uri,{"Accept":"application/json"});
 	var results = [f];
 	var i = 0;
 	if (p.CFAssociations != null)
@@ -135,7 +135,7 @@ embedCFPackageIntoFramework = function(f,document){
 
 var cassContext = null;
 ingestCase = function () {
-    cassContext = JSON.stringify(JSON.parse(httpGet("http://schema.cassproject.org/0.3/"))["@context"]);
+    cassContext = JSON.stringify(JSON.parse(httpGet("http://schema.cassproject.org/0.3/",{"Accept":"application/json"}))["@context"]);
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
     var caseIdentity = new EcIdentity();
