@@ -541,6 +541,17 @@ function cassConceptSchemeAsCeasn(framework) {
         cs["ceterms:ctid"] = "ce-" + cs["ceterms:ctid"];
     }
 
+    if (cs["@id"] != ceasnExportUriTransform(cs["@id"])) {
+        if (cs["ceasn:exactAlignment"] != null)
+            if (EcArray.isArray(cs["ceasn:exactAlignment"])) {
+                cs["ceasn:exactAlignment"].push(cs["@id"]);
+            }
+            else {
+                cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], cs["@id"]];
+            }
+        else
+            cs["ceasn:exactAlignment"] = [cs["@id"]];
+    }
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
 
     var results = [];
