@@ -164,9 +164,8 @@ ingestCase = function () {
             listToSave[j].addOwner(caseIdentity.ppk.toPk());
             if (owner != null)
                 listToSave[j].addOwner(EcPk.fromPem(owner));
-
-            repo.saveTo(listToSave[j],function(success){},function(failure){});
         }
+        repo.multiput(listToSave,console.log,console.error);
     }
     return JSON.stringify(dx, null, 2);
 }
