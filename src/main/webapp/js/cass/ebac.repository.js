@@ -1285,11 +1285,92 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         if (EcEncryptedValue.encryptOnSave(data.id, null)) {
             var encrypted = EcEncryptedValue.toEncryptedValue(data, false);
-            EcIdentityManager.sign(data);
-            EcRepository._saveWithoutSigning(data, success, failure, repo);
+            EcIdentityManager.sign(encrypted);
+            EcRepository._saveWithoutSigning(encrypted, success, failure, repo);
         } else {
             EcIdentityManager.sign(data);
             EcRepository._saveWithoutSigning(data, success, failure, repo);
+        }
+    };
+    /**
+     *  Attempts to save many pieces of data. Does some checks before saving to
+     *  ensure the data is valid. This version does not send a console warning,
+     *  <p>
+     *  Uses a signature sheet informed by the owner field of the data.
+     * 
+     *  @param {Array<EcRemoteLinkedData>} data Data to save to the location designated
+     *                              by its id.
+     *  @param {Callback1<String>}  success Callback triggered on successful save
+     *  @param {Callback1<String>}  failure Callback triggered if error during
+     *                              save
+     *  @memberOf EcRepository
+     *  @method multiput
+     *  @static
+     */
+    prototype.multiput = function(data, success, failure) {
+        var me = this;
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+            if (d.invalid()) {
+                var msg = "Cannot save data. It is missing a vital component.";
+                if (failure != null) {
+                    failure(msg);
+                } else {
+                    console.error(msg);
+                }
+                return;
+            }
+            if (d.reader != null && d.reader.length == 0) {
+                delete (d)["reader"];
+            }
+            if (d.owner != null && d.owner.length == 0) {
+                delete (d)["owner"];
+            }
+        }
+        var allOwners = new Array();
+        var serialized = new Array();
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+            if (EcEncryptedValue.encryptOnSave(d.id, null)) {
+                var encrypted = EcEncryptedValue.toEncryptedValue(d, false);
+                EcIdentityManager.sign(encrypted);
+                data[i] = encrypted;
+            } else {
+                EcIdentityManager.sign(d);
+            }
+            if (EcRepository.caching) {
+                delete (EcRepository.cache)[d.id];
+                delete (EcRepository.cache)[d.shortId()];
+            }
+            if (d.invalid()) {
+                failure("Data is malformed.");
+                return;
+            }
+            if (EcRepository.alwaysTryUrl || this.constructor.shouldTryUrl(d.id)) 
+                d.updateTimestamp();
+            if (d.owner != null) 
+                for (var j = 0; j < d.owner.length; j++) 
+                    EcArray.setAdd(allOwners, d.owner[j]);
+            serialized.push(JSON.parse(d.toJson()));
+        }
+        var fd = new FormData();
+        fd.append("data", JSON.stringify(serialized));
+        var afterSignatureSheet = function(signatureSheet) {
+            fd.append("signatureSheet", signatureSheet);
+            EcRemote.postExpectingString(me.selectedServer, "sky/repo/multiPut", fd, success, failure);
+        };
+        if (EcRemote.async == false) {
+            var signatureSheet;
+            if (allOwners != null && allOwners.length > 0) {
+                signatureSheet = EcIdentityManager.signatureSheetFor(allOwners, 60000 + this.timeOffset, this.selectedServer);
+            } else {
+                signatureSheet = EcIdentityManager.signatureSheet(60000 + this.timeOffset, this.selectedServer);
+            }
+            afterSignatureSheet(signatureSheet);
+        } else if (allOwners != null && allOwners.length > 0) {
+            EcIdentityManager.signatureSheetForAsync(allOwners, 60000 + this.timeOffset, this.selectedServer, afterSignatureSheet, failure);
+        } else {
+            EcIdentityManager.signatureSheetAsync(60000 + this.timeOffset, this.selectedServer, afterSignatureSheet, failure);
         }
     };
     /**
