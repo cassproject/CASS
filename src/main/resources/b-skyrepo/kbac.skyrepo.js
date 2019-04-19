@@ -735,6 +735,22 @@ var endpointMultiGet = function() {
     }
     return JSON.stringify(results);
 };
+var endpointMultiPut = function() {
+    var ary = JSON.parse(fileToString((fileFromDatastream).call(this, "data", null)));
+    for (var i = 0; i < ary.length; i++) {
+        var o = ary[i];
+        var ld = new EcRemoteLinkedData(null, null);
+        ld.copyFrom(o);
+        var id = ld.getGuid();
+        var version = ld.getTimestamp();
+        var type = ld.getDottedType();
+        (skyrepoPutParsed).call(this, o, id, version, type);
+        var params = new Object();
+        (params)["obj"] = JSON.stringify(o);
+        (afterSave).call(null, params);
+    }
+    return null;
+};
 var endpointSingleGet = function() {
     var urlRemainder = this.params.obj;
     var parseParams = (queryParse).call(this, urlRemainder, null);
@@ -804,6 +820,7 @@ var pingWithTime = function() {
     bindWebService("/data", endpointData);
     bindWebService("/sky/repo/search", skyRepoSearch);
     bindWebService("/sky/repo/multiGet", endpointMultiGet);
+    bindWebService("/sky/repo/multiPut", endpointMultiPut);
     bindWebService("/sky/admin", endpointAdmin);
 })();
 var usernameSalt = null;
