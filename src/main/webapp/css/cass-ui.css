@@ -427,7 +427,7 @@ li {
     vertical-align: baseline;
 }
 
-#cassUiLoginBtn {
+#cassUiLoginContainer button {
     margin-top: 1.75em;
 }
 

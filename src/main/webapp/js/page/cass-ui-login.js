@@ -5,10 +5,12 @@
 //**************************************************************************************************
 // Constants
 
-const CASSUI_LOGIN_SRV = "#cassUiLoginServer";
 const CASSUI_LOGIN_UN = "#cassUiLoginUsername";
 const CASSUI_LOGIN_PW = "#cassUiLoginPassword";
+const CASSUI_LOGIN_NAME = "#cassUiLoginName";
+const CASSUI_LOGIN_EMAIL = "#cassUiLoginEmail";
 const CASSUI_LOGIN_BTN = "#cassUiLoginBtn";
+const CASSUI_LOGIN_BTN = "#cassUiCreateBtn";
 const CASSUI_LOGIN_BUSY_CTR = "#cassUiLoginBusyCtr";
 const CASSUI_LOGIN_ERR_CTR = "#cassUiLoginErrorCtr";
 const CASSUI_LOGIN_ERR_TXT = "#cassUiLoginErrorText";
@@ -21,6 +23,7 @@ const CASSUI_AFTER_LOGIN_PAGE = "cass-ui-home.html";
 var inputUn;
 var inputPw;
 var ecIdentMgr;
+var createAccount = false;
 
 //**************************************************************************************************
 // Identity Intialization
@@ -38,11 +41,16 @@ function handleFetchIdentitySuccess(obj) {
         var p = new Person();
         p.assignId(repo.selectedServer, ident.ppk.toPk().fingerprint());
         p.addOwner(ident.ppk.toPk());
-        if (ssoName == null)
+        if ($("#cassUiLoginName").val() != null && $("#cassUiLoginName").val() != "")
+            p.name = $("#cassUiLoginName").val()
+        else if (ssoName == null)
             p.name = "Unknown Person.";
         else
             p.name = ssoName;
-        p.email = ssoEmail;
+        if ($("#cassUiLoginEmail").val() != null && $("#cassUiLoginEmail").val() != "")
+            p.email = $("#cassUiLoginEmail").val();
+        else
+            p.email = ssoEmail;
         EcRepository.save(p, console.log, console.error);
     } else
         handleFetchIdentitySuccess2(obj);
@@ -69,7 +77,7 @@ function handleFetchIdentitySuccess2(obj) {
 
 function handleFetchIdentityFailure(failMsg) {
     debugMessage("handleFetchIdentityFailure: " + failMsg);
-    if (failMsg.trim() == "User does not exist.") {
+    if ((createAccount||ssoName != null) && failMsg.trim() == "User does not exist.") {
         ecIdentMgr.create(handleConfigureFromServerSuccess, handleFetchIdentityFailure);
     } else {
         showLoginErrorMessage("Identity fetch failed: " + failMsg);
@@ -111,21 +119,27 @@ function checkForLoginInputEnter(event) {
 
 function disableAllLoginInputs() {
     $(CASSUI_LOGIN_BTN).attr("disabled", "true");
-    $(CASSUI_LOGIN_SRV).attr("disabled", "true");
+    $(CASSUI_CREATE_BTN).attr("disabled", "true");
     $(CASSUI_LOGIN_UN).attr("readonly", "true");
     $(CASSUI_LOGIN_PW).attr("readonly", "true");
+    $(CASSUI_LOGIN_NAME).attr("readonly", "true");
+    $(CASSUI_LOGIN_EMAIL).attr("readonly", "true");
 }
 
 function enableAllLoginInputs() {
     $(CASSUI_LOGIN_BTN).removeAttr("disabled");
-    $(CASSUI_LOGIN_SRV).removeAttr("disabled");
+    $(CASSUI_CREATE_BTN).removeAttr("disabled");
     $(CASSUI_LOGIN_UN).removeAttr("readonly");
     $(CASSUI_LOGIN_PW).removeAttr("readonly");
+    $(CASSUI_LOGIN_NAME).removeAttr("readonly");
+    $(CASSUI_LOGIN_EMAIL).removeAttr("readonly");
 }
 
 function clearLoginInputs() {
     $(CASSUI_LOGIN_UN).val("");
     $(CASSUI_LOGIN_PW).val("");
+    $(CASSUI_LOGIN_NAME).val("");
+    $(CASSUI_LOGIN_EMAIL).val("");
 }
 
 function hideLoginBusy() {
@@ -148,10 +162,9 @@ function showLoginErrorMessage(errMsg) {
 }
 
 function areLoginParamsValid() {
-    var srv = $(CASSUI_LOGIN_SRV).val();
     var un = $(CASSUI_LOGIN_UN).val().trim();
     var pw = $(CASSUI_LOGIN_PW).val().trim();
-    if (!srv || srv == null || !un || un == null || un.length == 0 || !pw || pw == null || pw.length == 0) {
+    if (!un || un == null || un.length == 0 || !pw || pw == null || pw.length == 0) {
         showLoginErrorMessage("Username, password, and server are all required");
         return false;
     }
@@ -167,7 +180,7 @@ function attemptCassUiLogin() {
     if (areLoginParamsValid()) {
         disableAllLoginInputs();
         showLoginBusy();
-        selectedServer = $(CASSUI_LOGIN_SRV).val();
+        selectedServer = "autoDetect";
         inputUn = $(CASSUI_LOGIN_UN).val().trim();
         inputPw = $(CASSUI_LOGIN_PW).val().trim();
         $(CASSUI_LOGIN_PW).val("");
