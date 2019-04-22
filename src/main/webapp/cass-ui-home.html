@@ -79,7 +79,7 @@
                             <div class="welcome-card-body">
                                 <p> Explore a unique and detailed view of an individual</p>
                                 <ul>
-                                    <li>Build CaSS Profiles</li>
+                                    <li>View CaSS Profiles</li>
                                     <li>Validate Skills Assertions</li>
                                     <li>Analyze Profile</li>
                                     <li>Export and Share</li>
@@ -145,39 +145,26 @@
                     </div>
                 </div>
 
-                <div id="welcome-more-stuff-wrapper">
-                    <a onclick="goToVLRC()" title="Demonstrate a lightweight CaSS Enabled learning environment with the VLRC">
-                        Virtual Learning Resource Center</a> &bull;
-                    <a onclick="goToEditor()" title="Create, import, and edit frameworks of competencies">
-                        CaSS Editor</a> &bull;
-                    <a onclick="goToDocs()" title="Learn more about how CaSS works">
-                        High Level Documentation</a> &bull;
-                    <a onclick="goToDevdocs()" title="Learn how to build apps or integrate with CaSS">
-                        Technical Documentation</a>
-                </div>
-
-                <!--
-
-                <div class="grid-container" style="display: none;">
+                <div class="grid-container">
                     <div class="grid-x grid-margin-x grid-margin-y" style="justify-content: center;">
 
                         <div id="vlrc-card" onclick="goToVLRC()" class="two-dp-shadow small-12 medium-4 large-4 cell">
                             <div class="welcome-card-header-wrapper">
                                 <div class="dblq">
-                                    <div class="i-wrapper black">
+                                    <div class="i-wrapper blue">
                                         <i class="fa fa-book"></i>
                                     </div>
                                 </div>
                                 <div class="dbl3">
-                                    <h2> Virtual Learning Resource Center</h2>
+                                    <h2> CaSS Dashboard</h2>
                                 </div>
                             </div>
                             <div class="welcome-card-body">
-                                <p> Demonstrate a lightweight CaSS Enabled learning environment with the VLRC</p>
+                                <p> Track competence and make assertions about yourself and others.</p>
                                 <ul>
-                                    <li>Discover competency aligned resources</li>
+                                    <li>View your timeline</li>
                                     <li>Find and align resources to competencies</li>
-                                    <li>See view counts and rate resources</li>
+                                    <li>Make claims and attach evidence</li>
                                 </ul>
                                 <div class="link-icon-container">
                                     <i class="fa fa-chevron-right card-link-icon"></i>
@@ -188,12 +175,12 @@
                         <div id="editor-card" onclick="goToEditor()" class="two-dp-shadow small-12 medium-4 large-4 cell">
                             <div class="welcome-card-header-wrapper">
                                 <div class="dblq">
-                                    <div class="i-wrapper black">
+                                    <div class="i-wrapper maroon">
                                         <i class="fa fa-pencil"></i>
                                     </div>
                                 </div>
                                 <div class="dbl3">
-                                    <h2> CaSS Editor</h2>
+                                    <h2> CaSS Competency Editor</h2>
                                 </div>
                             </div>
                             <div class="welcome-card-body">
@@ -201,16 +188,39 @@
                                 <ul>
                                     <li>Link competencies in frameworks</li>
                                     <li>Get URLs to reference in learning systems</li>
-                                    <li>Export frameworks in myriad standards</li>
+                                    <li>Export frameworks</li>
                                 </ul>
                                 <div class="link-icon-container">
                                     <i class="fa fa-chevron-right card-link-icon"></i>
                                 </div>
-
                             </div>
                         </div>
 
-                        <div id="docs-card" onclick="goToDocs()" class="two-dp-shadow small-12 medium-4 large-4 cell">
+                        <div id="concept-editor-card" onclick="goToConceptEditor()" class="two-dp-shadow small-12 medium-4 large-4 cell">
+                            <div class="welcome-card-header-wrapper">
+                                <div class="dblq">
+                                    <div class="i-wrapper teal">
+                                        <i class="fa fa-pencil"></i>
+                                    </div>
+                                </div>
+                                <div class="dbl3">
+                                    <h2> CaSS Concept Editor</h2>
+                                </div>
+                            </div>
+                            <div class="welcome-card-body">
+                                <p> Create, import, and edit schemes of concepts</p>
+                                <ul>
+                                    <li>Link concepts in schemes</li>
+                                    <li>Get URLs to reference in learning systems</li>
+                                    <li>Export concept schemes</li>
+                                </ul>
+                                <div class="link-icon-container">
+                                    <i class="fa fa-chevron-right card-link-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="docs-card" onclick="goToDocs()" style="display:none;" class="two-dp-shadow small-12 medium-4 large-4 cell">
                             <div class="welcome-card-header-wrapper">
                                 <div class="dblq">
                                     <div class="i-wrapper black">
@@ -235,7 +245,7 @@
                             </div>
                         </div>
 
-                        <div id="devdocs-card" onclick="goToDevdocs()" class="two-dp-shadow small-12 medium-4 large-4 cell">
+                        <div id="devdocs-card" onclick="goToDevdocs()" style="display:none;" class="two-dp-shadow small-12 medium-4 large-4 cell">
                             <div class="welcome-card-header-wrapper">
                                 <div class="dblq">
                                     <div class="i-wrapper black">
@@ -263,7 +273,17 @@
 
                     </div>
                 </div>
--->
+
+                <div id="welcome-more-stuff-wrapper">
+                    <a onclick="goToVLRC()" style="display:none;" title="Demonstrate a lightweight CaSS Enabled learning environment with the VLRC">
+                        Virtual Learning Resource Center</a> <span style="display:none;">&bull;</span>
+                    <a onclick="goToEditor()" style="display:none;" title="Create, import, and edit frameworks of competencies">
+                        CaSS Editor</a> <span style="display:none;">&bull;</span>
+                    <a onclick="goToDocs()" title="Learn more about how CaSS works">
+                        High Level Documentation</a> &bull;
+                    <a onclick="goToDevdocs()" title="Learn how to build apps or integrate with CaSS">
+                        Technical Documentation</a>
+                </div>
 
 
             </div>

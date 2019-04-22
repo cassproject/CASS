@@ -10,6 +10,7 @@ const CASSUI_PRF_EXP_PAGE = "cass-ui-profile-exp-ctr.html";
 const CASSUI_GAP_ANL_PAGE = "cass-ui-gap-analysis-ctr.html";
 const CASSUI_VLRC_PAGE = "cass-ui-vlrc-exp-ctr.html";
 const CASSUI_EDITOR_PAGE = "cass-ui-editor-ctr.html";
+const CASSUI_CONCEPT_EDITOR_PAGE = "cass-ui-concept-editor-ctr.html";
 
 //**************************************************************************************************
 // Variables
@@ -36,6 +37,10 @@ function goToVLRC() {
 
 function goToEditor() {
     location.replace(CASSUI_EDITOR_PAGE);
+}
+
+function goToConceptEditor() {
+    location.replace(CASSUI_CONCEPT_EDITOR_PAGE);
 }
 
 function goToDocs() {

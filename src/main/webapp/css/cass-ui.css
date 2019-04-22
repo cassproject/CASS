@@ -236,6 +236,7 @@ canvas {
 #framework-card,
 #gap-card,
 #vlrc-card,
+#concept-editor-card,
 #editor-card,
 #docs-card,
 #devdocs-card {
@@ -467,6 +468,7 @@ li {
     #framework-card,
     #gap-card,
     #vlrc-card,
+    #concept-editor-card,
     #editor-card,
     #docs-card,
     #devdocs-card {
@@ -507,6 +509,7 @@ li {
     #framework-card,
     #gap-card,
     #vlrc-card,
+    #concept-editor-card,
     #editor-card,
     #docs-card,
     #devdocs-card {
