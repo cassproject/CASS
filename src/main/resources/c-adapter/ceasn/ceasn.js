@@ -284,15 +284,15 @@ function cassFrameworkAsCeasn() {
         f["ceterms:ctid"] = "ce-" + f["ceterms:ctid"];
 
     if (f["@id"] != ceasnExportUriTransform(f["@id"])) {
-        if (f["ceasn:exactAlignment"] != null)
-            if (EcArray.isArray(f["ceasn:exactAlignment"])) {
-                f["ceasn:exactAlignment"].push(f["@id"]);
+        if (f["ceasn:source"] != null)
+            if (EcArray.isArray(f["ceasn:source"])) {
+                f["ceasn:source"].push(f["@id"]);
             }
             else {
-                f["ceasn:exactAlignment"] = [f["ceasn:exactAlignment"], f["@id"]];
+                f["ceasn:source"] = [f["ceasn:source"], f["@id"]];
             }
         else
-            f["ceasn:exactAlignment"] = f["@id"];
+            f["ceasn:source"] = f["@id"];
     }
     f["@id"] = ceasnExportUriTransform(f["@id"]);
 
