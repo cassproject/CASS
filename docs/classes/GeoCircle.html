@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l19547"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19547</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l19584"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19584</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1195,7 +1198,7 @@ An additional type for the item, typically used for adding more specific types f
 </div>
 <div id="property_address" class="property item inherited">
     <h3 class="name"><code>address</code></h3>
-    <span class="type">Schema, PostalAddress | schema,Text</span>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
 
 
 
@@ -1204,7 +1207,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_address">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12007"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12007</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12190"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12190</code></a>
         </p>
 
 
@@ -1221,7 +1224,7 @@ Physical address of the item.</p>
 </div>
 <div id="property_addressCountry" class="property item inherited">
     <h3 class="name"><code>addressCountry</code></h3>
-    <span class="type">Schema, Text | schema,Country</span>
+    <span class="type">Text</span>
 
 
 
@@ -1230,7 +1233,7 @@ Physical address of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_addressCountry">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11999"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11999</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12214"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12214</code></a>
         </p>
 
 
@@ -1282,7 +1285,7 @@ An alias for the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_box">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12023"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12023</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12206</code></a>
         </p>
 
 
@@ -1308,7 +1311,7 @@ A box is the area enclosed by the rectangle formed by two points. The first poin
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_circle">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12031"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12031</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12198"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12198</code></a>
         </p>
 
 
@@ -1377,7 +1380,7 @@ A sub property of description. A short description of the item used to disambigu
 </div>
 <div id="property_elevation" class="property item inherited">
     <h3 class="name"><code>elevation</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -1386,7 +1389,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_elevation">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11983"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11983</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12230"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12230</code></a>
         </p>
 
 
@@ -1412,7 +1415,7 @@ The elevation of a location (<a href="https://en.wikipedia.org/wiki/World_Geodet
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19569"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19569</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19614"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19614</code></a>
         </p>
 
 
@@ -1429,7 +1432,7 @@ Indicates the GeoCoordinates at the centre of a GeoShape e.g. GeoCircle.</p>
 </div>
 <div id="property_geoRadius" class="property item">
     <h3 class="name"><code>geoRadius</code></h3>
-    <span class="type">Schema, Number | schema,Text | schema,Distance</span>
+    <span class="type">Number</span>
 
 
 
@@ -1438,7 +1441,7 @@ Indicates the GeoCoordinates at the centre of a GeoShape e.g. GeoCircle.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19577"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19577</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19606"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19606</code></a>
         </p>
 
 
@@ -1516,7 +1519,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_line">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11991"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11991</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12246"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12246</code></a>
         </p>
 
 
@@ -1594,7 +1597,7 @@ The name of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_polygon">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12015"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12015</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12238"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12238</code></a>
         </p>
 
 
@@ -1620,7 +1623,7 @@ A polygon is the area enclosed by a point-to-point path for which the starting a
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeoShape.html#property_postalCode">GeoShape</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11975"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11975</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12222"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12222</code></a>
         </p>
 
 

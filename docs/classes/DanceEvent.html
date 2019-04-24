@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l9789"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:9789</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l9975"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:9975</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -899,6 +902,10 @@ Event type: A social dance.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_attendees">attendees</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_audience">audience</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1272,7 +1279,7 @@ Event type: A social dance.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_about">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2554"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2554</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2410"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2410</code></a>
         </p>
 
 
@@ -1298,7 +1305,7 @@ The subject matter of the content.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_actor">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2538"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2538</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2451"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2451</code></a>
         </p>
 
 
@@ -1350,7 +1357,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_aggregateRating">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2618"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2618</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2523"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2523</code></a>
         </p>
 
 
@@ -1393,7 +1400,7 @@ An alias for the item.</p>
 </div>
 <div id="property_attendee" class="property item inherited">
     <h3 class="name"><code>attendee</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -1402,7 +1409,7 @@ An alias for the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_attendee">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2546"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2546</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2555"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2555</code></a>
         </p>
 
 
@@ -1419,7 +1426,7 @@ A person or organization attending the event.</p>
 </div>
 <div id="property_attendees" class="property item inherited">
     <h3 class="name"><code>attendees</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1428,7 +1435,7 @@ A person or organization attending the event.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_attendees">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2418"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2418</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2515"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2515</code></a>
         </p>
 
 
@@ -1443,9 +1450,35 @@ A person attending the event.</p>
 
 
 </div>
+<div id="property_audience" class="property item inherited">
+    <h3 class="name"><code>audience</code></h3>
+    <span class="type"><a href="../classes/Audience.html" class="crosslink">Audience</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Event.html#property_audience">Event</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2435"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2435</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/audience">Schema.org/audience</a>
+An intended audience, i.e. a group for whom something was created.</p>
+
+    </div>
+
+
+
+</div>
 <div id="property_composer" class="property item inherited">
     <h3 class="name"><code>composer</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -1454,7 +1487,7 @@ A person attending the event.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_composer">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2434"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2434</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2667</code></a>
         </p>
 
 
@@ -1471,7 +1504,7 @@ The person or organization who wrote a composition, or who is the composer of a 
 </div>
 <div id="property_contributor" class="property item inherited">
     <h3 class="name"><code>contributor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -1480,7 +1513,7 @@ The person or organization who wrote a composition, or who is the composer of a 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_contributor">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2410"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2410</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2483"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2483</code></a>
         </p>
 
 
@@ -1532,7 +1565,7 @@ A description of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_director">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2466"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2466</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2587"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2587</code></a>
         </p>
 
 
@@ -1584,7 +1617,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_doorTime">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2578"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2578</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2475"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2475</code></a>
         </p>
 
 
@@ -1610,7 +1643,7 @@ The time admission will commence.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_duration">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2522"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2522</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2603"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2603</code></a>
         </p>
 
 
@@ -1627,7 +1660,7 @@ The duration of the item (movie, audio recording, event, etc.) in <a href="http:
 </div>
 <div id="property_endDate" class="property item inherited">
     <h3 class="name"><code>endDate</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">DateTime</span>
 
 
 
@@ -1636,7 +1669,7 @@ The duration of the item (movie, audio recording, event, etc.) in <a href="http:
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_endDate">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2659"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2659</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2467"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2467</code></a>
         </p>
 
 
@@ -1662,7 +1695,7 @@ The end date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_eventStatus">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2474"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2474</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2571"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2571</code></a>
         </p>
 
 
@@ -1679,7 +1712,7 @@ An eventStatus of an event represents its status; particularly useful when an ev
 </div>
 <div id="property_funder" class="property item inherited">
     <h3 class="name"><code>funder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1688,7 +1721,7 @@ An eventStatus of an event represents its status; particularly useful when an ev
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_funder">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2562"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2562</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2418"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2418</code></a>
         </p>
 
 
@@ -1757,7 +1790,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 </div>
 <div id="property_inLanguage" class="property item inherited">
     <h3 class="name"><code>inLanguage</code></h3>
-    <span class="type">Schema, Text | schema,Language</span>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
 
 
 
@@ -1766,7 +1799,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_inLanguage">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2667</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2619"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2619</code></a>
         </p>
 
 
@@ -1792,7 +1825,7 @@ The language of the content or performance or used in an action. Please use one 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_isAccessibleForFree">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2458"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2458</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2675"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2675</code></a>
         </p>
 
 
@@ -1809,7 +1842,7 @@ A flag to signal that the publication is accessible for free.</p>
 </div>
 <div id="property_location" class="property item inherited">
     <h3 class="name"><code>location</code></h3>
-    <span class="type">Schema, PostalAddress | schema,Text | schema,Place</span>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
 
 
 
@@ -1818,7 +1851,7 @@ A flag to signal that the publication is accessible for free.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_location">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2594"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2594</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2651"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2651</code></a>
         </p>
 
 
@@ -1870,7 +1903,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_maximumAttendeeCapacity">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2490"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2490</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2491"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2491</code></a>
         </p>
 
 
@@ -1922,7 +1955,7 @@ The name of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_offers">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2506"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2506</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2547"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2547</code></a>
         </p>
 
 
@@ -1939,7 +1972,7 @@ An offer to provide this item—for example, an offer to sell a product, rent th
 </div>
 <div id="property_organizer" class="property item inherited">
     <h3 class="name"><code>organizer</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1948,7 +1981,7 @@ An offer to provide this item—for example, an offer to sell a product, rent th
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_organizer">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2610"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2610</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2507"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2507</code></a>
         </p>
 
 
@@ -1965,7 +1998,7 @@ An organizer of an Event.</p>
 </div>
 <div id="property_performer" class="property item inherited">
     <h3 class="name"><code>performer</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1974,7 +2007,7 @@ An organizer of an Event.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_performer">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2442"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2442</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2683"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2683</code></a>
         </p>
 
 
@@ -1991,7 +2024,7 @@ A performer at the event—for example, a presenter, musician, musical group or 
 </div>
 <div id="property_performers" class="property item inherited">
     <h3 class="name"><code>performers</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2000,7 +2033,7 @@ A performer at the event—for example, a presenter, musician, musical group or 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_performers">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2426"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2426</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2459"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2459</code></a>
         </p>
 
 
@@ -2052,7 +2085,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_previousStartDate">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2634"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2634</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2627"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2627</code></a>
         </p>
 
 
@@ -2078,7 +2111,7 @@ Used in conjunction with eventStatus for rescheduled or cancelled events. This p
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_recordedIn">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2602"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2602</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2659"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2659</code></a>
         </p>
 
 
@@ -2104,7 +2137,7 @@ The CreativeWork that captured all or part of this Event.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_remainingAttendeeCapacity">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2450"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2450</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2443"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2443</code></a>
         </p>
 
 
@@ -2130,7 +2163,7 @@ The number of attendee places for an event that remain unallocated.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_review">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2514"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2514</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2635"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2635</code></a>
         </p>
 
 
@@ -2173,7 +2206,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 </div>
 <div id="property_sponsor" class="property item inherited">
     <h3 class="name"><code>sponsor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2182,7 +2215,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_sponsor">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2586"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2586</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2643"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2643</code></a>
         </p>
 
 
@@ -2199,7 +2232,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
 </div>
 <div id="property_startDate" class="property item inherited">
     <h3 class="name"><code>startDate</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">Date</span>
 
 
 
@@ -2208,7 +2241,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_startDate">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2626"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2626</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2579"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2579</code></a>
         </p>
 
 
@@ -2234,7 +2267,7 @@ The start date and time of the item (in <a href="http://en.wikipedia.org/wiki/IS
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_subEvent">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2530"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2530</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2531"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2531</code></a>
         </p>
 
 
@@ -2260,7 +2293,7 @@ An Event that is part of this event. For example, a conference event includes ma
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_subEvents">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2675"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2675</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2539"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2539</code></a>
         </p>
 
 
@@ -2286,7 +2319,7 @@ Events that are a part of this event. For example, a conference event includes m
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_superEvent">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2482"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2482</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2595"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2595</code></a>
         </p>
 
 
@@ -2303,7 +2336,7 @@ An event that this event is a part of. For example, a collection of individual m
 </div>
 <div id="property_translator" class="property item inherited">
     <h3 class="name"><code>translator</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2312,7 +2345,7 @@ An event that this event is a part of. For example, a collection of individual m
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_translator">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2498"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2498</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2611"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2611</code></a>
         </p>
 
 
@@ -2338,7 +2371,7 @@ Organization or person who adapts a creative work to different languages, region
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_typicalAgeRange">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2570"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2570</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2499"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2499</code></a>
         </p>
 
 
@@ -2390,7 +2423,7 @@ URL of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_workFeatured">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2642"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2642</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2426"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2426</code></a>
         </p>
 
 
@@ -2417,7 +2450,7 @@ Specific subproperties are available for workPerformed (e.g. a play), or a workP
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Event.html#property_workPerformed">Event</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2651"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2651</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2563"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2563</code></a>
         </p>
 
 

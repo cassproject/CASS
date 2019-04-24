@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -895,44 +898,6 @@ Triple = stjs.extend(Triple, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
- *  Object Helper Functions
- * 
- *  @author fritz.ray@eduworks.com
- *  @class EcObject
- *  @module com.eduworks.ec
- */
-var EcObject = function() {};
-EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
-    /**
-     *  Returns true if the result is an object.
-     * 
-     *  @param {any} o Object to test.
-     *  @return true iff the object is an object.
-     *  @static
-     *  @method isArray
-     */
-    constructor.isObject = function(o) {
-        if (o == null) 
-            return false;
-        return (typeof o) == &quot;object&quot;;
-    };
-    /**
-     *  Returns keys on the object
-     * 
-     *  @param {any} o Object to test.
-     *  @return List of keys
-     *  @static
-     *  @method keys
-     */
-    constructor.keys = function(o) {
-        return ecKeys(o);
-    };
-}, {}, {});
-var Callback5 = function() {};
-Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
-    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
-}, {}, {});
-/**
  *  Array Helper Functions
  * 
  *  @author fritz.ray@eduworks.com
@@ -977,13 +942,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @method setAdd
      */
     constructor.setAdd = function(a, o) {
-        var inThere = false;
-        for (var i = 0; i &lt; a.length; i++) 
-            if (a[i] == o) {
-                inThere = true;
-                break;
-            }
-        if (!inThere) 
+        if (!EcArray.has(a, o)) 
             a.push(o);
     };
     /**
@@ -995,10 +954,8 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @method setAdd
      */
     constructor.setRemove = function(a, o) {
-        for (var i = 0; i &lt; a.length; i++) 
-             while (a[i] == o){
-                a.splice(i, 1);
-            }
+         while (EcArray.has(a, o))
+            a.splice(EcArray.indexOf(a, o), 1);
     };
     /**
      *  Returns true if the array has the value already.
@@ -1009,13 +966,60 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @method has
      */
     constructor.has = function(a, o) {
-        var inThere = false;
-        for (var i = 0; i &lt; a.length; i++) 
-            if (a[i] == o) {
-                return true;
+        if (EcArray.isObject(o)) 
+            for (var i = 0; i &lt; a.length; i++) {
+                if (a[i] == o) 
+                    return true;
+                try {
+                    if (a[i].equals(o)) 
+                        return true;
+                }catch (e) {}
+            }
+         else 
+            for (var i = 0; i &lt; a.length; i++) {
+                if (a[i] == o) {
+                    return true;
+                }
             }
         return false;
     };
+    /**
+     *  Returns true if the result is an object.
+     * 
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an object.
+     *  @static
+     *  @method isObject
+     */
+    constructor.isObject = function(o) {
+        if (EcArray.isArray(o)) 
+            return false;
+        if (o == null) 
+            return false;
+        return (typeof o) == &quot;object&quot;;
+    };
+    constructor.indexOf = function(a, o) {
+        if (EcArray.isObject(o)) 
+            for (var i = 0; i &lt; a.length; i++) {
+                if (a[i] == o) 
+                    return i;
+                try {
+                    if (a[i].equals(o)) 
+                        return i;
+                }catch (e) {}
+            }
+         else 
+            for (var i = 0; i &lt; a.length; i++) {
+                if (a[i] == o) {
+                    return i;
+                }
+            }
+        return -1;
+    };
+}, {}, {});
+var Callback5 = function() {};
+Callback5 = stjs.extend(Callback5, null, [], function(constructor, prototype) {
+    prototype.$invoke = function(p1, p2, p3, p4, p5) {};
 }, {}, {});
 var EcLocalStorage = function() {};
 EcLocalStorage = stjs.extend(EcLocalStorage, null, [], function(constructor, prototype) {
@@ -1747,6 +1751,42 @@ EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 /**
+ *  Object Helper Functions
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @class EcObject
+ *  @module com.eduworks.ec
+ */
+var EcObject = function() {};
+EcObject = stjs.extend(EcObject, null, [], function(constructor, prototype) {
+    /**
+     *  Returns true if the result is an object.
+     * 
+     *  @param {any} o Object to test.
+     *  @return true iff the object is an object.
+     *  @static
+     *  @method isArray
+     */
+    constructor.isObject = function(o) {
+        if (EcArray.isArray(o)) 
+            return false;
+        if (o == null) 
+            return false;
+        return (typeof o) == &quot;object&quot;;
+    };
+    /**
+     *  Returns keys on the object
+     * 
+     *  @param {any} o Object to test.
+     *  @return List of keys
+     *  @static
+     *  @method keys
+     */
+    constructor.keys = function(o) {
+        return ecKeys(o);
+    };
+}, {}, {});
+/**
  *  A graph consisting of a set of vertices of type &lt;code&gt;V&lt;/code&gt;
  *  set and a set of edges of type &lt;code&gt;E&lt;/code&gt;.  Edges of this
  *  graph type have exactly two endpoints; whether these endpoints
@@ -1974,23 +2014,36 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
  */
 var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
-    constructor.desiredFps = 10;
+    constructor.desiredFps = 2;
     constructor.lastFrame = null;
     constructor.tasks = new Array();
     constructor.delayedFunctions = 0;
     constructor.immediateFunctions = 0;
+    constructor.calledFunctions = 0;
     constructor.asyncImmediateFunctions = 0;
     constructor.runningAsyncFunctions = 0;
+    constructor.updateFrameHandle = null;
+    constructor.updateFrame = function() {
+        Task.updateFrameHandle = setTimeout(function() {
+            Task.lastFrame = Date.now();
+            if (Task.calledFunctions - Task.delayedFunctions - Task.immediateFunctions == 0) {
+                Task.updateFrameHandle = null;
+            } else 
+                Task.updateFrame();
+        }, 100);
+    };
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
-        if (EcRemote.async == true &amp;&amp; (Task.lastFrame == null || currentMs &gt; Task.lastFrame + nextFrameMs)) 
+        Task.calledFunctions++;
+        if (EcRemote.async == true &amp;&amp; (Task.lastFrame == null || currentMs &gt; Task.lastFrame + nextFrameMs)) {
+            if (Task.updateFrameHandle == null) 
+                Task.updateFrame();
             return setTimeout(function() {
                 Task.delayedFunctions++;
-                Task.lastFrame = Date.now();
                 c();
             }, 0);
-         else {
+        } else {
             Task.immediateFunctions++;
             c();
         }
@@ -2017,7 +2070,10 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
         } else 
             Task.runningAsyncFunctions--;
     };
-}, {tasks: {name: &quot;Array&quot;, arguments: [&quot;CallbackOrFunction&quot;]}}, {});
+}, {tasks: {name: &quot;Array&quot;, arguments: [&quot;CallbackOrFunction&quot;]}, updateFrameHandle: &quot;Object&quot;}, {});
+(function() {
+    Task.updateFrame();
+})();
 /**
  *  A directed implementation of {{#crossLink &quot;Graph&quot;}}Graph{{/crossLink}}. Edges have types. Two vertices may have many edges between them.
  * 
@@ -2028,7 +2084,10 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
  *  @module com.eduworks.ec
  *  @extends Graph
  */
-var EcDirectedGraph = function() {};
+var EcDirectedGraph = function() {
+    this.edges = new Array();
+    this.verticies = new Array();
+};
 EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(constructor, prototype) {
     prototype.edges = null;
     prototype.verticies = null;
@@ -2046,13 +2105,13 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.containsVertex = function(vertex) {
         for (var i = 0; i &lt; this.verticies.length; i++) 
-            if (vertex == this.verticies[i]) 
+            if (vertex.equals(this.verticies[i])) 
                 return true;
         return false;
     };
     prototype.containsEdge = function(edge) {
         for (var i = 0; i &lt; this.edges.length; i++) 
-            if (edge == this.edges[i].edge) 
+            if (edge.equals(this.edges[i].edge)) 
                 return true;
         return false;
     };
@@ -2065,9 +2124,9 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getNeighbors = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].source) 
+            if (vertex.equals(this.edges[i].source)) 
                 results.push(this.edges[i].destination);
-             else if (vertex == this.edges[i].destination) 
+             else if (vertex.equals(this.edges[i].destination)) 
                 results.push(this.edges[i].source);
         }
         EcArray.removeDuplicates(results);
@@ -2076,9 +2135,9 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getIncidentEdges = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].source) 
+            if (vertex.equals(this.edges[i].source)) 
                 results.push(this.edges[i].edge);
-             else if (vertex == this.edges[i].destination) 
+             else if (vertex.equals(this.edges[i].destination)) 
                 results.push(this.edges[i].edge);
         }
         EcArray.removeDuplicates(results);
@@ -2087,7 +2146,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getIncidentVertices = function(edge) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (edge == this.edges[i].edge) {
+            if (edge.equals(this.edges[i].edge)) {
                 results.push(this.edges[i].source);
                 results.push(this.edges[i].destination);
             }
@@ -2097,9 +2156,9 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.findEdge = function(v1, v2) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (v1 == this.edges[i].source &amp;&amp; v2 == this.edges[i].destination) 
+            if (v1.equals(this.edges[i].source) &amp;&amp; v2.equals(this.edges[i].destination)) 
                 return this.edges[i].edge;
-            if (v1 == this.edges[i].destination &amp;&amp; v2 == this.edges[i].source) 
+            if (v1.equals(this.edges[i].destination) &amp;&amp; v2.equals(this.edges[i].source)) 
                 return this.edges[i].edge;
         }
         return null;
@@ -2107,24 +2166,28 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.findEdgeSet = function(v1, v2) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (v1 == this.edges[i].source &amp;&amp; v2 == this.edges[i].destination) 
+            if (v1.equals(this.edges[i].source) &amp;&amp; v2.equals(this.edges[i].destination)) 
                 results.push(this.edges[i].edge);
-            if (v1 == this.edges[i].destination &amp;&amp; v2 == this.edges[i].source) 
+            if (v1.equals(this.edges[i].destination) &amp;&amp; v2.equals(this.edges[i].source)) 
                 results.push(this.edges[i].edge);
         }
         return results;
     };
     prototype.addVertex = function(vertex) {
-        if (this.verticies.indexOf(vertex) != -1) 
+        this.verticies.push(vertex);
+        return true;
+    };
+    prototype.addVertexSafely = function(vertex) {
+        if (EcArray.has(this.verticies, vertex)) 
             return false;
         this.verticies.push(vertex);
         return true;
     };
     prototype.removeVertex = function(vertex) {
-        var indexOf = this.verticies.indexOf(vertex);
+        var indexOf = EcArray.indexOf(this.verticies, vertex);
         if (indexOf != -1) {
             for (var i = 0; i &lt; this.edges.length; i++) {
-                if (this.edges[i].source == vertex || this.edges[i].destination == vertex) {
+                if (this.edges[i].source.equals(vertex) || this.edges[i].destination.equals(vertex)) {
                     this.edges.splice(i, 1);
                     i--;
                 }
@@ -2137,7 +2200,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.removeEdge = function(edge) {
         var success = false;
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (this.edges[i].edge == edge) {
+            if (this.edges[i].edge.equals(edge)) {
                 this.edges.splice(i, 1);
                 i--;
                 success = true;
@@ -2147,16 +2210,16 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.isNeighbor = function(v1, v2) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (v1 == this.edges[i].source &amp;&amp; v2 == this.edges[i].destination) 
+            if (v1.equals(this.edges[i].source) &amp;&amp; v2.equals(this.edges[i].destination)) 
                 return true;
-             else if (v1 == this.edges[i].destination &amp;&amp; v2 == this.edges[i].source) 
+             else if (v1.equals(this.edges[i].destination) &amp;&amp; v2.equals(this.edges[i].source)) 
                 return true;
         }
         return false;
     };
     prototype.isIncident = function(vertex, edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if ((vertex == this.edges[i].source || vertex == this.edges[i].destination) &amp;&amp; edge == this.edges[i].edge) 
+            if ((vertex.equals(this.edges[i].source) || vertex.equals(this.edges[i].destination)) &amp;&amp; edge.equals(this.edges[i].edge)) 
                 return true;
         }
         return false;
@@ -2164,7 +2227,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.degree = function(vertex) {
         var count = 0;
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].source || vertex == this.edges[i].destination) 
+            if (vertex.equals(this.edges[i].source) || vertex.equals(this.edges[i].destination)) 
                 count++;
         }
         return count;
@@ -2191,7 +2254,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getInEdges = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].destination) 
+            if (vertex.equals(this.edges[i].destination)) 
                 results.push(this.edges[i].edge);
         }
         EcArray.removeDuplicates(results);
@@ -2200,7 +2263,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getOutEdges = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].source) 
+            if (vertex.equals(this.edges[i].source)) 
                 results.push(this.edges[i].edge);
         }
         EcArray.removeDuplicates(results);
@@ -2214,14 +2277,14 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.getSource = function(directed_edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (directed_edge == this.edges[i].edge) 
+            if (directed_edge.equals(this.edges[i].edge)) 
                 return this.edges[i].source;
         }
         return null;
     };
     prototype.getDest = function(directed_edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (directed_edge == this.edges[i].edge) 
+            if (directed_edge.equals(this.edges[i].edge)) 
                 return this.edges[i].destination;
         }
         return null;
@@ -2229,7 +2292,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getPredecessors = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].destination) 
+            if (vertex.equals(this.edges[i].destination)) 
                 results.push(this.edges[i].source);
         }
         EcArray.removeDuplicates(results);
@@ -2238,7 +2301,7 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     prototype.getSuccessors = function(vertex) {
         var results = new Array();
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (vertex == this.edges[i].source) 
+            if (vertex.equals(this.edges[i].source)) 
                 results.push(this.edges[i].destination);
         }
         EcArray.removeDuplicates(results);
@@ -2246,16 +2309,16 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.isPredecessor = function(v1, v2) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (v1 == this.edges[i].destination) 
-                if (v2 == this.edges[i].source) 
+            if (v1.equals(this.edges[i].destination)) 
+                if (v2.equals(this.edges[i].source)) 
                     return true;
         }
         return false;
     };
     prototype.isSuccessor = function(v1, v2) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (v2 == this.edges[i].destination) 
-                if (v1 == this.edges[i].source) 
+            if (v2.equals(this.edges[i].destination)) 
+                if (v1.equals(this.edges[i].source)) 
                     return true;
         }
         return false;
@@ -2268,38 +2331,56 @@ EcDirectedGraph = stjs.extend(EcDirectedGraph, null, [Graph], function(construct
     };
     prototype.isSource = function(vertex, edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (edge == this.edges[i].edge) 
-                if (vertex == this.edges[i].source) 
+            if (edge.equals(this.edges[i].edge)) 
+                if (vertex.equals(this.edges[i].source)) 
                     return true;
         }
         return false;
     };
     prototype.isDest = function(vertex, edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (edge == this.edges[i].edge) 
-                if (vertex == this.edges[i].destination) 
+            if (edge.equals(this.edges[i].edge)) 
+                if (vertex.equals(this.edges[i].destination)) 
                     return true;
         }
         return false;
     };
     prototype.addEdge = function(e, v1, v2) {
-        this.addVertex(v1);
-        this.addVertex(v2);
+        this.addVertexSafely(v1);
+        this.addVertexSafely(v2);
         var t = new Triple();
         t.source = v1;
         t.destination = v2;
         t.edge = e;
-        if (this.edges.indexOf(t) != -1) 
+        this.edges.push(t);
+        return true;
+    };
+    prototype.addEdgeUnsafely = function(e, v1, v2) {
+        var t = new Triple();
+        t.source = v1;
+        t.destination = v2;
+        t.edge = e;
+        this.edges.push(t);
+        return true;
+    };
+    prototype.addEdgeSafely = function(e, v1, v2) {
+        this.addVertexSafely(v1);
+        this.addVertexSafely(v2);
+        var t = new Triple();
+        t.source = v1;
+        t.destination = v2;
+        t.edge = e;
+        if (EcArray.has(this.edges, t)) 
             return false;
         this.edges.push(t);
         return true;
     };
     prototype.getOpposite = function(vertex, edge) {
         for (var i = 0; i &lt; this.edges.length; i++) {
-            if (edge == this.edges[i].edge) 
-                if (vertex == this.edges[i].destination) 
+            if (edge.equals(this.edges[i].edge)) 
+                if (vertex.equals(this.edges[i].destination)) 
                     return this.edges[i].source;
-                 else if (vertex == this.edges[i].source) 
+                 else if (vertex.equals(this.edges[i].source)) 
                     return this.edges[i].destination;
         }
         return null;
@@ -2352,6 +2433,12 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
             });
         });
     };
+    prototype.failWithCallback = function(failure, callback) {
+        return function(s) {
+            callback();
+            failure(s);
+        };
+    };
     /**
      *  Will prevent &#x27;after&#x27; from being called.
      * 
@@ -2359,6 +2446,23 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
      */
     prototype.stop = function() {
         this.counter = -1;
+    };
+    /**
+     *  Will allow &#x27;after&#x27; to be called.
+     * 
+     *  @method stop
+     */
+    prototype.finish = function() {
+        this.counter = 1;
+    };
+    /**
+     *  Is preventing &#x27;after&#x27; from being called?
+     * 
+     *  @return whether it is stopped.
+     *  @method isStopped
+     */
+    prototype.isStopped = function() {
+        return this.counter &lt;= -1;
     };
 }, {}, {});
 

@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l20781"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:20781</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l20858"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:20858</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1359,7 +1362,7 @@ A winery.</p>
 
 <div id="property_acceptsReservations" class="property item inherited">
     <h3 class="name"><code>acceptsReservations</code></h3>
-    <span class="type">Schema, URL | schema,Boolean | schema,Text</span>
+    <span class="type">URL</span>
 
 
 
@@ -1368,7 +1371,7 @@ A winery.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/FoodEstablishment.html#property_acceptsReservations">FoodEstablishment</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l16217"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16217</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l16278"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16278</code></a>
         </p>
 
 
@@ -1411,7 +1414,7 @@ An additional type for the item, typically used for adding more specific types f
 </div>
 <div id="property_address" class="property item inherited">
     <h3 class="name"><code>address</code></h3>
-    <span class="type">Schema, PostalAddress | schema,Text</span>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
 
 
 
@@ -1420,7 +1423,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_address">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1747"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1747</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1611"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1611</code></a>
         </p>
 
 
@@ -1446,7 +1449,7 @@ Physical address of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_aggregateRating">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1875"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1875</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1675"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1675</code></a>
         </p>
 
 
@@ -1498,7 +1501,7 @@ An alias for the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_alumni">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1803"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1803</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1755"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1755</code></a>
         </p>
 
 
@@ -1515,7 +1518,7 @@ Alumni of an organization.</p>
 </div>
 <div id="property_areaServed" class="property item inherited">
     <h3 class="name"><code>areaServed</code></h3>
-    <span class="type">Schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -1524,7 +1527,7 @@ Alumni of an organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_areaServed">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1731"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1731</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1979"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1979</code></a>
         </p>
 
 
@@ -1550,7 +1553,7 @@ The geographic area where a service or offered item is provided.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_award">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1635"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1635</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1699"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1699</code></a>
         </p>
 
 
@@ -1576,7 +1579,7 @@ An award won by or for this item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_awards">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1755"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1755</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1723"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1723</code></a>
         </p>
 
 
@@ -1602,7 +1605,7 @@ Awards won by or for this item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/LocalBusiness.html#property_branchOf">LocalBusiness</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8765"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8765</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8927"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8927</code></a>
         </p>
 
 
@@ -1619,7 +1622,7 @@ The larger organization that this local business is a branch of, if any. Not to 
 </div>
 <div id="property_brand" class="property item inherited">
     <h3 class="name"><code>brand</code></h3>
-    <span class="type">Schema, Organization | schema,Brand</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -1628,7 +1631,7 @@ The larger organization that this local business is a branch of, if any. Not to 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_brand">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1723"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1723</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1947"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1947</code></a>
         </p>
 
 
@@ -1654,7 +1657,7 @@ The brand(s) associated with a product or service, or the brand(s) maintained by
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_contactPoint">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1763"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1763</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1819"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1819</code></a>
         </p>
 
 
@@ -1680,7 +1683,7 @@ A contact point for a person or organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_contactPoints">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1651"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1651</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1715"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1715</code></a>
         </p>
 
 
@@ -1706,7 +1709,7 @@ A contact point for a person or organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/LocalBusiness.html#property_currenciesAccepted">LocalBusiness</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8757"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8757</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8951"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8951</code></a>
         </p>
 
 
@@ -1732,7 +1735,7 @@ The currency accepted (in <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 42
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_department">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1715"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1715</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1811"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1811</code></a>
         </p>
 
 
@@ -1810,7 +1813,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_dissolutionDate">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1947"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1947</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1763"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1763</code></a>
         </p>
 
 
@@ -1836,7 +1839,7 @@ The date that this organization was dissolved.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_duns">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1667</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1683"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1683</code></a>
         </p>
 
 
@@ -1862,7 +1865,7 @@ The Dun &amp; Bradstreet DUNS number for identifying an organization or business
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_email">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1795"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1795</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1803"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1803</code></a>
         </p>
 
 
@@ -1888,7 +1891,7 @@ Email address.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_employee">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1899"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1899</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1851"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1851</code></a>
         </p>
 
 
@@ -1914,7 +1917,7 @@ Someone working for this organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_employees">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1939"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1939</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1787"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1787</code></a>
         </p>
 
 
@@ -1940,7 +1943,7 @@ People working for this organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_event">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1611"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1611</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1907"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1907</code></a>
         </p>
 
 
@@ -1966,7 +1969,7 @@ Upcoming or past event associated with this place, organization, or action.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_events">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1683"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1683</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1771"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1771</code></a>
         </p>
 
 
@@ -1992,7 +1995,7 @@ Upcoming or past events associated with this place or organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_faxNumber">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1659"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1659</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1971"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1971</code></a>
         </p>
 
 
@@ -2018,7 +2021,7 @@ The fax number.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_founder">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1883"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1883</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1915"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1915</code></a>
         </p>
 
 
@@ -2044,7 +2047,7 @@ A person who founded this organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_founders">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1891"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1891</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1747"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1747</code></a>
         </p>
 
 
@@ -2070,7 +2073,7 @@ A person who founded this organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_foundingDate">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1787"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1787</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1843"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1843</code></a>
         </p>
 
 
@@ -2096,7 +2099,7 @@ The date that this organization was founded.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_foundingLocation">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1955"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1955</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1891"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1891</code></a>
         </p>
 
 
@@ -2113,7 +2116,7 @@ The place where the Organization was founded.</p>
 </div>
 <div id="property_funder" class="property item inherited">
     <h3 class="name"><code>funder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2122,7 +2125,7 @@ The place where the Organization was founded.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_funder">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1771"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1771</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1619"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1619</code></a>
         </p>
 
 
@@ -2148,7 +2151,7 @@ A person or organization that supports (sponsors) something through some kind of
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_globalLocationNumber">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1979"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1979</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1651"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1651</code></a>
         </p>
 
 
@@ -2165,7 +2168,7 @@ The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes 
 </div>
 <div id="property_hasMenu" class="property item inherited">
     <h3 class="name"><code>hasMenu</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,Menu</span>
+    <span class="type">URL</span>
 
 
 
@@ -2174,7 +2177,7 @@ The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/FoodEstablishment.html#property_hasMenu">FoodEstablishment</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l16241"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16241</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l16254"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16254</code></a>
         </p>
 
 
@@ -2200,7 +2203,7 @@ Either the actual menu as a structured representation, as text, or a URL of the 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_hasOfferCatalog">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1963"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1963</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1643"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1643</code></a>
         </p>
 
 
@@ -2226,7 +2229,7 @@ Indicates an OfferCatalog listing for this Organization, Person, or Service.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_hasPOS">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1859"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1859</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1875"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1875</code></a>
         </p>
 
 
@@ -2304,7 +2307,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_isicV4">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1675"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1675</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1931"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1931</code></a>
         </p>
 
 
@@ -2330,7 +2333,7 @@ The International Standard of Industrial Classification of All Economic Activiti
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_legalName">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1923"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1923</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1835"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1835</code></a>
         </p>
 
 
@@ -2356,7 +2359,7 @@ The official name of the organization, e.g. the registered company name.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_leiCode">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1691"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1691</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1963"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1963</code></a>
         </p>
 
 
@@ -2373,7 +2376,7 @@ An organization identifier that uniquely identifies a legal entity as defined in
 </div>
 <div id="property_location" class="property item inherited">
     <h3 class="name"><code>location</code></h3>
-    <span class="type">Schema, PostalAddress | schema,Text | schema,Place</span>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
 
 
 
@@ -2382,7 +2385,7 @@ An organization identifier that uniquely identifies a legal entity as defined in
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_location">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1843"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1843</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1939"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1939</code></a>
         </p>
 
 
@@ -2399,7 +2402,7 @@ The location of for example where the event is happening, an organization is loc
 </div>
 <div id="property_logo" class="property item inherited">
     <h3 class="name"><code>logo</code></h3>
-    <span class="type">Schema, URL | schema,ImageObject</span>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
 
 
 
@@ -2408,7 +2411,7 @@ The location of for example where the event is happening, an organization is loc
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_logo">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1907"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1907</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1779"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1779</code></a>
         </p>
 
 
@@ -2460,7 +2463,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_makesOffer">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1971"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1971</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1707"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1707</code></a>
         </p>
 
 
@@ -2477,7 +2480,7 @@ A pointer to products or services offered by the organization or person.</p>
 </div>
 <div id="property_member" class="property item inherited">
     <h3 class="name"><code>member</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2486,7 +2489,7 @@ A pointer to products or services offered by the organization or person.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_member">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1619"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1619</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1739"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1739</code></a>
         </p>
 
 
@@ -2503,7 +2506,7 @@ A member of an Organization or a ProgramMembership. Organizations can be members
 </div>
 <div id="property_memberOf" class="property item inherited">
     <h3 class="name"><code>memberOf</code></h3>
-    <span class="type">Schema, Organization | schema,ProgramMembership</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2529,7 +2532,7 @@ An Organization (or ProgramMembership) to which this Person or Organization belo
 </div>
 <div id="property_members" class="property item inherited">
     <h3 class="name"><code>members</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2538,7 +2541,7 @@ An Organization (or ProgramMembership) to which this Person or Organization belo
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_members">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1835"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1835</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1667</code></a>
         </p>
 
 
@@ -2555,7 +2558,7 @@ A member of this organization.</p>
 </div>
 <div id="property_menu" class="property item inherited">
     <h3 class="name"><code>menu</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,Menu</span>
+    <span class="type"><a href="../classes/Menu.html" class="crosslink">Menu</a></span>
 
 
 
@@ -2564,7 +2567,7 @@ A member of this organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/FoodEstablishment.html#property_menu">FoodEstablishment</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l16225"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16225</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l16262"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16262</code></a>
         </p>
 
 
@@ -2590,7 +2593,7 @@ Either the actual menu as a structured representation, as text, or a URL of the 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_naics">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1931"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1931</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1867"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1867</code></a>
         </p>
 
 
@@ -2642,7 +2645,7 @@ The name of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_numberOfEmployees">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1707"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1707</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1859"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1859</code></a>
         </p>
 
 
@@ -2668,7 +2671,7 @@ The number of employees in an organization e.g. business.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/LocalBusiness.html#property_openingHours">LocalBusiness</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8733"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8733</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8943"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8943</code></a>
         </p>
 
 
@@ -2685,7 +2688,7 @@ The general opening hours for a business. Opening hours can be specified as a we
 </div>
 <div id="property_owns" class="property item inherited">
     <h3 class="name"><code>owns</code></h3>
-    <span class="type">Schema, OwnershipInfo | schema,Product</span>
+    <span class="type"><a href="../classes/OwnershipInfo.html" class="crosslink">OwnershipInfo</a></span>
 
 
 
@@ -2694,7 +2697,7 @@ The general opening hours for a business. Opening hours can be specified as a we
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_owns">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1915"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1915</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1899"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1899</code></a>
         </p>
 
 
@@ -2720,7 +2723,7 @@ Products owned by the organization or person.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_parentOrganization">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1739"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1739</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1827"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1827</code></a>
         </p>
 
 
@@ -2746,7 +2749,7 @@ The larger organization that this organization is a [[subOrganization]] of, if a
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/LocalBusiness.html#property_paymentAccepted">LocalBusiness</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8741"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8741</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8935"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8935</code></a>
         </p>
 
 
@@ -2798,7 +2801,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/LocalBusiness.html#property_priceRange">LocalBusiness</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l8749"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8749</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l8919"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:8919</code></a>
         </p>
 
 
@@ -2824,7 +2827,7 @@ The price range of the business, for example <code>$$$</code>.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_review">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1699"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1699</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1883"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1883</code></a>
         </p>
 
 
@@ -2850,7 +2853,7 @@ A review of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_reviews">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1603"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1603</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1659"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1659</code></a>
         </p>
 
 
@@ -2902,7 +2905,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_seeks">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1819"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1819</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1731"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1731</code></a>
         </p>
 
 
@@ -2928,7 +2931,7 @@ A pointer to products or services sought by the organization or person (demand).
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/FoodEstablishment.html#property_servesCuisine">FoodEstablishment</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l16233"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16233</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l16246"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16246</code></a>
         </p>
 
 
@@ -2945,7 +2948,7 @@ The cuisine of the restaurant.</p>
 </div>
 <div id="property_serviceArea" class="property item inherited">
     <h3 class="name"><code>serviceArea</code></h3>
-    <span class="type">Schema, GeoShape | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/GeoShape.html" class="crosslink">GeoShape</a></span>
 
 
 
@@ -2954,7 +2957,7 @@ The cuisine of the restaurant.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_serviceArea">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1851"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1851</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1603"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1603</code></a>
         </p>
 
 
@@ -2971,7 +2974,7 @@ The geographic area where the service is provided.</p>
 </div>
 <div id="property_sponsor" class="property item inherited">
     <h3 class="name"><code>sponsor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2980,7 +2983,7 @@ The geographic area where the service is provided.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_sponsor">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1827"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1827</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1923"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1923</code></a>
         </p>
 
 
@@ -3006,7 +3009,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/FoodEstablishment.html#property_starRating">FoodEstablishment</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l16209"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16209</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l16270"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:16270</code></a>
         </p>
 
 
@@ -3032,7 +3035,7 @@ An official rating for a lodging business or food establishment, e.g. from natio
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_subOrganization">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1779"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1779</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1635"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1635</code></a>
         </p>
 
 
@@ -3058,7 +3061,7 @@ A relationship between two organizations where the first includes the second, e.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_taxID">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1643"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1643</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1691"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1691</code></a>
         </p>
 
 
@@ -3084,7 +3087,7 @@ The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_telephone">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1867"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1867</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1795"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1795</code></a>
         </p>
 
 
@@ -3136,7 +3139,7 @@ URL of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Organization.html#property_vatID">Organization</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1811"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1811</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1955"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1955</code></a>
         </p>
 
 

@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -1233,6 +1236,22 @@ InquiryPacket = stjs.extend(InquiryPacket, null, [], function(constructor, proto
     constructor.IPType = stjs.enumeration(&quot;COMPETENCY&quot;, &quot;ROLLUPRULE&quot;, &quot;RELATION_AND&quot;, &quot;RELATION_OR&quot;, &quot;RELATION_NARROWS&quot;, &quot;RELATION_BROADENS&quot;, &quot;RELATION_REQUIRES&quot;, &quot;RELATION_ISREQUIREDBY&quot;);
     constructor.ResultType = stjs.enumeration(&quot;TRUE&quot;, &quot;FALSE&quot;, &quot;UNKNOWN&quot;, &quot;INDETERMINANT&quot;);
 }, {subject: {name: &quot;Array&quot;, arguments: [&quot;EcPk&quot;]}, competency: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, context: &quot;EcFramework&quot;, success: {name: &quot;Callback1&quot;, arguments: [&quot;InquiryPacket&quot;]}, ask: {name: &quot;Function1&quot;, arguments: [null, null]}, failure: {name: &quot;Callback1&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [&quot;EcLevel&quot;]}, equivalentPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, subPackets: {name: &quot;Array&quot;, arguments: [&quot;InquiryPacket&quot;]}, positive: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, negative: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, type: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.IPType&quot;]}, result: {name: &quot;Enum&quot;, arguments: [&quot;InquiryPacket.ResultType&quot;]}}, {});
+var EcGraphUtil = function() {};
+EcGraphUtil = stjs.extend(EcGraphUtil, null, [], function(constructor, prototype) {
+    constructor.buildIdSearchQueryForIdList = function(idList) {
+        var searchQuery = &quot;&quot;;
+        if (idList.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; idList.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(\\*@id:\&quot;&quot; + idList[i] + &quot;\&quot;)&quot;;
+        }
+        if (idList.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        return searchQuery;
+    };
+}, {}, {});
 var NodePacket = function() {
     this.nodeList = new Array();
     this.nodeMap = {};
@@ -2933,6 +2952,214 @@ PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], funct
         this.dependencyDefinitionMap = dependencyDefinitionMap;
     };
 }, {dependencyDefinitionMap: {name: &quot;Map&quot;, arguments: [null, &quot;PapDependencyDefinitionBase&quot;]}}, {});
+var EcFrameworkGraph = function() {
+    EcDirectedGraph.call(this);
+    this.metaVerticies = new Object();
+    this.metaEdges = new Object();
+    this.competencyMap = new Object();
+    this.edgeMap = new Object();
+    this.dontTryAnyMore = new Object();
+    this.frameworks = new Array();
+};
+EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(constructor, prototype) {
+    prototype.metaVerticies = null;
+    prototype.metaEdges = null;
+    prototype.competencyMap = null;
+    prototype.edgeMap = null;
+    prototype.dontTryAnyMore = null;
+    prototype.frameworks = null;
+    prototype.addFrameworkSuccessCallback = null;
+    prototype.addFrameworkFailureCallback = null;
+    prototype.repo = null;
+    prototype.addFramework = function(framework, repo, success, failure) {
+        this.frameworks.push(framework);
+        var me = this;
+        console.log(&quot;addFramework about to multiget: &quot; + Date.now());
+        repo.multiget(framework.competency.concat(framework.relation), function(data) {
+            console.log(&quot;Multiget complete: &quot; + Date.now());
+            var competencyTemplate = new EcCompetency();
+            var alignmentTemplate = new EcAlignment();
+            for (var i = 0; i &lt; data.length; i++) {
+                var d = data[i];
+                if (d.isAny(competencyTemplate.getTypes())) {
+                    var c = EcCompetency.getBlocking(d.id);
+                    me.addCompetency(c);
+                    me.addToMetaStateArray(me.getMetaStateCompetency(c), &quot;framework&quot;, framework);
+                } else if (d.isAny(alignmentTemplate.getTypes())) {
+                    var alignment = EcAlignment.getBlocking(d.id);
+                    me.addRelation(alignment);
+                    me.addToMetaStateArray(me.getMetaStateAlignment(alignment), &quot;framework&quot;, framework);
+                }
+            }
+            success();
+        }, failure);
+    };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            for (var i = 0; i &lt; ecaa.length; i++) {
+                var a = ecaa[i];
+                me.addRelation(a);
+                me.addToMetaStateArray(me.getMetaStateAlignment(a), &quot;framework&quot;, framework);
+            }
+            me.addFrameworkSuccessCallback();
+        }, me.addFrameworkFailureCallback, null);
+    };
+    prototype.processAssertionsBoolean = function(assertions, success, failure) {
+        var me = this;
+        var eah = new EcAsyncHelper();
+        eah.each(assertions, function(assertion, done) {
+            var competency = me.getCompetency(assertion.competency);
+            if (competency == null || !me.containsVertex(competency)) {
+                done();
+                return;
+            }
+            assertion.getNegativeAsync(function(negative) {
+                me.processAssertionsBooleanPerAssertion(assertion, negative, competency, done, new Array());
+            }, eah.failWithCallback(failure, done));
+        }, function(strings) {
+            success();
+        });
+    };
+    prototype.processAssertionsBooleanPerAssertion = function(assertion, negative, competency, done, visited) {
+        var me = this;
+        if (EcArray.has(visited, competency)) {
+            done();
+            return;
+        }
+        visited.push(competency);
+        if (negative) {
+            var metaState = this.getMetaStateCompetency(competency);
+            this.addToMetaStateArray(metaState, &quot;negativeAssertion&quot;, assertion);
+            new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.target);
+                if (alignment.relationType == Relation.NARROWS) 
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                 else 
+                    callback0();
+            }, function(strings) {
+                new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.source);
+                    if (alignment.relationType == Relation.REQUIRES) 
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                     else 
+                        callback0();
+                }, function(strings) {
+                    done();
+                });
+            });
+        } else {
+            var metaState = this.getMetaStateCompetency(competency);
+            this.addToMetaStateArray(metaState, &quot;positiveAssertion&quot;, assertion);
+            new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
+                var c = me.getCompetency(alignment.source);
+                if (alignment.relationType == Relation.NARROWS) 
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                 else 
+                    callback0();
+            }, function(strings) {
+                new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
+                    var c = me.getCompetency(alignment.target);
+                    if (alignment.relationType == Relation.REQUIRES) 
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+                     else 
+                        callback0();
+                }, function(strings) {
+                    done();
+                });
+            });
+        }
+    };
+    prototype.addToMetaStateArray = function(metaState, key, value) {
+        if (metaState == null) 
+            return;
+        if ((metaState)[key] == null) 
+            (metaState)[key] = new Array();
+        ((metaState)[key]).push(value);
+    };
+    prototype.getMetaStateCompetency = function(c) {
+        var result = this.metaVerticies[c.shortId()];
+        if (result == null) {
+            if (this.containsVertex(c) == false) 
+                return null;
+            if (this.metaVerticies[c.shortId()] == null) 
+                this.metaVerticies[c.shortId()] = result = new Object();
+        }
+        return result;
+    };
+    prototype.getMetaStateAlignment = function(a) {
+        var result = this.metaEdges[a.shortId()];
+        if (result == null) {
+            if (this.containsEdge(a) == false) 
+                return null;
+            if (this.metaEdges[a.shortId()] == null) 
+                this.metaEdges[a.shortId()] = result = new Object();
+        }
+        return result;
+    };
+    prototype.containsVertex = function(competency) {
+        return (this.competencyMap)[competency.shortId()] != null;
+    };
+    prototype.containsEdge = function(competency) {
+        return (this.edgeMap)[competency.shortId()] != null;
+    };
+    prototype.getCompetency = function(competencyId) {
+        var c = null;
+        c = (this.competencyMap)[competencyId];
+        if (c == null) 
+            c = EcCompetency.getBlocking(competencyId);
+        return c;
+    };
+    prototype.addCompetency = function(competency) {
+        if (competency == null) 
+            return false;
+        if (this.containsVertex(competency)) 
+            return false;
+        (this.competencyMap)[competency.shortId()] = competency;
+        (this.competencyMap)[competency.id] = competency;
+        return this.addVertex(competency);
+    };
+    prototype.addRelation = function(alignment) {
+        if (alignment == null) 
+            return false;
+        if (this.containsEdge(alignment)) 
+            return false;
+        var source = (this.competencyMap)[alignment.source];
+        if (source == null &amp;&amp; (this.dontTryAnyMore)[alignment.source] != null) 
+            return false;
+        if (source == null) 
+            source = this.getCompetency(alignment.source);
+        if (source == null) 
+            (this.dontTryAnyMore)[alignment.source] = &quot;&quot;;
+        var target = (this.competencyMap)[alignment.target];
+        if (target == null &amp;&amp; (this.dontTryAnyMore)[alignment.target] != null) 
+            return false;
+        if (target == null) 
+            target = this.getCompetency(alignment.target);
+        if (target == null) 
+            (this.dontTryAnyMore)[alignment.target] = &quot;&quot;;
+        if (source == null || target == null) 
+            return false;
+        return this.addEdgeUnsafely(alignment, source, target);
+    };
+    prototype.addHyperEdge = function(edge, vertices) {
+         throw new RuntimeException(&quot;Don&#x27;t do this.&quot;);
+    };
+    prototype.getEdgeType = function(edge) {
+        return edge.relationType;
+    };
+    prototype.getDefaultEdgeType = function() {
+        return EcAlignment.NARROWS;
+    };
+}, {metaVerticies: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, metaEdges: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, competencyMap: &quot;Object&quot;, edgeMap: &quot;Object&quot;, dontTryAnyMore: &quot;Object&quot;, frameworks: {name: &quot;Array&quot;, arguments: [&quot;EcFramework&quot;]}, addFrameworkSuccessCallback: &quot;Callback0&quot;, addFrameworkFailureCallback: {name: &quot;Callback1&quot;, arguments: [null]}, repo: &quot;EcRepository&quot;, edges: {name: &quot;Array&quot;, arguments: [{name: &quot;Triple&quot;, arguments: [&quot;V&quot;, &quot;V&quot;, &quot;E&quot;]}]}, verticies: {name: &quot;Array&quot;, arguments: [&quot;V&quot;]}}, {});
 var NodePacketGraph = function() {
     this.nodePacketList = new Array();
     this.nodePacketMap = {};
@@ -4346,6 +4573,222 @@ PredictiveAssertionProcessor = stjs.extend(PredictiveAssertionProcessor, null, [
         return this.competencePrediction;
     };
 }, {competencyIndex: {name: &quot;Map&quot;, arguments: [null, null]}, values: {name: &quot;Array&quot;, arguments: [null]}, dependencies: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapDependency&quot;]}]}]}, assertions: {name: &quot;Map&quot;, arguments: [null, {name: &quot;Array&quot;, arguments: [&quot;PapAssertion&quot;]}]}, dependencyDefs: &quot;PapDependencyDefinitions&quot;, settings: &quot;PapSettings&quot;, inputGraph: &quot;CompetencyGraph&quot;, competencyNetwork: &quot;PapCompetencyNetwork&quot;, competencePrediction: &quot;PapNetworkPrediction&quot;}, {});
+/**
+ *  Processor used in determining all the competencies a for which a user has assertions.
+ *  Utilizes EcFrameworkGraph
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @class ProfileProcessor
+ *  @module org.cassproject
+ */
+var ProfileProcessor = function() {};
+ProfileProcessor = stjs.extend(ProfileProcessor, null, [], function(constructor, prototype) {
+    constructor.DEBUG = true;
+    prototype.profilePkPems = null;
+    prototype.repo = null;
+    prototype.successCallback = null;
+    prototype.failureCallback = null;
+    prototype.frameworksToProcess = 0;
+    prototype.frameworksProcessed = 0;
+    prototype.assertedFrameworkGraphs = null;
+    prototype.unfilteredAssertionList = null;
+    prototype.profileAssertions = null;
+    prototype.addedAssertionIds = null;
+    prototype.assertionCompetencies = null;
+    prototype.debugMessage = function(o) {
+        if (ProfileProcessor.DEBUG) 
+            console.log(o);
+    };
+    prototype.checkAllFrameworkGraphAssertionsHaveProcessed = function() {
+        this.debugMessage(&quot;checkAllFrameworkGraphAssertionsHaveProcessed&quot;);
+        this.debugMessage(&quot;frameworksProcessed: &quot; + this.frameworksProcessed);
+        if (this.frameworksProcessed &gt;= this.frameworksToProcess) {
+            this.debugMessage(&quot;All profile assertion framework graphs processed&quot;);
+            this.successCallback();
+        }
+    };
+    prototype.processFrameworkGraphAssertions = function(efg, framework) {
+        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Processing framework graph assertions for:&quot;);
+        this.debugMessage(framework.shortId());
+        this.debugMessage(framework.getName());
+        var me = this;
+        efg.processAssertionsBoolean(this.profileAssertions, function() {
+            me.frameworksProcessed++;
+            me.assertedFrameworkGraphs.push(efg);
+            me.checkAllFrameworkGraphAssertionsHaveProcessed();
+        }, function(err) {
+            me.handleFailedFrameworkGraphOperation(&quot;Process Graph: &quot; + err);
+        });
+    };
+    prototype.handleFailedFrameworkGraphOperation = function(err) {
+        this.debugMessage(&quot;handleFailedFrameworkGraphOperation: &quot; + err);
+        this.frameworksProcessed++;
+        this.checkAllFrameworkGraphAssertionsHaveProcessed();
+    };
+    prototype.buildProfileAssertionFrameworkGraph = function(framework) {
+        this.debugMessage(&quot;(&quot; + Date.now() + &quot;) Generating framework graph for:&quot;);
+        this.debugMessage(framework.shortId());
+        this.debugMessage(framework.getName());
+        var me = this;
+        var efg = new EcFrameworkGraph();
+        efg.addFramework(framework, this.repo, function() {
+            me.processFrameworkGraphAssertions(efg, framework);
+        }, function(err) {
+            me.handleFailedFrameworkGraphOperation(&quot;Build Graph: &quot; + err);
+        });
+    };
+    prototype.generateProfileAssertionFrameworkGraphs = function(profileAssertionFrameworks) {
+        if (profileAssertionFrameworks.length &lt;= 0) 
+            this.successCallback();
+         else {
+            this.frameworksToProcess = profileAssertionFrameworks.length;
+            this.debugMessage(&quot;Generating framework graphs...&quot;);
+            this.debugMessage(profileAssertionFrameworks);
+            for (var i = 0; i &lt; profileAssertionFrameworks.length; i++) {
+                this.buildProfileAssertionFrameworkGraph(profileAssertionFrameworks[i]);
+            }
+        }
+    };
+    prototype.buildAssertionCompetencyList = function() {
+        this.assertionCompetencies = new Array();
+        for (var i = 0; i &lt; this.profileAssertions.length; i++) {
+            var asr = this.profileAssertions[i];
+            if (!EcArray.has(this.assertionCompetencies, asr.competency)) {
+                this.assertionCompetencies.push(asr.competency);
+            }
+        }
+    };
+    prototype.getFrameworkSearchQueryForAssertionCompetencies = function() {
+        var searchQuery = &quot;&quot;;
+        if (this.assertionCompetencies.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; this.assertionCompetencies.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(competency:\&quot;&quot; + this.assertionCompetencies[i] + &quot;\&quot;)&quot;;
+        }
+        if (this.assertionCompetencies.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        this.debugMessage(&quot;Framework search query: &quot; + searchQuery);
+        return searchQuery;
+    };
+    prototype.findFrameworksForProfileAssertions = function() {
+        this.unfilteredAssertionList = null;
+        this.buildAssertionCompetencyList();
+        this.debugMessage(&quot;Fetching Assertion Frameworks...&quot;);
+        var me = this;
+        EcFramework.search(this.repo, this.getFrameworkSearchQueryForAssertionCompetencies(), function(arrayOfEcFrameworks) {
+            me.debugMessage(&quot;Assertion Frameworks Fetched&quot;);
+            me.generateProfileAssertionFrameworkGraphs(arrayOfEcFrameworks);
+        }, me.failureCallback, null);
+    };
+    prototype.filterAssertionList = function() {
+        if (this.unfilteredAssertionList.length == 0) 
+            this.successCallback();
+         else {
+            var me = this;
+            var eah = new EcAsyncHelper();
+            eah.each(this.unfilteredAssertionList, function(assertion, done) {
+                assertion.getSubjectAsync(function(subject) {
+                    if (subject != null) {
+                        if (EcArray.has(me.profilePkPems, subject.toPem())) {
+                            if (!EcArray.has(me.addedAssertionIds, assertion.shortId())) {
+                                me.profileAssertions.push(assertion);
+                                me.addedAssertionIds.push(assertion.shortId());
+                            }
+                        }
+                    }
+                    done();
+                }, eah.failWithCallback(me.failureCallback, done));
+            }, function(aa) {
+                me.debugMessage(&quot;Assertions filtered&quot;);
+                me.debugMessage(me.profileAssertions);
+                me.findFrameworksForProfileAssertions();
+            });
+        }
+    };
+    prototype.isEnvelopeOwnedByProfileUser = function(asrEnv) {
+        if (asrEnv.owner == null) 
+            return false;
+        for (var i = 0; i &lt; asrEnv.owner.length; i++) {
+            if (EcArray.has(this.profilePkPems, asrEnv.owner[i])) 
+                return true;
+        }
+        return false;
+    };
+    prototype.isEncryptedAssertionEnvelope = function(asrEnv) {
+        return true;
+    };
+    prototype.processPotentialAssertionEnvelope = function(potAsrEnv) {
+        this.debugMessage(&quot;processPotentialAssertionEnvelope: &quot; + potAsrEnv.shortId());
+        if (this.isEncryptedAssertionEnvelope(potAsrEnv) &amp;&amp; this.isEnvelopeOwnedByProfileUser(potAsrEnv)) {
+            var nv = new EcEncryptedValue();
+            nv.copyFrom(potAsrEnv);
+            var aed = nv.decryptIntoObject();
+            var realAsrEnv = new AssertionEnvelope();
+            realAsrEnv.copyFrom(aed);
+            for (var i = 0; i &lt; realAsrEnv.assertion.length; i++) {
+                var eca = new EcAssertion();
+                eca.copyFrom(realAsrEnv.getAssertion(i));
+                this.unfilteredAssertionList.push(eca);
+            }
+        }
+    };
+    prototype.processAssertionEnvelopes = function(ecRldArray) {
+        this.debugMessage(&quot;Processing Assertion Envelopes...&quot;);
+        if (ecRldArray != null &amp;&amp; ecRldArray.length &gt; 0) {
+            for (var i = 0; i &lt; ecRldArray.length; i++) {
+                this.processPotentialAssertionEnvelope(ecRldArray[i]);
+            }
+        }
+        this.filterAssertionList();
+    };
+    prototype.fetchAssertionEnvelopes = function() {
+        this.debugMessage(&quot;Fetching Assertion Envelopes...&quot;);
+        var me = this;
+        this.repo.searchWithParams(new AssertionEnvelope().getSearchStringByType(), null, null, function(ecRldArray) {
+            me.debugMessage(&quot;Assertion Envelopes Fetched&quot;);
+            me.processAssertionEnvelopes(ecRldArray);
+        }, me.failureCallback);
+    };
+    prototype.getAssertionSearchQueryForProfilePkPems = function() {
+        var searchQuery = &quot;&quot;;
+        if (this.profilePkPems.length &gt; 1) 
+            searchQuery = &quot;(&quot;;
+        for (var i = 0; i &lt; this.profilePkPems.length; i++) {
+            if (i &gt; 0) 
+                searchQuery += &quot; OR &quot;;
+            searchQuery += &quot;(\\*@reader:\&quot;&quot; + this.profilePkPems[i] + &quot;\&quot;)&quot;;
+        }
+        if (this.profilePkPems.length &gt; 1) 
+            searchQuery += &quot;)&quot;;
+        this.debugMessage(&quot;Assertion search query: &quot; + searchQuery);
+        return searchQuery;
+    };
+    prototype.fetchProfileAssertions = function() {
+        this.debugMessage(&quot;Fetching Assertions...&quot;);
+        var me = this;
+        EcAssertion.search(this.repo, this.getAssertionSearchQueryForProfilePkPems(), function(arrayOfEcAssertions) {
+            me.debugMessage(&quot;Assertions Fetched&quot;);
+            if (arrayOfEcAssertions != null &amp;&amp; arrayOfEcAssertions.length &gt; 0) {
+                me.unfilteredAssertionList = arrayOfEcAssertions;
+            }
+            me.fetchAssertionEnvelopes();
+        }, me.failureCallback, null);
+    };
+    prototype.processProfileAssertions = function(repo, profilePkPems, success, failure) {
+        this.profilePkPems = profilePkPems;
+        this.repo = repo;
+        this.successCallback = success;
+        this.failureCallback = failure;
+        this.assertedFrameworkGraphs = new Array();
+        this.profileAssertions = new Array();
+        this.unfilteredAssertionList = new Array();
+        this.addedAssertionIds = new Array();
+        this.fetchProfileAssertions();
+    };
+}, {profilePkPems: {name: &quot;Array&quot;, arguments: [null]}, repo: &quot;EcRepository&quot;, successCallback: &quot;Callback0&quot;, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}, assertedFrameworkGraphs: {name: &quot;Array&quot;, arguments: [&quot;EcFrameworkGraph&quot;]}, unfilteredAssertionList: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, profileAssertions: {name: &quot;Array&quot;, arguments: [&quot;EcAssertion&quot;]}, addedAssertionIds: {name: &quot;Array&quot;, arguments: [null]}, assertionCompetencies: {name: &quot;Array&quot;, arguments: [null]}}, {});
 var CyclicGraphCollapser = function() {};
 CyclicGraphCollapser = stjs.extend(CyclicGraphCollapser, null, [], function(constructor, prototype) {
     prototype.nodesProcessed = null;
@@ -4585,6 +5028,8 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
             if (ep.context != null &amp;&amp; ep.context.relation != null) 
                 for (var i = 0; i &lt; ep.context.relation.length; i++) {
                     var a = EcAlignment.getBlocking(ep.context.relation[i]);
+                    if (a == null) 
+                        continue;
                     if ((relationLookup)[a.source] == null) 
                         (relationLookup)[a.source] = new Array();
                     ((relationLookup)[a.source]).push(a);
@@ -4634,6 +5079,7 @@ CombinatorAssertionProcessor = stjs.extend(CombinatorAssertionProcessor, Asserti
 }, {relationLookup: &quot;Object&quot;, repositories: {name: &quot;Array&quot;, arguments: [&quot;EcRepository&quot;]}, logFunction: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, assertions: &quot;Object&quot;, coprocessors: {name: &quot;Array&quot;, arguments: [&quot;AssertionCoprocessor&quot;]}, processedEquivalencies: {name: &quot;Map&quot;, arguments: [null, null]}, context: &quot;EcFramework&quot;}, {});
 var FrameworkCollapser = function() {};
 FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(constructor, prototype) {
+    prototype.repo = null;
     prototype.framework = null;
     prototype.createImpliedRelations = false;
     prototype.competencyArray = null;
@@ -4643,44 +5089,6 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
     prototype.collapsedFrameworkNodePacketGraph = null;
     prototype.successCallback = null;
     prototype.failureCallback = null;
-    prototype.buildFrameworkUrlLookups = function() {
-        var urlArray = new Array();
-        var cid;
-        var rid;
-        for (var i = 0; i &lt; this.framework.competency.length; i++) {
-            cid = this.framework.competency[i];
-            urlArray.push(cid);
-        }
-        if (this.framework.relation != null &amp;&amp; this.framework.relation.length &gt; 0) {
-            for (var i = 0; i &lt; this.framework.relation.length; i++) {
-                rid = this.framework.relation[i];
-                urlArray.push(rid);
-            }
-        }
-        return urlArray;
-    };
-    prototype.parseCompetencies = function(rlda) {
-        this.competencyArray = new Array();
-        var c;
-        for (var i = 0; i &lt; rlda.length; i++) {
-            if (&quot;competency&quot;.equalsIgnoreCase(rlda[i].type)) {
-                c = new EcCompetency();
-                c.copyFrom(rlda[i]);
-                this.competencyArray.push(c);
-            }
-        }
-    };
-    prototype.parseRelationships = function(rlda) {
-        this.relationArray = new Array();
-        var r;
-        for (var i = 0; i &lt; rlda.length; i++) {
-            if (&quot;relation&quot;.equalsIgnoreCase(rlda[i].type)) {
-                r = new EcAlignment();
-                r.copyFrom(rlda[i]);
-                this.relationArray.push(r);
-            }
-        }
-    };
     prototype.addCompetenciesToFrameworkNodeGraph = function() {
         var cmp;
         var n;
@@ -4732,9 +5140,7 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
         var cgc = new CyclicGraphCollapser();
         this.collapsedFrameworkNodePacketGraph = cgc.collapseGraph(this.frameworkNodeGraph);
     };
-    prototype.continueFrameworkCollapse = function(rlda) {
-        this.parseCompetencies(rlda);
-        this.parseRelationships(rlda);
+    prototype.continueFrameworkCollapse = function() {
         try {
             this.generateFrameworkNodeGraph();
             try {
@@ -4747,6 +5153,13 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
             this.failureCallback(&quot;Framework node graph generation failed: &quot; + e.toString());
         }
     };
+    prototype.fetchFrameworkAlignments = function(framework) {
+        var me = this;
+        EcAlignment.search(this.repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.relation), function(ecaa) {
+            me.relationArray = ecaa;
+            me.continueFrameworkCollapse();
+        }, me.failureCallback, null);
+    };
     prototype.collapseFramework = function(repo, framework, createImpliedRelations, success, failure) {
         if (framework == null) 
             failure(&quot;Framework is null or undefined&quot;);
@@ -4755,19 +5168,20 @@ FrameworkCollapser = stjs.extend(FrameworkCollapser, null, [], function(construc
          else if (repo == null) 
             failure(&quot;Repo is null or undefined&quot;);
          else {
+            this.repo = repo;
             this.framework = framework;
             this.createImpliedRelations = createImpliedRelations;
             this.successCallback = success;
             this.failureCallback = failure;
-            var fc = this;
-            repo.multiget(this.buildFrameworkUrlLookups(), function(rlda) {
-                fc.continueFrameworkCollapse(rlda);
-            }, fc.failureCallback, function(rlda) {
-                fc.continueFrameworkCollapse(rlda);
-            });
+            var me = this;
+            var fwkParam = framework;
+            EcCompetency.search(repo, EcGraphUtil.buildIdSearchQueryForIdList(framework.competency), function(ecca) {
+                me.competencyArray = ecca;
+                me.fetchFrameworkAlignments(fwkParam);
+            }, me.failureCallback, null);
         }
     };
-}, {framework: &quot;EcFramework&quot;, competencyArray: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, competencyNodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationArray: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, frameworkNodeGraph: &quot;NodeGraph&quot;, collapsedFrameworkNodePacketGraph: &quot;NodePacketGraph&quot;, successCallback: {name: &quot;Callback2&quot;, arguments: [null, &quot;NodePacketGraph&quot;]}, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}}, {});
+}, {repo: &quot;EcRepository&quot;, framework: &quot;EcFramework&quot;, competencyArray: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, competencyNodeMap: {name: &quot;Map&quot;, arguments: [null, &quot;Node&quot;]}, relationArray: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, frameworkNodeGraph: &quot;NodeGraph&quot;, collapsedFrameworkNodePacketGraph: &quot;NodePacketGraph&quot;, successCallback: {name: &quot;Callback2&quot;, arguments: [null, &quot;NodePacketGraph&quot;]}, failureCallback: {name: &quot;Callback1&quot;, arguments: [null]}}, {});
 var OptimisticQuadnaryAssertionProcessor = function() {
     CombinatorAssertionProcessor.call(this);
 };

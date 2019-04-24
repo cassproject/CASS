@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l11018"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11018</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l11233"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11233</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1207,7 +1210,7 @@ An alias for the item.</p>
 </div>
 <div id="property_author" class="property item inherited">
     <h3 class="name"><code>author</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1233,7 +1236,7 @@ The author of this content or rating. Please note that author is special in that
 </div>
 <div id="property_bestRating" class="property item inherited">
     <h3 class="name"><code>bestRating</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Number</span>
 
 
 
@@ -1242,7 +1245,7 @@ The author of this content or rating. Please note that author is special in that
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Rating.html#property_bestRating">Rating</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2980"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2980</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2996"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2996</code></a>
         </p>
 
 
@@ -1372,7 +1375,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11046"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11046</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l11253"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11253</code></a>
         </p>
 
 
@@ -1476,7 +1479,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11054"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11054</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l11269"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11269</code></a>
         </p>
 
 
@@ -1493,7 +1496,7 @@ The count of total number of ratings.</p>
 </div>
 <div id="property_ratingValue" class="property item inherited">
     <h3 class="name"><code>ratingValue</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Number</span>
 
 
 
@@ -1528,7 +1531,7 @@ The rating for the content.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l11038"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11038</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l11261"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:11261</code></a>
         </p>
 
 
@@ -1597,7 +1600,7 @@ URL of the item.</p>
 </div>
 <div id="property_worstRating" class="property item inherited">
     <h3 class="name"><code>worstRating</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -1606,7 +1609,7 @@ URL of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Rating.html#property_worstRating">Rating</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2996"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2996</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l3012"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:3012</code></a>
         </p>
 
 

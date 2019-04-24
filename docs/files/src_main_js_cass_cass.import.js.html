@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -839,6 +842,7 @@ PapaParseParams = stjs.extend(PapaParseParams, null, [], function(constructor, p
     prototype.complete = null;
     prototype.header = null;
     prototype.error = null;
+    prototype.encoding = null;
 }, {complete: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}, error: {name: &quot;Callback1&quot;, arguments: [&quot;Object&quot;]}}, {});
 /**
  *  Base class for all importers, can hold helper functions
@@ -979,7 +983,8 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
                 if (props[prop] != null &amp;&amp; props[prop] != &quot;&quot; &amp;&amp; stjs.isInstanceOf(props[prop].constructor, Object)) {
                     this.flattenObject(flattenedObject, props[prop], id);
                 } else {
-                    (flattenedObject)[id] = props[prop];
+                    var display = Thing.getDisplayStringFrom(props[prop]);
+                    (flattenedObject)[id] = display;
                 }
             }
         };
@@ -1155,7 +1160,7 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 success(ASNImport.jsonCompetencies);
             }
         };
-        reader.readAsText(file);
+        reader.readAsText(file, &quot;UTF-8&quot;);
     };
     /**
      *  Method to import the competencies from an ASN JSON file,
@@ -1231,13 +1236,15 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
                 comp.name = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
              else 
                 comp.name = (((jsonComp)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
-            comp.sameAs = key;
             if ((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;] != null) 
                 comp.description = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
-            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                comp.generateId(serverUrl);
-             else 
-                comp.generateShortId(serverUrl);
+            comp.id = key;
+            if (comp.id == null) {
+                if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                    comp.generateId(serverUrl);
+                 else 
+                    comp.generateShortId(serverUrl);
+            }
             if (owner != null) 
                 comp.addOwner(owner.ppk.toPk());
             if (ASNImport.importedFramework != null) 
@@ -1303,8 +1310,8 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
             for (var j = 0; j &lt; children.length; j++) {
                 if (nodeId != null) {
                     var relation = new EcAlignment();
-                    relation.target = ASNImport.competencies[nodeId].shortId();
-                    relation.source = ASNImport.competencies[(children[j])[&quot;value&quot;]].shortId();
+                    relation.target = ASNImport.competencies[nodeId].id;
+                    relation.source = ASNImport.competencies[(children[j])[&quot;value&quot;]].id;
                     relation.relationType = &quot;narrows&quot;;
                     relation.name = &quot;&quot;;
                     relation.description = &quot;&quot;;
@@ -1361,11 +1368,13 @@ ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype
     constructor.createFramework = function(serverUrl, owner, success, failure, repo) {
         ASNImport.importedFramework.name = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
         ASNImport.importedFramework.description = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
-        if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-            ASNImport.importedFramework.generateId(serverUrl);
-         else 
-            ASNImport.importedFramework.generateShortId(serverUrl);
-        ASNImport.importedFramework.sameAs = ASNImport.frameworkUrl;
+        ASNImport.importedFramework.id = ASNImport.frameworkUrl;
+        if (ASNImport.importedFramework.id == null) {
+            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                ASNImport.importedFramework.generateId(serverUrl);
+             else 
+                ASNImport.importedFramework.generateShortId(serverUrl);
+        }
         if (owner != null) 
             ASNImport.importedFramework.addOwner(owner.ppk.toPk());
         ASNImport.importedFramework.save(function(p1) {
@@ -1661,7 +1670,7 @@ MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, pro
         reader.onerror = function(p1) {
             failure(&quot;Error Reading File&quot;);
         };
-        reader.readAsText(file);
+        reader.readAsText(file, &quot;UTF-8&quot;);
     };
     /**
      *  Method for actually creating the competencies in the CASS repository after a
@@ -1765,7 +1774,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.csv&quot;)) {
             failure(&quot;Invalid file type&quot;);
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             success(tabularData);
         }, error: failure});
@@ -1785,17 +1794,10 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
      *  @static
      */
     constructor.transformId = function(oldId, newObject, selectedServer, repo) {
-        if (oldId == null || oldId == &quot;&quot; || oldId.indexOf(&quot;http&quot;) == -1) 
+        if (oldId == null || oldId == &quot;&quot; || oldId.toLowerCase().indexOf(&quot;http&quot;) == -1) 
             newObject.assignId(selectedServer, oldId);
          else {
-            if (EcCompetency.getBlocking(oldId) == null) 
-                newObject.id = oldId;
-             else {
-                if (repo == null || repo.selectedServer.indexOf(selectedServer) != -1) 
-                    newObject.generateId(selectedServer);
-                 else 
-                    newObject.generateShortId(selectedServer);
-            }
+            newObject.id = oldId;
         }
     };
     /**
@@ -1844,7 +1846,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             return;
         }
         var competencies = [];
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             var colNames = tabularData[0];
             for (var i = 1; i &lt; tabularData.length; i++) {
@@ -1881,6 +1883,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                     if ((CSVImport.importCsvLookup)[tabularData[i][idIndex]] == null) 
                         (CSVImport.importCsvLookup)[tabularData[i][idIndex]] = competency.shortId();
                 }
+                (CSVImport.importCsvLookup)[competency.getName()] = competency.shortId();
                 for (var idx = 0; idx &lt; tabularData[i].length; idx++) {
                     var name = colNames[idx];
                     if (name == null || name.trim() == &quot;&quot; || name.startsWith(&quot;@&quot;) || name.indexOf(&quot;.&quot;) != -1 || tabularData[i][idx].trim() == &quot;&quot; || idx == nameIndex || idx == descriptionIndex || idx == scopeIndex || idx == idIndex) {
@@ -1901,7 +1904,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
     constructor.saveCompetency = function(comp, incremental, competencies, relations, success, serverUrl, owner, sourceIndex, relationTypeIndex, destIndex, failure, repo) {
         Task.asyncImmediate(function(o) {
             var keepGoing = o;
-            comp.save(function(results) {
+            var saveDone = function(results) {
                 CSVImport.saved++;
                 if (CSVImport.saved % CSVImport.INCREMENTAL_STEP == 0) {
                     if (CSVImport.progressObject == null) 
@@ -1916,13 +1919,8 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
                         CSVImport.importRelations(serverUrl, owner, relations, sourceIndex, relationTypeIndex, destIndex, competencies, success, failure, incremental, repo);
                 }
                 keepGoing();
-            }, function(results) {
-                failure(&quot;Failed to save competency&quot;);
-                for (var j = 0; j &lt; competencies.length; j++) {
-                    competencies[j]._delete(null, null, null);
-                }
-                keepGoing();
-            }, repo);
+            };
+            comp.save(saveDone, saveDone, repo);
         });
     };
     /**
@@ -1967,7 +1965,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
             failure(&quot;Destination Index not Set&quot;);
             return;
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             for (var i = 1; i &lt; tabularData.length; i++) {
                 var alignment = new EcAlignment();
@@ -2080,7 +2078,7 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         var hasAssignedContext = assignedContext != undefined &amp;&amp; assignedContext != null &amp;&amp; assignedContext.trim() != &quot;&quot;;
         var hasAssignedType = assignedType != undefined &amp;&amp; assignedType != null &amp;&amp; assignedType.trim() != &quot;&quot;;
         CSVImport.importCsvLookup = new Object();
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             var colNames = tabularData[0];
             var contextIdx = -1;
@@ -2203,7 +2201,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
         } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.csv&quot;)) {
             failure(&quot;Invalid file type&quot;);
         }
-        Papa.parse(file, {complete: function(results) {
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             var colNames = tabularData[0];
             var nameToCol = new Object();
@@ -2244,7 +2242,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
         } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.csv&quot;)) {
             failure(&quot;Invalid file type&quot;);
         }
-        Papa.parse(file, {header: true, complete: function(results) {
+        Papa.parse(file, {header: true, encoding: &quot;UTF-8&quot;, complete: function(results) {
             var tabularData = (results)[&quot;data&quot;];
             var frameworks = new Object();
             var frameworkArray = new Array();

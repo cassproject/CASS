@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -922,6 +925,9 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @type string (URL)
      */
     prototype.id = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  PEM encoded public keys of identities authorized to view the object. A
      *  repository will ignore write operations from these identities, but will
@@ -1229,10 +1235,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         var pem = newReader.toPem();
         if (this.reader == null) 
             this.reader = new Array();
-        for (var i = 0; i &lt; this.reader.length; i++) 
-            if (this.reader[i] == pem) 
-                return;
-        this.reader.push(pem);
+        EcArray.setAdd(this.reader, pem);
         this.signature = null;
     };
     /**
@@ -1246,9 +1249,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         var pem = oldReader.toPem();
         if (this.reader == null) 
             this.reader = new Array();
-        for (var i = 0; i &lt; this.reader.length; i++) 
-            if (this.reader[i] == pem) 
-                this.reader.splice(i, 1);
+        EcArray.setRemove(this.reader, pem);
         this.signature = null;
     };
     /**
@@ -1274,6 +1275,8 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
      *  @method updateTimestamp
      */
     prototype.updateTimestamp = function() {
+        if (this.getTimestamp() == null) 
+            return;
         var rawId = this.id.substring(0, this.id.lastIndexOf(&quot;/&quot;));
         if (rawId.endsWith(&quot;/&quot;) == false) 
             rawId += &quot;/&quot;;
@@ -1281,12 +1284,17 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id = rawId;
     };
     /**
-     *  Updates the ID timestamp of the object, for versioning purposes.
+     *  Returns the ID timestamp of the object, for versioning purposes.
      * 
-     *  @method updateTimestamp
+     *  @method getTimestamp
      */
     prototype.getTimestamp = function() {
-        return Integer.parseInt(this.id.substring(this.id.lastIndexOf(&quot;/&quot;) + 1));
+        var timestamp = this.id.substring(this.id.lastIndexOf(&quot;/&quot;) + 1);
+        if (timestamp.matches(&quot;[0-9]+&quot;)) {
+            return Integer.parseInt(timestamp);
+        } else {
+            return null;
+        }
     };
     /**
      *  Returns true if the provided ID represents this object.

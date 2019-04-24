@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -839,8 +842,17 @@
  */
 var EcConcept = function() {
     Concept.call(this);
+    var me = (this);
+    if (EcConcept.template != null) {
+        var you = (EcConcept.template);
+        for (var key in you) {
+            if ((typeof you[key]) != &quot;function&quot;) 
+                me[key.replace(&quot;@&quot;, &quot;&quot;)] = you[key];
+        }
+    }
 };
 EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype) {
+    constructor.template = null;
     /**
      *  Retrieves a concept from it&#x27;s server asynchronously
      * 
@@ -964,14 +976,23 @@ EcConcept = stjs.extend(EcConcept, Concept, [], function(constructor, prototype)
             }
         }, failure);
     };
-}, {topConceptOf: &quot;ConceptScheme&quot;, semanticRelation: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {template: &quot;Object&quot;, topConceptOf: &quot;ConceptScheme&quot;, semanticRelation: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Created by fray on 11/29/17.
  */
 var EcConceptScheme = function() {
     ConceptScheme.call(this);
+    var me = (this);
+    if (EcConceptScheme.template != null) {
+        var you = (EcConceptScheme.template);
+        for (var key in you) {
+            if ((typeof you[key]) != &quot;function&quot;) 
+                me[key.replace(&quot;@&quot;, &quot;&quot;)] = you[key];
+        }
+    }
 };
 EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(constructor, prototype) {
+    constructor.template = null;
     /**
      *  Retrieves a concept scheme from the server, specified by the ID
      * 
@@ -1090,7 +1111,7 @@ EcConceptScheme = stjs.extend(EcConceptScheme, ConceptScheme, [], function(const
             }
         }, failure);
     };
-}, {hasTopConcept: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {template: &quot;Object&quot;, hasTopConcept: &quot;Concept&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  The sequence that assertions should be built as such: 1. Generate the ID. 2.
  *  Add the owner. 3. Set the subject. 4. Set the agent. Further functions may be
@@ -1103,6 +1124,9 @@ var EcAssertion = function() {
     Assertion.call(this);
 };
 EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prototype) {
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     constructor.get = function(id, success, failure) {
         EcRepository.get(id, function(p1) {
             var assertion = new EcAssertion();
@@ -1178,6 +1202,28 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         readers.push(pk.toPem());
         this.subject = EcEncryptedValue.encryptValue(pk.toPem(), this.id, owners, readers);
     };
+    prototype.setSubjectAsync = function(pk, success, failure) {
+        var me = this;
+        var owners = new Array();
+        var readers = null;
+        if (this.reader == null) 
+            readers = new Array();
+         else 
+            readers = JSON.parse(JSON.stringify(this.reader));
+        if (this.subject != null) {
+            if (this.subject.owner != null) 
+                owners.concat(this.subject.owner);
+            if (this.subject.reader != null) 
+                readers.concat(this.subject.reader);
+        }
+        if (this.owner != null) 
+            owners = owners.concat(this.owner);
+        readers.push(pk.toPem());
+        EcEncryptedValue.encryptValueAsync(pk.toPem(), this.id, owners, readers, function(subject) {
+            me.subject = subject;
+            success();
+        }, failure);
+    };
     prototype.getSubjectAsync = function(success, failure) {
         if (this.subject == null) {
             success(null);
@@ -1215,6 +1261,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.setAgent = function(pk) {
         this.agent = EcEncryptedValue.encryptValue(pk.toPem(), this.id, this.subject.owner, this.subject.reader);
+    };
+    prototype.setAgentAsync = function(pk, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(pk.toPem(), this.id, this.subject.owner, this.subject.reader, function(agent) {
+            me.agent = agent;
+            success();
+        }, failure);
     };
     prototype.getAgentAsync = function(success, failure) {
         if (this.agent == null) {
@@ -1372,6 +1425,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setAssertionDate = function(assertionDateMs) {
         this.assertionDate = EcEncryptedValue.encryptValue(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
     };
+    prototype.setAssertionDateAsync = function(assertionDateMs, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(assertionDateMs.toString(), this.id, this.subject.owner, this.subject.reader, function(assertionDate) {
+            me.assertionDate = assertionDate;
+            success();
+        }, failure);
+    };
     prototype.getAssertionDateAsync = function(success, failure) {
         if (this.assertionDate == null) {
             success(null);
@@ -1409,6 +1469,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.setExpirationDate = function(expirationDateMs) {
         this.expirationDate = EcEncryptedValue.encryptValue(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
+    prototype.setExpirationDateAsync = function(expirationDateMs, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(expirationDateMs.toString(), this.id, this.subject.owner, this.subject.reader, function(expirationDate) {
+            me.expirationDate = expirationDate;
+            success();
+        }, failure);
     };
     prototype.getExpirationDateAsync = function(success, failure) {
         if (this.expirationDate == null) {
@@ -1448,6 +1515,20 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         return decryptedString;
     };
+    prototype.getEvidencesAsync = function(success, failure) {
+        var results = new Array();
+        if (this.evidence != null) 
+            new EcAsyncHelper().each(this.evidence, function(e, callback0) {
+                e.decryptIntoStringAsync(function(str) {
+                    results.push(str);
+                    callback0();
+                }, callback0);
+            }, function(strings) {
+                success(results);
+            });
+         else 
+            success(results);
+    };
     prototype.getEvidenceAsync = function(index, success, failure) {
         if (this.evidence[index] == null) {
             success(null);
@@ -1485,6 +1566,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     };
     prototype.setDecayFunction = function(decayFunctionText) {
         this.decayFunction = EcEncryptedValue.encryptValue(decayFunctionText.toString(), this.id, this.subject.owner, this.subject.reader);
+    };
+    prototype.setDecayFunctionAsync = function(decayFunctionText, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(decayFunctionText, this.id, this.subject.owner, this.subject.reader, function(decayFunction) {
+            me.decayFunction = decayFunction;
+            success();
+        }, failure);
     };
     prototype.getDecayFunctionAsync = function(success, failure) {
         if (this.decayFunction == null) {
@@ -1524,6 +1612,13 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
     prototype.setNegative = function(negativeB) {
         this.negative = EcEncryptedValue.encryptValue(negativeB.toString(), this.id, this.subject.owner, this.subject.reader);
     };
+    prototype.setNegativeAsync = function(negativeB, success, failure) {
+        var me = this;
+        EcEncryptedValue.encryptValueAsync(negativeB.toString(), this.id, this.subject.owner, this.subject.reader, function(negative) {
+            me.negative = negative;
+            success();
+        }, failure);
+    };
     prototype.getNegativeAsync = function(success, failure) {
         if (this.negative == null) {
             success(null);
@@ -1561,6 +1656,19 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         for (var i = 0; i &lt; evidences.length; i++) 
             encryptedValues.push(EcEncryptedValue.encryptValue(evidences[i], this.id, this.subject.owner, this.subject.reader));
         this.evidence = encryptedValues;
+    };
+    prototype.setEvidenceAsync = function(evidences, success, failure) {
+        var me = this;
+        var encryptedValues = new Array();
+        new EcAsyncHelper().each(evidences, function(s, callback0) {
+            EcEncryptedValue.encryptValueAsync(s, me.id, me.subject.owner, me.subject.reader, function(ecEncryptedValue) {
+                encryptedValues.push(ecEncryptedValue);
+                callback0();
+            }, callback0);
+        }, function(strings) {
+            me.evidence = encryptedValues;
+            success();
+        });
     };
     prototype.save = function(success, failure, repo) {
         if (this.competency == null || this.competency == &quot;&quot;) {
@@ -1666,10 +1774,84 @@ EcAssertion = stjs.extend(EcAssertion, Assertion, [], function(constructor, prot
         }
         EcRemoteLinkedData.prototype.removeReader.call(this, newReader);
     };
+    prototype.addReaderAsync = function(newReader, success, failure) {
+        var ary = new Array();
+        if (this.agent != null) {
+            ary.push(this.agent);
+        }
+        if (this.assertionDate != null) {
+            ary.push(this.assertionDate);
+        }
+        if (this.decayFunction != null) {
+            ary.push(this.decayFunction);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i &lt; this.evidence.length; i++) {
+                ary.push(this.evidence[i]);
+            }
+        if (this.expirationDate != null) {
+            ary.push(this.expirationDate);
+        }
+        if (this.negative != null) {
+            ary.push(this.negative);
+        }
+        if (this.subject != null) {
+            ary.push(this.subject);
+        }
+        EcRemoteLinkedData.prototype.addReader.call(this, newReader);
+        var eah = new EcAsyncHelper();
+        eah.each(ary, function(ecEncryptedValue, callback0) {
+            ecEncryptedValue.addReaderAsync(newReader, callback0, function(s) {
+                if (!eah.isStopped()) {
+                    eah.stop();
+                    failure(&quot;Failed to add reader to an assertion.&quot;);
+                }
+            });
+        }, function(strings) {
+            success();
+        });
+    };
+    prototype.removeReaderAsync = function(oldReader, success, failure) {
+        var ary = new Array();
+        if (this.agent != null) {
+            ary.push(this.agent);
+        }
+        if (this.assertionDate != null) {
+            ary.push(this.assertionDate);
+        }
+        if (this.decayFunction != null) {
+            ary.push(this.decayFunction);
+        }
+        if (this.evidence != null) 
+            for (var i = 0; i &lt; this.evidence.length; i++) {
+                ary.push(this.evidence[i]);
+            }
+        if (this.expirationDate != null) {
+            ary.push(this.expirationDate);
+        }
+        if (this.negative != null) {
+            ary.push(this.negative);
+        }
+        if (this.subject != null) {
+            ary.push(this.subject);
+        }
+        EcRemoteLinkedData.prototype.removeReader.call(this, oldReader);
+        var eah = new EcAsyncHelper();
+        eah.each(ary, function(ecEncryptedValue, callback0) {
+            ecEncryptedValue.removeReaderAsync(oldReader, callback0, function(s) {
+                if (!eah.isStopped()) {
+                    eah.stop();
+                    failure(&quot;Failed to remove reader to an assertion.&quot;);
+                }
+            });
+        }, function(strings) {
+            success();
+        });
+    };
     prototype.getSearchStringByTypeAndCompetency = function(competency) {
         return &quot;(&quot; + this.getSearchStringByType() + &quot; AND competency:\&quot;&quot; + competency.shortId() + &quot;\&quot;)&quot;;
     };
-}, {codebooks: &quot;Object&quot;, subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {codebooks: &quot;Object&quot;, subject: &quot;EcEncryptedValue&quot;, agent: &quot;EcEncryptedValue&quot;, evidence: {name: &quot;Array&quot;, arguments: [&quot;EcEncryptedValue&quot;]}, assertionDate: &quot;EcEncryptedValue&quot;, expirationDate: &quot;EcEncryptedValue&quot;, decayFunction: &quot;EcEncryptedValue&quot;, negative: &quot;EcEncryptedValue&quot;, about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of a Rollup Rule object with methods for interacting with CASS
  *  services on a server.
@@ -1829,7 +2011,7 @@ EcRollupRule = stjs.extend(EcRollupRule, RollupRule, [], function(constructor, p
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
-}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of an alignment object with methods for interacting with CASS
  *  services on a server.
@@ -1847,6 +2029,11 @@ var EcAlignment = function() {
     Relation.call(this);
 };
 EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, prototype) {
+    prototype.equals = function(obj) {
+        if ((obj).id == null) 
+            return ((obj).source == this.source &amp;&amp; (obj).target == this.target &amp;&amp; (obj).relationType == this.relationType);
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves the alignment specified with the ID from the server
      * 
@@ -2214,7 +2401,7 @@ EcAlignment = stjs.extend(EcAlignment, Relation, [], function(constructor, proto
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
-}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of a Level object with methods for interacting with CASS
  *  services on a server.
@@ -2491,7 +2678,7 @@ EcLevel = stjs.extend(EcLevel, Level, [], function(constructor, prototype) {
     prototype._delete = function(success, failure) {
         EcRepository.DELETE(this, success, failure);
     };
-}, {contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of a Competency object with methods for interacting with CASS
  *  services on a server.
@@ -2518,6 +2705,9 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
     constructor.relDone = {};
     constructor.levelDone = {};
     constructor.template = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a competency from it&#x27;s server asynchronously
      * 
@@ -3022,7 +3212,7 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
             }
         }, failure);
     };
-}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 /**
  *  Implementation of a Framework object with methods for interacting with CASS
  *  services on a server.
@@ -3049,6 +3239,9 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
     constructor.relDone = {};
     constructor.levelDone = {};
     constructor.template = null;
+    prototype.equals = function(obj) {
+        return this.isId((obj).id);
+    };
     /**
      *  Retrieves a framework from the server, specified by the ID
      * 
@@ -3454,7 +3647,7 @@ EcFramework = stjs.extend(EcFramework, Framework, [], function(constructor, prot
             }
         });
     };
-}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, contributor: &quot;Object&quot;, reviews: &quot;Review&quot;, audience: &quot;Audience&quot;, timeRequired: &quot;Duration&quot;, publication: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, temporalCoverage: &quot;Object&quot;, isBasedOn: &quot;Object&quot;, fileFormat: &quot;Object&quot;, interactionStatistic: &quot;InteractionCounter&quot;, recordedAt: &quot;Event&quot;, isPartOf: &quot;CreativeWork&quot;, exampleOfWork: &quot;CreativeWork&quot;, dateCreated: &quot;Object&quot;, releasedEvent: &quot;PublicationEvent&quot;, publisher: &quot;Object&quot;, encoding: &quot;MediaObject&quot;, creator: &quot;Object&quot;, hasPart: &quot;CreativeWork&quot;, license: &quot;Object&quot;, translator: &quot;Object&quot;, offers: &quot;Offer&quot;, schemaVersion: &quot;Object&quot;, review: &quot;Review&quot;, position: &quot;Object&quot;, genre: &quot;Object&quot;, character: &quot;Person&quot;, producer: &quot;Object&quot;, editor: &quot;Person&quot;, locationCreated: &quot;Place&quot;, about: &quot;Thing&quot;, audio: &quot;AudioObject&quot;, encodings: &quot;MediaObject&quot;, funder: &quot;Object&quot;, accountablePerson: &quot;Person&quot;, material: &quot;Object&quot;, author: &quot;Object&quot;, sourceOrganization: &quot;Organization&quot;, sponsor: &quot;Object&quot;, provider: &quot;Object&quot;, copyrightHolder: &quot;Object&quot;, comment: &quot;Comment&quot;, spatialCoverage: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, educationalAlignment: &quot;AlignmentObject&quot;, video: &quot;VideoObject&quot;, version: &quot;Object&quot;, mainEntity: &quot;Thing&quot;, associatedMedia: &quot;MediaObject&quot;, workExample: &quot;CreativeWork&quot;, mentions: &quot;Thing&quot;, citation: &quot;Object&quot;, dateModified: &quot;Object&quot;, inLanguage: &quot;Object&quot;, isBasedOnUrl: &quot;Object&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
+}, {relDone: {name: &quot;Map&quot;, arguments: [null, null]}, levelDone: {name: &quot;Map&quot;, arguments: [null, null]}, template: &quot;Object&quot;, competency: {name: &quot;Array&quot;, arguments: [null]}, relation: {name: &quot;Array&quot;, arguments: [null]}, level: {name: &quot;Array&quot;, arguments: [null]}, rollupRule: {name: &quot;Array&quot;, arguments: [null]}, about: &quot;Thing&quot;, educationalAlignment: &quot;AlignmentObject&quot;, associatedMedia: &quot;MediaObject&quot;, funder: &quot;Person&quot;, audio: &quot;AudioObject&quot;, workExample: &quot;CreativeWork&quot;, provider: &quot;Person&quot;, encoding: &quot;MediaObject&quot;, character: &quot;Person&quot;, audience: &quot;Audience&quot;, sourceOrganization: &quot;Organization&quot;, isPartOf: &quot;CreativeWork&quot;, video: &quot;VideoObject&quot;, publication: &quot;PublicationEvent&quot;, contributor: &quot;Organization&quot;, reviews: &quot;Review&quot;, hasPart: &quot;CreativeWork&quot;, releasedEvent: &quot;PublicationEvent&quot;, contentLocation: &quot;Place&quot;, aggregateRating: &quot;AggregateRating&quot;, locationCreated: &quot;Place&quot;, accountablePerson: &quot;Person&quot;, spatialCoverage: &quot;Place&quot;, offers: &quot;Offer&quot;, editor: &quot;Person&quot;, copyrightHolder: &quot;Person&quot;, recordedAt: &quot;Event&quot;, publisher: &quot;Person&quot;, interactionStatistic: &quot;InteractionCounter&quot;, exampleOfWork: &quot;CreativeWork&quot;, mainEntity: &quot;Thing&quot;, author: &quot;Person&quot;, timeRequired: &quot;Duration&quot;, translator: &quot;Person&quot;, comment: &quot;Comment&quot;, inLanguage: &quot;Language&quot;, review: &quot;Review&quot;, license: &quot;CreativeWork&quot;, encodings: &quot;MediaObject&quot;, isBasedOn: &quot;Product&quot;, creator: &quot;Person&quot;, sponsor: &quot;Organization&quot;, producer: &quot;Person&quot;, mentions: &quot;Thing&quot;, identifier: &quot;Object&quot;, image: &quot;Object&quot;, potentialAction: &quot;Action&quot;, mainEntityOfPage: &quot;Object&quot;, owner: {name: &quot;Array&quot;, arguments: [null]}, signature: {name: &quot;Array&quot;, arguments: [null]}, reader: {name: &quot;Array&quot;, arguments: [null]}, atProperties: {name: &quot;Array&quot;, arguments: [null]}}, {});
 
     </pre>
 </div>

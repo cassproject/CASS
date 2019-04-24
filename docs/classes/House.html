@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l10168"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:10168</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l10354"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:10354</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -1300,7 +1303,7 @@ A house is a building or structure that has the ability to be occupied for habit
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_additionalProperty">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:244</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:316</code></a>
         </p>
 
 
@@ -1308,7 +1311,7 @@ A house is a building or structure that has the ability to be occupied for habit
 
     <div class="description">
         <p><a href="http://Schema.org/additionalProperty">Schema.org/additionalProperty</a>
-A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in <a href="http://schema.org">schema.org</a>.\n\nNote: Publishers should be aware that applications designed to use specific <a href="http://schema.org">schema.org</a> properties (e.g. <a href="http://schema.org/width">http://schema.org/width</a>, <a href="http://schema.org/color">http://schema.org/color</a>, <a href="http://schema.org/gtin13">http://schema.org/gtin13</a>, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</p>
+A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in <a href="http://schema.org">schema.org</a>.\n\nNote: Publishers should be aware that applications designed to use specific <a href="http://schema.org">schema.org</a> properties (e.g. schema:width, schema:color, schema:gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</p>
 
     </div>
 
@@ -1343,7 +1346,7 @@ An additional type for the item, typically used for adding more specific types f
 </div>
 <div id="property_address" class="property item inherited">
     <h3 class="name"><code>address</code></h3>
-    <span class="type">Schema, PostalAddress | schema,Text</span>
+    <span class="type"><a href="../classes/PostalAddress.html" class="crosslink">PostalAddress</a></span>
 
 
 
@@ -1352,7 +1355,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_address">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l324"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:324</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:220</code></a>
         </p>
 
 
@@ -1378,7 +1381,7 @@ Physical address of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_addressCountry">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3553"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3553</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3662"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3662</code></a>
         </p>
 
 
@@ -1404,7 +1407,7 @@ Nation with its own government and occupying a particular territory identified b
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_addressLocality">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3560"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3560</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3669"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3669</code></a>
         </p>
 
 
@@ -1430,7 +1433,7 @@ Town, city, or village in which a particular location is situtated.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_addressRegion">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3567"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3567</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3676"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3676</code></a>
         </p>
 
 
@@ -1456,7 +1459,7 @@ State or province in which a particular location is situtated.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_aggregateRating">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:388</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l276"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:276</code></a>
         </p>
 
 
@@ -1511,7 +1514,7 @@ An alias for the item.</p>
                 Place
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2727"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2727</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2752"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2752</code></a>
         </p>
 
 
@@ -1537,7 +1540,7 @@ An amenity feature (e.g. a characteristic or service) of the Accommodation. This
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_branchCode">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:404</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l300"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:300</code></a>
         </p>
 
 
@@ -1563,7 +1566,7 @@ A short textual code (also called "store code") that uniquely identifies a place
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_containedIn">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:292</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l420"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:420</code></a>
         </p>
 
 
@@ -1589,7 +1592,7 @@ The basic containment relation between a place and one that contains it.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_containedInPlace">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:308</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:236</code></a>
         </p>
 
 
@@ -1615,7 +1618,7 @@ The basic containment relation between a place and one that contains it.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_containsPlace">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l268"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:268</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:388</code></a>
         </p>
 
 
@@ -1644,7 +1647,7 @@ The basic containment relation between a place and another that it contains.</p>
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3574</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3683"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3683</code></a>
         </p>
 
 
@@ -1652,7 +1655,7 @@ The basic containment relation between a place and another that it contains.</p>
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-Statememnt, characterization or account of the entity.</p>
+Statement, characterization or account of the entity.</p>
 
     </div>
 
@@ -1696,7 +1699,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_event">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:228</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l380"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:380</code></a>
         </p>
 
 
@@ -1722,7 +1725,7 @@ Upcoming or past event associated with this place, organization, or action.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_events">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l260"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:260</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l324"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:324</code></a>
         </p>
 
 
@@ -1748,7 +1751,7 @@ Upcoming or past events associated with this place or organization.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_faxNumber">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:236</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l412"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:412</code></a>
         </p>
 
 
@@ -1792,7 +1795,7 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
 </div>
 <div id="property_geo" class="property item inherited">
     <h3 class="name"><code>geo</code></h3>
-    <span class="type">Schema, GeoShape | schema,GeoCoordinates</span>
+    <span class="type"><a href="../classes/GeoCoordinates.html" class="crosslink">GeoCoordinates</a></span>
 
 
 
@@ -1801,7 +1804,7 @@ Typical unit code(s): MTK for square meter, FTK for square foot, or YDK for squa
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_geo">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l332"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:332</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l364"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:364</code></a>
         </p>
 
 
@@ -1827,7 +1830,7 @@ The geo coordinates of the place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_geoURI">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3581"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3581</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3690"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3690</code></a>
         </p>
 
 
@@ -1854,7 +1857,7 @@ This may define a place at any scale. Examples include a city, state, province, 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_globalLocationNumber">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l420"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:420</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:252</code></a>
         </p>
 
 
@@ -1871,7 +1874,7 @@ The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes 
 </div>
 <div id="property_hasMap" class="property item inherited">
     <h3 class="name"><code>hasMap</code></h3>
-    <span class="type">Schema, URL | schema,Map</span>
+    <span class="type">Object</span>
 
 
 
@@ -1880,7 +1883,7 @@ The <a href="http://www.gs1.org/gln">Global Location Number</a> (GLN, sometimes 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_hasMap">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l364"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:364</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:308</code></a>
         </p>
 
 
@@ -1958,7 +1961,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_isicV4">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:252</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:396</code></a>
         </p>
 
 
@@ -1984,7 +1987,7 @@ The International Standard of Industrial Classification of All Economic Activiti
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_latitude">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3589"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3589</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3698"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3698</code></a>
         </p>
 
 
@@ -2002,7 +2005,7 @@ For example 37.42242 (WGS 84)</p>
 </div>
 <div id="property_logo" class="property item inherited">
     <h3 class="name"><code>logo</code></h3>
-    <span class="type">Schema, URL | schema,ImageObject</span>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
 
 
 
@@ -2011,7 +2014,7 @@ For example 37.42242 (WGS 84)</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_logo">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l412"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:412</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l348"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:348</code></a>
         </p>
 
 
@@ -2037,7 +2040,7 @@ An associated logo.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_longitude">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3597"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3597</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3706"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3706</code></a>
         </p>
 
 
@@ -2090,7 +2093,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_map">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:356</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:292</code></a>
         </p>
 
 
@@ -2116,7 +2119,7 @@ A URL to a map of the place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_maps">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:284</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:404</code></a>
         </p>
 
 
@@ -2142,7 +2145,7 @@ A URL to a map of the place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_maximumAttendeeCapacity">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l276"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:276</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l260"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:260</code></a>
         </p>
 
 
@@ -2171,7 +2174,7 @@ The total number of individuals that may attend an event or venue.</p>
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3605"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3605</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3714"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3714</code></a>
         </p>
 
 
@@ -2188,7 +2191,7 @@ Name or title of the entity.</p>
 </div>
 <div id="property_numberOfRooms" class="property item">
     <h3 class="name"><code>numberOfRooms</code></h3>
-    <span class="type">Schema, Number | schema,QuantitativeValue</span>
+    <span class="type">Number</span>
 
 
 
@@ -2200,7 +2203,7 @@ Name or title of the entity.</p>
                 Accommodation
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l10188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:10188</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l10374"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:10374</code></a>
         </p>
 
 
@@ -2227,7 +2230,7 @@ Typical unit code(s): ROM for room or C62 for no unit. The type of room can be p
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_openingHoursSpecification">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l340"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:340</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:228</code></a>
         </p>
 
 
@@ -2253,7 +2256,7 @@ The opening hours of a certain place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Accommodation.html#property_permittedUsage">Accommodation</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2744"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2744</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2769"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2769</code></a>
         </p>
 
 
@@ -2270,7 +2273,7 @@ Indications regarding the permitted usage of the accommodation.</p>
 </div>
 <div id="property_petsAllowed" class="property item inherited">
     <h3 class="name"><code>petsAllowed</code></h3>
-    <span class="type">Schema, Boolean | schema,Text</span>
+    <span class="type">Boolean</span>
 
 
 
@@ -2279,7 +2282,7 @@ Indications regarding the permitted usage of the accommodation.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Accommodation.html#property_petsAllowed">Accommodation</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l2752"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2752</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l2744"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:2744</code></a>
         </p>
 
 
@@ -2296,7 +2299,7 @@ Indicates whether pets are allowed to enter the accommodation or lodging busines
 </div>
 <div id="property_photo" class="property item inherited">
     <h3 class="name"><code>photo</code></h3>
-    <span class="type">Schema, Photograph | schema,ImageObject</span>
+    <span class="type"><a href="../classes/ImageObject.html" class="crosslink">ImageObject</a></span>
 
 
 
@@ -2305,7 +2308,7 @@ Indicates whether pets are allowed to enter the accommodation or lodging busines
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_photo">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:316</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l212"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:212</code></a>
         </p>
 
 
@@ -2322,7 +2325,7 @@ A photograph of this place.</p>
 </div>
 <div id="property_photos" class="property item inherited">
     <h3 class="name"><code>photos</code></h3>
-    <span class="type">Schema, Photograph | schema,ImageObject</span>
+    <span class="type"><a href="../classes/Photograph.html" class="crosslink">Photograph</a></span>
 
 
 
@@ -2331,7 +2334,7 @@ A photograph of this place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_photos">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l348"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:348</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:284</code></a>
         </p>
 
 
@@ -2357,7 +2360,7 @@ Photographs of this place.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_postalCode">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3612"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3612</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3721"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3721</code></a>
         </p>
 
 
@@ -2383,7 +2386,7 @@ The postal code. For example, 94043.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_postOfficeBoxNumber">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3619"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3619</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3728"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3728</code></a>
         </p>
 
 
@@ -2435,7 +2438,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_review">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l300"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:300</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l372"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:372</code></a>
         </p>
 
 
@@ -2461,7 +2464,7 @@ A review of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_reviews">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l212"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:212</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l268"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:268</code></a>
         </p>
 
 
@@ -2513,7 +2516,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_smokingAllowed">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l372"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:372</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:244</code></a>
         </p>
 
 
@@ -2539,7 +2542,7 @@ Indicates whether it is allowed to smoke in the place, e.g. in the restaurant, h
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_specialOpeningHoursSpecification">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:396</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l332"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:332</code></a>
         </p>
 
 
@@ -2565,7 +2568,7 @@ The special opening hours of a certain place.\n\nUse this to explicitly override
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_streetAddress">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3626"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3626</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3735"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3735</code></a>
         </p>
 
 
@@ -2591,7 +2594,7 @@ Street address. e.g. "1600 Amphitheatre Pkwy".</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_targetContactPoint">Place</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3633"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3633</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3742"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3742</code></a>
         </p>
 
 
@@ -2617,7 +2620,7 @@ Options for contacting the organization or person.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Place.html#property_telephone">Place</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l380"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:380</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:356</code></a>
         </p>
 
 

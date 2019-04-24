@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l19631"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19631</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l19668"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19668</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -913,7 +916,7 @@ The mailing address.</p>
                                 <a href="#property_availableLanguage">availableLanguage</a>
 
                             </li>
-                            <li class="index-item property inherited inherited">
+                            <li class="index-item property inherited">
                                 <a href="#property_contactOption">contactOption</a>
 
                             </li>
@@ -1236,32 +1239,6 @@ An additional type for the item, typically used for adding more specific types f
 </div>
 <div id="property_addressCountry" class="property item">
     <h3 class="name"><code>addressCountry</code></h3>
-    <span class="type">Schema, Text | schema,Country</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19675"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19675</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/addressCountry">Schema.org/addressCountry</a>
-The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_addressCountry" class="property item">
-    <h3 class="name"><code>addressCountry</code></h3>
     <span class="type">LangString</span>
 
 
@@ -1272,7 +1249,7 @@ The country. For example, USA. You can also provide the two-letter <a href="http
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9556"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9556</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9898"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9898</code></a>
         </p>
 
 
@@ -1281,6 +1258,32 @@ The country. For example, USA. You can also provide the two-letter <a href="http
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/addressCountry">http://purl.org/ctdl/terms/addressCountry</a>
 Nation with its own government and occupying a particular territory identified by the two-letter ISO 3166-1 alpha-2 country code.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_addressCountry" class="property item">
+    <h3 class="name"><code>addressCountry</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19704"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19704</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/addressCountry">Schema.org/addressCountry</a>
+The country. For example, USA. You can also provide the two-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 alpha-2 country code</a>.</p>
 
     </div>
 
@@ -1299,7 +1302,7 @@ Nation with its own government and occupying a particular territory identified b
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9563"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9563</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9905"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9905</code></a>
         </p>
 
 
@@ -1325,7 +1328,7 @@ Town, city, or village in which a particular location is situtated.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19667"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19667</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19728"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19728</code></a>
         </p>
 
 
@@ -1334,32 +1337,6 @@ Town, city, or village in which a particular location is situtated.</p>
     <div class="description">
         <p><a href="http://Schema.org/addressLocality">Schema.org/addressLocality</a>
 The locality. For example, Mountain View.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_addressRegion" class="property item">
-    <h3 class="name"><code>addressRegion</code></h3>
-    <span class="type">Text</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19691"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19691</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/addressRegion">Schema.org/addressRegion</a>
-The region. For example, CA.</p>
 
     </div>
 
@@ -1378,7 +1355,7 @@ The region. For example, CA.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9570"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9570</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9912"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9912</code></a>
         </p>
 
 
@@ -1387,6 +1364,32 @@ The region. For example, CA.</p>
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/addressRegion">http://purl.org/ctdl/terms/addressRegion</a>
 State or province in which a particular location is situtated.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_addressRegion" class="property item">
+    <h3 class="name"><code>addressRegion</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19712"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19712</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/addressRegion">Schema.org/addressRegion</a>
+The region. For example, CA.</p>
 
     </div>
 
@@ -1420,7 +1423,7 @@ An alias for the item.
 </div>
 <div id="property_areaServed" class="property item inherited">
     <h3 class="name"><code>areaServed</code></h3>
-    <span class="type">Schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -1429,7 +1432,7 @@ An alias for the item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_areaServed">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12210"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12210</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12465"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12465</code></a>
         </p>
 
 
@@ -1446,7 +1449,7 @@ The geographic area where a service or offered item is provided.</p>
 </div>
 <div id="property_availableLanguage" class="property item inherited">
     <h3 class="name"><code>availableLanguage</code></h3>
-    <span class="type">Schema, Text | schema,Language</span>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
 
 
 
@@ -1455,7 +1458,7 @@ The geographic area where a service or offered item is provided.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_availableLanguage">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12202"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12202</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12417"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12417</code></a>
         </p>
 
 
@@ -1472,27 +1475,24 @@ A language someone may use with the item. Please use one of the language codes f
 </div>
 <div id="property_contactOption" class="property item inherited">
     <h3 class="name"><code>contactOption</code></h3>
-    <span class="type">LangString</span>
+    <span class="type"><a href="../classes/ContactPointOption.html" class="crosslink">ContactPointOption</a></span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/ContactPoint.html#property_contactOption">
-                ContactPoint
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3155"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3155</code></a>
+                <p>Inherited from
+                <a href="../classes/ContactPoint.html#property_contactOption">ContactPoint</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12409"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12409</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/contactOption">http://purl.org/ctdl/terms/contactOption</a>
-Option for a toll-free number or support for hearing-impaired callers.</p>
+        <p><a href="http://Schema.org/contactOption">Schema.org/contactOption</a>
+An option available on this contact point (e.g. a toll-free number or support for hearing-impaired callers).</p>
 
     </div>
 
@@ -1513,7 +1513,7 @@ Option for a toll-free number or support for hearing-impaired callers.</p>
                 ContactPoint
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3162"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3162</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3228</code></a>
         </p>
 
 
@@ -1593,7 +1593,7 @@ A sub property of description. A short description of the item used to disambigu
                 ContactPoint
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3170</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3236</code></a>
         </p>
 
 
@@ -1622,7 +1622,7 @@ Email address of the organization or person.</p>
                 ContactPoint
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3177"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3177</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3243"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3243</code></a>
         </p>
 
 
@@ -1648,7 +1648,7 @@ Fax number.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_hoursAvailable">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12218"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12218</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12401"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12401</code></a>
         </p>
 
 
@@ -1752,7 +1752,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9577"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9577</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9919"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9919</code></a>
         </p>
 
 
@@ -1778,7 +1778,7 @@ Name or title of the entity.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19651"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19651</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19720"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19720</code></a>
         </p>
 
 
@@ -1805,7 +1805,7 @@ The postal code. For example, 94043.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9584"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9584</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9926"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9926</code></a>
         </p>
 
 
@@ -1831,7 +1831,7 @@ The postal code. For example, 94043.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19659"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19659</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19688"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19688</code></a>
         </p>
 
 
@@ -1858,7 +1858,7 @@ The post office box number for PO box addresses.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9591"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9591</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9933"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9933</code></a>
         </p>
 
 
@@ -1900,7 +1900,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 </div>
 <div id="property_productSupported" class="property item inherited">
     <h3 class="name"><code>productSupported</code></h3>
-    <span class="type">Schema, Text | schema,Product</span>
+    <span class="type">Text</span>
 
 
 
@@ -1909,7 +1909,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_productSupported">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12194"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12194</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12449"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12449</code></a>
         </p>
 
 
@@ -1951,7 +1951,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 </div>
 <div id="property_serviceArea" class="property item inherited">
     <h3 class="name"><code>serviceArea</code></h3>
-    <span class="type">Schema, GeoShape | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/GeoShape.html" class="crosslink">GeoShape</a></span>
 
 
 
@@ -1960,7 +1960,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_serviceArea">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12234"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12234</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12393"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12393</code></a>
         </p>
 
 
@@ -1986,7 +1986,7 @@ The geographic area where the service is provided.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ContactPoint.html#property_socialMedia">ContactPoint</a>:
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3191"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3191</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3257"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3257</code></a>
         </p>
 
 
@@ -2012,7 +2012,7 @@ Social media access point for an agent or an agent's contact point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l19683"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19683</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l19696"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:19696</code></a>
         </p>
 
 
@@ -2039,7 +2039,7 @@ The street address. For example, 1600 Amphitheatre Pkwy.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9598"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9598</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l9940"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:9940</code></a>
         </p>
 
 
@@ -2068,7 +2068,7 @@ Street address. e.g. "1600 Amphitheatre Pkwy".</p>
                 ContactPoint
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3198"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3198</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3264"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3264</code></a>
         </p>
 
 

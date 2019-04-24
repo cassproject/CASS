@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -852,6 +855,14 @@ the data within.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_addReader">addReader</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addReaderAsync">addReaderAsync</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_decryptIntoObject">decryptIntoObject</a>
 
                             </li>
@@ -909,6 +920,11 @@ the data within.</p>
 
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_encryptValue">encryptValue</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item method deprecated">
                                 <a href="#method_encryptValueOld">encryptValueOld</a>
 
@@ -926,6 +942,10 @@ the data within.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_removeReader">removeReader</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeReaderAsync">removeReaderAsync</a>
 
                             </li>
                             <li class="index-item method">
@@ -969,7 +989,7 @@ the data within.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l677"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:677</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l745"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:745</code></a>
         </p>
 
 
@@ -1002,6 +1022,142 @@ the data within.</p>
 
 
 </div>
+<div id="method_addReader" class="method item">
+    <h3 class="name"><code>addReader</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>newReader</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l729"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:729</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a reader to the object, if the reader does not exist.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">newReader</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the new reader.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addReaderAsync" class="method item">
+    <h3 class="name"><code>addReaderAsync</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>newReader</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l789"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:789</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a reader to the object, if the reader does not exist.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">newReader</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the new reader.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback0</span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successful encryption</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error during secret decryption</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_decryptIntoObject" class="method item">
     <h3 class="name"><code>decryptIntoObject</code></h3>
 
@@ -1020,7 +1176,7 @@ the data within.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:308</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:358</code></a>
         </p>
 
 
@@ -1068,7 +1224,7 @@ the data within.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l329"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:329</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l379"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:379</code></a>
         </p>
 
 
@@ -1144,7 +1300,7 @@ encryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l355"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:355</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l405"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:405</code></a>
         </p>
 
 
@@ -1231,7 +1387,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l382"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:382</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l446"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:446</code></a>
         </p>
 
 
@@ -1239,7 +1395,7 @@ decryption</p>
     </div>
 
     <div class="description">
-        <p>Decrypts an encrypted value into a string</p>
+        <p>Decrypts an encrypted value into a string using an alternative secret.</p>
 
     </div>
 
@@ -1274,7 +1430,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:396</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l432"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:432</code></a>
         </p>
 
 
@@ -1282,7 +1438,7 @@ decryption</p>
     </div>
 
     <div class="description">
-        <p>Decrypts an encrypted value into a string using an alternative secret.</p>
+        <p>Decrypts an encrypted value into a string</p>
 
     </div>
 
@@ -1323,7 +1479,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l409"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:409</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l481"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:481</code></a>
         </p>
 
 
@@ -1393,7 +1549,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l431"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:431</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l459"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:459</code></a>
         </p>
 
 
@@ -1469,7 +1625,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l451"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:451</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l501"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:501</code></a>
         </p>
 
 
@@ -1556,7 +1712,7 @@ decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l471"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:471</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l521"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:521</code></a>
         </p>
 
 
@@ -1606,7 +1762,7 @@ Manager</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l544"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:544</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l594"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:594</code></a>
         </p>
 
 
@@ -1677,7 +1833,7 @@ secret</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l516"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:516</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l566"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:566</code></a>
         </p>
 
 
@@ -1746,7 +1902,7 @@ secret</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l609"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:609</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l661"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:661</code></a>
         </p>
 
 
@@ -1831,7 +1987,7 @@ secret decryption</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:277</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l327"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:327</code></a>
         </p>
 
 
@@ -1885,6 +2041,115 @@ function gets the encryptOnSave value</p>
                         <span class="type">Boolean</span>:
                     <p>if val is null/ignored returns value in the map, if val
 is passed in returns val</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_encryptValue" class="method item">
+    <h3 class="name"><code>encryptValue</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>id</code>
+                </li>
+                <li class="arg">
+                        <code>owners</code>
+                </li>
+                <li class="arg">
+                        <code>readers</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:236</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Encrypts a text value with the owners and readers provided</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Text to encrypt</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">id</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>ID of the value to encrypt</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">owners</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Owner keys to encrypt value with</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">readers</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Reader keys to encrypt value with</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/EcEncryptedValue.html" class="crosslink">EcEncryptedValue</a></span>:
+                    <p>Encrypted value</p>
 
             </div>
         </div>
@@ -2136,7 +2401,7 @@ is passed in returns val</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:236</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l286"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:286</code></a>
         </p>
 
 
@@ -2255,7 +2520,7 @@ is passed in returns val</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l660"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:660</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l712"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:712</code></a>
         </p>
 
 
@@ -2320,7 +2585,7 @@ can't tell</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ebac.repository.js.html#l702"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:702</code></a>
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l764"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:764</code></a>
         </p>
 
 
@@ -2343,6 +2608,88 @@ can't tell</p>
 
                     <div class="param-description">
                         <p>PK of the old reader.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeReaderAsync" class="method item">
+    <h3 class="name"><code>removeReaderAsync</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>oldReader</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code>failure</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_ebac.repository.js.html#l818"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ebac.repository.js:818</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a reader from the object, if the reader does exist.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">oldReader</code>
+                        <span class="type"><a href="../classes/EcPk.html" class="crosslink">EcPk</a></span>
+
+
+                    <div class="param-description">
+                        <p>PK of the old reader.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback0</span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after successful encryption</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">failure</code>
+                        <span class="type">Callback1<String></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered if error during secret decryption</p>
 
                     </div>
 

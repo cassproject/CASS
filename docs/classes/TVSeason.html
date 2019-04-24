@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -815,11 +818,11 @@
 <div class="box meta">
 
         <div class="extends">
-            Extends <a href="../classes/CreativeWorkSeason.html" class="crosslink">CreativeWorkSeason</a>
+            Extends <a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l14624"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:14624</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l7963"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7963</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -907,10 +910,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_accountablePerson">accountablePerson</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_actor">actor</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1014,10 +1013,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
 
                             </li>
                             <li class="index-item property inherited">
-                                <a href="#property_director">director</a>
-
-                            </li>
-                            <li class="index-item property inherited">
                                 <a href="#property_disambiguatingDescription">disambiguatingDescription</a>
 
                             </li>
@@ -1043,18 +1038,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_encodings">encodings</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_endDate">endDate</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_episode">episode</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_episodes">episodes</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1158,15 +1141,7 @@ Season dedicated to TV broadcast and associated online delivery.</p>
 
                             </li>
                             <li class="index-item property inherited">
-                                <a href="#property_numberOfEpisodes">numberOfEpisodes</a>
-
-                            </li>
-                            <li class="index-item property inherited">
                                 <a href="#property_offers">offers</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_partOfSeries">partOfSeries</a>
 
                             </li>
                             <li class="index-item property">
@@ -1183,10 +1158,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_producer">producer</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_productionCompany">productionCompany</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1230,10 +1201,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
 
                             </li>
                             <li class="index-item property inherited">
-                                <a href="#property_seasonNumber">seasonNumber</a>
-
-                            </li>
-                            <li class="index-item property inherited">
                                 <a href="#property_sourceOrganization">sourceOrganization</a>
 
                             </li>
@@ -1243,10 +1210,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_sponsor">sponsor</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_startDate">startDate</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1263,10 +1226,6 @@ Season dedicated to TV broadcast and associated online delivery.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_timeRequired">timeRequired</a>
-
-                            </li>
-                            <li class="index-item property inherited">
-                                <a href="#property_trailer">trailer</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1512,7 +1471,7 @@ Season dedicated to TV broadcast and associated online delivery.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_about">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1292</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l930"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:930</code></a>
         </p>
 
 
@@ -1538,7 +1497,7 @@ The subject matter of the content.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityAPI">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1420"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1420</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1286"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1286</code></a>
         </p>
 
 
@@ -1564,7 +1523,7 @@ Indicates that the resource is compatible with the referenced accessibility API 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityControl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1100"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1100</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1470"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1470</code></a>
         </p>
 
 
@@ -1590,7 +1549,7 @@ Identifies input methods that are sufficient to fully control the described reso
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityFeature">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1068"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1068</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1138"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1138</code></a>
         </p>
 
 
@@ -1616,7 +1575,7 @@ Content features of the resource, such as accessible media, alternatives and sup
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityHazard">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1380"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1380</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1238"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1238</code></a>
         </p>
 
 
@@ -1642,7 +1601,7 @@ A characteristic of the described resource that is physiologically dangerous to 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilitySummary">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1526"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1526</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1002"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1002</code></a>
         </p>
 
 
@@ -1668,7 +1627,7 @@ A human-readable summary of specific accessibility features or deficiencies, con
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessMode">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1212"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1212</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1326"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1326</code></a>
         </p>
 
 
@@ -1694,7 +1653,7 @@ The human sensory perceptual system or cognitive faculty through which a person 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessModeSufficient">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1260"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1260</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1162"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1162</code></a>
         </p>
 
 
@@ -1720,7 +1679,7 @@ A list of single or combined accessModes that are sufficient to understand all t
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accountablePerson">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1340"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1340</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1180"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1180</code></a>
         </p>
 
 
@@ -1729,32 +1688,6 @@ A list of single or combined accessModes that are sufficient to understand all t
     <div class="description">
         <p><a href="http://Schema.org/accountablePerson">Schema.org/accountablePerson</a>
 Specifies the Person that is legally accountable for the CreativeWork.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_actor" class="property item inherited">
-    <h3 class="name"><code>actor</code></h3>
-    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_actor">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7093"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7093</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/actor">Schema.org/actor</a>
-An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip.</p>
 
     </div>
 
@@ -1798,7 +1731,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_aggregateRating">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1462"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1462</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1146"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1146</code></a>
         </p>
 
 
@@ -1850,7 +1783,7 @@ An alias for the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_alternativeHeadline">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1124"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1124</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1558"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1558</code></a>
         </p>
 
 
@@ -1876,7 +1809,7 @@ A secondary title of the CreativeWork.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_associatedMedia">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1502"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1502</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l946"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:946</code></a>
         </p>
 
 
@@ -1902,7 +1835,7 @@ A media object that encodes this CreativeWork. This property is a synonym for en
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_audience">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l954"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:954</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1018"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1018</code></a>
         </p>
 
 
@@ -1928,7 +1861,7 @@ An intended audience, i.e. a group for whom something was created.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_audio">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1300"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1300</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l962"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:962</code></a>
         </p>
 
 
@@ -1945,7 +1878,7 @@ An embedded audio object.</p>
 </div>
 <div id="property_author" class="property item inherited">
     <h3 class="name"><code>author</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -1954,7 +1887,7 @@ An embedded audio object.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_author">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1372"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1372</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1398"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1398</code></a>
         </p>
 
 
@@ -1980,7 +1913,7 @@ The author of this content or rating. Please note that author is special in that
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_award">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l978"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:978</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1222"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1222</code></a>
         </p>
 
 
@@ -2006,7 +1939,7 @@ An award won by or for this item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_awards">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1252</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1254"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1254</code></a>
         </p>
 
 
@@ -2032,7 +1965,7 @@ Awards won by or for this item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_character">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1228</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1010"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1010</code></a>
         </p>
 
 
@@ -2049,7 +1982,7 @@ Fictional person connected with a creative work.</p>
 </div>
 <div id="property_citation" class="property item inherited">
     <h3 class="name"><code>citation</code></h3>
-    <span class="type">Schema, Text | schema,CreativeWork</span>
+    <span class="type">Text</span>
 
 
 
@@ -2058,7 +1991,7 @@ Fictional person connected with a creative work.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_citation">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1542"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1542</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1574</code></a>
         </p>
 
 
@@ -2084,7 +2017,7 @@ A citation or reference to another creative work, such as another publication, w
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_comment">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1436"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1436</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1438"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1438</code></a>
         </p>
 
 
@@ -2110,7 +2043,7 @@ Comments, typically from users.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_commentCount">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1236</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1270"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1270</code></a>
         </p>
 
 
@@ -2136,7 +2069,7 @@ The number of comments this CreativeWork (e.g. Article, Question or Answer) has 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contentLocation">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l986"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:986</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1122"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1122</code></a>
         </p>
 
 
@@ -2162,7 +2095,7 @@ The location depicted or described in the content. For example, the location in 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contentRating">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1244</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1310"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1310</code></a>
         </p>
 
 
@@ -2179,7 +2112,7 @@ Official rating of a piece of content—for example,'MPAA PG-13'.</p>
 </div>
 <div id="property_contributor" class="property item inherited">
     <h3 class="name"><code>contributor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2188,7 +2121,7 @@ Official rating of a piece of content—for example,'MPAA PG-13'.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contributor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l930"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:930</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1066"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1066</code></a>
         </p>
 
 
@@ -2205,7 +2138,7 @@ A secondary contributor to the CreativeWork or Event.</p>
 </div>
 <div id="property_copyrightHolder" class="property item inherited">
     <h3 class="name"><code>copyrightHolder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2214,7 +2147,7 @@ A secondary contributor to the CreativeWork or Event.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_copyrightHolder">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1412"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1412</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1230"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1230</code></a>
         </p>
 
 
@@ -2240,7 +2173,7 @@ The party holding the legal copyright to the CreativeWork.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_copyrightYear">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1518"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1518</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1246"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1246</code></a>
         </p>
 
 
@@ -2266,7 +2199,7 @@ The year during which the claimed copyright for the CreativeWork was first asser
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l14644"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:14644</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l7991"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7991</code></a>
         </p>
 
 
@@ -2283,7 +2216,7 @@ The country of the principal offices of the production company or individual res
 </div>
 <div id="property_creator" class="property item inherited">
     <h3 class="name"><code>creator</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2292,7 +2225,7 @@ The country of the principal offices of the production company or individual res
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_creator">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1140"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1140</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1494</code></a>
         </p>
 
 
@@ -2309,7 +2242,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
 </div>
 <div id="property_dateCreated" class="property item inherited">
     <h3 class="name"><code>dateCreated</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">Date</span>
 
 
 
@@ -2318,7 +2251,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_dateCreated">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1076"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1076</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1534"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1534</code></a>
         </p>
 
 
@@ -2335,7 +2268,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
 </div>
 <div id="property_dateModified" class="property item inherited">
     <h3 class="name"><code>dateModified</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">DateTime</span>
 
 
 
@@ -2344,7 +2277,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_dateModified">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1558"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1558</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1366"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1366</code></a>
         </p>
 
 
@@ -2370,7 +2303,7 @@ The date on which the CreativeWork was most recently modified or when the item's
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_datePublished">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1444"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1444</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1542"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1542</code></a>
         </p>
 
 
@@ -2405,32 +2338,6 @@ Date of first broadcast/publication.</p>
     <div class="description">
         <p><a href="http://Schema.org/description">Schema.org/description</a>
 A description of the item.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_director" class="property item inherited">
-    <h3 class="name"><code>director</code></h3>
-    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_director">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7069"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7069</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/director">Schema.org/director</a>
-A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip.</p>
 
     </div>
 
@@ -2474,7 +2381,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_discussionUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1550"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1550</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1214"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1214</code></a>
         </p>
 
 
@@ -2500,7 +2407,7 @@ A link to the page containing the comments of the CreativeWork.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_editor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1276"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1276</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1206</code></a>
         </p>
 
 
@@ -2526,7 +2433,7 @@ Specifies the Person who edited the CreativeWork.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_educationalAlignment">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1470"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1470</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l938"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:938</code></a>
         </p>
 
 
@@ -2552,7 +2459,7 @@ An alignment to an established educational framework.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_educationalUse">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1132"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1132</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1114"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1114</code></a>
         </p>
 
 
@@ -2578,7 +2485,7 @@ The purpose of a work in the context of education; for example, 'assignment', 'g
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_encoding">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1116"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1116</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l986"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:986</code></a>
         </p>
 
 
@@ -2604,7 +2511,7 @@ A media object that encodes this CreativeWork. This property is a synonym for as
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_encodings">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1308</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1478</code></a>
         </p>
 
 
@@ -2613,84 +2520,6 @@ A media object that encodes this CreativeWork. This property is a synonym for as
     <div class="description">
         <p><a href="http://Schema.org/encodings">Schema.org/encodings</a>
 A media object that encodes this CreativeWork.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_endDate" class="property item inherited">
-    <h3 class="name"><code>endDate</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_endDate">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7141"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7141</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/endDate">Schema.org/endDate</a>
-The end date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_episode" class="property item inherited">
-    <h3 class="name"><code>episode</code></h3>
-    <span class="type"><a href="../classes/Episode.html" class="crosslink">Episode</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_episode">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7085"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7085</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/episode">Schema.org/episode</a>
-An episode of a tv, radio or game media within a series or season.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_episodes" class="property item inherited">
-    <h3 class="name"><code>episodes</code></h3>
-    <span class="type"><a href="../classes/Episode.html" class="crosslink">Episode</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_episodes">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7061"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7061</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/episodes">Schema.org/episodes</a>
-An episode of a TV/radio series or season.</p>
 
     </div>
 
@@ -2708,7 +2537,7 @@ An episode of a TV/radio series or season.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_exampleOfWork">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1060"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1060</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1350"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1350</code></a>
         </p>
 
 
@@ -2725,7 +2554,7 @@ A creative work that this work is an example/instance/realization/derivation of.
 </div>
 <div id="property_fileFormat" class="property item inherited">
     <h3 class="name"><code>fileFormat</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -2734,7 +2563,7 @@ A creative work that this work is an example/instance/realization/derivation of.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_fileFormat">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1020"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1020</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1278"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1278</code></a>
         </p>
 
 
@@ -2751,7 +2580,7 @@ Media type, typically MIME format (see <a href="http://www.iana.org/assignments/
 </div>
 <div id="property_funder" class="property item inherited">
     <h3 class="name"><code>funder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2760,7 +2589,7 @@ Media type, typically MIME format (see <a href="http://www.iana.org/assignments/
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_funder">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1324"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1324</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l954"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:954</code></a>
         </p>
 
 
@@ -2777,7 +2606,7 @@ A person or organization that supports (sponsors) something through some kind of
 </div>
 <div id="property_genre" class="property item inherited">
     <h3 class="name"><code>genre</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">URL</span>
 
 
 
@@ -2786,7 +2615,7 @@ A person or organization that supports (sponsors) something through some kind of
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_genre">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1220</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1382"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1382</code></a>
         </p>
 
 
@@ -2812,7 +2641,7 @@ Genre of the creative work, broadcast channel or group.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_hasPart">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1148"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1148</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1090"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1090</code></a>
         </p>
 
 
@@ -2838,7 +2667,7 @@ Indicates a CreativeWork that is (in some sense) a part of this CreativeWork.</p
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_headline">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1012"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1012</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1566"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1566</code></a>
         </p>
 
 
@@ -2907,7 +2736,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 </div>
 <div id="property_inLanguage" class="property item inherited">
     <h3 class="name"><code>inLanguage</code></h3>
-    <span class="type">Schema, Text | schema,Language</span>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
 
 
 
@@ -2916,7 +2745,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_inLanguage">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1566"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1566</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1446"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1446</code></a>
         </p>
 
 
@@ -2942,7 +2771,7 @@ The language of the content or performance or used in an action. Please use one 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_interactionStatistic">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1028"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1028</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1302"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1302</code></a>
         </p>
 
 
@@ -2968,7 +2797,7 @@ The number of interactions for the CreativeWork using the WebSite or SoftwareApp
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_interactivityType">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1364"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1364</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l994"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:994</code></a>
         </p>
 
 
@@ -2994,7 +2823,7 @@ The predominant mode of learning supported by the learning resource. Acceptable 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isAccessibleForFree">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1044"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1044</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1550"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1550</code></a>
         </p>
 
 
@@ -3011,7 +2840,7 @@ A flag to signal that the publication is accessible for free.</p>
 </div>
 <div id="property_isBasedOn" class="property item inherited">
     <h3 class="name"><code>isBasedOn</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork | schema,Product</span>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
 
 
 
@@ -3020,7 +2849,7 @@ A flag to signal that the publication is accessible for free.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isBasedOn">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1004"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1004</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1486"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1486</code></a>
         </p>
 
 
@@ -3037,7 +2866,7 @@ A resource that was used in the creation of this resource. This term can be repe
 </div>
 <div id="property_isBasedOnUrl" class="property item inherited">
     <h3 class="name"><code>isBasedOnUrl</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork | schema,Product</span>
+    <span class="type">URL</span>
 
 
 
@@ -3046,7 +2875,7 @@ A resource that was used in the creation of this resource. This term can be repe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isBasedOnUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1574</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1406"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1406</code></a>
         </p>
 
 
@@ -3072,7 +2901,7 @@ A resource that was used in the creation of this resource. This term can be repe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isFamilyFriendly">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1108"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1108</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1342"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1342</code></a>
         </p>
 
 
@@ -3098,7 +2927,7 @@ Indicates whether this content is family friendly.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isPartOf">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1052"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1052</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1034</code></a>
         </p>
 
 
@@ -3124,7 +2953,7 @@ Indicates a CreativeWork that this CreativeWork is (in some sense) part of.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_keywords">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l946"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:946</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1390"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1390</code></a>
         </p>
 
 
@@ -3150,7 +2979,7 @@ Keywords or tags used to describe this content. Multiple entries in a keywords l
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_learningResourceType">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1348"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1348</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1318"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1318</code></a>
         </p>
 
 
@@ -3167,7 +2996,7 @@ The predominant type or kind characterizing the learning resource. For example, 
 </div>
 <div id="property_license" class="property item inherited">
     <h3 class="name"><code>license</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork</span>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
 
 
 
@@ -3176,7 +3005,7 @@ The predominant type or kind characterizing the learning resource. For example, 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_license">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1156"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1156</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1462"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1462</code></a>
         </p>
 
 
@@ -3202,7 +3031,7 @@ A license document that applies to this content, typically indicated by URL.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_locationCreated">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1284</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1154"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1154</code></a>
         </p>
 
 
@@ -3228,7 +3057,7 @@ The location where the CreativeWork was created, which may not be the same as th
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_mainEntity">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1494</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1374"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1374</code></a>
         </p>
 
 
@@ -3271,7 +3100,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 </div>
 <div id="property_material" class="property item inherited">
     <h3 class="name"><code>material</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,Product</span>
+    <span class="type">URL</span>
 
 
 
@@ -3280,7 +3109,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_material">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1356</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1334"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1334</code></a>
         </p>
 
 
@@ -3306,7 +3135,7 @@ A material that something is made from, e.g. leather, wool, cotton, paper.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_mentions">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1534"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1534</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1526"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1526</code></a>
         </p>
 
 
@@ -3347,32 +3176,6 @@ The name of the item.</p>
 
 
 </div>
-<div id="property_numberOfEpisodes" class="property item inherited">
-    <h3 class="name"><code>numberOfEpisodes</code></h3>
-    <span class="type">Integer</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_numberOfEpisodes">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7125"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7125</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/numberOfEpisodes">Schema.org/numberOfEpisodes</a>
-The number of episodes in this season or series.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_offers" class="property item inherited">
     <h3 class="name"><code>offers</code></h3>
     <span class="type"><a href="../classes/Offer.html" class="crosslink">Offer</a></span>
@@ -3384,7 +3187,7 @@ The number of episodes in this season or series.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_offers">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1172"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1172</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1198"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1198</code></a>
         </p>
 
 
@@ -3393,32 +3196,6 @@ The number of episodes in this season or series.</p>
     <div class="description">
         <p><a href="http://Schema.org/offers">Schema.org/offers</a>
 An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_partOfSeries" class="property item inherited">
-    <h3 class="name"><code>partOfSeries</code></h3>
-    <span class="type"><a href="../classes/CreativeWorkSeries.html" class="crosslink">CreativeWorkSeries</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_partOfSeries">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7133"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7133</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/partOfSeries">Schema.org/partOfSeries</a>
-The series to which this episode or season belongs.</p>
 
     </div>
 
@@ -3436,7 +3213,7 @@ The series to which this episode or season belongs.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l14652"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:14652</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l7983"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7983</code></a>
         </p>
 
 
@@ -3453,7 +3230,7 @@ The TV series to which this episode or season belongs.</p>
 </div>
 <div id="property_position" class="property item inherited">
     <h3 class="name"><code>position</code></h3>
-    <span class="type">Schema, Integer | schema,Text</span>
+    <span class="type">Integer</span>
 
 
 
@@ -3462,7 +3239,7 @@ The TV series to which this episode or season belongs.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_position">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1204"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1204</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1098"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1098</code></a>
         </p>
 
 
@@ -3505,7 +3282,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 </div>
 <div id="property_producer" class="property item inherited">
     <h3 class="name"><code>producer</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -3514,7 +3291,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_producer">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1268"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1268</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1518"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1518</code></a>
         </p>
 
 
@@ -3529,35 +3306,9 @@ The person or organization who produced the work (e.g. music album, movie, tv/ra
 
 
 </div>
-<div id="property_productionCompany" class="property item inherited">
-    <h3 class="name"><code>productionCompany</code></h3>
-    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_productionCompany">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7117"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7117</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/productionCompany">Schema.org/productionCompany</a>
-The production company or studio responsible for the item e.g. series, video game, episode etc.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_provider" class="property item inherited">
     <h3 class="name"><code>provider</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -3566,7 +3317,7 @@ The production company or studio responsible for the item e.g. series, video gam
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_provider">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1404</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l978"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:978</code></a>
         </p>
 
 
@@ -3592,7 +3343,7 @@ The service provider, service operator, or service performer; the goods producer
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publication">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l970"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:970</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1050"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1050</code></a>
         </p>
 
 
@@ -3609,7 +3360,7 @@ A publication event associated with the item.</p>
 </div>
 <div id="property_publisher" class="property item inherited">
     <h3 class="name"><code>publisher</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -3618,7 +3369,7 @@ A publication event associated with the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publisher">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1092"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1092</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1294"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1294</code></a>
         </p>
 
 
@@ -3644,7 +3395,7 @@ The publisher of the creative work.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publishingPrinciples">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1180"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1180</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1502"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1502</code></a>
         </p>
 
 
@@ -3670,7 +3421,7 @@ Link to page describing the editorial principles of the organization primarily r
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_recordedAt">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1036"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1036</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1262"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1262</code></a>
         </p>
 
 
@@ -3696,7 +3447,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_releasedEvent">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1084"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1084</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1106"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1106</code></a>
         </p>
 
 
@@ -3722,7 +3473,7 @@ The place and time the release was issued, expressed as a PublicationEvent.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_review">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1196"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1196</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1454"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1454</code></a>
         </p>
 
 
@@ -3748,7 +3499,7 @@ A review of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_reviews">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l938"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:938</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1074"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1074</code></a>
         </p>
 
 
@@ -3791,7 +3542,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 </div>
 <div id="property_schemaVersion" class="property item inherited">
     <h3 class="name"><code>schemaVersion</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">URL</span>
 
 
 
@@ -3800,7 +3551,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_schemaVersion">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1188</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1130"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1130</code></a>
         </p>
 
 
@@ -3808,33 +3559,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
     <div class="description">
         <p><a href="http://Schema.org/schemaVersion">Schema.org/schemaVersion</a>
-Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as <a href="http://schema.org/version/2.0/">http://schema.org/version/2.0/</a> if precise indication of schema version was required by some application.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_seasonNumber" class="property item inherited">
-    <h3 class="name"><code>seasonNumber</code></h3>
-    <span class="type">Schema, Integer | schema,Text</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_seasonNumber">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7077"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7077</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/seasonNumber">Schema.org/seasonNumber</a>
-Position of the season within an ordered group of seasons.</p>
+Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as schema:version/2.0/ if precise indication of schema version was required by some application.</p>
 
     </div>
 
@@ -3852,7 +3577,7 @@ Position of the season within an ordered group of seasons.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_sourceOrganization">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1388</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1026"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1026</code></a>
         </p>
 
 
@@ -3878,7 +3603,7 @@ The Organization on whose behalf the creator was working.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_spatialCoverage">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1452"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1452</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1188</code></a>
         </p>
 
 
@@ -3897,7 +3622,7 @@ areas that the dataset describes: a dataset of New York weather would have spati
 </div>
 <div id="property_sponsor" class="property item inherited">
     <h3 class="name"><code>sponsor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -3906,7 +3631,7 @@ areas that the dataset describes: a dataset of New York weather would have spati
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_sponsor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1396</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1510"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1510</code></a>
         </p>
 
 
@@ -3921,35 +3646,9 @@ A person or organization that supports a thing through a pledge, promise, or fin
 
 
 </div>
-<div id="property_startDate" class="property item inherited">
-    <h3 class="name"><code>startDate</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_startDate">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7109"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7109</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/startDate">Schema.org/startDate</a>
-The start date and time of the item (in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 date format</a>).</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_temporalCoverage" class="property item inherited">
     <h3 class="name"><code>temporalCoverage</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,DateTime</span>
+    <span class="type">URL</span>
 
 
 
@@ -3958,7 +3657,7 @@ The start date and time of the item (in <a href="http://en.wikipedia.org/wiki/IS
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_temporalCoverage">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l994"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:994</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1170</code></a>
         </p>
 
 
@@ -3986,7 +3685,7 @@ Written works such as books may sometimes have precise temporal coverage too, e.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_text">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1428"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1428</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1058"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1058</code></a>
         </p>
 
 
@@ -4012,7 +3711,7 @@ The textual content of this CreativeWork.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_thumbnailUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1316</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1430"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1430</code></a>
         </p>
 
 
@@ -4038,7 +3737,7 @@ A thumbnail image relevant to the Thing.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_timeRequired">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l962"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:962</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1414"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1414</code></a>
         </p>
 
 
@@ -4053,35 +3752,9 @@ Approximate or typical time it takes to work with or through this learning resou
 
 
 </div>
-<div id="property_trailer" class="property item inherited">
-    <h3 class="name"><code>trailer</code></h3>
-    <span class="type"><a href="../classes/VideoObject.html" class="crosslink">VideoObject</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/CreativeWorkSeason.html#property_trailer">CreativeWorkSeason</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l7101"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:7101</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/trailer">Schema.org/trailer</a>
-The trailer of a movie or tv/radio series, season, episode, etc.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_translator" class="property item inherited">
     <h3 class="name"><code>translator</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -4090,7 +3763,7 @@ The trailer of a movie or tv/radio series, season, episode, etc.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_translator">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1164"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1164</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1422"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1422</code></a>
         </p>
 
 
@@ -4116,7 +3789,7 @@ Organization or person who adapts a creative work to different languages, region
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_typicalAgeRange">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1332"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1332</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1082"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1082</code></a>
         </p>
 
 
@@ -4159,7 +3832,7 @@ URL of the item.</p>
 </div>
 <div id="property_version" class="property item inherited">
     <h3 class="name"><code>version</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -4168,7 +3841,7 @@ URL of the item.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_version">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1486"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1486</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1358</code></a>
         </p>
 
 
@@ -4194,7 +3867,7 @@ The version of the CreativeWork embodied by a specified resource.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_video">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1478</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1042"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1042</code></a>
         </p>
 
 
@@ -4220,7 +3893,7 @@ An embedded video object.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_workExample">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1510"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1510</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l970"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:970</code></a>
         </p>
 
 

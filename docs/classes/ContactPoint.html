@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l12158"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12158</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.schema.js.html#l12373"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12373</code></a>
         </div>
 
             Module: <a href="../modules/org.schema.html">org.schema</a>
@@ -887,10 +890,6 @@ A contact point—for example, a Customer Complaints department.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_availableLanguage">availableLanguage</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_contactOption">contactOption</a>
 
                             </li>
                             <li class="index-item property">
@@ -1233,7 +1232,7 @@ An alias for the item.
 </div>
 <div id="property_areaServed" class="property item">
     <h3 class="name"><code>areaServed</code></h3>
-    <span class="type">Schema, GeoShape | schema,Text | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
 
 
 
@@ -1242,7 +1241,7 @@ An alias for the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12210"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12210</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12465"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12465</code></a>
         </p>
 
 
@@ -1259,7 +1258,7 @@ The geographic area where a service or offered item is provided.</p>
 </div>
 <div id="property_availableLanguage" class="property item">
     <h3 class="name"><code>availableLanguage</code></h3>
-    <span class="type">Schema, Text | schema,Language</span>
+    <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
 
 
 
@@ -1268,7 +1267,7 @@ The geographic area where a service or offered item is provided.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12202"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12202</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12417"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12417</code></a>
         </p>
 
 
@@ -1277,33 +1276,6 @@ The geographic area where a service or offered item is provided.</p>
     <div class="description">
         <p><a href="http://Schema.org/availableLanguage">Schema.org/availableLanguage</a>
 A language someone may use with the item. Please use one of the language codes from the <a href="http://tools.ietf.org/html/bcp47">IETF BCP 47 standard</a>. See also [[inLanguage]]</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_contactOption" class="property item">
-    <h3 class="name"><code>contactOption</code></h3>
-    <span class="type">LangString</span>
-
-
-
-
-
-    <div class="meta">
-                    <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3155"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3155</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdl/terms/contactOption">http://purl.org/ctdl/terms/contactOption</a>
-Option for a toll-free number or support for hearing-impaired callers.</p>
 
     </div>
 
@@ -1321,7 +1293,7 @@ Option for a toll-free number or support for hearing-impaired callers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12250"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12250</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12409"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12409</code></a>
         </p>
 
 
@@ -1347,7 +1319,7 @@ An option available on this contact point (e.g. a toll-free number or support fo
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12178"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12178</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12441"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12441</code></a>
         </p>
 
 
@@ -1374,7 +1346,7 @@ A person or organization can have different contact points, for different purpos
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3162"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3162</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3228</code></a>
         </p>
 
 
@@ -1442,6 +1414,32 @@ A sub property of description. A short description of the item used to disambigu
 </div>
 <div id="property_email" class="property item">
     <h3 class="name"><code>email</code></h3>
+    <span class="type">Text</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12433"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12433</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://Schema.org/email">Schema.org/email</a>
+Email address.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_email" class="property item">
+    <h3 class="name"><code>email</code></h3>
     <span class="type">String</span>
 
 
@@ -1452,7 +1450,7 @@ A sub property of description. A short description of the item used to disambigu
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3170</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3236</code></a>
         </p>
 
 
@@ -1461,32 +1459,6 @@ A sub property of description. A short description of the item used to disambigu
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/email">http://purl.org/ctdl/terms/email</a>
 Email address of the organization or person.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_email" class="property item">
-    <h3 class="name"><code>email</code></h3>
-    <span class="type">Text</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12226"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12226</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://Schema.org/email">Schema.org/email</a>
-Email address.</p>
 
     </div>
 
@@ -1505,7 +1477,7 @@ Email address.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3177"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3177</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3243"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3243</code></a>
         </p>
 
 
@@ -1531,7 +1503,7 @@ Fax number.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12186"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12186</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12457"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12457</code></a>
         </p>
 
 
@@ -1557,7 +1529,7 @@ The fax number.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12218"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12218</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12401"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12401</code></a>
         </p>
 
 
@@ -1661,7 +1633,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3184"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3184</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3250"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3250</code></a>
         </p>
 
 
@@ -1703,7 +1675,7 @@ Indicates a potential Action, which describes an idealized action in which this 
 </div>
 <div id="property_productSupported" class="property item">
     <h3 class="name"><code>productSupported</code></h3>
-    <span class="type">Schema, Text | schema,Product</span>
+    <span class="type">Text</span>
 
 
 
@@ -1712,7 +1684,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12194"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12194</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12449"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12449</code></a>
         </p>
 
 
@@ -1754,7 +1726,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 </div>
 <div id="property_serviceArea" class="property item">
     <h3 class="name"><code>serviceArea</code></h3>
-    <span class="type">Schema, GeoShape | schema,Place | schema,AdministrativeArea</span>
+    <span class="type"><a href="../classes/GeoShape.html" class="crosslink">GeoShape</a></span>
 
 
 
@@ -1763,7 +1735,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12234"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12234</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12393"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12393</code></a>
         </p>
 
 
@@ -1790,7 +1762,7 @@ The geographic area where the service is provided.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3191"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3191</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3257"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3257</code></a>
         </p>
 
 
@@ -1816,7 +1788,7 @@ Social media access point for an agent or an agent's contact point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.schema.js.html#l12242"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12242</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l12425"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:12425</code></a>
         </p>
 
 
@@ -1843,7 +1815,7 @@ The telephone number.</p>
                     <p>Provided by the <a href="../modules/org.credentialengine.html">org.credentialengine</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3198"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3198</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3264"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3264</code></a>
         </p>
 
 

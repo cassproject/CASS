@@ -57,6 +57,7 @@
                                 <li><a href="../classes/AgreeAction.html">AgreeAction</a></li>
                                 <li><a href="../classes/Airline.html">Airline</a></li>
                                 <li><a href="../classes/Airport.html">Airport</a></li>
+                                <li><a href="../classes/AlignmentMap.html">AlignmentMap</a></li>
                                 <li><a href="../classes/AlignmentObject.html">AlignmentObject</a></li>
                                 <li><a href="../classes/AllocateAction.html">AllocateAction</a></li>
                                 <li><a href="../classes/AmusementPark.html">AmusementPark</a></li>
@@ -329,6 +330,7 @@
                                 <li><a href="../classes/Festival.html">Festival</a></li>
                                 <li><a href="../classes/FilmAction.html">FilmAction</a></li>
                                 <li><a href="../classes/FinancialAlignmentObject.html">FinancialAlignmentObject</a></li>
+                                <li><a href="../classes/FinancialAssistanceProfile.html">FinancialAssistanceProfile</a></li>
                                 <li><a href="../classes/FinancialProduct.html">FinancialProduct</a></li>
                                 <li><a href="../classes/FinancialService.html">FinancialService</a></li>
                                 <li><a href="../classes/FindAction.html">FindAction</a></li>
@@ -570,6 +572,7 @@
                                 <li><a href="../classes/ProfessionalService.html">ProfessionalService</a></li>
                                 <li><a href="../classes/ProficiencyScale.html">ProficiencyScale</a></li>
                                 <li><a href="../classes/ProfilePage.html">ProfilePage</a></li>
+                                <li><a href="../classes/ProfileProcessor.html">ProfileProcessor</a></li>
                                 <li><a href="../classes/ProgramMembership.html">ProgramMembership</a></li>
                                 <li><a href="../classes/PropertyValue.html">PropertyValue</a></li>
                                 <li><a href="../classes/PropertyValueSpecification.html">PropertyValueSpecification</a></li>
@@ -819,7 +822,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1885"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1885</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1929"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1929</code></a>
         </div>
 
             Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
@@ -829,8 +832,8 @@
 
 <div class="box intro">
     <p><a href="http://credentialengine.org/LearningOpportunityProfile">credentialengine.org/LearningOpportunityProfile</a>
-Entity describing a learning opportunity.
-Educational opportunities include required and optional programs, courses of study, and other structured experiences intended to serve as educational or training events.</p>
+Entity describing an educational or training opportunity.
+Opportunities include formal and informal educational training programs and classes, apprenticeship or work experience programs, or other structured or unstructured experiences that serve as educational or training activities.</p>
 
 </div>
 
@@ -952,6 +955,10 @@ Educational opportunities include required and optional programs, courses of stu
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_audience">audience</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_audienceType">audienceType</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1661,7 +1668,7 @@ Educational opportunities include required and optional programs, courses of stu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_about">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1292</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l930"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:930</code></a>
         </p>
 
 
@@ -1686,7 +1693,7 @@ The subject matter of the content.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityAPI">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1420"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1420</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1286"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1286</code></a>
         </p>
 
 
@@ -1711,7 +1718,7 @@ Indicates that the resource is compatible with the referenced accessibility API 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityControl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1100"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1100</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1470"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1470</code></a>
         </p>
 
 
@@ -1736,7 +1743,7 @@ Identifies input methods that are sufficient to fully control the described reso
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityFeature">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1068"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1068</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1138"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1138</code></a>
         </p>
 
 
@@ -1761,7 +1768,7 @@ Content features of the resource, such as accessible media, alternatives and sup
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilityHazard">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1380"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1380</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1238"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1238</code></a>
         </p>
 
 
@@ -1786,7 +1793,7 @@ A characteristic of the described resource that is physiologically dangerous to 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessibilitySummary">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1526"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1526</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1002"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1002</code></a>
         </p>
 
 
@@ -1811,7 +1818,7 @@ A human-readable summary of specific accessibility features or deficiencies, con
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessMode">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1212"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1212</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1326"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1326</code></a>
         </p>
 
 
@@ -1836,7 +1843,7 @@ The human sensory perceptual system or cognitive faculty through which a person 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accessModeSufficient">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1260"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1260</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1162"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1162</code></a>
         </p>
 
 
@@ -1861,7 +1868,7 @@ A list of single or combined accessModes that are sufficient to understand all t
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_accountablePerson">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1340"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1340</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1180"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1180</code></a>
         </p>
 
 
@@ -1886,7 +1893,7 @@ Specifies the Person that is legally accountable for the CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1904"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1904</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1948"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1948</code></a>
         </p>
 
 
@@ -1912,7 +1919,7 @@ Quality assurance organization that provides official authorization to, or appro
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1911"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1911</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1955"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1955</code></a>
         </p>
 
 
@@ -1963,7 +1970,7 @@ An additional type for the item, typically used for adding more specific types f
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1918"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1918</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1962"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1962</code></a>
         </p>
 
 
@@ -1989,7 +1996,7 @@ Credential that has its time or cost reduced by another credential, assessment o
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_aggregateRating">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1462"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1462</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1146"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1146</code></a>
         </p>
 
 
@@ -2039,7 +2046,7 @@ An alias for the item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_alternativeHeadline">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1124"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1124</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1558"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1558</code></a>
         </p>
 
 
@@ -2064,7 +2071,7 @@ A secondary title of the CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1925"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1925</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1969"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1969</code></a>
         </p>
 
 
@@ -2090,7 +2097,7 @@ Organization that pronounces favorable judgment for this credential, assessment,
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1932"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1932</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1976"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1976</code></a>
         </p>
 
 
@@ -2116,7 +2123,7 @@ Region or political jurisdiction such as a state, province or locale in which an
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_associatedMedia">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1502"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1502</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l946"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:946</code></a>
         </p>
 
 
@@ -2141,7 +2148,7 @@ A media object that encodes this CreativeWork. This property is a synonym for en
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_audience">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l954"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:954</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1018"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1018</code></a>
         </p>
 
 
@@ -2150,6 +2157,32 @@ A media object that encodes this CreativeWork. This property is a synonym for en
     <div class="description">
         Schema.org/audience
 An intended audience, i.e. a group for whom something was created.
+    </div>
+
+
+
+</div>
+<div id="property_audienceType" class="property item">
+    <h3 class="name"><code>audienceType</code></h3>
+    <span class="type"><a href="../classes/CredentialAlignmentObject.html" class="crosslink">CredentialAlignmentObject</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1983"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1983</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p><a href="http://purl.org/ctdl/terms/audienceType">http://purl.org/ctdl/terms/audienceType</a>
+The type of credential seeker for whom the entity is applicable; select from an existing enumeration of such types.</p>
+
     </div>
 
 
@@ -2166,7 +2199,7 @@ An intended audience, i.e. a group for whom something was created.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_audio">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1300"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1300</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l962"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:962</code></a>
         </p>
 
 
@@ -2182,7 +2215,7 @@ An embedded audio object.
 </div>
 <div id="property_author" class="property item inherited">
     <h3 class="name"><code>author</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2191,7 +2224,7 @@ An embedded audio object.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_author">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1372"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1372</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1398"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1398</code></a>
         </p>
 
 
@@ -2216,7 +2249,7 @@ The author of this content or rating. Please note that author is special in that
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1939"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1939</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1990"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1990</code></a>
         </p>
 
 
@@ -2242,7 +2275,7 @@ Listing of online and/or physical locations where a credential can be pursued.</
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1946"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1946</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1997"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1997</code></a>
         </p>
 
 
@@ -2268,7 +2301,7 @@ Physical location where the credential, assessment, or learning opportunity can 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1953"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1953</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2004"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2004</code></a>
         </p>
 
 
@@ -2294,7 +2327,7 @@ Online location where the credential, assessment, or learning opportunity can be
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_award">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l978"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:978</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1222"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1222</code></a>
         </p>
 
 
@@ -2319,7 +2352,7 @@ An award won by or for this item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_awards">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1252</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1254"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1254</code></a>
         </p>
 
 
@@ -2344,7 +2377,7 @@ Awards won by or for this item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_character">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1228"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1228</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1010"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1010</code></a>
         </p>
 
 
@@ -2360,7 +2393,7 @@ Fictional person connected with a creative work.
 </div>
 <div id="property_citation" class="property item inherited">
     <h3 class="name"><code>citation</code></h3>
-    <span class="type">Schema, Text | schema,CreativeWork</span>
+    <span class="type">Text</span>
 
 
 
@@ -2369,7 +2402,7 @@ Fictional person connected with a creative work.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_citation">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1542"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1542</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1574</code></a>
         </p>
 
 
@@ -2394,7 +2427,7 @@ A citation or reference to another creative work, such as another publication, w
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1960"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1960</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2011"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2011</code></a>
         </p>
 
 
@@ -2421,7 +2454,7 @@ Examples include the alpha-numeric code "CCSS.MATH.CONTENT.HSA.CED.A.2" identify
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_comment">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1436"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1436</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1438"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1438</code></a>
         </p>
 
 
@@ -2446,7 +2479,7 @@ Comments, typically from users.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_commentCount">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1236"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1236</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1270"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1270</code></a>
         </p>
 
 
@@ -2471,7 +2504,7 @@ The number of comments this CreativeWork (e.g. Article, Question or Answer) has 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1968"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1968</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2019"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2019</code></a>
         </p>
 
 
@@ -2497,7 +2530,7 @@ Set constraints, prerequisites, entry conditions, or requirements that are share
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1975"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1975</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2026"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2026</code></a>
         </p>
 
 
@@ -2523,7 +2556,7 @@ Set of costs maintained at an organizational or sub-organizational level, which 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contentLocation">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l986"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:986</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1122"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1122</code></a>
         </p>
 
 
@@ -2548,7 +2581,7 @@ The location depicted or described in the content. For example, the location in 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contentRating">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1244"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1244</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1310"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1310</code></a>
         </p>
 
 
@@ -2564,7 +2597,7 @@ Official rating of a piece of content&#x2014;for example,'MPAA PG-13'.
 </div>
 <div id="property_contributor" class="property item inherited">
     <h3 class="name"><code>contributor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -2573,7 +2606,7 @@ Official rating of a piece of content&#x2014;for example,'MPAA PG-13'.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_contributor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l930"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:930</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1066"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1066</code></a>
         </p>
 
 
@@ -2589,7 +2622,7 @@ A secondary contributor to the CreativeWork or Event.
 </div>
 <div id="property_copyrightHolder" class="property item inherited">
     <h3 class="name"><code>copyrightHolder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2598,7 +2631,7 @@ A secondary contributor to the CreativeWork or Event.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_copyrightHolder">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1412"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1412</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1230"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1230</code></a>
         </p>
 
 
@@ -2623,7 +2656,7 @@ The party holding the legal copyright to the CreativeWork.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_copyrightYear">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1518"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1518</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1246"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1246</code></a>
         </p>
 
 
@@ -2648,7 +2681,7 @@ The year during which the claimed copyright for the CreativeWork was first asser
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1982"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1982</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2033"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2033</code></a>
         </p>
 
 
@@ -2666,7 +2699,7 @@ Includes dual (double) degrees that cannot be earned independently of each other
 </div>
 <div id="property_creator" class="property item inherited">
     <h3 class="name"><code>creator</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -2675,7 +2708,7 @@ Includes dual (double) degrees that cannot be earned independently of each other
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_creator">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1140"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1140</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1494</code></a>
         </p>
 
 
@@ -2700,7 +2733,7 @@ The creator/author of this CreativeWork. This is the same as the Author property
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1990"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1990</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2041"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2041</code></a>
         </p>
 
 
@@ -2726,7 +2759,7 @@ Type of unit of time corresponding to type of credit such as semester hours, qua
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l1997"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:1997</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2048"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2048</code></a>
         </p>
 
 
@@ -2752,7 +2785,7 @@ Number of credit hours awarded for successful completion of a learning opportuni
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2004"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2004</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2055"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2055</code></a>
         </p>
 
 
@@ -2778,7 +2811,7 @@ Type of credit associated with both degree and non-degree learning opportunities
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2011"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2011</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2062"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2062</code></a>
         </p>
 
 
@@ -2804,7 +2837,7 @@ Detailed description of credit unit type.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2018"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2018</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2069"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2069</code></a>
         </p>
 
 
@@ -2830,7 +2863,7 @@ Number of either credit units awarded for college credit or continuing education
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2025"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2025</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2076"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2076</code></a>
         </p>
 
 
@@ -2848,7 +2881,7 @@ The CTID is the equivalent of a version identifier for the resource. Different v
 </div>
 <div id="property_dateCreated" class="property item inherited">
     <h3 class="name"><code>dateCreated</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">Date</span>
 
 
 
@@ -2857,7 +2890,7 @@ The CTID is the equivalent of a version identifier for the resource. Different v
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_dateCreated">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1076"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1076</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1534"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1534</code></a>
         </p>
 
 
@@ -2882,7 +2915,7 @@ The date on which the CreativeWork was created or the item was added to a DataFe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2033"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2033</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2084"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2084</code></a>
         </p>
 
 
@@ -2899,7 +2932,7 @@ Effective date of the content of a credential, assessment or learning opportunit
 </div>
 <div id="property_dateModified" class="property item inherited">
     <h3 class="name"><code>dateModified</code></h3>
-    <span class="type">Schema, DateTime | schema,Date</span>
+    <span class="type">DateTime</span>
 
 
 
@@ -2908,7 +2941,7 @@ Effective date of the content of a credential, assessment or learning opportunit
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_dateModified">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1558"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1558</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1366"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1366</code></a>
         </p>
 
 
@@ -2933,7 +2966,7 @@ The date on which the CreativeWork was most recently modified or when the item's
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_datePublished">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1444"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1444</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1542"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1542</code></a>
         </p>
 
 
@@ -2958,7 +2991,7 @@ Date of first broadcast/publication.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2040"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2040</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2091"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2091</code></a>
         </p>
 
 
@@ -2984,7 +3017,7 @@ Type of means by which a learning opportunity or assessment is delivered to cred
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2047"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2047</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2098"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2098</code></a>
         </p>
 
 
@@ -3013,7 +3046,7 @@ Detailed description of the delivery type of an assessment or learning opportuni
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2054"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2054</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2105"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2105</code></a>
         </p>
 
 
@@ -3021,7 +3054,7 @@ Detailed description of the delivery type of an assessment or learning opportuni
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/description">http://purl.org/ctdl/terms/description</a>
-Statememnt, characterization or account of the entity.</p>
+Statement, characterization or account of the entity.</p>
 
     </div>
 
@@ -3064,7 +3097,7 @@ A sub property of description. A short description of the item used to disambigu
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_discussionUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1550"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1550</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1214"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1214</code></a>
         </p>
 
 
@@ -3089,7 +3122,7 @@ A link to the page containing the comments of the CreativeWork.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_editor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1276"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1276</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1206</code></a>
         </p>
 
 
@@ -3114,7 +3147,7 @@ Specifies the Person who edited the CreativeWork.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_educationalAlignment">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1470"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1470</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l938"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:938</code></a>
         </p>
 
 
@@ -3139,7 +3172,7 @@ An alignment to an established educational framework.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_educationalUse">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1132"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1132</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1114"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1114</code></a>
         </p>
 
 
@@ -3164,7 +3197,7 @@ The purpose of a work in the context of education; for example, 'assignment', 'g
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_encoding">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1116"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1116</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l986"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:986</code></a>
         </p>
 
 
@@ -3189,7 +3222,7 @@ A media object that encodes this CreativeWork. This property is a synonym for as
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_encodings">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1308</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1478</code></a>
         </p>
 
 
@@ -3214,7 +3247,7 @@ A media object that encodes this CreativeWork.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2061"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2061</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2112"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2112</code></a>
         </p>
 
 
@@ -3240,7 +3273,7 @@ Prerequisites for entry into a credentialing program, a learning opportunity or 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2068"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2068</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2119"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2119</code></a>
         </p>
 
 
@@ -3266,7 +3299,7 @@ Estimated cost of a credential, learning opportunity or assessment.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2075"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2075</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2126"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2126</code></a>
         </p>
 
 
@@ -3292,7 +3325,7 @@ Estimated time it will take to complete a credential, learning opportunity or as
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_exampleOfWork">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1060"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1060</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1350"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1350</code></a>
         </p>
 
 
@@ -3308,7 +3341,7 @@ A creative work that this work is an example/instance/realization/derivation of.
 </div>
 <div id="property_fileFormat" class="property item inherited">
     <h3 class="name"><code>fileFormat</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -3317,7 +3350,7 @@ A creative work that this work is an example/instance/realization/derivation of.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_fileFormat">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1020"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1020</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1278"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1278</code></a>
         </p>
 
 
@@ -3333,7 +3366,7 @@ Media type, typically MIME format (see [IANA site](http://www.iana.org/assignmen
 </div>
 <div id="property_financialAssistance" class="property item">
     <h3 class="name"><code>financialAssistance</code></h3>
-    <span class="type"><a href="../classes/FinancialAlignmentObject.html" class="crosslink">FinancialAlignmentObject</a></span>
+    <span class="type"><a href="../classes/FinancialAssistanceProfile.html" class="crosslink">FinancialAssistanceProfile</a></span>
 
 
 
@@ -3342,7 +3375,7 @@ Media type, typically MIME format (see [IANA site](http://www.iana.org/assignmen
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2082"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2082</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2133"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2133</code></a>
         </p>
 
 
@@ -3360,7 +3393,7 @@ Whether the financial aid in question is associated with a credential, an assess
 </div>
 <div id="property_funder" class="property item inherited">
     <h3 class="name"><code>funder</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -3369,7 +3402,7 @@ Whether the financial aid in question is associated with a credential, an assess
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_funder">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1324"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1324</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l954"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:954</code></a>
         </p>
 
 
@@ -3385,7 +3418,7 @@ A person or organization that supports (sponsors) something through some kind of
 </div>
 <div id="property_genre" class="property item inherited">
     <h3 class="name"><code>genre</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">URL</span>
 
 
 
@@ -3394,7 +3427,7 @@ A person or organization that supports (sponsors) something through some kind of
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_genre">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1220</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1382"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1382</code></a>
         </p>
 
 
@@ -3422,7 +3455,7 @@ Genre of the creative work, broadcast channel or group.
                 CreativeWork
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2090"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2090</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2141"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2141</code></a>
         </p>
 
 
@@ -3449,7 +3482,7 @@ Such partitive components can frequently be used in more than one context.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_headline">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1012"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1012</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1566"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1566</code></a>
         </p>
 
 
@@ -3527,7 +3560,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
                 CreativeWork
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2098"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2098</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2149"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2149</code></a>
         </p>
 
 
@@ -3535,8 +3568,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
     <div class="description">
         <p><a href="http://purl.org/ctdl/terms/inLanguage">http://purl.org/ctdl/terms/inLanguage</a>
-Primary language of the credential, learning opportunity or assessment.
-This is the primary language the entity, even if the it makes use of other languages. For example, a course that teaches Spanish to English-speaking students may primarily be in English, because that is the language used to convey the material.</p>
+The primary language or languages of the entity, even if it makes use of other languages; e.g., a course offered in English to teach Spanish would have an inLanguage of English, while a credential in Quebec could have an inLanguage of both French and English.</p>
 
     </div>
 
@@ -3554,7 +3586,7 @@ This is the primary language the entity, even if the it makes use of other langu
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2106"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2106</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2156"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2156</code></a>
         </p>
 
 
@@ -3580,7 +3612,7 @@ Type of instructional program; select from an existing enumeration of such types
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_interactionStatistic">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1028"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1028</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1302"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1302</code></a>
         </p>
 
 
@@ -3605,7 +3637,7 @@ The number of interactions for the CreativeWork using the WebSite or SoftwareApp
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_interactivityType">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1364"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1364</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l994"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:994</code></a>
         </p>
 
 
@@ -3630,7 +3662,7 @@ The predominant mode of learning supported by the learning resource. Acceptable 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isAccessibleForFree">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1044"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1044</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1550"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1550</code></a>
         </p>
 
 
@@ -3655,7 +3687,7 @@ A flag to signal that the publication is accessible for free.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2113"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2113</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2163"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2163</code></a>
         </p>
 
 
@@ -3672,7 +3704,7 @@ This credential, assessment, or learning opportunity reduces the time or cost re
 </div>
 <div id="property_isBasedOn" class="property item inherited">
     <h3 class="name"><code>isBasedOn</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork | schema,Product</span>
+    <span class="type"><a href="../classes/Product.html" class="crosslink">Product</a></span>
 
 
 
@@ -3681,7 +3713,7 @@ This credential, assessment, or learning opportunity reduces the time or cost re
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isBasedOn">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1004"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1004</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1486"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1486</code></a>
         </p>
 
 
@@ -3697,7 +3729,7 @@ A resource that was used in the creation of this resource. This term can be repe
 </div>
 <div id="property_isBasedOnUrl" class="property item inherited">
     <h3 class="name"><code>isBasedOnUrl</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork | schema,Product</span>
+    <span class="type">URL</span>
 
 
 
@@ -3706,7 +3738,7 @@ A resource that was used in the creation of this resource. This term can be repe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isBasedOnUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1574</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1406"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1406</code></a>
         </p>
 
 
@@ -3731,7 +3763,7 @@ A resource that was used in the creation of this resource. This term can be repe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_isFamilyFriendly">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1108"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1108</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1342"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1342</code></a>
         </p>
 
 
@@ -3759,7 +3791,7 @@ Indicates whether this content is family friendly.
                 CreativeWork
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2120"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2120</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2170</code></a>
         </p>
 
 
@@ -3786,7 +3818,7 @@ Covers partitive notions such as "embedded".</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2128"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2128</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2178"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2178</code></a>
         </p>
 
 
@@ -3812,7 +3844,7 @@ This credential, assessment, or learning opportunity provides preparation for th
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2135"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2135</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2185"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2185</code></a>
         </p>
 
 
@@ -3838,7 +3870,7 @@ It is recommended to earn or complete this credential, assessment, or learning o
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2142"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2142</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2192"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2192</code></a>
         </p>
 
 
@@ -3864,7 +3896,7 @@ This credential, assessment, or learning opportunity must be earned or completed
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2149"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2149</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2199"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2199</code></a>
         </p>
 
 
@@ -3890,7 +3922,7 @@ Geographic or political region in which the credential is formally applicable or
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2156"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2156</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2206</code></a>
         </p>
 
 
@@ -3916,7 +3948,7 @@ Keyword or key phrase describing relevant aspects of an entity.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_keywords">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l946"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:946</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1390"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1390</code></a>
         </p>
 
 
@@ -3941,7 +3973,7 @@ Keywords or tags used to describe this content. Multiple entries in a keywords l
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2163"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2163</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2213"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2213</code></a>
         </p>
 
 
@@ -3967,7 +3999,7 @@ Types of methods used to conduct the learning opportunity; select from an existi
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_learningResourceType">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1348"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1348</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1318"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1318</code></a>
         </p>
 
 
@@ -3983,7 +4015,7 @@ The predominant type or kind characterizing the learning resource. For example, 
 </div>
 <div id="property_license" class="property item inherited">
     <h3 class="name"><code>license</code></h3>
-    <span class="type">Schema, URL | schema,CreativeWork</span>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
 
 
 
@@ -3992,7 +4024,7 @@ The predominant type or kind characterizing the learning resource. For example, 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_license">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1156"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1156</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1462"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1462</code></a>
         </p>
 
 
@@ -4017,7 +4049,7 @@ A license document that applies to this content, typically indicated by URL.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_locationCreated">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1284</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1154"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1154</code></a>
         </p>
 
 
@@ -4042,7 +4074,7 @@ The location where the CreativeWork was created, which may not be the same as th
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_mainEntity">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1494</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1374"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1374</code></a>
         </p>
 
 
@@ -4083,7 +4115,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 </div>
 <div id="property_material" class="property item inherited">
     <h3 class="name"><code>material</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,Product</span>
+    <span class="type">URL</span>
 
 
 
@@ -4092,7 +4124,7 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_material">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1356</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1334"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1334</code></a>
         </p>
 
 
@@ -4117,7 +4149,7 @@ A material that something is made from, e.g. leather, wool, cotton, paper.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_mentions">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1534"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1534</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1526"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1526</code></a>
         </p>
 
 
@@ -4145,7 +4177,7 @@ Indicates that the CreativeWork contains a reference to, but is not necessarily 
                 Thing
             </a>
             but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2170</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2220</code></a>
         </p>
 
 
@@ -4171,7 +4203,7 @@ Name or title of the entity.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2177"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2177</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2227"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2227</code></a>
         </p>
 
 
@@ -4197,7 +4229,7 @@ Agent that offers the credential, learning opportunity or assessment.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2184"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2184</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2234"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2234</code></a>
         </p>
 
 
@@ -4223,7 +4255,7 @@ Region or political jurisdiction such as a state, province or locale where the c
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_offers">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1172"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1172</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1198"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1198</code></a>
         </p>
 
 
@@ -4248,7 +4280,7 @@ An offer to provide this item&#x2014;for example, an offer to sell a product, re
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2191"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2191</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2241"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2241</code></a>
         </p>
 
 
@@ -4266,7 +4298,7 @@ Agent includes credentialing organizations, quality assurance organizations and 
 </div>
 <div id="property_position" class="property item inherited">
     <h3 class="name"><code>position</code></h3>
-    <span class="type">Schema, Integer | schema,Text</span>
+    <span class="type">Integer</span>
 
 
 
@@ -4275,7 +4307,7 @@ Agent includes credentialing organizations, quality assurance organizations and 
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_position">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1204"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1204</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1098"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1098</code></a>
         </p>
 
 
@@ -4325,7 +4357,7 @@ Indicates a potential Action, which describes an idealized action in which this 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2199"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2199</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2249"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2249</code></a>
         </p>
 
 
@@ -4342,7 +4374,7 @@ Another credential, learning opportunity or assessment that provides preparation
 </div>
 <div id="property_producer" class="property item inherited">
     <h3 class="name"><code>producer</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -4351,7 +4383,7 @@ Another credential, learning opportunity or assessment that provides preparation
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_producer">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1268"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1268</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1518"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1518</code></a>
         </p>
 
 
@@ -4367,7 +4399,7 @@ The person or organization who produced the work (e.g. music album, movie, tv/ra
 </div>
 <div id="property_provider" class="property item inherited">
     <h3 class="name"><code>provider</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -4376,7 +4408,7 @@ The person or organization who produced the work (e.g. music album, movie, tv/ra
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_provider">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1404</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l978"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:978</code></a>
         </p>
 
 
@@ -4401,7 +4433,7 @@ The service provider, service operator, or service performer; the goods producer
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publication">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l970"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:970</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1050"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1050</code></a>
         </p>
 
 
@@ -4417,7 +4449,7 @@ A publication event associated with the item.
 </div>
 <div id="property_publisher" class="property item inherited">
     <h3 class="name"><code>publisher</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -4426,7 +4458,7 @@ A publication event associated with the item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publisher">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1092"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1092</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1294"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1294</code></a>
         </p>
 
 
@@ -4451,7 +4483,7 @@ The publisher of the creative work.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_publishingPrinciples">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1180"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1180</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1502"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1502</code></a>
         </p>
 
 
@@ -4476,7 +4508,7 @@ Link to page describing the editorial principles of the organization primarily r
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2206"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2206</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2256"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2256</code></a>
         </p>
 
 
@@ -4502,7 +4534,7 @@ Agent that acknowledges the validity of the credential, learning opportunity of 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2213"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2213</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2263"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2263</code></a>
         </p>
 
 
@@ -4528,7 +4560,7 @@ Region or political jurisdiction such as a state, province or locale in which th
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2220"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2220</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2270"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2270</code></a>
         </p>
 
 
@@ -4554,7 +4586,7 @@ Recommended credential, learning opportunity or assessment.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_recordedAt">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1036"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1036</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1262"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1262</code></a>
         </p>
 
 
@@ -4579,7 +4611,7 @@ The Event where the CreativeWork was recorded. The CreativeWork may capture all 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2227"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2227</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2277</code></a>
         </p>
 
 
@@ -4605,7 +4637,7 @@ Entity that describes the longitude, latitude and other location details of an a
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2234"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2234</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2284</code></a>
         </p>
 
 
@@ -4631,7 +4663,7 @@ Quality assurance organization that enforces the legal requirements of the crede
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2241"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2241</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2291"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2291</code></a>
         </p>
 
 
@@ -4657,7 +4689,7 @@ Region or political jurisdiction such as a state, province or locale in which th
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_releasedEvent">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1084"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1084</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1106"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1106</code></a>
         </p>
 
 
@@ -4682,7 +4714,7 @@ The place and time the release was issued, expressed as a PublicationEvent.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2248"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2248</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2298"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2298</code></a>
         </p>
 
 
@@ -4708,7 +4740,7 @@ Requirement or set of requirements for this credential, learning opportunity, or
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_review">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1196"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1196</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1454"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1454</code></a>
         </p>
 
 
@@ -4733,7 +4765,7 @@ A review of the item.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_reviews">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l938"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:938</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1074"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1074</code></a>
         </p>
 
 
@@ -4774,7 +4806,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 </div>
 <div id="property_schemaVersion" class="property item inherited">
     <h3 class="name"><code>schemaVersion</code></h3>
-    <span class="type">Schema, URL | schema,Text</span>
+    <span class="type">URL</span>
 
 
 
@@ -4783,7 +4815,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_schemaVersion">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1188</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1130"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1130</code></a>
         </p>
 
 
@@ -4791,7 +4823,7 @@ URL of a reference Web page that unambiguously indicates the item's identity. E.
 
     <div class="description">
         Schema.org/schemaVersion
-Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application.
+Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as schema:version/2.0/ if precise indication of schema version was required by some application.
     </div>
 
 
@@ -4808,7 +4840,7 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_sourceOrganization">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1388</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1026"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1026</code></a>
         </p>
 
 
@@ -4833,7 +4865,7 @@ The Organization on whose behalf the creator was working.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_spatialCoverage">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1452"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1452</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1188"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1188</code></a>
         </p>
 
 
@@ -4851,7 +4883,7 @@ areas that the dataset describes: a dataset of New York weather would have spati
 </div>
 <div id="property_sponsor" class="property item inherited">
     <h3 class="name"><code>sponsor</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Organization.html" class="crosslink">Organization</a></span>
 
 
 
@@ -4860,7 +4892,7 @@ areas that the dataset describes: a dataset of New York weather would have spati
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_sponsor">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1396</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1510"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1510</code></a>
         </p>
 
 
@@ -4885,7 +4917,7 @@ A person or organization that supports a thing through a pledge, promise, or fin
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2255"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2255</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2305"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2305</code></a>
         </p>
 
 
@@ -4911,7 +4943,7 @@ Words or brief phrases describing the topicality of the entity; select subject t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2262"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2262</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2312"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2312</code></a>
         </p>
 
 
@@ -4938,7 +4970,7 @@ The web page being referenced describes the entity. The value of subjectWebpage 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2270"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2270</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2320"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2320</code></a>
         </p>
 
 
@@ -4964,7 +4996,7 @@ Assessment that provides direct, indirect, formative or summative evaluation or 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2277"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2277</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2327"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2327</code></a>
         </p>
 
 
@@ -4990,7 +5022,7 @@ Learning opportunity that is the focus of a condition, process or another learni
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2284"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2284</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2334"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2334</code></a>
         </p>
 
 
@@ -5017,7 +5049,7 @@ Examples include a textbook or lesson plan that describes or records the educati
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2292"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2292</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2342"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2342</code></a>
         </p>
 
 
@@ -5034,7 +5066,7 @@ Competency that the learning opportunity is intended to teach.</p>
 </div>
 <div id="property_temporalCoverage" class="property item inherited">
     <h3 class="name"><code>temporalCoverage</code></h3>
-    <span class="type">Schema, URL | schema,Text | schema,DateTime</span>
+    <span class="type">URL</span>
 
 
 
@@ -5043,7 +5075,7 @@ Competency that the learning opportunity is intended to teach.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_temporalCoverage">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l994"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:994</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1170"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1170</code></a>
         </p>
 
 
@@ -5070,7 +5102,7 @@ Written works such as books may sometimes have precise temporal coverage too, e.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_text">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1428"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1428</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1058"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1058</code></a>
         </p>
 
 
@@ -5095,7 +5127,7 @@ The textual content of this CreativeWork.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_thumbnailUrl">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1316"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1316</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1430"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1430</code></a>
         </p>
 
 
@@ -5120,7 +5152,7 @@ A thumbnail image relevant to the Thing.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_timeRequired">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l962"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:962</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1414"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1414</code></a>
         </p>
 
 
@@ -5136,7 +5168,7 @@ Approximate or typical time it takes to work with or through this learning resou
 </div>
 <div id="property_translator" class="property item inherited">
     <h3 class="name"><code>translator</code></h3>
-    <span class="type">Schema, Organization | schema,Person</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
@@ -5145,7 +5177,7 @@ Approximate or typical time it takes to work with or through this learning resou
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_translator">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1164"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1164</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1422"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1422</code></a>
         </p>
 
 
@@ -5170,7 +5202,7 @@ Organization or person who adapts a creative work to different languages, region
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_typicalAgeRange">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1332"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1332</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1082"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1082</code></a>
         </p>
 
 
@@ -5220,7 +5252,7 @@ URL of the item.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2299"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2299</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2349"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2349</code></a>
         </p>
 
 
@@ -5237,7 +5269,7 @@ Textual description of the methods used to evaluate an assessment, learning oppo
 </div>
 <div id="property_version" class="property item inherited">
     <h3 class="name"><code>version</code></h3>
-    <span class="type">Schema, Number | schema,Text</span>
+    <span class="type">Text</span>
 
 
 
@@ -5246,7 +5278,7 @@ Textual description of the methods used to evaluate an assessment, learning oppo
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_version">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1486"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1486</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1358"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1358</code></a>
         </p>
 
 
@@ -5271,7 +5303,7 @@ The version of the CreativeWork embodied by a specified resource.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2306"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2306</code></a>
+        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l2356"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:2356</code></a>
         </p>
 
 
@@ -5298,7 +5330,7 @@ The credential version captured here is any local identifier used by the credent
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_video">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1478"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1478</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1042"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1042</code></a>
         </p>
 
 
@@ -5323,7 +5355,7 @@ An embedded video object.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/CreativeWork.html#property_workExample">CreativeWork</a>:
-        <a href="../files/src_main_js_cass_org.schema.js.html#l1510"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1510</code></a>
+        <a href="../files/src_main_js_cass_org.schema.js.html#l970"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:970</code></a>
         </p>
 
 
