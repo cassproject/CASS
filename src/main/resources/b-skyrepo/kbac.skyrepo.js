@@ -147,6 +147,8 @@ var inferTypeFromObj = function(o, atType) {
     if (atType != null) 
         return atType;
     var fullType = skyrepoUrlType(o);
+    if (fullType == null) 
+        return fullType;
     fullType = fullType.replace("http://", "");
     fullType = fullType.replace("https://", "");
     fullType = fullType.replace("/", ".");
@@ -574,6 +576,10 @@ var skyrepoSearch = function(q, urlRemainder, start, size, sort, track_scores) {
     for (var i = 0; i < hits.length; i++) {
         var searchResult = hits[i];
         var type = inferTypeFromObj((searchResult)["_source"], null);
+        if (type == null) {
+            hits.splice(i--, 1);
+            continue;
+        }
         var id = (searchResult)["_id"];
         var version = "";
         var hit = "data/";
@@ -741,7 +747,11 @@ var endpointMultiPut = function() {
         var o = ary[i];
         var ld = new EcRemoteLinkedData(null, null);
         ld.copyFrom(o);
-        var id = ld.getGuid();
+        var id = null;
+        if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
+            id = EcCrypto.md5(ld.id);
+         else 
+            id = ld.getGuid();
         var version = ld.getTimestamp();
         var type = ld.getDottedType();
         (skyrepoPutParsed).call(this, o, id, version, type);
