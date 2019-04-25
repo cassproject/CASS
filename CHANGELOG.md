@@ -1,56 +1,138 @@
 # Change Log
 
-## [1.0.6](https://github.com/cassproject/cass/tree/1.0.6) (2019-02-15)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.28...1.0.6)
+## [Unreleased](https://github.com/cassproject/CASS/tree/HEAD)
 
-## [0.4.28](https://github.com/cassproject/cass/tree/0.4.28) (2019-02-13)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.27...0.4.28)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.6...HEAD)
+
+**Closed issues:**
+
+- CTDL-ASN Export sometimes outputs children in the wrong order. [\#145](https://github.com/cassproject/CASS/issues/145)
+
+## [1.2.6](https://github.com/cassproject/CASS/tree/1.2.6) (2019-04-24)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.5...1.2.6)
+
+## [1.2.5](https://github.com/cassproject/CASS/tree/1.2.5) (2019-04-24)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.4...1.2.5)
+
+**Implemented enhancements:**
+
+- Assertion Processing - Create User Focused Implementation [\#120](https://github.com/cassproject/CASS/issues/120)
+- xAPI adapter generates assertions based on alignments established in the VLRC. [\#106](https://github.com/cassproject/CASS/issues/106)
+
+**Closed issues:**
+
+- All relevant files should be replaceable with ENV variables. [\#133](https://github.com/cassproject/CASS/issues/133)
+- Ignore data that wasn't put into ElasticSearch by CaSS \(has no type, context\) [\#130](https://github.com/cassproject/CASS/issues/130)
+- SKOS import from CTDL-ASN @context needs to recast to 0.3/skos/ context \(and be detected correctly\) [\#126](https://github.com/cassproject/CASS/issues/126)
+
+## [1.2.4](https://github.com/cassproject/CASS/tree/1.2.4) (2019-04-19)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.3...1.2.4)
+
+## [1.2.3](https://github.com/cassproject/CASS/tree/1.2.3) (2019-04-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.2...1.2.3)
+
+## [1.2.2](https://github.com/cassproject/CASS/tree/1.2.2) (2019-04-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.1...1.2.2)
+
+## [1.2.1](https://github.com/cassproject/CASS/tree/1.2.1) (2019-04-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.0...1.2.1)
+
+**Merged pull requests:**
+
+- xapi.js default config wrong path [\#143](https://github.com/cassproject/CASS/pull/143) ([tsimon-edu-sharing](https://github.com/tsimon-edu-sharing))
+
+## [1.2.0](https://github.com/cassproject/CASS/tree/1.2.0) (2019-04-12)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.1.2...1.2.0)
+
+## [1.1.2](https://github.com/cassproject/CASS/tree/1.1.2) (2019-03-27)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.1.1...1.1.2)
+
+## [1.1.1](https://github.com/cassproject/CASS/tree/1.1.1) (2019-03-22)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.1.0...1.1.1)
+
+## [1.1.0](https://github.com/cassproject/CASS/tree/1.1.0) (2019-03-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.10...1.1.0)
+
+**Implemented enhancements:**
+
+- Consider OAuth2 based permissioning on the server. [\#35](https://github.com/cassproject/CASS/issues/35)
+
+**Fixed bugs:**
+
+- Docker container reports tomcat not started, when it is started. [\#83](https://github.com/cassproject/CASS/issues/83)
+
+## [1.0.10](https://github.com/cassproject/CASS/tree/1.0.10) (2019-03-08)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.9...1.0.10)
+
+## [1.0.9](https://github.com/cassproject/CASS/tree/1.0.9) (2019-03-01)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.8...1.0.9)
+
+**Closed issues:**
+
+- Exports need to export using a UTF-8 encoding. [\#123](https://github.com/cassproject/CASS/issues/123)
+
+## [1.0.8](https://github.com/cassproject/CASS/tree/1.0.8) (2019-02-21)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.7...1.0.8)
+
+**Closed issues:**
+
+- Deletions need to cause websocket change notifications. [\#129](https://github.com/cassproject/CASS/issues/129)
+- CEASN Import needs to respect the order of competencies in the hierarchy. [\#127](https://github.com/cassproject/CASS/issues/127)
+
+## [1.0.7](https://github.com/cassproject/CASS/tree/1.0.7) (2019-02-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.6...1.0.7)
+
+## [1.0.6](https://github.com/cassproject/CASS/tree/1.0.6) (2019-02-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.28...1.0.6)
+
+## [0.4.28](https://github.com/cassproject/CASS/tree/0.4.28) (2019-02-13)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.27...0.4.28)
 
 **Closed issues:**
 
 - CEASN Export should not create exactAlignment if @id == what we would exactAlignment to. [\#125](https://github.com/cassproject/CASS/issues/125)
 
-## [0.4.27](https://github.com/cassproject/cass/tree/0.4.27) (2019-02-12)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.5...0.4.27)
+## [0.4.27](https://github.com/cassproject/CASS/tree/0.4.27) (2019-02-12)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.5...0.4.27)
 
-## [1.0.5](https://github.com/cassproject/cass/tree/1.0.5) (2019-02-08)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.4...1.0.5)
+## [1.0.5](https://github.com/cassproject/CASS/tree/1.0.5) (2019-02-08)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.4...1.0.5)
 
 **Closed issues:**
 
 - ce-ce- and /graphs/ in CTDL-ASN export. [\#122](https://github.com/cassproject/CASS/issues/122)
 
-## [1.0.4](https://github.com/cassproject/cass/tree/1.0.4) (2019-02-01)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.3...1.0.4)
+## [1.0.4](https://github.com/cassproject/CASS/tree/1.0.4) (2019-02-01)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.3...1.0.4)
 
 **Closed issues:**
 
 - No Profile Data being generated [\#119](https://github.com/cassproject/CASS/issues/119)
 
-## [1.0.3](https://github.com/cassproject/cass/tree/1.0.3) (2019-02-01)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.26...1.0.3)
+## [1.0.3](https://github.com/cassproject/CASS/tree/1.0.3) (2019-02-01)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.26...1.0.3)
 
 **Implemented enhancements:**
 
 - CASS UI Build Initial Gap Analysis Tool [\#96](https://github.com/cassproject/CASS/issues/96)
 
-## [0.4.26](https://github.com/cassproject/cass/tree/0.4.26) (2019-01-18)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.2...0.4.26)
+## [0.4.26](https://github.com/cassproject/CASS/tree/0.4.26) (2019-01-18)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.2...0.4.26)
 
-## [1.0.2](https://github.com/cassproject/cass/tree/1.0.2) (2019-01-17)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.1...1.0.2)
+## [1.0.2](https://github.com/cassproject/CASS/tree/1.0.2) (2019-01-17)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.1...1.0.2)
 
-## [1.0.1](https://github.com/cassproject/cass/tree/1.0.1) (2019-01-16)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.25...1.0.1)
+## [1.0.1](https://github.com/cassproject/CASS/tree/1.0.1) (2019-01-16)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.25...1.0.1)
 
-## [0.4.25](https://github.com/cassproject/cass/tree/0.4.25) (2019-01-16)
-[Full Changelog](https://github.com/cassproject/cass/compare/1.0.0...0.4.25)
+## [0.4.25](https://github.com/cassproject/CASS/tree/0.4.25) (2019-01-16)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.0.0...0.4.25)
 
-## [1.0.0](https://github.com/cassproject/cass/tree/1.0.0) (2019-01-10)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24...1.0.0)
+## [1.0.0](https://github.com/cassproject/CASS/tree/1.0.0) (2019-01-10)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.24...1.0.0)
 
-## [0.4.24](https://github.com/cassproject/cass/tree/0.4.24) (2019-01-07)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.24-RC2...0.4.24)
+## [0.4.24](https://github.com/cassproject/CASS/tree/0.4.24) (2019-01-07)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.24-RC2...0.4.24)
 
 **Implemented enhancements:**
 
@@ -64,8 +146,8 @@
 
 - Allow user to return to prev page from docs & devdocs \#115 [\#118](https://github.com/cassproject/CASS/pull/118) ([woodkri](https://github.com/woodkri))
 
-## [0.4.24-RC2](https://github.com/cassproject/cass/tree/0.4.24-RC2) (2019-01-04)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.23-RC1...0.4.24-RC2)
+## [0.4.24-RC2](https://github.com/cassproject/CASS/tree/0.4.24-RC2) (2019-01-04)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.23-RC1...0.4.24-RC2)
 
 **Implemented enhancements:**
 
@@ -84,8 +166,8 @@
 - Searching for assertions does not always return them all. [\#116](https://github.com/cassproject/CASS/issues/116)
 - Update Readme.MD for all projects. [\#111](https://github.com/cassproject/CASS/issues/111)
 
-## [0.4.23-RC1](https://github.com/cassproject/cass/tree/0.4.23-RC1) (2018-12-20)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.22-UNSTABLE...0.4.23-RC1)
+## [0.4.23-RC1](https://github.com/cassproject/CASS/tree/0.4.23-RC1) (2018-12-20)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.22-UNSTABLE...0.4.23-RC1)
 
 **Implemented enhancements:**
 
@@ -104,8 +186,8 @@
 - CFPackages URI gives error when exporting a CASE framework [\#104](https://github.com/cassproject/CASS/issues/104)
 - Export individual CTDL-ASN competencies. [\#82](https://github.com/cassproject/CASS/issues/82)
 
-## [0.4.22-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.22-UNSTABLE) (2018-11-15)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.20-UNSTABLE...0.4.22-UNSTABLE)
+## [0.4.22-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.22-UNSTABLE) (2018-11-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.20-UNSTABLE...0.4.22-UNSTABLE)
 
 **Implemented enhancements:**
 
@@ -117,8 +199,8 @@
 
 - CSV upload doesn't prepopulate IDs with http data if none exists. [\#102](https://github.com/cassproject/CASS/issues/102)
 
-## [0.4.20-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.20-UNSTABLE) (2018-10-25)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.18-UNSTABLE...0.4.20-UNSTABLE)
+## [0.4.20-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.20-UNSTABLE) (2018-10-25)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.18-UNSTABLE...0.4.20-UNSTABLE)
 
 **Implemented enhancements:**
 
@@ -142,11 +224,11 @@
 - Missing equivalent relation [\#72](https://github.com/cassproject/CASS/issues/72)
 - ResultType not documented [\#71](https://github.com/cassproject/CASS/issues/71)
 
-## [0.4.18-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.18-UNSTABLE) (2018-10-15)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.17-UNSTABLE...0.4.18-UNSTABLE)
+## [0.4.18-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.18-UNSTABLE) (2018-10-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.17-UNSTABLE...0.4.18-UNSTABLE)
 
-## [0.4.17-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.17-UNSTABLE) (2018-10-05)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.16-UNSTABLE...0.4.17-UNSTABLE)
+## [0.4.17-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.17-UNSTABLE) (2018-10-05)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.16-UNSTABLE...0.4.17-UNSTABLE)
 
 **Implemented enhancements:**
 
@@ -161,26 +243,26 @@
 - Profile Registration with Server and Profile Lookup [\#37](https://github.com/cassproject/CASS/issues/37)
 - Explore Public Key Publishing & Authentication [\#36](https://github.com/cassproject/CASS/issues/36)
 
-## [0.4.16-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.16-UNSTABLE) (2018-09-06)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.15-UNSTABLE...0.4.16-UNSTABLE)
+## [0.4.16-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.16-UNSTABLE) (2018-09-06)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.15-UNSTABLE...0.4.16-UNSTABLE)
 
-## [0.4.15-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.15-UNSTABLE) (2018-09-05)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.14-UNSTABLE...0.4.15-UNSTABLE)
+## [0.4.15-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.15-UNSTABLE) (2018-09-05)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.14-UNSTABLE...0.4.15-UNSTABLE)
 
-## [0.4.14-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.14-UNSTABLE) (2018-08-15)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.13-UNSTABLE...0.4.14-UNSTABLE)
+## [0.4.14-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.14-UNSTABLE) (2018-08-15)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.13-UNSTABLE...0.4.14-UNSTABLE)
 
-## [0.4.13-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.13-UNSTABLE) (2018-08-01)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.12-UNSTABLE...0.4.13-UNSTABLE)
+## [0.4.13-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.13-UNSTABLE) (2018-08-01)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.12-UNSTABLE...0.4.13-UNSTABLE)
 
-## [0.4.12-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.12-UNSTABLE) (2018-07-13)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.11-UNSTABLE...0.4.12-UNSTABLE)
+## [0.4.12-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.12-UNSTABLE) (2018-07-13)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.11-UNSTABLE...0.4.12-UNSTABLE)
 
-## [0.4.11-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.11-UNSTABLE) (2018-06-26)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.10-UNSTABLE...0.4.11-UNSTABLE)
+## [0.4.11-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.11-UNSTABLE) (2018-06-26)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.10-UNSTABLE...0.4.11-UNSTABLE)
 
-## [0.4.10-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.10-UNSTABLE) (2018-06-21)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.6-UNSTABLE...0.4.10-UNSTABLE)
+## [0.4.10-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.10-UNSTABLE) (2018-06-21)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.6-UNSTABLE...0.4.10-UNSTABLE)
 
 **Fixed bugs:**
 
@@ -192,18 +274,18 @@
 - xAPI adapter searches for old style @type [\#48](https://github.com/cassproject/CASS/issues/48)
 - Explore credential assertions. [\#46](https://github.com/cassproject/CASS/issues/46)
 
-## [0.4.6-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.6-UNSTABLE) (2018-05-03)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.4-UNSTABLE...0.4.6-UNSTABLE)
+## [0.4.6-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.6-UNSTABLE) (2018-05-03)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.4-UNSTABLE...0.4.6-UNSTABLE)
 
 **Closed issues:**
 
 - Issue in example about levels [\#70](https://github.com/cassproject/CASS/issues/70)
 
-## [0.4.4-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.4-UNSTABLE) (2018-05-02)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.3-UNSTABLE...0.4.4-UNSTABLE)
+## [0.4.4-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.4-UNSTABLE) (2018-05-02)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.3-UNSTABLE...0.4.4-UNSTABLE)
 
-## [0.4.3-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.3-UNSTABLE) (2018-04-27)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.4.2-UNSTABLE...0.4.3-UNSTABLE)
+## [0.4.3-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.3-UNSTABLE) (2018-04-27)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.4.2-UNSTABLE...0.4.3-UNSTABLE)
 
 **Closed issues:**
 
@@ -213,8 +295,8 @@
 - alert does not work in nodejs environment [\#66](https://github.com/cassproject/CASS/issues/66)
 - JS libraries not installed with nodejs 8.11.x  [\#64](https://github.com/cassproject/CASS/issues/64)
 
-## [0.4.2-UNSTABLE](https://github.com/cassproject/cass/tree/0.4.2-UNSTABLE) (2018-04-24)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.3.0-RC1...0.4.2-UNSTABLE)
+## [0.4.2-UNSTABLE](https://github.com/cassproject/CASS/tree/0.4.2-UNSTABLE) (2018-04-24)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.3.0-RC1...0.4.2-UNSTABLE)
 
 **Fixed bugs:**
 
@@ -232,8 +314,8 @@
 - Backup / Restore revives all deleted content. [\#31](https://github.com/cassproject/CASS/issues/31)
 - CASS Example App - Download Icons for JSON/Turtle [\#27](https://github.com/cassproject/CASS/issues/27)
 
-## [0.3.0-RC1](https://github.com/cassproject/cass/tree/0.3.0-RC1) (2017-12-26)
-[Full Changelog](https://github.com/cassproject/cass/compare/0.2.0-RC1...0.3.0-RC1)
+## [0.3.0-RC1](https://github.com/cassproject/CASS/tree/0.3.0-RC1) (2017-12-26)
+[Full Changelog](https://github.com/cassproject/CASS/compare/0.2.0-RC1...0.3.0-RC1)
 
 **Implemented enhancements:**
 
@@ -269,7 +351,7 @@
 - Remove 'privateEncrypted' field from CASS Libraries [\#5](https://github.com/cassproject/CASS/issues/5)
 - Licensing Issues [\#1](https://github.com/cassproject/CASS/issues/1)
 
-## [0.2.0-RC1](https://github.com/cassproject/cass/tree/0.2.0-RC1) (2016-10-28)
+## [0.2.0-RC1](https://github.com/cassproject/CASS/tree/0.2.0-RC1) (2016-10-28)
 **Closed issues:**
 
 - Node.js support for CASS js library [\#3](https://github.com/cassproject/CASS/issues/3)
