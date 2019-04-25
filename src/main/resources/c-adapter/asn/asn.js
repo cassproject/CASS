@@ -526,6 +526,28 @@ function importJsonLdGraph(graph, context) {
             objToSave.addOwner(skosIdentity.ppk.toPk());
             if (owner != null)
                 objToSave.addOwner(EcPk.fromPem(owner));
+            
+            if (objToSave["skos:narrower"] != null & !EcArray.isArray(objToSave["skos:narrower"])) {
+                objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
+            }
+            if (objToSave["skos:broader"] != null & !EcArray.isArray(objToSave["skos:broader"])) {
+                objToSave["skos:broader"] = [objToSave["skos:broader"]];
+            }
+            if (objToSave["skos:broadMatch"] != null & !EcArray.isArray(objToSave["skos:broadMatch"])) {
+                objToSave["skos:broadMatch"] = [objToSave["skos:broadMatch"]];
+            }
+            if (objToSave["skos:closeMatch"] != null & !EcArray.isArray(objToSave["skos:closeMatch"])) {
+                objToSave["skos:closeMatch"] = [objToSave["skos:closeMatch"]];
+            }
+            if (objToSave["skos:exactMatch"] != null & !EcArray.isArray(objToSave["skos:exactMatch"])) {
+                objToSave["skos:exactMatch"] = [objToSave["skos:exactMatch"]];
+            }
+            if (objToSave["skos:narrowMatch"] != null & !EcArray.isArray(objToSave["skos:narrowMatch"])) {
+                objToSave["skos:narrowMatch"] = [objToSave["skos:narrowMatch"]];
+            }
+            if (objToSave["skos:relatedMatch"] != null & !EcArray.isArray(objToSave["skos:relatedMatch"])) {
+                objToSave["skos:relatedMatch"] = [objToSave["skos:relatedMatch"]];
+            }
 
             repo.saveTo(objToSave,print,print);
         }
