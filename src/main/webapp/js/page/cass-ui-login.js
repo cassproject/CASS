@@ -239,6 +239,7 @@ $(document).ready(function () {
                                         $("#cassUiLoginPassword").val(profile.attributes.cass_secret[0]);
                                         init();
                                         $(".credentials").hide();
+                                        $("#loginHeaderImg").hide();
                                         attemptCassUiLogin();
                                     } else
                                         init();
