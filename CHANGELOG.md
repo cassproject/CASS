@@ -1,12 +1,12 @@
 # Change Log
 
-## [Unreleased](https://github.com/cassproject/CASS/tree/HEAD)
-
-[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.6...HEAD)
+## [1.2.7](https://github.com/cassproject/CASS/tree/1.2.7) (2019-04-26)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.6...1.2.7)
 
 **Closed issues:**
 
 - CTDL-ASN Export sometimes outputs children in the wrong order. [\#145](https://github.com/cassproject/CASS/issues/145)
+- Check to make sure a new object cannot be overwritten by a different owner. [\#140](https://github.com/cassproject/CASS/issues/140)
 
 ## [1.2.6](https://github.com/cassproject/CASS/tree/1.2.6) (2019-04-24)
 [Full Changelog](https://github.com/cassproject/CASS/compare/1.2.5...1.2.6)
