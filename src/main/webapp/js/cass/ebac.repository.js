@@ -1404,8 +1404,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             fd.append("signatureSheet", signatureSheet);
             if (!EcRepository.alwaysTryUrl) 
                 if (repo != null) 
-                    if (!repo.constructor.shouldTryUrl(data.id)) {
-                        EcRemote.postExpectingString(EcRemote.urlAppend(repo.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.id)), "", fd, success, failure);
+                    if (!repo.constructor.shouldTryUrl(data.id) || data.id.indexOf(repo.selectedServer) == -1) {
+                        EcRemote.postExpectingString(EcRemote.urlAppend(repo.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.shortId())), "", fd, success, failure);
                         return;
                     }
             EcRemote.postExpectingString(data.id, "", fd, success, failure);
@@ -1519,7 +1519,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         if (EcRepository.shouldTryUrl(data.id)) 
             targetUrl = data.shortId();
          else {
-            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.id));
+            targetUrl = EcRemote.urlAppend(this.selectedServer, "data/" + data.getDottedType() + "/" + EcCrypto.md5(data.shortId()));
         }
         var me = this;
         if (data.owner != null && data.owner.length > 0) {
@@ -1609,7 +1609,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                 results[i] = d;
                 if (EcRepository.caching) {
                     if (!EcRepository.shouldTryUrl(d.id)) {
-                        var md5 = EcCrypto.md5(d.id);
+                        var md5 = EcCrypto.md5(d.shortId());
                         for (var j = 0; j < cacheUrls.length; j++) {
                             var url = cacheUrls[j];
                             if (url.indexOf(md5) != -1) {

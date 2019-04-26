@@ -749,7 +749,7 @@ var endpointMultiPut = function() {
         ld.copyFrom(o);
         var id = null;
         if (!EcRepository.alwaysTryUrl && repo != null && !repo.constructor.shouldTryUrl(ld.id)) 
-            id = EcCrypto.md5(ld.id);
+            id = EcCrypto.md5(ld.shortId());
          else 
             id = ld.getGuid();
         var version = ld.getTimestamp();
