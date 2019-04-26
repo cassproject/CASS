@@ -28611,7 +28611,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 139,
+            "line": 141,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository).",
             "params": [
                 {
@@ -28627,7 +28627,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 157,
+            "line": 159,
             "description": "Will generate an short (non-versioned) identifier using the server URL provided (usually from\nan EcRepository).",
             "params": [
                 {
@@ -28643,7 +28643,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 173,
+            "line": 175,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -28664,7 +28664,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 192,
+            "line": 194,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -28685,7 +28685,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 209,
+            "line": 211,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -28706,7 +28706,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 228,
+            "line": 230,
             "description": "Determines if the object has an owner identified by pk.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -28726,7 +28726,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 246,
+            "line": 248,
             "description": "Determines if the object has a reader identified by pk.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -28746,7 +28746,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 264,
+            "line": 266,
             "description": "Determines if the PK matches an owner or if the object is public.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -28766,7 +28766,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 278,
+            "line": 280,
             "description": "Determines if the PK matches an owner or if the object is public.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -28786,7 +28786,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 297,
+            "line": 299,
             "description": "Encodes the object in a form where it is ready to be signed.\nThis method is under long term review, and may change from version to version.",
             "return": {
                 "description": "ASCII-sort order encoded space-free and tab-free JSON-LD."
@@ -28798,7 +28798,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 319,
+            "line": 321,
             "description": "Sign this object using a private key.\nDoes not check for ownership, objects signed with keys absent from @owner or @reader may be removed.",
             "params": [
                 {
@@ -28814,7 +28814,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 338,
+            "line": 340,
             "description": "Verifies the object's signatures.",
             "return": {
                 "description": "true if all of the signatures could be verified, false if they could not",
@@ -28827,7 +28827,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 374,
+            "line": 376,
             "description": "Adds an owner to the object, if the owner does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -28843,7 +28843,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 391,
+            "line": 393,
             "description": "Removes an owner from the object, if the owner does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -28859,7 +28859,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 407,
+            "line": 409,
             "description": "Adds a reader to the object, if the reader does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -28875,7 +28875,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 421,
+            "line": 423,
             "description": "Removes a reader from the object, if the reader does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -28891,7 +28891,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 435,
+            "line": 437,
             "description": "Determines if the object is not retrievable from a repository should it be written.",
             "return": {
                 "description": "True if the object is NOT VALID for storage, false otherwise.",
@@ -28904,7 +28904,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 452,
+            "line": 454,
             "description": "Updates the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "updateTimestamp",
@@ -28913,7 +28913,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 466,
+            "line": 468,
             "description": "Returns the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "getTimestamp",
@@ -28922,7 +28922,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 479,
+            "line": 481,
             "description": "Returns true if the provided ID represents this object.\nUse this, as version information can make direct comparison difficult.",
             "params": [
                 {
@@ -28942,7 +28942,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 490,
+            "line": 492,
             "description": "Return the ID of this object without the version information.\nUsed to reference the latest version of an object.",
             "return": {
                 "description": "ID of the latest version of this object.",
@@ -28955,7 +28955,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 500,
+            "line": 502,
             "description": "Return the GUID portion of the short ID.",
             "return": {
                 "description": "Guid of the linked data object.",
@@ -28968,7 +28968,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 511,
+            "line": 513,
             "description": "Return the URL Base portion of the short ID.",
             "return": {
                 "description": "Server Base URL of the linked data object.",
@@ -28981,7 +28981,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 522,
+            "line": 524,
             "description": "Return a valid ElasticSearch search string that will retrieve all objects with this type.",
             "return": {
                 "description": "ElasticSearch compatible search string.",
