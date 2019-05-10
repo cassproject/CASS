@@ -20,27 +20,27 @@ const CASSUI_CONCEPT_EDITOR_PAGE = "cass-ui-concept-editor-ctr.html";
 //**************************************************************************************************
 
 function goToFrameworkExplorer() {
-    location.replace(CASSUI_FWK_EXP_PAGE);
+    location.assign(CASSUI_FWK_EXP_PAGE);
 }
 
 function goToProfileExplorer() {
-    location.replace(CASSUI_PRF_EXP_PAGE);
+    location.assign(CASSUI_PRF_EXP_PAGE);
 }
 
 function goToGapAnalysis() {
-    location.replace(CASSUI_GAP_ANL_PAGE);
+    location.assign(CASSUI_GAP_ANL_PAGE);
 }
 
 function goToVLRC() {
-    location.replace(CASSUI_VLRC_PAGE);
+    location.assign(CASSUI_VLRC_PAGE);
 }
 
 function goToEditor() {
-    location.replace(CASSUI_EDITOR_PAGE);
+    location.assign(CASSUI_EDITOR_PAGE);
 }
 
 function goToConceptEditor() {
-    location.replace(CASSUI_CONCEPT_EDITOR_PAGE);
+    location.assign(CASSUI_CONCEPT_EDITOR_PAGE);
 }
 
 function goToDocs() {

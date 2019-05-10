@@ -28,7 +28,7 @@ const CASSUI_FWK_EXP_PAGE = "cass-ui-concept-editor-ctr.html";
 function handleInitFrameworkExplorerMessage(frameworkId) {
 	debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
 	storeFrameworkToExploreInfo(frameworkId);
-	location.replace(CASSUI_FWK_EXP_PAGE);
+	location.assign(CASSUI_FWK_EXP_PAGE);
 }
 
 function sendIdentityInitializeMessage() {

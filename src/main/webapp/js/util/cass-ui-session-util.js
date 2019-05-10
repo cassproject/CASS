@@ -255,7 +255,7 @@ function clearCassUiSession() {
 
 function goToCassUISessionExpired() {
 	clearCassUiSession();
-	location.replace(CASSUI_AFTER_LOGOUT_PAGE + "?" + CASSUI_SES_EXP_QSP + "=true");
+	location.assign(CASSUI_AFTER_LOGOUT_PAGE + "?" + CASSUI_SES_EXP_QSP + "=true");
 }
 
 //**************************************************************************************************
@@ -264,5 +264,5 @@ function goToCassUISessionExpired() {
 
 function logoutCassUi() {
 	clearCassUiSession();
-	location.replace(CASSUI_AFTER_LOGOUT_PAGE);
+	location.assign(CASSUI_AFTER_LOGOUT_PAGE);
 }

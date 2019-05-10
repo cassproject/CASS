@@ -108,7 +108,7 @@ function initIdentity() {
 //**************************************************************************************************
 function doAfterLoginSuccess() {
     saveCassUiSessionState();
-    location.replace(CASSUI_AFTER_LOGIN_PAGE);
+    location.assign(CASSUI_AFTER_LOGIN_PAGE);
 }
 
 function checkForLoginInputEnter(event) {

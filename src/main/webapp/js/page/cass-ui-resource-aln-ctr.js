@@ -28,7 +28,7 @@ function handleInitFrameworkExplorerMessage(frameworkId) {
 	debugMessage("handleInitFrameworkExplorerMessage storing framework id: " + frameworkId);
 	storeFrameworkToExploreInfo(frameworkId);
     var lson = copySessionStateToLocalStorage();
-	//location.replace(CASSUI_FWK_EXP_PAGE);
+	//location.assign(CASSUI_FWK_EXP_PAGE);
     window.open(CASSUI_FWK_EXP_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 }
 

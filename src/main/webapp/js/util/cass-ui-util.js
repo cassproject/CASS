@@ -76,7 +76,7 @@ function setCassUiMainMenuUserName() {
 }
 
 function goToCassUiHomePage() {
-    location.replace(CASSUI_HOME_PAGE);
+    location.assign(CASSUI_HOME_PAGE);
 }
 
 

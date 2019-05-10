@@ -22,7 +22,7 @@ function handleInitProfileExplorerMessage(profilePem) {
 	debugMessage("handleInitProfileExplorerMessage storing profile pem: " + profilePem);
 	storeProfileToExploreInfo(profilePem);
     var lson = copySessionStateToLocalStorage();
-	//location.replace(CASSUI_PRF_EXP_PAGE);
+	//location.assign(CASSUI_PRF_EXP_PAGE);
     window.open(CASSUI_PRF_EXP_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 }
 

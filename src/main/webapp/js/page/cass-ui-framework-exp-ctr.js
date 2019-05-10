@@ -30,7 +30,7 @@ function handleAlignmentMessage(messageData) {
 		debugMessage("Handling framework to framework alignment");
 		storeFrameworkToFrameworkAlignmentInfo(alignType, messageData.framework1Id, messageData.framework2Id);
         var lson = copySessionStateToLocalStorage();
-		//location.replace(CASSUI_RES_ALN_PAGE);
+		//location.assign(CASSUI_RES_ALN_PAGE);
         window.open(CASSUI_RES_ALN_PAGE + "?" + CASS_CONT_PARAM_NAME + "=" + lson);
 	}
 	else {
