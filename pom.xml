@@ -189,6 +189,7 @@
 						<maven.javadoc.skip>true</maven.javadoc.skip>
 					</properties>
 					<noLog>true</noLog>
+					<parallelThreads>7</parallelThreads>
 					<goals>
 						<goal>install</goal>
 					</goals>

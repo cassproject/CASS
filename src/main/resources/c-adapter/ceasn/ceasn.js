@@ -75,7 +75,7 @@ function cassFrameworkAsCeasn() {
     if (framework == null)
         error("Object not found or you did not supply sufficient permissions to access the object.", 404);
 
-    f = new EcFramework();
+    var f = new EcFramework();
     f.copyFrom(framework);
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
@@ -616,6 +616,8 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         }
     }
 
+    var listToSave = [];
+
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
 
@@ -638,7 +640,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
-                    repo.saveTo(r, print, print);
+                    listToSave.push(r);
                     cassRelationships.push(r.shortId());
                     cassCompetencies.push(r.source);
                 }
@@ -663,7 +665,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
 
-        repo.saveTo(c, print, print);
+        listToSave.push(c);
 
     } // end for each competency in  competencyList
 
@@ -690,8 +692,9 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         if (owner != null)
             f.addOwner(EcPk.fromPem(owner));
 
-        repo.saveTo(f, print, print);
+        listToSave.push(f);
 
+        repo.multiput(listToSave,console.log,console.error);
         return repoEndpoint() + "data/" + guid;
     } // end if frameworkObj != null
 }
