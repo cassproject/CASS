@@ -1,5 +1,29 @@
 # Change Log
 
+## [1.2.8](https://github.com/cassproject/CASS/tree/1.2.8) (2019-05-10)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.7...1.2.8)
+
+**Implemented enhancements:**
+
+- Login screen needs create account option. [\#134](https://github.com/cassproject/CASS/issues/134)
+- Allow Assertion Processor to weigh assertions and return t/f instead of indeterminate.  [\#77](https://github.com/cassproject/CASS/issues/77)
+- Add switch to AssertionProcessor to base judgment off of last assertion \(removing Indeterminate from the options\) [\#76](https://github.com/cassproject/CASS/issues/76)
+- Reproduce lastModifedMs \(version part of url\) in records so it may be searched / sorted over. [\#42](https://github.com/cassproject/CASS/issues/42)
+
+**Fixed bugs:**
+
+- Case import works on sandbox but not on dev or local servers [\#142](https://github.com/cassproject/CASS/issues/142)
+- When exporting the same framework in multiple ways at the same time, errors occur. [\#114](https://github.com/cassproject/CASS/issues/114)
+
+**Closed issues:**
+
+- No interface for user to edit concept schemes within the CaSS UI Editor [\#141](https://github.com/cassproject/CASS/issues/141)
+- Review "optimistic transmission of indeterminate state" in Boolean Assertion Processing [\#139](https://github.com/cassproject/CASS/issues/139)
+- Boolean Assertion Processing doesn't work quite right with frameworks that fork and merge. [\#138](https://github.com/cassproject/CASS/issues/138)
+- CTDL-ASN Import of a CTDL-ASN export \(non CE\) doesn't work very well. [\#137](https://github.com/cassproject/CASS/issues/137)
+- publisherName is preventing CEASN export. [\#128](https://github.com/cassproject/CASS/issues/128)
+- Test case: Rollup. [\#78](https://github.com/cassproject/CASS/issues/78)
+
 ## [1.2.7](https://github.com/cassproject/CASS/tree/1.2.7) (2019-04-26)
 [Full Changelog](https://github.com/cassproject/CASS/compare/1.2.6...1.2.7)
 
