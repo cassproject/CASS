@@ -1959,8 +1959,6 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *                                         Callback triggered if error searching
      *  @param {Object}                        paramObj
      *                                         Parameter object for search
-     *  @param start
-     *  @param size
      *  @memberOf EcCompetency
      *  @method search
      *  @static

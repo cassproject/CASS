@@ -272,15 +272,18 @@
                                 <li><a href="../classes/EcAes.html">EcAes</a></li>
                                 <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
                                 <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                                <li><a href="../classes/EcAesCtrAsyncWorker.html">EcAesCtrAsyncWorker</a></li>
                                 <li><a href="../classes/EcAlignment.html">EcAlignment</a></li>
                                 <li><a href="../classes/EcArray.html">EcArray</a></li>
                                 <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
                                 <li><a href="../classes/EcCompetency.html">EcCompetency</a></li>
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
+                                <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
+                                <li><a href="../classes/EcFrameworkGraph.html">EcFrameworkGraph</a></li>
                                 <li><a href="../classes/EcIdentity.html">EcIdentity</a></li>
                                 <li><a href="../classes/EcIdentityManager.html">EcIdentityManager</a></li>
                                 <li><a href="../classes/EcLevel.html">EcLevel</a></li>
@@ -297,6 +300,7 @@
                                 <li><a href="../classes/EcRollupRule.html">EcRollupRule</a></li>
                                 <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
                                 <li><a href="../classes/EcRsaOaepAsync.html">EcRsaOaepAsync</a></li>
+                                <li><a href="../classes/EcRsaOaepAsyncWorker.html">EcRsaOaepAsyncWorker</a></li>
                                 <li><a href="../classes/EcScreen.html">EcScreen</a></li>
                                 <li><a href="../classes/EcView.html">EcView</a></li>
                                 <li><a href="../classes/EducationalAudience.html">EducationalAudience</a></li>
@@ -688,6 +692,7 @@
                                 <li><a href="../classes/Synagogue.html">Synagogue</a></li>
                                 <li><a href="../classes/Table.html">Table</a></li>
                                 <li><a href="../classes/TakeAction.html">TakeAction</a></li>
+                                <li><a href="../classes/Task.html">Task</a></li>
                                 <li><a href="../classes/TaskProfile.html">TaskProfile</a></li>
                                 <li><a href="../classes/TattooParlor.html">TattooParlor</a></li>
                                 <li><a href="../classes/Taxi.html">Taxi</a></li>
@@ -873,866 +878,6 @@ Importer = stjs.extend(Importer, null, [], function(constructor, prototype) {
  */
 var Exporter = function() {};
 Exporter = stjs.extend(Exporter, null, [], null, {}, {});
-/**
- *  Export methods to handle exporting two CSV file , one of competencies
- *  and one of relationships representing a framework
- * 
- *  @author devlin.junker@eduworks.com
- *  @author fritz.ray@eduworks.com
- *  @module org.cassproject
- *  @class CSVExport
- *  @static
- *  @extends Exporter
- */
-var CSVExport = function() {
-    Exporter.call(this);
-};
-CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
-    constructor.frameworkCompetencies = null;
-    constructor.frameworkRelations = null;
-    constructor.exportObjects = function(objects, fileName) {
-        var compExport = new CSVExport.CSVExportProcess();
-        compExport.buildExport(objects);
-        compExport.downloadCSV(fileName);
-    };
-    /**
-     *  Method to export the CSV files of competencies and relationships for a framework
-     * 
-     *  @param {String}            frameworkId
-     *                             Id of the framework to export
-     *  @param {Callback0}         success
-     *                             Callback triggered after both files have been successfully exported
-     *  @param {Callback1&lt;String&gt;} failure
-     *                             Callback triggered if an error occurs during export
-     *  @memberOf CSVExport
-     *  @method export
-     *  @static
-     */
-    constructor.exportFramework = function(frameworkId, success, failure) {
-        if (frameworkId == null) {
-            failure(&quot;Framework not selected.&quot;);
-            return;
-        }
-        CSVExport.frameworkCompetencies = [];
-        CSVExport.frameworkRelations = [];
-        EcRepository.get(frameworkId, function(data) {
-            if (data.isAny(new EcFramework().getTypes())) {
-                var fw = new EcFramework();
-                fw.copyFrom(data);
-                if (fw.competency == null || fw.competency.length == 0) 
-                    failure(&quot;No Competencies in Framework&quot;);
-                for (var i = 0; i &lt; fw.competency.length; i++) {
-                    var competencyUrl = fw.competency[i];
-                    EcRepository.get(competencyUrl, function(competency) {
-                        CSVExport.frameworkCompetencies.push(competency);
-                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
-                            var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkCompetencies);
-                            compExport.downloadCSV(fw.getName() + &quot; - Competencies.csv&quot;);
-                        } else {}
-                    }, function(s) {
-                        CSVExport.frameworkCompetencies.push(null);
-                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
-                            var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkCompetencies);
-                            compExport.downloadCSV(fw.getName() + &quot; - Competencies.csv&quot;);
-                        } else {}
-                    });
-                }
-                for (var i = 0; i &lt; fw.relation.length; i++) {
-                    var relationUrl = fw.relation[i];
-                    EcRepository.get(relationUrl, function(relation) {
-                        CSVExport.frameworkRelations.push(relation);
-                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
-                            var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkRelations);
-                            compExport.downloadCSV(fw.getName() + &quot; - Relations.csv&quot;);
-                            if (success != null &amp;&amp; success != undefined) 
-                                success();
-                        } else {}
-                    }, function(s) {
-                        CSVExport.frameworkRelations.push(null);
-                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
-                            var compExport = new CSVExport.CSVExportProcess();
-                            compExport.buildExport(CSVExport.frameworkRelations);
-                            compExport.downloadCSV(fw.getName() + &quot; - Relations.csv&quot;);
-                            if (success != null &amp;&amp; success != undefined) 
-                                success();
-                        } else {}
-                    });
-                }
-            }
-        }, failure);
-    };
-    constructor.CSVExportProcess = function() {
-        this.csvOutput = [];
-    };
-    constructor.CSVExportProcess = stjs.extend(constructor.CSVExportProcess, null, [], function(constructor, prototype) {
-        prototype.csvOutput = null;
-        prototype.flattenObject = function(flattenedObject, object, prefix) {
-            var data = new EcRemoteLinkedData((object)[&quot;@context&quot;], (object)[&quot;@type&quot;]);
-            data.copyFrom(object);
-            var tempObj = JSON.parse(data.toJson());
-            var props = (tempObj);
-            for (var prop in props) {
-                var id;
-                if (prefix != null &amp;&amp; prefix != undefined) 
-                    id = prefix + &quot;.&quot; + prop;
-                 else 
-                    id = prop;
-                if (props[prop] != null &amp;&amp; props[prop] != &quot;&quot; &amp;&amp; stjs.isInstanceOf(props[prop].constructor, Object)) {
-                    this.flattenObject(flattenedObject, props[prop], id);
-                } else {
-                    var display = Thing.getDisplayStringFrom(props[prop]);
-                    (flattenedObject)[id] = display;
-                }
-            }
-        };
-        prototype.addCSVRow = function(object) {
-            var flattenedObject = new EcRemoteLinkedData(object.context, object.type);
-            this.flattenObject(flattenedObject, object, null);
-            this.csvOutput.push(JSON.parse(flattenedObject.toJson()));
-            var props = (JSON.parse(flattenedObject.toJson()));
-            for (var prop in props) {
-                if (props[prop] != null &amp;&amp; props[prop] != &quot;&quot;) {
-                    for (var i = 0; i &lt; this.csvOutput.length; i++) {
-                        var row = this.csvOutput[i];
-                        if (!(row).hasOwnProperty(prop)) {
-                            (row)[prop] = &quot;&quot;;
-                        }
-                    }
-                }
-            }
-        };
-        prototype.buildExport = function(objects) {
-            for (var i = 0; i &lt; objects.length; i++) 
-                if (objects[i] != null) {
-                    var object = objects[i];
-                    this.addCSVRow(object);
-                }
-        };
-        prototype.downloadCSV = function(name) {
-            var csv = Papa.unparse(this.csvOutput);
-            var pom = window.document.createElement(&quot;a&quot;);
-            pom.setAttribute(&quot;href&quot;, &quot;data:text/csv;charset=utf-8,&quot; + encodeURIComponent(csv));
-            pom.setAttribute(&quot;download&quot;, name);
-            if ((window.document)[&quot;createEvent&quot;] != null) {
-                var event = ((window.document)[&quot;createEvent&quot;]).call(window.document, &quot;MouseEvents&quot;);
-                ((event)[&quot;initEvent&quot;]).call(event, &quot;click&quot;, true, true);
-                pom.dispatchEvent(event);
-            } else {
-                ((pom)[&quot;click&quot;]).call(pom);
-            }
-        };
-    }, {csvOutput: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}}, {});
-}, {frameworkCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}, frameworkRelations: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}}, {});
-/**
- *  Import methods to handle an ASN JSON file containing a framework,
- *  competencies and relationships, and store them in a CASS instance
- * 
- *  @author devlin.junker@eduworks.com
- *  @author fritz.ray@eduworks.com
- *  @module org.cassproject
- *  @class ASNImport
- *  @static
- *  @extends Importer
- */
-var ASNImport = function() {
-    Importer.call(this);
-};
-ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype) {
-    constructor.INCREMENTAL_STEP = 5;
-    constructor.jsonFramework = null;
-    constructor.frameworkUrl = null;
-    constructor.jsonCompetencies = null;
-    constructor.competencyCount = 0;
-    constructor.relationCount = 0;
-    constructor.importedFramework = null;
-    constructor.competencies = null;
-    constructor.progressObject = null;
-    constructor.savedCompetencies = 0;
-    constructor.savedRelations = 0;
-    /**
-     *  Recursive function that looks through the file and saves each
-     *  competency object in a map for use during importing. It also counts
-     *  the number of competencies and relationships that it finds
-     * 
-     *  @param {Object} obj
-     *                  The current JSON object we&#x27;re examining for comepetencies and reationships
-     *  @param {String} key
-     *                  The ASN identifier of the current object
-     *  @memberOf ASNImport
-     *  @method asnJsonPrime
-     *  @private
-     *  @static
-     */
-    constructor.asnJsonPrime = function(obj, key) {
-        var value = (obj)[key];
-        if (Importer.isObject(value)) {
-            if ((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;] != null) {
-                var stringVal = (((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;])[&quot;0&quot;])[&quot;value&quot;];
-                if (stringVal == &quot;http://purl.org/ASN/schema/core/Statement&quot;) {
-                    ASNImport.jsonCompetencies[key] = value;
-                    ASNImport.competencyCount++;
-                    var children = (value)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
-                    if (children != null) 
-                        for (var j = 0; j &lt; children.length; j++) {
-                            ASNImport.relationCount++;
-                            ASNImport.asnJsonPrime(obj, (children[j])[&quot;value&quot;]);
-                        }
-                }
-            }
-        }
-    };
-    /**
-     *  Does the actual legwork of looking for competencies and relationships.
-     *  &lt;p&gt;
-     *  This function finds the framework information, and pulls out the competency
-     *  objects array to be scanned by asnJsonPrime
-     * 
-     *  @param {Object} obj
-     *                  ASN JSON Object from file that contains framework information and competencies/relationships
-     *  @memberOf ASNImport
-     *  @method lookThroughSource
-     *  @private
-     *  @static
-     */
-    constructor.lookThroughSource = function(obj) {
-        ASNImport.competencyCount = 0;
-        ASNImport.relationCount = 0;
-        for (var key in (obj)) {
-            var value = (obj)[key];
-            if (Importer.isObject(value)) {
-                if ((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;] != null) {
-                    var stringVal = (((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;])[&quot;0&quot;])[&quot;value&quot;];
-                    if (stringVal == &quot;http://purl.org/ASN/schema/core/StandardDocument&quot;) {
-                        ASNImport.jsonFramework = value;
-                        ASNImport.frameworkUrl = key;
-                        var children = (value)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
-                        if (children != null) 
-                            for (var j = 0; j &lt; children.length; j++) {
-                                ASNImport.asnJsonPrime(obj, (children[j])[&quot;value&quot;]);
-                            }
-                    }
-                }
-            }
-        }
-    };
-    /**
-     *  Analyzes an ASN File for competencies and relationships.
-     *  &lt;p&gt;
-     *  This should be called before import, the success callback returns an object
-     *  indicating the number of competencies and relationships found.
-     * 
-     *  @param {Object}            file
-     *                             ASN JSON file
-     *  @param {Callback1&lt;Object&gt;} success
-     *                             Callback triggered on successful analysis of file
-     *  @param {Callback1&lt;Object&gt;} [failure]
-     *                             Callback triggered if there is an error during analysis of the file
-     *  @memberOf ASNImport
-     *  @method analyzeFile
-     *  @static
-     */
-    constructor.analyzeFile = function(file, success, failure) {
-        if (file == null) {
-            failure(&quot;No file to analyze&quot;);
-            return;
-        }
-        if ((file)[&quot;name&quot;] == null) {
-            failure(&quot;Invalid file&quot;);
-            return;
-        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.json&quot;)) {
-            failure(&quot;Invalid file type&quot;);
-            return;
-        }
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var result = ((e)[&quot;target&quot;])[&quot;result&quot;];
-            var jsonObj = JSON.parse(result);
-            ASNImport.jsonCompetencies = {};
-            ASNImport.jsonFramework = null;
-            ASNImport.frameworkUrl = &quot;&quot;;
-            ASNImport.lookThroughSource(jsonObj);
-            if (ASNImport.jsonFramework == null) {
-                failure(&quot;Could not find StandardDocument.&quot;);
-            } else {
-                success(ASNImport.jsonCompetencies);
-            }
-        };
-        reader.readAsText(file, &quot;UTF-8&quot;);
-    };
-    /**
-     *  Method to import the competencies from an ASN JSON file,
-     *  should be called after analyzing the file
-     * 
-     *  @param {String}                        serverUrl
-     *                                         URL Prefix for the competencies to be imported
-     *  @param {EcIdentity}                    owner
-     *                                         EcIdentity that will own the new competencies
-     *  @param {boolean}                       createFramework
-     *                                         Flag to create a framework and include the competencies and relationships created
-     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, EcFramework&gt;} success
-     *                                         Callback triggered after the competencies (and framework?) are created
-     *  @param {Callback1&lt;Object&gt;}             failure
-     *                                         Callback triggered if an error occurs while creating the competencies
-     *  @param {Callback1&lt;Object&gt;}             [incremental]
-     *                                         Callback triggered incrementally during the creation of competencies to indicate progress,
-     *                                         returns an object indicating the number of competencies (and relationships?) created so far
-     *  @memberOf ASNImport
-     *  @method importCompetencies
-     *  @static
-     */
-    constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure, incremental, repo) {
-        ASNImport.competencies = {};
-        if (createFramework) {
-            ASNImport.importedFramework = new EcFramework();
-            ASNImport.importedFramework.competency = [];
-            ASNImport.importedFramework.relation = [];
-        } else {
-            ASNImport.importedFramework = null;
-        }
-        ASNImport.progressObject = null;
-        ASNImport.createCompetencies(serverUrl, owner, function() {
-            ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonFramework, null, function() {
-                if (createFramework) {
-                    ASNImport.createFramework(serverUrl, owner, success, failure, repo);
-                } else {
-                    var compList = [];
-                    for (var key in ASNImport.competencies) {
-                        compList.push(ASNImport.competencies[key]);
-                    }
-                    if (success != null) 
-                        success(compList, null);
-                }
-            }, failure, incremental, repo);
-        }, failure, incremental, repo);
-    };
-    /**
-     *  Handles creating the competencies found during analysis, iterates through the
-     *  competency ASN objects saved and creates them in the CASS repository at the URL given.
-     * 
-     *  @param {String}            serverUrl
-     *                             URL Prefix for the competencies to be imported
-     *  @param {EcIdentity}        owner
-     *                             EcIdentity that will own the new competencies
-     *  @param {Callback0}         success
-     *                             Callback triggered after the competencies are created
-     *  @param {Callback1&lt;Object&gt;} failure
-     *                             Callback triggered if an error occurs while creating the competencies
-     *  @param {Callback1&lt;Object&gt;} [incremental]
-     *                             Callback triggered incrementally during the creation of competencies to indicate progress
-     *  @memberOf ASNImport
-     *  @method createCompetencies
-     *  @private
-     *  @static
-     */
-    constructor.createCompetencies = function(serverUrl, owner, success, failure, incremental, repo) {
-        ASNImport.savedCompetencies = 0;
-        for (var key in ASNImport.jsonCompetencies) {
-            var comp = new EcCompetency();
-            var jsonComp = ASNImport.jsonCompetencies[key];
-            if ((jsonComp)[&quot;http://purl.org/dc/elements/1.1/title&quot;] == null) 
-                comp.name = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
-             else 
-                comp.name = (((jsonComp)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
-            if ((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;] != null) 
-                comp.description = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
-            comp.id = key;
-            if (comp.id == null) {
-                if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                    comp.generateId(serverUrl);
-                 else 
-                    comp.generateShortId(serverUrl);
-            }
-            if (owner != null) 
-                comp.addOwner(owner.ppk.toPk());
-            if (ASNImport.importedFramework != null) 
-                ASNImport.importedFramework.addCompetency(comp.shortId());
-            ASNImport.competencies[key] = comp;
-            ASNImport.saveCompetency(success, failure, incremental, comp, repo);
-        }
-    };
-    constructor.saveCompetency = function(success, failure, incremental, comp, repo) {
-        Task.asyncImmediate(function(o) {
-            var keepGoing = o;
-            comp.save(function(p1) {
-                ASNImport.savedCompetencies++;
-                if (ASNImport.savedCompetencies % ASNImport.INCREMENTAL_STEP == 0) {
-                    if (ASNImport.progressObject == null) 
-                        ASNImport.progressObject = new Object();
-                    (ASNImport.progressObject)[&quot;competencies&quot;] = ASNImport.savedCompetencies;
-                    incremental(ASNImport.progressObject);
-                }
-                if (ASNImport.savedCompetencies == ASNImport.competencyCount) {
-                    if (ASNImport.progressObject == null) 
-                        ASNImport.progressObject = new Object();
-                    (ASNImport.progressObject)[&quot;competencies&quot;] = ASNImport.savedCompetencies;
-                    incremental(ASNImport.progressObject);
-                    success();
-                }
-                keepGoing();
-            }, function(p1) {
-                failure(&quot;Failed to save competency&quot;);
-                keepGoing();
-            }, repo);
-        });
-    };
-    /**
-     *  Handles creating the relationships from the file analyzed earlier.
-     *  Recursively travels through looking for the hasChild field and creates
-     *  relationships based off of that.
-     * 
-     *  @param {String}            serverUrl
-     *                             URL Prefix for the relationships to be imported
-     *  @param {EcIdentity}        owner
-     *                             EcIdentity that will own the new relationships
-     *  @param {Object}            node
-     *  @param {String}            nodeId
-     *  @param {Callback0}         success
-     *                             Callback triggered after the relationships are created
-     *  @param {Callback1&lt;Object&gt;} failure
-     *                             Callback triggered if an error occurs while creating the relationships
-     *  @param {Callback1&lt;Object&gt;} incremental
-     *                             Callback triggered incrementally during the creation of relationships to indicate progress
-     *  @memberOf ASNImport
-     *  @method createRelationships
-     *  @private
-     *  @static
-     */
-    constructor.createRelationships = function(serverUrl, owner, node, nodeId, success, failure, incremental, repo) {
-        ASNImport.savedRelations = 0;
-        if (ASNImport.relationCount == 0) {
-            success();
-        }
-        var children = (node)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
-        if (children != null) 
-            for (var j = 0; j &lt; children.length; j++) {
-                if (nodeId != null) {
-                    var relation = new EcAlignment();
-                    relation.target = ASNImport.competencies[nodeId].id;
-                    relation.source = ASNImport.competencies[(children[j])[&quot;value&quot;]].id;
-                    relation.relationType = &quot;narrows&quot;;
-                    relation.name = &quot;&quot;;
-                    relation.description = &quot;&quot;;
-                    if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                        relation.generateId(serverUrl);
-                     else 
-                        relation.generateShortId(serverUrl);
-                    if (owner != null) 
-                        relation.addOwner(owner.ppk.toPk());
-                    if (ASNImport.importedFramework != null) 
-                        ASNImport.importedFramework.addRelation(relation.shortId());
-                    ASNImport.saveRelation(success, failure, incremental, relation, repo);
-                }
-                ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonCompetencies[(children[j])[&quot;value&quot;]], (children[j])[&quot;value&quot;], success, failure, incremental, repo);
-            }
-    };
-    constructor.saveRelation = function(success, failure, incremental, relation, repo) {
-        Task.asyncImmediate(function(o) {
-            var keepGoing = o;
-            relation.save(function(p1) {
-                ASNImport.savedRelations++;
-                if (ASNImport.savedRelations % ASNImport.INCREMENTAL_STEP == 0) {
-                    if (ASNImport.progressObject == null) 
-                        ASNImport.progressObject = new Object();
-                    (ASNImport.progressObject)[&quot;relations&quot;] = ASNImport.savedRelations;
-                    incremental(ASNImport.progressObject);
-                }
-                if (ASNImport.savedRelations == ASNImport.relationCount) {
-                    success();
-                }
-                keepGoing();
-            }, function(p1) {
-                failure(&quot;Failed to save Relationship&quot;);
-                keepGoing();
-            }, repo);
-        });
-    };
-    /**
-     *  Handles creating the framework if the createFramework flag was set
-     * 
-     *  @param {String}                        serverUrl
-     *                                         URL Prefix for the framework to be imported
-     *  @param {EcIdentity}                    owner
-     *                                         EcIdentity that will own the new framework
-     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, EcFramework&gt;} success
-     *                                         Callback triggered after the framework is created
-     *  @param {Callback1&lt;Object&gt;}             failure
-     *                                         Callback triggered if there is an error during the creation of framework
-     *  @meberOf ASNImport
-     *  @method createFramework
-     *  @private
-     *  @static
-     */
-    constructor.createFramework = function(serverUrl, owner, success, failure, repo) {
-        ASNImport.importedFramework.name = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
-        ASNImport.importedFramework.description = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
-        ASNImport.importedFramework.id = ASNImport.frameworkUrl;
-        if (ASNImport.importedFramework.id == null) {
-            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                ASNImport.importedFramework.generateId(serverUrl);
-             else 
-                ASNImport.importedFramework.generateShortId(serverUrl);
-        }
-        if (owner != null) 
-            ASNImport.importedFramework.addOwner(owner.ppk.toPk());
-        ASNImport.importedFramework.save(function(p1) {
-            var compList = [];
-            for (var key in ASNImport.competencies) {
-                compList.push(ASNImport.competencies[key]);
-            }
-            if (success != null) 
-                success(compList, ASNImport.importedFramework);
-        }, function(p1) {
-            failure(&quot;Failed to save framework&quot;);
-        }, repo);
-    };
-}, {jsonFramework: &quot;Object&quot;, jsonCompetencies: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, importedFramework: &quot;EcFramework&quot;, competencies: {name: &quot;Map&quot;, arguments: [null, &quot;EcCompetency&quot;]}, progressObject: &quot;Object&quot;}, {});
-/**
- *  Importer methods to copy or link to competencies that already
- *  exist in another framework in a CASS instance.
- * 
- *  @author devlin.junker@eduworks.com
- *  @module org.cassproject
- *  @class FrameworkImport
- *  @static
- *  @extends Importer
- */
-var FrameworkImport = function() {};
-FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
-    constructor.savedComp = 0;
-    constructor.savedRel = 0;
-    constructor.targetUsable = null;
-    constructor.competencies = null;
-    constructor.relations = null;
-    constructor.compMap = null;
-    /**
-     *  Copies or links competencies that exist in one framework in a CASS instance,
-     *  to another different framework in the same CASS instance.
-     * 
-     *  @param {EcFramework}                    source
-     *                                          Framework to copy or link the competencies from
-     *  @param {EcFramework}                    target
-     *                                          Framework to add the copied or linked competencies to
-     *  @param {boolean}                        copy
-     *                                          Flag indicating whether or not to copy or link the competencies in the source framework
-     *  @param {String}                         serverUrl
-     *                                          URL Prefix for the created competencies if copied
-     *  @param {EcIdentity}                     owner
-     *                                          EcIdentity that will own the created competencies if copied
-     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
-     *                                          Callback triggered after succesfully copying or linking all of the competencies,
-     *                                          returns an array of the new or linked competencies
-     *  @param {Callback1&lt;Object&gt;}              [failure]
-     *                                          Callback triggered if an error occurred while creating the competencies
-     *  @memberOf FrameworkImport
-     *  @method importCompetencies
-     *  @static
-     */
-    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure, repo) {
-        if (source == null) {
-            failure(&quot;Source Framework not set&quot;);
-            return;
-        }
-        if (target == null) {
-            failure(&quot;Target Framework not Set&quot;);
-            return;
-        }
-        FrameworkImport.targetUsable = target;
-        if (source.competency == null || source.competency.length == 0) {
-            failure(&quot;Source Has No Competencies&quot;);
-            return;
-        }
-        FrameworkImport.competencies = [];
-        FrameworkImport.relations = [];
-        if (copy) {
-            FrameworkImport.compMap = {};
-            FrameworkImport.savedComp = 0;
-            FrameworkImport.savedRel = 0;
-            for (var i = 0; i &lt; source.competency.length; i++) {
-                var id = source.competency[i];
-                EcCompetency.get(id, function(comp) {
-                    var competency = new EcCompetency();
-                    competency.copyFrom(comp);
-                    if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                        competency.generateId(serverUrl);
-                     else 
-                        competency.generateShortId(serverUrl);
-                    FrameworkImport.compMap[comp.shortId()] = competency.shortId();
-                    if (owner != null) 
-                        competency.addOwner(owner.ppk.toPk());
-                    var id = competency.id;
-                    Task.asyncImmediate(function(o) {
-                        var keepGoing = o;
-                        competency.save(function(str) {
-                            FrameworkImport.savedComp++;
-                            FrameworkImport.targetUsable.addCompetency(id);
-                            if (FrameworkImport.savedComp == FrameworkImport.competencies.length) {
-                                FrameworkImport.targetUsable.save(function(p1) {
-                                    for (var i = 0; i &lt; source.relation.length; i++) {
-                                        var id = source.relation[i];
-                                        EcAlignment.get(id, function(rel) {
-                                            var relation = new EcAlignment();
-                                            relation.copyFrom(rel);
-                                            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                                                relation.generateId(serverUrl);
-                                             else 
-                                                relation.generateShortId(serverUrl);
-                                            relation.source = FrameworkImport.compMap[rel.source];
-                                            relation.target = FrameworkImport.compMap[rel.target];
-                                            if (owner != null) 
-                                                relation.addOwner(owner.ppk.toPk());
-                                            var id = relation.id;
-                                            Task.asyncImmediate(function(o) {
-                                                var keepGoing2 = o;
-                                                relation.save(function(str) {
-                                                    FrameworkImport.savedRel++;
-                                                    FrameworkImport.targetUsable.addRelation(id);
-                                                    if (FrameworkImport.savedRel == FrameworkImport.relations.length) {
-                                                        FrameworkImport.targetUsable.save(function(p1) {
-                                                            success(FrameworkImport.competencies, FrameworkImport.relations);
-                                                        }, function(p1) {
-                                                            failure(p1);
-                                                        }, repo);
-                                                    }
-                                                    keepGoing2();
-                                                }, function(str) {
-                                                    failure(&quot;Trouble Saving Copied Competency&quot;);
-                                                    keepGoing2();
-                                                }, repo);
-                                            });
-                                            FrameworkImport.relations.push(relation);
-                                        }, function(str) {
-                                            failure(str);
-                                        });
-                                    }
-                                }, function(p1) {
-                                    failure(p1);
-                                }, repo);
-                            }
-                            keepGoing();
-                        }, function(str) {
-                            failure(&quot;Trouble Saving Copied Competency&quot;);
-                            keepGoing();
-                        }, repo);
-                    });
-                    FrameworkImport.competencies.push(competency);
-                }, function(str) {
-                    failure(str);
-                });
-            }
-        } else {
-            for (var i = 0; i &lt; source.competency.length; i++) {
-                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 &amp;&amp; target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
-                    EcCompetency.get(source.competency[i], function(comp) {
-                        FrameworkImport.competencies.push(comp);
-                        FrameworkImport.targetUsable.addCompetency(comp.id);
-                        if (FrameworkImport.competencies.length == source.competency.length) {
-                            delete (FrameworkImport.targetUsable)[&quot;competencyObjects&quot;];
-                            FrameworkImport.targetUsable.save(function(p1) {
-                                for (var i = 0; i &lt; source.relation.length; i++) {
-                                    if (target.relation == null || (target.relation.indexOf(source.relation[i]) == -1 &amp;&amp; target.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
-                                        EcAlignment.get(source.relation[i], function(relation) {
-                                            FrameworkImport.relations.push(relation);
-                                            FrameworkImport.targetUsable.addRelation(relation.id);
-                                            if (FrameworkImport.relations.length == source.relation.length) {
-                                                delete (FrameworkImport.targetUsable)[&quot;competencyObjects&quot;];
-                                                Task.asyncImmediate(function(o) {
-                                                    var keepGoing = o;
-                                                    FrameworkImport.targetUsable.save(function(p1) {
-                                                        success(FrameworkImport.competencies, FrameworkImport.relations);
-                                                        keepGoing();
-                                                    }, function(p1) {
-                                                        failure(p1);
-                                                        keepGoing();
-                                                    }, repo);
-                                                });
-                                            }
-                                        }, function(p1) {
-                                            failure(p1);
-                                        });
-                                    }
-                                }
-                            }, function(p1) {
-                                failure(p1);
-                            }, repo);
-                        }
-                    }, function(p1) {
-                        failure(p1);
-                    });
-                }
-            }
-        }
-    };
-}, {targetUsable: &quot;EcFramework&quot;, competencies: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, relations: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, compMap: {name: &quot;Map&quot;, arguments: [null, null]}}, {});
-/**
- *  Importer methods to create competencies based on a
- *  Medbiquitous competency XML file
- * 
- *  @author devlin.junker@eduworks.com
- *  @author fritz.ray@eduworks.com
- *  @module org.cassproject
- *  @class MedbiqImport
- *  @static
- *  @extends Importer
- */
-var MedbiqImport = function() {
-    Importer.call(this);
-};
-MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, prototype) {
-    constructor.INCREMENTAL_STEP = 5;
-    constructor.medbiqXmlCompetencies = null;
-    constructor.progressObject = null;
-    constructor.saved = 0;
-    /**
-     *  Does the legwork of looking for competencies in the XML
-     * 
-     *  @param {Object} obj
-     *                  Parsed XML Object
-     *  @memberOf MedbiqImport
-     *  @method medbiqXmlLookForCompetencyObject
-     *  @private
-     *  @static
-     */
-    constructor.medbiqXmlLookForCompetencyObject = function(obj) {
-        if (Importer.isObject(obj) || Importer.isArray(obj)) 
-            for (var key in (obj)) {
-                if (key == &quot;CompetencyObject&quot;) 
-                    MedbiqImport.medbiqXmlParseCompetencyObject((obj)[key]);
-                 else 
-                    MedbiqImport.medbiqXmlLookForCompetencyObject((obj)[key]);
-            }
-    };
-    /**
-     *  Does the legwork of parsing the competencies out of the parsed XML
-     * 
-     *  @param {Object} obj
-     *                  Parsed XML Object
-     *  @memberOf MedbiqImport
-     *  @method medbiqXmlParseCompetencyObject
-     *  @private
-     *  @static
-     */
-    constructor.medbiqXmlParseCompetencyObject = function(obj) {
-        if (Importer.isArray(obj)) {
-            for (var key in (obj)) {
-                MedbiqImport.medbiqXmlParseCompetencyObject((obj)[key]);
-            }
-        } else {
-            var newCompetency = new EcCompetency();
-            if ((obj)[&quot;lom&quot;] != null &amp;&amp; ((obj)[&quot;lom&quot;])[&quot;general&quot;] != null) {
-                newCompetency.name = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;title&quot;])[&quot;string&quot;].toString();
-                if ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;description&quot;] != null) 
-                    newCompetency.description = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;description&quot;])[&quot;string&quot;].toString();
-                if ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;identifier&quot;] != null) 
-                    newCompetency.url = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;identifier&quot;])[&quot;entry&quot;].toString();
-                if (newCompetency.description == null) 
-                    newCompetency.description = &quot;&quot;;
-                MedbiqImport.medbiqXmlCompetencies.push(newCompetency);
-            }
-        }
-    };
-    /**
-     *  Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process
-     * 
-     *  @param {Object}                         file
-     *                                          Medbiquitous XML file
-     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
-     *                                          Callback triggered on succesfully analyzing competencies,
-     *                                          returns an array of all of the competencies found
-     *  @param {Callback1&lt;String&gt;}              [failure]
-     *                                          Callback triggered on error analyzing file
-     *  @memberOf MedbiqImport
-     *  @method analyzeFile
-     *  @static
-     */
-    constructor.analyzeFile = function(file, success, failure) {
-        if (file == null) {
-            failure(&quot;No file to analyze&quot;);
-            return;
-        }
-        if ((file)[&quot;name&quot;] == null) {
-            failure(&quot;Invalid file&quot;);
-            return;
-        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.xml&quot;)) {
-            failure(&quot;Invalid file type&quot;);
-            return;
-        }
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var result = ((e)[&quot;target&quot;])[&quot;result&quot;];
-            var jsonObject = new X2JS().xml_str2json(result);
-            MedbiqImport.medbiqXmlCompetencies = [];
-            MedbiqImport.medbiqXmlLookForCompetencyObject(jsonObject);
-            success(MedbiqImport.medbiqXmlCompetencies);
-        };
-        reader.onerror = function(p1) {
-            failure(&quot;Error Reading File&quot;);
-        };
-        reader.readAsText(file, &quot;UTF-8&quot;);
-    };
-    /**
-     *  Method for actually creating the competencies in the CASS repository after a
-     *  Medbiquitous XML file has been parsed. Must be called after analyzeFile
-     * 
-     *  @param {String}                         serverUrl
-     *                                          URL Prefix for the created competencies (and relationships?)
-     *  @param {EcIdentity}                     owner
-     *                                          EcIdentity that will own the created competencies (and relationships?)
-     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
-     *                                          Callback triggered after successfully creating the competencies from the XML file
-     *  @param {Callback1&lt;Object&gt;}              [failure]
-     *                                          Callback triggered if there is an error while creating the competencies
-     *  @param {Callback1&lt;Object&gt;}              [incremental]
-     *                                          Callback triggered incrementally while the competencies are being created to show progress,
-     *                                          returns an object indicating the number of competencies created so far
-     *  @memberOf MedbiqImport
-     *  @method importCompetencies
-     *  @static
-     */
-    constructor.importCompetencies = function(serverUrl, owner, success, failure, incremental, repo) {
-        MedbiqImport.progressObject = null;
-        MedbiqImport.saved = 0;
-        for (var i = 0; i &lt; MedbiqImport.medbiqXmlCompetencies.length; i++) {
-            var comp = MedbiqImport.medbiqXmlCompetencies[i];
-            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
-                comp.generateId(serverUrl);
-             else 
-                comp.generateShortId(serverUrl);
-            if (owner != null) 
-                comp.addOwner(owner.ppk.toPk());
-            MedbiqImport.saveCompetency(success, failure, incremental, comp, repo);
-        }
-    };
-    constructor.saveCompetency = function(success, failure, incremental, comp, repo) {
-        Task.asyncImmediate(function(o) {
-            var keepGoing = o;
-            var scs = function(p1) {
-                MedbiqImport.saved++;
-                if (MedbiqImport.saved % MedbiqImport.INCREMENTAL_STEP == 0) {
-                    if (MedbiqImport.progressObject == null) 
-                        MedbiqImport.progressObject = new Object();
-                    (MedbiqImport.progressObject)[&quot;competencies&quot;] = MedbiqImport.saved;
-                    incremental(MedbiqImport.progressObject);
-                }
-                if (MedbiqImport.saved == MedbiqImport.medbiqXmlCompetencies.length) {
-                    if (MedbiqImport.progressObject == null) 
-                        MedbiqImport.progressObject = new Object();
-                    (MedbiqImport.progressObject)[&quot;competencies&quot;] = MedbiqImport.saved;
-                    incremental(MedbiqImport.progressObject);
-                    success(MedbiqImport.medbiqXmlCompetencies);
-                }
-                keepGoing();
-            };
-            var err = function(p1) {
-                failure(&quot;Failed to Save Competency&quot;);
-                keepGoing();
-            };
-            comp.save(scs, err, repo);
-        });
-    };
-}, {medbiqXmlCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, progressObject: &quot;Object&quot;}, {});
 /**
  *  Import methods to handle an CSV file of competencies and a
  *  CSV file of relationships and store them in a CASS instance
@@ -2189,6 +1334,183 @@ CSVImport = stjs.extend(CSVImport, null, [], function(constructor, prototype) {
         });
     };
 }, {importCsvLookup: &quot;Object&quot;, progressObject: &quot;Object&quot;}, {});
+/**
+ *  Importer methods to copy or link to competencies that already
+ *  exist in another framework in a CASS instance.
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @module org.cassproject
+ *  @class FrameworkImport
+ *  @static
+ *  @extends Importer
+ */
+var FrameworkImport = function() {};
+FrameworkImport = stjs.extend(FrameworkImport, null, [], function(constructor, prototype) {
+    constructor.savedComp = 0;
+    constructor.savedRel = 0;
+    constructor.targetUsable = null;
+    constructor.competencies = null;
+    constructor.relations = null;
+    constructor.compMap = null;
+    /**
+     *  Copies or links competencies that exist in one framework in a CASS instance,
+     *  to another different framework in the same CASS instance.
+     * 
+     *  @param {EcFramework}                    source
+     *                                          Framework to copy or link the competencies from
+     *  @param {EcFramework}                    target
+     *                                          Framework to add the copied or linked competencies to
+     *  @param {boolean}                        copy
+     *                                          Flag indicating whether or not to copy or link the competencies in the source framework
+     *  @param {String}                         serverUrl
+     *                                          URL Prefix for the created competencies if copied
+     *  @param {EcIdentity}                     owner
+     *                                          EcIdentity that will own the created competencies if copied
+     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
+     *                                          Callback triggered after succesfully copying or linking all of the competencies,
+     *                                          returns an array of the new or linked competencies
+     *  @param {Callback1&lt;Object&gt;}              [failure]
+     *                                          Callback triggered if an error occurred while creating the competencies
+     *  @memberOf FrameworkImport
+     *  @method importCompetencies
+     *  @static
+     */
+    constructor.importCompetencies = function(source, target, copy, serverUrl, owner, success, failure, repo) {
+        if (source == null) {
+            failure(&quot;Source Framework not set&quot;);
+            return;
+        }
+        if (target == null) {
+            failure(&quot;Target Framework not Set&quot;);
+            return;
+        }
+        FrameworkImport.targetUsable = target;
+        if (source.competency == null || source.competency.length == 0) {
+            failure(&quot;Source Has No Competencies&quot;);
+            return;
+        }
+        FrameworkImport.competencies = [];
+        FrameworkImport.relations = [];
+        if (copy) {
+            FrameworkImport.compMap = {};
+            FrameworkImport.savedComp = 0;
+            FrameworkImport.savedRel = 0;
+            for (var i = 0; i &lt; source.competency.length; i++) {
+                var id = source.competency[i];
+                EcCompetency.get(id, function(comp) {
+                    var competency = new EcCompetency();
+                    competency.copyFrom(comp);
+                    if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                        competency.generateId(serverUrl);
+                     else 
+                        competency.generateShortId(serverUrl);
+                    FrameworkImport.compMap[comp.shortId()] = competency.shortId();
+                    if (owner != null) 
+                        competency.addOwner(owner.ppk.toPk());
+                    var id = competency.id;
+                    Task.asyncImmediate(function(o) {
+                        var keepGoing = o;
+                        competency.save(function(str) {
+                            FrameworkImport.savedComp++;
+                            FrameworkImport.targetUsable.addCompetency(id);
+                            if (FrameworkImport.savedComp == FrameworkImport.competencies.length) {
+                                FrameworkImport.targetUsable.save(function(p1) {
+                                    for (var i = 0; i &lt; source.relation.length; i++) {
+                                        var id = source.relation[i];
+                                        EcAlignment.get(id, function(rel) {
+                                            var relation = new EcAlignment();
+                                            relation.copyFrom(rel);
+                                            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                                                relation.generateId(serverUrl);
+                                             else 
+                                                relation.generateShortId(serverUrl);
+                                            relation.source = FrameworkImport.compMap[rel.source];
+                                            relation.target = FrameworkImport.compMap[rel.target];
+                                            if (owner != null) 
+                                                relation.addOwner(owner.ppk.toPk());
+                                            var id = relation.id;
+                                            Task.asyncImmediate(function(o) {
+                                                var keepGoing2 = o;
+                                                relation.save(function(str) {
+                                                    FrameworkImport.savedRel++;
+                                                    FrameworkImport.targetUsable.addRelation(id);
+                                                    if (FrameworkImport.savedRel == FrameworkImport.relations.length) {
+                                                        FrameworkImport.targetUsable.save(function(p1) {
+                                                            success(FrameworkImport.competencies, FrameworkImport.relations);
+                                                        }, function(p1) {
+                                                            failure(p1);
+                                                        }, repo);
+                                                    }
+                                                    keepGoing2();
+                                                }, function(str) {
+                                                    failure(&quot;Trouble Saving Copied Competency&quot;);
+                                                    keepGoing2();
+                                                }, repo);
+                                            });
+                                            FrameworkImport.relations.push(relation);
+                                        }, function(str) {
+                                            failure(str);
+                                        });
+                                    }
+                                }, function(p1) {
+                                    failure(p1);
+                                }, repo);
+                            }
+                            keepGoing();
+                        }, function(str) {
+                            failure(&quot;Trouble Saving Copied Competency&quot;);
+                            keepGoing();
+                        }, repo);
+                    });
+                    FrameworkImport.competencies.push(competency);
+                }, function(str) {
+                    failure(str);
+                });
+            }
+        } else {
+            for (var i = 0; i &lt; source.competency.length; i++) {
+                if (target.competency == null || (target.competency.indexOf(source.competency[i]) == -1 &amp;&amp; target.competency.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
+                    EcCompetency.get(source.competency[i], function(comp) {
+                        FrameworkImport.competencies.push(comp);
+                        FrameworkImport.targetUsable.addCompetency(comp.id);
+                        if (FrameworkImport.competencies.length == source.competency.length) {
+                            delete (FrameworkImport.targetUsable)[&quot;competencyObjects&quot;];
+                            FrameworkImport.targetUsable.save(function(p1) {
+                                for (var i = 0; i &lt; source.relation.length; i++) {
+                                    if (target.relation == null || (target.relation.indexOf(source.relation[i]) == -1 &amp;&amp; target.relation.indexOf(EcRemoteLinkedData.trimVersionFromUrl(source.competency[i])) == -1)) {
+                                        EcAlignment.get(source.relation[i], function(relation) {
+                                            FrameworkImport.relations.push(relation);
+                                            FrameworkImport.targetUsable.addRelation(relation.id);
+                                            if (FrameworkImport.relations.length == source.relation.length) {
+                                                delete (FrameworkImport.targetUsable)[&quot;competencyObjects&quot;];
+                                                Task.asyncImmediate(function(o) {
+                                                    var keepGoing = o;
+                                                    FrameworkImport.targetUsable.save(function(p1) {
+                                                        success(FrameworkImport.competencies, FrameworkImport.relations);
+                                                        keepGoing();
+                                                    }, function(p1) {
+                                                        failure(p1);
+                                                        keepGoing();
+                                                    }, repo);
+                                                });
+                                            }
+                                        }, function(p1) {
+                                            failure(p1);
+                                        });
+                                    }
+                                }
+                            }, function(p1) {
+                                failure(p1);
+                            }, repo);
+                        }
+                    }, function(p1) {
+                        failure(p1);
+                    });
+                }
+            }
+        }
+    };
+}, {targetUsable: &quot;EcFramework&quot;, competencies: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, relations: {name: &quot;Array&quot;, arguments: [&quot;EcAlignment&quot;]}, compMap: {name: &quot;Map&quot;, arguments: [null, null]}}, {});
 var CTDLASNCSVImport = function() {};
 CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor, prototype) {
     constructor.analyzeFile = function(file, success, failure) {
@@ -2218,9 +1540,9 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 if (i == 0) 
                     continue;
                 var col = tabularData[i];
-                if (col[typeCol] == &quot;ceasn:CompetencyFramework&quot;) 
+                if (col[typeCol] != null &amp;&amp; col[typeCol].trim() == &quot;ceasn:CompetencyFramework&quot;) 
                     frameworkCounter++;
-                 else if (col[typeCol] == &quot;ceasn:Competency&quot;) 
+                 else if (col[typeCol] != null &amp;&amp; col[typeCol].trim() == &quot;ceasn:Competency&quot;) 
                     competencyCounter++;
                  else if (col[typeCol] == null || col[typeCol] == &quot;&quot;) 
                     continue;
@@ -2253,7 +1575,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
             var relationById = new Object();
             for (var i = 0; i &lt; tabularData.length; i++) {
                 var e = tabularData[i];
-                if ((e)[&quot;@type&quot;] == &quot;ceasn:CompetencyFramework&quot;) {
+                if ((e)[&quot;@type&quot;] != null &amp;&amp; ((e)[&quot;@type&quot;]).trim() == &quot;ceasn:CompetencyFramework&quot;) {
                     var f = new EcFramework();
                     if ((e)[&quot;@owner&quot;] != null) {
                         var id = new EcIdentity();
@@ -2275,7 +1597,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                     (f)[&quot;schema:creator&quot;] = (e)[&quot;ceasn:creator&quot;];
                     (f)[&quot;ceasn:derivedFrom&quot;] = (e)[&quot;ceasn:derivedFrom&quot;];
                     (f)[&quot;dc:source&quot;] = (e)[&quot;ceasn:source&quot;];
-                } else if ((e)[&quot;@type&quot;] == &quot;ceasn:Competency&quot;) {
+                } else if ((e)[&quot;@type&quot;] != null &amp;&amp; ((e)[&quot;@type&quot;]).trim() == &quot;ceasn:Competency&quot;) {
                     var f = new EcCompetency();
                     if ((e)[&quot;@id&quot;] == null) 
                         continue;
@@ -2298,7 +1620,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             return;
                         }
                         if (parent != null) {
-                            if ((parent)[&quot;@type&quot;] == &quot;ceasn:CompetencyFramework&quot;) {
+                            if ((parent)[&quot;@type&quot;] != null &amp;&amp; ((parent)[&quot;@type&quot;]).trim() == &quot;ceasn:CompetencyFramework&quot;) {
                                 (e)[&quot;ceasn:isPartOf&quot;] = (parent)[&quot;@id&quot;];
                                 ((frameworks)[(parent)[&quot;@id&quot;]]).competency.push(f.shortId());
                             } else {
@@ -2359,6 +1681,777 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
         }, error: failure});
     };
 }, {}, {});
+var TabStructuredImport = function() {};
+TabStructuredImport = stjs.extend(TabStructuredImport, null, [], function(constructor, prototype) {
+    /**
+     *  Method to create competencies (and relationships if the parameters are passed in)
+     *  based on a CSV file and references to which columns correspond to which pieces
+     *  of data.
+     * 
+     *  @param {Object}                        text
+     *                                         Text to extract competencies from
+     *  @param {String}                        serverUrl
+     *                                         URL Prefix for the created competencies (and relationships?)
+     *  @param {EcIdentity}                    owner
+     *                                         EcIdentity that will own the created competencies (and relationships?)
+     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, Array&lt;EcAlignment&gt;&gt;} success
+     *                                         Callback triggered after the competencies (and relationships?) have been created
+     *  @param {Callback1&lt;Object&gt;}             [failure]
+     *                                         Callback triggered if an error during creating the competencies
+     *  @param {Callback1&lt;Object&gt;}             [incremental]
+     *                                         Callback triggered incrementally during creation of competencies to indicate progress,
+     *                                         returns an object indicating the number of competencies (and relationships?) created so far
+     *  @param {EcRepository}                  repo
+     *                                         Repository to save any new data to, or to use to generate IDs.
+     *  @memberOf TabStructuredImport
+     *  @method importCompetencies
+     *  @static
+     */
+    constructor.importCompetencies = function(text, serverUrl, owner, success, failure, incremental, repo, hashNameForId) {
+        var lines = text.split(&quot;\n&quot;);
+        var competencies = new Array();
+        var alignments = new Array();
+        for (var i = 0; i &lt; lines.length; i++) 
+            TabStructuredImport.parseLinesIntoHierarchy(lines, competencies, alignments, i, serverUrl, hashNameForId);
+        success(competencies, alignments);
+    };
+    constructor.parseLinesIntoHierarchy = function(lines, competencies, alignments, index, serverUrl, hashNameForId) {
+        var parentI = -1;
+        for (var i = index - 1; i &gt;= 0; i--) {
+            if (TabStructuredImport.tabs(lines[i]) &lt; TabStructuredImport.tabs(lines[index])) {
+                parentI = i;
+                break;
+            }
+        }
+        var c = null;
+        for (var i = 0; i &lt; competencies.length; i++) {
+            if (competencies[i].getName().trim() == lines[index].trim()) {
+                c = competencies[i];
+                break;
+            }
+        }
+        if (c == null) {
+            c = new EcCompetency();
+            if (hashNameForId) 
+                c.assignId(serverUrl, EcCrypto.md5(lines[index].trim()));
+             else 
+                c.generateId(serverUrl);
+            c.setName(lines[index]);
+            competencies.push(c);
+        }
+        if (parentI != -1) {
+            var parent = null;
+            for (var i = 0; i &lt; competencies.length; i++) {
+                if (competencies[i].getName().trim() == lines[parentI].trim()) {
+                    parent = competencies[i];
+                    break;
+                }
+            }
+            if (parent != null) {
+                var a = new EcAlignment();
+                a.generateId(serverUrl);
+                a.relationType = EcAlignment.NARROWS;
+                a.source = c.shortId();
+                a.target = parent.shortId();
+                alignments.push(a);
+            }
+        }
+    };
+    constructor.tabs = function(line) {
+        var tabs = 0;
+        for (var i = 0; i &lt; line.length; i++) {
+            var c = line.charAt(i);
+            if (c == &#x27;\t&#x27; || c == &#x27; &#x27;) 
+                tabs++;
+             else 
+                return tabs;
+        }
+        return tabs;
+    };
+}, {}, {});
+/**
+ *  Import methods to handle an ASN JSON file containing a framework,
+ *  competencies and relationships, and store them in a CASS instance
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ *  @module org.cassproject
+ *  @class ASNImport
+ *  @static
+ *  @extends Importer
+ */
+var ASNImport = function() {
+    Importer.call(this);
+};
+ASNImport = stjs.extend(ASNImport, Importer, [], function(constructor, prototype) {
+    constructor.INCREMENTAL_STEP = 5;
+    constructor.jsonFramework = null;
+    constructor.frameworkUrl = null;
+    constructor.jsonCompetencies = null;
+    constructor.competencyCount = 0;
+    constructor.relationCount = 0;
+    constructor.importedFramework = null;
+    constructor.competencies = null;
+    constructor.progressObject = null;
+    constructor.savedCompetencies = 0;
+    constructor.savedRelations = 0;
+    /**
+     *  Recursive function that looks through the file and saves each
+     *  competency object in a map for use during importing. It also counts
+     *  the number of competencies and relationships that it finds
+     * 
+     *  @param {Object} obj
+     *                  The current JSON object we&#x27;re examining for comepetencies and reationships
+     *  @param {String} key
+     *                  The ASN identifier of the current object
+     *  @memberOf ASNImport
+     *  @method asnJsonPrime
+     *  @private
+     *  @static
+     */
+    constructor.asnJsonPrime = function(obj, key) {
+        var value = (obj)[key];
+        if (Importer.isObject(value)) {
+            if ((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;] != null) {
+                var stringVal = (((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;])[&quot;0&quot;])[&quot;value&quot;];
+                if (stringVal == &quot;http://purl.org/ASN/schema/core/Statement&quot;) {
+                    ASNImport.jsonCompetencies[key] = value;
+                    ASNImport.competencyCount++;
+                    var children = (value)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
+                    if (children != null) 
+                        for (var j = 0; j &lt; children.length; j++) {
+                            ASNImport.relationCount++;
+                            ASNImport.asnJsonPrime(obj, (children[j])[&quot;value&quot;]);
+                        }
+                }
+            }
+        }
+    };
+    /**
+     *  Does the actual legwork of looking for competencies and relationships.
+     *  &lt;p&gt;
+     *  This function finds the framework information, and pulls out the competency
+     *  objects array to be scanned by asnJsonPrime
+     * 
+     *  @param {Object} obj
+     *                  ASN JSON Object from file that contains framework information and competencies/relationships
+     *  @memberOf ASNImport
+     *  @method lookThroughSource
+     *  @private
+     *  @static
+     */
+    constructor.lookThroughSource = function(obj) {
+        ASNImport.competencyCount = 0;
+        ASNImport.relationCount = 0;
+        for (var key in (obj)) {
+            var value = (obj)[key];
+            if (Importer.isObject(value)) {
+                if ((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;] != null) {
+                    var stringVal = (((value)[&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;])[&quot;0&quot;])[&quot;value&quot;];
+                    if (stringVal == &quot;http://purl.org/ASN/schema/core/StandardDocument&quot;) {
+                        ASNImport.jsonFramework = value;
+                        ASNImport.frameworkUrl = key;
+                        var children = (value)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
+                        if (children != null) 
+                            for (var j = 0; j &lt; children.length; j++) {
+                                ASNImport.asnJsonPrime(obj, (children[j])[&quot;value&quot;]);
+                            }
+                    }
+                }
+            }
+        }
+    };
+    /**
+     *  Analyzes an ASN File for competencies and relationships.
+     *  &lt;p&gt;
+     *  This should be called before import, the success callback returns an object
+     *  indicating the number of competencies and relationships found.
+     * 
+     *  @param {Object}            file
+     *                             ASN JSON file
+     *  @param {Callback1&lt;Object&gt;} success
+     *                             Callback triggered on successful analysis of file
+     *  @param {Callback1&lt;Object&gt;} [failure]
+     *                             Callback triggered if there is an error during analysis of the file
+     *  @memberOf ASNImport
+     *  @method analyzeFile
+     *  @static
+     */
+    constructor.analyzeFile = function(file, success, failure) {
+        if (file == null) {
+            failure(&quot;No file to analyze&quot;);
+            return;
+        }
+        if ((file)[&quot;name&quot;] == null) {
+            failure(&quot;Invalid file&quot;);
+            return;
+        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.json&quot;)) {
+            failure(&quot;Invalid file type&quot;);
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var result = ((e)[&quot;target&quot;])[&quot;result&quot;];
+            var jsonObj = JSON.parse(result);
+            ASNImport.jsonCompetencies = {};
+            ASNImport.jsonFramework = null;
+            ASNImport.frameworkUrl = &quot;&quot;;
+            ASNImport.lookThroughSource(jsonObj);
+            if (ASNImport.jsonFramework == null) {
+                failure(&quot;Could not find StandardDocument.&quot;);
+            } else {
+                success(ASNImport.jsonCompetencies);
+            }
+        };
+        reader.readAsText(file, &quot;UTF-8&quot;);
+    };
+    /**
+     *  Method to import the competencies from an ASN JSON file,
+     *  should be called after analyzing the file
+     * 
+     *  @param {String}                        serverUrl
+     *                                         URL Prefix for the competencies to be imported
+     *  @param {EcIdentity}                    owner
+     *                                         EcIdentity that will own the new competencies
+     *  @param {boolean}                       createFramework
+     *                                         Flag to create a framework and include the competencies and relationships created
+     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, EcFramework&gt;} success
+     *                                         Callback triggered after the competencies (and framework?) are created
+     *  @param {Callback1&lt;Object&gt;}             failure
+     *                                         Callback triggered if an error occurs while creating the competencies
+     *  @param {Callback1&lt;Object&gt;}             [incremental]
+     *                                         Callback triggered incrementally during the creation of competencies to indicate progress,
+     *                                         returns an object indicating the number of competencies (and relationships?) created so far
+     *  @memberOf ASNImport
+     *  @method importCompetencies
+     *  @static
+     */
+    constructor.importCompetencies = function(serverUrl, owner, createFramework, success, failure, incremental, repo) {
+        ASNImport.competencies = {};
+        if (createFramework) {
+            ASNImport.importedFramework = new EcFramework();
+            ASNImport.importedFramework.competency = [];
+            ASNImport.importedFramework.relation = [];
+        } else {
+            ASNImport.importedFramework = null;
+        }
+        ASNImport.progressObject = null;
+        ASNImport.createCompetencies(serverUrl, owner, function() {
+            ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonFramework, null, function() {
+                if (createFramework) {
+                    ASNImport.createFramework(serverUrl, owner, success, failure, repo);
+                } else {
+                    var compList = [];
+                    for (var key in ASNImport.competencies) {
+                        compList.push(ASNImport.competencies[key]);
+                    }
+                    if (success != null) 
+                        success(compList, null);
+                }
+            }, failure, incremental, repo);
+        }, failure, incremental, repo);
+    };
+    /**
+     *  Handles creating the competencies found during analysis, iterates through the
+     *  competency ASN objects saved and creates them in the CASS repository at the URL given.
+     * 
+     *  @param {String}            serverUrl
+     *                             URL Prefix for the competencies to be imported
+     *  @param {EcIdentity}        owner
+     *                             EcIdentity that will own the new competencies
+     *  @param {Callback0}         success
+     *                             Callback triggered after the competencies are created
+     *  @param {Callback1&lt;Object&gt;} failure
+     *                             Callback triggered if an error occurs while creating the competencies
+     *  @param {Callback1&lt;Object&gt;} [incremental]
+     *                             Callback triggered incrementally during the creation of competencies to indicate progress
+     *  @memberOf ASNImport
+     *  @method createCompetencies
+     *  @private
+     *  @static
+     */
+    constructor.createCompetencies = function(serverUrl, owner, success, failure, incremental, repo) {
+        ASNImport.savedCompetencies = 0;
+        for (var key in ASNImport.jsonCompetencies) {
+            var comp = new EcCompetency();
+            var jsonComp = ASNImport.jsonCompetencies[key];
+            if ((jsonComp)[&quot;http://purl.org/dc/elements/1.1/title&quot;] == null) 
+                comp.name = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
+             else 
+                comp.name = (((jsonComp)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
+            if ((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;] != null) 
+                comp.description = (((jsonComp)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
+            comp.id = key;
+            if (comp.id == null) {
+                if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                    comp.generateId(serverUrl);
+                 else 
+                    comp.generateShortId(serverUrl);
+            }
+            if (owner != null) 
+                comp.addOwner(owner.ppk.toPk());
+            if (ASNImport.importedFramework != null) 
+                ASNImport.importedFramework.addCompetency(comp.shortId());
+            ASNImport.competencies[key] = comp;
+            ASNImport.saveCompetency(success, failure, incremental, comp, repo);
+        }
+    };
+    constructor.saveCompetency = function(success, failure, incremental, comp, repo) {
+        Task.asyncImmediate(function(o) {
+            var keepGoing = o;
+            comp.save(function(p1) {
+                ASNImport.savedCompetencies++;
+                if (ASNImport.savedCompetencies % ASNImport.INCREMENTAL_STEP == 0) {
+                    if (ASNImport.progressObject == null) 
+                        ASNImport.progressObject = new Object();
+                    (ASNImport.progressObject)[&quot;competencies&quot;] = ASNImport.savedCompetencies;
+                    incremental(ASNImport.progressObject);
+                }
+                if (ASNImport.savedCompetencies == ASNImport.competencyCount) {
+                    if (ASNImport.progressObject == null) 
+                        ASNImport.progressObject = new Object();
+                    (ASNImport.progressObject)[&quot;competencies&quot;] = ASNImport.savedCompetencies;
+                    incremental(ASNImport.progressObject);
+                    success();
+                }
+                keepGoing();
+            }, function(p1) {
+                failure(&quot;Failed to save competency&quot;);
+                keepGoing();
+            }, repo);
+        });
+    };
+    /**
+     *  Handles creating the relationships from the file analyzed earlier.
+     *  Recursively travels through looking for the hasChild field and creates
+     *  relationships based off of that.
+     * 
+     *  @param {String}            serverUrl
+     *                             URL Prefix for the relationships to be imported
+     *  @param {EcIdentity}        owner
+     *                             EcIdentity that will own the new relationships
+     *  @param {Object}            node
+     *  @param {String}            nodeId
+     *  @param {Callback0}         success
+     *                             Callback triggered after the relationships are created
+     *  @param {Callback1&lt;Object&gt;} failure
+     *                             Callback triggered if an error occurs while creating the relationships
+     *  @param {Callback1&lt;Object&gt;} incremental
+     *                             Callback triggered incrementally during the creation of relationships to indicate progress
+     *  @memberOf ASNImport
+     *  @method createRelationships
+     *  @private
+     *  @static
+     */
+    constructor.createRelationships = function(serverUrl, owner, node, nodeId, success, failure, incremental, repo) {
+        ASNImport.savedRelations = 0;
+        if (ASNImport.relationCount == 0) {
+            success();
+        }
+        var children = (node)[&quot;http://purl.org/gem/qualifiers/hasChild&quot;];
+        if (children != null) 
+            for (var j = 0; j &lt; children.length; j++) {
+                if (nodeId != null) {
+                    var relation = new EcAlignment();
+                    relation.target = ASNImport.competencies[nodeId].id;
+                    relation.source = ASNImport.competencies[(children[j])[&quot;value&quot;]].id;
+                    relation.relationType = &quot;narrows&quot;;
+                    relation.name = &quot;&quot;;
+                    relation.description = &quot;&quot;;
+                    if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                        relation.generateId(serverUrl);
+                     else 
+                        relation.generateShortId(serverUrl);
+                    if (owner != null) 
+                        relation.addOwner(owner.ppk.toPk());
+                    if (ASNImport.importedFramework != null) 
+                        ASNImport.importedFramework.addRelation(relation.shortId());
+                    ASNImport.saveRelation(success, failure, incremental, relation, repo);
+                }
+                ASNImport.createRelationships(serverUrl, owner, ASNImport.jsonCompetencies[(children[j])[&quot;value&quot;]], (children[j])[&quot;value&quot;], success, failure, incremental, repo);
+            }
+    };
+    constructor.saveRelation = function(success, failure, incremental, relation, repo) {
+        Task.asyncImmediate(function(o) {
+            var keepGoing = o;
+            relation.save(function(p1) {
+                ASNImport.savedRelations++;
+                if (ASNImport.savedRelations % ASNImport.INCREMENTAL_STEP == 0) {
+                    if (ASNImport.progressObject == null) 
+                        ASNImport.progressObject = new Object();
+                    (ASNImport.progressObject)[&quot;relations&quot;] = ASNImport.savedRelations;
+                    incremental(ASNImport.progressObject);
+                }
+                if (ASNImport.savedRelations == ASNImport.relationCount) {
+                    success();
+                }
+                keepGoing();
+            }, function(p1) {
+                failure(&quot;Failed to save Relationship&quot;);
+                keepGoing();
+            }, repo);
+        });
+    };
+    /**
+     *  Handles creating the framework if the createFramework flag was set
+     * 
+     *  @param {String}                        serverUrl
+     *                                         URL Prefix for the framework to be imported
+     *  @param {EcIdentity}                    owner
+     *                                         EcIdentity that will own the new framework
+     *  @param {Callback2&lt;Array&lt;EcCompetency&gt;, EcFramework&gt;} success
+     *                                         Callback triggered after the framework is created
+     *  @param {Callback1&lt;Object&gt;}             failure
+     *                                         Callback triggered if there is an error during the creation of framework
+     *  @meberOf ASNImport
+     *  @method createFramework
+     *  @private
+     *  @static
+     */
+    constructor.createFramework = function(serverUrl, owner, success, failure, repo) {
+        ASNImport.importedFramework.name = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/elements/1.1/title&quot;])[&quot;0&quot;])[&quot;value&quot;];
+        ASNImport.importedFramework.description = (((ASNImport.jsonFramework)[&quot;http://purl.org/dc/terms/description&quot;])[&quot;0&quot;])[&quot;value&quot;];
+        ASNImport.importedFramework.id = ASNImport.frameworkUrl;
+        if (ASNImport.importedFramework.id == null) {
+            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                ASNImport.importedFramework.generateId(serverUrl);
+             else 
+                ASNImport.importedFramework.generateShortId(serverUrl);
+        }
+        if (owner != null) 
+            ASNImport.importedFramework.addOwner(owner.ppk.toPk());
+        ASNImport.importedFramework.save(function(p1) {
+            var compList = [];
+            for (var key in ASNImport.competencies) {
+                compList.push(ASNImport.competencies[key]);
+            }
+            if (success != null) 
+                success(compList, ASNImport.importedFramework);
+        }, function(p1) {
+            failure(&quot;Failed to save framework&quot;);
+        }, repo);
+    };
+}, {jsonFramework: &quot;Object&quot;, jsonCompetencies: {name: &quot;Map&quot;, arguments: [null, &quot;Object&quot;]}, importedFramework: &quot;EcFramework&quot;, competencies: {name: &quot;Map&quot;, arguments: [null, &quot;EcCompetency&quot;]}, progressObject: &quot;Object&quot;}, {});
+/**
+ *  Importer methods to create competencies based on a
+ *  Medbiquitous competency XML file
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ *  @module org.cassproject
+ *  @class MedbiqImport
+ *  @static
+ *  @extends Importer
+ */
+var MedbiqImport = function() {
+    Importer.call(this);
+};
+MedbiqImport = stjs.extend(MedbiqImport, Importer, [], function(constructor, prototype) {
+    constructor.INCREMENTAL_STEP = 5;
+    constructor.medbiqXmlCompetencies = null;
+    constructor.progressObject = null;
+    constructor.saved = 0;
+    /**
+     *  Does the legwork of looking for competencies in the XML
+     * 
+     *  @param {Object} obj
+     *                  Parsed XML Object
+     *  @memberOf MedbiqImport
+     *  @method medbiqXmlLookForCompetencyObject
+     *  @private
+     *  @static
+     */
+    constructor.medbiqXmlLookForCompetencyObject = function(obj) {
+        if (Importer.isObject(obj) || Importer.isArray(obj)) 
+            for (var key in (obj)) {
+                if (key == &quot;CompetencyObject&quot;) 
+                    MedbiqImport.medbiqXmlParseCompetencyObject((obj)[key]);
+                 else 
+                    MedbiqImport.medbiqXmlLookForCompetencyObject((obj)[key]);
+            }
+    };
+    /**
+     *  Does the legwork of parsing the competencies out of the parsed XML
+     * 
+     *  @param {Object} obj
+     *                  Parsed XML Object
+     *  @memberOf MedbiqImport
+     *  @method medbiqXmlParseCompetencyObject
+     *  @private
+     *  @static
+     */
+    constructor.medbiqXmlParseCompetencyObject = function(obj) {
+        if (Importer.isArray(obj)) {
+            for (var key in (obj)) {
+                MedbiqImport.medbiqXmlParseCompetencyObject((obj)[key]);
+            }
+        } else {
+            var newCompetency = new EcCompetency();
+            if ((obj)[&quot;lom&quot;] != null &amp;&amp; ((obj)[&quot;lom&quot;])[&quot;general&quot;] != null) {
+                newCompetency.name = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;title&quot;])[&quot;string&quot;].toString();
+                if ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;description&quot;] != null) 
+                    newCompetency.description = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;description&quot;])[&quot;string&quot;].toString();
+                if ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;identifier&quot;] != null) 
+                    newCompetency.url = ((((obj)[&quot;lom&quot;])[&quot;general&quot;])[&quot;identifier&quot;])[&quot;entry&quot;].toString();
+                if (newCompetency.description == null) 
+                    newCompetency.description = &quot;&quot;;
+                MedbiqImport.medbiqXmlCompetencies.push(newCompetency);
+            }
+        }
+    };
+    /**
+     *  Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process
+     * 
+     *  @param {Object}                         file
+     *                                          Medbiquitous XML file
+     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
+     *                                          Callback triggered on succesfully analyzing competencies,
+     *                                          returns an array of all of the competencies found
+     *  @param {Callback1&lt;String&gt;}              [failure]
+     *                                          Callback triggered on error analyzing file
+     *  @memberOf MedbiqImport
+     *  @method analyzeFile
+     *  @static
+     */
+    constructor.analyzeFile = function(file, success, failure) {
+        if (file == null) {
+            failure(&quot;No file to analyze&quot;);
+            return;
+        }
+        if ((file)[&quot;name&quot;] == null) {
+            failure(&quot;Invalid file&quot;);
+            return;
+        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.xml&quot;)) {
+            failure(&quot;Invalid file type&quot;);
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var result = ((e)[&quot;target&quot;])[&quot;result&quot;];
+            var jsonObject = new X2JS().xml_str2json(result);
+            MedbiqImport.medbiqXmlCompetencies = [];
+            MedbiqImport.medbiqXmlLookForCompetencyObject(jsonObject);
+            success(MedbiqImport.medbiqXmlCompetencies);
+        };
+        reader.onerror = function(p1) {
+            failure(&quot;Error Reading File&quot;);
+        };
+        reader.readAsText(file, &quot;UTF-8&quot;);
+    };
+    /**
+     *  Method for actually creating the competencies in the CASS repository after a
+     *  Medbiquitous XML file has been parsed. Must be called after analyzeFile
+     * 
+     *  @param {String}                         serverUrl
+     *                                          URL Prefix for the created competencies (and relationships?)
+     *  @param {EcIdentity}                     owner
+     *                                          EcIdentity that will own the created competencies (and relationships?)
+     *  @param {Callback1&lt;Array&lt;EcCompetency&gt;&gt;} success
+     *                                          Callback triggered after successfully creating the competencies from the XML file
+     *  @param {Callback1&lt;Object&gt;}              [failure]
+     *                                          Callback triggered if there is an error while creating the competencies
+     *  @param {Callback1&lt;Object&gt;}              [incremental]
+     *                                          Callback triggered incrementally while the competencies are being created to show progress,
+     *                                          returns an object indicating the number of competencies created so far
+     *  @memberOf MedbiqImport
+     *  @method importCompetencies
+     *  @static
+     */
+    constructor.importCompetencies = function(serverUrl, owner, success, failure, incremental, repo) {
+        MedbiqImport.progressObject = null;
+        MedbiqImport.saved = 0;
+        for (var i = 0; i &lt; MedbiqImport.medbiqXmlCompetencies.length; i++) {
+            var comp = MedbiqImport.medbiqXmlCompetencies[i];
+            if (repo == null || repo.selectedServer.indexOf(serverUrl) != -1) 
+                comp.generateId(serverUrl);
+             else 
+                comp.generateShortId(serverUrl);
+            if (owner != null) 
+                comp.addOwner(owner.ppk.toPk());
+            MedbiqImport.saveCompetency(success, failure, incremental, comp, repo);
+        }
+    };
+    constructor.saveCompetency = function(success, failure, incremental, comp, repo) {
+        Task.asyncImmediate(function(o) {
+            var keepGoing = o;
+            var scs = function(p1) {
+                MedbiqImport.saved++;
+                if (MedbiqImport.saved % MedbiqImport.INCREMENTAL_STEP == 0) {
+                    if (MedbiqImport.progressObject == null) 
+                        MedbiqImport.progressObject = new Object();
+                    (MedbiqImport.progressObject)[&quot;competencies&quot;] = MedbiqImport.saved;
+                    incremental(MedbiqImport.progressObject);
+                }
+                if (MedbiqImport.saved == MedbiqImport.medbiqXmlCompetencies.length) {
+                    if (MedbiqImport.progressObject == null) 
+                        MedbiqImport.progressObject = new Object();
+                    (MedbiqImport.progressObject)[&quot;competencies&quot;] = MedbiqImport.saved;
+                    incremental(MedbiqImport.progressObject);
+                    success(MedbiqImport.medbiqXmlCompetencies);
+                }
+                keepGoing();
+            };
+            var err = function(p1) {
+                failure(&quot;Failed to Save Competency&quot;);
+                keepGoing();
+            };
+            comp.save(scs, err, repo);
+        });
+    };
+}, {medbiqXmlCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcCompetency&quot;]}, progressObject: &quot;Object&quot;}, {});
+/**
+ *  Export methods to handle exporting two CSV file , one of competencies
+ *  and one of relationships representing a framework
+ * 
+ *  @author devlin.junker@eduworks.com
+ *  @author fritz.ray@eduworks.com
+ *  @module org.cassproject
+ *  @class CSVExport
+ *  @static
+ *  @extends Exporter
+ */
+var CSVExport = function() {
+    Exporter.call(this);
+};
+CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype) {
+    constructor.frameworkCompetencies = null;
+    constructor.frameworkRelations = null;
+    constructor.exportObjects = function(objects, fileName) {
+        var compExport = new CSVExport.CSVExportProcess();
+        compExport.buildExport(objects);
+        compExport.downloadCSV(fileName);
+    };
+    /**
+     *  Method to export the CSV files of competencies and relationships for a framework
+     * 
+     *  @param {String}            frameworkId
+     *                             Id of the framework to export
+     *  @param {Callback0}         success
+     *                             Callback triggered after both files have been successfully exported
+     *  @param {Callback1&lt;String&gt;} failure
+     *                             Callback triggered if an error occurs during export
+     *  @memberOf CSVExport
+     *  @method export
+     *  @static
+     */
+    constructor.exportFramework = function(frameworkId, success, failure) {
+        if (frameworkId == null) {
+            failure(&quot;Framework not selected.&quot;);
+            return;
+        }
+        CSVExport.frameworkCompetencies = [];
+        CSVExport.frameworkRelations = [];
+        EcRepository.get(frameworkId, function(data) {
+            if (data.isAny(new EcFramework().getTypes())) {
+                var fw = new EcFramework();
+                fw.copyFrom(data);
+                if (fw.competency == null || fw.competency.length == 0) 
+                    failure(&quot;No Competencies in Framework&quot;);
+                for (var i = 0; i &lt; fw.competency.length; i++) {
+                    var competencyUrl = fw.competency[i];
+                    EcRepository.get(competencyUrl, function(competency) {
+                        CSVExport.frameworkCompetencies.push(competency);
+                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.downloadCSV(fw.getName() + &quot; - Competencies.csv&quot;);
+                        } else {}
+                    }, function(s) {
+                        CSVExport.frameworkCompetencies.push(null);
+                        if (CSVExport.frameworkCompetencies.length == fw.competency.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkCompetencies);
+                            compExport.downloadCSV(fw.getName() + &quot; - Competencies.csv&quot;);
+                        } else {}
+                    });
+                }
+                for (var i = 0; i &lt; fw.relation.length; i++) {
+                    var relationUrl = fw.relation[i];
+                    EcRepository.get(relationUrl, function(relation) {
+                        CSVExport.frameworkRelations.push(relation);
+                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.downloadCSV(fw.getName() + &quot; - Relations.csv&quot;);
+                            if (success != null &amp;&amp; success != undefined) 
+                                success();
+                        } else {}
+                    }, function(s) {
+                        CSVExport.frameworkRelations.push(null);
+                        if (CSVExport.frameworkRelations.length == fw.relation.length) {
+                            var compExport = new CSVExport.CSVExportProcess();
+                            compExport.buildExport(CSVExport.frameworkRelations);
+                            compExport.downloadCSV(fw.getName() + &quot; - Relations.csv&quot;);
+                            if (success != null &amp;&amp; success != undefined) 
+                                success();
+                        } else {}
+                    });
+                }
+            }
+        }, failure);
+    };
+    constructor.CSVExportProcess = function() {
+        this.csvOutput = [];
+    };
+    constructor.CSVExportProcess = stjs.extend(constructor.CSVExportProcess, null, [], function(constructor, prototype) {
+        prototype.csvOutput = null;
+        prototype.flattenObject = function(flattenedObject, object, prefix) {
+            var data = new EcRemoteLinkedData((object)[&quot;@context&quot;], (object)[&quot;@type&quot;]);
+            data.copyFrom(object);
+            var tempObj = JSON.parse(data.toJson());
+            var props = (tempObj);
+            for (var prop in props) {
+                var id;
+                if (prefix != null &amp;&amp; prefix != undefined) 
+                    id = prefix + &quot;.&quot; + prop;
+                 else 
+                    id = prop;
+                if (props[prop] != null &amp;&amp; props[prop] != &quot;&quot; &amp;&amp; stjs.isInstanceOf(props[prop].constructor, Object)) {
+                    this.flattenObject(flattenedObject, props[prop], id);
+                } else {
+                    var display = Thing.getDisplayStringFrom(props[prop]);
+                    (flattenedObject)[id] = display;
+                }
+            }
+        };
+        prototype.addCSVRow = function(object) {
+            var flattenedObject = new EcRemoteLinkedData(object.context, object.type);
+            this.flattenObject(flattenedObject, object, null);
+            this.csvOutput.push(JSON.parse(flattenedObject.toJson()));
+            var props = (JSON.parse(flattenedObject.toJson()));
+            for (var prop in props) {
+                if (props[prop] != null &amp;&amp; props[prop] != &quot;&quot;) {
+                    for (var i = 0; i &lt; this.csvOutput.length; i++) {
+                        var row = this.csvOutput[i];
+                        if (!(row).hasOwnProperty(prop)) {
+                            (row)[prop] = &quot;&quot;;
+                        }
+                    }
+                }
+            }
+        };
+        prototype.buildExport = function(objects) {
+            for (var i = 0; i &lt; objects.length; i++) 
+                if (objects[i] != null) {
+                    var object = objects[i];
+                    this.addCSVRow(object);
+                }
+        };
+        prototype.downloadCSV = function(name) {
+            var csv = Papa.unparse(this.csvOutput);
+            var pom = window.document.createElement(&quot;a&quot;);
+            pom.setAttribute(&quot;href&quot;, &quot;data:text/csv;charset=utf-8,&quot; + encodeURIComponent(csv));
+            pom.setAttribute(&quot;download&quot;, name);
+            if ((window.document)[&quot;createEvent&quot;] != null) {
+                var event = ((window.document)[&quot;createEvent&quot;]).call(window.document, &quot;MouseEvents&quot;);
+                ((event)[&quot;initEvent&quot;]).call(event, &quot;click&quot;, true, true);
+                pom.dispatchEvent(event);
+            } else {
+                ((pom)[&quot;click&quot;]).call(pom);
+            }
+        };
+    }, {csvOutput: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}}, {});
+}, {frameworkCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}, frameworkRelations: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}}, {});
 
     </pre>
 </div>

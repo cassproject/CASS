@@ -39,6 +39,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         var newIv = EcAes.newIv(16);
         var newSecret = EcAes.newIv(16);
+        var conceptName = (d)["skos:prefLabel"];
+        var conceptSchemeName = (d)["dcterms:title"];
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
         v.reader = d.reader;
@@ -67,6 +69,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
             }
+        }
+        if (conceptName != null) {
+            (v)["skos:prefLabel"] = conceptName;
+        }
+        if (conceptSchemeName != null) {
+            (v)["dcterms:title"] = conceptSchemeName;
         }
         return v;
     };
@@ -654,7 +662,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         var encryptedSecret = null;
         var me = this;
         if (this.secret != null) {
-            if (estimatedIndex < 0) {
+            if (estimatedIndex < 0 || estimatedIndex >= this.secret.length) {
                 this.decryptSecretsByKeyAsync(decryptionKey, success, failure);
             } else {
                 EcRsaOaepAsync.decrypt(decryptionKey, this.secret[estimatedIndex], function(decryptedSecret) {

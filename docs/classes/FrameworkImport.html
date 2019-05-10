@@ -272,15 +272,18 @@
                                 <li><a href="../classes/EcAes.html">EcAes</a></li>
                                 <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
                                 <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                                <li><a href="../classes/EcAesCtrAsyncWorker.html">EcAesCtrAsyncWorker</a></li>
                                 <li><a href="../classes/EcAlignment.html">EcAlignment</a></li>
                                 <li><a href="../classes/EcArray.html">EcArray</a></li>
                                 <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
                                 <li><a href="../classes/EcCompetency.html">EcCompetency</a></li>
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
+                                <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
+                                <li><a href="../classes/EcFrameworkGraph.html">EcFrameworkGraph</a></li>
                                 <li><a href="../classes/EcIdentity.html">EcIdentity</a></li>
                                 <li><a href="../classes/EcIdentityManager.html">EcIdentityManager</a></li>
                                 <li><a href="../classes/EcLevel.html">EcLevel</a></li>
@@ -297,6 +300,7 @@
                                 <li><a href="../classes/EcRollupRule.html">EcRollupRule</a></li>
                                 <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
                                 <li><a href="../classes/EcRsaOaepAsync.html">EcRsaOaepAsync</a></li>
+                                <li><a href="../classes/EcRsaOaepAsyncWorker.html">EcRsaOaepAsyncWorker</a></li>
                                 <li><a href="../classes/EcScreen.html">EcScreen</a></li>
                                 <li><a href="../classes/EcView.html">EcView</a></li>
                                 <li><a href="../classes/EducationalAudience.html">EducationalAudience</a></li>
@@ -688,6 +692,7 @@
                                 <li><a href="../classes/Synagogue.html">Synagogue</a></li>
                                 <li><a href="../classes/Table.html">Table</a></li>
                                 <li><a href="../classes/TakeAction.html">TakeAction</a></li>
+                                <li><a href="../classes/Task.html">Task</a></li>
                                 <li><a href="../classes/TaskProfile.html">TaskProfile</a></li>
                                 <li><a href="../classes/TattooParlor.html">TattooParlor</a></li>
                                 <li><a href="../classes/Taxi.html">Taxi</a></li>
@@ -819,7 +824,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_cass.import.js.html#l572"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:572</code></a>
+            Defined in: <a href="../files/src_main_js_cass_cass.import.js.html#l512"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:512</code></a>
         </div>
 
             Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
@@ -849,6 +854,11 @@ exist in another framework in a CASS instance.</p>
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_importCompetencies">importCompetencies</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_importCompetencies">importCompetencies</a>
 
@@ -904,7 +914,7 @@ exist in another framework in a CASS instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_cass.import.js.html#l590"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:590</code></a>
+        <a href="../files/src_main_js_cass_cass.import.js.html#l530"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:530</code></a>
         </p>
 
 
@@ -996,6 +1006,150 @@ returns an array of the new or linked competencies</p>
 
                     <div class="param-description">
                         <pre><code>                                    Callback triggered if an error occurred while creating the competencies</code></pre>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_importCompetencies" class="method item">
+    <h3 class="name"><code>importCompetencies</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>text</code>
+                </li>
+                <li class="arg">
+                        <code>serverUrl</code>
+                </li>
+                <li class="arg">
+                        <code>owner</code>
+                </li>
+                <li class="arg">
+                        <code>success</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[failure]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[incremental]</code>
+                </li>
+                <li class="arg">
+                        <code>repo</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_main_js_cass_cass.import.js.html#l861"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;cass.import.js:861</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Method to create competencies (and relationships if the parameters are passed in)
+based on a CSV file and references to which columns correspond to which pieces
+of data.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">text</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Text to extract competencies from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">serverUrl</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>URL Prefix for the created competencies (and relationships?)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">owner</code>
+                        <span class="type"><a href="../classes/EcIdentity.html" class="crosslink">EcIdentity</a></span>
+
+
+                    <div class="param-description">
+                        <p>EcIdentity that will own the created competencies (and relationships?)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">success</code>
+                        <span class="type">Callback2<Array<EcCompetency>, Array<EcAlignment>></span>
+
+
+                    <div class="param-description">
+                        <p>Callback triggered after the competencies (and relationships?) have been created</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[failure]</code>
+                        <span class="type">Callback1<Object></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered if an error during creating the competencies</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[incremental]</code>
+                        <span class="type">Callback1<Object></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <pre><code>                                   Callback triggered incrementally during creation of competencies to indicate progress,
+                                   returns an object indicating the number of competencies (and relationships?) created so far</code></pre>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">repo</code>
+                        <span class="type"><a href="../classes/EcRepository.html" class="crosslink">EcRepository</a></span>
+
+
+                    <div class="param-description">
+                        <p>Repository to save any new data to, or to use to generate IDs.</p>
 
                     </div>
 

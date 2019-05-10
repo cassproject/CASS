@@ -30820,6 +30820,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @return true iff the object is an array.
      *  @static
      *  @method isArray
+     *  @memberOf EcArray
      */
     constructor.isArray = function(o) {
         return Object.prototype.toString.call(o) == "[object Array]";
@@ -30830,6 +30831,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param a {Array} Array to remove duplicates from.
      *  @static
      *  @method removeDuplicates
+     *  @memberOf EcArray
      */
     constructor.removeDuplicates = function(a) {
         for (var i = 0; i < a.length; i++) 
@@ -30847,6 +30849,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to add to the array if it isn't in there already.
      *  @static
      *  @method setAdd
+     *  @memberOf EcArray
      */
     constructor.setAdd = function(a, o) {
         if (!EcArray.has(a, o)) 
@@ -30859,6 +30862,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to add to the array if it isn't in there already.
      *  @static
      *  @method setAdd
+     *  @memberOf EcArray
      */
     constructor.setRemove = function(a, o) {
          while (EcArray.has(a, o))
@@ -30871,6 +30875,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to sample for.
      *  @static
      *  @method has
+     *  @memberOf EcArray
      */
     constructor.has = function(a, o) {
         if (EcArray.isObject(o)) 
@@ -30897,6 +30902,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @return true iff the object is an object.
      *  @static
      *  @method isObject
+     *  @memberOf EcArray
      */
     constructor.isObject = function(o) {
         if (EcArray.isArray(o)) 
@@ -30905,6 +30911,15 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
             return false;
         return (typeof o) == "object";
     };
+    /**
+     *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
+     *  @param {Array} a Array to check over.
+     *  @param {any} o Object to check for.
+     *  @return Index of the result, -1 if the result isn't in the array.
+     *  @static
+     *  @method indexOf
+     *  @memberOf EcArray
+     */
     constructor.indexOf = function(a, o) {
         if (EcArray.isObject(o)) 
             for (var i = 0; i < a.length; i++) {
@@ -31457,6 +31472,22 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.postExpectingString = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, null, success, failure);
     };
+    /**
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request. Includes headers.
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {Object}           headers Headers to attach to the HTTP post.
+     *  @param {function(string)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method postWithHeadersExpectingString
+     *  @static
+     */
     constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
         EcRemote.postInner(server, service, fd, headers, success, failure);
     };
@@ -31653,6 +31684,13 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
 }, {}, {});
 var EcDate = function() {};
 EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    /**
+     *  Returns an ISO 8601 TimeDate String from a Date object.
+     *  @param {Date} obj Date Object
+     *  @memberOf EcDate
+     *  @static
+     *  @return
+     */
     constructor.toISOString = function(obj) {
         return ((obj)["toISOString"])();
     };
@@ -31917,7 +31955,11 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
     prototype.getOpposite = function(vertex, edge) {};
 }, {}, {});
 /**
- *  Created by fray on 7/5/17.
+ *  Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,
+ *  but to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.
+ *  Uses a framerate timer to determine between the two.
+ * 
+ *  @class Task
  */
 var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
@@ -31930,6 +31972,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
     constructor.asyncImmediateFunctions = 0;
     constructor.runningAsyncFunctions = 0;
     constructor.updateFrameHandle = null;
+    /**
+     *  Updates the framerate timer/counter.
+     *  @method updateFrame
+     *  @static
+     */
     constructor.updateFrame = function() {
         Task.updateFrameHandle = setTimeout(function() {
             Task.lastFrame = Date.now();
@@ -31939,6 +31986,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
                 Task.updateFrame();
         }, 100);
     };
+    /**
+     *  Invoke a method now or later based on whether some time has passed since we last drew the screen.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
@@ -31956,6 +32008,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
         }
         return null;
     };
+    /**
+     *  Invoke a method at some point in the future, allowing draw methods to occur periodically.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
     constructor.asyncImmediate = function(c) {
         Task.tasks.push(c);
         Task.asyncImmediateFunctions++;
@@ -32320,6 +32377,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
      *  @param {function(item,callback)} each Method that gets invoked per item in the array.
      *  @param {function(array)}         after Method invoked when all callbacks are called.
      *  @method each
+     *  @memberOf EcAsyncHelper
      */
     prototype.each = function(array, each, after) {
         var me = this;
@@ -32347,17 +32405,19 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
         };
     };
     /**
-     *  Will prevent 'after' from being called.
+     *  Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.
      * 
      *  @method stop
+     *  @memberOf EcAsyncHelper
      */
     prototype.stop = function() {
         this.counter = -1;
     };
     /**
-     *  Will allow 'after' to be called.
+     *  Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.
      * 
      *  @method stop
+     *  @memberOf EcAsyncHelper
      */
     prototype.finish = function() {
         this.counter = 1;
@@ -32367,6 +32427,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
      * 
      *  @return whether it is stopped.
      *  @method isStopped
+     *  @memberOf EcAsyncHelper
      */
     prototype.isStopped = function() {
         return this.counter <= -1;
@@ -32437,16 +32498,36 @@ else
 		print(str);
 }/**
  *  @author Fritz
+ *  @class EcCrypto
  */
 var EcCrypto = function() {};
 EcCrypto = stjs.extend(EcCrypto, null, [], function(constructor, prototype) {
+    /**
+     *  Turn on (defualt off) caching of decrypted data.
+     *  @property caching
+     *  @type boolean
+     */
     constructor.caching = false;
     constructor.decryptionCache = new Object();
+    /**
+     *  Calculate MD5 hash of a string.
+     *  @param {String} s String to MD5
+     *  @return {String} MD5 hash
+     *  @static
+     *  @method md5
+     */
     constructor.md5 = function(s) {
         var m = forge.md.md5.create();
         m.update(s);
         return m.digest().toHex();
     };
+    /**
+     *  Calculate SHA-256 hash of a string.
+     *  @param {String} s String to SHA-256
+     *  @return {String} SHA-256 hash
+     *  @static
+     *  @method sha256
+     */
     constructor.sha256 = function(s) {
         var m = forge.md.sha256.create();
         m.update(s, "utf8");
@@ -39672,7 +39753,7 @@ EcAesCtr = stjs.extend(EcAesCtr, null, [], function(constructor, prototype) {
  *  "EcRsaOaep"}}EcRsaOaep{{/crossLink}}. Uses web workers and assumes 8 workers.
  * 
  *  @author fritz.ray@eduworks.com
- *  @class EcRsaOaepAsync
+ *  @class EcRsaOaepAsyncWorker
  *  @module com.eduworks.ec
  */
 var EcRsaOaepAsyncWorker = function() {};
@@ -39891,7 +39972,7 @@ EcRsaOaepAsyncWorker = stjs.extend(EcRsaOaepAsyncWorker, null, [], function(cons
  *  "EcAesCtr"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.
  * 
  *  @author fritz.ray@eduworks.com
- *  @class EcAesCtrAsync
+ *  @class EcAesCtrAsyncWorker
  *  @module com.eduworks.ec
  */
 var EcAesCtrAsyncWorker = function() {};
@@ -40020,8 +40101,26 @@ EcAesCtrAsyncWorker = stjs.extend(EcAesCtrAsyncWorker, null, [], function(constr
         }
     };
 }, {w: {name: "Array", arguments: [{name: "Worker", arguments: ["Object"]}]}, q1: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}, q2: {name: "Array", arguments: [{name: "Array", arguments: ["Callback1"]}]}}, {});
+/**
+ *  Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.
+ *  Falls back to EcRsaOaepAsyncWorker, if window.crypto is not available.
+ *  @class EcRsaOaepAsync
+ */
 var EcRsaOaepAsync = function() {};
 EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, prototype) {
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/encrypt:method"}}EcRsaOaep.encrypt{{/crossLink}}
+     * 
+     *  @param {EcPk}             pk Public Key to use to encrypt.
+     *  @param {string}           plaintext Plaintext to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method encrypt
+     *  @static
+     */
     constructor.encrypt = function(pk, text, success, failure) {
         if (EcRemote.async == false) {
             success(EcRsaOaep.encrypt(pk, text));
@@ -40048,6 +40147,19 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 success(base64.encode(p1));
             }, failure);
     };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/decrypt:method"}}EcRsaOaep.decrypt{{/crossLink}}
+     * 
+     *  @param {EcPpk}            ppk Public private keypair to use to decrypt.
+     *  @param {string}           ciphertext Ciphertext to decrypt.
+     *  @param {function(string)} success Success method, result is unencoded
+     *                            plaintext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method decrypt
+     *  @static
+     */
     constructor.decrypt = function(ppk, text, success, failure) {
         if (EcCrypto.caching) {
             var cacheGet = null;
@@ -40082,6 +40194,19 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 success(ab2str(p1));
             }, failure);
     };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/sign:method"}}EcRsaOaep.sign{{/crossLink}}
+     * 
+     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
+     *  @param {string}           text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method sign
+     *  @static
+     */
     constructor.sign = function(ppk, text, success, failure) {
         if (EcRemote.async == false) {
             success(EcRsaOaep.sign(ppk, text));
@@ -40108,6 +40233,19 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 success(base64.encode(p1));
             }, failure);
     };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/signSha256:method"}}EcRsaOaep.signSha256{{/crossLink}}
+     * 
+     *  @param {EcPpk}            ppk Public private keypair to use to sign message.
+     *  @param {string}           text Text to sign.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded signature.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method signSha256
+     *  @static
+     */
     constructor.signSha256 = function(ppk, text, success, failure) {
         if (EcRemote.async == false) {
             success(EcRsaOaep.signSha256(ppk, text));
@@ -40134,6 +40272,20 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
                 success(base64.encode(p1));
             }, failure);
     };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcRsaOaep/verify:method"}}EcRsaOaep.verify{{/crossLink}}
+     * 
+     *  @param {EcPk}              pk Public key to use to verify message.
+     *  @param {string}            text Text to use in verification.
+     *  @param {string}            signature Signature to use in verification.
+     *  @param {function(boolean)} success Success method, result is whether
+     *                             signature is valid.
+     *  @param {function(string)}  failure Failure method, parameter is error
+     *                             message.
+     *  @method verify
+     *  @static
+     */
     constructor.verify = function(pk, text, signature, success, failure) {
         if (EcRemote.async == false) {
             success(EcRsaOaep.verify(pk, text, signature));
@@ -40161,8 +40313,27 @@ EcRsaOaepAsync = stjs.extend(EcRsaOaepAsync, null, [], function(constructor, pro
             }, failure);
     };
 }, {}, {});
+/**
+ *  Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.
+ *  Falls back to EcAesCtrAsyncWorker, if window.crypto is not available.
+ *  @class EcAesCtrAsync
+ */
 var EcAesCtrAsync = function() {};
 EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, prototype) {
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/encrypt:method"}}EcAesCtr.encrypt{{/crossLink}}
+     * 
+     *  @param {string}           plaintext Text to encrypt.
+     *  @param {string}           secret Secret to use to encrypt.
+     *  @param {string}           iv Initialization Vector to use to encrypt.
+     *  @param {function(string)} success Success method, result is Base64
+     *                            encoded Ciphertext.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method encrypt
+     *  @static
+     */
     constructor.encrypt = function(plaintext, secret, iv, success, failure) {
         if (window == null || window.crypto == null || window.crypto.subtle == null) {
             EcAesCtrAsyncWorker.encrypt(plaintext, secret, iv, success, failure);
@@ -40187,6 +40358,20 @@ EcAesCtrAsync = stjs.extend(EcAesCtrAsync, null, [], function(constructor, proto
             }, failure);
         }, failure);
     };
+    /**
+     *  Asynchronous form of {{#crossLink
+     *  "EcAesCtr/decrypt:method"}}EcAesCtr.decrypt{{/crossLink}}
+     * 
+     *  @param {string}           ciphertext Text to decrypt.
+     *  @param {string}           secret Secret to use to decrypt.
+     *  @param {string}           iv Initialization Vector to use to decrypt.
+     *  @param {function(string)} success Success method, result is Plaintext
+     *                            with no encoding.
+     *  @param {function(string)} failure Failure method, parameter is error
+     *                            message.
+     *  @method decrypt
+     *  @static
+     */
     constructor.decrypt = function(ciphertext, secret, iv, success, failure) {
         if (EcCrypto.caching) {
             var cacheGet = (EcCrypto.decryptionCache)[secret + iv + ciphertext];
@@ -67672,6 +67857,8 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         }
         var newIv = EcAes.newIv(16);
         var newSecret = EcAes.newIv(16);
+        var conceptName = (d)["skos:prefLabel"];
+        var conceptSchemeName = (d)["dcterms:title"];
         v.payload = EcAesCtr.encrypt(d.toJson(), newSecret, newIv);
         v.owner = d.owner;
         v.reader = d.reader;
@@ -67700,6 +67887,12 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
                 }
                 v.secret.push(EcRsaOaep.encrypt(EcPk.fromPem(d.reader[i]), eSecret.toEncryptableJson()));
             }
+        }
+        if (conceptName != null) {
+            (v)["skos:prefLabel"] = conceptName;
+        }
+        if (conceptSchemeName != null) {
+            (v)["dcterms:title"] = conceptSchemeName;
         }
         return v;
     };
@@ -68287,7 +68480,7 @@ EcEncryptedValue = stjs.extend(EcEncryptedValue, EbacEncryptedValue, [], functio
         var encryptedSecret = null;
         var me = this;
         if (this.secret != null) {
-            if (estimatedIndex < 0) {
+            if (estimatedIndex < 0 || estimatedIndex >= this.secret.length) {
                 this.decryptSecretsByKeyAsync(decryptionKey, success, failure);
             } else {
                 EcRsaOaepAsync.decrypt(decryptionKey, this.secret[estimatedIndex], function(decryptedSecret) {
@@ -72036,8 +72229,6 @@ EcCompetency = stjs.extend(EcCompetency, Competency, [], function(constructor, p
      *                                         Callback triggered if error searching
      *  @param {Object}                        paramObj
      *                                         Parameter object for search
-     *  @param start
-     *  @param size
      *  @memberOf EcCompetency
      *  @method search
      *  @static
@@ -75001,6 +75192,13 @@ PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], funct
         this.dependencyDefinitionMap = dependencyDefinitionMap;
     };
 }, {dependencyDefinitionMap: {name: "Map", arguments: [null, "PapDependencyDefinitionBase"]}}, {});
+/**
+ *  Graph for working with a framework. Additional computed data (such as profile data) can be overlaid on the graph through the use of "metaverticies" and "metaedges" that hold additional information.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @class EcFrameworkGraph
+ */
 var EcFrameworkGraph = function() {
     EcDirectedGraph.call(this);
     this.metaVerticies = new Object();
@@ -75020,27 +75218,41 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFrameworkSuccessCallback = null;
     prototype.addFrameworkFailureCallback = null;
     prototype.repo = null;
+    /**
+     *  Adds a framework to the graph, and creates the edges to connect the competencies in the framework.
+     * 
+     *  @param {EcFramework}     framework Framework to add to the graph.
+     *  @param {EcRepository}    repo Repository to fetch data from that exists in the framework.
+     *  @param {function()}      success Method to invoke when done adding the framework.
+     *  @param {function(error)} failure Method to invoke when things go badly.
+     *  @method addFramework
+     *  @memberOf EcFrameworkGraph
+     */
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        console.log("addFramework about to multiget: " + Date.now());
         repo.multiget(framework.competency.concat(framework.relation), function(data) {
-            console.log("Multiget complete: " + Date.now());
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
-            for (var i = 0; i < data.length; i++) {
-                var d = data[i];
+            var eah = new EcAsyncHelper();
+            eah.each(data, function(d, callback0) {
                 if (d.isAny(competencyTemplate.getTypes())) {
-                    var c = EcCompetency.getBlocking(d.id);
-                    me.addCompetency(c);
-                    me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
+                    EcCompetency.get(d.id, function(c) {
+                        me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
+                        me.addCompetency(c);
+                        callback0();
+                    }, callback0);
                 } else if (d.isAny(alignmentTemplate.getTypes())) {
-                    var alignment = EcAlignment.getBlocking(d.id);
-                    me.addRelation(alignment);
-                    me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
-                }
-            }
-            success();
+                    EcAlignment.get(d.id, function(alignment) {
+                        me.addRelation(alignment);
+                        me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
+                        callback0();
+                    }, callback0);
+                } else 
+                    callback0();
+            }, function(strings) {
+                success();
+            });
         }, failure);
     };
     prototype.fetchFrameworkAlignments = function(framework) {
@@ -75054,6 +75266,13 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             me.addFrameworkSuccessCallback();
         }, me.addFrameworkFailureCallback, null);
     };
+    /**
+     *  Helper method to populate the graph with assertion data, based on propagation rules implicit in the relations (see devs.cassproject.org, Relations). Does not draw conclusions. Must be able to decrypt 'negative' value.
+     * 
+     *  @param {Assertion[]}     assertions Assertion candidates to use to populate the graph.
+     *  @param {function()}      success Method to invoke when the operation completes successfully.
+     *  @param {function(error)} failure Error method.
+     */
     prototype.processAssertionsBoolean = function(assertions, success, failure) {
         var me = this;
         var eah = new EcAsyncHelper();
@@ -75082,21 +75301,11 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             this.addToMetaStateArray(metaState, "negativeAssertion", assertion);
             new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
                 var c = me.getCompetency(alignment.target);
-                if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else 
-                    callback0();
+                me.processAssertionBooleanOutward(alignment, callback0, c, me, assertion, negative, visited);
             }, function(strings) {
                 new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
                     var c = me.getCompetency(alignment.source);
-                    if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else 
-                        callback0();
+                    me.processAssertionBooleanInward(alignment, callback0, c, me, assertion, negative, visited);
                 }, function(strings) {
                     done();
                 });
@@ -75106,26 +75315,32 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             this.addToMetaStateArray(metaState, "positiveAssertion", assertion);
             new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
                 var c = me.getCompetency(alignment.source);
-                if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else 
-                    callback0();
+                me.processAssertionBooleanOutward(alignment, callback0, c, me, assertion, negative, visited);
             }, function(strings) {
                 new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
                     var c = me.getCompetency(alignment.target);
-                    if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else 
-                        callback0();
+                    me.processAssertionBooleanInward(alignment, callback0, c, me, assertion, negative, visited);
                 }, function(strings) {
                     done();
                 });
             });
         }
+    };
+    prototype.processAssertionBooleanOutward = function(alignment, callback0, c, me, assertion, negative, visited) {
+        if (alignment.relationType == Relation.NARROWS) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else 
+            callback0();
+    };
+    prototype.processAssertionBooleanInward = function(alignment, callback0, c, me, assertion, negative, visited) {
+        if (alignment.relationType == Relation.REQUIRES) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else 
+            callback0();
     };
     prototype.addToMetaStateArray = function(metaState, key, value) {
         if (metaState == null) 
@@ -75134,6 +75349,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             (metaState)[key] = new Array();
         ((metaState)[key]).push(value);
     };
+    /**
+     *  Fetches the Meta Competency (additional state information used to compute profiles or other data) for a competency.
+     * 
+     *  @param {EcCompetency} c Competency to fetch meta state for.
+     *  @return Meta state (empty object by default)
+     *  @method getMetaStateCompetency
+     *  @memberOf EcFrameworkGraph
+     */
     prototype.getMetaStateCompetency = function(c) {
         var result = this.metaVerticies[c.shortId()];
         if (result == null) {
@@ -77447,23 +77670,23 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         if (ip.anyChildPacketsAreTrue()) 
             ip.result = InquiryPacket.ResultType.TRUE;
          else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
+            ip.result = InquiryPacket.ResultType.TRUE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorBroadensResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorRequiresResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
@@ -77471,7 +77694,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         if (ip.anyChildPacketsAreTrue()) 
             ip.result = InquiryPacket.ResultType.TRUE;
          else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
+            ip.result = InquiryPacket.ResultType.TRUE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };

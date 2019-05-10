@@ -2113,6 +2113,13 @@ PapDependencyDefinitions = stjs.extend(PapDependencyDefinitions, null, [], funct
         this.dependencyDefinitionMap = dependencyDefinitionMap;
     };
 }, {dependencyDefinitionMap: {name: "Map", arguments: [null, "PapDependencyDefinitionBase"]}}, {});
+/**
+ *  Graph for working with a framework. Additional computed data (such as profile data) can be overlaid on the graph through the use of "metaverticies" and "metaedges" that hold additional information.
+ * 
+ *  @author fritz.ray@eduworks.com
+ *  @author tom.buskirk@eduworks.com
+ *  @class EcFrameworkGraph
+ */
 var EcFrameworkGraph = function() {
     EcDirectedGraph.call(this);
     this.metaVerticies = new Object();
@@ -2132,27 +2139,41 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
     prototype.addFrameworkSuccessCallback = null;
     prototype.addFrameworkFailureCallback = null;
     prototype.repo = null;
+    /**
+     *  Adds a framework to the graph, and creates the edges to connect the competencies in the framework.
+     * 
+     *  @param {EcFramework}     framework Framework to add to the graph.
+     *  @param {EcRepository}    repo Repository to fetch data from that exists in the framework.
+     *  @param {function()}      success Method to invoke when done adding the framework.
+     *  @param {function(error)} failure Method to invoke when things go badly.
+     *  @method addFramework
+     *  @memberOf EcFrameworkGraph
+     */
     prototype.addFramework = function(framework, repo, success, failure) {
         this.frameworks.push(framework);
         var me = this;
-        console.log("addFramework about to multiget: " + Date.now());
         repo.multiget(framework.competency.concat(framework.relation), function(data) {
-            console.log("Multiget complete: " + Date.now());
             var competencyTemplate = new EcCompetency();
             var alignmentTemplate = new EcAlignment();
-            for (var i = 0; i < data.length; i++) {
-                var d = data[i];
+            var eah = new EcAsyncHelper();
+            eah.each(data, function(d, callback0) {
                 if (d.isAny(competencyTemplate.getTypes())) {
-                    var c = EcCompetency.getBlocking(d.id);
-                    me.addCompetency(c);
-                    me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
+                    EcCompetency.get(d.id, function(c) {
+                        me.addToMetaStateArray(me.getMetaStateCompetency(c), "framework", framework);
+                        me.addCompetency(c);
+                        callback0();
+                    }, callback0);
                 } else if (d.isAny(alignmentTemplate.getTypes())) {
-                    var alignment = EcAlignment.getBlocking(d.id);
-                    me.addRelation(alignment);
-                    me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
-                }
-            }
-            success();
+                    EcAlignment.get(d.id, function(alignment) {
+                        me.addRelation(alignment);
+                        me.addToMetaStateArray(me.getMetaStateAlignment(alignment), "framework", framework);
+                        callback0();
+                    }, callback0);
+                } else 
+                    callback0();
+            }, function(strings) {
+                success();
+            });
         }, failure);
     };
     prototype.fetchFrameworkAlignments = function(framework) {
@@ -2166,6 +2187,13 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             me.addFrameworkSuccessCallback();
         }, me.addFrameworkFailureCallback, null);
     };
+    /**
+     *  Helper method to populate the graph with assertion data, based on propagation rules implicit in the relations (see devs.cassproject.org, Relations). Does not draw conclusions. Must be able to decrypt 'negative' value.
+     * 
+     *  @param {Assertion[]}     assertions Assertion candidates to use to populate the graph.
+     *  @param {function()}      success Method to invoke when the operation completes successfully.
+     *  @param {function(error)} failure Error method.
+     */
     prototype.processAssertionsBoolean = function(assertions, success, failure) {
         var me = this;
         var eah = new EcAsyncHelper();
@@ -2194,21 +2222,11 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             this.addToMetaStateArray(metaState, "negativeAssertion", assertion);
             new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
                 var c = me.getCompetency(alignment.target);
-                if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else 
-                    callback0();
+                me.processAssertionBooleanOutward(alignment, callback0, c, me, assertion, negative, visited);
             }, function(strings) {
                 new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
                     var c = me.getCompetency(alignment.source);
-                    if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else 
-                        callback0();
+                    me.processAssertionBooleanInward(alignment, callback0, c, me, assertion, negative, visited);
                 }, function(strings) {
                     done();
                 });
@@ -2218,26 +2236,32 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             this.addToMetaStateArray(metaState, "positiveAssertion", assertion);
             new EcAsyncHelper().each(me.getInEdges(competency), function(alignment, callback0) {
                 var c = me.getCompetency(alignment.source);
-                if (alignment.relationType == Relation.NARROWS) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                    me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                 else 
-                    callback0();
+                me.processAssertionBooleanOutward(alignment, callback0, c, me, assertion, negative, visited);
             }, function(strings) {
                 new EcAsyncHelper().each(me.getOutEdges(competency), function(alignment, callback0) {
                     var c = me.getCompetency(alignment.target);
-                    if (alignment.relationType == Relation.REQUIRES) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
-                        me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
-                     else 
-                        callback0();
+                    me.processAssertionBooleanInward(alignment, callback0, c, me, assertion, negative, visited);
                 }, function(strings) {
                     done();
                 });
             });
         }
+    };
+    prototype.processAssertionBooleanOutward = function(alignment, callback0, c, me, assertion, negative, visited) {
+        if (alignment.relationType == Relation.NARROWS) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else 
+            callback0();
+    };
+    prototype.processAssertionBooleanInward = function(alignment, callback0, c, me, assertion, negative, visited) {
+        if (alignment.relationType == Relation.REQUIRES) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else if (alignment.relationType == Relation.IS_EQUIVALENT_TO) 
+            me.processAssertionsBooleanPerAssertion(assertion, negative, c, callback0, visited);
+         else 
+            callback0();
     };
     prototype.addToMetaStateArray = function(metaState, key, value) {
         if (metaState == null) 
@@ -2246,6 +2270,14 @@ EcFrameworkGraph = stjs.extend(EcFrameworkGraph, EcDirectedGraph, [], function(c
             (metaState)[key] = new Array();
         ((metaState)[key]).push(value);
     };
+    /**
+     *  Fetches the Meta Competency (additional state information used to compute profiles or other data) for a competency.
+     * 
+     *  @param {EcCompetency} c Competency to fetch meta state for.
+     *  @return Meta state (empty object by default)
+     *  @method getMetaStateCompetency
+     *  @memberOf EcFrameworkGraph
+     */
     prototype.getMetaStateCompetency = function(c) {
         var result = this.metaVerticies[c.shortId()];
         if (result == null) {
@@ -4559,23 +4591,23 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         if (ip.anyChildPacketsAreTrue()) 
             ip.result = InquiryPacket.ResultType.TRUE;
          else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
+            ip.result = InquiryPacket.ResultType.TRUE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorBroadensResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
     prototype.determineCombinatorRequiresResult = function(ip) {
         if (ip.anyChildPacketsAreFalse()) 
             ip.result = InquiryPacket.ResultType.FALSE;
-         else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.TRUE;
+         else if (ip.anyIndeterminantChildPackets()) 
+            ip.result = InquiryPacket.ResultType.FALSE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };
@@ -4583,7 +4615,7 @@ PessimisticQuadnaryAssertionProcessor = stjs.extend(PessimisticQuadnaryAssertion
         if (ip.anyChildPacketsAreTrue()) 
             ip.result = InquiryPacket.ResultType.TRUE;
          else if (this.transferIndeterminateOptimistically && ip.anyIndeterminantChildPackets()) 
-            ip.result = InquiryPacket.ResultType.FALSE;
+            ip.result = InquiryPacket.ResultType.TRUE;
          else 
             ip.result = InquiryPacket.ResultType.UNKNOWN;
     };

@@ -272,15 +272,18 @@
                                 <li><a href="../classes/EcAes.html">EcAes</a></li>
                                 <li><a href="../classes/EcAesCtr.html">EcAesCtr</a></li>
                                 <li><a href="../classes/EcAesCtrAsync.html">EcAesCtrAsync</a></li>
+                                <li><a href="../classes/EcAesCtrAsyncWorker.html">EcAesCtrAsyncWorker</a></li>
                                 <li><a href="../classes/EcAlignment.html">EcAlignment</a></li>
                                 <li><a href="../classes/EcArray.html">EcArray</a></li>
                                 <li><a href="../classes/EcAsyncHelper.html">EcAsyncHelper</a></li>
                                 <li><a href="../classes/EcCompetency.html">EcCompetency</a></li>
                                 <li><a href="../classes/EcContact.html">EcContact</a></li>
+                                <li><a href="../classes/EcCrypto.html">EcCrypto</a></li>
                                 <li><a href="../classes/EcDirectedGraph.html">EcDirectedGraph</a></li>
                                 <li><a href="../classes/EcEncryptedValue.html">EcEncryptedValue</a></li>
                                 <li><a href="../classes/EcFile.html">EcFile</a></li>
                                 <li><a href="../classes/EcFramework.html">EcFramework</a></li>
+                                <li><a href="../classes/EcFrameworkGraph.html">EcFrameworkGraph</a></li>
                                 <li><a href="../classes/EcIdentity.html">EcIdentity</a></li>
                                 <li><a href="../classes/EcIdentityManager.html">EcIdentityManager</a></li>
                                 <li><a href="../classes/EcLevel.html">EcLevel</a></li>
@@ -297,6 +300,7 @@
                                 <li><a href="../classes/EcRollupRule.html">EcRollupRule</a></li>
                                 <li><a href="../classes/EcRsaOaep.html">EcRsaOaep</a></li>
                                 <li><a href="../classes/EcRsaOaepAsync.html">EcRsaOaepAsync</a></li>
+                                <li><a href="../classes/EcRsaOaepAsyncWorker.html">EcRsaOaepAsyncWorker</a></li>
                                 <li><a href="../classes/EcScreen.html">EcScreen</a></li>
                                 <li><a href="../classes/EcView.html">EcView</a></li>
                                 <li><a href="../classes/EducationalAudience.html">EducationalAudience</a></li>
@@ -688,6 +692,7 @@
                                 <li><a href="../classes/Synagogue.html">Synagogue</a></li>
                                 <li><a href="../classes/Table.html">Table</a></li>
                                 <li><a href="../classes/TakeAction.html">TakeAction</a></li>
+                                <li><a href="../classes/Task.html">Task</a></li>
                                 <li><a href="../classes/TaskProfile.html">TaskProfile</a></li>
                                 <li><a href="../classes/TattooParlor.html">TattooParlor</a></li>
                                 <li><a href="../classes/Taxi.html">Taxi</a></li>
@@ -819,7 +824,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7252"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7252</code></a>
+            Defined in: <a href="../files/src_main_js_cass_ec.crypto.js.html#l7625"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7625</code></a>
         </div>
 
             Module: <a href="../modules/com.eduworks.ec.html">com.eduworks.ec</a>
@@ -828,7 +833,8 @@
 
 
 <div class="box intro">
-    <p>Asynchronous implementation of <a href="../classes/EcRsaOaep.html" class="crosslink">EcRsaOaep</a>. Uses web workers and assumes 8 workers.</p>
+    <p>Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.
+Falls back to EcRsaOaepAsyncWorker, if window.crypto is not available.</p>
 
 </div>
 
@@ -914,7 +920,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7337"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7337</code></a>
+        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7671"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7671</code></a>
         </p>
 
 
@@ -1013,7 +1019,7 @@ message.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7308"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7308</code></a>
+        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7632"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7632</code></a>
         </p>
 
 
@@ -1112,7 +1118,7 @@ message.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7381"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7381</code></a>
+        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7718"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7718</code></a>
         </p>
 
 
@@ -1211,7 +1217,7 @@ message.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7410"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7410</code></a>
+        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7757"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7757</code></a>
         </p>
 
 
@@ -1313,7 +1319,7 @@ message.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7439"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7439</code></a>
+        <a href="../files/src_main_js_cass_ec.crypto.js.html#l7796"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;ec.crypto.js:7796</code></a>
         </p>
 
 

@@ -74,6 +74,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @return true iff the object is an array.
      *  @static
      *  @method isArray
+     *  @memberOf EcArray
      */
     constructor.isArray = function(o) {
         return Object.prototype.toString.call(o) == "[object Array]";
@@ -84,6 +85,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param a {Array} Array to remove duplicates from.
      *  @static
      *  @method removeDuplicates
+     *  @memberOf EcArray
      */
     constructor.removeDuplicates = function(a) {
         for (var i = 0; i < a.length; i++) 
@@ -101,6 +103,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to add to the array if it isn't in there already.
      *  @static
      *  @method setAdd
+     *  @memberOf EcArray
      */
     constructor.setAdd = function(a, o) {
         if (!EcArray.has(a, o)) 
@@ -113,6 +116,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to add to the array if it isn't in there already.
      *  @static
      *  @method setAdd
+     *  @memberOf EcArray
      */
     constructor.setRemove = function(a, o) {
          while (EcArray.has(a, o))
@@ -125,6 +129,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @param o {Object} Object to sample for.
      *  @static
      *  @method has
+     *  @memberOf EcArray
      */
     constructor.has = function(a, o) {
         if (EcArray.isObject(o)) 
@@ -151,6 +156,7 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
      *  @return true iff the object is an object.
      *  @static
      *  @method isObject
+     *  @memberOf EcArray
      */
     constructor.isObject = function(o) {
         if (EcArray.isArray(o)) 
@@ -159,6 +165,15 @@ EcArray = stjs.extend(EcArray, null, [], function(constructor, prototype) {
             return false;
         return (typeof o) == "object";
     };
+    /**
+     *  Returns the index of an object or value if the object or value exists in the array. Uses .equals if available.
+     *  @param {Array} a Array to check over.
+     *  @param {any} o Object to check for.
+     *  @return Index of the result, -1 if the result isn't in the array.
+     *  @static
+     *  @method indexOf
+     *  @memberOf EcArray
+     */
     constructor.indexOf = function(a, o) {
         if (EcArray.isObject(o)) 
             for (var i = 0; i < a.length; i++) {
@@ -711,6 +726,22 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
     constructor.postExpectingString = function(server, service, fd, success, failure) {
         EcRemote.postInner(server, service, fd, null, success, failure);
     };
+    /**
+     *  POSTs a request to a remote endpoint. Composed of a server endpoint (root
+     *  URL) and a service (service path). Sends form data as a multi-part mime
+     *  request. Includes headers.
+     * 
+     *  @param {string}           server Protocol, hostname and path to the remote handler.
+     *  @param {string}           service Path to service to invoke.
+     *  @param {FormData}         fd Form data to send as multi-part mime.
+     *  @param {Object}           headers Headers to attach to the HTTP post.
+     *  @param {function(string)} success Method that is invoked if the server
+     *                            responds with a success (per jQuery ajax)
+     *  @param {function(string)} failure Method that is invoked if the server
+     *                            responds with an error (per jQuery ajax) or a non-200/300.
+     *  @method postWithHeadersExpectingString
+     *  @static
+     */
     constructor.postWithHeadersExpectingString = function(server, service, fd, headers, success, failure) {
         EcRemote.postInner(server, service, fd, headers, success, failure);
     };
@@ -907,6 +938,13 @@ EcRemote = stjs.extend(EcRemote, null, [], function(constructor, prototype) {
 }, {}, {});
 var EcDate = function() {};
 EcDate = stjs.extend(EcDate, null, [], function(constructor, prototype) {
+    /**
+     *  Returns an ISO 8601 TimeDate String from a Date object.
+     *  @param {Date} obj Date Object
+     *  @memberOf EcDate
+     *  @static
+     *  @return
+     */
     constructor.toISOString = function(obj) {
         return ((obj)["toISOString"])();
     };
@@ -1171,7 +1209,11 @@ Graph = stjs.extend(Graph, null, [Hypergraph], function(constructor, prototype) 
     prototype.getOpposite = function(vertex, edge) {};
 }, {}, {});
 /**
- *  Created by fray on 7/5/17.
+ *  Class with static methods to prevent unnecessary overhead with small operations that don't prevent drawing,
+ *  but to setTimeout on methods that slow down the browser sufficiently to interfere with drawing.
+ *  Uses a framerate timer to determine between the two.
+ * 
+ *  @class Task
  */
 var Task = function() {};
 Task = stjs.extend(Task, null, [], function(constructor, prototype) {
@@ -1184,6 +1226,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
     constructor.asyncImmediateFunctions = 0;
     constructor.runningAsyncFunctions = 0;
     constructor.updateFrameHandle = null;
+    /**
+     *  Updates the framerate timer/counter.
+     *  @method updateFrame
+     *  @static
+     */
     constructor.updateFrame = function() {
         Task.updateFrameHandle = setTimeout(function() {
             Task.lastFrame = Date.now();
@@ -1193,6 +1240,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
                 Task.updateFrame();
         }, 100);
     };
+    /**
+     *  Invoke a method now or later based on whether some time has passed since we last drew the screen.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
     constructor.immediate = function(c) {
         var currentMs = Date.now();
         var nextFrameMs = stjs.trunc(1000 / Task.desiredFps);
@@ -1210,6 +1262,11 @@ Task = stjs.extend(Task, null, [], function(constructor, prototype) {
         }
         return null;
     };
+    /**
+     *  Invoke a method at some point in the future, allowing draw methods to occur periodically.
+     *  @param {function()} c Method to invoke
+     *  @return Timeout Handler, can use clearTimeout on it if needed.
+     */
     constructor.asyncImmediate = function(c) {
         Task.tasks.push(c);
         Task.asyncImmediateFunctions++;
@@ -1574,6 +1631,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
      *  @param {function(item,callback)} each Method that gets invoked per item in the array.
      *  @param {function(array)}         after Method invoked when all callbacks are called.
      *  @method each
+     *  @memberOf EcAsyncHelper
      */
     prototype.each = function(array, each, after) {
         var me = this;
@@ -1601,17 +1659,19 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
         };
     };
     /**
-     *  Will prevent 'after' from being called.
+     *  Stops any remaining objects from being iterated over, if they have not already. Will prevent 'after' from being called.
      * 
      *  @method stop
+     *  @memberOf EcAsyncHelper
      */
     prototype.stop = function() {
         this.counter = -1;
     };
     /**
-     *  Will allow 'after' to be called.
+     *  Stops any remaining objects from being iterated over, if they have not already. Will allow 'after' to be called.
      * 
      *  @method stop
+     *  @memberOf EcAsyncHelper
      */
     prototype.finish = function() {
         this.counter = 1;
@@ -1621,6 +1681,7 @@ EcAsyncHelper = stjs.extend(EcAsyncHelper, null, [], function(constructor, proto
      * 
      *  @return whether it is stopped.
      *  @method isStopped
+     *  @memberOf EcAsyncHelper
      */
     prototype.isStopped = function() {
         return this.counter <= -1;
