@@ -46,7 +46,7 @@ function cassFrameworkAsAsn() {
     if (framework == null)
         error("Framework not found.", "404");
 
-    f = new EcFramework();
+    var f = new EcFramework();
     f.copyFrom(framework);
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
@@ -55,100 +55,101 @@ function cassFrameworkAsAsn() {
     ids = ids.concat(f.competency);
     ids = ids.concat(f.relation);
 
-    repo.precache(ids, function (results) {});
+    repo.precache(ids, function (results) {
+    });
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
     var topLevelCompIds = []
     if (f.competency != null)
-    for (var i = 0; i < f.competency.length; i++) {
-    	var c = EcCompetency.getBlocking(f.competency[i]);
-    	if (c == null) continue;
-        competencies[f.competency[i]] = c;
-        if (competencies[f.competency[i]] == null)
-            error("Competency not found.", 404);
-    }
+        for (var i = 0; i < f.competency.length; i++) {
+            var c = EcCompetency.getBlocking(f.competency[i]);
+            if (c == null) continue;
+            competencies[f.competency[i]] = c;
+            if (competencies[f.competency[i]] == null)
+                error("Competency not found.", 404);
+        }
 
-if (f.relation != null)
-    for (var i = 0; i < f.relation.length; i++) {
-    	//Workaround due to bug in 1.3.0
-    	if (EcRepository.getBlocking(f.relation[i]) == null) continue;
-        var r = EcAlignment.getBlocking(f.relation[i]);
-        if (r.source == null || r.target == null) continue;
-        if (r.relationType == Relation.NARROWS) {
-            EcArray.setRemove(f.competency, r.target);
+    if (f.relation != null)
+        for (var i = 0; i < f.relation.length; i++) {
+            //Workaround due to bug in 1.3.0
+            if (EcRepository.getBlocking(f.relation[i]) == null) continue;
+            var r = EcAlignment.getBlocking(f.relation[i]);
+            if (r.source == null || r.target == null) continue;
+            if (r.relationType == Relation.NARROWS) {
+                EcArray.setRemove(f.competency, r.target);
 
-            if (r.target == f.id || r.target == f.shortId()) continue;
+                if (r.target == f.id || r.target == f.shortId()) continue;
 
-            if (competencies[r.source] != null)
-                if (competencies[r.source]["gemq:isChildOf"] == null)
-                    competencies[r.source]["gemq:isChildOf"] = [];
-            if (competencies[r.source] != null)
+                if (competencies[r.source] != null)
+                    if (competencies[r.source]["gemq:isChildOf"] == null)
+                        competencies[r.source]["gemq:isChildOf"] = [];
+                if (competencies[r.source] != null)
+                    if (competencies[r.target] != null)
+                        competencies[r.source]["gemq:isChildOf"].push(competencies[r.target].id);
+                    else
+                        competencies[r.source]["gemq:isChildOf"].push(r.target);
+
                 if (competencies[r.target] != null)
-                    competencies[r.source]["gemq:isChildOf"].push(competencies[r.target].id);
-                else
-                    competencies[r.source]["gemq:isChildOf"].push(r.target);
-
-            if (competencies[r.target] != null)
-                if (competencies[r.target]["gemq:hasChild"] == null)
-                    competencies[r.target]["gemq:hasChild"] = [];
-            if (competencies[r.target] != null)
-                if (competencies[r.source] != null)
-                    competencies[r.target]["gemq:hasChild"].push(competencies[r.source].id);
-                else
-                    competencies[r.target]["gemq:hasChild"].push(r.source);
-        }
-        if (r.relationType == Relation.IS_EQUIVALENT_TO) {
-            EcArray.setRemove(f.competency, r.source);
-            if (competencies[r.target] != null)
-                if (competencies[r.target].sameAs == null)
-                    competencies[r.target].sameAs = [];
-            if (competencies[r.source] != null)
-                if (competencies[r.source].sameAs == null)
-                    competencies[r.source].sameAs = [];
-            if (competencies[r.target] != null)
-                if (competencies[r.source] != null)
-                    competencies[r.target].sameAs.push(competencies[r.source].id);
-                else
-                    competencies[r.target].sameAs.push(r.source);
-
-            if (competencies[r.source] != null)
+                    if (competencies[r.target]["gemq:hasChild"] == null)
+                        competencies[r.target]["gemq:hasChild"] = [];
                 if (competencies[r.target] != null)
-                    competencies[r.source].sameAs.push(competencies[r.target].id);
-                else
-                    competencies[r.source].sameAs.push(r.target);
-        }
-        if (r.relationType == Relation.IS_RELATED_TO) {
-            EcArray.setRemove(f.competency, r.source);
-            if (competencies[r.target] != null)
-                if (competencies[r.target]["skos:relatedMatch"] == null)
-                    competencies[r.target]["skos:relatedMatch"] = [];
-            if (competencies[r.target] != null)
-                if (competencies[r.source] != null)
-                    competencies[r.target]["skos:relatedMatch"].push(competencies[r.source].id);
-                else
-                    competencies[r.target]["skos:relatedMatch"].push(r.source);
-            if (competencies[r.source] != null)
-                if (competencies[r.source]["skos:relatedMatch"] == null)
-                    competencies[r.source]["skos:relatedMatch"] = [];
-            if (competencies[r.source] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target]["gemq:hasChild"].push(competencies[r.source].id);
+                    else
+                        competencies[r.target]["gemq:hasChild"].push(r.source);
+            }
+            if (r.relationType == Relation.IS_EQUIVALENT_TO) {
+                EcArray.setRemove(f.competency, r.source);
                 if (competencies[r.target] != null)
-                    competencies[r.source]["skos:relatedMatch"].push(competencies[r.target].id);
-                else
-                    competencies[r.source]["skos:relatedMatch"].push(r.target);
-        }
-        if (r.relationType == Relation.REQUIRES) {
-            EcArray.setRemove(f.competency, r.source);
-            if (competencies[r.target] != null)
-                if (competencies[r.target]["asn:prerequisiteAlignment"] == null)
-                    competencies[r.target]["asn:prerequisiteAlignment"] = [];
-            if (competencies[r.target] != null)
+                    if (competencies[r.target].sameAs == null)
+                        competencies[r.target].sameAs = [];
                 if (competencies[r.source] != null)
-                    competencies[r.target]["asn:prerequisiteAlignment"].push(competencies[r.source].id);
-                else
-                    competencies[r.target]["asn:prerequisiteAlignment"].push(r.source);
+                    if (competencies[r.source].sameAs == null)
+                        competencies[r.source].sameAs = [];
+                if (competencies[r.target] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target].sameAs.push(competencies[r.source].id);
+                    else
+                        competencies[r.target].sameAs.push(r.source);
+
+                if (competencies[r.source] != null)
+                    if (competencies[r.target] != null)
+                        competencies[r.source].sameAs.push(competencies[r.target].id);
+                    else
+                        competencies[r.source].sameAs.push(r.target);
+            }
+            if (r.relationType == Relation.IS_RELATED_TO) {
+                EcArray.setRemove(f.competency, r.source);
+                if (competencies[r.target] != null)
+                    if (competencies[r.target]["skos:relatedMatch"] == null)
+                        competencies[r.target]["skos:relatedMatch"] = [];
+                if (competencies[r.target] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target]["skos:relatedMatch"].push(competencies[r.source].id);
+                    else
+                        competencies[r.target]["skos:relatedMatch"].push(r.source);
+                if (competencies[r.source] != null)
+                    if (competencies[r.source]["skos:relatedMatch"] == null)
+                        competencies[r.source]["skos:relatedMatch"] = [];
+                if (competencies[r.source] != null)
+                    if (competencies[r.target] != null)
+                        competencies[r.source]["skos:relatedMatch"].push(competencies[r.target].id);
+                    else
+                        competencies[r.source]["skos:relatedMatch"].push(r.target);
+            }
+            if (r.relationType == Relation.REQUIRES) {
+                EcArray.setRemove(f.competency, r.source);
+                if (competencies[r.target] != null)
+                    if (competencies[r.target]["asn:prerequisiteAlignment"] == null)
+                        competencies[r.target]["asn:prerequisiteAlignment"] = [];
+                if (competencies[r.target] != null)
+                    if (competencies[r.source] != null)
+                        competencies[r.target]["asn:prerequisiteAlignment"].push(competencies[r.source].id);
+                    else
+                        competencies[r.target]["asn:prerequisiteAlignment"].push(r.source);
+            }
         }
-    }
 
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
@@ -168,7 +169,7 @@ if (f.relation != null)
 }
 
 /**
- * 
+ *
  * @param jsonLd
  * @returns
  */
@@ -268,7 +269,7 @@ function fixScalars(jsonLd) {
 }
 
 /**
- * 
+ *
  */
 function importFrameworkToCass(frameworkObj, competencyList) {
     var asnIdentity = new EcIdentity();
@@ -402,7 +403,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
 }
 
 /**
- * 
+ *
  */
 function asnFrameworkToCass() {
 
@@ -457,16 +458,15 @@ function asnFrameworkToCass() {
 }
 
 
-
 /**
- * 
+ *
  * @param graph
  * @param context
  */
 function importJsonLdGraph(graph, context) {
     debug("importing jsonld graph")
 
-    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+    var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var skosIdentity = new EcIdentity();
     skosIdentity.ppk = EcPpk.fromPem(keyFor("adapter.skos.private"));
@@ -479,7 +479,7 @@ function importJsonLdGraph(graph, context) {
         var graphObj = graph[idx];
 
         if (context != undefined) {
-            if (context == "http://credreg.net/ctdlasn/schema/context/json"||context == "http://credreg.net/ctdl/schema/context/json") {
+            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json") {
                 context = "http://schema.cassproject.org/0.3/ceasn2cassConcepts";
             }
             if (context["schema"] == undefined) {
@@ -517,7 +517,7 @@ function importJsonLdGraph(graph, context) {
             if (owner != null)
                 objToSave.addOwner(EcPk.fromPem(owner));
 
-            repo.saveTo(objToSave,print,print);
+            repo.saveTo(objToSave, print, print);
         }
         else if (type == "Concept") {
             objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
@@ -526,7 +526,7 @@ function importJsonLdGraph(graph, context) {
             objToSave.addOwner(skosIdentity.ppk.toPk());
             if (owner != null)
                 objToSave.addOwner(EcPk.fromPem(owner));
-            
+
             if (objToSave["skos:narrower"] != null & !EcArray.isArray(objToSave["skos:narrower"])) {
                 objToSave["skos:narrower"] = [objToSave["skos:narrower"]];
             }
@@ -549,7 +549,7 @@ function importJsonLdGraph(graph, context) {
                 objToSave["skos:relatedMatch"] = [objToSave["skos:relatedMatch"]];
             }
 
-            repo.saveTo(objToSave,print,print);
+            repo.saveTo(objToSave, print, print);
         }
     }
     if (conceptSchemeGuid) {

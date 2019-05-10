@@ -28,8 +28,8 @@ function ceasnExportUriTransform(uri, frameworkUri) {
         return uri;
     if (uri.startsWith(ceasnExportUriPrefix))
         return uri;
-    var uuid = null;
-    var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
+    let uuid = null;
+    let parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
     uuid = parts[parts.length - 1];
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
         uuid = new UUID(3, "nil", EcRemoteLinkedData.trimVersionFromUrl(uri)).format();
@@ -40,7 +40,7 @@ function cassFrameworkAsCeasn() {
     EcRepository.cache = new Object();
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
-    var query = queryParse.call(this);
+    let query = queryParse.call(this);
     var framework = null;
     if (framework == null)
         framework = skyrepoGet.call(this, query);
@@ -51,13 +51,13 @@ function cassFrameworkAsCeasn() {
         framework = null;
     if (framework == null && urlDecode(this.params.id) != null)
         framework = EcFramework.getBlocking(urlDecode(this.params.id));
-    var competency = null;
+    let competency = null;
     if (framework == null) {
         competency = skyrepoGet.call(this, query);
         if (competency == null && urlDecode(this.params.id) != null)
             competency = EcCompetency.getBlocking(urlDecode(this.params.id));
         else if (competency != null) {
-            var c = new EcCompetency();
+            let c = new EcCompetency();
             c.copyFrom(competency);
             competency = c;
         }
@@ -75,12 +75,12 @@ function cassFrameworkAsCeasn() {
     if (framework == null)
         error("Object not found or you did not supply sufficient permissions to access the object.", 404);
 
-    f = new EcFramework();
+    let f = new EcFramework();
     f.copyFrom(framework);
     if (f.competency == null) f.competency = [];
     if (f.relation == null) f.relation = [];
 
-    var all = [];
+    let all = [];
     if (f.competency != null)
         all = all.concat(f.competency);
     if (f.relation != null)
@@ -90,17 +90,17 @@ function cassFrameworkAsCeasn() {
     });
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
-    var competencies = {};
+    let competencies = {};
 
-    for (var i = 0; i < f.competency.length; i++) {
-        var c = EcCompetency.getBlocking(f.competency[i]);
+    for (let i = 0; i < f.competency.length; i++) {
+        let c = EcCompetency.getBlocking(f.competency[i]);
         if (c != null) {
             competencies[f.competency[i]] = competencies[c.id] = c;
         }
     }
 
-    for (var i = 0; i < f.relation.length; i++) {
-        var r = EcAlignment.getBlocking(f.relation[i]);
+    for (let i = 0; i < f.relation.length; i++) {
+        let r = EcAlignment.getBlocking(f.relation[i]);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
         if (r.relationType == Relation.NARROWS) {
@@ -210,17 +210,17 @@ function cassFrameworkAsCeasn() {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    let ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
     f.competency = [];
-    for (var i = 0; i < allCompetencies.length; i++) {
-        var c = competencies[allCompetencies[i]];
+    for (let i = 0; i < allCompetencies.length; i++) {
+        let c = competencies[allCompetencies[i]];
         if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
         c["ceasn:hasChild"]["@list"].sort(function (a, b) {
             return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
         });
         if (c == null) continue;
         delete competencies[allCompetencies[i]];
-        var id = c.id;
+        let id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
         console.log(f.id);
         c["ceasn:isPartOf"] = ceasnExportUriTransform(f.id);
@@ -239,8 +239,8 @@ function cassFrameworkAsCeasn() {
             }
         if (c.type == null) //Already done / referred to by another name.
             continue;
-        var guid = c.getGuid();
-        var uuid = new UUID(3, "nil", c.shortId()).format();
+        let guid = c.getGuid();
+        let uuid = new UUID(3, "nil", c.shortId()).format();
 
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
 
@@ -273,8 +273,8 @@ function cassFrameworkAsCeasn() {
         f.description = f.name;
     framework = f;
     delete f.competency;
-    var guid = f.getGuid();
-    var uuid = new UUID(3, "nil", f.shortId()).format();
+    let guid = f.getGuid();
+    let uuid = new UUID(3, "nil", f.shortId()).format();
     f = jsonLdCompact(f.toJson(), ctx);
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
@@ -300,13 +300,13 @@ function cassFrameworkAsCeasn() {
     }
     f["@id"] = ceasnExportUriTransform(f["@id"]);
 
-    var results = [];
+    let results = [];
     f = stripNonCe(f);
     results.push(f);
-    for (var k in competencies) {
-        var c = competencies[k];
-        var found = false;
-        for (var j = 0; j < results.length; j++)
+    for (let k in competencies) {
+        let c = competencies[k];
+        let found = false;
+        for (let j = 0; j < results.length; j++)
             if (results[j]["@id"] == competencies[k]["@id"]) {
                 found = true;
                 break;
@@ -330,7 +330,7 @@ function cassFrameworkAsCeasn() {
                 return JSON.stringify(competencies[k], null, 2);
     }
     delete f["@context"];
-    var r = {};
+    let r = {};
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
     if (ceasnExportUriPrefixGraph != null)
         if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
@@ -342,7 +342,7 @@ function cassFrameworkAsCeasn() {
 }
 
 function stripNonCe(f) {
-    for (var k in f) {
+    for (let k in f) {
         if (EcObject.isObject(f[k]) == false)
             if (k.indexOf("@") != 0)
                 if (k.indexOf("ceterms:ctid") != 0)
@@ -385,7 +385,7 @@ function stripNonCe(f) {
 }
 
 function orderFields(object) {
-    var ordered = {};
+    let ordered = {};
     Object.keys(object).sort().forEach(function (key) {
         ordered[key] = object[key];
         delete object[key];
@@ -397,7 +397,7 @@ function orderFields(object) {
 }
 
 function conceptArrays(object) {
-    for (var k in object) {
+    for (let k in object) {
         if (EcObject.isObject(object[k]) == false)
             if (k.indexOf("@") != 0)
                 if (k.indexOf("ceterms:ctid") != 0)
@@ -435,23 +435,23 @@ function cassConceptSchemeAsCeasn(framework) {
     if (framework == null)
         error("Concept Scheme not found.", 404);
 
-    var cs = new EcConceptScheme();
+    let cs = new EcConceptScheme();
     cs.copyFrom(framework);
     if (cs["skos:hasTopConcept"] == null) {
         cs["skos:hasTopConcept"] = [];
     }
 
-    var concepts = {};
-    var allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
+    let concepts = {};
+    let allConcepts = JSON.parse(JSON.stringify(cs["skos:hasTopConcept"]));
 
-    for (var i = 0; i < cs["skos:hasTopConcept"].length; i++) {
-        var c = EcConcept.getBlocking(cs["skos:hasTopConcept"][i]);
+    for (let i = 0; i < cs["skos:hasTopConcept"].length; i++) {
+        let c = EcConcept.getBlocking(cs["skos:hasTopConcept"][i]);
         if (c != null) {
             concepts[cs["skos:hasTopConcept"][i]] = concepts[c.id] = c;
             if (c["skos:narrower"]) {
                 function getSubConcepts(c) {
-                    for (var j = 0; j < c["skos:narrower"].length; j++) {
-                        var subC = EcConcept.getBlocking(c["skos:narrower"][j]);
+                    for (let j = 0; j < c["skos:narrower"].length; j++) {
+                        let subC = EcConcept.getBlocking(c["skos:narrower"][j]);
                         if (subC != null) {
                             concepts[subC.id] = subC;
                             allConcepts.push(subC.id);
@@ -467,13 +467,13 @@ function cassConceptSchemeAsCeasn(framework) {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    let ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
     
-    for (var i = 0; i < allConcepts.length; i++) {
-        var c = concepts[allConcepts[i]];
+    for (let i = 0; i < allConcepts.length; i++) {
+        let c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
         if (c != null && c.id != null) {
-            var id = c.id;
+            let id = c.id;
             concepts[id] = c;
             delete concepts[id]["owner"];
             delete concepts[id]["signature"];
@@ -497,8 +497,8 @@ function cassConceptSchemeAsCeasn(framework) {
             }
             if (c.type == null) //Already done / referred to by another name.
                 continue;
-            var guid = c.getGuid();
-            var uuid = new UUID(3, "nil", c.shortId()).format();
+            let guid = c.getGuid();
+            let uuid = new UUID(3, "nil", c.shortId()).format();
             concepts[allConcepts[i]] = concepts[id] = jsonLdCompact(c.toJson(), ctx);
 
             if (concepts[id]["ceterms:ctid"] == null) {
@@ -525,8 +525,8 @@ function cassConceptSchemeAsCeasn(framework) {
     cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
 
     framework = cs;
-    var guid = cs.getGuid();
-    var uuid = new UUID(3, "nil", cs.shortId()).format();
+    let guid = cs.getGuid();
+    let uuid = new UUID(3, "nil", cs.shortId()).format();
     delete cs["owner"];
     delete cs["signature"];
     cs = jsonLdCompact(cs.toJson(), ctx);
@@ -558,14 +558,14 @@ function cassConceptSchemeAsCeasn(framework) {
     }
     cs["@id"] = ceasnExportUriTransform(cs["@id"]);
 
-    var results = [];
+    let results = [];
 
     cs = conceptArrays(cs);
     results.push(cs);
-    for (var k in concepts) {
-        var c = concepts[k];
-        var found = false;
-        for (var j = 0; j < results.length; j++) {
+    for (let k in concepts) {
+        let c = concepts[k];
+        let found = false;
+        for (let j = 0; j < results.length; j++) {
             if (results[j]["@id"] == concepts[k]["@id"]) {
                 found = true;
                 break;
@@ -577,7 +577,7 @@ function cassConceptSchemeAsCeasn(framework) {
     }
         
     delete cs["@context"];
-    var r = {};
+    let r = {};
     r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
     if (ceasnExportUriPrefixGraph != null)
         if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
@@ -591,9 +591,9 @@ function cassConceptSchemeAsCeasn(framework) {
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
 
-    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+    let owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
-    var ceasnIdentity = new EcIdentity();
+    let ceasnIdentity = new EcIdentity();
     ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
     ceasnIdentity.displayName = "CEASN Server Identity";
     EcIdentityManager.addIdentity(ceasnIdentity);
@@ -602,31 +602,33 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     if (false && repoEndpoint().contains("localhost"))
         error("Endpoint Configuration is not set.", 500);
 
-    var cassCompetencies = [];
-    var cassRelationships = [];
-    var relationshipMap = {};
-    var parentMap = {};
+    let cassCompetencies = [];
+    let cassRelationships = [];
+    let relationshipMap = {};
+    let parentMap = {};
 
     if (frameworkObj != null) {
-        var topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
+        let topChild = frameworkObj["ceasn:hasTopChild"] ? frameworkObj["ceasn:hasTopChild"] : frameworkObj["ceasn:hasChild"];
         if (topChild != null && topChild.length != null) {
-            for (var i = 0; i < topChild.length; i++) {
+            for (let i = 0; i < topChild.length; i++) {
                 cassCompetencies.push(EcRemoteLinkedData.trimVersionFromUrl(topChild[i]));
             }
         }
     }
 
-    for (var idx in competencyList) {
-        var asnComp = competencyList[idx];
+    let listToSave = [];
 
-        var compVersion = date(null, null, true);
+    for (let idx in competencyList) {
+        let asnComp = competencyList[idx];
 
-        var canonicalId = asnComp["@id"];
+        let compVersion = date(null, null, true);
 
-        var childComps = asnComp["ceasn:hasChild"];
+        let canonicalId = asnComp["@id"];
+
+        let childComps = asnComp["ceasn:hasChild"];
         if (childComps != null && childComps.length != null) {
-            for (var i = 0; i < childComps.length; i++) {
-                var r = new EcAlignment();
+            for (let i = 0; i < childComps.length; i++) {
+                let r = new EcAlignment();
                 r.source = EcRemoteLinkedData.trimVersionFromUrl(childComps[i]);
                 r.target = EcRemoteLinkedData.trimVersionFromUrl(canonicalId);
                 r.relationType = Relation.NARROWS;
@@ -638,42 +640,42 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
                 if (relationshipMap[r.source + r.target] != true) {
                     relationshipMap[r.source + r.target] = true;
-                    repo.saveTo(r, print, print);
+                    listToSave.push(r);
                     cassRelationships.push(r.shortId());
                     cassCompetencies.push(r.source);
                 }
             }
         }
 
-        var newComp = JSON.parse(JSON.stringify(asnComp));
+        let newComp = JSON.parse(JSON.stringify(asnComp));
         delete newComp["ceasn:hasChild"];
 
         newComp["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
-        var expandedComp = jsonLdExpand(JSON.stringify(newComp));
-        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
+        let expandedComp = jsonLdExpand(JSON.stringify(newComp));
+        let compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
 
         delete compactedComp["ceasn:isChildOf"];
         delete compactedComp["ceasn:hasChild"];
         delete compactedComp["ceasn:isPartOf"];
 
-        var c = new EcCompetency();
+        let c = new EcCompetency();
         c.copyFrom(compactedComp);
         c.addOwner(ceasnIdentity.ppk.toPk());
 
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
 
-        repo.saveTo(c, print, print);
+        listToSave.push(c);
 
     } // end for each competency in  competencyList
 
     if (frameworkObj != null) {
-        var guid = stringToHex(md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"])));
-        var version = date(null, null, true);
+        let guid = stringToHex(md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"])));
+        let version = date(null, null, true);
 
         frameworkObj["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
-        var expanded = jsonLdExpand(JSON.stringify(frameworkObj));
-        var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3");
+        let expanded = jsonLdExpand(JSON.stringify(frameworkObj));
+        let compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3");
 
         delete compacted["ceasn:hasChild"];
         delete compacted["ceasn:hasTopChild"];
@@ -683,29 +685,30 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         //delete compacted["@context"];
         //delete compacted["@type"];
 
-        var f = new EcFramework();
+        let f = new EcFramework();
         f.copyFrom(compacted);
         f.addOwner(ceasnIdentity.ppk.toPk());
 
         if (owner != null)
             f.addOwner(EcPk.fromPem(owner));
 
-        repo.saveTo(f, print, print);
+        listToSave.push(f);
 
+        repo.multiput(listToSave,console.log,console.error);
         return repoEndpoint() + "data/" + guid;
     } // end if frameworkObj != null
 }
 
 function ceasnFrameworkToCass() {
 
-    var jsonLd, text;
+    let jsonLd, text;
 
-    var file = getFileFromPost.call(this);
+    let file = getFileFromPost.call(this);
 
     if (file == undefined || file == null) {
         error("Unable to find ASN to Convert");
     } else if (file.length != undefined) {
-        var data = getFileFromPost.call(this, "data");
+        let data = getFileFromPost.call(this, "data");
         if (data != undefined && data != null) {
             text = fileToString(data);
         } else {
@@ -725,14 +728,14 @@ function ceasnFrameworkToCass() {
         jsonLd = rdfToJsonLd(text);
     }
 
-    var frameworkObj = undefined;
-    var competencyList = [];
+    let frameworkObj = undefined;
+    let competencyList = [];
 
     if (jsonLd["@graph"] != undefined && jsonLd["@graph"] != "") {
-        var graph = jsonLd["@graph"];
+        let graph = jsonLd["@graph"];
 
-        for (var idx in graph) {
-            var graphObj = graph[idx];
+        for (let idx in graph) {
+            let graphObj = graph[idx];
 
             if (graphObj["@type"] == "ceasn:CompetencyFramework") {
                 graphObj["@context"] = jsonLd["@context"];
