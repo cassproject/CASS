@@ -1919,7 +1919,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 947,
+            "line": 1052,
             "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1934,7 +1934,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1310,
+            "line": 1415,
             "description": "Importer methods to create competencies based on a\nMedbiquitous competency XML file",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1949,7 +1949,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1477,
+            "line": 1582,
             "description": "Export methods to handle exporting two CSV file , one of competencies\nand one of relationships representing a framework",
             "author": "fritz.ray@eduworks.com"
         },
@@ -15542,7 +15542,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 861,
+            "line": 966,
             "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "params": [
                 {
@@ -15592,7 +15592,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 973,
+            "line": 1078,
             "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts\nthe number of competencies and relationships that it finds",
             "params": [
                 {
@@ -15617,7 +15617,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1005,
+            "line": 1110,
             "description": "Does the actual legwork of looking for competencies and relationships.\n<p>\nThis function finds the framework information, and pulls out the competency\nobjects array to be scanned by asnJsonPrime",
             "params": [
                 {
@@ -15637,7 +15637,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1039,
+            "line": 1144,
             "description": "Analyzes an ASN File for competencies and relationships.\n<p>\nThis should be called before import, the success callback returns an object\nindicating the number of competencies and relationships found.",
             "params": [
                 {
@@ -15666,7 +15666,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1083,
+            "line": 1188,
             "description": "Method to import the competencies from an ASN JSON file,\nshould be called after analyzing the file",
             "params": [
                 {
@@ -15710,7 +15710,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1129,
+            "line": 1234,
             "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "params": [
                 {
@@ -15751,7 +15751,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1199,
+            "line": 1304,
             "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "params": [
                 {
@@ -15801,7 +15801,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1270,
+            "line": 1375,
             "description": "Handles creating the framework if the createFramework flag was set",
             "params": [
                 {
@@ -15836,7 +15836,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1329,
+            "line": 1434,
             "description": "Does the legwork of looking for competencies in the XML",
             "params": [
                 {
@@ -15856,7 +15856,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1348,
+            "line": 1453,
             "description": "Does the legwork of parsing the competencies out of the parsed XML",
             "params": [
                 {
@@ -15876,7 +15876,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1377,
+            "line": 1482,
             "description": "Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process",
             "params": [
                 {
@@ -15905,7 +15905,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1416,
+            "line": 1521,
             "description": "Method for actually creating the competencies in the CASS repository after a\nMedbiquitous XML file has been parsed. Must be called after analyzeFile",
             "params": [
                 {
@@ -15945,7 +15945,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1499,
+            "line": 1604,
             "description": "Method to export the CSV files of competencies and relationships for a framework",
             "params": [
                 {
@@ -54460,7 +54460,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 281,
+            "line": 304,
             "description": "Upgrades the object to the latest version, performing transforms and the like.",
             "itemtype": "method",
             "name": "upgrade",
@@ -54469,7 +54469,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 287,
+            "line": 310,
             "description": "Removes the @ symbol from properties in order to make them more\naccessible in Javascript.",
             "return": {
                 "description": "This object, with @ properties converted to @-less properties.",
@@ -54483,7 +54483,7 @@
         },
         {
             "file": "src/main/js/cass/org.json-ld.js",
-            "line": 319,
+            "line": 342,
             "description": "Gets all versions of JSON-LD type strings for this type of object.",
             "return": {
                 "description": "Array of URIs.",
@@ -68038,55 +68038,55 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:861"
+            "line": " src/main/js/cass/cass.import.js:966"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:973"
+            "line": " src/main/js/cass/cass.import.js:1078"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1005"
+            "line": " src/main/js/cass/cass.import.js:1110"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1039"
+            "line": " src/main/js/cass/cass.import.js:1144"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1083"
+            "line": " src/main/js/cass/cass.import.js:1188"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1129"
+            "line": " src/main/js/cass/cass.import.js:1234"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1199"
+            "line": " src/main/js/cass/cass.import.js:1304"
         },
         {
             "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:1270"
+            "line": " src/main/js/cass/cass.import.js:1375"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1329"
+            "line": " src/main/js/cass/cass.import.js:1434"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1348"
+            "line": " src/main/js/cass/cass.import.js:1453"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1377"
+            "line": " src/main/js/cass/cass.import.js:1482"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1416"
+            "line": " src/main/js/cass/cass.import.js:1521"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1499"
+            "line": " src/main/js/cass/cass.import.js:1604"
         },
         {
             "message": "unknown tag: internal",
@@ -68742,7 +68742,7 @@
         },
         {
             "message": "unknown tag: internal",
-            "line": " src/main/js/cass/org.json-ld.js:287"
+            "line": " src/main/js/cass/org.json-ld.js:310"
         },
         {
             "message": "unknown tag: memberof",
