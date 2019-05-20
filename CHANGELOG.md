@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.2.9](https://github.com/cassproject/CASS/tree/1.2.9) (2019-05-17)
+[Full Changelog](https://github.com/cassproject/CASS/compare/1.2.8...1.2.9)
+
+**Implemented enhancements:**
+
+- Create method of cleaning up data. Test on Dev. [\#132](https://github.com/cassproject/CASS/issues/132)
+
+**Fixed bugs:**
+
+- dev.cassproject back button usage [\#147](https://github.com/cassproject/CASS/issues/147)
+
 ## [1.2.8](https://github.com/cassproject/CASS/tree/1.2.8) (2019-05-10)
 [Full Changelog](https://github.com/cassproject/CASS/compare/1.2.7...1.2.8)
 
