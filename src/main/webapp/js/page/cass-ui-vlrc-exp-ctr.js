@@ -6,7 +6,7 @@
 // Constants
 
 const VLRC_EXP_IFRAME = "#vlrcExpIFrame";
-const VLRC_EXP_IFRAME_SOURCE = "cass-vlrc/index.html?user=wait&origin=";
+const VLRC_EXP_IFRAME_SOURCE = "cass-vlrc/index.html?user=wait&css=../css/cass-ui-editor.css&origin=";
 const VLRC_EXP_IFRAME_SOURCE_VLRC_ID_PARAM = "?frameworkId=";
 
 const WAITING_MESSAGE = "waiting";
