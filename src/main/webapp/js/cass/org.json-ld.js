@@ -259,6 +259,29 @@ EcLinkedData = stjs.extend(EcLinkedData, null, [], function(constructor, prototy
         if (!this.isAny(this.getTypes())) 
              throw new RuntimeException("Incompatible type: " + this.getFullType());
     };
+    prototype.recast = function(translationContext, targetContext, success, failure) {
+        var me = this;
+        var json = JSON.parse(this.toJson());
+        if (targetContext == null) 
+            targetContext = (json)["@context"];
+        (json)["@context"] = translationContext;
+        var finalTargetContext = targetContext;
+        jsonld.expand(json, new Object(), function(error, actual) {
+            if (error != null) {
+                failure((error)["message"]);
+                return;
+            }
+            jsonld.compact(actual, finalTargetContext, new Object(), function(s, o, o2) {
+                if (s != null) {
+                    failure(s);
+                    return;
+                }
+                me.copyFrom(o);
+                (me)["@context"] = finalTargetContext;
+                success(me);
+            });
+        });
+    };
     /**
      *  Upgrades the object to the latest version, performing transforms and the like.
      * 

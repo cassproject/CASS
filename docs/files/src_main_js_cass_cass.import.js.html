@@ -1573,111 +1573,216 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
             var competencyRows = new Object();
             var relations = new Array();
             var relationById = new Object();
-            for (var i = 0; i &lt; tabularData.length; i++) {
-                var e = tabularData[i];
-                if ((e)[&quot;@type&quot;] != null &amp;&amp; ((e)[&quot;@type&quot;]).trim() == &quot;ceasn:CompetencyFramework&quot;) {
-                    var f = new EcFramework();
-                    if ((e)[&quot;@owner&quot;] != null) {
-                        var id = new EcIdentity();
-                        id.ppk = EcPpk.fromPem((e)[&quot;@owner&quot;]);
-                        if (ceo != null) 
-                            f.addOwner(ceo.ppk.toPk());
-                        f.addOwner(id.ppk.toPk());
-                        EcIdentityManager.addIdentityQuietly(id);
-                    }
-                    f.id = (e)[&quot;@id&quot;];
-                    (frameworks)[f.id] = f;
-                    (frameworkRows)[f.id] = e;
-                    frameworkArray.push(f);
-                    f.competency = new Array();
-                    f.relation = new Array();
-                    f.name = (e)[&quot;ceasn:name&quot;];
-                    if ((e)[&quot;ceasn:creator&quot;] != null) 
-                        (e)[&quot;ceasn:creator&quot;] = ((e)[&quot;ceasn:creator&quot;]).toLowerCase();
-                    (f)[&quot;schema:creator&quot;] = (e)[&quot;ceasn:creator&quot;];
-                    (f)[&quot;ceasn:derivedFrom&quot;] = (e)[&quot;ceasn:derivedFrom&quot;];
-                    (f)[&quot;dc:source&quot;] = (e)[&quot;ceasn:source&quot;];
-                } else if ((e)[&quot;@type&quot;] != null &amp;&amp; ((e)[&quot;@type&quot;]).trim() == &quot;ceasn:Competency&quot;) {
-                    var f = new EcCompetency();
-                    if ((e)[&quot;@id&quot;] == null) 
-                        continue;
-                    f.id = (e)[&quot;@id&quot;];
-                    if ((e)[&quot;ceasn:isPartOf&quot;] != null) {
-                        ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).competency.push(f.shortId());
-                    } else {
-                        var parent = e;
-                        var done = false;
-                         while (!done &amp;&amp; parent != null){
-                            if ((parent)[&quot;ceasn:isChildOf&quot;] != null &amp;&amp; (parent)[&quot;ceasn:isChildOf&quot;] != &quot;&quot;) {
-                                parent = (competencyRows)[(parent)[&quot;ceasn:isChildOf&quot;]];
-                            } else if ((parent)[&quot;ceasn:isTopChildOf&quot;] != null &amp;&amp; (parent)[&quot;ceasn:isTopChildOf&quot;] != &quot;&quot;) {
-                                parent = (frameworkRows)[(parent)[&quot;ceasn:isTopChildOf&quot;]];
-                                done = true;
-                            }
+            new EcAsyncHelper().each(tabularData, function(pretranslatedE, callback0) {
+                if ((pretranslatedE)[&quot;@type&quot;] == &quot;ceasn:CompetencyFramework&quot;) {
+                    var translator = new EcLinkedData(null, null);
+                    translator.copyFrom(pretranslatedE);
+                    for (var key in (translator)) {
+                        if ((translator)[key] == &quot;&quot;) {
+                            (translator)[key] = null;
                         }
-                        if (!done) {
-                            this.error(&quot;Could not find framework:&quot; + (e)[&quot;@type&quot;]);
+                    }
+                    translator.recast(&quot;http://schema.cassproject.org/0.3/ceasn2cass&quot;, &quot;http://schema.cassproject.org/0.3&quot;, function(e) {
+                        var f = new EcFramework();
+                        f.copyFrom(e);
+                        if ((e)[&quot;owner&quot;] != null) {
+                            var id = new EcIdentity();
+                            id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
+                            if (ceo != null) 
+                                f.addOwner(ceo.ppk.toPk());
+                            f.addOwner(id.ppk.toPk());
+                            EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        (frameworks)[f.id] = f;
+                        (frameworkRows)[f.id] = e;
+                        (f)[&quot;ceasn:hasChild&quot;] = null;
+                        (f)[&quot;ceasn:hasTopChild&quot;] = null;
+                        frameworkArray.push(f);
+                        f.competency = new Array();
+                        f.relation = new Array();
+                        callback0();
+                    }, failure);
+                } else if ((pretranslatedE)[&quot;@type&quot;] == &quot;ceasn:Competency&quot;) {
+                    var translator = new EcLinkedData(null, null);
+                    translator.copyFrom(pretranslatedE);
+                    for (var key in (translator)) {
+                        if ((translator)[key] == &quot;&quot;) {
+                            (translator)[key] = null;
+                        }
+                    }
+                    translator.recast(&quot;http://schema.cassproject.org/0.3/ceasn2cass&quot;, &quot;http://schema.cassproject.org/0.3&quot;, function(e) {
+                        var f = new EcCompetency();
+                        f.copyFrom(e);
+                        if ((e)[&quot;id&quot;] == null) {
+                            callback0();
                             return;
                         }
-                        if (parent != null) {
-                            if ((parent)[&quot;@type&quot;] != null &amp;&amp; ((parent)[&quot;@type&quot;]).trim() == &quot;ceasn:CompetencyFramework&quot;) {
-                                (e)[&quot;ceasn:isPartOf&quot;] = (parent)[&quot;@id&quot;];
-                                ((frameworks)[(parent)[&quot;@id&quot;]]).competency.push(f.shortId());
-                            } else {
-                                this.error(&quot;Object cannot trace to framework:&quot; + (e)[&quot;@type&quot;]);
+                        if ((e)[&quot;ceasn:isPartOf&quot;] != null) {
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).competency.push(f.shortId());
+                        } else {
+                            var parent = e;
+                            var done = false;
+                             while (!done &amp;&amp; parent != null){
+                                if ((parent)[&quot;ceasn:isChildOf&quot;] != null &amp;&amp; (parent)[&quot;ceasn:isChildOf&quot;] != &quot;&quot;) {
+                                    parent = (competencyRows)[(parent)[&quot;ceasn:isChildOf&quot;]];
+                                } else if ((parent)[&quot;ceasn:isTopChildOf&quot;] != null &amp;&amp; (parent)[&quot;ceasn:isTopChildOf&quot;] != &quot;&quot;) {
+                                    parent = (frameworkRows)[(parent)[&quot;ceasn:isTopChildOf&quot;]];
+                                    done = true;
+                                }
+                            }
+                            if (!done) {
+                                this.error(&quot;Could not find framework:&quot; + (e)[&quot;type&quot;]);
                                 return;
                             }
-                        } else {
-                            this.error(&quot;Object has no framework:&quot; + (e)[&quot;@type&quot;]);
-                            return;
+                            if (parent != null) {
+                                if ((parent)[&quot;type&quot;] == &quot;Framework&quot;) {
+                                    (e)[&quot;ceasn:isPartOf&quot;] = (parent)[&quot;id&quot;];
+                                    ((frameworks)[(parent)[&quot;id&quot;]]).competency.push(f.shortId());
+                                } else {
+                                    this.error(&quot;Object cannot trace to framework:&quot; + (e)[&quot;type&quot;]);
+                                    return;
+                                }
+                            } else {
+                                this.error(&quot;Object has no framework:&quot; + (e)[&quot;type&quot;]);
+                                return;
+                            }
                         }
-                    }
-                    if ((e)[&quot;@owner&quot;] == null) {
-                        if (((frameworkRows)[(e)[&quot;ceasn:isPartOf&quot;]])[&quot;@owner&quot;] != null) 
-                            (e)[&quot;@owner&quot;] = ((frameworkRows)[(e)[&quot;ceasn:isPartOf&quot;]])[&quot;@owner&quot;];
-                    }
-                    var id = new EcIdentity();
-                    if ((e)[&quot;@owner&quot;] != null) {
-                        id.ppk = EcPpk.fromPem((e)[&quot;@owner&quot;]);
-                        if (ceo != null) 
-                            f.addOwner(ceo.ppk.toPk());
-                        if (id.ppk != null) 
-                            f.addOwner(id.ppk.toPk());
-                        EcIdentityManager.addIdentityQuietly(id);
-                    }
-                    f.name = (e)[&quot;ceasn:competencyText&quot;];
-                    if (f.name == null || f.name == &quot;&quot;) 
-                        f.name = (e)[&quot;ceasn:name&quot;];
-                    if ((e)[&quot;ceasn:comment&quot;] != null) 
-                        f.description = (e)[&quot;ceasn:comment&quot;];
-                    (f)[&quot;schema:creator&quot;] = (e)[&quot;ceasn:creator&quot;];
-                    (f)[&quot;ceasn:codedNotation&quot;] = (e)[&quot;ceasn:codedNotation&quot;];
-                    (f)[&quot;ceasn:listID&quot;] = (e)[&quot;ceasn:listID&quot;];
-                    if ((e)[&quot;ceasn:isChildOf&quot;] != null) {
-                        var r = new EcAlignment();
-                        r.generateId(repo.selectedServer);
-                        if (ceo != null) 
-                            r.addOwner(ceo.ppk.toPk());
-                        if (id.ppk != null) 
-                            r.addOwner(id.ppk.toPk());
-                        r.source = (e)[&quot;@id&quot;];
-                        r.relationType = Relation.NARROWS;
-                        r.target = (e)[&quot;ceasn:isChildOf&quot;];
-                        relations.push(r);
-                        (relationById)[r.shortId()] = r;
-                        ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
-                    }
-                    (f)[&quot;ceasn:derivedFrom&quot;] = (e)[&quot;ceasn:derivedFrom&quot;];
-                    competencies.push(f);
-                    (competencyRows)[f.id] = e;
-                } else if ((e)[&quot;@type&quot;] == null || (e)[&quot;@type&quot;] == &quot;&quot;) 
-                    continue;
-                 else {
-                    this.error(&quot;Found unknown type:&quot; + (e)[&quot;@type&quot;]);
+                        if ((e)[&quot;owner&quot;] == null) {
+                            if (((frameworkRows)[(e)[&quot;ceasn:isPartOf&quot;]])[&quot;owner&quot;] != null) 
+                                (e)[&quot;owner&quot;] = ((frameworkRows)[(e)[&quot;ceasn:isPartOf&quot;]])[&quot;owner&quot;];
+                        }
+                        var id = new EcIdentity();
+                        if ((e)[&quot;owner&quot;] != null) {
+                            id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
+                            if (ceo != null) 
+                                f.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                f.addOwner(id.ppk.toPk());
+                            EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        if ((e)[&quot;ceasn:isChildOf&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = Relation.NARROWS;
+                            r.target = (e)[&quot;ceasn:isChildOf&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;ceasn:broadAlignment&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = Relation.NARROWS;
+                            r.target = (e)[&quot;ceasn:broadAlignment&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;ceasn:narrowAlignment&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;ceasn:narrowAlignment&quot;];
+                            r.relationType = Relation.NARROWS;
+                            r.target = (e)[&quot;id&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;sameAs&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = Relation.IS_EQUIVALENT_TO;
+                            r.target = (e)[&quot;sameAs&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;ceasn:majorAlignment&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = &quot;majorRelated&quot;;
+                            r.target = (e)[&quot;ceasn:majorAlignment&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;ceasn:minorAlignment&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = &quot;minorRelated&quot;;
+                            r.target = (e)[&quot;ceasn:minorAlignment&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        if ((e)[&quot;ceasn:prerequisiteAlignment&quot;] != null) {
+                            var r = new EcAlignment();
+                            r.generateId(repo.selectedServer);
+                            if (ceo != null) 
+                                r.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                r.addOwner(id.ppk.toPk());
+                            r.source = (e)[&quot;id&quot;];
+                            r.relationType = Relation.REQUIRES;
+                            r.target = (e)[&quot;ceasn:prerequisiteAlignment&quot;];
+                            relations.push(r);
+                            (relationById)[r.shortId()] = r;
+                            ((frameworks)[(e)[&quot;ceasn:isPartOf&quot;]]).relation.push(r.shortId());
+                        }
+                        (f)[&quot;ceasn:isTopChildOf&quot;] = null;
+                        (f)[&quot;ceasn:isChildOf&quot;] = null;
+                        (f)[&quot;ceasn:isPartOf&quot;] = null;
+                        (f)[&quot;ceasn:broadAlignment&quot;] = null;
+                        (f)[&quot;ceasn:narrowAlignment&quot;] = null;
+                        (f)[&quot;sameAs&quot;] = null;
+                        (f)[&quot;ceasn:majorAlignment&quot;] = null;
+                        (f)[&quot;ceasn:minorAlignment&quot;] = null;
+                        (f)[&quot;ceasn:prerequisiteAlignment&quot;] = null;
+                        (f)[&quot;ceasn:hasChild&quot;] = null;
+                        competencies.push(f);
+                        (competencyRows)[f.id] = e;
+                        callback0();
+                    }, failure);
+                } else if ((pretranslatedE)[&quot;@type&quot;] == null || (pretranslatedE)[&quot;@type&quot;] == &quot;&quot;) {
+                    callback0();
+                    return;
+                } else {
+                    this.error(&quot;Found unknown type:&quot; + (pretranslatedE)[&quot;@type&quot;]);
+                    callback0();
                     return;
                 }
-            }
-            success(frameworkArray, competencies, relations);
+            }, function(strings) {
+                success(frameworkArray, competencies, relations);
+            });
         }, error: failure});
     };
 }, {}, {});
@@ -2452,6 +2557,208 @@ CSVExport = stjs.extend(CSVExport, Exporter, [], function(constructor, prototype
         };
     }, {csvOutput: {name: &quot;Array&quot;, arguments: [&quot;Object&quot;]}}, {});
 }, {frameworkCompetencies: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}, frameworkRelations: {name: &quot;Array&quot;, arguments: [&quot;EcRemoteLinkedData&quot;]}}, {});
+var CTDLASNCSVConceptImport = function() {};
+CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], function(constructor, prototype) {
+    constructor.analyzeFile = function(file, success, failure) {
+        if (file == null) {
+            failure(&quot;No file to analyze&quot;);
+            return;
+        }
+        if ((file)[&quot;name&quot;] == null) {
+            failure(&quot;Invalid file&quot;);
+        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.csv&quot;)) {
+            failure(&quot;Invalid file type&quot;);
+        }
+        Papa.parse(file, {encoding: &quot;UTF-8&quot;, complete: function(results) {
+            var tabularData = (results)[&quot;data&quot;];
+            var colNames = tabularData[0];
+            var nameToCol = new Object();
+            for (var i = 0; i &lt; colNames.length; i++) 
+                (nameToCol)[colNames[i]] = i;
+            var conceptSchemeCounter = 0;
+            var conceptCounter = 0;
+            var typeCol = (nameToCol)[&quot;@type&quot;];
+            if (typeCol == null) {
+                this.error(&quot;No @type in CSV.&quot;);
+                return;
+            }
+            for (var i = 0; i &lt; tabularData.length; i++) {
+                if (i == 0) 
+                    continue;
+                var col = tabularData[i];
+                if (col[typeCol] == &quot;skos:ConceptScheme&quot;) 
+                    conceptSchemeCounter++;
+                 else if (col[typeCol] == &quot;skos:Concept&quot;) 
+                    conceptCounter++;
+                 else if (col[typeCol] == null || col[typeCol] == &quot;&quot;) 
+                    continue;
+                 else {
+                    this.error(&quot;Found unknown type:&quot; + col[typeCol]);
+                    return;
+                }
+            }
+            success(conceptSchemeCounter, conceptCounter);
+        }, error: failure});
+    };
+    constructor.importFrameworksAndCompetencies = function(repo, file, success, failure, ceo) {
+        if (file == null) {
+            failure(&quot;No file to analyze&quot;);
+            return;
+        }
+        if ((file)[&quot;name&quot;] == null) {
+            failure(&quot;Invalid file&quot;);
+        } else if (!((file)[&quot;name&quot;]).endsWith(&quot;.csv&quot;)) {
+            failure(&quot;Invalid file type&quot;);
+        }
+        Papa.parse(file, {header: true, encoding: &quot;UTF-8&quot;, complete: function(results) {
+            var tabularData = (results)[&quot;data&quot;];
+            var schemeArray = new Array();
+            var concepts = new Array();
+            new EcAsyncHelper().each(tabularData, function(pretranslatedE, callback0) {
+                if ((pretranslatedE)[&quot;@type&quot;] == &quot;skos:ConceptScheme&quot;) {
+                    var translator = new EcLinkedData(null, null);
+                    translator.copyFrom(pretranslatedE);
+                    for (var key in (translator)) {
+                        if ((translator)[key] == &quot;&quot;) {
+                            (translator)[key] = null;
+                        } else if ((translator)[key] != null) {
+                            var thisKey = (translator)[key];
+                            if ((typeof thisKey) == &quot;string&quot; &amp;&amp; (thisKey).indexOf(&quot;[&quot;) != -1) {
+                                thisKey = (thisKey).replaceAll(&quot;&#x27;&quot;, &quot;\&quot;&quot;);
+                                (translator)[key] = JSON.parse(thisKey);
+                            }
+                        }
+                    }
+                    if ((translator)[&quot;ceasn:name&quot;] != null) {
+                        var name = (translator)[&quot;ceasn:name&quot;];
+                        var nameWithLanguage = new Object();
+                        (nameWithLanguage)[&quot;en-US&quot;] = name;
+                        (translator)[&quot;ceasn:name&quot;] = nameWithLanguage;
+                    }
+                    translator.recast(&quot;http://schema.cassproject.org/0.3/ceasn2cassConcepts&quot;, &quot;http://schema.cassproject.org/0.3/skos&quot;, function(e) {
+                        var f = new EcConceptScheme();
+                        f.copyFrom(e);
+                        if ((e)[&quot;owner&quot;] != null) {
+                            var id = new EcIdentity();
+                            id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
+                            if (ceo != null) 
+                                f.addOwner(ceo.ppk.toPk());
+                            f.addOwner(id.ppk.toPk());
+                            EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();
+                        if ((e)[&quot;schema:dateCreated&quot;] == null) {
+                            (f)[&quot;schema:dateCreated&quot;] = new Date().toISOString();
+                        }
+                        schemeArray.push(f);
+                        callback0();
+                    }, failure);
+                } else if ((pretranslatedE)[&quot;@type&quot;] == &quot;skos:Concept&quot;) {
+                    var translator = new EcLinkedData(null, null);
+                    translator.copyFrom(pretranslatedE);
+                    for (var key in (translator)) {
+                        if ((translator)[key] == &quot;&quot;) {
+                            (translator)[key] = null;
+                        } else if ((translator)[key] != null) {
+                            var thisKey = (translator)[key];
+                            if ((typeof thisKey) == &quot;string&quot; &amp;&amp; (thisKey).indexOf(&quot;[&quot;) != -1) {
+                                thisKey = (thisKey).replaceAll(&quot;&#x27;&quot;, &quot;\&quot;&quot;);
+                                (translator)[key] = JSON.parse(thisKey);
+                            }
+                        }
+                    }
+                    if ((translator)[&quot;skos:prefLabel&quot;] != null) {
+                        var name = (translator)[&quot;skos:prefLabel&quot;];
+                        var nameWithLanguage = new Object();
+                        (nameWithLanguage)[&quot;en-US&quot;] = name;
+                        (translator)[&quot;skos:prefLabel&quot;] = nameWithLanguage;
+                    }
+                    translator.recast(&quot;http://schema.cassproject.org/0.3/ceasn2cassConcepts&quot;, &quot;http://schema.cassproject.org/0.3/skos&quot;, function(e) {
+                        var f = new EcConcept();
+                        f.copyFrom(e);
+                        if ((e)[&quot;id&quot;] == null) {
+                            callback0();
+                            return;
+                        }
+                        if ((e)[&quot;owner&quot;] != null) {
+                            var id = new EcIdentity();
+                            id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
+                            if (ceo != null) 
+                                f.addOwner(ceo.ppk.toPk());
+                            if (id.ppk != null) 
+                                f.addOwner(id.ppk.toPk());
+                            EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        if ((e)[&quot;skos:narrower&quot;] != null) {
+                            var relation = (e)[&quot;skos:narrower&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:narrower&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:broader&quot;] != null) {
+                            var relation = (e)[&quot;skos:broader&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:broader&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:broadMatch&quot;] != null) {
+                            var relation = (e)[&quot;skos:broadMatch&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:broadMatch&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:closeMatch&quot;] != null) {
+                            var relation = (e)[&quot;skos:closeMatch&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:closeMatch&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:exactMatch&quot;] != null) {
+                            var relation = (e)[&quot;skos:exactMatch&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:exactMatch&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:narrowMatch&quot;] != null) {
+                            var relation = (e)[&quot;skos:narrowMatch&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:narrowMatch&quot;] = array;
+                            }
+                        }
+                        if ((e)[&quot;skos:relatedMatch&quot;] != null) {
+                            var relation = (e)[&quot;skos:relatedMatch&quot;];
+                            if (!EcArray.isArray(relation)) {
+                                var array = [relation];
+                                (f)[&quot;skos:relatedMatch&quot;] = array;
+                            }
+                        }
+                        (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();
+                        if ((e)[&quot;schema:dateCreated&quot;] == null) {
+                            (f)[&quot;schema:dateCreated&quot;] = new Date().toISOString();
+                        }
+                        concepts.push(f);
+                        callback0();
+                    }, failure);
+                } else if ((pretranslatedE)[&quot;@type&quot;] == null || (pretranslatedE)[&quot;@type&quot;] == &quot;&quot;) {
+                    callback0();
+                    return;
+                } else {
+                    this.error(&quot;Found unknown type:&quot; + (pretranslatedE)[&quot;@type&quot;]);
+                    callback0();
+                    return;
+                }
+            }, function(strings) {
+                success(schemeArray, concepts);
+            });
+        }, error: failure});
+    };
+}, {}, {});
 
     </pre>
 </div>

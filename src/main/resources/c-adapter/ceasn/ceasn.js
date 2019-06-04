@@ -31,6 +31,9 @@ function ceasnExportUriTransform(uri, frameworkUri) {
     var uuid = null;
     var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
     uuid = parts[parts.length - 1];
+    if (frameworkUri != null && frameworkUri !== undefined) {
+        uri = frameworkUri + uri;
+    }
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
         uuid = new UUID(3, "nil", EcRemoteLinkedData.trimVersionFromUrl(uri)).format();
     return ceasnExportUriPrefix + uuid;
@@ -214,11 +217,11 @@ function cassFrameworkAsCeasn() {
     f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
+        if (c == null) continue;
         if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
         c["ceasn:hasChild"]["@list"].sort(function (a, b) {
             return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
         });
-        if (c == null) continue;
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
