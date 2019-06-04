@@ -1,11 +1,11 @@
 {
     "name": "CASS Javascript Library",
     "description": "CASS Javascript Library API: ",
-    "version": "0.2",
+    "version": "1.2",
     "url": "http://cassproject.org/",
     "logo": "http://docs.cassproject.org/img/customLogo-blue.png",
     "options": {
-        "exclude": "moment-with-locales.js,base64toArrayBuffer.js,base64x-1.1.js,blobHelper.js,FileSaver.js,forgeAsync.js,openpgp.js,papaparse.js,random.js,stjs.js,xml2json.js,cass.js,cass.min.js",
+        "exclude": "moment-with-locales.js, org.credentialengine.js, base64toArrayBuffer.js,base64x-1.1.js,blobHelper.js,FileSaver.js,forgeAsync.js,openpgp.js,papaparse.js,random.js,stjs.js,xml2json.js,cass.js,cass.min.js",
         "themedir": "/scripts/node/node_modules/yuidoc-ember-cli-theme",
         "helpers": ["/scripts/node/node_modules/yuidoc-ember-cli-theme/helpers.js"]
     }
