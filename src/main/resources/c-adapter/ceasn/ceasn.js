@@ -31,6 +31,9 @@ function ceasnExportUriTransform(uri, frameworkUri) {
     var uuid = null;
     var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
     uuid = parts[parts.length - 1];
+    if (frameworkUri != null && frameworkUri !== undefined) {
+        uri = frameworkUri + uri;
+    }
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
         uuid = new UUID(3, "nil", EcRemoteLinkedData.trimVersionFromUrl(uri)).format();
     return ceasnExportUriPrefix + uuid;
