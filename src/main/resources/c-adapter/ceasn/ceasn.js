@@ -32,10 +32,12 @@ function ceasnExportUriTransform(uri, frameworkUri) {
     var parts = EcRemoteLinkedData.trimVersionFromUrl(uri).split("/");
     uuid = parts[parts.length - 1];
     if (frameworkUri != null && frameworkUri !== undefined) {
-        uri = frameworkUri + uri;
+        uri = EcRemoteLinkedData.trimVersionFromUrl(frameworkUri) + EcRemoteLinkedData.trimVersionFromUrl(uri);
     }
+    else
+        uri = EcRemoteLinkedData.trimVersionFromUrl(uri);
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
-        uuid = new UUID(3, "nil", EcRemoteLinkedData.trimVersionFromUrl(uri)).format();
+        uuid = new UUID(3, "nil", uri).format();
     return ceasnExportUriPrefix + uuid;
 }
 
