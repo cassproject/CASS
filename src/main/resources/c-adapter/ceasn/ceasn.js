@@ -532,6 +532,7 @@ function cassConceptSchemeAsCeasn(framework) {
     framework = cs;
     var guid = cs.getGuid();
     var uuid = new UUID(3, "nil", cs.shortId()).format();
+    var csId = cs.id;
     delete cs["owner"];
     delete cs["signature"];
     cs = jsonLdCompact(cs.toJson(), ctx);
@@ -550,18 +551,18 @@ function cassConceptSchemeAsCeasn(framework) {
         cs["ceterms:ctid"] = "ce-" + cs["ceterms:ctid"];
     }
 
-    if (cs["@id"] != ceasnExportUriTransform(cs["@id"])) {
+    if (csId != ceasnExportUriTransform(csId)) {
         if (cs["ceasn:exactAlignment"] != null)
             if (EcArray.isArray(cs["ceasn:exactAlignment"])) {
-                cs["ceasn:exactAlignment"].push(cs["@id"]);
+                cs["ceasn:exactAlignment"].push(csId);
             }
             else {
-                cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], cs["@id"]];
+                cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], csId];
             }
         else
-            cs["ceasn:exactAlignment"] = [cs["@id"]];
+            cs["ceasn:exactAlignment"] = [csId];
     }
-    cs["@id"] = ceasnExportUriTransform(cs["@id"]);
+    cs["@id"] = ceasnExportUriTransform(csId);
 
     var results = [];
 
