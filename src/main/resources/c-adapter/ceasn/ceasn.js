@@ -495,7 +495,7 @@ function cassConceptSchemeAsCeasn(framework) {
                 else
                     c["skos:exactMatch"] = [c.id];
             }
-            c.id = ceasnExportUriTransform(c.id, cs.id);
+            c.id = ceasnExportUriTransform(c.id);
             c["skos:inScheme"] = ceasnExportUriTransform(cs.id);
             if (c["skos:topConceptOf"] != null) {
                 c["skos:topConceptOf"] = ceasnExportUriTransform(cs.id);
@@ -577,7 +577,7 @@ function cassConceptSchemeAsCeasn(framework) {
             }
         }
         if (found) continue;
-        concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"], cs["@id"]);
+        concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"]);
         results.push(concepts[k]);
     }
         
