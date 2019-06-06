@@ -627,8 +627,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     for (var idx in competencyList) {
         var asnComp = competencyList[idx];
 
-        var compVersion = date(null, null, true);
-
         var canonicalId = asnComp["@id"];
 
         var childComps = asnComp["ceasn:hasChild"];
@@ -668,6 +666,34 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         c.copyFrom(compactedComp);
         c.addOwner(ceasnIdentity.ppk.toPk());
 
+        if (c["schema:inLanguage"] == null || c["schema:inLanguage"] === undefined) {
+            if (frameworkObj != null && (frameworkObj["ceasn:inLanguage"] != null || frameworkObj["schema:inLanguage"] != null)) {
+                c["schema:inLanguage"] = frameworkObj["ceasn:inLanguage"] ? frameworkObj["ceasn:inLanguage"] : frameworkObj["schema:inLanguage"];
+            }
+            else {
+                c["schema:inLanguage"] = "en";
+            }
+        }
+
+
+        if (c["schema:dateCreated"] == null || c["schema:dateCreated"] === undefined) {
+            var timestamp;
+            var date;
+            if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                timestamp = null;
+            }
+            else {
+                timestamp = c.id.substring(c.id.lastIndexOf("/")+1);
+            }
+            if (timestamp != null) {
+                date = new Date(parseInt(timestamp)).toISOString();
+            }
+            else {
+                date = new Date().toISOString();
+            }
+            c["schema:dateCreated"] = date;
+        }
+
         if (owner != null)
             c.addOwner(EcPk.fromPem(owner));
 
@@ -677,7 +703,6 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
     if (frameworkObj != null) {
         var guid = stringToHex(md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"])));
-        var version = date(null, null, true);
 
         frameworkObj["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
         var expanded = jsonLdExpand(JSON.stringify(frameworkObj));
@@ -697,6 +722,28 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
         if (owner != null)
             f.addOwner(EcPk.fromPem(owner));
+
+        if (f["schema:inLanguage"] == null || f["schema:inLanguage"] === undefined) {
+            f["schema:inLanguage"] = "en";
+        }
+
+        if (f["schema:dateCreated"] == null || f["schema:dateCreated"] === undefined) {
+            var timestamp;
+            var date;
+            if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                timestamp = null;
+            }
+            else {
+                timestamp = f.id.substring(f.id.lastIndexOf("/")+1);
+            }
+            if (timestamp != null) {
+                date = new Date(parseInt(timestamp)).toISOString();
+            }
+            else {
+                date = new Date().toISOString();
+            }
+            f["schema:dateCreated"] = date;
+        }
 
         listToSave.push(f);
 
