@@ -464,7 +464,6 @@ function asnFrameworkToCass() {
  * @param context
  */
 function importJsonLdGraph(graph, context) {
-    debug("importing jsonld graph")
 
     var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
@@ -474,6 +473,7 @@ function importJsonLdGraph(graph, context) {
     EcIdentityManager.addIdentity(skosIdentity);
 
     var conceptSchemeGuid;
+    var lang = null;
 
     for (var idx in graph) {
         var graphObj = graph[idx];
@@ -505,7 +505,6 @@ function importJsonLdGraph(graph, context) {
 
         var type = compacted["@type"]
         var guid = EcCrypto.md5(compacted["@id"]);
-        var version = date(null, null, true);
         var objToSave = compacted;
 
         if (type == "ConceptScheme") {
@@ -516,6 +515,31 @@ function importJsonLdGraph(graph, context) {
             objToSave.addOwner(skosIdentity.ppk.toPk());
             if (owner != null)
                 objToSave.addOwner(EcPk.fromPem(owner));
+
+            if (objToSave["dcterms:language"] == null || objToSave["dcterms:language"] === undefined) {
+                objToSave["dcterms:language"] = "en";
+            }
+            else {
+                lang = objToSave["dcterms:language"];
+            }
+
+            if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                var timestamp;
+                var date;
+                if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                    timestamp = null;
+                }
+                else {
+                    timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                }
+                if (timestamp != null) {
+                    date = new Date(parseInt(timestamp)).toISOString();
+                }
+                else {
+                    date = new Date().toISOString();
+                }
+                objToSave["schema:dateCreated"] = date;
+            }
 
             repo.saveTo(objToSave, print, print);
         }
@@ -547,6 +571,33 @@ function importJsonLdGraph(graph, context) {
             }
             if (objToSave["skos:relatedMatch"] != null & !EcArray.isArray(objToSave["skos:relatedMatch"])) {
                 objToSave["skos:relatedMatch"] = [objToSave["skos:relatedMatch"]];
+            }
+
+            if (objToSave["skos:inLanguage"] == null || objToSave["skos:inLanguage"] === undefined) {
+                if (lang != null) {
+                    objToSave["skos:inLanguage"] = lang;
+                }
+                else {
+                    objToSave["skos:inLanguage"] = "en";
+                }
+            }
+
+            if (objToSave["schema:dateCreated"] == null || objToSave["schema:dateCreated"] === undefined) {
+                var timestamp;
+                var date;
+                if (!objToSave.id.substring(objToSave.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
+                    timestamp = null;
+                }
+                else {
+                    timestamp = objToSave.id.substring(objToSave.id.lastIndexOf("/")+1);
+                }
+                if (timestamp != null) {
+                    date = new Date(parseInt(timestamp)).toISOString();
+                }
+                else {
+                    date = new Date().toISOString();
+                }
+                objToSave["schema:dateCreated"] = date;
             }
 
             repo.saveTo(objToSave, print, print);
