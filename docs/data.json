@@ -2,11 +2,18 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "0.2",
+        "version": "1.2",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
     "files": {
+        "src/main/js/cass/base64toArrayBuffer.js": {
+            "name": "src/main/js/cass/base64toArrayBuffer.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/main/js/cass/cass.adapter.js": {
             "name": "src/main/js/cass/cass.adapter.js",
             "modules": {},
@@ -148,6 +155,7 @@
             "modules": {},
             "classes": {
                 "Cass": 1,
+                "Competency": 1,
                 "Level": 1,
                 "RollupRule": 1,
                 "Framework": 1,
@@ -195,7 +203,6 @@
                 "org.credentialengine": 1
             },
             "classes": {
-                "Competency": 1,
                 "CredentialingAction": 1,
                 "CredentialAlignmentObject": 1,
                 "EarningsProfile": 1,
@@ -224,6 +231,7 @@
                 "Assessment": 1,
                 "FinancialAssistanceProfile": 1,
                 "Agent": 1,
+                "CeCompetency": 1,
                 "CostManifest": 1,
                 "CredentialAssertion": 1,
                 "VerificationServiceProfile": 1,
@@ -927,6 +935,7 @@
                 "EcFrameworkGraph": 1,
                 "AssertionProcessor": 1,
                 "ProfileProcessor": 1,
+                "Competency": 1,
                 "Level": 1,
                 "RollupRule": 1,
                 "Framework": 1,
@@ -1030,7 +1039,6 @@
             "submodules": {},
             "elements": {},
             "classes": {
-                "Competency": 1,
                 "CredentialingAction": 1,
                 "CredentialAlignmentObject": 1,
                 "EarningsProfile": 1,
@@ -1059,6 +1067,7 @@
                 "Assessment": 1,
                 "FinancialAssistanceProfile": 1,
                 "Agent": 1,
+                "CeCompetency": 1,
                 "CostManifest": 1,
                 "CredentialAssertion": 1,
                 "VerificationServiceProfile": 1,
@@ -1738,7 +1747,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 100,
+            "line": 128,
             "description": "www.w3.org/2004/02/skos/core/Collection\nA meaningful collection of concepts.\nLabelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy."
         }
     },
@@ -2409,7 +2418,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7491,
+            "line": 7496,
             "description": "Asynchronous implementation of {{#crossLink\n\"EcAesCtr\"}}EcAesCtr{{/crossLink}}. Uses web workers and assumes 8 workers.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2424,7 +2433,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7625,
+            "line": 7635,
             "description": "Async version of EcRsaOaep that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcRsaOaepAsyncWorker, if window.crypto is not available."
         },
         "EcAesCtrAsync": {
@@ -2438,7 +2447,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7837,
+            "line": 7847,
             "description": "Async version of EcAesCtr that uses browser extensions (window.crypto) to accomplish cryptography much faster.\nFalls back to EcAesCtrAsyncWorker, if window.crypto is not available."
         },
         "ViewManager": {
@@ -2599,12 +2608,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "org.credentialengine",
+            "module": "org.cassproject",
             "namespace": "",
-            "file": "src/main/js/cass/org.credentialengine.js",
-            "line": 3365,
-            "description": "credentialengine.org/Competency\nDescription of knowledge, skills, and/or abilities.",
-            "author": "credentialengine.org",
+            "file": "src/main/js/cass/org.cassproject.schema.cass.js",
+            "line": 48,
+            "description": "Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.",
+            "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
         },
         "Level": {
@@ -2618,7 +2627,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 100,
+            "line": 106,
             "description": "When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2634,7 +2643,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 164,
+            "line": 175,
             "description": "A segment of script that defines in a domain specific language how competence is transferred from one competency to another.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2650,7 +2659,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 212,
+            "line": 228,
             "description": "A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2666,7 +2675,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 282,
+            "line": 303,
             "description": "A relation between two objects.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2682,7 +2691,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 420,
+            "line": 446,
             "description": "A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2698,7 +2707,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 715,
+            "line": 746,
             "description": "Container for storing assertions and the secrets used to decrypt those assertions.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -3336,6 +3345,21 @@
             "file": "src/main/js/cass/org.credentialengine.js",
             "line": 3341,
             "description": "credentialengine.org/Agent\nOrganization or person that acts or has the power to act.\nBroad type that includes both organizations and people who play roles in the lifecycle of a credential.",
+            "author": "credentialengine.org"
+        },
+        "CeCompetency": {
+            "name": "CeCompetency",
+            "shortname": "CeCompetency",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "org.credentialengine",
+            "namespace": "",
+            "file": "src/main/js/cass/org.credentialengine.js",
+            "line": 3365,
+            "description": "credentialengine.org/Competency\nDescription of knowledge, skills, and/or abilities.",
             "author": "credentialengine.org"
         },
         "Place": {
@@ -13439,7 +13463,7 @@
             "module": "org.w3.skos",
             "namespace": "",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 75,
+            "line": 89,
             "description": "www.w3.org/2004/02/skos/core/ConceptScheme\nA set of concepts, optionally including statements about semantic relationships between those concepts.\nA concept scheme may be defined to include concepts from different sources.",
             "author": "w3.org"
         },
@@ -13454,7 +13478,7 @@
             "module": "org.w3.skos",
             "namespace": "",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 100,
+            "line": 128,
             "description": "www.w3.org/2004/02/skos/core/OrderedCollection\nAn ordered collection of concepts, where both the grouping and the ordering are meaningful.\nOrdered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a 'node label'.",
             "author": "w3.org",
             "extends": "Collection"
@@ -13462,6 +13486,1429 @@
     },
     "elements": {},
     "classitems": [
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 71,
+            "fileoverview": "Global |this| required for resolving indexes in node.",
+            "suppress": "{globalThis}",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 89,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "The number to test.",
+                    "type": "Number"
+                },
+                {
+                    "name": "min",
+                    "description": "The minimum value in the range, inclusive.",
+                    "type": "Number"
+                },
+                {
+                    "name": "max",
+                    "description": "The maximum value in the range, inclusive.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "True if a >= min and a <= max.",
+                "type": "Boolean"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 99,
+            "params": [
+                {
+                    "name": "array",
+                    "description": "The array to check.",
+                    "type": "!Array.<*>"
+                },
+                {
+                    "name": "item",
+                    "description": "The item to look for in the array.",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "True if the item appears in the array.",
+                "type": "Boolean"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 110,
+            "params": [
+                {
+                    "name": "o",
+                    "description": "",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 120,
+            "params": [
+                {
+                    "name": "string",
+                    "description": "Input string of UTF-16 code units.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Code points.",
+                "type": "!Array.<number>"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 203,
+            "params": [
+                {
+                    "name": "code_points",
+                    "description": "Array of code points.",
+                    "type": "!Array.<number>"
+                }
+            ],
+            "return": {
+                "description": "string String of UTF-16 code units.",
+                "type": "String"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 232,
+            "description": "An ASCII byte is a byte in the range 0x00 to 0x7F, inclusive.",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "The number to test.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "True if a is in the range 0x00 to 0x7F, inclusive.",
+                "type": "Boolean"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 241,
+            "description": "An ASCII code point is a code point in the range U+0000 to\nU+007F, inclusive.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 248,
+            "description": "End-of-stream is a special token that signifies no more tokens\nare in the stream.",
+            "itemtype": "property",
+            "name": "/ var end_of_stream = -1;\n\n   /**\nA stream represents an ordered sequence of tokens.",
+            "final": "",
+            "is_constructor": 1,
+            "class": "MoodleConfig",
+            "subprops": [
+                {
+                    "name": "tokens",
+                    "description": "Array of tokens that provide\nthe stream.",
+                    "type": "!(Array.<number>|Uint8Array)"
+                }
+            ]
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 262,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 269,
+            "return": {
+                "description": "True if end-of-stream has been hit.",
+                "type": "Boolean"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 276,
+            "description": "When a token is read from a stream, the first token in the\nstream must be returned and subsequently removed, and\nend-of-stream must be returned otherwise.",
+            "return": {
+                "description": "Get the next token from the stream, or\nend_of_stream.",
+                "type": "Number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 290,
+            "description": "When one or more tokens are prepended to a stream, those tokens\nmust be inserted, in given order, before the first token in the\nstream.",
+            "params": [
+                {
+                    "name": "token",
+                    "description": "The token(s) to prepend to the\nstream.",
+                    "type": "(number|!Array.<number>)"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 308,
+            "description": "When one or more tokens are pushed to a stream, those tokens\nmust be inserted, in given order, after the last token in the\nstream.",
+            "params": [
+                {
+                    "name": "token",
+                    "description": "The tokens(s) to push to the\nstream.",
+                    "type": "(number|!Array.<number>)"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 333,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 336,
+            "params": [
+                {
+                    "name": "fatal",
+                    "description": "If true, decoding errors raise an exception.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "opt_code_point",
+                    "description": "Override the standard fallback code point.",
+                    "type": "Number="
+                }
+            ],
+            "return": {
+                "description": "The code point to insert on a decoding error.",
+                "type": "Number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 347,
+            "params": [
+                {
+                    "name": "code_point",
+                    "description": "The code point that could not be encoded.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Always throws, no value is actually returned.",
+                "type": "Number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 355,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 358,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point, or |finished|.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 368,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 371,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of code points being encoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit, or |finished|.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 384,
+            "params": [
+                {
+                    "name": "label",
+                    "description": "The encoding label.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "}",
+                "type": "?{name:string,labels:Array.<string>"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 401,
+            "description": "Encodings table: https://encoding.spec.whatwg.org/encodings.json",
+            "itemtype": "property",
+            "name": "",
+            "final": "",
+            "type": "{!Array.<{\n         heading: string,\n         encodings: Array.<{name:string,labels:Array.<string>}>\n       }>}",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 866,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 877,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 879,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 886,
+            "params": [
+                {
+                    "name": "pointer",
+                    "description": "The |pointer| to search for.",
+                    "type": "Number"
+                },
+                {
+                    "name": "index",
+                    "description": "The |index| to search within.",
+                    "type": "(!Array.<?number>|undefined)"
+                }
+            ],
+            "return": {
+                "description": "The code point corresponding to |pointer| in |index|,\n    or null if |code point| is not in |index|.",
+                "type": "?number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 897,
+            "params": [
+                {
+                    "name": "code_point",
+                    "description": "The |code point| to search for.",
+                    "type": "Number"
+                },
+                {
+                    "name": "index",
+                    "description": "The |index| to search within.",
+                    "type": "!Array.<?number>"
+                }
+            ],
+            "return": {
+                "description": "The first pointer corresponding to |code point| in\n    |index|, or null if |code point| is not in |index|.",
+                "type": "?number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 908,
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the index.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "(!Array.<number>|!Array.<Array.<number>>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 920,
+            "params": [
+                {
+                    "name": "pointer",
+                    "description": "The |pointer| to search for in the gb18030 index.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The code point corresponding to |pointer| in |index|,\n    or null if |code point| is not in the gb18030 index.",
+                "type": "?number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 942,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 957,
+            "params": [
+                {
+                    "name": "code_point",
+                    "description": "The |code point| to locate in the gb18030 index.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The first pointer corresponding to |code point| in the\n    gb18030 index.",
+                "type": "Number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 974,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 989,
+            "params": [
+                {
+                    "name": "code_point",
+                    "description": "The |code_point| to search for in the Shift_JIS\n    index.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The code point corresponding to |pointer| in |index|,\n    or null if |code point| is not in the Shift_JIS index.",
+                "type": "?number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1009,
+            "params": [
+                {
+                    "name": "code_point",
+                    "description": "The |code_point| to search for in the big5\n    index.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The code point corresponding to |pointer| in |index|,\n    or null if |code point| is not in the big5 index.",
+                "type": "?number"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1041,
+            "description": "// 8.1 Interface TextDecoder\n/**\n     * @constructor\n     * @param {string=} label The label of the encoding;\n     *     defaults to 'utf-8'.\n     * @param {Object=} options",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1063,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1065,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1067,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1069,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1071,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1073,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1119,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1126,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1133,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1138,
+            "params": [
+                {
+                    "name": "input",
+                    "description": "The buffer of bytes to decode.",
+                    "type": "BufferSource="
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object="
+                }
+            ],
+            "return": {
+                "description": "The decoded string.",
+                "type": "String"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1178,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1232,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "",
+                    "type": "!Array.<number>"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "this": "{TextDecoder}",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1268,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "label",
+                    "description": "The label of the encoding. NONSTANDARD.",
+                    "type": "String="
+                },
+                {
+                    "name": "options",
+                    "description": "NONSTANDARD.",
+                    "type": "Object="
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1281,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1283,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1287,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1289,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1328,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1333,
+            "params": [
+                {
+                    "name": "opt_string",
+                    "description": "The string to encode.",
+                    "type": "String="
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object="
+                }
+            ],
+            "return": {
+                "description": "Encoded bytes, as a Uint8Array.",
+                "type": "!Uint8Array"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1356,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1401,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1414,
+            "description": "/** @type {number} */ utf8_bytes_needed = 0,\n/** @type {number} */ utf8_lower_boundary = 0x80,\n/** @type {number} */ utf8_upper_boundary = 0xBF;\n\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1542,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1549,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1607,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1611,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1621,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "The encoding index.",
+                    "type": "!Array.<number>"
+                },
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1629,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1660,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "The encoding index.",
+                    "type": "!Array.<?number>"
+                },
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1668,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1705,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1709,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1725,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1732,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1740,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1750,
+            "description": "/** @type {number} */ gb18030_third = 0x00;\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1897,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                },
+                {
+                    "name": "gbk_flag",
+                    "description": "",
+                    "type": "Boolean="
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1906,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1985,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 1989,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2002,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2012,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2102,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2109,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2150,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2154,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2167,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2178,
+            "description": "/**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2270,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2277,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2329,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2333,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2341,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2348,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2363,
+            "description": "/** @type {number} */ iso2022jp_lead = 0x00,\n/** @type {boolean} */ iso2022jp_output_flag = false;\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2650,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2660,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2667,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2780,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2784,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2792,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2802,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2891,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2898,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2957,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2961,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2973,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 2983,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3052,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3059,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3093,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3097,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3113,
+            "params": [
+                {
+                    "name": "code_unit",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "utf16be",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "bytes",
+                "type": "!Array.<number>"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3134,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "utf16_be",
+                    "description": "True if big-endian, false if little-endian.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3143,
+            "description": "/**\n * @param {Stream} stream The stream of bytes being decoded.\n * @param {number} bite The next byte read from the stream.\n * @return {?(number|!Array.<number>)} The next code point(s)\n *     decoded, or null if not enough data exists in the input\n *     stream to decode a complete code point.",
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3228,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "utf16_be",
+                    "description": "True if big-endian, false if little-endian.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3236,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3269,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3274,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3281,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3286,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3294,
+            "is_constructor": 1,
+            "implements": "{Decoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3301,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "The stream of bytes being decoded.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "bite",
+                    "description": "The next byte read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The next code point(s)\n    decoded, or null if not enough data exists in the input\n    stream to decode a complete code point.",
+                "type": "?(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3324,
+            "is_constructor": 1,
+            "implements": "{Encoder}",
+            "params": [
+                {
+                    "name": "}",
+                    "description": "options",
+                    "type": "Fatal: boolean"
+                }
+            ],
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3331,
+            "params": [
+                {
+                    "name": "stream",
+                    "description": "Input stream.",
+                    "type": "Stream"
+                },
+                {
+                    "name": "code_point",
+                    "description": "Next code point read from the stream.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Byte(s) to emit.",
+                "type": "(number|!Array.<number>)"
+            },
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3356,
+            "class": "MoodleConfig"
+        },
+        {
+            "file": "src/main/js/cass/base64toArrayBuffer.js",
+            "line": 3360,
+            "class": "MoodleConfig"
+        },
         {
             "file": "src/main/js/cass/cass.adapter.js",
             "line": 36,
@@ -24567,7 +26014,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7328,
+            "line": 7331,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/encrypt:method\"}}EcRsaOaep.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -24599,7 +26046,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7357,
+            "line": 7360,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/decrypt:method\"}}EcRsaOaep.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -24631,7 +26078,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7401,
+            "line": 7406,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
             "params": [
                 {
@@ -24663,7 +26110,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7430,
+            "line": 7435,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
             "params": [
                 {
@@ -24695,7 +26142,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7459,
+            "line": 7464,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
             "params": [
                 {
@@ -24732,7 +26179,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7547,
+            "line": 7555,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -24769,7 +26216,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7578,
+            "line": 7586,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -24806,7 +26253,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7632,
+            "line": 7642,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/encrypt:method\"}}EcRsaOaep.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -24838,7 +26285,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7671,
+            "line": 7681,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/decrypt:method\"}}EcRsaOaep.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -24870,7 +26317,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7718,
+            "line": 7728,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/sign:method\"}}EcRsaOaep.sign{{/crossLink}}",
             "params": [
                 {
@@ -24902,7 +26349,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7757,
+            "line": 7767,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/signSha256:method\"}}EcRsaOaep.signSha256{{/crossLink}}",
             "params": [
                 {
@@ -24934,7 +26381,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7796,
+            "line": 7806,
             "description": "Asynchronous form of {{#crossLink\n\"EcRsaOaep/verify:method\"}}EcRsaOaep.verify{{/crossLink}}",
             "params": [
                 {
@@ -24971,7 +26418,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7844,
+            "line": 7854,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/encrypt:method\"}}EcAesCtr.encrypt{{/crossLink}}",
             "params": [
                 {
@@ -25008,7 +26455,7 @@
         },
         {
             "file": "src/main/js/cass/ec.crypto.js",
-            "line": 7882,
+            "line": 7892,
             "description": "Asynchronous form of {{#crossLink\n\"EcAesCtr/decrypt:method\"}}EcAesCtr.decrypt{{/crossLink}}",
             "params": [
                 {
@@ -28300,7 +29747,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 65,
+            "line": 67,
             "description": "Scope in which the competency may be applied. e.g. Underwater.",
             "itemtype": "property",
             "name": "scope",
@@ -28310,7 +29757,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 118,
+            "line": 125,
             "description": "Specifies the URL of the competency this level relates to.",
             "itemtype": "property",
             "name": "competency",
@@ -28320,7 +29767,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 125,
+            "line": 132,
             "description": "The title that one who holds this performance level may assume.",
             "itemtype": "property",
             "name": "title",
@@ -28330,7 +29777,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 132,
+            "line": 139,
             "description": "The performance characteristics required by this level in text form.\nFR - Represented by description.",
             "itemtype": "property",
             "name": "performance",
@@ -28340,7 +29787,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 181,
+            "line": 193,
             "description": "The rollup rule encoded as source code that is understandable to the assertion processor.",
             "itemtype": "property",
             "name": "rule",
@@ -28350,7 +29797,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 188,
+            "line": 200,
             "description": "Specifies the URL of the competency that the rollup rule pertains to.",
             "itemtype": "property",
             "name": "competency",
@@ -28360,7 +29807,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 230,
+            "line": 247,
             "description": "URLs of competencies included in this framework.",
             "itemtype": "property",
             "name": "competency",
@@ -28370,7 +29817,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 237,
+            "line": 254,
             "description": "URLs of relations included in this framework.",
             "itemtype": "property",
             "name": "relation",
@@ -28380,7 +29827,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 244,
+            "line": 261,
             "description": "URLs of levels included in this framework.",
             "itemtype": "property",
             "name": "level",
@@ -28390,7 +29837,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 251,
+            "line": 268,
             "description": "URLs of RollupRules included in this framework.",
             "itemtype": "property",
             "name": "rollupRule",
@@ -28400,7 +29847,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 295,
+            "line": 316,
             "description": "Relation type when one object enables the capability to obtain another.\nEnabling relations do not imply a requirement, but makes the acquisition of the source much easier.",
             "itemtype": "property",
             "name": "IS_ENABLED_BY",
@@ -28411,7 +29858,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 304,
+            "line": 325,
             "description": "Relation type when one object requires another.\nRequiring relations are strict.",
             "itemtype": "property",
             "name": "REQUIRES",
@@ -28422,7 +29869,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 313,
+            "line": 334,
             "description": "Relation type when one object desires another.\nDesire relations improve the range of applicability or improve performance of the source.",
             "itemtype": "property",
             "name": "DESIRES",
@@ -28433,7 +29880,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 322,
+            "line": 343,
             "description": "Relation type when one object is a subset of another.\nNarrows relations are strict, and represent a super/sub relation.",
             "itemtype": "property",
             "name": "NARROWS",
@@ -28444,7 +29891,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 331,
+            "line": 352,
             "description": "Relation type when one object is related to another.\nRelated relations provide linkages that do not necessarily carry information.\nRelated relations are bidirectional.",
             "itemtype": "property",
             "name": "IS_RELATED_TO",
@@ -28455,7 +29902,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 341,
+            "line": 362,
             "description": "Relation type when one object is equivalent to another.\nEquivalent relations define two objects that are effectively equivalent.\nEquivalent relations are bidirectional.",
             "itemtype": "property",
             "name": "IS_EQUIVALENT_TO",
@@ -28466,7 +29913,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 356,
+            "line": 378,
             "description": "URL of the object at the beginning of the relation.\nA <relation> B, this is A.",
             "itemtype": "property",
             "name": "source",
@@ -28476,7 +29923,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 364,
+            "line": 386,
             "description": "URL of the object at the end of the relation.\nA <relation> B, this is B.",
             "itemtype": "property",
             "name": "target",
@@ -28486,7 +29933,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 372,
+            "line": 394,
             "description": "URL or controlled vocabulary of the relation.\nA <relation> B, this is <relation>.",
             "itemtype": "property",
             "name": "relationType",
@@ -28496,7 +29943,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 380,
+            "line": 402,
             "description": "Date time in ISO 8601 format at which the relation may be observed.",
             "itemtype": "property",
             "name": "validFrom",
@@ -28506,7 +29953,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 387,
+            "line": 409,
             "description": "Date time in ISO 8601 format at which the relation may no longer be observed.",
             "itemtype": "property",
             "name": "validThrough",
@@ -28516,7 +29963,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 439,
+            "line": 466,
             "description": "URL of the competency.",
             "itemtype": "property",
             "name": "competency",
@@ -28526,7 +29973,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 446,
+            "line": 473,
             "description": "URL of the framework within which the assertion is restricted.",
             "itemtype": "property",
             "name": "framework",
@@ -28536,7 +29983,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 453,
+            "line": 480,
             "description": "URL of the level, or null if 'held with no performance expectations'.",
             "itemtype": "property",
             "name": "level",
@@ -28546,7 +29993,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 460,
+            "line": 487,
             "description": "Confidence with which the assertion was made.\nConfidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.",
             "itemtype": "property",
             "name": "confidence",
@@ -28556,7 +30003,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 468,
+            "line": 495,
             "description": "Public Key in PEM format of the recipient of the assertion.",
             "itemtype": "property",
             "name": "subject",
@@ -28566,7 +30013,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 475,
+            "line": 502,
             "description": "Public Key in PEM format of the identity making the assertion.",
             "itemtype": "property",
             "name": "agent",
@@ -28576,7 +30023,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 482,
+            "line": 509,
             "description": "Encrypted evidence. May be a string, URL or schema.org/Thing.",
             "itemtype": "property",
             "name": "evidence",
@@ -28586,7 +30033,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 489,
+            "line": 516,
             "description": "Time that the assertion was made in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "assertionDate",
@@ -28596,7 +30043,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 496,
+            "line": 523,
             "description": "Time that the assertion expires, specified in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "expirationDate",
@@ -28606,7 +30053,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 503,
+            "line": 530,
             "description": "Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).",
             "itemtype": "property",
             "name": "decayFunction",
@@ -28616,7 +30063,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 510,
+            "line": 537,
             "description": "True if the assertion is a claim that the subject cannot demonstrate the competency.",
             "itemtype": "property",
             "name": "negative",
@@ -28626,7 +30073,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 520,
+            "line": 547,
             "description": "Sets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
             "params": [
                 {
@@ -28639,7 +30086,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 730,
+            "line": 761,
             "description": "List of assertions to pack in the envelope.",
             "itemtype": "property",
             "name": "assertion",
@@ -28649,7 +30096,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 737,
+            "line": 768,
             "description": "List of secrets found in assertions to the objects necessary to decrypt the assertion data.",
             "itemtype": "property",
             "name": "codebook",
@@ -28659,7 +30106,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 749,
+            "line": 780,
             "description": "Removes an assertion from the envelope",
             "params": [
                 {
@@ -28674,7 +30121,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 772,
+            "line": 803,
             "description": "Returns the assertion indexed at position @index.",
             "params": [
                 {
@@ -28692,7 +30139,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 790,
+            "line": 821,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -28707,7 +30154,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 826,
+            "line": 857,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -28730,7 +30177,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 908,
+            "line": 939,
             "description": "Validates that all assertions have not been tampered with (are authentic).\nDoes not validate the sources of assertions.",
             "return": {
                 "description": "True IFF assertions are authentic."
@@ -33546,7 +34993,7 @@
             "itemtype": "property",
             "name": "alignFrom",
             "type": "Competency | CompetencyFramework",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33556,7 +35003,7 @@
             "itemtype": "property",
             "name": "alignTo",
             "type": "Competency | CompetencyFramework",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33566,7 +35013,7 @@
             "itemtype": "property",
             "name": "altCodedNotation",
             "type": "string",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33576,7 +35023,7 @@
             "itemtype": "property",
             "name": "author",
             "type": "string",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33586,7 +35033,7 @@
             "itemtype": "property",
             "name": "broadAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33596,7 +35043,7 @@
             "itemtype": "property",
             "name": "codedNotation",
             "type": "string",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33606,7 +35053,7 @@
             "itemtype": "property",
             "name": "comment",
             "type": "langString",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33616,7 +35063,7 @@
             "itemtype": "property",
             "name": "competencyCategory",
             "type": "langString",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33626,7 +35073,7 @@
             "itemtype": "property",
             "name": "competencyText",
             "type": "langString",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33636,7 +35083,7 @@
             "itemtype": "property",
             "name": "complexityLevel",
             "type": "ProficiencyScale",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33646,7 +35093,7 @@
             "itemtype": "property",
             "name": "comprisedOf",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33656,7 +35103,7 @@
             "itemtype": "property",
             "name": "conceptKeyword",
             "type": "langString",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33666,7 +35113,7 @@
             "itemtype": "property",
             "name": "conceptTerm",
             "type": "Concept",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33676,7 +35123,7 @@
             "itemtype": "property",
             "name": "creator",
             "type": "CredentialOrganization | QACredentialOrganization",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33686,7 +35133,7 @@
             "itemtype": "property",
             "name": "crossSubjectReference",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33696,7 +35143,7 @@
             "itemtype": "property",
             "name": "dateCreated",
             "type": "date",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33706,7 +35153,7 @@
             "itemtype": "property",
             "name": "dateModified",
             "type": "dateTime",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33716,7 +35163,7 @@
             "itemtype": "property",
             "name": "derivedFrom",
             "type": "Competency | CompetencyFramework",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33726,7 +35173,7 @@
             "itemtype": "property",
             "name": "educationLevelType",
             "type": "Concept",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33736,7 +35183,7 @@
             "itemtype": "property",
             "name": "exactAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33746,7 +35193,7 @@
             "itemtype": "property",
             "name": "hasChild",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33756,7 +35203,7 @@
             "itemtype": "property",
             "name": "identifier",
             "type": "anyURI",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33766,7 +35213,7 @@
             "itemtype": "property",
             "name": "inLanguage",
             "type": "language",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33776,7 +35223,7 @@
             "itemtype": "property",
             "name": "isChildOf",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33786,7 +35233,7 @@
             "itemtype": "property",
             "name": "isPartOf",
             "type": "CompetencyFramework",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33796,7 +35243,7 @@
             "itemtype": "property",
             "name": "isTopChildOf",
             "type": "CompetencyFramework",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33806,7 +35253,7 @@
             "itemtype": "property",
             "name": "isVersionOf",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33816,7 +35263,7 @@
             "itemtype": "property",
             "name": "listID",
             "type": "string",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33826,7 +35273,7 @@
             "itemtype": "property",
             "name": "localSubject",
             "type": "langString",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33836,7 +35283,7 @@
             "itemtype": "property",
             "name": "majorAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33846,7 +35293,7 @@
             "itemtype": "property",
             "name": "minorAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33856,7 +35303,7 @@
             "itemtype": "property",
             "name": "narrowAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33866,7 +35313,7 @@
             "itemtype": "property",
             "name": "prerequisiteAlignment",
             "type": "Competency",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33876,7 +35323,7 @@
             "itemtype": "property",
             "name": "shouldIndex",
             "type": "boolean",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33886,7 +35333,7 @@
             "itemtype": "property",
             "name": "skillEmbodied",
             "type": "anyURI",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -33896,7 +35343,7 @@
             "itemtype": "property",
             "name": "weight",
             "type": "float",
-            "class": "Competency",
+            "class": "CeCompetency",
             "module": "org.credentialengine"
         },
         {
@@ -67468,7 +68915,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 60,
+            "line": 62,
             "description": "www.w3.org/2004/02/skos/core/topConceptOf\nRelates a concept to the concept scheme that it is a top level concept of.",
             "itemtype": "property",
             "name": "topConceptOf",
@@ -67478,7 +68925,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 67,
+            "line": 69,
             "description": "www.w3.org/2004/02/skos/core/semanticRelation\nLinks a concept to a concept related by meaning.",
             "itemtype": "property",
             "name": "semanticRelation",
@@ -67488,7 +68935,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 92,
+            "line": 108,
             "description": "www.w3.org/2004/02/skos/core/hasTopConcept\nRelates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
             "itemtype": "property",
             "name": "hasTopConcept",
@@ -67498,7 +68945,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 119,
+            "line": 147,
             "description": "www.w3.org/2004/02/skos/core/memberList\nRelates an ordered collection to the RDF list containing its members.",
             "itemtype": "property",
             "name": "memberList",
@@ -67752,6 +69199,18 @@
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: fileoverview",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:71"
+        },
+        {
+            "message": "unknown tag: suppress",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:71"
+        },
+        {
+            "message": "unknown tag: this",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1232"
+        },
         {
             "message": "unknown tag: memberof",
             "line": " src/main/js/cass/cass.adapter.js:36"
@@ -68783,6 +70242,490 @@
         {
             "message": "unknown tag: api",
             "line": " src/main/js/cass/pem-jwk.js:25935"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:71"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:89"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:99"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:110"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:120"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:203"
+        },
+        {
+            "message": "Missing item type\nAn ASCII byte is a byte in the range 0x00 to 0x7F, inclusive.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:232"
+        },
+        {
+            "message": "Missing item type\nAn ASCII code point is a code point in the range U+0000 to\nU+007F, inclusive.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:241"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:262"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:269"
+        },
+        {
+            "message": "Missing item type\nWhen a token is read from a stream, the first token in the\nstream must be returned and subsequently removed, and\nend-of-stream must be returned otherwise.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:276"
+        },
+        {
+            "message": "Missing item type\nWhen one or more tokens are prepended to a stream, those tokens\nmust be inserted, in given order, before the first token in the\nstream.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:290"
+        },
+        {
+            "message": "Missing item type\nWhen one or more tokens are pushed to a stream, those tokens\nmust be inserted, in given order, after the last token in the\nstream.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:308"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:333"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:336"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:347"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:355"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:358"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:368"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:371"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:384"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:866"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:877"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:879"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:886"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:897"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:908"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:920"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:942"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:957"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:974"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:989"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1009"
+        },
+        {
+            "message": "Missing item type\n// 8.1 Interface TextDecoder\n/**\n     * @constructor\n     * @param {string=} label The label of the encoding;\n     *     defaults to 'utf-8'.\n     * @param {Object=} options",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1041"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1063"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1065"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1067"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1069"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1071"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1073"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1119"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1126"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1133"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1138"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1178"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1232"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1268"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1281"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1283"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1287"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1289"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1328"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1333"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1356"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1401"
+        },
+        {
+            "message": "Missing item type\n/** @type {number} */ utf8_bytes_needed = 0,\n/** @type {number} */ utf8_lower_boundary = 0x80,\n/** @type {number} */ utf8_upper_boundary = 0xBF;\n\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1414"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1542"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1549"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1607"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1611"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1621"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1629"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1660"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1668"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1705"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1709"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1725"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1732"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1740"
+        },
+        {
+            "message": "Missing item type\n/** @type {number} */ gb18030_third = 0x00;\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1750"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1897"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1906"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1985"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:1989"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2002"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2012"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2102"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2109"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2150"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2154"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2167"
+        },
+        {
+            "message": "Missing item type\n/**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2178"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2270"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2277"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2329"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2333"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2341"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2348"
+        },
+        {
+            "message": "Missing item type\n/** @type {number} */ iso2022jp_lead = 0x00,\n/** @type {boolean} */ iso2022jp_output_flag = false;\n      /**\n       * @param {Stream} stream The stream of bytes being decoded.\n       * @param {number} bite The next byte read from the stream.\n       * @return {?(number|!Array.<number>)} The next code point(s)\n       *     decoded, or null if not enough data exists in the input\n       *     stream to decode a complete code point.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2363"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2650"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2660"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2667"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2780"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2784"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2792"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2802"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2891"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2898"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2957"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2961"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2973"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:2983"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3052"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3059"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3093"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3097"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3113"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3134"
+        },
+        {
+            "message": "Missing item type\n/**\n * @param {Stream} stream The stream of bytes being decoded.\n * @param {number} bite The next byte read from the stream.\n * @return {?(number|!Array.<number>)} The next code point(s)\n *     decoded, or null if not enough data exists in the input\n *     stream to decode a complete code point.",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3143"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3228"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3236"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3269"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3274"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3281"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3286"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3294"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3301"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3324"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3331"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3356"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/main/js/cass/base64toArrayBuffer.js:3360"
         },
         {
             "message": "Missing item type\nCreated by fray on 11/29/17.",
@@ -70190,7 +72133,7 @@
         },
         {
             "message": "Missing item type\nSets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
-            "line": " src/main/js/cass/org.cassproject.schema.cass.js:520"
+            "line": " src/main/js/cass/org.cassproject.schema.cass.js:547"
         },
         {
             "message": "Missing item type\nIf `Buffer.TYPED_ARRAY_SUPPORT`:\n  === true    Use Uint8Array implementation (fastest)\n  === false   Print warning and recommend using `buffer` v4.x which has an Object\n              implementation (most compatible, even IE6)\n\nBrowsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,\nOpera 11.6+, iOS 4.2+.\n\nWe report that the browser does not support typed arrays if the are not subclassable\nusing __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`\n(See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support\nfor __proto__ and has a buggy typed array implementation.",

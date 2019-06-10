@@ -30,8 +30,9 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_2 = "http://schema.eduworks.com/cass/0.2";
     constructor.context_0_3 = "http://schema.cassproject.org/0.2";
     constructor.context_0_4 = "http://schema.cassproject.org/0.3";
-    constructor.context_0_5 = "http://schema.cassproject.org/0.4";
-    constructor.context = Cass.context_0_4;
+    constructor.context_0_5 = "https://schema.cassproject.org/0.3";
+    constructor.context_0_6 = "http://schema.cassproject.org/0.4";
+    constructor.context = Cass.context_0_5;
 }, {}, {});
 var AssertionCodebook = function() {};
 AssertionCodebook = stjs.extend(AssertionCodebook, null, [], function(constructor, prototype) {
@@ -61,7 +62,8 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/competency";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Competency";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Competency";
-    constructor.myType = Competency.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Competency";
+    constructor.myType = Competency.TYPE_0_5;
     /**
      *  Scope in which the competency may be applied. e.g. Underwater.
      * 
@@ -87,9 +89,13 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
         if (Competency.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, Competency.TYPE_0_4);
         }
+        if (Competency.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, Competency.TYPE_0_5);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Competency.TYPE_0_5);
         a.push(Competency.TYPE_0_4);
         a.push(Competency.TYPE_0_3);
         a.push(Competency.TYPE_0_2);
@@ -114,7 +120,8 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/level";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Level";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Level";
-    constructor.myType = Level.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Level";
+    constructor.myType = Level.TYPE_0_5;
     /**
      *  Specifies the URL of the competency this level relates to.
      * 
@@ -151,9 +158,13 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
         if (Level.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, Level.TYPE_0_4);
         }
+        if (Level.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, Level.TYPE_0_5);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Level.TYPE_0_5);
         a.push(Level.TYPE_0_4);
         a.push(Level.TYPE_0_3);
         a.push(Level.TYPE_0_2);
@@ -177,7 +188,8 @@ RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, pro
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/rollupRule";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/RollupRule";
-    constructor.myType = RollupRule.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/RollupRule";
+    constructor.myType = RollupRule.TYPE_0_5;
     /**
      *  The rollup rule encoded as source code that is understandable to the assertion processor.
      * 
@@ -200,9 +212,13 @@ RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, pro
         if (RollupRule.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, RollupRule.TYPE_0_4);
         }
+        if (RollupRule.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, RollupRule.TYPE_0_5);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(RollupRule.TYPE_0_5);
         a.push(RollupRule.TYPE_0_4);
         a.push(RollupRule.TYPE_0_3);
         a.push(RollupRule.TYPE_0_2);
@@ -226,7 +242,8 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/framework";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Framework";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Framework";
-    constructor.myType = Framework.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Framework";
+    constructor.myType = Framework.TYPE_0_5;
     /**
      *  URLs of competencies included in this framework.
      * 
@@ -269,9 +286,13 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
         if (Framework.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, Framework.TYPE_0_4);
         }
+        if (Framework.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, Framework.TYPE_0_5);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Framework.TYPE_0_5);
         a.push(Framework.TYPE_0_4);
         a.push(Framework.TYPE_0_3);
         a.push(Framework.TYPE_0_2);
@@ -352,7 +373,8 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/relation";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Relation";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Relation";
-    constructor.myType = Relation.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Relation";
+    constructor.myType = Relation.TYPE_0_5;
     /**
      *  URL of the object at the beginning of the relation.
      *  A <relation> B, this is A.
@@ -407,9 +429,13 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
         if (Relation.TYPE_0_3 == this.getFullType()) {
             this.setContextAndType(Cass.context_0_4, Relation.TYPE_0_4);
         }
+        if (Relation.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, Relation.TYPE_0_5);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Relation.TYPE_0_5);
         a.push(Relation.TYPE_0_4);
         a.push(Relation.TYPE_0_3);
         a.push(Relation.TYPE_0_2);
@@ -434,7 +460,8 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     constructor.TYPE_0_2 = "http://schema.eduworks.com/cass/0.2/assertion";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Assertion";
-    constructor.myType = Assertion.TYPE_0_4;
+    constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Assertion";
+    constructor.myType = Assertion.TYPE_0_5;
     constructor.codebooks = null;
     /**
      *  URL of the competency.
@@ -687,6 +714,9 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
         if (Assertion.TYPE_0_3.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_4, Assertion.TYPE_0_4);
         }
+        if (Assertion.TYPE_0_4.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_5, Assertion.TYPE_0_5);
+        }
         this.agent = EcEncryptedValue.revive(this.agent);
         this.subject = EcEncryptedValue.revive(this.subject);
         this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
@@ -700,6 +730,7 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Assertion.TYPE_0_5);
         a.push(Assertion.TYPE_0_4);
         a.push(Assertion.TYPE_0_3);
         a.push(Assertion.TYPE_0_2);
@@ -722,7 +753,7 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
  */
 var AssertionEnvelope = function() {
     CreativeWork.call(this);
-    this.setContextAndType(Cass.context_0_5, AssertionEnvelope.myType);
+    this.setContextAndType(Cass.context_0_6, AssertionEnvelope.myType);
 };
 AssertionEnvelope = stjs.extend(AssertionEnvelope, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_5 = "http://schema.cassproject.org/0.4/AssertionEnvelope";

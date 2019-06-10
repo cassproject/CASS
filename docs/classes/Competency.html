@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2</em>
+            <em>API Docs for: 1.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -148,6 +148,7 @@
                                 <li><a href="../classes/Casino.html">Casino</a></li>
                                 <li><a href="../classes/Cass.html">Cass</a></li>
                                 <li><a href="../classes/CatholicChurch.html">CatholicChurch</a></li>
+                                <li><a href="../classes/CeCompetency.html">CeCompetency</a></li>
                                 <li><a href="../classes/Cemetery.html">Cemetery</a></li>
                                 <li><a href="../classes/Certificate.html">Certificate</a></li>
                                 <li><a href="../classes/Certification.html">Certification</a></li>
@@ -827,17 +828,16 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3365"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3365</code></a>
+            Defined in: <a href="../files/src_main_js_cass_org.cassproject.schema.cass.js.html#l48"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.cass.js:48</code></a>
         </div>
 
-            Module: <a href="../modules/org.credentialengine.html">org.credentialengine</a>
+            Module: <a href="../modules/org.cassproject.html">org.cassproject</a>
 
 </div>
 
 
 <div class="box intro">
-    <p><a href="http://credentialengine.org/Competency">credentialengine.org/Competency</a>
-Description of knowledge, skills, and/or abilities.</p>
+    <p>Competencies include skills, knowledge, abilities, traits, and combinations thereof that are needed to perform a task or job. In CASS, competencies are identified and located using a globally unique ID. Competencies can be further described using titles, descriptions, levels, indicators (coming soon), roll-up rules, and relationships to other competencies.</p>
 
 </div>
 
@@ -925,18 +925,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_aggregateRating">aggregateRating</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_alignFrom">alignFrom</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_alignTo">alignTo</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_altCodedNotation">altCodedNotation</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_alternateName">alternateName</a>
 
@@ -969,10 +957,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_awards">awards</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_broadAlignment">broadAlignment</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_character">character</a>
 
@@ -981,40 +965,12 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_citation">citation</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_codedNotation">codedNotation</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_comment">comment</a>
 
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_commentCount">commentCount</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_competencyCategory">competencyCategory</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_competencyText">competencyText</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_complexityLevel">complexityLevel</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_comprisedOf">comprisedOf</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_conceptKeyword">conceptKeyword</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_conceptTerm">conceptTerm</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1041,10 +997,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_creator">creator</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_crossSubjectReference">crossSubjectReference</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_dateCreated">dateCreated</a>
 
@@ -1055,10 +1007,6 @@ Description of knowledge, skills, and/or abilities.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_datePublished">datePublished</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_derivedFrom">derivedFrom</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1085,20 +1033,12 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_educationalUse">educationalUse</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_educationLevelType">educationLevelType</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_encoding">encoding</a>
 
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_encodings">encodings</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_exactAlignment">exactAlignment</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1115,10 +1055,6 @@ Description of knowledge, skills, and/or abilities.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_genre">genre</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_hasChild">hasChild</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1161,24 +1097,12 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_isBasedOnUrl">isBasedOnUrl</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_isChildOf">isChildOf</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_isFamilyFriendly">isFamilyFriendly</a>
 
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_isPartOf">isPartOf</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isTopChildOf">isTopChildOf</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isVersionOf">isVersionOf</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1193,14 +1117,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_license">license</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_listID">listID</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_localSubject">localSubject</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_locationCreated">locationCreated</a>
 
@@ -1213,10 +1129,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_mainEntityOfPage">mainEntityOfPage</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_majorAlignment">majorAlignment</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_material">material</a>
 
@@ -1225,16 +1137,8 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_mentions">mentions</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_minorAlignment">minorAlignment</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_name">name</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_narrowAlignment">narrowAlignment</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1247,10 +1151,6 @@ Description of knowledge, skills, and/or abilities.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_potentialAction">potentialAction</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_prerequisiteAlignment">prerequisiteAlignment</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1301,14 +1201,6 @@ Description of knowledge, skills, and/or abilities.</p>
                                 <a href="#property_scope">scope</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_shouldIndex">shouldIndex</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_skillEmbodied">skillEmbodied</a>
-
-                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_sourceOrganization">sourceOrganization</a>
 
@@ -1355,10 +1247,6 @@ Description of knowledge, skills, and/or abilities.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_video">video</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_weight">weight</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1840,87 +1728,6 @@ The overall rating, based on a collection of reviews or ratings, of the item.
 
 
 </div>
-<div id="property_alignFrom" class="property item">
-    <h3 class="name"><code>alignFrom</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3380"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3380</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/alignFrom">http://purl.org/ctdlasn/terms/alignFrom</a>
-A competency framework or competency from which this competency framework or competency is aligned.
-An alignment is an assertion of some degree of equivalency between the subject and the object of the assertion.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_alignTo" class="property item">
-    <h3 class="name"><code>alignTo</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3388"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3388</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/alignTo">http://purl.org/ctdlasn/terms/alignTo</a>
-A competency framework or competency to which this competency framework or competency is aligned.
-An alignment is an assertion of some degree of equivalency between the subject and the object of the assertion.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_altCodedNotation" class="property item">
-    <h3 class="name"><code>altCodedNotation</code></h3>
-    <span class="type">String</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3396"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3396</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/altCodedNotation">http://purl.org/ctdlasn/terms/altCodedNotation</a>
-An alphanumeric notation or ID code identifying this competency in common use among end-users.
-Unlike the codedNotation property, the value for the altCodedNotation property need not be an official identifier created by the promulgating agency. It must be an identifier in common use among end-users of the competency. This property should be seldom used and only with a clear demonstration of need (i.e., in common use). For example, in the Common Core State Standards (Math) in the U.S., the official codedNotation of "CCSS.Math.Content.1.NBT.C.4" is abbreviated in common use by end-users to the unofficial altCodedNotation of "1.NBT.4".</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_alternateName" class="property item inherited">
     <h3 class="name"><code>alternateName</code></h3>
     <span class="type">Text</span>
@@ -2046,30 +1853,26 @@ An embedded audio object.
 
 
 </div>
-<div id="property_author" class="property item">
+<div id="property_author" class="property item inherited">
     <h3 class="name"><code>author</code></h3>
-    <span class="type">String</span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_author">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3404"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3404</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_author">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1398"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1398</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/author">http://purl.org/ctdlasn/terms/author</a>
-A person or organization chiefly responsible for the intellectual or artistic content of this competency framework or competency.</p>
-
+        Schema.org/author
+The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
     </div>
 
 
@@ -2125,32 +1928,6 @@ Awards won by or for this item.
 
 
 </div>
-<div id="property_broadAlignment" class="property item">
-    <h3 class="name"><code>broadAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3411"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3411</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/broadAlignment">http://purl.org/ctdlasn/terms/broadAlignment</a>
-The referenced competency covers all of the relevant concepts in this competency as well as relevant concepts not found in this competency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_character" class="property item inherited">
     <h3 class="name"><code>character</code></h3>
     <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
@@ -2201,58 +1978,26 @@ A citation or reference to another creative work, such as another publication, w
 
 
 </div>
-<div id="property_codedNotation" class="property item">
-    <h3 class="name"><code>codedNotation</code></h3>
-    <span class="type">String</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3418"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3418</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/codedNotation">http://purl.org/ctdlasn/terms/codedNotation</a>
-An alphanumeric notation or ID code as defined by the promulgating body to identify this competency.
-This property should be used only for codes created by the promulgating body. For alternative competency notations in common use in the community of practice, but not endorsed by the promulgating body, the altCodedNotation property can be used (sparingly on clear evidence of common use and need).</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_comment" class="property item">
+<div id="property_comment" class="property item inherited">
     <h3 class="name"><code>comment</code></h3>
-    <span class="type">LangString</span>
+    <span class="type"><a href="../classes/Comment.html" class="crosslink">Comment</a></span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_comment">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3426"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3426</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_comment">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1438"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1438</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/comment">http://purl.org/ctdlasn/terms/comment</a>
-Supplemental text provided by the promulgating body that clarifies the nature, scope or use of this competency.
-Use this property when the text provides useful context for this competency.</p>
-
+        Schema.org/comment
+Comments, typically from users.
     </div>
 
 
@@ -2278,165 +2023,6 @@ Use this property when the text provides useful context for this competency.</p>
     <div class="description">
         Schema.org/commentCount
 The number of comments this CreativeWork (e.g. Article, Question or Answer) has received. This is most applicable to works published in Web sites with commenting system; additional comments may exist elsewhere.
-    </div>
-
-
-
-</div>
-<div id="property_competencyCategory" class="property item">
-    <h3 class="name"><code>competencyCategory</code></h3>
-    <span class="type">LangString</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3434"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3434</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/competencyCategory">http://purl.org/ctdlasn/terms/competencyCategory</a>
-The textual label identifying the category of the competency as designated by the promulgating body.
-This property points to a class, not to instances of that class. For example, where two competencies in a competency framework have been identified respectively by the promulgating agency as "Strand: Rennaisance" and "Strand: Social history", the statementLabel for both these competencies is "Strand".</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_competencyText" class="property item">
-    <h3 class="name"><code>competencyText</code></h3>
-    <span class="type">LangString</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3442"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3442</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/competencyText">http://purl.org/ctdlasn/terms/competencyText</a>
-The text of the competency.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_complexityLevel" class="property item">
-    <h3 class="name"><code>complexityLevel</code></h3>
-    <span class="type"><a href="../classes/ProficiencyScale.html" class="crosslink">ProficiencyScale</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3449"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3449</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/complexityLevel">http://purl.org/ctdlasn/terms/complexityLevel</a>
-The expected performance level of a learner or professional as defined by a competency.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_comprisedOf" class="property item">
-    <h3 class="name"><code>comprisedOf</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3456"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3456</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/comprisedOf">http://purl.org/ctdlasn/terms/comprisedOf</a>
-This competency includes, comprehends or encompasses, in whole or in part, the meaning, nature or importance of the referenced competency.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_conceptKeyword" class="property item">
-    <h3 class="name"><code>conceptKeyword</code></h3>
-    <span class="type">LangString</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3463"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3463</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/conceptKeyword">http://purl.org/ctdlasn/terms/conceptKeyword</a>
-A word or phrase used by the promulgating agency to refine and differentiate individual competencies contextually.
-The conceptKeyword property is used in ASN-conforming data solely to denote the significant topicality of the competency using free-text keywords and phrases derived and assigned by the indexer, e.g., "George Washington", "Ayers Rock", etc.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_conceptTerm" class="property item">
-    <h3 class="name"><code>conceptTerm</code></h3>
-    <span class="type"><a href="../classes/Concept.html" class="crosslink">Concept</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3471"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3471</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/conceptTerm">http://purl.org/ctdlasn/terms/conceptTerm</a>
-A term drawn from a controlled vocabulary used by the promulgating agency to refine and differentiate individual competencies contextually.
-The conceptTerm property is used in ASN-conforming data solely to denote the topicality of the competency - e.g., "Pythagorean Theorem", "Trigonometric functions", "Forces and energy", "Scientific method", "Oral history" etc. The value of the conceptTerm property must be drawn from a controlled vocabulary where concepts have all been assigned URI - e.g., terms drawn from the Australia Schools Online Thesaurus (ScOT).</p>
-
     </div>
 
 
@@ -2567,64 +2153,32 @@ The year during which the claimed copyright for the CreativeWork was first asser
 
 
 </div>
-<div id="property_creator" class="property item">
+<div id="property_creator" class="property item inherited">
     <h3 class="name"><code>creator</code></h3>
-    <span class="type"><a href="../classes/CredentialOrganization.html" class="crosslink">CredentialOrganization</a> | <a href="../classes/QACredentialOrganization.html" class="crosslink">QACredentialOrganization</a></span>
+    <span class="type"><a href="../classes/Person.html" class="crosslink">Person</a></span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_creator">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3479"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3479</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_creator">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1494"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1494</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/creator">http://purl.org/ctdlasn/terms/creator</a>
-An entity primarily responsible for making this competency framework or competency.
-The creator property is used with non-canonical statements created by a third party.</p>
-
+        Schema.org/creator
+The creator/author of this CreativeWork. This is the same as the Author property for CreativeWork.
     </div>
 
 
 
 </div>
-<div id="property_crossSubjectReference" class="property item">
-    <h3 class="name"><code>crossSubjectReference</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3487"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3487</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/crossSubjectReference">http://purl.org/ctdlasn/terms/crossSubjectReference</a>
-A relationship between this competency and a competency in a separate competency framework.
-An interdisciplinary statement reference.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_dateCreated" class="property item">
+<div id="property_dateCreated" class="property item inherited">
     <h3 class="name"><code>dateCreated</code></h3>
     <span class="type">Date</span>
 
@@ -2633,28 +2187,23 @@ An interdisciplinary statement reference.</p>
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_dateCreated">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3495"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3495</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_dateCreated">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1534"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1534</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/dateCreated">http://purl.org/ctdlasn/terms/dateCreated</a>
-Date of creation of this competency framework or competency.
-The dateCreated property is used for non-canonical statements created by a third party.</p>
-
+        Schema.org/dateCreated
+The date on which the CreativeWork was created or the item was added to a DataFeed.
     </div>
 
 
 
 </div>
-<div id="property_dateModified" class="property item">
+<div id="property_dateModified" class="property item inherited">
     <h3 class="name"><code>dateModified</code></h3>
     <span class="type">DateTime</span>
 
@@ -2663,21 +2212,17 @@ The dateCreated property is used for non-canonical statements created by a third
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_dateModified">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3503"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3503</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_dateModified">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1366"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1366</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/dateModified">http://purl.org/ctdlasn/terms/dateModified</a>
-The date on which this framework or competency was most recently modified in some way.</p>
-
+        Schema.org/dateModified
+The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.
     </div>
 
 
@@ -2703,32 +2248,6 @@ The date on which this framework or competency was most recently modified in som
     <div class="description">
         Schema.org/datePublished
 Date of first broadcast/publication.
-    </div>
-
-
-
-</div>
-<div id="property_derivedFrom" class="property item">
-    <h3 class="name"><code>derivedFrom</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a> | <a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3510"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3510</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/derivedFrom">http://purl.org/ctdlasn/terms/derivedFrom</a>
-A third party version of the entity being reference that has been modified in meaning through editing, extension or refinement.</p>
-
     </div>
 
 
@@ -2884,33 +2403,6 @@ The purpose of a work in the context of education; for example, 'assignment', 'g
 
 
 </div>
-<div id="property_educationLevelType" class="property item">
-    <h3 class="name"><code>educationLevelType</code></h3>
-    <span class="type"><a href="../classes/Concept.html" class="crosslink">Concept</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3517"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3517</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/educationLevelType">http://purl.org/ctdlasn/terms/educationLevelType</a>
-A general statement describing the education or training context. Alternatively, a more specific statement of the location of the audience in terms of its progression through an education or training context.
-Best practice is to use terms from the <a href="http://purl.org/ctdl/terms/AudienceLevel">http://purl.org/ctdl/terms/AudienceLevel</a> concept scheme.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_encoding" class="property item inherited">
     <h3 class="name"><code>encoding</code></h3>
     <span class="type"><a href="../classes/MediaObject.html" class="crosslink">MediaObject</a></span>
@@ -2956,32 +2448,6 @@ A media object that encodes this CreativeWork. This property is a synonym for as
     <div class="description">
         Schema.org/encodings
 A media object that encodes this CreativeWork.
-    </div>
-
-
-
-</div>
-<div id="property_exactAlignment" class="property item">
-    <h3 class="name"><code>exactAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3525"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3525</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/exactAlignment">http://purl.org/ctdlasn/terms/exactAlignment</a>
-The relevant concepts in this competency and the referenced competency are coextensive.</p>
-
     </div>
 
 
@@ -3087,32 +2553,6 @@ Genre of the creative work, broadcast channel or group.
 
 
 </div>
-<div id="property_hasChild" class="property item">
-    <h3 class="name"><code>hasChild</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3532"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3532</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/hasChild">http://purl.org/ctdlasn/terms/hasChild</a>
-The referenced competency is lower in some arbitrary hierarchy than this competency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_hasPart" class="property item inherited">
     <h3 class="name"><code>hasPart</code></h3>
     <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
@@ -3163,30 +2603,26 @@ Headline of the article.
 
 
 </div>
-<div id="property_identifier" class="property item">
+<div id="property_identifier" class="property item inherited">
     <h3 class="name"><code>identifier</code></h3>
-    <span class="type">AnyURI</span>
+    <span class="type">Schema, URL | schema,Text | schema,PropertyValue</span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/Thing.html#property_identifier">
-                Thing
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3539"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3539</code></a>
+                <p>Inherited from
+                <a href="../classes/Thing.html#property_identifier">Thing</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l45"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:45</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/identifier">http://purl.org/ctdlasn/terms/identifier</a>
-An alternative URI by which this competency framework or competency is identified.</p>
-
+        Schema.org/identifier
+The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
     </div>
 
 
@@ -3217,7 +2653,7 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
 
 </div>
-<div id="property_inLanguage" class="property item">
+<div id="property_inLanguage" class="property item inherited">
     <h3 class="name"><code>inLanguage</code></h3>
     <span class="type"><a href="../classes/Language.html" class="crosslink">Language</a></span>
 
@@ -3226,21 +2662,17 @@ An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_inLanguage">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3546"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3546</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_inLanguage">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1446"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1446</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/inLanguage">http://purl.org/ctdlasn/terms/inLanguage</a>
-The primary language used in or by this competency framework or competency.</p>
-
+        Schema.org/inLanguage
+The language of the content or performance or used in an action. Please use one of the language codes from the [IETF BCP 47 standard](http://tools.ietf.org/html/bcp47). See also [[availableLanguage]].
     </div>
 
 
@@ -3371,32 +2803,6 @@ A resource that was used in the creation of this resource. This term can be repe
 
 
 </div>
-<div id="property_isChildOf" class="property item">
-    <h3 class="name"><code>isChildOf</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3553"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3553</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/isChildOf">http://purl.org/ctdlasn/terms/isChildOf</a>
-The referenced competency is higher in some arbitrary hierarchy than this competency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_isFamilyFriendly" class="property item inherited">
     <h3 class="name"><code>isFamilyFriendly</code></h3>
     <span class="type">Boolean</span>
@@ -3422,83 +2828,26 @@ Indicates whether this content is family friendly.
 
 
 </div>
-<div id="property_isPartOf" class="property item">
+<div id="property_isPartOf" class="property item inherited">
     <h3 class="name"><code>isPartOf</code></h3>
-    <span class="type"><a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
+    <span class="type"><a href="../classes/CreativeWork.html" class="crosslink">CreativeWork</a></span>
 
 
 
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/CreativeWork.html#property_isPartOf">
-                CreativeWork
-            </a>
-            but overwritten in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3560"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3560</code></a>
+                <p>Inherited from
+                <a href="../classes/CreativeWork.html#property_isPartOf">CreativeWork</a>:
+        <a href="../files/src_main_js_cass_org.schema.js.html#l1034"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.schema.js:1034</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/isPartOf">http://purl.org/ctdlasn/terms/isPartOf</a>
-Competency framework that this competency is a part of.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isTopChildOf" class="property item">
-    <h3 class="name"><code>isTopChildOf</code></h3>
-    <span class="type"><a href="../classes/CompetencyFramework.html" class="crosslink">CompetencyFramework</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3567"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3567</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/isTopChildOf">http://purl.org/ctdlasn/terms/isTopChildOf</a>
-Indicates that this competency is at the top of some arbitrary hierarchy.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_isVersionOf" class="property item">
-    <h3 class="name"><code>isVersionOf</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3574"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3574</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/isVersionOf">http://purl.org/ctdlasn/terms/isVersionOf</a>
-A related competency of which this competency is a version, edition, or adaptation.
-Changes in version imply substantive changes in content rather than differences in format.</p>
-
+        Schema.org/isPartOf
+Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
     </div>
 
 
@@ -3579,58 +2928,6 @@ A license document that applies to this content, typically indicated by URL.
 
 
 </div>
-<div id="property_listID" class="property item">
-    <h3 class="name"><code>listID</code></h3>
-    <span class="type">String</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3582"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3582</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/listID">http://purl.org/ctdlasn/terms/listID</a>
-An alphanumeric string found in the source framework indicating the relative position of a competency in an ordered list of competencies such as "A", "B", or "a", "b", or "I", "II", or "1", "2".</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_localSubject" class="property item">
-    <h3 class="name"><code>localSubject</code></h3>
-    <span class="type">LangString</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3589"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3589</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/localSubject">http://purl.org/ctdlasn/terms/localSubject</a>
-The text string denoting the subject of the competency framework or competency as designated by the promulgating agency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_locationCreated" class="property item inherited">
     <h3 class="name"><code>locationCreated</code></h3>
     <span class="type"><a href="../classes/Place.html" class="crosslink">Place</a></span>
@@ -3706,32 +3003,6 @@ Indicates a page (or other CreativeWork) for which this thing is the main entity
 
 
 </div>
-<div id="property_majorAlignment" class="property item">
-    <h3 class="name"><code>majorAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3596"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3596</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/majorAlignment">http://purl.org/ctdlasn/terms/majorAlignment</a>
-Major overlap of relevant concepts between the this competency and the referenced competency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_material" class="property item inherited">
     <h3 class="name"><code>material</code></h3>
     <span class="type">URL</span>
@@ -3782,32 +3053,6 @@ Indicates that the CreativeWork contains a reference to, but is not necessarily 
 
 
 </div>
-<div id="property_minorAlignment" class="property item">
-    <h3 class="name"><code>minorAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3603"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3603</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/minorAlignment">http://purl.org/ctdlasn/terms/minorAlignment</a>
-Minor overlap of relevant concepts between this competency and the referenced competency.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_name" class="property item inherited">
     <h3 class="name"><code>name</code></h3>
     <span class="type">Text</span>
@@ -3828,32 +3073,6 @@ Minor overlap of relevant concepts between this competency and the referenced co
     <div class="description">
         Schema.org/name
 The name of the item.
-    </div>
-
-
-
-</div>
-<div id="property_narrowAlignment" class="property item">
-    <h3 class="name"><code>narrowAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3610"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3610</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/narrowAlignment">http://purl.org/ctdlasn/terms/narrowAlignment</a>
-This competency covers all of the relevant concepts in the referenced competency as well as relevant concepts not found in the referenced competency.</p>
-
     </div>
 
 
@@ -3929,32 +3148,6 @@ The position of an item in a series or sequence of items.
     <div class="description">
         Schema.org/potentialAction
 Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.
-    </div>
-
-
-
-</div>
-<div id="property_prerequisiteAlignment" class="property item">
-    <h3 class="name"><code>prerequisiteAlignment</code></h3>
-    <span class="type"><a href="../classes/Competency.html" class="crosslink">Competency</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3617"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3617</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/prerequisiteAlignment">http://purl.org/ctdlasn/terms/prerequisiteAlignment</a>
-This competency is a prerequisite to the referenced competency.</p>
-
     </div>
 
 
@@ -4244,10 +3437,9 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
 
 
     <div class="meta">
-                    <p>Provided by the <a href="../modules/org.cassproject.html">org.cassproject</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_main_js_cass_org.cassproject.schema.cass.js.html#l65"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.cass.js:65</code></a>
+        <a href="../files/src_main_js_cass_org.cassproject.schema.cass.js.html#l67"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.cassproject.schema.cass.js:67</code></a>
         </p>
 
 
@@ -4255,58 +3447,6 @@ Indicates (by URL or string) a particular version of a schema used in some Creat
 
     <div class="description">
         <p>Scope in which the competency may be applied. e.g. Underwater.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_shouldIndex" class="property item">
-    <h3 class="name"><code>shouldIndex</code></h3>
-    <span class="type">Boolean</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3624"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3624</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/shouldIndex">http://purl.org/ctdlasn/terms/shouldIndex</a>
-Indicates whether correlators should or should not assign the competency during correlation.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_skillEmbodied" class="property item">
-    <h3 class="name"><code>skillEmbodied</code></h3>
-    <span class="type">AnyURI</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3631"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3631</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/skillEmbodied">http://purl.org/ctdlasn/terms/skillEmbodied</a>
-Cognitive, affective, and psychomotor skills directly or indirectly embodied in this competency.</p>
 
     </div>
 
@@ -4612,33 +3752,6 @@ The version of the CreativeWork embodied by a specified resource.
     <div class="description">
         Schema.org/video
 An embedded video object.
-    </div>
-
-
-
-</div>
-<div id="property_weight" class="property item">
-    <h3 class="name"><code>weight</code></h3>
-    <span class="type">Float</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_main_js_cass_org.credentialengine.js.html#l3638"><code>src&#x2F;main&#x2F;js&#x2F;cass&#x2F;org.credentialengine.js:3638</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p><a href="http://purl.org/ctdlasn/terms/weight">http://purl.org/ctdlasn/terms/weight</a>
-An asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison.
-Best practice is to assigned a decimal value weight between 0 and 1 that indicates the strength of the assertion, with 0 being weakest and 1 being strongest.</p>
-
     </div>
 
 

@@ -34,10 +34,12 @@ var Concept = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "Concept");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "Concept");
 };
 Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.cassproject.org/0.3/skos/Concept";
+    constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/Concept";
+    constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/Concept";
+    constructor.myType = Concept.TYPE_0_2;
     /**
      *  www.w3.org/2004/02/skos/core/topConceptOf
      *  Relates a concept to the concept scheme that it is a top level concept of.
@@ -52,6 +54,18 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
      *  @type Concept
      */
     prototype.semanticRelation = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (Concept.TYPE_0_1.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.3/skos", Concept.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(Concept.TYPE_0_2);
+        a.push(Concept.TYPE_0_1);
+        return a;
+    };
 }, {topConceptOf: "ConceptScheme", semanticRelation: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/ConceptScheme
@@ -66,10 +80,12 @@ var ConceptScheme = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "ConceptScheme");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "ConceptScheme");
 };
 ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(constructor, prototype) {
-    constructor.myType = "http://schema.cassproject.org/0.3/skos/ConceptScheme";
+    constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/ConceptScheme";
+    constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/ConceptScheme";
+    constructor.myType = ConceptScheme.TYPE_0_2;
     /**
      *  www.w3.org/2004/02/skos/core/hasTopConcept
      *  Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.
@@ -77,6 +93,18 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
      *  @type Concept
      */
     prototype.hasTopConcept = null;
+    prototype.upgrade = function() {
+        EcLinkedData.prototype.upgrade.call(this);
+        if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.3/skos", ConceptScheme.TYPE_0_2);
+        }
+    };
+    prototype.getTypes = function() {
+        var a = new Array();
+        a.push(ConceptScheme.TYPE_0_2);
+        a.push(ConceptScheme.TYPE_0_1);
+        return a;
+    };
 }, {hasTopConcept: "Concept", owner: {name: "Array", arguments: [null]}, signature: {name: "Array", arguments: [null]}, reader: {name: "Array", arguments: [null]}, atProperties: {name: "Array", arguments: [null]}}, {});
 /**
  *  www.w3.org/2004/02/skos/core/OrderedCollection

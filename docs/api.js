@@ -113,6 +113,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Casino",
         "Cass",
         "CatholicChurch",
+        "CeCompetency",
         "Cemetery",
         "Certificate",
         "Certification",
