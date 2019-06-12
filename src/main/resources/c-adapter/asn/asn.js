@@ -346,7 +346,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
         this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(c.owner, 60000, c.id)));
         skyrepoPut.call(this, {
             obj: c.toJson(),
-            type: c.getFullType().replace("http://", "").replaceAll("/", "."),
+            type: c.getFullType().replace("http://", "").replace("https://", "").replaceAll("/", "."),
             id: compGuid,
             version: compVersion
         });
@@ -393,7 +393,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
         this.dataStreams.put("signatureSheet", new java.io.StringBufferInputStream(EcIdentityManager.signatureSheetFor(f.owner, 60000, f.id)));
         skyrepoPut.call(this, {
             obj: f.toJson(),
-            type: f.getFullType().replace("http://", "").replaceAll("/", "."),
+            type: f.getFullType().replace("http://", "").replace("https://", "").replaceAll("/", "."),
             id: guid,
             version: version
         });
