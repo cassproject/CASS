@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2</em>
+            <em>API Docs for: 1.2.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -996,7 +996,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += generateUUID();
     };
     prototype.getDottedType = function() {
-        return this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
+        return this.getFullType().replace(&quot;http://&quot;, &quot;&quot;).replace(&quot;https://&quot;, &quot;&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;);
     };
     /**
      *  Will generate an identifier using the server URL provided (usually from

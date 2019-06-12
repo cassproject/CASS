@@ -151,7 +151,7 @@ EcRemoteLinkedData = stjs.extend(EcRemoteLinkedData, EcLinkedData, [], function(
         this.id += generateUUID();
     };
     prototype.getDottedType = function() {
-        return this.getFullType().replace("http://", "").replaceAll("/", ".");
+        return this.getFullType().replace("http://", "").replace("https://", "").replaceAll("/", ".");
     };
     /**
      *  Will generate an identifier using the server URL provided (usually from
