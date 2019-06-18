@@ -2,8 +2,8 @@ var asnContext = {
     "asn": "http://purl.org/asn/schema/core/",
     "asnPublicationStatus": "http://purl.org/asn/scheme/ASNPublicationStatus/",
     "asnscheme": "http://purl.org/asn/scheme/",
-    "ceasn": "http://purl.org/ctdlasn/terms/",
-    "ceterms": "http://purl.org/ctdl/terms/",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "ceterms": "https://purl.org/ctdl/terms/",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dct": "http://purl.org/dc/terms/",
     "gem": "http://purl.org/gem/elements/",
@@ -215,7 +215,7 @@ function cassFrameworkAsCeasn() {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"]);
     f.competency = [];
     for (var i = 0; i < allCompetencies.length; i++) {
         var c = competencies[allCompetencies[i]];
@@ -226,7 +226,7 @@ function cassFrameworkAsCeasn() {
         });
         delete competencies[allCompetencies[i]];
         var id = c.id;
-        c.context = "http://schema.cassproject.org/0.3/cass2ceasn";
+        c.context = "https://schema.cassproject.org/0.4/cass2ceasn";
         console.log(f.id);
         c["ceasn:isPartOf"] = ceasnExportUriTransform(f.id);
         console.log(c["ceasn:isPartOf"]);
@@ -271,7 +271,7 @@ function cassFrameworkAsCeasn() {
         competencies[id] = stripNonCe(competencies[id]);
     }
 
-    f.context = "http://schema.cassproject.org/0.3/cass2ceasn";
+    f.context = "https://schema.cassproject.org/0.4/cass2ceasn";
     delete f.relation;
 
     if (f.description == null)
@@ -336,7 +336,7 @@ function cassFrameworkAsCeasn() {
     }
     delete f["@context"];
     var r = {};
-    r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+    r["@context"] = "https://credreg.net/ctdlasn/schema/context/json";
     if (ceasnExportUriPrefixGraph != null)
         if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             r["@id"] = ceasnExportUriPrefixGraph + guid;
@@ -472,7 +472,7 @@ function cassConceptSchemeAsCeasn(framework) {
         }
     }
 
-    var ctx = JSON.stringify(httpGet("http://credreg.net/ctdlasn/schema/context/json")["@context"]);
+    var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"]);
     
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
@@ -483,7 +483,7 @@ function cassConceptSchemeAsCeasn(framework) {
             delete concepts[id]["owner"];
             delete concepts[id]["signature"];
 
-            c.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+            c.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";
             if (c.id != ceasnExportUriTransform(c.id)) {
                 if (c["skos:exactMatch"] != null)
                     if (EcArray.isArray(c["skos:exactMatch"])) {
@@ -527,7 +527,7 @@ function cassConceptSchemeAsCeasn(framework) {
         }
     }
 
-    cs.context = "http://schema.cassproject.org/0.3/cass2ceasnConcepts";
+    cs.context = "https://schema.cassproject.org/0.4/cass2ceasnConcepts";
 
     framework = cs;
     var guid = cs.getGuid();
@@ -584,7 +584,7 @@ function cassConceptSchemeAsCeasn(framework) {
         
     delete cs["@context"];
     var r = {};
-    r["@context"] = "http://credreg.net/ctdlasn/schema/context/json";
+    r["@context"] = "https://credreg.net/ctdlasn/schema/context/json";
     if (ceasnExportUriPrefixGraph != null)
         if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
             r["@id"] = ceasnExportUriPrefixGraph + guid;
@@ -654,9 +654,9 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         var newComp = JSON.parse(JSON.stringify(asnComp));
         delete newComp["ceasn:hasChild"];
 
-        newComp["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
+        newComp["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
         var expandedComp = jsonLdExpand(JSON.stringify(newComp));
-        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
+        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
 
         delete compactedComp["ceasn:isChildOf"];
         delete compactedComp["ceasn:hasChild"];
@@ -704,9 +704,9 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
     if (frameworkObj != null) {
         var guid = stringToHex(md5(EcRemoteLinkedData.trimVersionFromUrl(frameworkObj["@id"])));
 
-        frameworkObj["@context"] = "http://schema.cassproject.org/0.3/ceasn2cass";
+        frameworkObj["@context"] = "https://schema.cassproject.org/0.4/ceasn2cass";
         var expanded = jsonLdExpand(JSON.stringify(frameworkObj));
-        var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3");
+        var compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4");
 
         delete compacted["ceasn:hasChild"];
         delete compacted["ceasn:hasTopChild"];

@@ -159,7 +159,7 @@ cfDocuments = function (f) {
     var guid = f.getGuid();
     if (guid.startsWith("ce-"))
         guid = guid.substring(3);
-    f.context = "http://schema.cassproject.org/0.3/cass2case";
+    f.context = "https://schema.cassproject.org/0.4/cass2case";
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
     f = jsonLdExpand(f.toJson());
@@ -227,7 +227,7 @@ cfItems = function (f, fw) {
         guid = guid.substring(3);
     if (f["schema:identifier"] == null)
         f["schema:identifier"] = guid;
-    f.context = "http://schema.cassproject.org/0.3/cass2case";
+    f.context = "https://schema.cassproject.org/0.4/cass2case";
     f = jsonLdExpand(f.toJson());
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2["@context"] = "http://purl.imsglobal.org/spec/case/v1p0/context/imscasev1p0_context_v1p0.jsonld";
@@ -275,7 +275,7 @@ cfItemAssociations = function (f, fw) {
     var timestamp = f.getTimestamp();
     var guid = f.getGuid();
     var shortId = f.shortId();
-    f.context = "http://schema.cassproject.org/0.3/cass2case";
+    f.context = "https://schema.cassproject.org/0.4/cass2case";
     f = jsonLdExpand(f.toJson());
     var f2 = jsonLdCompact(JSON.stringify(f), cfGetContext.call(this));
     f2.uri = thisEndpoint() + "ims/case/v1p0/CFAssociations/" + guid;

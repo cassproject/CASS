@@ -60,7 +60,7 @@ function importJsonLd(){
 				obj["@id"] = idx;
 
 			var expanded = jsonLdExpand(JSON.stringify(obj));
-			var graphObj = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+			var graphObj = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
 
 			if(graphObj["rdf:type"] != undefined && graphObj["@type"] == undefined){
 				if(graphObj["rdf:type"]["@id"] == undefined){

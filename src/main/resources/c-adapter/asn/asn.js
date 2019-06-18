@@ -39,7 +39,7 @@ function cassFrameworkAsAsn() {
             competency = c;
         }
         if (competency != null) {
-            competency.context = "http://schema.cassproject.org/0.3/cass2asn";
+            competency.context = "https://schema.cassproject.org/0.4/cass2asn";
             return jsonLdToRdfJson(competency.toJson());
         }
     }
@@ -156,13 +156,13 @@ function cassFrameworkAsAsn() {
         delete competencies[allCompetencies[i]];
         if (c == null) continue;
         var id = c.id;
-        c.context = "http://schema.cassproject.org/0.3/cass2asn";
+        c.context = "https://schema.cassproject.org/0.4/cass2asn";
         if (c.type == null) //Already done / referred to by another name.
             continue;
         competencies[id] = JSON.parse(jsonLdToRdfJson(c.toJson()))[id];
     }
 
-    f.context = "http://schema.cassproject.org/0.3/cass2asn";
+    f.context = "https://schema.cassproject.org/0.4/cass2asn";
     delete f.relation;
     competencies[f.id] = JSON.parse(jsonLdToRdfJson(f.toJson()))[f.id];
     return JSON.stringify(competencies, null, 2);
@@ -281,14 +281,14 @@ function importFrameworkToCass(frameworkObj, competencyList) {
         error("Endpoint Configuration is not set.", 500);
 
     var asnToCassFrameworkContext = JSON.parse(JSON.stringify(asnContext));
-    asnToCassFrameworkContext["@vocab"] = "http://schema.cassproject.org/0.3/";
-    asnToCassFrameworkContext["asn:StandardDocument"] = "http://schema.cassproject.org/0.3/Framework";
+    asnToCassFrameworkContext["@vocab"] = "https://schema.cassproject.org/0.4/";
+    asnToCassFrameworkContext["asn:StandardDocument"] = "https://schema.cassproject.org/0.4/Framework";
     asnToCassFrameworkContext["dc:title"] = "http://schema.org/name";
     asnToCassFrameworkContext["dcterms:description"] = "http://schema.org/description";
     asnToCassFrameworkContext["sameAs"] = "http://schema.org/sameAs";
 
     var asnToCassCompetencyContext = JSON.parse(JSON.stringify(asnContext));
-    asnToCassCompetencyContext["asn:Statement"] = "http://schema.cassproject.org/0.3/Competency";
+    asnToCassCompetencyContext["asn:Statement"] = "https://schema.cassproject.org/0.4/Competency";
     asnToCassCompetencyContext["dcterms:description"] = "http://schema.org/name";
     asnToCassCompetencyContext["sameAs"] = "http://schema.org/sameAs";
 
@@ -335,7 +335,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
 
         var expandedComp = jsonLdExpand(JSON.stringify(newComp));
 
-        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "http://schema.cassproject.org/0.3");
+        var compactedComp = jsonLdCompact(JSON.stringify(expandedComp), "https://schema.cassproject.org/0.4");
 
         delete compactedComp["gemq:isChildOf"];
 
@@ -379,7 +379,7 @@ function importFrameworkToCass(frameworkObj, competencyList) {
 
         var expanded = jsonLdExpand(JSON.stringify(frameworkObj))[0];
 
-        var compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+        var compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
 
         delete compacted["gemq:hasChild"];
 
@@ -479,8 +479,9 @@ function importJsonLdGraph(graph, context) {
         var graphObj = graph[idx];
 
         if (context != undefined) {
-            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json") {
-                context = "http://schema.cassproject.org/0.3/ceasn2cassConcepts";
+            if (context == "http://credreg.net/ctdlasn/schema/context/json" || context == "http://credreg.net/ctdl/schema/context/json" 
+                || context == "https://credreg.net/ctdlasn/schema/context/json" || context == "https://credreg.net/ctdl/schema/context/json") {
+                context = "https://schema.cassproject.org/0.4/ceasn2cassConcepts";
             }
             if (context["schema"] == undefined) {
                 context["schema"] = "http://schema.org";
@@ -496,10 +497,10 @@ function importJsonLdGraph(graph, context) {
             var expanded = jsonLdExpand(JSON.stringify(graphObj))[0];
             var compacted;
             if (graphObj["@type"].indexOf("Concept") != -1) {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/skos/");
+                compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/skos/");
             }
             else {
-                compacted = jsonLdCompact(JSON.stringify(expanded), "http://schema.cassproject.org/0.3/");
+                compacted = jsonLdCompact(JSON.stringify(expanded), "https://schema.cassproject.org/0.4/");
             }
         }
 
@@ -509,7 +510,7 @@ function importJsonLdGraph(graph, context) {
 
         if (type == "ConceptScheme") {
             conceptSchemeGuid = guid;
-            objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
+            objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
             objToSave = new EcConceptScheme();
             objToSave.copyFrom(compacted);
             objToSave.addOwner(skosIdentity.ppk.toPk());
@@ -544,7 +545,7 @@ function importJsonLdGraph(graph, context) {
             repo.saveTo(objToSave, print, print);
         }
         else if (type == "Concept") {
-            objToSave["@context"] = "http://schema.cassproject.org/0.3/skos/";
+            objToSave["@context"] = "https://schema.cassproject.org/0.4/skos/";
             objToSave = new EcConcept();
             objToSave.copyFrom(compacted);
             objToSave.addOwner(skosIdentity.ppk.toPk());

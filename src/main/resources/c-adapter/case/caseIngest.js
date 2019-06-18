@@ -1,4 +1,4 @@
-var caseToCassSchema = "http://schema.cassproject.org/0.3/case2cass";
+var caseToCassSchema = "https://schema.cassproject.org/0.4/case2cass";
 
 var caseInterface = {
     CFDocuments: function () {
@@ -40,7 +40,7 @@ var caseInterface = {
 }
 
 stripCassNamespace = function (o) {
-    if (typeof o["@context"] === "string" && o["@context"].indexOf("http://schema.cassproject.org") == -1)
+    if (typeof o["@context"] === "string" && o["@context"].indexOf("://schema.cassproject.org") == -1)
         return o;
     var keys = EcObject.keys(o);
     for (var i = 0; i < keys.length; i++) {
@@ -135,7 +135,7 @@ embedCFPackageIntoFramework = function(f,document){
 
 var cassContext = null;
 ingestCase = function () {
-    cassContext = JSON.stringify(JSON.parse(httpGet("http://schema.cassproject.org/0.3/",{"Accept":"application/json"}))["@context"]);
+    cassContext = JSON.stringify(JSON.parse(httpGet("https://schema.cassproject.org/0.4/",{"Accept":"application/json"}))["@context"]);
     var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
 
     var caseIdentity = new EcIdentity();
