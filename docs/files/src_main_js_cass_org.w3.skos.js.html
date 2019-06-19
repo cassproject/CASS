@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.11</em>
+            <em>API Docs for: 1.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -856,7 +856,7 @@ var Collection = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, &quot;http://schema.cassproject.org/0.3/skos/&quot;, &quot;Collection&quot;);
+    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;Collection&quot;);
 };
 Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
@@ -879,12 +879,13 @@ var Concept = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.3/skos/&quot;, &quot;Concept&quot;);
+    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;Concept&quot;);
 };
 Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.cassproject.org/0.3/skos/Concept&quot;;
     constructor.TYPE_0_2 = &quot;https://schema.cassproject.org/0.3/skos/Concept&quot;;
-    constructor.myType = Concept.TYPE_0_2;
+    constructor.TYPE_0_3 = &quot;https://schema.cassproject.org/0.4/skos/Concept&quot;;
+    constructor.myType = Concept.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/topConceptOf
      *  Relates a concept to the concept scheme that it is a top level concept of.
@@ -904,9 +905,13 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
         if (Concept.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType(&quot;https://schema.cassproject.org/0.3/skos&quot;, Concept.TYPE_0_2);
         }
+        if (Concept.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(&quot;https://schema.cassproject.org/0.4/skos&quot;, Concept.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Concept.TYPE_0_3);
         a.push(Concept.TYPE_0_2);
         a.push(Concept.TYPE_0_1);
         return a;
@@ -925,12 +930,13 @@ var ConceptScheme = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.3/skos/&quot;, &quot;ConceptScheme&quot;);
+    EcRemoteLinkedData.call(this, &quot;https://schema.cassproject.org/0.4/skos/&quot;, &quot;ConceptScheme&quot;);
 };
 ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = &quot;http://schema.cassproject.org/0.3/skos/ConceptScheme&quot;;
     constructor.TYPE_0_2 = &quot;https://schema.cassproject.org/0.3/skos/ConceptScheme&quot;;
-    constructor.myType = ConceptScheme.TYPE_0_2;
+    constructor.TYPE_0_3 = &quot;https://schema.cassproject.org/0.4/skos/ConceptScheme&quot;;
+    constructor.myType = ConceptScheme.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/hasTopConcept
      *  Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.
@@ -943,9 +949,13 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
         if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType(&quot;https://schema.cassproject.org/0.3/skos&quot;, ConceptScheme.TYPE_0_2);
         }
+        if (ConceptScheme.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType(&quot;https://schema.cassproject.org/0.4/skos&quot;, ConceptScheme.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(ConceptScheme.TYPE_0_3);
         a.push(ConceptScheme.TYPE_0_2);
         a.push(ConceptScheme.TYPE_0_1);
         return a;
@@ -966,7 +976,7 @@ var OrderedCollection = /**
  */
 function() {
     Collection.call(this);
-    this.context = &quot;http://schema.cassproject.org/0.3/skos/&quot;;
+    this.context = &quot;https://schema.cassproject.org/0.4/skos/&quot;;
     this.type = &quot;OrderedCollection&quot;;
 };
 OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(constructor, prototype) {

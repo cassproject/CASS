@@ -27,12 +27,13 @@
  *  @module org.cassproject
  */
 var EbacCredential = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_4);
 };
 EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credential";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credential";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Credential";
     /**
      *  AES Initialization Vector used to decode PPK. Base64 encoded.
      * 
@@ -72,9 +73,13 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
         if (EbacCredential.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredential.TYPE_0_3);
         }
+        if (EbacCredential.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredential.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredential.TYPE_0_4);
         a.push(EbacCredential.TYPE_0_3);
         a.push(EbacCredential.TYPE_0_2);
         a.push(EbacCredential.TYPE_0_1);
@@ -91,12 +96,13 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
  *  @module org.cassproject
  */
 var EbacCredentialRequest = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_4);
 };
 EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialRequest";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialRequest";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialRequest";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/CredentialRequest";
     /**
      *  Hashed username.
      * 
@@ -122,9 +128,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
         if (EbacCredentialRequest.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentialRequest.TYPE_0_3);
         }
+        if (EbacCredentialRequest.TYPE_0_3 == this.getFullType()) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentialRequest.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialRequest.TYPE_0_4);
         a.push(EbacCredentialRequest.TYPE_0_3);
         a.push(EbacCredentialRequest.TYPE_0_2);
         a.push(EbacCredentialRequest.TYPE_0_1);
@@ -140,12 +150,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
  *  @module org.cassproject
  */
 var EbacCredentials = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_4);
 };
 EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credentials";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Credentials";
     /**
      *  One time pad that may be used in password recovery. Base64 encoded.
      * 
@@ -185,9 +196,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
         if (EbacCredentials.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentials.TYPE_0_3);
         }
+        if (EbacCredentials.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentials.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentials.TYPE_0_4);
         a.push(EbacCredentials.TYPE_0_3);
         a.push(EbacCredentials.TYPE_0_2);
         a.push(EbacCredentials.TYPE_0_1);
@@ -204,12 +219,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
  *  @module org.cassproject
  */
 var EbacContact = function() {
-    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_4);
 };
 EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Contact";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Contact";
     /**
      *  AES Initialization Vector used to decode PPK. Base64 encoded.
      * 
@@ -263,9 +279,13 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
         if (EbacContact.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacContact.TYPE_0_3);
         }
+        if (EbacContact.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacContact.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContact.TYPE_0_4);
         a.push(EbacContact.TYPE_0_3);
         a.push(EbacContact.TYPE_0_2);
         a.push(EbacContact.TYPE_0_1);
@@ -287,12 +307,13 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
  *  @module org.cassproject
  */
 var EbacEncryptedSecret = function() {
-    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_4);
 };
 EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedSecret";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedSecret";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedSecret";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/EncryptedSecret";
     /**
      *  IV used to encrypt/decrypt payload. Base64 encoded.
      * 
@@ -369,9 +390,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
         if (EbacEncryptedSecret.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacEncryptedSecret.TYPE_0_3);
         }
+        if (EbacEncryptedSecret.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacEncryptedSecret.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedSecret.TYPE_0_4);
         a.push(EbacEncryptedSecret.TYPE_0_3);
         a.push(EbacEncryptedSecret.TYPE_0_2);
         a.push(EbacEncryptedSecret.TYPE_0_1);
@@ -387,12 +412,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
  *  @module org.cassproject
  */
 var EbacSignature = function() {
-    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_4);
 };
 EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/timeLimitedSignature";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/timeLimitedSignature";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/TimeLimitedSignature";
     /**
      *  The public key of the authorizing party in PEM format.
      * 
@@ -436,9 +462,13 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
         if (EbacSignature.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacSignature.TYPE_0_3);
         }
+        if (EbacSignature.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacSignature.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacSignature.TYPE_0_4);
         a.push(EbacSignature.TYPE_0_3);
         a.push(EbacSignature.TYPE_0_2);
         a.push(EbacSignature.TYPE_0_1);
@@ -459,7 +489,8 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedValue";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedValue";
-    constructor.myType = EbacEncryptedValue.TYPE_0_3;
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/EncryptedValue";
+    constructor.myType = EbacEncryptedValue.TYPE_0_4;
     /**
      *  Optional Hint used to aid in search.
      *  Displays the type of the encrypted object.
@@ -515,9 +546,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
         if (EbacEncryptedValue.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacEncryptedValue.TYPE_0_3);
         }
+        if (EbacEncryptedValue.TYPE_0_3 == this.getFullType()) {
+            this.setContextAndType(Ebac.context_0_4, EbacEncryptedValue.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedValue.TYPE_0_4);
         a.push(EbacEncryptedValue.TYPE_0_3);
         a.push(EbacEncryptedValue.TYPE_0_2);
         a.push(EbacEncryptedValue.TYPE_0_1);
@@ -535,12 +570,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
  *  @module org.cassproject
  */
 var EbacContactGrant = function() {
-    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_3);
+    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_4);
 };
 EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/contactGrant";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contactGrant";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/ContactGrant";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/ContactGrant";
     /**
      *  Public key being granted to the owner of this message.
      * 
@@ -588,9 +624,13 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
         if (EbacContactGrant.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacContactGrant.TYPE_0_3);
         }
+        if (EbacContactGrant.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacContactGrant.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContactGrant.TYPE_0_4);
         a.push(EbacContactGrant.TYPE_0_3);
         a.push(EbacContactGrant.TYPE_0_2);
         a.push(EbacContactGrant.TYPE_0_1);
@@ -608,13 +648,14 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
  *  @module org.cassproject
  */
 var EbacCredentialCommit = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_4);
     this.credentials = new EbacCredentials();
 };
 EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialCommit";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialCommit";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialCommit";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/CredentialCommit";
     /**
      *  Hashed username.
      * 
@@ -655,9 +696,13 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
         if (EbacCredentialCommit.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentialCommit.TYPE_0_3);
         }
+        if (EbacCredentialCommit.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentialCommit.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialCommit.TYPE_0_4);
         a.push(EbacCredentialCommit.TYPE_0_3);
         a.push(EbacCredentialCommit.TYPE_0_2);
         a.push(EbacCredentialCommit.TYPE_0_1);

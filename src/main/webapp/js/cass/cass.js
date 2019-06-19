@@ -41069,6 +41069,7 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
     constructor.context_0_1 = "http://schema.eduworks.com/ebac/0.1";
     constructor.context_0_2 = "http://schema.eduworks.com/ebac/0.2";
     constructor.context_0_3 = "http://schema.cassproject.org/kbac/0.2";
+    constructor.context_0_4 = "https://schema.cassproject.org/kbac/0.4";
     /**
      *  Current version of KBAC.
      * 
@@ -41076,7 +41077,7 @@ Ebac = stjs.extend(Ebac, null, [], function(constructor, prototype) {
      *  @static
      *  @type string (URL)
      */
-    constructor.context = "http://schema.cassproject.org/kbac/0.2";
+    constructor.context = Ebac.context_0_4;
 }, {}, {});
 /**
  *  Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for
@@ -64046,7 +64047,7 @@ var Collection = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "Collection");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "Collection");
 };
 Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
@@ -64069,12 +64070,13 @@ var Concept = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "Concept");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "Concept");
 };
 Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/Concept";
     constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/Concept";
-    constructor.myType = Concept.TYPE_0_2;
+    constructor.TYPE_0_3 = "https://schema.cassproject.org/0.4/skos/Concept";
+    constructor.myType = Concept.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/topConceptOf
      *  Relates a concept to the concept scheme that it is a top level concept of.
@@ -64094,9 +64096,13 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
         if (Concept.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", Concept.TYPE_0_2);
         }
+        if (Concept.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.4/skos", Concept.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Concept.TYPE_0_3);
         a.push(Concept.TYPE_0_2);
         a.push(Concept.TYPE_0_1);
         return a;
@@ -64115,12 +64121,13 @@ var ConceptScheme = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "ConceptScheme");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "ConceptScheme");
 };
 ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/ConceptScheme";
     constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/ConceptScheme";
-    constructor.myType = ConceptScheme.TYPE_0_2;
+    constructor.TYPE_0_3 = "https://schema.cassproject.org/0.4/skos/ConceptScheme";
+    constructor.myType = ConceptScheme.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/hasTopConcept
      *  Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.
@@ -64133,9 +64140,13 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
         if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", ConceptScheme.TYPE_0_2);
         }
+        if (ConceptScheme.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.4/skos", ConceptScheme.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(ConceptScheme.TYPE_0_3);
         a.push(ConceptScheme.TYPE_0_2);
         a.push(ConceptScheme.TYPE_0_1);
         return a;
@@ -64156,7 +64167,7 @@ var OrderedCollection = /**
  */
 function() {
     Collection.call(this);
-    this.context = "http://schema.cassproject.org/0.3/skos/";
+    this.context = "https://schema.cassproject.org/0.4/skos/";
     this.type = "OrderedCollection";
 };
 OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(constructor, prototype) {
@@ -64178,12 +64189,13 @@ OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(cons
  *  @module org.cassproject
  */
 var EbacCredential = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredential.TYPE_0_4);
 };
 EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credential";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credential";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credential";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Credential";
     /**
      *  AES Initialization Vector used to decode PPK. Base64 encoded.
      * 
@@ -64223,9 +64235,13 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
         if (EbacCredential.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredential.TYPE_0_3);
         }
+        if (EbacCredential.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredential.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredential.TYPE_0_4);
         a.push(EbacCredential.TYPE_0_3);
         a.push(EbacCredential.TYPE_0_2);
         a.push(EbacCredential.TYPE_0_1);
@@ -64242,12 +64258,13 @@ EbacCredential = stjs.extend(EbacCredential, EcLinkedData, [], function(construc
  *  @module org.cassproject
  */
 var EbacCredentialRequest = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialRequest.TYPE_0_4);
 };
 EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialRequest";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialRequest";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialRequest";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/CredentialRequest";
     /**
      *  Hashed username.
      * 
@@ -64273,9 +64290,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
         if (EbacCredentialRequest.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentialRequest.TYPE_0_3);
         }
+        if (EbacCredentialRequest.TYPE_0_3 == this.getFullType()) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentialRequest.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialRequest.TYPE_0_4);
         a.push(EbacCredentialRequest.TYPE_0_3);
         a.push(EbacCredentialRequest.TYPE_0_2);
         a.push(EbacCredentialRequest.TYPE_0_1);
@@ -64291,12 +64312,13 @@ EbacCredentialRequest = stjs.extend(EbacCredentialRequest, EcLinkedData, [], fun
  *  @module org.cassproject
  */
 var EbacCredentials = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentials.TYPE_0_4);
 };
 EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentials";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentials";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Credentials";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Credentials";
     /**
      *  One time pad that may be used in password recovery. Base64 encoded.
      * 
@@ -64336,9 +64358,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
         if (EbacCredentials.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentials.TYPE_0_3);
         }
+        if (EbacCredentials.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentials.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentials.TYPE_0_4);
         a.push(EbacCredentials.TYPE_0_3);
         a.push(EbacCredentials.TYPE_0_2);
         a.push(EbacCredentials.TYPE_0_1);
@@ -64355,12 +64381,13 @@ EbacCredentials = stjs.extend(EbacCredentials, EcLinkedData, [], function(constr
  *  @module org.cassproject
  */
 var EbacContact = function() {
-    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacContact.TYPE_0_4);
 };
 EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contact";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/Contact";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/Contact";
     /**
      *  AES Initialization Vector used to decode PPK. Base64 encoded.
      * 
@@ -64414,9 +64441,13 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
         if (EbacContact.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacContact.TYPE_0_3);
         }
+        if (EbacContact.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacContact.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContact.TYPE_0_4);
         a.push(EbacContact.TYPE_0_3);
         a.push(EbacContact.TYPE_0_2);
         a.push(EbacContact.TYPE_0_1);
@@ -64438,12 +64469,13 @@ EbacContact = stjs.extend(EbacContact, EcLinkedData, [], function(constructor, p
  *  @module org.cassproject
  */
 var EbacEncryptedSecret = function() {
-    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacEncryptedSecret.TYPE_0_4);
 };
 EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedSecret";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedSecret";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedSecret";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/EncryptedSecret";
     /**
      *  IV used to encrypt/decrypt payload. Base64 encoded.
      * 
@@ -64520,9 +64552,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
         if (EbacEncryptedSecret.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacEncryptedSecret.TYPE_0_3);
         }
+        if (EbacEncryptedSecret.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacEncryptedSecret.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedSecret.TYPE_0_4);
         a.push(EbacEncryptedSecret.TYPE_0_3);
         a.push(EbacEncryptedSecret.TYPE_0_2);
         a.push(EbacEncryptedSecret.TYPE_0_1);
@@ -64538,12 +64574,13 @@ EbacEncryptedSecret = stjs.extend(EbacEncryptedSecret, EcLinkedData, [], functio
  *  @module org.cassproject
  */
 var EbacSignature = function() {
-    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacSignature.TYPE_0_4);
 };
 EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/timeLimitedSignature";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/timeLimitedSignature";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/TimeLimitedSignature";
     /**
      *  The public key of the authorizing party in PEM format.
      * 
@@ -64587,9 +64624,13 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
         if (EbacSignature.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacSignature.TYPE_0_3);
         }
+        if (EbacSignature.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacSignature.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacSignature.TYPE_0_4);
         a.push(EbacSignature.TYPE_0_3);
         a.push(EbacSignature.TYPE_0_2);
         a.push(EbacSignature.TYPE_0_1);
@@ -64610,7 +64651,8 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/encryptedValue";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/encryptedValue";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/EncryptedValue";
-    constructor.myType = EbacEncryptedValue.TYPE_0_3;
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/EncryptedValue";
+    constructor.myType = EbacEncryptedValue.TYPE_0_4;
     /**
      *  Optional Hint used to aid in search.
      *  Displays the type of the encrypted object.
@@ -64666,9 +64708,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
         if (EbacEncryptedValue.TYPE_0_2 == this.getFullType()) {
             this.setContextAndType(Ebac.context_0_3, EbacEncryptedValue.TYPE_0_3);
         }
+        if (EbacEncryptedValue.TYPE_0_3 == this.getFullType()) {
+            this.setContextAndType(Ebac.context_0_4, EbacEncryptedValue.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacEncryptedValue.TYPE_0_4);
         a.push(EbacEncryptedValue.TYPE_0_3);
         a.push(EbacEncryptedValue.TYPE_0_2);
         a.push(EbacEncryptedValue.TYPE_0_1);
@@ -64686,12 +64732,13 @@ EbacEncryptedValue = stjs.extend(EbacEncryptedValue, EcRemoteLinkedData, [], fun
  *  @module org.cassproject
  */
 var EbacContactGrant = function() {
-    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_3);
+    EcRemoteLinkedData.call(this, Ebac.context, EbacContactGrant.TYPE_0_4);
 };
 EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/contactGrant";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/contactGrant";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/ContactGrant";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/ContactGrant";
     /**
      *  Public key being granted to the owner of this message.
      * 
@@ -64739,9 +64786,13 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
         if (EbacContactGrant.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacContactGrant.TYPE_0_3);
         }
+        if (EbacContactGrant.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacContactGrant.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacContactGrant.TYPE_0_4);
         a.push(EbacContactGrant.TYPE_0_3);
         a.push(EbacContactGrant.TYPE_0_2);
         a.push(EbacContactGrant.TYPE_0_1);
@@ -64759,13 +64810,14 @@ EbacContactGrant = stjs.extend(EbacContactGrant, EcRemoteLinkedData, [], functio
  *  @module org.cassproject
  */
 var EbacCredentialCommit = function() {
-    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_3);
+    EcLinkedData.call(this, Ebac.context, EbacCredentialCommit.TYPE_0_4);
     this.credentials = new EbacCredentials();
 };
 EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.eduworks.com/ebac/0.1/credentialCommit";
     constructor.TYPE_0_2 = "http://schema.eduworks.com/ebac/0.2/credentialCommit";
     constructor.TYPE_0_3 = "http://schema.cassproject.org/kbac/0.2/CredentialCommit";
+    constructor.TYPE_0_4 = "https://schema.cassproject.org/kbac/0.4/CredentialCommit";
     /**
      *  Hashed username.
      * 
@@ -64806,9 +64858,13 @@ EbacCredentialCommit = stjs.extend(EbacCredentialCommit, EcLinkedData, [], funct
         if (EbacCredentialCommit.TYPE_0_2.equals(this.getFullType())) {
             this.setContextAndType(Ebac.context_0_3, EbacCredentialCommit.TYPE_0_3);
         }
+        if (EbacCredentialCommit.TYPE_0_3.equals(this.getFullType())) {
+            this.setContextAndType(Ebac.context_0_4, EbacCredentialCommit.TYPE_0_4);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(EbacCredentialCommit.TYPE_0_4);
         a.push(EbacCredentialCommit.TYPE_0_3);
         a.push(EbacCredentialCommit.TYPE_0_2);
         a.push(EbacCredentialCommit.TYPE_0_1);
@@ -64829,8 +64885,8 @@ Cass = stjs.extend(Cass, null, [], function(constructor, prototype) {
     constructor.context_0_3 = "http://schema.cassproject.org/0.2";
     constructor.context_0_4 = "http://schema.cassproject.org/0.3";
     constructor.context_0_5 = "https://schema.cassproject.org/0.3";
-    constructor.context_0_6 = "http://schema.cassproject.org/0.4";
-    constructor.context = Cass.context_0_5;
+    constructor.context_0_6 = "https://schema.cassproject.org/0.4";
+    constructor.context = Cass.context_0_6;
 }, {}, {});
 var AssertionCodebook = function() {};
 AssertionCodebook = stjs.extend(AssertionCodebook, null, [], function(constructor, prototype) {
@@ -64861,7 +64917,8 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Competency";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Competency";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Competency";
-    constructor.myType = Competency.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/Competency";
+    constructor.myType = Competency.TYPE_0_6;
     /**
      *  Scope in which the competency may be applied. e.g. Underwater.
      * 
@@ -64890,9 +64947,13 @@ Competency = stjs.extend(Competency, CreativeWork, [], function(constructor, pro
         if (Competency.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, Competency.TYPE_0_5);
         }
+        if (Competency.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, Competency.TYPE_0_6);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Competency.TYPE_0_6);
         a.push(Competency.TYPE_0_5);
         a.push(Competency.TYPE_0_4);
         a.push(Competency.TYPE_0_3);
@@ -64919,7 +64980,8 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Level";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Level";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Level";
-    constructor.myType = Level.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/Level";
+    constructor.myType = Level.TYPE_0_6;
     /**
      *  Specifies the URL of the competency this level relates to.
      * 
@@ -64959,9 +65021,13 @@ Level = stjs.extend(Level, CreativeWork, [], function(constructor, prototype) {
         if (Level.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, Level.TYPE_0_5);
         }
+        if (Level.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, Level.TYPE_0_6);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Level.TYPE_0_6);
         a.push(Level.TYPE_0_5);
         a.push(Level.TYPE_0_4);
         a.push(Level.TYPE_0_3);
@@ -64987,7 +65053,8 @@ RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, pro
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/RollupRule";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/RollupRule";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/RollupRule";
-    constructor.myType = RollupRule.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/RollupRule";
+    constructor.myType = RollupRule.TYPE_0_6;
     /**
      *  The rollup rule encoded as source code that is understandable to the assertion processor.
      * 
@@ -65013,9 +65080,13 @@ RollupRule = stjs.extend(RollupRule, CreativeWork, [], function(constructor, pro
         if (RollupRule.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, RollupRule.TYPE_0_5);
         }
+        if (RollupRule.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, RollupRule.TYPE_0_6);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(RollupRule.TYPE_0_6);
         a.push(RollupRule.TYPE_0_5);
         a.push(RollupRule.TYPE_0_4);
         a.push(RollupRule.TYPE_0_3);
@@ -65041,7 +65112,8 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Framework";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Framework";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Framework";
-    constructor.myType = Framework.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/Framework";
+    constructor.myType = Framework.TYPE_0_6;
     /**
      *  URLs of competencies included in this framework.
      * 
@@ -65087,9 +65159,13 @@ Framework = stjs.extend(Framework, CreativeWork, [], function(constructor, proto
         if (Framework.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, Framework.TYPE_0_5);
         }
+        if (Framework.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, Framework.TYPE_0_6);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Framework.TYPE_0_6);
         a.push(Framework.TYPE_0_5);
         a.push(Framework.TYPE_0_4);
         a.push(Framework.TYPE_0_3);
@@ -65172,7 +65248,8 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Relation";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Relation";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Relation";
-    constructor.myType = Relation.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/Relation";
+    constructor.myType = Relation.TYPE_0_6;
     /**
      *  URL of the object at the beginning of the relation.
      *  A <relation> B, this is A.
@@ -65230,9 +65307,13 @@ Relation = stjs.extend(Relation, CreativeWork, [], function(constructor, prototy
         if (Relation.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, Relation.TYPE_0_5);
         }
+        if (Relation.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, Relation.TYPE_0_6);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Relation.TYPE_0_6);
         a.push(Relation.TYPE_0_5);
         a.push(Relation.TYPE_0_4);
         a.push(Relation.TYPE_0_3);
@@ -65259,7 +65340,8 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     constructor.TYPE_0_3 = "http://schema.cassproject.org/0.2/Assertion";
     constructor.TYPE_0_4 = "http://schema.cassproject.org/0.3/Assertion";
     constructor.TYPE_0_5 = "https://schema.cassproject.org/0.3/Assertion";
-    constructor.myType = Assertion.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/Assertion";
+    constructor.myType = Assertion.TYPE_0_6;
     constructor.codebooks = null;
     /**
      *  URL of the competency.
@@ -65515,6 +65597,9 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
         if (Assertion.TYPE_0_4.equals(this.getFullType())) {
             this.setContextAndType(Cass.context_0_5, Assertion.TYPE_0_5);
         }
+        if (Assertion.TYPE_0_5.equals(this.getFullType())) {
+            this.setContextAndType(Cass.context_0_6, Assertion.TYPE_0_6);
+        }
         this.agent = EcEncryptedValue.revive(this.agent);
         this.subject = EcEncryptedValue.revive(this.subject);
         this.assertionDate = EcEncryptedValue.revive(this.assertionDate);
@@ -65528,6 +65613,7 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Assertion.TYPE_0_6);
         a.push(Assertion.TYPE_0_5);
         a.push(Assertion.TYPE_0_4);
         a.push(Assertion.TYPE_0_3);
@@ -65551,11 +65637,12 @@ Assertion = stjs.extend(Assertion, CreativeWork, [], function(constructor, proto
  */
 var AssertionEnvelope = function() {
     CreativeWork.call(this);
-    this.setContextAndType(Cass.context_0_6, AssertionEnvelope.myType);
+    this.setContextAndType(Cass.context, AssertionEnvelope.myType);
 };
 AssertionEnvelope = stjs.extend(AssertionEnvelope, CreativeWork, [], function(constructor, prototype) {
     constructor.TYPE_0_5 = "http://schema.cassproject.org/0.4/AssertionEnvelope";
-    constructor.myType = AssertionEnvelope.TYPE_0_5;
+    constructor.TYPE_0_6 = "https://schema.cassproject.org/0.4/AssertionEnvelope";
+    constructor.myType = AssertionEnvelope.TYPE_0_6;
     /**
      *  List of assertions to pack in the envelope.
      * 
@@ -68917,8 +69004,9 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
             }, function(p1) {
                 EcRepository.find(originalUrl, p1, new Object(), 0, success, failure);
             });
-        } else 
-            EcIdentityManager.signatureSheetAsync(60000, url, function(p1) {
+        } else {
+            var offset = EcRepository.setOffset(url);
+            EcIdentityManager.signatureSheetAsync(60000 + offset, url, function(p1) {
                 if ((EcRepository.cache)[originalUrl] != null) {
                     delete (EcRepository.fetching)[originalUrl];
                     success((EcRepository.cache)[originalUrl]);
@@ -68931,6 +69019,16 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     EcRepository.find(originalUrl, p1, new Object(), 0, success, failure);
                 });
             }, failure);
+        }
+    };
+    constructor.setOffset = function(url) {
+        var offset = 0;
+        for (var i = 0; i < EcRepository.repos.length; i++) {
+            if (url.indexOf(EcRepository.repos[i].selectedServer) != -1) {
+                offset = EcRepository.repos[i].timeOffset;
+            }
+        }
+        return offset;
     };
     constructor.getHandleData = function(p1, originalUrl, success, failure, finalUrl) {
         delete (EcRepository.fetching)[originalUrl];
@@ -69069,7 +69167,8 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         var fd = new FormData();
         var p1 = null;
         if (EcRepository.unsigned == false) {
-            p1 = EcIdentityManager.signatureSheet(60000, originalUrl);
+            var offset = EcRepository.setOffset(url);
+            p1 = EcIdentityManager.signatureSheet(60000 + offset, originalUrl);
             fd.append("signatureSheet", p1);
         }
         var oldAsync = EcRemote.async;
@@ -69329,18 +69428,24 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                     }
             EcRemote.postExpectingString(data.id, "", fd, success, failure);
         };
+        var offset = 0;
+        if (repo == null) {
+            offset = EcRepository.setOffset(data.id);
+        } else {
+            offset = repo.timeOffset;
+        }
         if (EcRemote.async == false) {
             var signatureSheet;
             if (data.owner != null && data.owner.length > 0) {
-                signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000 + (repo == null ? 0 : repo.timeOffset), data.id);
+                signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000 + offset, data.id);
             } else {
-                signatureSheet = EcIdentityManager.signatureSheet(60000 + (repo == null ? 0 : repo.timeOffset), data.id);
+                signatureSheet = EcIdentityManager.signatureSheet(60000 + offset, data.id);
             }
             afterSignatureSheet(signatureSheet);
         } else if (data.owner != null && data.owner.length > 0) {
-            EcIdentityManager.signatureSheetForAsync(data.owner, 60000 + (repo == null ? 0 : repo.timeOffset), data.id, afterSignatureSheet, failure);
+            EcIdentityManager.signatureSheetForAsync(data.owner, 60000 + offset, data.id, afterSignatureSheet, failure);
         } else {
-            EcIdentityManager.signatureSheetAsync(60000 + (repo == null ? 0 : repo.timeOffset), data.id, afterSignatureSheet, failure);
+            EcIdentityManager.signatureSheetAsync(60000 + offset, data.id, afterSignatureSheet, failure);
         }
     };
     /**
@@ -69383,9 +69488,10 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
         }
         var targetUrl;
         targetUrl = data.shortId();
+        var offset = EcRepository.setOffset(data.id);
         if (data.owner != null && data.owner.length > 0) {
             if (EcRemote.async) {
-                EcIdentityManager.signatureSheetForAsync(data.owner, 60000, data.id, function(signatureSheet) {
+                EcIdentityManager.signatureSheetForAsync(data.owner, 60000 + offset, data.id, function(signatureSheet) {
                     if (signatureSheet.length == 2) {
                         for (var i = 0; i < EcRepository.repos.length; i++) {
                             if (data.id.indexOf(EcRepository.repos[i].selectedServer) != -1) {
@@ -69398,7 +69504,7 @@ EcRepository = stjs.extend(EcRepository, null, [], function(constructor, prototy
                         EcRemote._delete(targetUrl, signatureSheet, success, failure);
                 }, failure);
             } else {
-                var signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000, data.id);
+                var signatureSheet = EcIdentityManager.signatureSheetFor(data.owner, 60000 + offset, data.id);
                 if (signatureSheet.length == 2) {
                     for (var i = 0; i < EcRepository.repos.length; i++) {
                         if (data.id.indexOf(EcRepository.repos[i].selectedServer) != -1) {

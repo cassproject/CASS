@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.11",
+        "version": "1.2.12",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -957,7 +957,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 61,
+            "line": 62,
             "description": "Location of strings that store the current namespace for EBAC/KBAC.",
             "author": "devlin.junker@eduworks.com",
             "is_constructor": 1,
@@ -1747,7 +1747,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 128,
+            "line": 138,
             "description": "www.w3.org/2004/02/skos/core/Collection\nA meaningful collection of concepts.\nLabelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy."
         }
     },
@@ -1778,7 +1778,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.adapter.js",
-            "line": 103,
+            "line": 106,
             "description": "Object that holds the xAPI Adapter configuration values returned\nfrom the server and provides methods for saving new config values",
             "author": "devlin.junker@eduworks.com"
         },
@@ -1928,7 +1928,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1052,
+            "line": 1070,
             "description": "Import methods to handle an ASN JSON file containing a framework,\ncompetencies and relationships, and store them in a CASS instance",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1943,7 +1943,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1415,
+            "line": 1433,
             "description": "Importer methods to create competencies based on a\nMedbiquitous competency XML file",
             "author": "fritz.ray@eduworks.com"
         },
@@ -1958,7 +1958,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1582,
+            "line": 1600,
             "description": "Export methods to handle exporting two CSV file , one of competencies\nand one of relationships representing a framework",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2153,7 +2153,7 @@
             "module": "com.eduworks.ec",
             "namespace": "",
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2319,
+            "line": 2338,
             "description": "Implementation of a file with methods for communicating with repository services",
             "author": "devlin.junker@eduworks.com"
         },
@@ -2627,7 +2627,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 106,
+            "line": 111,
             "description": "When an individual's performance in a competency can be measured, a level specifies milestones that an individual can reach, creating fine-grained distinction between the proficient and the adept.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2643,7 +2643,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 175,
+            "line": 185,
             "description": "A segment of script that defines in a domain specific language how competence is transferred from one competency to another.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2659,7 +2659,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 228,
+            "line": 243,
             "description": "A Competency Framework or simply Framework is a collection of competencies and relations between competencies in the framework and potentially between competencies in the framework and competencies in other frameworks. In practice, a Framework represents competencies related to a specific job, task, organization, career, knowledge domain, etc.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2675,7 +2675,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 303,
+            "line": 323,
             "description": "A relation between two objects.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2691,7 +2691,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 446,
+            "line": 471,
             "description": "A claim of competence in CASS is called an Assertion. It states with some confidence that an individual has mastered a competency at a given level, provides evidence of such mastery, and records data such as the time of assertion and the party making the assertion.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2707,7 +2707,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 746,
+            "line": 776,
             "description": "Container for storing assertions and the secrets used to decrypt those assertions.",
             "author": "fritz.ray@eduworks.com",
             "extends": "CreativeWork"
@@ -2738,7 +2738,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 84,
+            "line": 89,
             "description": "Message used to retrieve credentials from a remote system.\n<p>\nTODO: Vulnerable to replay attacks.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2753,7 +2753,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 134,
+            "line": 144,
             "description": "Credential list along with one time pad and session-based token for use in\ncommit actions.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2768,7 +2768,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 197,
+            "line": 212,
             "description": "AES encrypted public key and display name. Contains Initialization Vectors,\nbut not secrets. Used to encrypt public identities for storage on remote\nsystems.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2783,7 +2783,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 275,
+            "line": 295,
             "description": "Component of EbacEncryptedValue that contains data needed to decrypt\nencrypted payload. Is, itself, encrypted.\n<p>\nAlso contains data used to verify that encrypted-data substitution attacks\nwere not performed on the data.\n<p>\nMust be encryptable by RSA-2048, therefore, serialized form must less than 256\nbytes.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2798,7 +2798,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 381,
+            "line": 406,
             "description": "Signature used to authorize movement of data on behalf of a private-key\nholding owner.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2813,7 +2813,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 448,
+            "line": 478,
             "description": "Encrypted JSON-LD object or string.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2828,7 +2828,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 527,
+            "line": 562,
             "description": "AES encrypted public key and display name message.\nUsed to grant access to a contact.\nContains Initialization Vectors, but not secrets.\nUsed to encrypt public identities for storage on remote systems.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2843,7 +2843,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 600,
+            "line": 640,
             "description": "Message used to commit credentials to a remote login server.\n<p>\nTODO: Vulnerable to replay attacks. Token field prevents some replay\nattacks.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2888,7 +2888,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 61,
+            "line": 62,
             "description": "Data wrapper to represent remotely hosted data. Includes necessary KBAC fields for\npermission controls, signing, identifying and locating the object.",
             "author": "fritz.ray@eduworks.com",
             "extends": "EcLinkedData"
@@ -13463,7 +13463,7 @@
             "module": "org.w3.skos",
             "namespace": "",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 89,
+            "line": 94,
             "description": "www.w3.org/2004/02/skos/core/ConceptScheme\nA set of concepts, optionally including statements about semantic relationships between those concepts.\nA concept scheme may be defined to include concepts from different sources.",
             "author": "w3.org"
         },
@@ -13478,7 +13478,7 @@
             "module": "org.w3.skos",
             "namespace": "",
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 128,
+            "line": 138,
             "description": "www.w3.org/2004/02/skos/core/OrderedCollection\nAn ordered collection of concepts, where both the grouping and the ordering are meaningful.\nOrdered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a 'node label'.",
             "author": "w3.org",
             "extends": "Collection"
@@ -14939,7 +14939,7 @@
         },
         {
             "file": "src/main/js/cass/cass.adapter.js",
-            "line": 56,
+            "line": 57,
             "description": "Retrieves the Moodle adapter Encryption Key from the server to share frameworks with",
             "params": [
                 {
@@ -14967,7 +14967,7 @@
         },
         {
             "file": "src/main/js/cass/cass.adapter.js",
-            "line": 82,
+            "line": 84,
             "description": "Saves this config Objects configuration values to the server specified",
             "params": [
                 {
@@ -14994,7 +14994,7 @@
         },
         {
             "file": "src/main/js/cass/cass.adapter.js",
-            "line": 120,
+            "line": 123,
             "description": "Retrieves the adapter configuration values from the server",
             "params": [
                 {
@@ -15019,7 +15019,7 @@
         },
         {
             "file": "src/main/js/cass/cass.adapter.js",
-            "line": 137,
+            "line": 141,
             "description": "Saves this config Objects configuration values to the server specified",
             "params": [
                 {
@@ -16989,7 +16989,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 966,
+            "line": 984,
             "description": "Method to create competencies (and relationships if the parameters are passed in)\nbased on a CSV file and references to which columns correspond to which pieces\nof data.",
             "params": [
                 {
@@ -17039,7 +17039,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1078,
+            "line": 1096,
             "description": "Recursive function that looks through the file and saves each\ncompetency object in a map for use during importing. It also counts\nthe number of competencies and relationships that it finds",
             "params": [
                 {
@@ -17064,7 +17064,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1110,
+            "line": 1128,
             "description": "Does the actual legwork of looking for competencies and relationships.\n<p>\nThis function finds the framework information, and pulls out the competency\nobjects array to be scanned by asnJsonPrime",
             "params": [
                 {
@@ -17084,7 +17084,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1144,
+            "line": 1162,
             "description": "Analyzes an ASN File for competencies and relationships.\n<p>\nThis should be called before import, the success callback returns an object\nindicating the number of competencies and relationships found.",
             "params": [
                 {
@@ -17113,7 +17113,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1188,
+            "line": 1206,
             "description": "Method to import the competencies from an ASN JSON file,\nshould be called after analyzing the file",
             "params": [
                 {
@@ -17157,7 +17157,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1234,
+            "line": 1252,
             "description": "Handles creating the competencies found during analysis, iterates through the\ncompetency ASN objects saved and creates them in the CASS repository at the URL given.",
             "params": [
                 {
@@ -17198,7 +17198,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1304,
+            "line": 1322,
             "description": "Handles creating the relationships from the file analyzed earlier.\nRecursively travels through looking for the hasChild field and creates\nrelationships based off of that.",
             "params": [
                 {
@@ -17248,7 +17248,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1375,
+            "line": 1393,
             "description": "Handles creating the framework if the createFramework flag was set",
             "params": [
                 {
@@ -17283,7 +17283,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1434,
+            "line": 1452,
             "description": "Does the legwork of looking for competencies in the XML",
             "params": [
                 {
@@ -17303,7 +17303,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1453,
+            "line": 1471,
             "description": "Does the legwork of parsing the competencies out of the parsed XML",
             "params": [
                 {
@@ -17323,7 +17323,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1482,
+            "line": 1500,
             "description": "Analyzes a Medbiquitous XML file for competencies and saves them for use in the import process",
             "params": [
                 {
@@ -17352,7 +17352,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1521,
+            "line": 1539,
             "description": "Method for actually creating the competencies in the CASS repository after a\nMedbiquitous XML file has been parsed. Must be called after analyzeFile",
             "params": [
                 {
@@ -17392,7 +17392,7 @@
         },
         {
             "file": "src/main/js/cass/cass.import.js",
-            "line": 1604,
+            "line": 1622,
             "description": "Method to export the CSV files of competencies and relationships for a framework",
             "params": [
                 {
@@ -19865,7 +19865,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1148,
+            "line": 1159,
             "description": "Retrieves a piece of data synchronously from the server, blocking until\nit is returned",
             "params": [
                 {
@@ -19887,7 +19887,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1213,
+            "line": 1225,
             "description": "Escapes a search query",
             "params": [
                 {
@@ -19909,7 +19909,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1248,
+            "line": 1260,
             "description": "Attempts to save a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19937,7 +19937,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1265,
+            "line": 1277,
             "description": "Attempts to save a piece of data. If the @id of the data is not of this server, will register the data to the server.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19965,7 +19965,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1282,
+            "line": 1294,
             "description": "Attempts to save a piece of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -19993,7 +19993,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1322,
+            "line": 1334,
             "description": "Attempts to save many pieces of data. Does some checks before saving to\nensure the data is valid. This version does not send a console warning,\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20021,7 +20021,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1403,
+            "line": 1415,
             "description": "Attempts to save a piece of data without signing it.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20049,7 +20049,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1454,
+            "line": 1472,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20077,7 +20077,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1472,
+            "line": 1490,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20105,7 +20105,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1525,
+            "line": 1544,
             "description": "Attempts to delete a piece of data.\n<p>\nUses a signature sheet informed by the owner field of the data.",
             "params": [
                 {
@@ -20133,7 +20133,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1574,
+            "line": 1593,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20155,7 +20155,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1619,
+            "line": 1638,
             "description": "Retrieves data from the server and caches it for use later during the\napplication. This should be called before the data is needed if possible,\nso loading displays can be faster.",
             "params": [
                 {
@@ -20177,7 +20177,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1657,
+            "line": 1676,
             "description": "Returns an array of JSON-LD objects from the places designated by the given URIs.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20209,7 +20209,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1703,
+            "line": 1722,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20241,7 +20241,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1721,
+            "line": 1740,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20261,7 +20261,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1735,
+            "line": 1754,
             "description": "Search a repository for JSON-LD compatible data.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20298,7 +20298,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1845,
+            "line": 1864,
             "description": "Search a repository for JSON-LD compatible data synchronously.\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20323,7 +20323,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 1960,
+            "line": 1979,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20333,7 +20333,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2034,
+            "line": 2053,
             "description": "Searches known repository endpoints to set the server configuration for\nthis repositories instance",
             "memberof": "EcRepository",
             "itemtype": "method",
@@ -20343,7 +20343,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2105,
+            "line": 2124,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20366,7 +20366,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2151,
+            "line": 2170,
             "description": "Handles the actual detection of repository endpoint /ping service",
             "params": [
                 {
@@ -20389,7 +20389,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2194,
+            "line": 2213,
             "description": "Lists all types visible to the current user in the repository\n<p>\nUses a signature sheet gathered from {@link EcIdentityManager}.",
             "params": [
                 {
@@ -20411,7 +20411,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2214,
+            "line": 2233,
             "description": "Backs up the skyrepo elasticsearch database to the server backup directory",
             "params": [
                 {
@@ -20438,7 +20438,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2226,
+            "line": 2245,
             "description": "Restores the skyrepo elasticsearch backup from the server backup directory",
             "params": [
                 {
@@ -20465,7 +20465,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2238,
+            "line": 2257,
             "description": "Wipes all data from the the skyrepo elasticsearch, can only be restored by using backup restore",
             "params": [
                 {
@@ -20492,7 +20492,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2250,
+            "line": 2269,
             "description": "Handles the search results in search by params, before returning them\nwith the callback passed into search method",
             "params": [
                 {
@@ -20525,7 +20525,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2287,
+            "line": 2306,
             "description": "Fetches the admin keys from the server to compare for check if current\nuser is an admin user",
             "params": [
                 {
@@ -20547,7 +20547,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2332,
+            "line": 2351,
             "description": "Factory method for creating a file with certain values",
             "params": [
                 {
@@ -20579,7 +20579,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2354,
+            "line": 2373,
             "description": "Retrieves a file from the server specified by it's ID",
             "params": [
                 {
@@ -20607,7 +20607,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2388,
+            "line": 2407,
             "description": "Searches the repository given for files that match the query passed in",
             "params": [
                 {
@@ -20652,7 +20652,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2437,
+            "line": 2456,
             "description": "Saves this file in the repository using the repository web services",
             "params": [
                 {
@@ -20674,7 +20674,7 @@
         },
         {
             "file": "src/main/js/cass/ebac.repository.js",
-            "line": 2458,
+            "line": 2477,
             "description": "Deletes the file from the repository using repository web services",
             "params": [
                 {
@@ -29747,7 +29747,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 67,
+            "line": 68,
             "description": "Scope in which the competency may be applied. e.g. Underwater.",
             "itemtype": "property",
             "name": "scope",
@@ -29757,7 +29757,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 125,
+            "line": 131,
             "description": "Specifies the URL of the competency this level relates to.",
             "itemtype": "property",
             "name": "competency",
@@ -29767,7 +29767,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 132,
+            "line": 138,
             "description": "The title that one who holds this performance level may assume.",
             "itemtype": "property",
             "name": "title",
@@ -29777,7 +29777,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 139,
+            "line": 145,
             "description": "The performance characteristics required by this level in text form.\nFR - Represented by description.",
             "itemtype": "property",
             "name": "performance",
@@ -29787,7 +29787,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 193,
+            "line": 204,
             "description": "The rollup rule encoded as source code that is understandable to the assertion processor.",
             "itemtype": "property",
             "name": "rule",
@@ -29797,7 +29797,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 200,
+            "line": 211,
             "description": "Specifies the URL of the competency that the rollup rule pertains to.",
             "itemtype": "property",
             "name": "competency",
@@ -29807,7 +29807,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 247,
+            "line": 263,
             "description": "URLs of competencies included in this framework.",
             "itemtype": "property",
             "name": "competency",
@@ -29817,7 +29817,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 254,
+            "line": 270,
             "description": "URLs of relations included in this framework.",
             "itemtype": "property",
             "name": "relation",
@@ -29827,7 +29827,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 261,
+            "line": 277,
             "description": "URLs of levels included in this framework.",
             "itemtype": "property",
             "name": "level",
@@ -29837,7 +29837,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 268,
+            "line": 284,
             "description": "URLs of RollupRules included in this framework.",
             "itemtype": "property",
             "name": "rollupRule",
@@ -29847,7 +29847,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 316,
+            "line": 336,
             "description": "Relation type when one object enables the capability to obtain another.\nEnabling relations do not imply a requirement, but makes the acquisition of the source much easier.",
             "itemtype": "property",
             "name": "IS_ENABLED_BY",
@@ -29858,7 +29858,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 325,
+            "line": 345,
             "description": "Relation type when one object requires another.\nRequiring relations are strict.",
             "itemtype": "property",
             "name": "REQUIRES",
@@ -29869,7 +29869,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 334,
+            "line": 354,
             "description": "Relation type when one object desires another.\nDesire relations improve the range of applicability or improve performance of the source.",
             "itemtype": "property",
             "name": "DESIRES",
@@ -29880,7 +29880,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 343,
+            "line": 363,
             "description": "Relation type when one object is a subset of another.\nNarrows relations are strict, and represent a super/sub relation.",
             "itemtype": "property",
             "name": "NARROWS",
@@ -29891,7 +29891,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 352,
+            "line": 372,
             "description": "Relation type when one object is related to another.\nRelated relations provide linkages that do not necessarily carry information.\nRelated relations are bidirectional.",
             "itemtype": "property",
             "name": "IS_RELATED_TO",
@@ -29902,7 +29902,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 362,
+            "line": 382,
             "description": "Relation type when one object is equivalent to another.\nEquivalent relations define two objects that are effectively equivalent.\nEquivalent relations are bidirectional.",
             "itemtype": "property",
             "name": "IS_EQUIVALENT_TO",
@@ -29913,7 +29913,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 378,
+            "line": 399,
             "description": "URL of the object at the beginning of the relation.\nA <relation> B, this is A.",
             "itemtype": "property",
             "name": "source",
@@ -29923,7 +29923,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 386,
+            "line": 407,
             "description": "URL of the object at the end of the relation.\nA <relation> B, this is B.",
             "itemtype": "property",
             "name": "target",
@@ -29933,7 +29933,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 394,
+            "line": 415,
             "description": "URL or controlled vocabulary of the relation.\nA <relation> B, this is <relation>.",
             "itemtype": "property",
             "name": "relationType",
@@ -29943,7 +29943,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 402,
+            "line": 423,
             "description": "Date time in ISO 8601 format at which the relation may be observed.",
             "itemtype": "property",
             "name": "validFrom",
@@ -29953,7 +29953,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 409,
+            "line": 430,
             "description": "Date time in ISO 8601 format at which the relation may no longer be observed.",
             "itemtype": "property",
             "name": "validThrough",
@@ -29963,7 +29963,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 466,
+            "line": 492,
             "description": "URL of the competency.",
             "itemtype": "property",
             "name": "competency",
@@ -29973,7 +29973,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 473,
+            "line": 499,
             "description": "URL of the framework within which the assertion is restricted.",
             "itemtype": "property",
             "name": "framework",
@@ -29983,7 +29983,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 480,
+            "line": 506,
             "description": "URL of the level, or null if 'held with no performance expectations'.",
             "itemtype": "property",
             "name": "level",
@@ -29993,7 +29993,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 487,
+            "line": 513,
             "description": "Confidence with which the assertion was made.\nConfidence has many interpretations, one possibility is the probability that the individual could demonstrate the competency again.",
             "itemtype": "property",
             "name": "confidence",
@@ -30003,7 +30003,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 495,
+            "line": 521,
             "description": "Public Key in PEM format of the recipient of the assertion.",
             "itemtype": "property",
             "name": "subject",
@@ -30013,7 +30013,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 502,
+            "line": 528,
             "description": "Public Key in PEM format of the identity making the assertion.",
             "itemtype": "property",
             "name": "agent",
@@ -30023,7 +30023,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 509,
+            "line": 535,
             "description": "Encrypted evidence. May be a string, URL or schema.org/Thing.",
             "itemtype": "property",
             "name": "evidence",
@@ -30033,7 +30033,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 516,
+            "line": 542,
             "description": "Time that the assertion was made in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "assertionDate",
@@ -30043,7 +30043,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 523,
+            "line": 549,
             "description": "Time that the assertion expires, specified in milliseconds since the Unix Epoch.",
             "itemtype": "property",
             "name": "expirationDate",
@@ -30053,7 +30053,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 530,
+            "line": 556,
             "description": "Describes the slope of the line from the initial confidence at the assertion date and the expiration date. t is a number between [0,1] representing the percentage of time that has elapsed. Examples include t^2 and ln(t).",
             "itemtype": "property",
             "name": "decayFunction",
@@ -30063,7 +30063,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 537,
+            "line": 563,
             "description": "True if the assertion is a claim that the subject cannot demonstrate the competency.",
             "itemtype": "property",
             "name": "negative",
@@ -30073,7 +30073,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 547,
+            "line": 573,
             "description": "Sets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
             "params": [
                 {
@@ -30086,7 +30086,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 761,
+            "line": 792,
             "description": "List of assertions to pack in the envelope.",
             "itemtype": "property",
             "name": "assertion",
@@ -30096,7 +30096,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 768,
+            "line": 799,
             "description": "List of secrets found in assertions to the objects necessary to decrypt the assertion data.",
             "itemtype": "property",
             "name": "codebook",
@@ -30106,7 +30106,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 780,
+            "line": 811,
             "description": "Removes an assertion from the envelope",
             "params": [
                 {
@@ -30121,7 +30121,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 803,
+            "line": 834,
             "description": "Returns the assertion indexed at position @index.",
             "params": [
                 {
@@ -30139,7 +30139,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 821,
+            "line": 852,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -30154,7 +30154,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 857,
+            "line": 888,
             "description": "Adds the assertion to the envelope and adds the keys necessary to decode the assertion to the envelope.",
             "params": [
                 {
@@ -30177,7 +30177,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.cass.js",
-            "line": 939,
+            "line": 970,
             "description": "Validates that all assertions have not been tampered with (are authentic).\nDoes not validate the sources of assertions.",
             "return": {
                 "description": "True IFF assertions are authentic."
@@ -30189,7 +30189,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 36,
+            "line": 37,
             "description": "AES Initialization Vector used to decode PPK. Base64 encoded.",
             "itemtype": "property",
             "name": "iv",
@@ -30199,7 +30199,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 43,
+            "line": 44,
             "description": "AES encrypted Private Key in PEM form.",
             "itemtype": "property",
             "name": "ppk",
@@ -30209,7 +30209,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 50,
+            "line": 51,
             "description": "AES Initialization Vector used to decode displayName. Base64 encoded.",
             "itemtype": "property",
             "name": "displayNameIv",
@@ -30219,7 +30219,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 57,
+            "line": 58,
             "description": "AES encrypted display name for identity.",
             "itemtype": "property",
             "name": "displayName",
@@ -30229,7 +30229,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 100,
+            "line": 106,
             "description": "Hashed username.",
             "itemtype": "property",
             "name": "username",
@@ -30239,7 +30239,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 107,
+            "line": 113,
             "description": "Hashed password to authorize request.",
             "itemtype": "property",
             "name": "password",
@@ -30249,7 +30249,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 149,
+            "line": 160,
             "description": "One time pad that may be used in password recovery. Base64 encoded.",
             "itemtype": "property",
             "name": "pad",
@@ -30259,7 +30259,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 156,
+            "line": 167,
             "description": "Token provided by server to use in commit actions.",
             "itemtype": "property",
             "name": "token",
@@ -30269,7 +30269,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 163,
+            "line": 174,
             "description": "Credential array.",
             "itemtype": "property",
             "name": "credentials",
@@ -30279,7 +30279,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 170,
+            "line": 181,
             "description": "Contact array.",
             "itemtype": "property",
             "name": "contacts",
@@ -30289,7 +30289,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 213,
+            "line": 229,
             "description": "AES Initialization Vector used to decode PPK. Base64 encoded.",
             "itemtype": "property",
             "name": "iv",
@@ -30299,7 +30299,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 220,
+            "line": 236,
             "description": "AES encrypted Private Key in PEM format.",
             "itemtype": "property",
             "name": "pk",
@@ -30309,7 +30309,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 227,
+            "line": 243,
             "description": "AES Initialization Vector used to decode displayName. Base64 encoded.",
             "itemtype": "property",
             "name": "displayNameIv",
@@ -30319,7 +30319,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 234,
+            "line": 250,
             "description": "AES encrypted display name for identity.",
             "itemtype": "property",
             "name": "displayName",
@@ -30329,7 +30329,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 241,
+            "line": 257,
             "description": "AES Initialization Vector of the home server of the contact. Base64 encoded.",
             "itemtype": "property",
             "name": "sourceIv",
@@ -30339,7 +30339,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 248,
+            "line": 264,
             "description": "URL to the home server of the contact.",
             "itemtype": "property",
             "name": "source",
@@ -30349,7 +30349,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 296,
+            "line": 317,
             "description": "IV used to encrypt/decrypt payload. Base64 encoded.",
             "itemtype": "property",
             "name": "iv",
@@ -30359,7 +30359,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 303,
+            "line": 324,
             "description": "Hashed and Base64 encoded ID of the parent (if any) object.\nUsed to verify the data has not been copied from elsewhere.",
             "itemtype": "property",
             "name": "id",
@@ -30369,7 +30369,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 311,
+            "line": 332,
             "description": "Secret used to encrypt/decrypt payload.",
             "itemtype": "property",
             "name": "secret",
@@ -30379,7 +30379,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 318,
+            "line": 339,
             "description": "Dot and Bracket notated index of the field in the parent-most object (if\nany). Used to verify the field has not been copied from elsewhere.",
             "itemtype": "property",
             "name": "field",
@@ -30389,7 +30389,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 326,
+            "line": 347,
             "description": "Deserializes the field from a compact form used in RSA encryption.",
             "params": [
                 {
@@ -30410,7 +30410,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 345,
+            "line": 366,
             "description": "Serializes the field into a compact form for RSA encryption.",
             "return": {
                 "description": "string",
@@ -30423,7 +30423,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 396,
+            "line": 422,
             "description": "The public key of the authorizing party in PEM format.",
             "itemtype": "property",
             "name": "owner",
@@ -30433,7 +30433,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 403,
+            "line": 429,
             "description": "The time in number of milliseconds since midnight of January 1, 1970\n00:00:00 UTC that this signature is authorized to move data.",
             "itemtype": "property",
             "name": "expiry",
@@ -30443,7 +30443,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 411,
+            "line": 437,
             "description": "The signature of this object, having signed the object, having been\nencoded in JSON with no space or tabs in ASCII sort order, having no\nvalue for the signature at the time of signing.",
             "itemtype": "property",
             "name": "signature",
@@ -30453,7 +30453,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 420,
+            "line": 446,
             "description": "The server authorized to move data. If this is empty, the signature may\nbe used by a server to ask for data from other servers.",
             "itemtype": "property",
             "name": "server",
@@ -30463,7 +30463,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 463,
+            "line": 494,
             "description": "Optional Hint used to aid in search.\nDisplays the type of the encrypted object.",
             "itemtype": "property",
             "name": "encryptedType",
@@ -30473,7 +30473,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 471,
+            "line": 502,
             "description": "Base-64 encoded, AES encrypted form of the encrypted object (or string).",
             "itemtype": "property",
             "name": "payload",
@@ -30483,7 +30483,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 478,
+            "line": 509,
             "description": "Optional Hint used to aid in search and display.\nName of the inner encrypted object.",
             "itemtype": "property",
             "name": "name",
@@ -30493,7 +30493,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 486,
+            "line": 517,
             "description": "Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners, readers, or other parties to allow them\naccess to the payload.",
             "itemtype": "property",
             "name": "secret",
@@ -30503,7 +30503,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 544,
+            "line": 580,
             "description": "Public key being granted to the owner of this message.",
             "itemtype": "property",
             "name": "pk",
@@ -30513,7 +30513,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 551,
+            "line": 587,
             "description": "Display name of the contact.",
             "itemtype": "property",
             "name": "displayName",
@@ -30523,7 +30523,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 558,
+            "line": 594,
             "description": "Source server of the contact.",
             "itemtype": "property",
             "name": "source",
@@ -30533,7 +30533,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 565,
+            "line": 601,
             "description": "Response token used to validate that this grant is in response to a contact request you sent.",
             "itemtype": "property",
             "name": "responseToken",
@@ -30543,7 +30543,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 572,
+            "line": 608,
             "description": "Signature (Base64 encoded) of the response token to verify against your own public key\nto ensure that this grant is in response to a contact request you sent.",
             "itemtype": "property",
             "name": "responseSignature",
@@ -30553,7 +30553,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 618,
+            "line": 659,
             "description": "Hashed username.",
             "itemtype": "property",
             "name": "username",
@@ -30563,7 +30563,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 625,
+            "line": 666,
             "description": "Hashed password to authorize commit.",
             "itemtype": "property",
             "name": "password",
@@ -30573,7 +30573,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 632,
+            "line": 673,
             "description": "Token provided to client when previously executed Request was done. May\nbe empty if this is used as part of Create action.",
             "itemtype": "property",
             "name": "token",
@@ -30583,7 +30583,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 640,
+            "line": 681,
             "description": "List of credentials to commit to the login server storage.",
             "itemtype": "property",
             "name": "credentials",
@@ -30604,7 +30604,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 52,
+            "line": 53,
             "description": "Current version of KBAC.",
             "itemtype": "property",
             "name": "context",
@@ -30615,7 +30615,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 81,
+            "line": 82,
             "description": "PEM encoded public keys of the owner of the object. A repository, upon\nreceiving a write operation, will ensure either the data did not\npreviously exist, or that an owner has provided a signature authorizing\nthe replacement of the old data with the new data.",
             "itemtype": "property",
             "name": "owner",
@@ -30625,7 +30625,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 91,
+            "line": 92,
             "description": "Signatures of the object. The signing method is as follows: Remove the\nsignature field. Encode the object and its fields in ascii-sort order\nJSON-LD using a space-free, tab-free encoding. Sign the aforementioned\nstring.",
             "itemtype": "property",
             "name": "signature",
@@ -30635,7 +30635,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 101,
+            "line": 102,
             "description": "URL/URI used to retrieve, store and identify the object.",
             "itemtype": "property",
             "name": "id",
@@ -30645,7 +30645,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 111,
+            "line": 112,
             "description": "PEM encoded public keys of identities authorized to view the object. A\nrepository will ignore write operations from these identities, but will\nallow them to read the object.",
             "itemtype": "property",
             "name": "reader",
@@ -30655,7 +30655,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 120,
+            "line": 121,
             "description": "Removes the version information from an identifier.\nWarning: Will remove identifier if the identifier is composed solely of digits!!!",
             "params": [
                 {
@@ -30675,7 +30675,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 141,
+            "line": 142,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository).",
             "params": [
                 {
@@ -30691,7 +30691,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 159,
+            "line": 160,
             "description": "Will generate an short (non-versioned) identifier using the server URL provided (usually from\nan EcRepository).",
             "params": [
                 {
@@ -30707,7 +30707,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 175,
+            "line": 176,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -30728,7 +30728,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 194,
+            "line": 195,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -30749,7 +30749,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 211,
+            "line": 212,
             "description": "Will generate an identifier using the server URL provided (usually from\nan EcRepository) and unique identifier.",
             "params": [
                 {
@@ -30770,7 +30770,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 230,
+            "line": 231,
             "description": "Determines if the object has an owner identified by pk.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -30790,7 +30790,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 248,
+            "line": 249,
             "description": "Determines if the object has a reader identified by pk.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -30810,7 +30810,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 266,
+            "line": 267,
             "description": "Determines if the PK matches an owner or if the object is public.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -30830,7 +30830,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 280,
+            "line": 281,
             "description": "Determines if the PK matches an owner or if the object is public.\nHomogenizes the PEM strings for comparison.\nHomogenization is necessary for comparing PKCS#1 and PKCS#8 or PKs with Certificates, etc.",
             "params": [
                 {
@@ -30850,7 +30850,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 299,
+            "line": 300,
             "description": "Encodes the object in a form where it is ready to be signed.\nThis method is under long term review, and may change from version to version.",
             "return": {
                 "description": "ASCII-sort order encoded space-free and tab-free JSON-LD."
@@ -30862,7 +30862,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 321,
+            "line": 322,
             "description": "Sign this object using a private key.\nDoes not check for ownership, objects signed with keys absent from @owner or @reader may be removed.",
             "params": [
                 {
@@ -30878,7 +30878,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 340,
+            "line": 341,
             "description": "Verifies the object's signatures.",
             "return": {
                 "description": "true if all of the signatures could be verified, false if they could not",
@@ -30891,7 +30891,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 376,
+            "line": 377,
             "description": "Adds an owner to the object, if the owner does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -30907,7 +30907,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 393,
+            "line": 394,
             "description": "Removes an owner from the object, if the owner does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -30923,7 +30923,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 409,
+            "line": 410,
             "description": "Adds a reader to the object, if the reader does not exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -30939,7 +30939,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 423,
+            "line": 424,
             "description": "Removes a reader from the object, if the reader does exist.\nNote that this method invalidates all signatures.",
             "params": [
                 {
@@ -30955,7 +30955,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 437,
+            "line": 438,
             "description": "Determines if the object is not retrievable from a repository should it be written.",
             "return": {
                 "description": "True if the object is NOT VALID for storage, false otherwise.",
@@ -30968,7 +30968,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 454,
+            "line": 455,
             "description": "Updates the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "updateTimestamp",
@@ -30977,7 +30977,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 468,
+            "line": 469,
             "description": "Returns the ID timestamp of the object, for versioning purposes.",
             "itemtype": "method",
             "name": "getTimestamp",
@@ -30986,7 +30986,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 481,
+            "line": 482,
             "description": "Returns true if the provided ID represents this object.\nUse this, as version information can make direct comparison difficult.",
             "params": [
                 {
@@ -31006,7 +31006,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 492,
+            "line": 493,
             "description": "Return the ID of this object without the version information.\nUsed to reference the latest version of an object.",
             "return": {
                 "description": "ID of the latest version of this object.",
@@ -31019,7 +31019,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 502,
+            "line": 503,
             "description": "Return the GUID portion of the short ID.",
             "return": {
                 "description": "Guid of the linked data object.",
@@ -31032,7 +31032,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 513,
+            "line": 514,
             "description": "Return the URL Base portion of the short ID.",
             "return": {
                 "description": "Server Base URL of the linked data object.",
@@ -31045,7 +31045,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.general.js",
-            "line": 524,
+            "line": 525,
             "description": "Return a valid ElasticSearch search string that will retrieve all objects with this type.",
             "return": {
                 "description": "ElasticSearch compatible search string.",
@@ -68915,7 +68915,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 62,
+            "line": 63,
             "description": "www.w3.org/2004/02/skos/core/topConceptOf\nRelates a concept to the concept scheme that it is a top level concept of.",
             "itemtype": "property",
             "name": "topConceptOf",
@@ -68925,7 +68925,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 69,
+            "line": 70,
             "description": "www.w3.org/2004/02/skos/core/semanticRelation\nLinks a concept to a concept related by meaning.",
             "itemtype": "property",
             "name": "semanticRelation",
@@ -68935,7 +68935,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 108,
+            "line": 114,
             "description": "www.w3.org/2004/02/skos/core/hasTopConcept\nRelates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
             "itemtype": "property",
             "name": "hasTopConcept",
@@ -68945,7 +68945,7 @@
         },
         {
             "file": "src/main/js/cass/org.w3.skos.js",
-            "line": 147,
+            "line": 157,
             "description": "www.w3.org/2004/02/skos/core/memberList\nRelates an ordered collection to the RDF list containing its members.",
             "itemtype": "property",
             "name": "memberList",
@@ -69217,19 +69217,19 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.adapter.js:56"
+            "line": " src/main/js/cass/cass.adapter.js:57"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.adapter.js:82"
+            "line": " src/main/js/cass/cass.adapter.js:84"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.adapter.js:120"
+            "line": " src/main/js/cass/cass.adapter.js:123"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.adapter.js:137"
+            "line": " src/main/js/cass/cass.adapter.js:141"
         },
         {
             "message": "unknown tag: memberof",
@@ -69497,55 +69497,55 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:966"
+            "line": " src/main/js/cass/cass.import.js:984"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1078"
+            "line": " src/main/js/cass/cass.import.js:1096"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1110"
+            "line": " src/main/js/cass/cass.import.js:1128"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1144"
+            "line": " src/main/js/cass/cass.import.js:1162"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1188"
+            "line": " src/main/js/cass/cass.import.js:1206"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1234"
+            "line": " src/main/js/cass/cass.import.js:1252"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1304"
+            "line": " src/main/js/cass/cass.import.js:1322"
         },
         {
             "message": "unknown tag: meberof",
-            "line": " src/main/js/cass/cass.import.js:1375"
+            "line": " src/main/js/cass/cass.import.js:1393"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1434"
+            "line": " src/main/js/cass/cass.import.js:1452"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1453"
+            "line": " src/main/js/cass/cass.import.js:1471"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1482"
+            "line": " src/main/js/cass/cass.import.js:1500"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1521"
+            "line": " src/main/js/cass/cass.import.js:1539"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/cass.import.js:1604"
+            "line": " src/main/js/cass/cass.import.js:1622"
         },
         {
             "message": "unknown tag: internal",
@@ -69853,35 +69853,31 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1148"
+            "line": " src/main/js/cass/ebac.repository.js:1159"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1213"
+            "line": " src/main/js/cass/ebac.repository.js:1225"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1248"
+            "line": " src/main/js/cass/ebac.repository.js:1260"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1265"
+            "line": " src/main/js/cass/ebac.repository.js:1277"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1282"
+            "line": " src/main/js/cass/ebac.repository.js:1294"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1322"
+            "line": " src/main/js/cass/ebac.repository.js:1334"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1403"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1454"
+            "line": " src/main/js/cass/ebac.repository.js:1415"
         },
         {
             "message": "unknown tag: memberof",
@@ -69889,103 +69885,107 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1525"
+            "line": " src/main/js/cass/ebac.repository.js:1490"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1574"
+            "line": " src/main/js/cass/ebac.repository.js:1544"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1619"
+            "line": " src/main/js/cass/ebac.repository.js:1593"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1657"
+            "line": " src/main/js/cass/ebac.repository.js:1638"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1703"
+            "line": " src/main/js/cass/ebac.repository.js:1676"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/main/js/cass/ebac.repository.js:1722"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1721"
+            "line": " src/main/js/cass/ebac.repository.js:1740"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1721"
+            "line": " src/main/js/cass/ebac.repository.js:1740"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1735"
+            "line": " src/main/js/cass/ebac.repository.js:1754"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/main/js/cass/ebac.repository.js:1845"
+            "line": " src/main/js/cass/ebac.repository.js:1864"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1845"
+            "line": " src/main/js/cass/ebac.repository.js:1864"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:1960"
+            "line": " src/main/js/cass/ebac.repository.js:1979"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2034"
+            "line": " src/main/js/cass/ebac.repository.js:2053"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2105"
+            "line": " src/main/js/cass/ebac.repository.js:2124"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2151"
+            "line": " src/main/js/cass/ebac.repository.js:2170"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2194"
+            "line": " src/main/js/cass/ebac.repository.js:2213"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2214"
+            "line": " src/main/js/cass/ebac.repository.js:2233"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2226"
+            "line": " src/main/js/cass/ebac.repository.js:2245"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2238"
+            "line": " src/main/js/cass/ebac.repository.js:2257"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2250"
+            "line": " src/main/js/cass/ebac.repository.js:2269"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2287"
+            "line": " src/main/js/cass/ebac.repository.js:2306"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2332"
+            "line": " src/main/js/cass/ebac.repository.js:2351"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2354"
+            "line": " src/main/js/cass/ebac.repository.js:2373"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2388"
+            "line": " src/main/js/cass/ebac.repository.js:2407"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2437"
+            "line": " src/main/js/cass/ebac.repository.js:2456"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/main/js/cass/ebac.repository.js:2458"
+            "line": " src/main/js/cass/ebac.repository.js:2477"
         },
         {
             "message": "unknown tag: memberof",
@@ -72133,7 +72133,7 @@
         },
         {
             "message": "Missing item type\nSets the subject of an assertion. Makes a few assumptions: Owners of the\nobject should be able to see and change the encrypted value. Owners and\nreaders of the object should be persisted.",
-            "line": " src/main/js/cass/org.cassproject.schema.cass.js:547"
+            "line": " src/main/js/cass/org.cassproject.schema.cass.js:573"
         },
         {
             "message": "Missing item type\nIf `Buffer.TYPED_ARRAY_SUPPORT`:\n  === true    Use Uint8Array implementation (fastest)\n  === false   Print warning and recommend using `buffer` v4.x which has an Object\n              implementation (most compatible, even IE6)\n\nBrowsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,\nOpera 11.6+, iOS 4.2+.\n\nWe report that the browser does not support typed arrays if the are not subclassable\nusing __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`\n(See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support\nfor __proto__ and has a buggy typed array implementation.",

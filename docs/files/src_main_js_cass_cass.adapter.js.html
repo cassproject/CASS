@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.11</em>
+            <em>API Docs for: 1.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -874,7 +874,8 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      */
     constructor.get = function(serverUrl, success, failure) {
         var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+        var offset = EcRepository.setOffset(serverUrl);
+        EcIdentityManager.signatureSheetAsync(60000 + offset, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/moodle/config/get&quot;, fd, success, failure);
         }, failure);
@@ -894,7 +895,8 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
      */
     constructor.getMoodleKey = function(serverUrl, success, failure) {
         var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+        var offset = EcRepository.setOffset(serverUrl);
+        EcIdentityManager.signatureSheetAsync(60000 + offset, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingString(serverUrl, &quot;adapter/moodle/config/key&quot;, fd, success, failure);
         }, failure);
@@ -920,7 +922,8 @@ MoodleConfig = stjs.extend(MoodleConfig, EcLinkedData, [], function(constructor,
     prototype.save = function(serverUrl, success, failure) {
         var fd = new FormData();
         fd.append(&quot;config&quot;, JSON.stringify(this));
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+        var offset = EcRepository.setOffset(serverUrl);
+        EcIdentityManager.signatureSheetAsync(60000 + offset, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/moodle/config/set&quot;, fd, success, failure);
         }, failure);
@@ -955,7 +958,8 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
      */
     constructor.get = function(serverUrl, success, failure) {
         var fd = new FormData();
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+        var offset = EcRepository.setOffset(serverUrl);
+        EcIdentityManager.signatureSheetAsync(60000 + offset, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/xapi/config/get&quot;, fd, success, failure);
         }, failure);
@@ -972,7 +976,8 @@ XapiConfig = stjs.extend(XapiConfig, EcLinkedData, [], function(constructor, pro
     prototype.save = function(serverUrl, success, failure) {
         var fd = new FormData();
         fd.append(&quot;config&quot;, JSON.stringify(this));
-        EcIdentityManager.signatureSheetAsync(60000, serverUrl, function(signatureSheet) {
+        var offset = EcRepository.setOffset(serverUrl);
+        EcIdentityManager.signatureSheetAsync(60000 + offset, serverUrl, function(signatureSheet) {
             fd.append(&quot;signatureSheet&quot;, signatureSheet);
             EcRemote.postExpectingObject(serverUrl, &quot;adapter/xapi/config/set&quot;, fd, success, failure);
         }, failure);

@@ -11,7 +11,7 @@ var Collection = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "http://schema.cassproject.org/0.3/skos/", "Collection");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "Collection");
 };
 Collection = stjs.extend(Collection, EcRemoteLinkedData, [], function(constructor, prototype) {
     /**
@@ -34,12 +34,13 @@ var Concept = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "Concept");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "Concept");
 };
 Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/Concept";
     constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/Concept";
-    constructor.myType = Concept.TYPE_0_2;
+    constructor.TYPE_0_3 = "https://schema.cassproject.org/0.4/skos/Concept";
+    constructor.myType = Concept.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/topConceptOf
      *  Relates a concept to the concept scheme that it is a top level concept of.
@@ -59,9 +60,13 @@ Concept = stjs.extend(Concept, EcRemoteLinkedData, [], function(constructor, pro
         if (Concept.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", Concept.TYPE_0_2);
         }
+        if (Concept.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.4/skos", Concept.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(Concept.TYPE_0_3);
         a.push(Concept.TYPE_0_2);
         a.push(Concept.TYPE_0_1);
         return a;
@@ -80,12 +85,13 @@ var ConceptScheme = /**
  *  @constructor
  */
 function() {
-    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.3/skos/", "ConceptScheme");
+    EcRemoteLinkedData.call(this, "https://schema.cassproject.org/0.4/skos/", "ConceptScheme");
 };
 ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(constructor, prototype) {
     constructor.TYPE_0_1 = "http://schema.cassproject.org/0.3/skos/ConceptScheme";
     constructor.TYPE_0_2 = "https://schema.cassproject.org/0.3/skos/ConceptScheme";
-    constructor.myType = ConceptScheme.TYPE_0_2;
+    constructor.TYPE_0_3 = "https://schema.cassproject.org/0.4/skos/ConceptScheme";
+    constructor.myType = ConceptScheme.TYPE_0_3;
     /**
      *  www.w3.org/2004/02/skos/core/hasTopConcept
      *  Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.
@@ -98,9 +104,13 @@ ConceptScheme = stjs.extend(ConceptScheme, EcRemoteLinkedData, [], function(cons
         if (ConceptScheme.TYPE_0_1.equals(this.getFullType())) {
             this.setContextAndType("https://schema.cassproject.org/0.3/skos", ConceptScheme.TYPE_0_2);
         }
+        if (ConceptScheme.TYPE_0_2.equals(this.getFullType())) {
+            this.setContextAndType("https://schema.cassproject.org/0.4/skos", ConceptScheme.TYPE_0_3);
+        }
     };
     prototype.getTypes = function() {
         var a = new Array();
+        a.push(ConceptScheme.TYPE_0_3);
         a.push(ConceptScheme.TYPE_0_2);
         a.push(ConceptScheme.TYPE_0_1);
         return a;
@@ -121,7 +131,7 @@ var OrderedCollection = /**
  */
 function() {
     Collection.call(this);
-    this.context = "http://schema.cassproject.org/0.3/skos/";
+    this.context = "https://schema.cassproject.org/0.4/skos/";
     this.type = "OrderedCollection";
 };
 OrderedCollection = stjs.extend(OrderedCollection, Collection, [], function(constructor, prototype) {

@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.11</em>
+            <em>API Docs for: 1.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1583,7 +1583,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             (translator)[key] = null;
                         }
                     }
-                    translator.recast(&quot;https://schema.cassproject.org/0.3/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.3&quot;, function(e) {
+                    translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.4&quot;, function(e) {
                         var f = new EcFramework();
                         f.copyFrom(e);
                         if ((e)[&quot;owner&quot;] != null) {
@@ -1593,6 +1593,9 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                                 f.addOwner(ceo.ppk.toPk());
                             f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        if (EcFramework.template != null &amp;&amp; (EcFramework.template)[(&quot;schema:dateCreated&quot;)] != null) {
+                            CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         (frameworks)[f.id] = f;
                         (frameworkRows)[f.id] = e;
@@ -1611,7 +1614,7 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             (translator)[key] = null;
                         }
                     }
-                    translator.recast(&quot;https://schema.cassproject.org/0.3/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.3&quot;, function(e) {
+                    translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cass&quot;, &quot;https://schema.cassproject.org/0.4&quot;, function(e) {
                         var f = new EcCompetency();
                         f.copyFrom(e);
                         if ((e)[&quot;id&quot;] == null) {
@@ -1660,6 +1663,9 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        if (EcCompetency.template != null &amp;&amp; (EcCompetency.template)[(&quot;schema:dateCreated&quot;)] != null) {
+                            CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         if ((e)[&quot;ceasn:isChildOf&quot;] != null) {
                             var r = new EcAlignment();
@@ -1785,6 +1791,18 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                 success(frameworkArray, competencies, relations);
             });
         }, error: failure});
+    };
+    constructor.setDateCreated = function(importObject, object) {
+        if ((importObject)[&quot;ceasn:dateCreated&quot;] == null &amp;&amp; (importObject)[&quot;schema:dateCreated&quot;] == null) {
+            var timestamp = object.getTimestamp();
+            var date;
+            if (timestamp != null) {
+                date = new Date(parseInt(timestamp)).toISOString();
+            } else {
+                date = new Date().toISOString();
+            }
+            (object)[&quot;schema:dateCreated&quot;] = date;
+        }
     };
 }, {}, {});
 var TabStructuredImport = function() {};
@@ -2636,7 +2654,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         (nameWithLanguage)[&quot;en-US&quot;] = name;
                         (translator)[&quot;ceasn:name&quot;] = nameWithLanguage;
                     }
-                    translator.recast(&quot;https://schema.cassproject.org/0.3/ceasn2cassConcepts&quot;, &quot;https://schema.cassproject.org/0.3/skos&quot;, function(e) {
+                    translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cassConcepts&quot;, &quot;https://schema.cassproject.org/0.4/skos&quot;, function(e) {
                         var f = new EcConceptScheme();
                         f.copyFrom(e);
                         if ((e)[&quot;owner&quot;] != null) {
@@ -2648,8 +2666,8 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                             EcIdentityManager.addIdentityQuietly(id);
                         }
                         (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();
-                        if ((e)[&quot;schema:dateCreated&quot;] == null) {
-                            (f)[&quot;schema:dateCreated&quot;] = new Date().toISOString();
+                        if (EcConceptScheme.template != null &amp;&amp; (EcConceptScheme.template)[(&quot;schema:dateCreated&quot;)] != null) {
+                            CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         schemeArray.push(f);
                         callback0();
@@ -2674,7 +2692,7 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         (nameWithLanguage)[&quot;en-US&quot;] = name;
                         (translator)[&quot;skos:prefLabel&quot;] = nameWithLanguage;
                     }
-                    translator.recast(&quot;https://schema.cassproject.org/0.3/ceasn2cassConcepts&quot;, &quot;https://schema.cassproject.org/0.3/skos&quot;, function(e) {
+                    translator.recast(&quot;https://schema.cassproject.org/0.4/ceasn2cassConcepts&quot;, &quot;https://schema.cassproject.org/0.4/skos&quot;, function(e) {
                         var f = new EcConcept();
                         f.copyFrom(e);
                         if ((e)[&quot;id&quot;] == null) {
@@ -2689,6 +2707,9 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
+                        }
+                        if (EcConcept.template != null &amp;&amp; (EcConcept.template)[(&quot;schema:dateCreated&quot;)] != null) {
+                            CTDLASNCSVImport.setDateCreated(e, f);
                         }
                         if ((e)[&quot;skos:narrower&quot;] != null) {
                             var relation = (e)[&quot;skos:narrower&quot;];
@@ -2740,9 +2761,6 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                             }
                         }
                         (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();
-                        if ((e)[&quot;schema:dateCreated&quot;] == null) {
-                            (f)[&quot;schema:dateCreated&quot;] = new Date().toISOString();
-                        }
                         concepts.push(f);
                         callback0();
                     }, failure);

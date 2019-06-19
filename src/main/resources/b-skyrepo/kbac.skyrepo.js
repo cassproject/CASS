@@ -65,7 +65,7 @@ var signatureSheet = function() {
         signature.copyFrom(sigSheet[i]);
         if (signature == null) 
             error("Missing Signature.", 496);
-        if (getTypeFromObject(sigSheet[i]) != "http://schema.cassproject.org/kbac/0.2/TimeLimitedSignature") 
+        if (getTypeFromObject(sigSheet[i]) != "https://schema.cassproject.org/kbac/0.4/TimeLimitedSignature") 
             error("Invalid Signature Version.", 422);
         if (signature.expiry == null) 
             error("Missing expiry date.", 422);
