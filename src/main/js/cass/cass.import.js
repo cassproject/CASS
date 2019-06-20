@@ -763,11 +763,11 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         if ((e)["owner"] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)["owner"]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcFramework.template != null && (EcFramework.template)[("schema:dateCreated")] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
@@ -832,12 +832,12 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         var id = new EcIdentity();
                         if ((e)["owner"] != null) {
                             id.ppk = EcPpk.fromPem((e)["owner"]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcCompetency.template != null && (EcCompetency.template)[("schema:dateCreated")] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
@@ -1834,11 +1834,11 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         if ((e)["owner"] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)["owner"]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         (f)["schema:dateModified"] = new Date().toISOString();
                         if (EcConceptScheme.template != null && (EcConceptScheme.template)[("schema:dateCreated")] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
@@ -1876,12 +1876,12 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         if ((e)["owner"] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)["owner"]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcConcept.template != null && (EcConcept.template)[("schema:dateCreated")] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }

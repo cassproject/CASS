@@ -17,7 +17,7 @@
                 <h1><img src="http://docs.cassproject.org/img/customLogo-blue.png" title="CASS Javascript Library"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.2.12</em>
+            <em>API Docs for: 1.2.13</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1589,11 +1589,11 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcFramework.template != null &amp;&amp; (EcFramework.template)[(&quot;schema:dateCreated&quot;)] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
@@ -1658,12 +1658,12 @@ CTDLASNCSVImport = stjs.extend(CTDLASNCSVImport, null, [], function(constructor,
                         var id = new EcIdentity();
                         if ((e)[&quot;owner&quot;] != null) {
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcCompetency.template != null &amp;&amp; (EcCompetency.template)[(&quot;schema:dateCreated&quot;)] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
@@ -2660,11 +2660,11 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         (f)[&quot;schema:dateModified&quot;] = new Date().toISOString();
                         if (EcConceptScheme.template != null &amp;&amp; (EcConceptScheme.template)[(&quot;schema:dateCreated&quot;)] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
@@ -2702,12 +2702,12 @@ CTDLASNCSVConceptImport = stjs.extend(CTDLASNCSVConceptImport, null, [], functio
                         if ((e)[&quot;owner&quot;] != null) {
                             var id = new EcIdentity();
                             id.ppk = EcPpk.fromPem((e)[&quot;owner&quot;]);
-                            if (ceo != null) 
-                                f.addOwner(ceo.ppk.toPk());
                             if (id.ppk != null) 
                                 f.addOwner(id.ppk.toPk());
                             EcIdentityManager.addIdentityQuietly(id);
                         }
+                        if (ceo != null) 
+                            f.addOwner(ceo.ppk.toPk());
                         if (EcConcept.template != null &amp;&amp; (EcConcept.template)[(&quot;schema:dateCreated&quot;)] != null) {
                             CTDLASNCSVImport.setDateCreated(e, f);
                         }
