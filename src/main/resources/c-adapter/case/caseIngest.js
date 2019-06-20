@@ -53,6 +53,28 @@ stripCassNamespace = function (o) {
     return o;
 }
 
+setDateCreated = function(object) {
+    if (object["ceasn:dateCreated"] == null && (object)["schema:dateCreated"] == null) {
+        var timestamp = getTimestamp(object);
+        var date;
+        if (timestamp != null) {
+            date = new Date(parseInt(timestamp)).toISOString();
+        } else {
+            date = new Date().toISOString();
+        }
+        object["schema:dateCreated"] = date;
+    }
+};
+
+getTimestamp = function(object) {
+    var timestamp = object["@id"].substring(object["@id"].lastIndexOf("/") + 1);
+    if (timestamp.matches("[0-9]+")) {
+        return Integer.parseInt(timestamp);
+    } else {
+        return null;
+    }
+};
+
 convertCFDocumentToFramework = function (document) {
     var f = new EcFramework();
     f.assignId(document.identifier);
@@ -66,6 +88,9 @@ convertCFDocumentToFramework = function (document) {
     document["@context"] = caseToCassSchema;
     document = jsonLdExpand(JSON.stringify(document));
     document = jsonLdCompact(JSON.stringify(document), cassContext);
+    if (EcFramework.template != null && EcFramework.template["schema:dateCreated"] != null) {
+        setDateCreated(document);
+    }
     f.copyFrom(document);
     return f;
 }
@@ -104,6 +129,9 @@ convertCFItemIntoCompetency = function (a) {
         }
     a = jsonLdExpand(JSON.stringify(a));
     a = jsonLdCompact(JSON.stringify(a), cassContext);
+    if (EcCompetency.template != null && EcCompetency.template["schema:dateCreated"] != null) {
+        setDateCreated(a);
+    }
     var r = new EcCompetency();
     r.copyFrom(a);
     return r;
