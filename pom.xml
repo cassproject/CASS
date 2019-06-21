@@ -5,7 +5,7 @@
 	<groupId>org.cassproject</groupId>
 	<artifactId>cass</artifactId>
 	<packaging>war</packaging>
-	<version>1.2.13</version>
+	<version>1.2.14</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -189,7 +189,7 @@
 						<maven.javadoc.skip>true</maven.javadoc.skip>
 					</properties>
 					<noLog>true</noLog>
-					<parallelThreads>7</parallelThreads>
+					<parallelThreads>2</parallelThreads>
 					<goals>
 						<goal>install</goal>
 					</goals>

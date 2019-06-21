@@ -434,18 +434,6 @@ EbacSignature = stjs.extend(EbacSignature, EcLinkedData, [], function(constructo
     prototype.server = null;
     prototype.upgrade = function() {
         EcLinkedData.prototype.upgrade.call(this);
-        if (EbacSignature.TYPE_0_1.equals(this.type)) {
-            var me = (this);
-            if (me["@context"] == null && me["@schema"] != null) 
-                me["@context"] = me["@schema"];
-            this.setContextAndType(Ebac.context_0_2, EbacSignature.TYPE_0_2);
-        }
-        if (EbacSignature.TYPE_0_2.equals(this.getFullType())) {
-            this.setContextAndType(Ebac.context_0_3, EbacSignature.TYPE_0_3);
-        }
-        if (EbacSignature.TYPE_0_3.equals(this.getFullType())) {
-            this.setContextAndType(Ebac.context_0_4, EbacSignature.TYPE_0_4);
-        }
     };
     prototype.getTypes = function() {
         var a = new Array();

@@ -2,7 +2,7 @@
     "project": {
         "name": "CASS Javascript Library",
         "description": "CASS Javascript Library API: ",
-        "version": "1.2.13",
+        "version": "1.2.14",
         "url": "http://cassproject.org/",
         "logo": "http://docs.cassproject.org/img/customLogo-blue.png"
     },
@@ -2813,7 +2813,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 478,
+            "line": 466,
             "description": "Encrypted JSON-LD object or string.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2828,7 +2828,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 562,
+            "line": 550,
             "description": "AES encrypted public key and display name message.\nUsed to grant access to a contact.\nContains Initialization Vectors, but not secrets.\nUsed to encrypt public identities for storage on remote systems.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -2843,7 +2843,7 @@
             "module": "org.cassproject",
             "namespace": "",
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 640,
+            "line": 628,
             "description": "Message used to commit credentials to a remote login server.\n<p>\nTODO: Vulnerable to replay attacks. Token field prevents some replay\nattacks.",
             "author": "fritz.ray@eduworks.com"
         },
@@ -30463,7 +30463,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 494,
+            "line": 482,
             "description": "Optional Hint used to aid in search.\nDisplays the type of the encrypted object.",
             "itemtype": "property",
             "name": "encryptedType",
@@ -30473,7 +30473,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 502,
+            "line": 490,
             "description": "Base-64 encoded, AES encrypted form of the encrypted object (or string).",
             "itemtype": "property",
             "name": "payload",
@@ -30483,7 +30483,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 509,
+            "line": 497,
             "description": "Optional Hint used to aid in search and display.\nName of the inner encrypted object.",
             "itemtype": "property",
             "name": "name",
@@ -30493,7 +30493,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 517,
+            "line": 505,
             "description": "Array of EbacEncryptedSecret objects encoded in Base-64, encrypted using\nRSA public keys of owners, readers, or other parties to allow them\naccess to the payload.",
             "itemtype": "property",
             "name": "secret",
@@ -30503,7 +30503,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 580,
+            "line": 568,
             "description": "Public key being granted to the owner of this message.",
             "itemtype": "property",
             "name": "pk",
@@ -30513,7 +30513,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 587,
+            "line": 575,
             "description": "Display name of the contact.",
             "itemtype": "property",
             "name": "displayName",
@@ -30523,7 +30523,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 594,
+            "line": 582,
             "description": "Source server of the contact.",
             "itemtype": "property",
             "name": "source",
@@ -30533,7 +30533,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 601,
+            "line": 589,
             "description": "Response token used to validate that this grant is in response to a contact request you sent.",
             "itemtype": "property",
             "name": "responseToken",
@@ -30543,7 +30543,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 608,
+            "line": 596,
             "description": "Signature (Base64 encoded) of the response token to verify against your own public key\nto ensure that this grant is in response to a contact request you sent.",
             "itemtype": "property",
             "name": "responseSignature",
@@ -30553,7 +30553,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 659,
+            "line": 647,
             "description": "Hashed username.",
             "itemtype": "property",
             "name": "username",
@@ -30563,7 +30563,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 666,
+            "line": 654,
             "description": "Hashed password to authorize commit.",
             "itemtype": "property",
             "name": "password",
@@ -30573,7 +30573,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 673,
+            "line": 661,
             "description": "Token provided to client when previously executed Request was done. May\nbe empty if this is used as part of Create action.",
             "itemtype": "property",
             "name": "token",
@@ -30583,7 +30583,7 @@
         },
         {
             "file": "src/main/js/cass/org.cassproject.schema.ebac.js",
-            "line": 681,
+            "line": 669,
             "description": "List of credentials to commit to the login server storage.",
             "itemtype": "property",
             "name": "credentials",
