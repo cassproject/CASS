@@ -247,6 +247,18 @@ function cassFrameworkAsCeasn() {
         var guid = c.getGuid();
         var uuid = new UUID(3, "nil", c.shortId()).format();
 
+        //If schema:identifier is not a URI, remove from translation
+        if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
+            delete c["schema:identifier"];
+        }
+        else if (c["schema:identifier"] != null) {
+            for (var i = c["schema:identifier"].length - 1; i >= 0; i--) {
+                if (c["schema:identifier"][i].indexOf("http") == -1) {
+                    c["schema:identifier"].splice(i, 1);
+                }
+            }
+        }
+
         competencies[allCompetencies[i]] = competencies[id] = jsonLdCompact(c.toJson(), ctx);
 
         if (competencies[id]["ceterms:ctid"] == null) {
@@ -280,6 +292,39 @@ function cassFrameworkAsCeasn() {
     delete f.competency;
     var guid = f.getGuid();
     var uuid = new UUID(3, "nil", f.shortId()).format();
+
+    //If schema:publisher field is not a URI, put data in ceasn:publisherName field
+    if (f["schema:publisher"] != null && !EcArray.isArray(f["schema:publisher"]) && f["schema:publisher"].indexOf("http") == -1) {
+        if (!EcArray.isArray(f["ceasn:publisherName"])) {
+            f["ceasn:publisherName"] = [];
+        }
+        f["ceasn:publisherName"].push(f["schema:publisher"]);
+        delete f["schema:publisher"];
+    }
+    else if (f["schema:publisher"] != null) {
+        for (var i = f["schema:publisher"].length - 1; i >= 0 ; i--) {
+            if (f["schema:publisher"][i].indexOf("http") == -1) {
+                if (!EcArray.isArray(f["ceasn:publisherName"])) {
+                    f["ceasn:publisherName"] = [];
+                }
+                f["ceasn:publisherName"].push(f["schema:publisher"][i]);
+                f["schema:publisher"].splice(i, 1);
+            }
+        }
+    }
+
+    //If schema:identifier is not a URI, remove from translation
+    if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && f["schema:identifier"].indexOf("http") == -1) {
+        delete f["schema:identifier"];
+    }
+    else if (f["schema:identifier"] != null) {
+        for (var i = f["schema:identifier"].length - 1; i >= 0; i--) {
+            if (f["schema:identifier"][i].indexOf("http") == -1) {
+                f["schema:identifier"].splice(i, 1);
+            }
+        }
+    }
+    
     f = jsonLdCompact(f.toJson(), ctx);
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
