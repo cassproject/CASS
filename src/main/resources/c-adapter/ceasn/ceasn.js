@@ -203,15 +203,15 @@ function cassFrameworkAsCeasn() {
         }
         if (r.relationType == Relation.REQUIRES) {
             EcArray.setRemove(f.competency, r.source);
-            if (competencies[r.target] != null)
-                if (competencies[r.target]["ceasn:prerequisiteAlignment"] == null)
-                    competencies[r.target]["ceasn:prerequisiteAlignment"] = [];
+            if (competencies[r.source] != null)
+                if (competencies[r.source]["ceasn:prerequisiteAlignment"] == null)
+                    competencies[r.source]["ceasn:prerequisiteAlignment"] = [];
 
-            if (competencies[r.target] != null)
-                if (competencies[r.source] != null)
-                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
+            if (competencies[r.source] != null)
+                if (competencies[r.target] != null)
+                    competencies[r.source]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(competencies[r.target].id, f.id));
                 else
-                    competencies[r.target]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(r.source, f.id));
+                    competencies[r.source]["ceasn:prerequisiteAlignment"].push(ceasnExportUriTransform(r.target, f.id));
         }
     }
 
