@@ -61,32 +61,6 @@ if [ "$md5Local" != "$md5Remote" ]
  fi
 fi
 
-if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/lib/jvm/java-8-oracle" ];
- then
-echo -----
-echo Installing Oracle Java...
-add-apt-repository ppa:webupd8team/java
-apt-get -qqy update
-apt-get -qqy remove tomcat7
-apt-get -qqy remove tomcat8
-apt-get -qqy remove maven
-apt-get -qqy autoremove
-apt-get -qqy install oracle-java8-installer
-fi
-if [ "$platformFedora" -ne 0 ] && [ ! -e "/usr/java/jdk1.8.0_144/jre/bin/java" ];
- then
-echo -----
-echo Installing Oracle Java...
-yum -y -q remove tomcat maven
-echo If installing Java does not work, please download and install Oracle Java 8.
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm"
-yum -y -q mastlocalinstall jdk-8u144-linux-x64.rpm
-echo Please ensure Oracle Java is installed.
-pause
-alternatives --config java
-rm jdk-8u144-linux-x64.rpm
-fi
-
 if [ "$platformDebian" -ne 0 ] && [ ! -e "/usr/bin/git" ];
  then
 echo -----
@@ -120,7 +94,6 @@ if [ "$platformDebian" -ne 0 ] && [ "$platformVersion16" -ne 0 ] && [ ! -e "/etc
 echo -----
 echo Installing Tomcat 7...
 apt-get -qqy install tomcat7
-echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat7
 mkdir /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7/backup
 chown tomcat7:tomcat7 /var/lib/tomcat7
@@ -130,7 +103,6 @@ if [ "$platformDebian" -ne 0 ] && [ "$platformVersion18" -ne 0 ] && [ ! -e "/etc
 echo -----
 echo Installing Tomcat 8...
 apt-get -qqy install systemd tomcat8
-echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /etc/default/tomcat8
 mkdir /var/lib/tomcat8/backup
 chown tomcat8:tomcat8 /var/lib/tomcat8/backup
 chown tomcat8:tomcat8 /var/lib/tomcat8
