@@ -33,8 +33,7 @@ function ceasnExportUriTransform(uri, frameworkUri) {
     uuid = parts[parts.length - 1];
     if (frameworkUri != null && frameworkUri !== undefined) {
         uri = EcRemoteLinkedData.trimVersionFromUrl(frameworkUri) + EcRemoteLinkedData.trimVersionFromUrl(uri);
-    }
-    else
+    } else
         uri = EcRemoteLinkedData.trimVersionFromUrl(uri);
     if (!uuid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"))
         uuid = new UUID(3, "nil", uri).format();
@@ -91,8 +90,7 @@ function cassFrameworkAsCeasn() {
     if (f.relation != null)
         all = all.concat(f.relation);
 
-    repo.precache(all, function (results) {
-    });
+    repo.precache(all, function (results) {});
 
     var allCompetencies = JSON.parse(JSON.stringify(f.competency));
     var competencies = {};
@@ -108,6 +106,7 @@ function cassFrameworkAsCeasn() {
         var r = EcAlignment.getBlocking(f.relation[i]);
         if (r == null) continue;
         if (r.source == null || r.target == null) continue;
+        if (r.source == "" || r.target == "") continue;
         if (r.relationType == Relation.NARROWS) {
             if (allCompetencies.indexOf(r.target) == -1 || allCompetencies.indexOf(r.source) == -1) {
                 if (r.target == f.id || r.target == f.shortId()) continue;
@@ -131,8 +130,7 @@ function cassFrameworkAsCeasn() {
                         competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(competencies[r.source].id, f.id));
                     else
                         competencies[r.target]["ceasn:narrowAlignment"].push(ceasnExportUriTransform(r.source, f.id));
-            }
-            else {
+            } else {
                 EcArray.setRemove(f.competency, r.target);
 
                 if (r.target == f.id || r.target == f.shortId()) continue;
@@ -149,7 +147,9 @@ function cassFrameworkAsCeasn() {
 
                 if (competencies[r.target] != null)
                     if (competencies[r.target]["ceasn:hasChild"] == null)
-                        competencies[r.target]["ceasn:hasChild"] = {"@list": []};
+                        competencies[r.target]["ceasn:hasChild"] = {
+                            "@list": []
+                        };
 
                 if (competencies[r.target] != null)
                     if (competencies[r.source] != null)
@@ -221,9 +221,9 @@ function cassFrameworkAsCeasn() {
         var c = competencies[allCompetencies[i]];
         if (c == null) continue;
         if (c["ceasn:hasChild"] != null && c["ceasn:hasChild"]["@list"] != null)
-        c["ceasn:hasChild"]["@list"].sort(function (a, b) {
-            return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
-        });
+            c["ceasn:hasChild"]["@list"].sort(function (a, b) {
+                return allCompetencies.indexOf(a) - allCompetencies.indexOf(b);
+            });
         delete competencies[allCompetencies[i]];
         var id = c.id;
         c.context = "https://schema.cassproject.org/0.4/cass2ceasn";
@@ -233,7 +233,9 @@ function cassFrameworkAsCeasn() {
         if (c["ceasn:isChildOf"] == null) {
             c["ceasn:isTopChildOf"] = ceasnExportUriTransform(f.id);
             if (f["ceasn:hasTopChild"] == null)
-                f["ceasn:hasTopChild"] = {"@list": []};
+                f["ceasn:hasTopChild"] = {
+                    "@list": []
+                };
             f["ceasn:hasTopChild"]["@list"].push(ceasnExportUriTransform(c.id, f.id));
         }
         f.competency.push(ceasnExportUriTransform(c.id, f.id));
@@ -250,8 +252,7 @@ function cassFrameworkAsCeasn() {
         //If schema:identifier is not a URI, remove from translation
         if (c["schema:identifier"] != null && !EcArray.isArray(c["schema:identifier"]) && c["schema:identifier"].indexOf("http") == -1) {
             delete c["schema:identifier"];
-        }
-        else if (c["schema:identifier"] != null) {
+        } else if (c["schema:identifier"] != null) {
             for (var i = c["schema:identifier"].length - 1; i >= 0; i--) {
                 if (c["schema:identifier"][i].indexOf("http") == -1) {
                     c["schema:identifier"].splice(i, 1);
@@ -300,9 +301,8 @@ function cassFrameworkAsCeasn() {
         }
         f["ceasn:publisherName"].push(f["schema:publisher"]);
         delete f["schema:publisher"];
-    }
-    else if (f["schema:publisher"] != null) {
-        for (var i = f["schema:publisher"].length - 1; i >= 0 ; i--) {
+    } else if (f["schema:publisher"] != null) {
+        for (var i = f["schema:publisher"].length - 1; i >= 0; i--) {
             if (f["schema:publisher"][i].indexOf("http") == -1) {
                 if (!EcArray.isArray(f["ceasn:publisherName"])) {
                     f["ceasn:publisherName"] = [];
@@ -316,15 +316,14 @@ function cassFrameworkAsCeasn() {
     //If schema:identifier is not a URI, remove from translation
     if (f["schema:identifier"] != null && !EcArray.isArray(f["schema:identifier"]) && f["schema:identifier"].indexOf("http") == -1) {
         delete f["schema:identifier"];
-    }
-    else if (f["schema:identifier"] != null) {
+    } else if (f["schema:identifier"] != null) {
         for (var i = f["schema:identifier"].length - 1; i >= 0; i--) {
             if (f["schema:identifier"][i].indexOf("http") == -1) {
                 f["schema:identifier"].splice(i, 1);
             }
         }
     }
-    
+
     f = jsonLdCompact(f.toJson(), ctx);
     if (f["ceasn:inLanguage"] == null)
         f["ceasn:inLanguage"] = "en";
@@ -342,10 +341,9 @@ function cassFrameworkAsCeasn() {
             if (EcArray.isArray(f["ceasn:source"])) {
                 f["ceasn:source"].push(f["@id"]);
             }
-            else {
-                f["ceasn:source"] = [f["ceasn:source"], f["@id"]];
-            }
-        else
+        else {
+            f["ceasn:source"] = [f["ceasn:source"], f["@id"]];
+        } else
             f["ceasn:source"] = f["@id"];
     }
     f["@id"] = ceasnExportUriTransform(f["@id"]);
@@ -367,16 +365,15 @@ function cassFrameworkAsCeasn() {
                 if (EcArray.isArray(c["ceasn:exactAlignment"])) {
                     c["ceasn:exactAlignment"].push(c["@id"]);
                 }
-                else {
-                    c["ceasn:exactAlignment"] = [c["ceasn:exactAlignment"], c["@id"]];
-                }
-            else
+            else {
+                c["ceasn:exactAlignment"] = [c["ceasn:exactAlignment"], c["@id"]];
+            } else
                 c["ceasn:exactAlignment"] = [c["@id"]];
         }
         competencies[k]["@id"] = ceasnExportUriTransform(competencies[k]["@id"], f["@id"]);
         results.push(competencies[k]);
         if (competency != null)
-            if (competency.id == competencies[k]["@id"]||ceasnExportUriTransform(competency.id, f["@id"]) == competencies[k]["@id"])
+            if (competency.id == competencies[k]["@id"] || ceasnExportUriTransform(competency.id, f["@id"]) == competencies[k]["@id"])
                 return JSON.stringify(competencies[k], null, 2);
     }
     delete f["@context"];
@@ -427,7 +424,7 @@ function stripNonCe(f) {
             });
         }
         if (k.indexOf("ceasn:") == 0 || k.indexOf("ceterms:") == 0 || k.indexOf("@") == 0)
-            ;
+        ;
         else
             delete f[k];
     }
@@ -510,7 +507,7 @@ function cassConceptSchemeAsCeasn(framework) {
                             }
                         }
                     }
-                    
+
                 }
                 getSubConcepts(c);
             }
@@ -518,7 +515,7 @@ function cassConceptSchemeAsCeasn(framework) {
     }
 
     var ctx = JSON.stringify(httpGet("https://credreg.net/ctdlasn/schema/context/json")["@context"]);
-    
+
     for (var i = 0; i < allConcepts.length; i++) {
         var c = concepts[allConcepts[i]];
         delete concepts[allConcepts[i]];
@@ -534,10 +531,9 @@ function cassConceptSchemeAsCeasn(framework) {
                     if (EcArray.isArray(c["skos:exactMatch"])) {
                         c["skos:exactMatch"].push(c.id);
                     }
-                    else {
-                        c["skos:exactMatch"] = [c["skos:exactMatch"], c.id];
-                    }
-                else
+                else {
+                    c["skos:exactMatch"] = [c["skos:exactMatch"], c.id];
+                } else
                     c["skos:exactMatch"] = [c.id];
             }
             c.id = ceasnExportUriTransform(c.id);
@@ -554,8 +550,7 @@ function cassConceptSchemeAsCeasn(framework) {
             if (concepts[id]["ceterms:ctid"] == null) {
                 if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
                     concepts[id]["ceterms:ctid"] = guid;
-                }
-                else {
+                } else {
                     concepts[id]["ceterms:ctid"] = uuid;
                 }
             }
@@ -587,8 +582,7 @@ function cassConceptSchemeAsCeasn(framework) {
     if (cs["ceterms:ctid"] == null) {
         if (guid.matches("^(ce-)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
             cs["ceterms:ctid"] = guid;
-        }
-        else {
+        } else {
             cs["ceterms:ctid"] = uuid;
         }
     }
@@ -601,10 +595,9 @@ function cassConceptSchemeAsCeasn(framework) {
             if (EcArray.isArray(cs["ceasn:exactAlignment"])) {
                 cs["ceasn:exactAlignment"].push(csId);
             }
-            else {
-                cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], csId];
-            }
-        else
+        else {
+            cs["ceasn:exactAlignment"] = [cs["ceasn:exactAlignment"], csId];
+        } else
             cs["ceasn:exactAlignment"] = [csId];
     }
     cs["@id"] = ceasnExportUriTransform(csId);
@@ -626,7 +619,7 @@ function cassConceptSchemeAsCeasn(framework) {
         concepts[k]["@id"] = ceasnExportUriTransform(concepts[k]["@id"]);
         results.push(concepts[k]);
     }
-        
+
     delete cs["@context"];
     var r = {};
     r["@context"] = "https://credreg.net/ctdlasn/schema/context/json";
@@ -642,7 +635,7 @@ function cassConceptSchemeAsCeasn(framework) {
 
 function importCeFrameworkToCass(frameworkObj, competencyList) {
 
-    var owner = fileToString.call(this,(fileFromDatastream).call(this,"owner"));
+    var owner = fileToString.call(this, (fileFromDatastream).call(this, "owner"));
 
     var ceasnIdentity = new EcIdentity();
     ceasnIdentity.ppk = EcPpk.fromPem(keyFor("adapter.ceasn.private"));
@@ -714,8 +707,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
         if (c["schema:inLanguage"] == null || c["schema:inLanguage"] === undefined) {
             if (frameworkObj != null && (frameworkObj["ceasn:inLanguage"] != null || frameworkObj["schema:inLanguage"] != null)) {
                 c["schema:inLanguage"] = frameworkObj["ceasn:inLanguage"] ? frameworkObj["ceasn:inLanguage"] : frameworkObj["schema:inLanguage"];
-            }
-            else {
+            } else {
                 c["schema:inLanguage"] = "en";
             }
         }
@@ -726,14 +718,12 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             var date;
             if (!c.id.substring(c.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
                 timestamp = null;
-            }
-            else {
-                timestamp = c.id.substring(c.id.lastIndexOf("/")+1);
+            } else {
+                timestamp = c.id.substring(c.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
                 date = new Date(parseInt(timestamp)).toISOString();
-            }
-            else {
+            } else {
                 date = new Date().toISOString();
             }
             c["schema:dateCreated"] = date;
@@ -777,14 +767,12 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
             var date;
             if (!f.id.substring(f.id.lastIndexOf("/")).matches("\\/[0-9]+")) {
                 timestamp = null;
-            }
-            else {
-                timestamp = f.id.substring(f.id.lastIndexOf("/")+1);
+            } else {
+                timestamp = f.id.substring(f.id.lastIndexOf("/") + 1);
             }
             if (timestamp != null) {
                 date = new Date(parseInt(timestamp)).toISOString();
-            }
-            else {
+            } else {
                 date = new Date().toISOString();
             }
             f["schema:dateCreated"] = date;
@@ -792,7 +780,7 @@ function importCeFrameworkToCass(frameworkObj, competencyList) {
 
         listToSave.push(f);
 
-        repo.multiput(listToSave,console.log,console.error);
+        repo.multiput(listToSave, console.log, console.error);
         return repoEndpoint() + "data/" + guid;
     } // end if frameworkObj != null
 }
@@ -870,35 +858,35 @@ bindWebService("/ceasn", ceasnEndpoint);
 bindWebService("/ctdlasn", ceasnEndpoint);
 
 /*!
-**  Pure-UUID -- Pure JavaScript Based Universally Unique Identifier (UUID)
-**  Copyright (c) 2004-2018 Ralf S. Engelschall <rse@engelschall.com>
-**
-**  Permission is hereby granted, free of charge, to any person obtaining
-**  a copy of this software and associated documentation files (the
-**  "Software"), to deal in the Software without restriction, including
-**  without limitation the rights to use, copy, modify, merge, publish,
-**  distribute, sublicense, and/or sell copies of the Software, and to
-**  permit persons to whom the Software is furnished to do so, subject to
-**  the following conditions:
-**
-**  The above copyright notice and this permission notice shall be included
-**  in all copies or substantial portions of the Software.
-**
-**  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-**  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-**  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-**  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-**  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-**  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-**  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ **  Pure-UUID -- Pure JavaScript Based Universally Unique Identifier (UUID)
+ **  Copyright (c) 2004-2018 Ralf S. Engelschall <rse@engelschall.com>
+ **
+ **  Permission is hereby granted, free of charge, to any person obtaining
+ **  a copy of this software and associated documentation files (the
+ **  "Software"), to deal in the Software without restriction, including
+ **  without limitation the rights to use, copy, modify, merge, publish,
+ **  distribute, sublicense, and/or sell copies of the Software, and to
+ **  permit persons to whom the Software is furnished to do so, subject to
+ **  the following conditions:
+ **
+ **  The above copyright notice and this permission notice shall be included
+ **  in all copies or substantial portions of the Software.
+ **
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ **  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ **  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ **  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ **  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ **  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 /*  Universal Module Definition (UMD)  */
 (function (root, name, factory) {
     /* global define: false */
     /* global module: false */
     if (typeof define === "function" && typeof define.amd !== "undefined")
-    /*  AMD environment  */
+        /*  AMD environment  */
         define(function () {
             return factory(root);
         });
@@ -906,11 +894,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         /*  CommonJS environment  */
         module.exports = factory(root);
         module.exports["default"] = module.exports;
-    }
-    else
-    /*  Browser environment  */
+    } else
+        /*  Browser environment  */
         root[name] = factory(root);
-}(this, "UUID", function (/* root */) {
+}(this, "UUID", function ( /* root */ ) {
 
     /*  array to hex-string conversion  */
     var a2hs = function (bytes, begin, end, uppercase, str, pos) {
@@ -959,7 +946,9 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     var z85_encode = function (data, size) {
         if ((size % 4) !== 0)
             throw new Error("z85_encode: invalid input length (multiple of 4 expected)");
-        var str = "", i = 0, value = 0;
+        var str = "",
+            i = 0,
+            value = 0;
         while (i < size) {
             value = (value * 256) + data[i++];
             if ((i % 4) === 0) {
@@ -980,7 +969,9 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             throw new Error("z85_decode: invalid input length (multiple of 5 expected)");
         if (typeof dest === "undefined")
             dest = new Array(l * 4 / 5);
-        var i = 0, j = 0, value = 0;
+        var i = 0,
+            j = 0,
+            value = 0;
         while (i < l) {
             var idx = str.charCodeAt(i++) - 32;
             if (idx < 0 || idx >= z85_decoder.length)
@@ -1004,7 +995,11 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  string to array conversion  */
     var s2a = function (s, _options) {
         /*  determine options  */
-        var options = {ibits: 8, obits: 8, obigendian: true};
+        var options = {
+            ibits: 8,
+            obits: 8,
+            obigendian: true
+        };
         for (var opt in _options)
             if (typeof options[opt] !== "undefined")
                 options[opt] = _options[opt];
@@ -1017,7 +1012,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         var w;
         var wk = 0;
         var sl = s.length;
-        for (; ;) {
+        for (;;) {
             /*  fetch next octet from string  */
             if (ck === 0)
                 C = s.charCodeAt(i++);
@@ -1028,8 +1023,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             if (options.obigendian) {
                 if (wk === 0) w = (c << (options.obits - 8));
                 else w |= (c << ((options.obits - 8) - wk));
-            }
-            else {
+            } else {
                 if (wk === 0) w = c;
                 else w |= (c << wk);
             }
@@ -1046,7 +1040,10 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  array to string conversion  */
     var a2s = function (a, _options) {
         /*  determine options  */
-        var options = {ibits: 32, ibigendian: true};
+        var options = {
+            ibits: 32,
+            ibigendian: true
+        };
         for (var opt in _options)
             if (typeof options[opt] !== "undefined")
                 options[opt] = _options[opt];
@@ -1293,8 +1290,8 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  bitwise rotate 32-bit number to the left  */
     var ui32_rol = function (num, cnt) {
         return (
-            ((num << cnt) & 0xFFFFFFFF)
-            | ((num >>> (32 - cnt)) & 0xFFFFFFFF)
+            ((num << cnt) & 0xFFFFFFFF) |
+            ((num >>> (32 - cnt)) & 0xFFFFFFFF)
         );
     };
 
@@ -1312,8 +1309,8 @@ bindWebService("/ctdlasn", ceasnEndpoint);
         function sha1_kt(t) {
             return (t < 20) ? 1518500249 :
                 (t < 40) ? 1859775393 :
-                    (t < 60) ? -1894007588 :
-                        -899497514;
+                (t < 60) ? -1894007588 :
+                -899497514;
         }
 
         /*  append padding  */
@@ -1361,9 +1358,15 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     var sha1 = function (s) {
         return a2s(
             sha1_core(
-                s2a(s, {ibits: 8, obits: 32, obigendian: true}),
-                s.length * 8),
-            {ibits: 32, ibigendian: true});
+                s2a(s, {
+                    ibits: 8,
+                    obits: 32,
+                    obigendian: true
+                }),
+                s.length * 8), {
+                ibits: 32,
+                ibigendian: true
+            });
     };
 
     /*  calculate the MD5 of an array of little-endian words, and a bit length  */
@@ -1484,9 +1487,15 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     var md5 = function (s) {
         return a2s(
             md5_core(
-                s2a(s, {ibits: 8, obits: 32, obigendian: false}),
-                s.length * 8),
-            {ibits: 32, ibigendian: false});
+                s2a(s, {
+                    ibits: 8,
+                    obits: 32,
+                    obigendian: false
+                }),
+                s.length * 8), {
+                ibits: 32,
+                ibigendian: false
+            });
     };
 
     /*  PCG Pseudo-Random-Number-Generator (PRNG)
@@ -1572,14 +1581,14 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /* global Uint8Array: false */
     /* global Buffer: false */
     if (typeof Uint8Array !== "undefined")
-    /*  HTML5 TypedArray (browser environments: IE10, FF, CH, SF, OP)
-        (http://caniuse.com/#feat=typedarrays)  */
+        /*  HTML5 TypedArray (browser environments: IE10, FF, CH, SF, OP)
+            (http://caniuse.com/#feat=typedarrays)  */
         UUID.prototype = new Uint8Array(16);
     else if (Buffer)
-    /*  Node Buffer (server environments: Node.js, IO.js)  */
+        /*  Node Buffer (server environments: Node.js, IO.js)  */
         UUID.prototype = new Buffer(16);
     else
-    /*  JavaScript (any environment)  */
+        /*  JavaScript (any environment)  */
         UUID.prototype = new Array(16);
     UUID.prototype.constructor = UUID;
 
@@ -1641,19 +1650,17 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             node[0] |= 0x02;
             for (i = 0; i < 6; i++)
                 uuid[10 + i] = node[i];
-        }
-        else if (version === 4) {
+        } else if (version === 4) {
             /*  generate UUID version 4 (random data based)  */
             var data = prng(16, 255);
             for (i = 0; i < 16; i++)
                 this[i] = data[i];
-        }
-        else if (version === 3 || version === 5) {
+        } else if (version === 3 || version === 5) {
             /*  generate UUID version 3/5 (MD5/SHA-1 based)  */
             var input = "";
             var nsUUID = (
                 typeof arguments[1] === "object" && arguments[1] instanceof UUID ?
-                    arguments[1] : new UUID().parse(arguments[1])
+                arguments[1] : new UUID().parse(arguments[1])
             );
             for (i = 0; i < 16; i++)
                 input += String.fromCharCode(nsUUID[i]);
@@ -1661,8 +1668,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             var s = version === 3 ? md5(input) : sha1(input);
             for (i = 0; i < 16; i++)
                 uuid[i] = s.charCodeAt(i);
-        }
-        else
+        } else
             throw new Error("UUID: make: invalid version");
 
         /*  brand with particular UUID version  */
@@ -1685,8 +1691,7 @@ bindWebService("/ctdlasn", ceasnEndpoint);
             arr = Array(32);
             a2hs(this, 0, 15, true, arr, 0);
             str = arr.join("");
-        }
-        else if (type === undefined || type === "std") {
+        } else if (type === undefined || type === "std") {
             arr = new Array(36);
             a2hs(this, 0, 3, false, arr, 0);
             arr[8] = "-";
@@ -1803,4 +1808,3 @@ bindWebService("/ctdlasn", ceasnEndpoint);
     /*  export API  */
     return UUID;
 }));
-
